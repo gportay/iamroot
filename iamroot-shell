@@ -1,0 +1,9 @@
+#!/bin/sh
+#
+# Copyright 2020 Gaël PORTAY
+#
+# SPDX-License-Identifier: GPL-2.1
+#
+
+LD_PRELOAD="libiamroot.so${LD_PRELOAD+:$LD_PRELOAD}" \
+exec "${SHELL:-/bin/sh}" "$@"

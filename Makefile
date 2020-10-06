@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-2.1
 #
 
-override CFLAGS += -fPIC
+override CFLAGS += -fPIC -Wall -Wextra -Werror
 
 .PHONY: all
 all: libiamroot.so

@@ -10,7 +10,10 @@ override CFLAGS += -fPIC -Wall -Wextra -Werror
 all: libiamroot.so
 
 libiamroot.so: chroot.o
+libiamroot.so: execve.o
 libiamroot.so: geteuid.o
+libiamroot.so: path_resolution.o
+libiamroot.so: override LDLIBS += -ldl
 
 .PHONY: tests
 tests: export LD_PRELOAD += $(CURDIR)/libiamroot.so

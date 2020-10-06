@@ -11,34 +11,7 @@
 
 #include <unistd.h>
 
-static const char *path_resolution(const char *path, char *buf, size_t bufsize)
-{
-	if (getenv("IAMROOT_DEBUG"))
-		fprintf(stderr, "%s(path: '%s')\n", __func__, path);
-
-	if (!path || !*path) {
-		errno = EINVAL;
-		return NULL;
-	}
-
-	if (*path == '/') {
-		char *root = getenv("IAMROOT_ROOT") ?: "";
-		int size = snprintf(buf, bufsize, "%s%s", root, path);
-		if (size < 0) {
-			errno = EINVAL;
-			return NULL;
-		}
-
-		if ((size_t) size >= bufsize) {
-			errno = ENAMETOOLONG;
-			return NULL;
-		}
-
-		return buf;
-	}
-
-	return path;
-}
+#include "path_resolution.h"
 
 int chroot(const char *path)
 {

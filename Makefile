@@ -15,6 +15,7 @@ libiamroot.so: geteuid.o
 tests: export LD_PRELOAD += $(CURDIR)/libiamroot.so
 tests: libiamroot.so
 	whoami | tee /dev/stderr | grep -q root
+	IAMROOT_GETEUID=$$UID whoami | tee /dev/stderr | grep -q $$USER
 
 .PHONY: shell-tests
 shell-tests: export LD_LIBRARY_PATH := $(CURDIR)

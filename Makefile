@@ -30,6 +30,12 @@ shell-tests: libiamroot.so | rootfs
 	iamroot-shell -c "whoami" | tee /dev/stderr | grep -q root
 	iamroot-shell -c "chroot rootfs pwd" | tee /dev/stderr | grep -q /
 
+.PHONY: alpine-tests
+alpine-tests: export LD_PRELOAD += $(CURDIR)/libiamroot.so
+alpine-tests: libiamroot.so | alpine-minirootfs
+	chroot alpine-minirootfs pwd | tee /dev/stderr | grep -q /
+	chroot alpine-minirootfs /bin/sh | tee /dev/stderr | grep -q /
+
 .PHONY: rootfs
 rootfs: rootfs/usr/bin/sh
 rootfs: rootfs/bin
@@ -50,14 +56,24 @@ rootfs/bin: | rootfs/usr/bin
 rootfs/usr/bin rootfs/root:
 	mkdir -p $@
 
+.PHONY: alpine-minirootfs
+alpine-minirootfs: | alpine-minirootfs/bin/busybox
+
+alpine-minirootfs/bin/busybox: | alpine-minirootfs-3.13.0-x86_64.tar.gz
+	mkdir -p alpine-minirootfs
+	tar xf alpine-minirootfs-3.13.0-x86_64.tar.gz -C alpine-minirootfs
+
+alpine-minirootfs-3.13.0-x86_64.tar.gz:
+	wget http://dl-cdn.alpinelinux.org/alpine/v3.13/releases/x86_64/alpine-minirootfs-3.13.0-x86_64.tar.gz
+
 .PHONY: clean
 clean:
 	rm -f libiamroot.so *.o
-	rm -Rf rootfs/
+	rm -Rf rootfs/ alpine-minirootfs/
 
 .PHONY: mrproper
 mrproper: clean
-	rm -R busybox
+	rm -f busybox alpine-minirootfs-3.13.0-x86_64.tar.gz
 
 %.so: override LDFLAGS += -shared
 %.so:

@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <errno.h>
 
+#include "path_resolution.h"
+
 const char *path_resolution(const char *path, char *buf, size_t bufsize)
 {
 	if (getenv("IAMROOT_DEBUG"))

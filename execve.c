@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Gaël PORTAY
+ * Copyright 2020-2021 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1
  */
@@ -8,6 +8,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <limits.h>
 #include <dlfcn.h>
 
@@ -30,6 +31,10 @@ int execve(const char *path, char *const argv[], char *const envp[])
 		perror("path_resolution");
 		return -1;
 	}
+
+	if (getenv("IAMROOT_DEBUG") && strcmp(path, real_path))
+		fprintf(stderr, "%s(real_path: '%s', argv: '%s'... , envp: '%s'...)\n",
+				__func__, real_path, argv[0], envp[0]);
 
 	realsym = dlsym(RTLD_NEXT, __func__);
 	return realsym(real_path, argv, envp);

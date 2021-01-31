@@ -1,5 +1,5 @@
 #
-# Copyright 2020 Gaël PORTAY
+# Copyright 2020-2021 Gaël PORTAY
 #
 # SPDX-License-Identifier: GPL-2.1
 #
@@ -16,10 +16,11 @@ libiamroot.so: path_resolution.o
 libiamroot.so: override LDLIBS += -ldl
 
 .PHONY: tests
+tests: SHELL = /bin/bash
 tests: export LD_PRELOAD += $(CURDIR)/libiamroot.so
 tests: libiamroot.so | rootfs
 	whoami | tee /dev/stderr | grep -q root
-	IAMROOT_GETEUID=$$UID whoami | tee /dev/stderr | grep -q $$USER
+	IAMROOT_GETEUID=$$EUID whoami | tee /dev/stderr | grep -q $$USER
 	chroot rootfs pwd | tee /dev/stderr | grep -q /
 
 .PHONY: shell-tests

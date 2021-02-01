@@ -38,6 +38,12 @@ alpine-tests: libiamroot.so | alpine-minirootfs
 	chroot alpine-minirootfs pwd | tee /dev/stderr | grep -q /
 	chroot alpine-minirootfs /bin/sh | tee /dev/stderr | grep -q /
 
+.PHONY: shell
+shell: export LD_LIBRARY_PATH := $(CURDIR)
+shell: export PATH := $(CURDIR):$(PATH)
+shell: libiamroot.so
+	iamroot-shell
+
 .PHONY: rootfs
 rootfs: rootfs/usr/bin/sh
 rootfs: rootfs/bin

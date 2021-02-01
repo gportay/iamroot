@@ -14,7 +14,10 @@ libiamroot.so: chroot.o
 libiamroot.so: execve.o
 libiamroot.so: execvp.o
 libiamroot.so: execvpe.o
+libiamroot.so: get_current_dir_name.o
+libiamroot.so: getcwd.o
 libiamroot.so: geteuid.o
+libiamroot.so: getwd.o
 libiamroot.so: path_resolution.o
 libiamroot.so: readlink.o
 libiamroot.so: override LDLIBS += -ldl

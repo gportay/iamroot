@@ -9,6 +9,7 @@ override CFLAGS += -fPIC -Wall -Wextra -Werror
 .PHONY: all
 all: libiamroot.so
 
+libiamroot.so: chdir.o
 libiamroot.so: chroot.o
 libiamroot.so: execve.o
 libiamroot.so: execvp.o

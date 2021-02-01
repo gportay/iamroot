@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <errno.h>
 #include <limits.h>
 
@@ -26,6 +27,23 @@ int chroot(const char *path)
 	if (!real_path) {
 		perror("path_resolution");
 		return -1;
+	}
+
+	/* prepend the current working directory for relative paths */
+	if (real_path == path) {
+		size_t len;
+		char *cwd;
+
+		cwd = getcwd(buf, sizeof(buf));
+		len = strlen(cwd);
+		if (len + 1 + strlen(path) + 1 > sizeof(buf)) {
+			errno = ENAMETOOLONG;
+			return -1;
+		}
+
+		cwd[len++] = '/';
+		cwd[len] = 0;
+		real_path = strncat(cwd, path, sizeof(buf) - len);
 	}
 
 	if (getenv("IAMROOT_DEBUG"))

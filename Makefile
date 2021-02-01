@@ -44,6 +44,18 @@ shell: export PATH := $(CURDIR):$(PATH)
 shell: libiamroot.so
 	iamroot-shell
 
+.PHONY: chroot
+chroot: export LD_PRELOAD += $(CURDIR)/libiamroot.so
+chroot: export PATH := $(CURDIR):/bin:/sbin
+chroot: libiamroot.so | rootfs
+	chroot rootfs /bin/sh
+
+.PHONY: alpine-chroot
+alpine-chroot: export LD_PRELOAD += $(CURDIR)/libiamroot.so
+alpine-chroot: export PATH := $(CURDIR):/bin:/sbin
+alpine-chroot: libiamroot.so | alpine-minirootfs
+	chroot alpine-minirootfs /bin/sh
+
 .PHONY: rootfs
 rootfs: rootfs/usr/bin/sh
 rootfs: rootfs/bin

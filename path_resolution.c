@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Gaël PORTAY
+ * Copyright 2020-2021 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1
  */
@@ -33,8 +33,14 @@ const char *path_resolution(const char *path, char *buf, size_t bufsize)
 			return NULL;
 		}
 
+		if (getenv("IAMROOT_DEBUG"))
+			fprintf(stderr, "%s(buf: '%s')\n", __func__, buf);
+
 		return buf;
 	}
+
+	if (getenv("IAMROOT_DEBUG"))
+		fprintf(stderr, "%s(path: '%s')\n", __func__, path);
 
 	return path;
 }

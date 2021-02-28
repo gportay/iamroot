@@ -23,14 +23,8 @@ int chroot(const char *path)
 		fprintf(stderr, "%s(path: '%s') IAMROOT_ROOT='%s'\n", __func__,
 				path, getenv("IAMROOT_ROOT") ?: "");
 
-	real_path = path_resolution(path, buf, sizeof(buf));
-	if (!real_path) {
-		perror("path_resolution");
-		return -1;
-	}
-
 	/* prepend the current working directory for relative paths */
-	if (real_path == path) {
+	if (path[0] != '/') {
 		size_t len;
 		char *cwd;
 
@@ -44,6 +38,12 @@ int chroot(const char *path)
 		cwd[len++] = '/';
 		cwd[len] = 0;
 		real_path = strncat(cwd, path, sizeof(buf) - len);
+	} else {
+		real_path = path_resolution(path, buf, sizeof(buf));
+		if (!real_path) {
+			perror("path_resolution");
+			return -1;
+		}
 	}
 
 	if (getenv("IAMROOT_DEBUG"))

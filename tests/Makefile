@@ -52,6 +52,7 @@ all: libiamnotroot.so
 all: $(TESTS)
 
 libiamnotroot.so: iamnotroot.o
+libiamnotroot.so: override LDLIBS += -ldl
 
 path_resolution: libiamnotroot.so
 path_resolution: override LDLIBS += libiamnotroot.so

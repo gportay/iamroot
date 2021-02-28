@@ -5,8 +5,12 @@
  */
 
 #include <stddef.h>
+#include <stdio.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <dlfcn.h>
+
+#include "iamroot.h"
 
 int pathsetenv(const char *root, const char *name, const char *value,
 	       int overwrite)
@@ -29,6 +33,7 @@ char *fpath_resolutionat(int fd, const char *path, char *buf, size_t bufsize,
 	(void)bufsize;
 	(void)flags;
 
+	__dl_perror(__func__);
 	errno = ENOSYS;
 	return NULL;
 }

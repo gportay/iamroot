@@ -26,22 +26,22 @@ libiamroot.so: override LDLIBS += -ldl
 tests: SHELL = /bin/bash
 tests: export LD_PRELOAD += $(CURDIR)/libiamroot.so
 tests: libiamroot.so | rootfs
-	whoami | tee /dev/stderr | grep -q root
-	IAMROOT_GETEUID=$$EUID whoami | tee /dev/stderr | grep -q $$USER
-	chroot rootfs pwd | tee /dev/stderr | grep -q /
+	whoami | tee /dev/stderr | grep -q "^root\$$"
+	IAMROOT_GETEUID=$$EUID whoami | tee /dev/stderr | grep -q "^$$USER\$$"
+	chroot rootfs pwd | tee /dev/stderr | grep -q "^/\$$"
 
 .PHONY: shell-tests
 shell-tests: export LD_LIBRARY_PATH := $(CURDIR)
 shell-tests: export PATH := $(CURDIR):$(PATH)
 shell-tests: libiamroot.so | rootfs
-	iamroot-shell -c "whoami" | tee /dev/stderr | grep -q root
-	iamroot-shell -c "chroot rootfs pwd" | tee /dev/stderr | grep -q /
+	iamroot-shell -c "whoami" | tee /dev/stderr | grep -q "^root\$$"
+	iamroot-shell -c "chroot rootfs pwd" | tee /dev/stderr | grep -q "^/\$$"
 
 .PHONY: alpine-tests
 alpine-tests: export LD_PRELOAD += $(CURDIR)/libiamroot.so
 alpine-tests: libiamroot.so | alpine-minirootfs
-	chroot alpine-minirootfs pwd | tee /dev/stderr | grep -q /
-	chroot alpine-minirootfs /bin/sh | tee /dev/stderr | grep -q /
+	chroot alpine-minirootfs pwd | tee /dev/stderr | grep -q "^/\$$"
+	chroot alpine-minirootfs /bin/sh | tee /dev/stderr | grep -q "^/\$$"
 
 .PHONY: shell
 shell: export LD_LIBRARY_PATH := $(CURDIR)

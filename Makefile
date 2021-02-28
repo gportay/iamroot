@@ -41,7 +41,6 @@ shell-tests: libiamroot.so | rootfs
 alpine-tests: export LD_PRELOAD += $(CURDIR)/libiamroot.so
 alpine-tests: libiamroot.so | alpine-minirootfs
 	chroot alpine-minirootfs pwd | tee /dev/stderr | grep -q "^/\$$"
-	chroot alpine-minirootfs /bin/sh | tee /dev/stderr | grep -q "^/\$$"
 
 .PHONY: shell
 shell: export LD_LIBRARY_PATH := $(CURDIR)

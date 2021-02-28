@@ -22,12 +22,18 @@ libiamroot.so: get_current_dir_name.o
 libiamroot.so: getcwd.o
 libiamroot.so: geteuid.o
 libiamroot.so: getwd.o
+libiamroot.so: mount.o
 libiamroot.so: path_resolution.o
 libiamroot.so: readlink.o
+libiamroot.so: umount.o
+libiamroot.so: umount2.o
 libiamroot.so: override LDLIBS += -ldl
 
 .PHONY: tests
 tests: alpine-tests
+tests: | libiamroot.so
+	$(MAKE) -C tests
+	$(MAKE) -C tests $@ LD_PRELOAD=$(CURDIR)/libiamroot.so
 
 .PHONY: static-tests
 static-tests: SHELL = /bin/bash

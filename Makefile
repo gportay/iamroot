@@ -108,12 +108,12 @@ static-rootfs/usr/bin static-rootfs/root:
 .PHONY: alpine-minirootfs
 alpine-minirootfs: | alpine-minirootfs/bin/busybox
 
-alpine-minirootfs/bin/busybox: | alpine-minirootfs-3.12.0-x86_64.tar.gz
+alpine-minirootfs/bin/busybox: | alpine-minirootfs-3.13.0-x86_64.tar.gz
 	mkdir -p alpine-minirootfs
-	tar xf alpine-minirootfs-3.12.0-x86_64.tar.gz -C alpine-minirootfs
+	tar xf alpine-minirootfs-3.13.0-x86_64.tar.gz -C alpine-minirootfs
 
-alpine-minirootfs-3.12.0-x86_64.tar.gz:
-	wget http://dl-cdn.alpinelinux.org/alpine/v3.12/releases/x86_64/alpine-minirootfs-3.12.0-x86_64.tar.gz
+alpine-minirootfs-3.13.0-x86_64.tar.gz:
+	wget http://dl-cdn.alpinelinux.org/alpine/v3.13/releases/x86_64/alpine-minirootfs-3.13.0-x86_64.tar.gz
 
 .PHONY: clean
 clean:
@@ -122,7 +122,7 @@ clean:
 
 .PHONY: mrproper
 mrproper: clean
-	rm -f busybox alpine-minirootfs-3.12.0-x86_64.tar.gz
+	rm -f busybox alpine-minirootfs-3.13.0-x86_64.tar.gz
 
 %.so: override LDFLAGS += -shared
 %.so:

@@ -25,6 +25,7 @@ int next_truncate(const char *path, off_t length)
 
 	sym = dlsym(RTLD_NEXT, "truncate");
 	if (!sym) {
+		__dl_perror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

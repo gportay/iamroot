@@ -25,6 +25,7 @@ int next___open_2(const char *path, int flags)
 
 	sym = dlsym(RTLD_NEXT, "__open_2");
 	if (!sym) {
+		__dl_perror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

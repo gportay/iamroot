@@ -20,6 +20,7 @@ int next_running_in_chroot(void)
 
 	sym = dlsym(RTLD_NEXT, "running_in_chroot");
 	if (!sym) {
+		__dl_perror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

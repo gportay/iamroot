@@ -24,6 +24,7 @@ int next_linkat(int oldfd, const char *oldpath, int newfd, const char *newpath,
 
 	sym = dlsym(RTLD_NEXT, "linkat");
 	if (!sym) {
+		__dl_perror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

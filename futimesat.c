@@ -23,6 +23,7 @@ int next_futimesat(int fd, const char *path, const struct timeval times[2])
 
 	sym = dlsym(RTLD_NEXT, "futimesat");
 	if (!sym) {
+		__dl_perror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

@@ -22,6 +22,7 @@ int next___xmknod(int ver, const char *path, mode_t mode, dev_t dev)
 
 	sym = dlsym(RTLD_NEXT, "__xmknod");
 	if (!sym) {
+		__dl_perror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

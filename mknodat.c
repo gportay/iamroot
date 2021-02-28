@@ -23,6 +23,7 @@ int next_mknodat(int fd, const char *path, mode_t mode, dev_t dev)
 
 	sym = dlsym(RTLD_NEXT, "mknodat");
 	if (!sym) {
+		__dl_perror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

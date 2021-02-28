@@ -25,6 +25,7 @@ int next_lsetxattr(const char *path, const char *name, const void *value,
 
 	sym = dlsym(RTLD_NEXT, "lsetxattr");
 	if (!sym) {
+		__dl_perror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

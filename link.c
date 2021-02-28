@@ -23,6 +23,7 @@ int next_link(const char *oldpath, const char *newpath)
 
 	sym = dlsym(RTLD_NEXT, "link");
 	if (!sym) {
+		__dl_perror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

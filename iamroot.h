@@ -15,6 +15,8 @@ extern int __verbosef(const char *, const char *, ...) __attribute__ ((format(pr
 
 #define __verbose(fmt, ...) __verbosef(__func__, fmt, __VA_ARGS__)
 
+#define __dl_perror(s) fprintf(stderr, "%s: %s\n", s, dlerror())
+
 #ifdef __cplusplus
 }
 #endif

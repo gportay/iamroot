@@ -22,6 +22,7 @@ int next_remove(const char *path)
 
 	sym = dlsym(RTLD_NEXT, "remove");
 	if (!sym) {
+		__dl_perror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

@@ -21,6 +21,7 @@ int next_fchdir(int fd)
 
 	sym = dlsym(RTLD_NEXT, "fchdir");
 	if (!sym) {
+		__dl_perror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

@@ -24,6 +24,7 @@ int next_mkostemp64(char *path, int flags)
 
 	sym = dlsym(RTLD_NEXT, "mkostemp64");
 	if (!sym) {
+		__dl_perror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

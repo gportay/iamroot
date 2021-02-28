@@ -24,6 +24,7 @@ int next_mkstemps64(char *path, int suffixlen)
 
 	sym = dlsym(RTLD_NEXT, "mkstemps64");
 	if (!sym) {
+		__dl_perror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

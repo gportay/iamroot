@@ -23,6 +23,7 @@ int next_unlinkat(int fd, const char *path, int flags)
 
 	sym = dlsym(RTLD_NEXT, "unlinkat");
 	if (!sym) {
+		__dl_perror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

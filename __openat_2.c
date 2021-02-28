@@ -23,6 +23,7 @@ int next___openat_2(int fd, const char *path, int flags)
 
 	sym = dlsym(RTLD_NEXT, "__openat_2");
 	if (!sym) {
+		__dl_perror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

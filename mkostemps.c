@@ -23,6 +23,7 @@ int next_mkostemps(char *path, int suffixlen, int flags)
 
 	sym = dlsym(RTLD_NEXT, "mkostemps");
 	if (!sym) {
+		__dl_perror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

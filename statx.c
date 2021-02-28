@@ -28,6 +28,7 @@ int next_statx(int fd, const char *path, int flags, unsigned int mask,
 
 	sym = dlsym(RTLD_NEXT, "statx");
 	if (!sym) {
+		__dl_perror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

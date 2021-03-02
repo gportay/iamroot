@@ -45,7 +45,6 @@ static-tests: libiamroot.so | static-rootfs
 	chroot rootfs pwd | tee /dev/stderr | grep -q "^/\$$"
 
 .PHONY: shell-tests
-shell-tests: export LD_LIBRARY_PATH := $(CURDIR)
 shell-tests: export PATH := $(CURDIR):$(PATH)
 shell-tests: libiamroot.so | static-rootfs
 	iamroot-shell -c "whoami" | tee /dev/stderr | grep -q "^root\$$"
@@ -57,7 +56,6 @@ alpine-tests: libiamroot.so | alpine-minirootfs
 	chroot alpine-minirootfs pwd | tee /dev/stderr | grep -q "^/\$$"
 
 .PHONY: shell
-shell: export LD_LIBRARY_PATH := $(CURDIR)
 shell: export PATH := $(CURDIR):$(PATH)
 shell: libiamroot.so
 	iamroot-shell

@@ -11,6 +11,9 @@ all: libiamroot.so
 
 libiamroot.so: chdir.o
 libiamroot.so: chroot.o
+libiamroot.so: execl.o
+libiamroot.so: execle.o
+libiamroot.so: execlp.o
 libiamroot.so: execv.o
 libiamroot.so: execve.o
 libiamroot.so: execvp.o

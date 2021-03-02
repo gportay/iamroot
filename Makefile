@@ -27,6 +27,7 @@ libiamroot.so: path_resolution.o
 libiamroot.so: readlink.o
 libiamroot.so: umount.o
 libiamroot.so: umount2.o
+libiamroot.so: unshare.o
 libiamroot.so: override LDLIBS += -ldl
 
 .PHONY: tests

@@ -8,8 +8,10 @@ override CFLAGS += -fPIC -Wall -Wextra -Werror
 
 .PHONY: all
 all: mount
+all: unshare
 
 .PHONY: tests
 tests: PATH := $(CURDIR):$(PATH)
 tests:
 	mount -t procfs none /proc
+	unshare whoami

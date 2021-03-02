@@ -6,4 +6,4 @@
 #
 
 LD_PRELOAD="$PWD/libiamroot.so${LD_PRELOAD+:$LD_PRELOAD}" \
-exec "${SHELL:-/bin/sh}" "$@"
+exec fakeroot "${SHELL:-/bin/sh}" "$@"

@@ -148,10 +148,20 @@ alpine-minirootfs/bin/busybox: | alpine-minirootfs-3.13.0-x86_64.tar.gz
 alpine-minirootfs-3.13.0-x86_64.tar.gz:
 	wget http://dl-cdn.alpinelinux.org/alpine/v3.13/releases/x86_64/alpine-minirootfs-3.13.0-x86_64.tar.gz
 
+.PHONY: arch-rootfs
+arch-rootfs: | arch-rootfs/usr/bin/pacman
+
+arch-rootfs/usr/bin/pacman: export LD_PRELOAD = $(CURDIR)/libiamroot.so
+arch-rootfs/usr/bin/pacman: export EUID = 0
+arch-rootfs/usr/bin/pacman: export IAMROOT_FORCE = 1
+arch-rootfs/usr/bin/pacman: libiamroot.so
+	mkdir -p arch-rootfs
+	pacstrap arch-rootfs
+
 .PHONY: clean
 clean:
 	rm -f libiamroot.so *.o
-	rm -Rf static-rootfs/ alpine-minirootfs/
+	rm -Rf static-rootfs/ alpine-minirootfs/ arch-rootfs/
 	$(MAKE) -C tests $@
 
 .PHONY: mrproper

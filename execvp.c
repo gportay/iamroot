@@ -11,7 +11,7 @@
 
 #include <unistd.h>
 
-int execvp(const char *file, char *const argv[])
+int execvp(const char *file, char * const argv[])
 {
 	if (getenv("IAMROOT_DEBUG"))
 		fprintf(stderr, "%s(file: '%s', argv: '%s'...)\n",

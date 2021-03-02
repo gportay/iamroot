@@ -16,9 +16,9 @@
 
 #include "path_resolution.h"
 
-int execve(const char *path, char *const argv[], char *const envp[])
+int execve(const char *path, char *const argv[], char * const envp[])
 {
-	int (*realsym)(const char *, char *const [], char *const []);
+	int (*realsym)(const char *, char * const [], char * const []);
 	const char *real_path;
 	char buf[PATH_MAX];
 

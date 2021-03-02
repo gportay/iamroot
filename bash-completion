@@ -1,0 +1,17 @@
+#
+# Copyright 2021 Gaël PORTAY
+#
+# SPDX-License-Identifier: GPL-2.1
+#
+
+_iamroot-shell()
+{
+	local cur prev words cword
+	_init_completion || return
+
+	COMP_WORDS=("${SHELL:sh}" "${COMP_WORDS[@]:2}" "$cur")
+	COMP_LINE="${COMP_WORDS[*]}"
+	COMP_POINT="${#COMP_LINE}"
+	_command_offset 0
+} &&
+complete -F _iamroot-shell iamroot-shell

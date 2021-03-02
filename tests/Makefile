@@ -14,6 +14,7 @@ all: mknod
 all: mknodat
 all: mount
 all: openat
+all: sanitize
 all: unshare
 
 .PHONY: tests
@@ -33,5 +34,7 @@ tests:
 	mount -t procfs none /proc
 	openat - file
 	IAMROOT_ROOT=$(CURDIR) /openat . /file
+	sanitize . ./ ././ | tee /dev/stderr | grep -vc '^\.$$' | grep -q '^0$$'
+	sanitize / // ///  | tee /dev/stderr | grep -vc '^/$$'  | grep -q '^0$$'
 	unshare whoami
 	rm -f file dev dev1 dev2 dev3 dev4

@@ -36,6 +36,25 @@ static inline ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
 	return readlink(tmp, buf, bufsize);
 }
 
+char *sanitize(char *path, size_t bufsize)
+{
+	ssize_t len;
+
+	len = strnlen(path, bufsize);
+	while ((len > 3) && (__strncmp(path, "./") == 0)) {
+		char *s;
+		for (s = path; *s; s++)
+			*s = *(s+2);
+		len -= 2;
+	}
+	while ((len > 1) && (path[len-1] == '/')) {
+		path[len-1] = 0;
+		len--;
+	}
+
+	return path;
+}
+
 const char *fpath_resolutionat(int fd, const char *path, char *buf,
 			       size_t bufsize, int flags)
 {
@@ -94,6 +113,8 @@ const char *fpath_resolutionat(int fd, const char *path, char *buf,
 
 		path = buf;
 	}
+
+	path = sanitize(buf, bufsize);
 
 	if (flags == AT_SYMLINK_NOFOLLOW)
 		goto exit;

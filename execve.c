@@ -139,8 +139,12 @@ int execve(const char *path, char *const argv[], char * const envp[])
 				__func__, real_path, argv[0], envp[0]);
 
 	if (canpreload(real_path) == 0) {
-		fprintf(stderr, "Error: %s: Cannot support LD_PRELOAD\n",
-				real_path);
+		int force = strtoul(getenv("IAMROOT_FORCE") ?: "0", NULL, 0);
+		fprintf(stderr, "%s: %s: Cannot support LD_PRELOAD\n",
+				force == 0 ? "Error" : "Warning", real_path);
+		if (force)
+			_exit(0);
+
 		errno = ENOEXEC;
 		return -1;
 	}

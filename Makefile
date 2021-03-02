@@ -27,8 +27,6 @@ libiamroot.so: readlink.o
 libiamroot.so: override LDLIBS += -ldl
 
 .PHONY: tests
-tests: static-tests
-tests: shell-tests
 tests: alpine-tests
 
 .PHONY: static-tests

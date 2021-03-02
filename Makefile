@@ -27,9 +27,14 @@ libiamroot.so: readlink.o
 libiamroot.so: override LDLIBS += -ldl
 
 .PHONY: tests
-tests: SHELL = /bin/bash
-tests: export LD_PRELOAD += $(CURDIR)/libiamroot.so
-tests: libiamroot.so | rootfs
+tests: static-tests
+tests: shell-tests
+tests: alpine-tests
+
+.PHONY: static-tests
+static-tests: SHELL = /bin/bash
+static-tests: export LD_PRELOAD += $(CURDIR)/libiamroot.so
+static-tests: libiamroot.so | static-rootfs
 	whoami | tee /dev/stderr | grep -q "^root\$$"
 	IAMROOT_GETEUID=$$EUID whoami | tee /dev/stderr | grep -q "^$$USER\$$"
 	chroot rootfs pwd | tee /dev/stderr | grep -q "^/\$$"
@@ -37,7 +42,7 @@ tests: libiamroot.so | rootfs
 .PHONY: shell-tests
 shell-tests: export LD_LIBRARY_PATH := $(CURDIR)
 shell-tests: export PATH := $(CURDIR):$(PATH)
-shell-tests: libiamroot.so | rootfs
+shell-tests: libiamroot.so | static-rootfs
 	iamroot-shell -c "whoami" | tee /dev/stderr | grep -q "^root\$$"
 	iamroot-shell -c "chroot rootfs pwd" | tee /dev/stderr | grep -q "^/\$$"
 
@@ -55,8 +60,8 @@ shell: libiamroot.so
 .PHONY: chroot
 chroot: export LD_PRELOAD += $(CURDIR)/libiamroot.so
 chroot: export PATH := $(CURDIR):/bin:/sbin
-chroot: libiamroot.so | rootfs
-	chroot rootfs /bin/sh
+chroot: libiamroot.so | static-rootfs
+	chroot static-rootfs /bin/sh
 
 .PHONY: alpine-chroot
 alpine-chroot: export LD_PRELOAD += $(CURDIR)/libiamroot.so
@@ -64,13 +69,13 @@ alpine-chroot: export PATH := $(CURDIR):/bin:/sbin
 alpine-chroot: libiamroot.so | alpine-minirootfs
 	chroot alpine-minirootfs /bin/sh
 
-.PHONY: rootfs
-rootfs: rootfs/usr/bin/sh
-rootfs: rootfs/bin
-rootfs: rootfs/root
+.PHONY: static-rootfs
+static-rootfs: static-rootfs/usr/bin/sh
+static-rootfs: static-rootfs/bin
+static-rootfs: static-rootfs/root
 
-rootfs/usr/bin/sh: PATH := $(CURDIR):$(PATH)
-rootfs/usr/bin/sh: | busybox rootfs/usr/bin
+static-rootfs/usr/bin/sh: PATH := $(CURDIR):$(PATH)
+static-rootfs/usr/bin/sh: | busybox static-rootfs/usr/bin
 	busybox --install $(@D)
 
 busybox:
@@ -78,10 +83,10 @@ busybox:
 	chmod +x busybox-x86_64
 	mv busybox-x86_64 $@
 
-rootfs/bin: | rootfs/usr/bin
+static-rootfs/bin: | static-rootfs/usr/bin
 	ln -sf usr/bin $@
 
-rootfs/usr/bin rootfs/root:
+static-rootfs/usr/bin static-rootfs/root:
 	mkdir -p $@
 
 .PHONY: alpine-minirootfs
@@ -97,7 +102,7 @@ alpine-minirootfs-3.12.0-x86_64.tar.gz:
 .PHONY: clean
 clean:
 	rm -f libiamroot.so *.o
-	rm -Rf rootfs/ alpine-minirootfs/
+	rm -Rf static-rootfs/ alpine-minirootfs/
 
 .PHONY: mrproper
 mrproper: clean

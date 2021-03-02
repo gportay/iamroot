@@ -38,7 +38,7 @@ tests: | libiamroot.so
 
 .PHONY: static-tests
 static-tests: SHELL = /bin/bash
-static-tests: export LD_PRELOAD += $(CURDIR)/libiamroot.so
+static-tests: export LD_PRELOAD = $(CURDIR)/libiamroot.so
 static-tests: libiamroot.so | static-rootfs
 	whoami | tee /dev/stderr | grep -q "^root\$$"
 	IAMROOT_GETEUID=$$EUID whoami | tee /dev/stderr | grep -q "^$$USER\$$"
@@ -51,7 +51,7 @@ shell-tests: libiamroot.so | static-rootfs
 	iamroot-shell -c "chroot rootfs pwd" | tee /dev/stderr | grep -q "^/\$$"
 
 .PHONY: alpine-tests
-alpine-tests: export LD_PRELOAD += $(CURDIR)/libiamroot.so
+alpine-tests: export LD_PRELOAD = $(CURDIR)/libiamroot.so
 alpine-tests: libiamroot.so | alpine-minirootfs
 	chroot alpine-minirootfs pwd | tee /dev/stderr | grep -q "^/\$$"
 
@@ -61,13 +61,13 @@ shell: libiamroot.so
 	iamroot-shell
 
 .PHONY: chroot
-chroot: export LD_PRELOAD += $(CURDIR)/libiamroot.so
+chroot: export LD_PRELOAD = $(CURDIR)/libiamroot.so
 chroot: export PATH := $(CURDIR):/bin:/sbin
 chroot: libiamroot.so | static-rootfs
 	chroot static-rootfs /bin/sh
 
 .PHONY: alpine-chroot
-alpine-chroot: export LD_PRELOAD += $(CURDIR)/libiamroot.so
+alpine-chroot: export LD_PRELOAD = $(CURDIR)/libiamroot.so
 alpine-chroot: export PATH := $(CURDIR):/bin:/sbin
 alpine-chroot: libiamroot.so | alpine-minirootfs
 	chroot alpine-minirootfs /bin/sh

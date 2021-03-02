@@ -6,15 +6,117 @@
 
 #define _GNU_SOURCE
 
+#include <unistd.h>
+#include <stddef.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
 #include <limits.h>
 #include <dlfcn.h>
+#include <byteswap.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #include <unistd.h>
 
 #include "path_resolution.h"
+
+/* Stolen from musl (src/network/ntohl.c) */
+static inline uint32_t ntohl(uint32_t n)
+{
+	union { int i; char c; } u = { 1 };
+	return u.c ? bswap_32(n) : n;
+}
+
+/* Stolen from musl (src/network/htonl.c) */
+static inline uint32_t htonl(uint32_t n)
+{
+	union { int i; char c; } u = { 1 };
+	return u.c ? bswap_32(n) : n;
+}
+
+static inline int real_stat(const char *path, struct stat *buf)
+{
+	int (*realsym)(const char *, struct stat *);
+
+	realsym = dlsym(RTLD_NEXT, "stat");
+	if (!realsym) {
+		errno = ENOTSUP;
+		return -1;
+	}
+
+	return realsym(path, buf);
+}
+
+static inline int issuid(const char *path)
+{
+	struct stat statbuf;
+	int ret = -1;
+
+	ret = real_stat(path, &statbuf);
+	if (ret == -1)
+		return -1;
+
+	ret = (statbuf.st_mode & S_ISUID) != 0;
+	if (ret != 0)
+		fprintf(stderr, "Warning: %s: SUID set\n", path);
+
+	return ret;
+}
+
+static inline int isstatic(const char *path)
+{
+	struct elf_header {
+		uint32_t magic;
+		unsigned char unused[12];
+		uint16_t type;
+		unsigned char unused2[46];
+	} hdr;
+	int ret = -1, fd;
+	ssize_t s;
+
+	fd = open(path, O_RDONLY);
+	if (fd == -1)
+		return -1;
+
+	s = read(fd, &hdr, sizeof(hdr));
+	if (s == -1)
+		goto close;
+	else if ((size_t)s < sizeof(hdr))
+		goto close;
+
+	ret = (hdr.magic == htonl(0x7f454c46)) && (hdr.type == 2);
+	if (ret != 0)
+		fprintf(stderr, "Warning: %s: statically linked\n", path);
+
+close:
+	if (close(fd))
+		perror("close");
+
+	return ret;
+}
+
+static inline int canpreload(const char *path)
+{
+	int ret = -1;
+
+	ret = issuid(path);
+	if (ret == -1)
+		return -1;
+	else if (ret == 1)
+		return 0;
+
+	ret = isstatic(path);
+	if (ret == -1)
+		return -1;
+	else if (ret == 1)
+		return 0;
+
+	return 1;
+}
 
 int execve(const char *path, char *const argv[], char * const envp[])
 {
@@ -35,6 +137,13 @@ int execve(const char *path, char *const argv[], char * const envp[])
 	if (getenv("IAMROOT_DEBUG") && strcmp(path, real_path))
 		fprintf(stderr, "%s(real_path: '%s', argv: '%s'... , envp: '%s'...)\n",
 				__func__, real_path, argv[0], envp[0]);
+
+	if (canpreload(real_path) == 0) {
+		fprintf(stderr, "Error: %s: Cannot support LD_PRELOAD\n",
+				real_path);
+		errno = ENOEXEC;
+		return -1;
+	}
 
 	realsym = dlsym(RTLD_NEXT, __func__);
 	return realsym(real_path, argv, envp);

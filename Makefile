@@ -32,6 +32,8 @@ libiamroot.so: override LDLIBS += -ldl
 
 .PHONY: tests
 tests: alpine-tests
+tests: shell-tests
+tests: static-tests
 tests: | libiamroot.so
 	$(MAKE) -C tests
 	$(MAKE) -C tests $@ LD_PRELOAD=$(CURDIR)/libiamroot.so
@@ -42,13 +44,11 @@ static-tests: export LD_PRELOAD = $(CURDIR)/libiamroot.so
 static-tests: libiamroot.so | static-rootfs
 	whoami | tee /dev/stderr | grep -q "^root\$$"
 	IAMROOT_GETEUID=$$EUID whoami | tee /dev/stderr | grep -q "^$$USER\$$"
-	chroot rootfs pwd | tee /dev/stderr | grep -q "^/\$$"
 
 .PHONY: shell-tests
 shell-tests: export PATH := $(CURDIR):$(PATH)
 shell-tests: libiamroot.so | static-rootfs
 	iamroot-shell -c "whoami" | tee /dev/stderr | grep -q "^root\$$"
-	iamroot-shell -c "chroot rootfs pwd" | tee /dev/stderr | grep -q "^/\$$"
 
 .PHONY: alpine-tests
 alpine-tests: export LD_PRELOAD = $(CURDIR)/libiamroot.so

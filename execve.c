@@ -26,6 +26,7 @@
 
 extern int __fprintf(FILE *, const char *, ...);
 extern int next_open(const char *, int, mode_t);
+extern int next_stat(const char *, struct stat *);
 
 /* Stolen from musl (src/network/ntohl.c) */
 static inline uint32_t ntohl(uint32_t n)
@@ -39,19 +40,6 @@ static inline uint32_t htonl(uint32_t n)
 {
 	union { int i; char c; } u = { 1 };
 	return u.c ? bswap_32(n) : n;
-}
-
-static inline int next_stat(const char *path, struct stat *buf)
-{
-	int (*sym)(const char *, struct stat *);
-
-	sym = dlsym(RTLD_NEXT, "stat");
-	if (!sym) {
-		errno = ENOTSUP;
-		return -1;
-	}
-
-	return sym(path, buf);
 }
 
 static inline int issuid(const char *path)

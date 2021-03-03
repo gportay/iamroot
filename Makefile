@@ -33,6 +33,7 @@ libiamroot.so: open.o
 libiamroot.so: openat.o
 libiamroot.so: path_resolution.o
 libiamroot.so: readlink.o
+libiamroot.so: stat.o
 libiamroot.so: umount.o
 libiamroot.so: umount2.o
 libiamroot.so: unshare.o

@@ -18,36 +18,30 @@
 #include "path_resolution.h"
 
 extern int __fprintf(FILE *, const char *, ...);
+extern char *next_getcwd(char *, size_t);
 
-int next_chdir(const char *path)
+int next_fchdir(int fd)
 {
-	int (*sym)(const char *);
+	int (*sym)(int);
 
-	sym = dlsym(RTLD_NEXT, "chdir");
+	sym = dlsym(RTLD_NEXT, "fchdir");
 	if (!sym) {
 		errno = ENOTSUP;
 		return -1;
 	}
 
-	return sym(path);
+	return sym(fd);
 }
 
-int chdir(const char *path)
+int fchdir(int fd)
 {
-	const char *real_path;
-	char buf[PATH_MAX];
+	char cwd[PATH_MAX];
 	char *root;
 	int ret;
 
-	real_path = path_resolution(path, buf, sizeof(buf));
-	if (!real_path) {
-		perror("path_resolution");
-		return -1;
-	}
-
-	ret = next_chdir(real_path);
+	ret = next_fchdir(fd);
 	if (ret) {
-		perror("chdir");
+		perror("fchdir");
 		goto exit;
 	}
 
@@ -55,12 +49,17 @@ int chdir(const char *path)
 	if (!root)
 		goto exit;
 
-	if (strstr(real_path, root) == NULL)
+	if (next_getcwd(cwd, sizeof(cwd)) == NULL) {
+		perror("getcwd");
+		goto exit;
+	}
+
+	if (strstr(cwd, root) == NULL)
 		unsetenv("IAMROOT_ROOT");
 
 exit:
-	__fprintf(stderr, "%s(path: '%s' -> '%s'): IAMROOT_ROOT: '%s'\n",
-			  __func__, path, real_path, root);
+	__fprintf(stderr, "%s(fd: %i '%s'): IAMROOT_ROOT: '%s'\n", __func__,
+			  fd, cwd, root);
 
 	return ret;
 }

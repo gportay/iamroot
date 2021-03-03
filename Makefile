@@ -20,6 +20,7 @@ libiamroot.so: execv.o
 libiamroot.so: execve.o
 libiamroot.so: execvp.o
 libiamroot.so: execvpe.o
+libiamroot.so: fchdir.o
 libiamroot.so: fexecve.o
 libiamroot.so: get_current_dir_name.o
 libiamroot.so: getcwd.o

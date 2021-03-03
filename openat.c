@@ -19,6 +19,7 @@
 #include "path_resolution.h"
 
 extern int __fprintf(FILE *, const char *, ...);
+extern int next_fchdir(int);
 extern int next_open(const char *, int, mode_t);
 extern char *next_getcwd(const char *, size_t);
 

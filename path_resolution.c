@@ -8,12 +8,15 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <errno.h>
 #include <limits.h>
 #include <dlfcn.h>
 #include <sys/stat.h>
 
 #include "path_resolution.h"
+
+#define __strncmp(s1, s2) strncmp(s1, s2, sizeof(s2)-1)
 
 extern int __fprintf(FILE *, const char *, ...);
 extern ssize_t next_readlink(const char *, char *, size_t);
@@ -27,6 +30,11 @@ const char *path_resolution(const char *path, char *buf, size_t bufsize)
 		errno = EINVAL;
 		return NULL;
 	}
+
+	if ((__strncmp(path, "/proc/") == 0) ||
+	    (__strncmp(path, "/sys/") == 0) ||
+	    (__strncmp(path, "/dev/") == 0))
+		return path;
 
 	if (*path == '/') {
 		char *root = getenv("IAMROOT_ROOT") ?: "";

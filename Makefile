@@ -11,6 +11,7 @@ all: libiamroot.so
 
 libiamroot.so: __fprintf.o
 libiamroot.so: __printf.o
+libiamroot.so: access.o
 libiamroot.so: chdir.o
 libiamroot.so: chroot.o
 libiamroot.so: execl.o

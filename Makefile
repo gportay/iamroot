@@ -50,9 +50,9 @@ libiamroot.so: override LDLIBS += -ldl
 tests: alpine-tests
 tests: shell-tests
 tests: static-tests
-tests: | libiamroot.so
+tests: | libiamroot.so alpine-minirootfs
 	$(MAKE) -C tests
-	$(MAKE) -C tests $@ LD_PRELOAD=$(CURDIR)/libiamroot.so
+	$(MAKE) -C tests $@ LD_PRELOAD=$(CURDIR)/libiamroot.so ALPINE_MINIROOTFS=$(CURDIR)/alpine-minirootfs
 
 .PHONY: static-tests
 static-tests: SHELL = /bin/bash

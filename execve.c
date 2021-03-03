@@ -25,6 +25,7 @@
 #include "path_resolution.h"
 
 extern int __fprintf(FILE *, const char *, ...);
+extern int next_open(const char *, int, mode_t);
 
 /* Stolen from musl (src/network/ntohl.c) */
 static inline uint32_t ntohl(uint32_t n)
@@ -80,7 +81,7 @@ static inline int isstatic(const char *path)
 	int ret = -1, fd;
 	ssize_t s;
 
-	fd = open(path, O_RDONLY);
+	fd = next_open(path, O_RDONLY, 0);
 	if (fd == -1)
 		return -1;
 

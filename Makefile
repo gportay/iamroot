@@ -27,6 +27,8 @@ libiamroot.so: geteuid.o
 libiamroot.so: getwd.o
 libiamroot.so: lstat.o
 libiamroot.so: mount.o
+libiamroot.so: open.o
+libiamroot.so: openat.o
 libiamroot.so: path_resolution.o
 libiamroot.so: readlink.o
 libiamroot.so: umount.o
@@ -58,6 +60,7 @@ shell-tests: libiamroot.so | static-rootfs
 alpine-tests: export LD_PRELOAD = $(CURDIR)/libiamroot.so
 alpine-tests: libiamroot.so | alpine-minirootfs
 	chroot alpine-minirootfs pwd | tee /dev/stderr | grep -q "^/\$$"
+	chroot alpine-minirootfs cat /etc/os-release | tee /dev/stderr | grep 'NAME="Alpine Linux"'
 
 .PHONY: shell
 shell: export PATH := $(CURDIR):$(PATH)

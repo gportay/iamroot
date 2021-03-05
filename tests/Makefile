@@ -9,6 +9,7 @@ override CFLAGS += -fPIC -Wall -Wextra -Werror
 .PHONY: all
 all: chroot
 all: fchown
+all: mknod
 all: mount
 all: unshare
 
@@ -19,5 +20,6 @@ tests:
 	rm -f file
 	chroot $(ALPINE_MINIROOTFS) whoami
 	fchown file 0 0
+	mknod dev 0644 0 0
 	mount -t procfs none /proc
 	unshare whoami

@@ -15,6 +15,7 @@ libiamroot.so: access.o
 libiamroot.so: chdir.o
 libiamroot.so: chown.o
 libiamroot.so: chroot.o
+libiamroot.so: creat.o
 libiamroot.so: dlmopen.o
 libiamroot.so: dlopen.o
 libiamroot.so: execl.o
@@ -34,6 +35,7 @@ libiamroot.so: geteuid.o
 libiamroot.so: getwd.o
 libiamroot.so: lchown.o
 libiamroot.so: lstat.o
+libiamroot.so: mknod.o
 libiamroot.so: mount.o
 libiamroot.so: open.o
 libiamroot.so: openat.o

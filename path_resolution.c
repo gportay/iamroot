@@ -17,19 +17,7 @@
 
 extern int __fprintf(FILE *, const char *, ...);
 extern ssize_t next_readlink(const char *, char *, size_t);
-
-static inline int next_lstat(const char *path, struct stat *buf)
-{
-	int (*sym)(const char *, struct stat *);
-
-	sym = dlsym(RTLD_NEXT, "lstat");
-	if (!sym) {
-		errno = ENOTSUP;
-		return -1;
-	}
-
-	return sym(path, buf);
-}
+extern int next_lstat(const char *, struct stat *);
 
 const char *path_resolution(const char *path, char *buf, size_t bufsize)
 {

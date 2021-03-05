@@ -24,6 +24,7 @@ libiamroot.so: get_current_dir_name.o
 libiamroot.so: getcwd.o
 libiamroot.so: geteuid.o
 libiamroot.so: getwd.o
+libiamroot.so: lstat.o
 libiamroot.so: mount.o
 libiamroot.so: path_resolution.o
 libiamroot.so: readlink.o

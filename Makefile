@@ -38,6 +38,7 @@ libiamroot.so: mount.o
 libiamroot.so: open.o
 libiamroot.so: openat.o
 libiamroot.so: path_resolution.o
+libiamroot.so: path_resolutionat.o
 libiamroot.so: readlink.o
 libiamroot.so: stat.o
 libiamroot.so: umount.o

@@ -15,6 +15,8 @@
 
 #include "path_resolution.h"
 
+extern int __fprintf(FILE *, const char *, ...);
+
 static inline int real_lstat(const char *path, struct stat *buf)
 {
 	int (*realsym)(const char *, struct stat *);
@@ -46,9 +48,6 @@ const char *path_resolution(const char *path, char *buf, size_t bufsize)
 {
 	struct stat statbuf;
 
-	if (getenv("IAMROOT_DEBUG"))
-		fprintf(stderr, "%s(path: '%s')\n", __func__, path);
-
 	if (!path || !*path) {
 		errno = EINVAL;
 		return NULL;
@@ -67,17 +66,11 @@ const char *path_resolution(const char *path, char *buf, size_t bufsize)
 			return NULL;
 		}
 
-		if (getenv("IAMROOT_DEBUG"))
-			fprintf(stderr, "%s(buf: '%s')\n", __func__, buf);
-
 		path = buf;
 	}
 
-	if (getenv("IAMROOT_DEBUG"))
-		fprintf(stderr, "%s(path: '%s')\n", __func__, path);
-
 	if (real_lstat(path, &statbuf) != 0)
-		return path;
+		goto exit;
 
 	if (S_ISLNK(statbuf.st_mode)) {
 		char tmp[NAME_MAX];
@@ -94,8 +87,8 @@ const char *path_resolution(const char *path, char *buf, size_t bufsize)
 			return path_resolution(tmp, buf, bufsize);
 	}
 
-	if (getenv("IAMROOT_DEBUG"))
-		fprintf(stderr, "%s(path: '%s')\n", __func__, path);
+exit:
+	__fprintf(stderr, "%s(path: '%s' -> '%s')\n", __func__, path, buf);
 
 	return path;
 }

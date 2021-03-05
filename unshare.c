@@ -11,11 +11,11 @@
 
 #include <sched.h>
 
+extern int __fprintf(FILE *, const char *, ...);
+
 int unshare(int flags)
 {
-	if (getenv("IAMROOT_DEBUG"))
-		fprintf(stderr, "%s(flags: 0x%x)\n", __func__, flags);
-
+	__fprintf(stderr, "%s(flags: 0x%x)\n", __func__, flags);
 
 	return 0;
 }

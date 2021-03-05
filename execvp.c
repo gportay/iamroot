@@ -11,11 +11,12 @@
 
 #include <unistd.h>
 
+extern int __fprintf(FILE *, const char *, ...);
+
 int execvp(const char *file, char * const argv[])
 {
-	if (getenv("IAMROOT_DEBUG"))
-		fprintf(stderr, "%s(file: '%s', argv: '%s'...)\n",
-				__func__, file, argv[0]);
+	__fprintf(stderr, "%s(file: '%s', argv: '%s'...)\n", __func__, file,
+			  argv[0]);
 
 	return execvpe(file, argv, environ);
 }

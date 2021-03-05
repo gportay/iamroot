@@ -16,6 +16,8 @@
 
 #define __strchrnul strchrnul
 
+extern int __fprintf(FILE *, const char *, ...);
+
 int __execve(const char *path, char * const argv[], char * const envp[])
 {
 	ssize_t len;
@@ -78,9 +80,8 @@ int __execvpe(const char *file, char *const argv[], char *const envp[])
 
 int execvpe(const char *file, char * const argv[], char * const envp[])
 {
-	if (getenv("IAMROOT_DEBUG"))
-		fprintf(stderr, "%s(file: '%s', argv: '%s'...)\n",
-				__func__, file, argv[0]);
+	__fprintf(stderr, "%s(file: '%s', argv: '%s'...)\n", __func__, file,
+			  argv[0]);
 
 	return __execvpe(file, argv, envp);
 }

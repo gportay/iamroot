@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Gaël PORTAY
+ * Copyright 2020-2021 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1
  */
@@ -10,6 +10,8 @@
 
 #include <sys/mount.h>
 
+extern int __fprintf(FILE *, const char *, ...);
+
 int mount(const char *source, const char *target, const char *filesystemtype,
 	  unsigned long mountflags, const void *data)
 {
@@ -17,9 +19,8 @@ int mount(const char *source, const char *target, const char *filesystemtype,
 	(void)mountflags;
 	(void)data;
 
-	if (getenv("IAMROOT_DEBUG"))
-		fprintf(stderr, "%s(source: '%s', target: '%s', ...)\n",
-				__func__, source, target);
+	__fprintf(stderr, "%s(source: '%s', target: '%s', ...)\n", __func__,
+			  source, target);
 
 	return 0;
 }

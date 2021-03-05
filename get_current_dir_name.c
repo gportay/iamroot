@@ -14,14 +14,13 @@
 
 #include <unistd.h>
 
+extern int __fprintf(FILE *, const char *, ...);
+
 char *get_current_dir_name()
 {
 	char *(*realsym)();
 	char *root, *ret;
 	size_t len;
-
-	if (getenv("IAMROOT_DEBUG"))
-		fprintf(stderr, "%s(...)\n", __func__);
 
 	realsym = dlsym(RTLD_NEXT, __func__);
 	if (!realsym) {
@@ -33,12 +32,9 @@ char *get_current_dir_name()
 	if (!ret)
 		return NULL;
 
-	if (getenv("IAMROOT_DEBUG"))
-		fprintf(stderr, "%s(ret: '%s', ...)\n", __func__, ret);
-
 	root = getenv("IAMROOT_ROOT");
 	if (!root)
-		return ret;
+		goto exit;
 
 	len = strlen(root);
 	if (strncmp(root, ret, len) == 0)
@@ -47,8 +43,8 @@ char *get_current_dir_name()
 	if (!*ret)
 		strcpy(ret, "/");
 
-	if (getenv("IAMROOT_DEBUG"))
-		fprintf(stderr, "%s(ret: '%s', ...)\n", __func__, ret);
+exit:
+	__fprintf(stderr, "%s(): IAMROOT_ROOT: '%s'\n", __func__, root);
 
 	return ret;
 }

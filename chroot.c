@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: LGPL-2.1
  */
 
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <errno.h>
 #include <limits.h>
@@ -13,6 +13,8 @@
 #include <unistd.h>
 
 #include "path_resolution.h"
+
+extern int __fprintf(FILE *, const char *, ...);
 
 static int prependenv(const char *root, const char *name, const char *value,
 		      int overwrite)
@@ -97,10 +99,6 @@ int chroot(const char *path)
 	const char *real_path;
 	char buf[PATH_MAX];
 
-	if (getenv("IAMROOT_DEBUG"))
-		fprintf(stderr, "%s(path: '%s') IAMROOT_ROOT='%s'\n", __func__,
-				path, getenv("IAMROOT_ROOT") ?: "");
-
 	/* prepend the current working directory for relative paths */
 	if (path[0] != '/') {
 		size_t len;
@@ -127,9 +125,9 @@ int chroot(const char *path)
 	setenv("PATH", "/bin:/usr/bin", 1);
 	prependenv(real_path, "LD_LIBRARY_PATH", "/usr/lib:/lib", 1);
 
-	if (getenv("IAMROOT_DEBUG"))
-		fprintf(stderr, "%s(path: '%s') IAMROOT_ROOT='%s'\n", __func__,
-				real_path, getenv("IAMROOT_ROOT") ?: "");
+	__fprintf(stderr, "%s(path: '%s' -> '%s') IAMROOT_ROOT='%s'\n",
+			  __func__, path, real_path,
+			  getenv("IAMROOT_ROOT") ?: "");
 
 	return setenv("IAMROOT_ROOT", real_path, 1);
 }

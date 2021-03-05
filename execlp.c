@@ -14,14 +14,12 @@
 
 #include <unistd.h>
 
+extern int __fprintf(FILE *, const char *, ...);
+
 int execlp(const char *file, const char *arg, ...)
 {
 	va_list ap;
 	int argc;
-
-	if (getenv("IAMROOT_DEBUG"))
-		fprintf(stderr, "%s(file: '%s', arg: '%s'...)\n",
-				__func__, file, arg);
 
 	argc = 1;
 	va_start(ap, arg);
@@ -38,6 +36,9 @@ int execlp(const char *file, const char *arg, ...)
 		for (i = 1; i <= argc; i++)
 			argv[i] = va_arg(ap, char *);
 		va_end(ap);
+
+		__fprintf(stderr, "%s(file: '%s', arg: '%s'...)\n", __func__,
+				  file, arg);
 
 		return execvpe(file, argv, environ);
 	}

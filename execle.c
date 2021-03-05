@@ -14,14 +14,12 @@
 
 #include <unistd.h>
 
+extern int __fprintf(FILE *, const char *, ...);
+
 int execle(const char *path, const char *arg, ...)
 {
 	va_list ap;
 	int argc;
-
-	if (getenv("IAMROOT_DEBUG"))
-		fprintf(stderr, "%s(path: '%s', arg: '%s'...)\n",
-				__func__, path, arg);
 
 	argc = 1;
 	va_start(ap, arg);
@@ -39,6 +37,9 @@ int execle(const char *path, const char *arg, ...)
 			argv[i] = va_arg(ap, char *);
 		envp = va_arg(ap, char **);
 		va_end(ap);
+
+		__fprintf(stderr, "%s(path: '%s', arg: '%s'...)\n", __func__,
+				  path, arg);
 
 		return execve(path, argv, envp);
 	}

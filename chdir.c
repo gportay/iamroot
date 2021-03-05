@@ -6,7 +6,6 @@
 
 #define _GNU_SOURCE
 
-#include <stdlib.h>
 #include <stdio.h>
 #include <limits.h>
 #include <dlfcn.h>
@@ -15,14 +14,13 @@
 
 #include "path_resolution.h"
 
+extern int __fprintf(FILE *, const char *, ...);
+
 int chdir(const char *path)
 {
 	int (*realsym)(const char *);
 	const char *real_path;
 	char buf[PATH_MAX];
-
-	if (getenv("IAMROOT_DEBUG"))
-		fprintf(stderr, "%s(path: '%s')\n", __func__, path);
 
 	real_path = path_resolution(path, buf, sizeof(buf));
 	if (!real_path) {
@@ -30,8 +28,8 @@ int chdir(const char *path)
 		return -1;
 	}
 
-	if (getenv("IAMROOT_DEBUG"))
-		fprintf(stderr, "%s(path: '%s'): real_path: '%s'\n", __func__, path, real_path);
+	__fprintf(stderr, "%s(path: '%s' -> '%s')\n", __func__, path,
+			  real_path);
 
 	realsym = dlsym(RTLD_NEXT, __func__);
 	return realsym(real_path);

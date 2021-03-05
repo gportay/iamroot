@@ -29,6 +29,7 @@ libiamroot.so: fchdir.o
 libiamroot.so: fchown.o
 libiamroot.so: fchownat.o
 libiamroot.so: fexecve.o
+libiamroot.so: fpath_resolutionat.o
 libiamroot.so: get_current_dir_name.o
 libiamroot.so: getcwd.o
 libiamroot.so: geteuid.o

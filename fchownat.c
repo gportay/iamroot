@@ -16,6 +16,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#include "fpath_resolutionat.h"
+
 extern int __fprintf(FILE *, const char *, ...);
 extern uid_t next_geteuid();
 
@@ -34,11 +36,20 @@ int next_fchownat(int fd, const char *path, uid_t owner, gid_t group, int flags)
 
 int fchownat(int fd, const char *path, uid_t owner, gid_t group, int flags)
 {
+	const char *real_path;
+	char buf[PATH_MAX];
+
+	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), flags);
+	if (!real_path) {
+		perror("fpath_resolutionat");
+		return -1;
+	}
+
 	owner = next_geteuid();
 	group = getegid();
 
-	__fprintf(stderr, "%s(fd: %i, path: '%s', owner: %i, group: %i)\n",
-			  __func__, fd, path, owner, group);
+	__fprintf(stderr, "%s(fd: %i, path: '%s' -> '%s', owner: %i, group: %i)\n",
+			  __func__, fd, path, real_path, owner, group);
 
-	return next_fchownat(fd, path, owner, group, flags);
+	return next_fchownat(fd, real_path, owner, group, flags);
 }

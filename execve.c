@@ -40,17 +40,17 @@ static inline uint32_t htonl(uint32_t n)
 	return u.c ? bswap_32(n) : n;
 }
 
-static inline int real_stat(const char *path, struct stat *buf)
+static inline int next_stat(const char *path, struct stat *buf)
 {
-	int (*realsym)(const char *, struct stat *);
+	int (*sym)(const char *, struct stat *);
 
-	realsym = dlsym(RTLD_NEXT, "stat");
-	if (!realsym) {
+	sym = dlsym(RTLD_NEXT, "stat");
+	if (!sym) {
 		errno = ENOTSUP;
 		return -1;
 	}
 
-	return realsym(path, buf);
+	return sym(path, buf);
 }
 
 static inline int issuid(const char *path)
@@ -58,7 +58,7 @@ static inline int issuid(const char *path)
 	struct stat statbuf;
 	int ret = -1;
 
-	ret = real_stat(path, &statbuf);
+	ret = next_stat(path, &statbuf);
 	if (ret == -1)
 		return -1;
 
@@ -120,9 +120,21 @@ static inline int canpreload(const char *path)
 	return 1;
 }
 
+int next_execve(const char *path, char * const argv[], char * const envp[])
+{
+	int (*sym)(const char *, char * const argv[], char * const envp[]);
+
+	sym = dlsym(RTLD_NEXT, "execve");
+	if (!sym) {
+		errno = ENOTSUP;
+		return -1;
+	}
+
+	return sym(path, argv, envp);
+}
+
 int execve(const char *path, char *const argv[], char * const envp[])
 {
-	int (*realsym)(const char *, char * const [], char * const []);
 	const char *real_path;
 	char buf[PATH_MAX];
 
@@ -146,6 +158,5 @@ int execve(const char *path, char *const argv[], char * const envp[])
 	__fprintf(stderr, "%s(path: '%s' -> '%s', argv: '%s'... , envp: @%p...)\n",
 			  __func__, path, real_path, argv[0], envp[0]);
 
-	realsym = dlsym(RTLD_NEXT, __func__);
-	return realsym(real_path, argv, envp);
+	return next_execve(real_path, argv, envp);
 }

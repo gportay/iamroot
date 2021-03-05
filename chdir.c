@@ -7,6 +7,7 @@
 #define _GNU_SOURCE
 
 #include <stdio.h>
+#include <errno.h>
 #include <limits.h>
 #include <dlfcn.h>
 
@@ -16,9 +17,21 @@
 
 extern int __fprintf(FILE *, const char *, ...);
 
+int next_chdir(const char *path)
+{
+	int (*sym)(const char *);
+
+	sym = dlsym(RTLD_NEXT, "chdir");
+	if (!sym) {
+		errno = ENOTSUP;
+		return -1;
+	}
+
+	return sym(path);
+}
+
 int chdir(const char *path)
 {
-	int (*realsym)(const char *);
 	const char *real_path;
 	char buf[PATH_MAX];
 
@@ -31,6 +44,5 @@ int chdir(const char *path)
 	__fprintf(stderr, "%s(path: '%s' -> '%s')\n", __func__, path,
 			  real_path);
 
-	realsym = dlsym(RTLD_NEXT, __func__);
-	return realsym(real_path);
+	return next_chdir(real_path);
 }

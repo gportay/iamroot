@@ -8,6 +8,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <errno.h>
 #include <limits.h>
 #include <dlfcn.h>
 
@@ -17,9 +18,21 @@
 
 extern int __fprintf(FILE *, const char *, ...);
 
+ssize_t next_readlink(const char *path, char *buf, size_t bufsize)
+{
+	ssize_t (*sym)(const char *, char *, size_t);
+
+	sym = dlsym(RTLD_NEXT, "readlink");
+	if (!sym) {
+		errno = ENOTSUP;
+		return -1;
+	}
+
+	return sym(path, buf, bufsize);
+}
+
 ssize_t readlink(const char *path, char *buf, size_t bufsize)
 {
-	ssize_t (*realsym)(const char *, char *, size_t);
 	const char *real_path;
 	char tmp[PATH_MAX];
 
@@ -32,6 +45,5 @@ ssize_t readlink(const char *path, char *buf, size_t bufsize)
 	__fprintf(stderr, "%s(path: '%s' -> '%s', ...)\n", __func__, path,
 			  real_path);
 
-	realsym = dlsym(RTLD_NEXT, __func__);
-	return realsym(real_path, buf, bufsize);
+	return next_readlink(real_path, buf, bufsize);
 }

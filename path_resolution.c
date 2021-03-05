@@ -16,32 +16,19 @@
 #include "path_resolution.h"
 
 extern int __fprintf(FILE *, const char *, ...);
+extern ssize_t next_readlink(const char *, char *, size_t);
 
-static inline int real_lstat(const char *path, struct stat *buf)
+static inline int next_lstat(const char *path, struct stat *buf)
 {
-	int (*realsym)(const char *, struct stat *);
+	int (*sym)(const char *, struct stat *);
 
-	realsym = dlsym(RTLD_NEXT, "lstat");
-	if (!realsym) {
+	sym = dlsym(RTLD_NEXT, "lstat");
+	if (!sym) {
 		errno = ENOTSUP;
 		return -1;
 	}
 
-	return realsym(path, buf);
-}
-
-static inline ssize_t real_readlink(const char *path, char *buf,
-				    size_t bufsize)
-{
-	ssize_t (*realsym)(const char *, char *, size_t);
-
-	realsym = dlsym(RTLD_NEXT, "readlink");
-	if (!realsym) {
-		errno = ENOTSUP;
-		return -1;
-	}
-
-	return realsym(path, buf, bufsize);
+	return sym(path, buf);
 }
 
 const char *path_resolution(const char *path, char *buf, size_t bufsize)
@@ -69,14 +56,14 @@ const char *path_resolution(const char *path, char *buf, size_t bufsize)
 		path = buf;
 	}
 
-	if (real_lstat(path, &statbuf) != 0)
+	if (next_lstat(path, &statbuf) != 0)
 		goto exit;
 
 	if (S_ISLNK(statbuf.st_mode)) {
 		char tmp[NAME_MAX];
 		ssize_t s;
 
-		s = real_readlink(path, tmp, sizeof(tmp) - 1);
+		s = next_readlink(path, tmp, sizeof(tmp) - 1);
 		if (s == -1) {
 			perror("readlink");
 			return NULL;

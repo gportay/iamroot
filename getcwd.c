@@ -16,19 +16,25 @@
 
 extern int __fprintf(FILE *, const char *, ...);
 
-char *getcwd(char *buf, size_t size)
+char *next_getcwd(char *buf, size_t size)
 {
-	char *(*realsym)(char *, size_t);
-	char *root, *ret;
-	size_t len;
+	char *(*sym)(char *, size_t);
 
-	realsym = dlsym(RTLD_NEXT, __func__);
-	if (!realsym) {
+	sym = dlsym(RTLD_NEXT, "getcwd");
+	if (!sym) {
 		errno = ENOTSUP;
 		return NULL;
 	}
 
-	ret = realsym(buf, size);
+	return sym(buf, size);
+}
+
+char *getcwd(char *buf, size_t size)
+{
+	char *root, *ret;
+	size_t len;
+
+	ret = next_getcwd(buf, size);
 	if (!ret) {
 		perror(__func__);
 		return NULL;

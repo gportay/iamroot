@@ -16,19 +16,25 @@
 
 extern int __fprintf(FILE *, const char *, ...);
 
-char *get_current_dir_name()
+char *next_get_current_dir_name()
 {
-	char *(*realsym)();
-	char *root, *ret;
-	size_t len;
+	char *(*sym)();
 
-	realsym = dlsym(RTLD_NEXT, __func__);
-	if (!realsym) {
+	sym = dlsym(RTLD_NEXT, "get_current_dir_name");
+	if (!sym) {
 		errno = ENOTSUP;
 		return NULL;
 	}
 
-	ret = realsym();
+	return sym();
+}
+
+char *get_current_dir_name()
+{
+	char *root, *ret;
+	size_t len;
+
+	ret = next_get_current_dir_name();
 	if (!ret) {
 		perror(__func__);
 		return NULL;

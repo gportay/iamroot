@@ -639,8 +639,9 @@ int chroot(const char *path)
 		}
 	}
 
-	setenv("PATH", "/bin:/usr/bin", 1);
-	prependenv(real_path, "LD_LIBRARY_PATH", "/usr/lib:/lib", 1);
+	setenv("PATH", getenv("IAMROOT_PATH") ?: "/bin:/usr/bin", 1);
+	prependenv(real_path, "LD_LIBRARY_PATH",
+		   getenv("IAMROOT_LD_LIBRARY_PATH") ?: "/usr/lib:/lib", 1);
 
 	if (setrootdir(real_path))
 		return -1;

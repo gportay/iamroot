@@ -29,8 +29,10 @@ char *getcwd(char *buf, size_t size)
 	}
 
 	ret = realsym(buf, size);
-	if (!ret)
+	if (!ret) {
+		perror(__func__);
 		return NULL;
+	}
 
 	root = getenv("IAMROOT_ROOT");
 	if (!root)

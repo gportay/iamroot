@@ -29,8 +29,10 @@ char *get_current_dir_name()
 	}
 
 	ret = realsym();
-	if (!ret)
+	if (!ret) {
+		perror(__func__);
 		return NULL;
+	}
 
 	root = getenv("IAMROOT_ROOT");
 	if (!root)

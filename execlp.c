@@ -10,7 +10,9 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <errno.h>
+#ifndef ARG_MAX
 #include <linux/limits.h>
+#endif
 
 #include <unistd.h>
 

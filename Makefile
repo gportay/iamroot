@@ -13,6 +13,7 @@ libiamroot.so: __fprintf.o
 libiamroot.so: __printf.o
 libiamroot.so: access.o
 libiamroot.so: chdir.o
+libiamroot.so: chown.o
 libiamroot.so: chroot.o
 libiamroot.so: dlmopen.o
 libiamroot.so: dlopen.o
@@ -24,11 +25,14 @@ libiamroot.so: execve.o
 libiamroot.so: execvp.o
 libiamroot.so: execvpe.o
 libiamroot.so: fchdir.o
+libiamroot.so: fchown.o
+libiamroot.so: fchownat.o
 libiamroot.so: fexecve.o
 libiamroot.so: get_current_dir_name.o
 libiamroot.so: getcwd.o
 libiamroot.so: geteuid.o
 libiamroot.so: getwd.o
+libiamroot.so: lchown.o
 libiamroot.so: lstat.o
 libiamroot.so: mount.o
 libiamroot.so: open.o

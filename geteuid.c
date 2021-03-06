@@ -4,13 +4,29 @@
  * SPDX-License-Identifier: LGPL-2.1
  */
 
+#define _GNU_SOURCE
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <dlfcn.h>
 
 #include <unistd.h>
 
 extern int __fprintf(FILE *, const char *, ...);
+
+uid_t next_geteuid()
+{
+	uid_t (*sym)();
+
+	sym = dlsym(RTLD_NEXT, "geteuid");
+	if (!sym) {
+		errno = ENOTSUP;
+		return -1;
+	}
+
+	return sym();
+}
 
 uid_t geteuid(void)
 {

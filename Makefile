@@ -14,6 +14,8 @@ libiamroot.so: __printf.o
 libiamroot.so: access.o
 libiamroot.so: chdir.o
 libiamroot.so: chroot.o
+libiamroot.so: dlmopen.o
+libiamroot.so: dlopen.o
 libiamroot.so: execl.o
 libiamroot.so: execle.o
 libiamroot.so: execlp.o

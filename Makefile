@@ -58,6 +58,7 @@ static-tests: libiamroot.so | static-rootfs
 shell-tests: export PATH := $(CURDIR):$(PATH)
 shell-tests: libiamroot.so | static-rootfs
 	iamroot-shell -c "whoami" | tee /dev/stderr | grep -q "^root\$$"
+	iamroot-shell -c "echo \$$IAMROOTLVL" | tee /dev/stderr | grep -q "^[0-9]\+$$"
 
 .PHONY: alpine-tests
 alpine-tests: export LD_PRELOAD = $(CURDIR)/libiamroot.so

@@ -23,3 +23,4 @@ tests:
 	mknod dev 0644 0 0
 	mount -t procfs none /proc
 	unshare whoami
+	rm -f file dev

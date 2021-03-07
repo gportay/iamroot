@@ -37,6 +37,7 @@ libiamroot.so: getwd.o
 libiamroot.so: lchown.o
 libiamroot.so: lstat.o
 libiamroot.so: mknod.o
+libiamroot.so: mknodat.o
 libiamroot.so: mount.o
 libiamroot.so: open.o
 libiamroot.so: openat.o

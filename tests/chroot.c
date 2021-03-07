@@ -10,11 +10,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <limits.h>
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <fcntl.h>
+
+int whereami(char *buf, size_t bufsize) __attribute__ ((weak));
 
 static pid_t execvpf(const char *file, char * const argv[])
 {
@@ -92,6 +95,7 @@ static int out(int fd)
 
 int main(int argc, char * const argv[])
 {
+	static char buf[PATH_MAX], cwd[PATH_MAX];
 	const char *root;
 	int fd, ret;
 
@@ -126,5 +130,19 @@ int main(int argc, char * const argv[])
 	if (out(fd) == -1)
 		perror("out");
 
+	if (realpath(".", cwd) == NULL) {
+		perror("realpath");
+		goto exit;
+	}
+
+	if (whereami(buf, sizeof(buf)) == -1) {
+		perror("whereami");
+		goto exit;
+	}
+
+	if (strcmp(cwd, buf) != 0)
+		ret = EXIT_FAILURE;
+
+exit:
 	return ret;
 }

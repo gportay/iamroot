@@ -44,6 +44,8 @@ libiamroot.so: stat.o
 libiamroot.so: umount.o
 libiamroot.so: umount2.o
 libiamroot.so: unshare.o
+libiamroot.so: whereami.o
+libiamroot.so: whoami.o
 libiamroot.so: override LDLIBS += -ldl
 
 .PHONY: tests

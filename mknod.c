@@ -41,7 +41,7 @@ int mknod(const char *path, mode_t mode, dev_t dev)
 	int fd;
 	(void)dev;
 
-	real_path = path_resolution(path, buf, sizeof(buf));
+	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {
 		perror("path_resolution");
 		return -1;

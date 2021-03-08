@@ -40,7 +40,7 @@ int open(const char *path, int flags, ...)
 	char buf[PATH_MAX];
 	mode_t mode = 0;
 
-	real_path = path_resolution(path, buf, sizeof(buf));
+	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {
 		perror("path_resolution");
 		return -1;

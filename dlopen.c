@@ -37,7 +37,7 @@ void *dlopen(const char *path, int flags)
 	const char *real_path;
 	char buf[PATH_MAX];
 
-	real_path = path_resolution(path, buf, sizeof(buf));
+	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {
 		perror("path_resolution");
 		return NULL;

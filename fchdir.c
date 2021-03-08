@@ -15,8 +15,6 @@
 
 #include <unistd.h>
 
-#include "path_resolution.h"
-
 extern int __fprintf(FILE *, const char *, ...);
 extern char *next_getcwd(char *, size_t);
 

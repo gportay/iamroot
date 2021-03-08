@@ -12,7 +12,8 @@
 extern const char *path_resolutionat(const char *path, char *buf,
 				     size_t bufsize, int flags);
 
-const char *path_resolution(const char *path, char *buf, size_t bufsize)
+const char *path_resolution(const char *path, char *buf, size_t bufsize,
+			    int flags)
 {
-	return path_resolutionat(path, buf, bufsize, AT_SYMLINK_FOLLOW);
+	return path_resolutionat(path, buf, bufsize, flags);
 }

@@ -26,7 +26,8 @@ extern int __fprintf(FILE *, const char *, ...);
 extern ssize_t next_readlink(const char *, char *, size_t);
 extern int next_lstat(const char *, struct stat *);
 extern void __procfdname(char *, unsigned);
-extern const char *path_resolution(const char *path, char *buf, size_t bufsize);
+extern const char *path_resolution(const char *path, char *buf, size_t bufsize,
+				   int flags);
 
 static inline ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
 {
@@ -112,7 +113,7 @@ const char *fpath_resolutionat(int fd, const char *path, char *buf,
 
 		tmp[s] = 0;
 		if (*tmp == '/')
-			return path_resolution(tmp, buf, bufsize);
+			return path_resolution(tmp, buf, bufsize, flags);
 	}
 
 exit:

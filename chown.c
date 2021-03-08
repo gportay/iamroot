@@ -38,7 +38,7 @@ int chown(const char *path, uid_t owner, gid_t group)
 	const char *real_path;
 	char buf[PATH_MAX];
 
-	real_path = path_resolution(path, buf, sizeof(buf));
+	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {
 		perror("path_resolution");
 		return -1;

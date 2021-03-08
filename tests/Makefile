@@ -7,9 +7,11 @@
 override CFLAGS += -fPIC -Wall -Wextra -Werror
 
 .PHONY: all
+all: chown
 all: chroot
 all: fchown
 all: fchownat
+all: lchown
 all: mknod
 all: mknodat
 all: mount
@@ -21,10 +23,12 @@ all: unshare
 tests: PATH := $(CURDIR):$(PATH)
 tests: ALPINE_MINIROOTFS ?= .
 tests:
-	rm -f file
+	rm -f file symlink
 	chroot $(ALPINE_MINIROOTFS) whoami
+	chown file 0 0
 	fchown file 0 0
 	fchownat - file 0 0
+	lchown symlink 0 0
 	IAMROOT_ROOT=$(CURDIR) /fchownat - /file 0 0
 	mknod dev 0644 0 0
 	mknodat - dev1 0666 0 1
@@ -37,4 +41,4 @@ tests:
 	sanitize . ./ ././ | tee /dev/stderr | grep -vc '^\.$$' | grep -q '^0$$'
 	sanitize / // ///  | tee /dev/stderr | grep -vc '^/$$'  | grep -q '^0$$'
 	unshare whoami
-	rm -f file dev dev1 dev2 dev3 dev4
+	rm -f file symlink dev dev1 dev2 dev3 dev4

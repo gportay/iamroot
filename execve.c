@@ -24,7 +24,7 @@
 
 #include "path_resolution.h"
 
-extern int __fprintf(FILE *, const char *, ...);
+extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern int next_open(const char *, int, mode_t);
 extern int next_stat(const char *, struct stat *);
 

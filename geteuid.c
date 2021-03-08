@@ -13,7 +13,7 @@
 
 #include <unistd.h>
 
-extern int __fprintf(FILE *, const char *, ...);
+extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 uid_t next_geteuid()
 {

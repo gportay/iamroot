@@ -15,7 +15,7 @@
 
 #include <unistd.h>
 
-extern int __fprintf(FILE *, const char *, ...);
+extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern char *next_getcwd(char *, size_t);
 
 int next_fchdir(int fd)

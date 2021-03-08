@@ -18,7 +18,7 @@
 
 #include "path_resolution.h"
 
-extern int __fprintf(FILE *, const char *, ...);
+extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 void *next_dlmopen(Lmid_t lmid, const char *path, int flags)
 

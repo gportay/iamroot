@@ -18,7 +18,7 @@
 
 #include "fpath_resolutionat.h"
 
-extern int __fprintf(FILE *, const char *, ...);
+extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 int next_faccessat(int fd, const char *path, int mode, int flag)
 {

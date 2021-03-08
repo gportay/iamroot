@@ -19,7 +19,7 @@
 
 #include "path_resolution.h"
 
-extern int __fprintf(FILE *, const char *, ...);
+extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 int next_mknod(const char *path, mode_t mode, dev_t dev)
 {

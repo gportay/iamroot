@@ -14,7 +14,7 @@
 
 #include "path_resolution.h"
 
-extern int __fprintf(FILE *, const char *, ...);
+extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 static int prependenv(const char *root, const char *name, const char *value,
 		      int overwrite)

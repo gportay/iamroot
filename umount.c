@@ -10,7 +10,7 @@
 
 #include <sys/mount.h>
 
-extern int __fprintf(FILE *, const char *, ...);
+extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 int umount(const char *target)
 {

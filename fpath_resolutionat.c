@@ -22,7 +22,7 @@
 
 #define __strncmp(s1, s2) strncmp(s1, s2, sizeof(s2)-1)
 
-extern int __fprintf(FILE *, const char *, ...);
+extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern ssize_t next_readlink(const char *, char *, size_t);
 extern int next_lstat(const char *, struct stat *);
 extern void __procfdname(char *, unsigned);

@@ -14,7 +14,7 @@
 
 #include <unistd.h>
 
-extern int __fprintf(FILE *, const char *, ...);
+extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 char *next_get_current_dir_name()
 {

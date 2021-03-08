@@ -16,7 +16,7 @@
 
 #include <unistd.h>
 
-extern int __fprintf(FILE *, const char *, ...);
+extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 int execle(const char *path, const char *arg, ...)
 {

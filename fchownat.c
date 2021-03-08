@@ -18,7 +18,7 @@
 
 #include "fpath_resolutionat.h"
 
-extern int __fprintf(FILE *, const char *, ...);
+extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern uid_t next_geteuid();
 
 int next_fchownat(int fd, const char *path, uid_t owner, gid_t group, int flags)

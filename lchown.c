@@ -17,7 +17,7 @@
 
 #include "path_resolution.h"
 
-extern int __fprintf(FILE *, const char *, ...);
+extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern uid_t next_geteuid();
 
 int next_lchown(const char *path, uid_t owner, gid_t group)

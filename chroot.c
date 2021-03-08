@@ -125,9 +125,14 @@ int chroot(const char *path)
 	setenv("PATH", "/bin:/usr/bin", 1);
 	prependenv(real_path, "LD_LIBRARY_PATH", "/usr/lib:/lib", 1);
 
+	if (setenv("IAMROOT_ROOT", real_path, 1)) {
+		perror("setenv");
+		return -1;
+	}
+
 	__fprintf(stderr, "%s(path: '%s' -> '%s') IAMROOT_ROOT='%s'\n",
 			  __func__, path, real_path,
 			  getenv("IAMROOT_ROOT") ?: "");
 
-	return setenv("IAMROOT_ROOT", real_path, 1);
+	return 0;
 }

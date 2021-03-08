@@ -16,7 +16,7 @@ int __vfprintf(FILE *f, const char *fmt, va_list ap)
 	int debug;
 
 	debug = strtoul(getenv("IAMROOT_DEBUG") ?: "0", NULL, 0);
-	if (debug == 0)
+	if (debug < 1 || !getenv("IAMROOT_ROOT"))
 		return 0;
 
 	return vfprintf(f, fmt, ap);

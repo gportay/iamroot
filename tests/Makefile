@@ -6,20 +6,22 @@
 
 override CFLAGS += -fPIC -Wall -Wextra -Werror
 
+TESTS += access
+TESTS += chown
+TESTS += chroot
+TESTS += faccessat
+TESTS += fchown
+TESTS += fchownat
+TESTS += lchown
+TESTS += mknod
+TESTS += mknodat
+TESTS += mount
+TESTS += openat
+TESTS += sanitize
+TESTS += unshare
+
 .PHONY: all
-all: access
-all: chown
-all: chroot
-all: faccessat
-all: fchown
-all: fchownat
-all: lchown
-all: mknod
-all: mknodat
-all: mount
-all: openat
-all: sanitize
-all: unshare
+all: $(TESTS)
 
 .PHONY: tests
 tests: PATH := $(CURDIR):$(PATH)
@@ -48,3 +50,7 @@ tests:
 	sanitize / // ///  | tee /dev/stderr | grep -vc '^/$$'  | grep -q '^0$$'
 	unshare whoami
 	rm -f file symlink dev dev1 dev2 dev3 dev4
+
+.PHONY: clean
+clean:
+	rm -f $(TESTS)

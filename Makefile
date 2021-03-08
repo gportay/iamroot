@@ -131,6 +131,7 @@ alpine-minirootfs-3.13.0-x86_64.tar.gz:
 clean:
 	rm -f libiamroot.so *.o
 	rm -Rf static-rootfs/ alpine-minirootfs/
+	$(MAKE) -C tests $@
 
 .PHONY: mrproper
 mrproper: clean

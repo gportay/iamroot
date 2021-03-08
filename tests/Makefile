@@ -7,6 +7,7 @@
 override CFLAGS += -fPIC -Wall -Wextra -Werror
 
 .PHONY: all
+all: access
 all: chown
 all: chroot
 all: fchown
@@ -24,6 +25,8 @@ tests: PATH := $(CURDIR):$(PATH)
 tests: ALPINE_MINIROOTFS ?= .
 tests:
 	rm -f file symlink
+	access Makefile 0
+	IAMROOT_ROOT=$(CURDIR) /access /Makefile 0
 	chroot $(ALPINE_MINIROOTFS) whoami
 	chown file 0 0
 	fchown file 0 0

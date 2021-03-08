@@ -12,6 +12,7 @@ TESTS += chroot
 TESTS += faccessat
 TESTS += fchown
 TESTS += fchownat
+TESTS += fstatat
 TESTS += lchown
 TESTS += mknod
 TESTS += mknodat
@@ -36,6 +37,8 @@ tests:
 	IAMROOT_ROOT=$(CURDIR) /faccessat - /Makefile 0 0
 	fchown file 0 0
 	fchownat - file 0 0
+	fstatat - file 0 0
+	IAMROOT_ROOT=$(CURDIR) /fstatat - /file 0 0
 	lchown symlink 0 0
 	IAMROOT_ROOT=$(CURDIR) /fchownat - /file 0 0
 	mknod dev 0644 0 0

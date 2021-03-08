@@ -74,6 +74,7 @@ libiamroot.so: scandirat.o
 libiamroot.so: setxattr.o
 libiamroot.so: stat.o
 libiamroot.so: statfs.o
+libiamroot.so: statx.o
 libiamroot.so: symlink.o
 libiamroot.so: symlinkat.o
 libiamroot.so: umount.o

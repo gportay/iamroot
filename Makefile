@@ -25,6 +25,7 @@ libiamroot.so: execv.o
 libiamroot.so: execve.o
 libiamroot.so: execvp.o
 libiamroot.so: execvpe.o
+libiamroot.so: faccessat.o
 libiamroot.so: fchdir.o
 libiamroot.so: fchown.o
 libiamroot.so: fchownat.o

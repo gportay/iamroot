@@ -10,6 +10,7 @@ override CFLAGS += -fPIC -Wall -Wextra -Werror
 all: access
 all: chown
 all: chroot
+all: faccessat
 all: fchown
 all: fchownat
 all: lchown
@@ -29,6 +30,8 @@ tests:
 	IAMROOT_ROOT=$(CURDIR) /access /Makefile 0
 	chroot $(ALPINE_MINIROOTFS) whoami
 	chown file 0 0
+	faccessat . Makefile 0 0
+	IAMROOT_ROOT=$(CURDIR) /faccessat - /Makefile 0 0
 	fchown file 0 0
 	fchownat - file 0 0
 	lchown symlink 0 0

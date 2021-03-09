@@ -23,6 +23,9 @@ TESTS += mknod
 TESTS += mknodat
 TESTS += mount
 TESTS += openat
+TESTS += rename
+TESTS += renameat
+TESTS += renameat2
 TESTS += sanitize
 TESTS += symlink
 TESTS += symlinkat
@@ -68,6 +71,10 @@ tests:
 	openat - file
 	IAMROOT_ROOT=$(CURDIR) /openat . /file
 	sanitize . ./ ././ | tee /dev/stderr | grep -vc '^\.$$' | grep -q '^0$$'
+	rename file file1
+	renameat - file1 - file2
+	IAMROOT_ROOT=$(CURDIR) /renameat - /file2 - /file3
+	IAMROOT_ROOT=$(CURDIR) /renameat2 - /file3 - /file 0
 	sanitize / // ///  | tee /dev/stderr | grep -vc '^/$$'  | grep -q '^0$$'
 	symlink file symlink1
 	symlinkat file . symlink2

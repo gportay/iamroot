@@ -7,26 +7,24 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <unistd.h>
+#include <sys/stat.h>
 
 int main(int argc, char * const argv[])
 {
-	uid_t owner;
-	gid_t group;
+	mode_t mode;
 
-	if (argc < 4) {
+	if (argc < 3) {
 		fprintf(stderr, "Too few arguments\n");
 		exit(EXIT_FAILURE);
-	} else if (argc > 4) {
+	} else if (argc > 3) {
 		fprintf(stderr, "Too many arguments\n");
 		exit(EXIT_FAILURE);
 	}
 
-	owner = strtoul(argv[2], NULL, 0);
-	group = strtoul(argv[3], NULL, 0);
+	mode = strtoul(argv[2], NULL, 0);
 
-	if (chown(argv[1], owner, group)) {
-		perror("chown");
+	if (chmod(argv[1], mode)) {
+		perror("mode");
 		return EXIT_FAILURE;
 	}
 

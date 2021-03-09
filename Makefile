@@ -14,6 +14,7 @@ libiamroot.so: __fprintf.o
 libiamroot.so: __printf.o
 libiamroot.so: access.o
 libiamroot.so: chdir.o
+libiamroot.so: chmod.o
 libiamroot.so: chown.o
 libiamroot.so: chroot.o
 libiamroot.so: creat.o
@@ -28,6 +29,7 @@ libiamroot.so: execvp.o
 libiamroot.so: execvpe.o
 libiamroot.so: faccessat.o
 libiamroot.so: fchdir.o
+libiamroot.so: fchmodat.o
 libiamroot.so: fchown.o
 libiamroot.so: fchownat.o
 libiamroot.so: fexecve.o

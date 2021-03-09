@@ -7,9 +7,11 @@
 override CFLAGS += -fPIC -Wall -Wextra -Werror
 
 TESTS += access
+TESTS += chmod
 TESTS += chown
 TESTS += chroot
 TESTS += faccessat
+TESTS += fchmodat
 TESTS += fchown
 TESTS += fchownat
 TESTS += fstatat
@@ -38,9 +40,13 @@ tests: PATH := $(CURDIR):$(PATH)
 tests: ALPINE_MINIROOTFS ?= .
 tests:
 	rm -f dev* file* symlink[0-9] link[0-9]*
+	touch file
 	access Makefile 0
 	IAMROOT_ROOT=$(CURDIR) /access /Makefile 0
 	chroot $(ALPINE_MINIROOTFS) whoami
+	chmod file 01644
+	fchmodat . file 02644
+	IAMROOT_ROOT=$(CURDIR) /fchmodat - /file 04644
 	chown file 0 0
 	faccessat . Makefile 0 0
 	IAMROOT_ROOT=$(CURDIR) /faccessat - /Makefile 0 0

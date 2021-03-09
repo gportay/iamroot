@@ -14,6 +14,7 @@ TESTS += fchown
 TESTS += fchownat
 TESTS += fstatat
 TESTS += lchown
+TESTS += lutimes
 TESTS += mknod
 TESTS += mknodat
 TESTS += mount
@@ -22,6 +23,8 @@ TESTS += sanitize
 TESTS += unlink
 TESTS += unlinkat
 TESTS += unshare
+TESTS += utimensat
+TESTS += utimes
 
 .PHONY: all
 all: $(TESTS)
@@ -53,6 +56,10 @@ tests:
 	IAMROOT_ROOT=$(CURDIR) /openat . /file
 	sanitize . ./ ././ | tee /dev/stderr | grep -vc '^\.$$' | grep -q '^0$$'
 	sanitize / // ///  | tee /dev/stderr | grep -vc '^/$$'  | grep -q '^0$$'
+	utimes file 0x3fffffff 0x3fffffff
+	lutimes symlink 0x3fffffff 0x3fffffff
+	utimensat . file 0x3fffffff 0x3fffffff
+	IAMROOT_ROOT=$(CURDIR) /utimensat . /file 0x3fffffff 0x3fffffff
 	unlink file
 	unlinkat . dev1 0
 	IAMROOT_ROOT=$(CURDIR) /unlinkat - /dev2 0

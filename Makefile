@@ -39,6 +39,7 @@ libiamroot.so: geteuid.o
 libiamroot.so: getwd.o
 libiamroot.so: lchown.o
 libiamroot.so: lstat.o
+libiamroot.so: lutimes.o
 libiamroot.so: mknod.o
 libiamroot.so: mknodat.o
 libiamroot.so: mount.o
@@ -53,6 +54,8 @@ libiamroot.so: umount2.o
 libiamroot.so: unlink.o
 libiamroot.so: unlinkat.o
 libiamroot.so: unshare.o
+libiamroot.so: utimensat.o
+libiamroot.so: utimes.o
 libiamroot.so: whereami.o
 libiamroot.so: whoami.o
 libiamroot.so: override LDLIBS += -ldl

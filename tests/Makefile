@@ -22,6 +22,8 @@ TESTS += mknodat
 TESTS += mount
 TESTS += openat
 TESTS += sanitize
+TESTS += symlink
+TESTS += symlinkat
 TESTS += unlink
 TESTS += unlinkat
 TESTS += unshare
@@ -35,7 +37,7 @@ all: $(TESTS)
 tests: PATH := $(CURDIR):$(PATH)
 tests: ALPINE_MINIROOTFS ?= .
 tests:
-	rm -f dev* file* symlink* link[0-9]*
+	rm -f dev* file* symlink[0-9] link[0-9]*
 	access Makefile 0
 	IAMROOT_ROOT=$(CURDIR) /access /Makefile 0
 	chroot $(ALPINE_MINIROOTFS) whoami
@@ -46,7 +48,7 @@ tests:
 	fchownat - file 0 0
 	fstatat - file 0 0
 	IAMROOT_ROOT=$(CURDIR) /fstatat - /file 0 0
-	lchown symlink 0 0
+	lchown symlink0 0 0
 	IAMROOT_ROOT=$(CURDIR) /fchownat - /file 0 0
 	link file link1
 	linkat - file - link2 0
@@ -61,8 +63,11 @@ tests:
 	IAMROOT_ROOT=$(CURDIR) /openat . /file
 	sanitize . ./ ././ | tee /dev/stderr | grep -vc '^\.$$' | grep -q '^0$$'
 	sanitize / // ///  | tee /dev/stderr | grep -vc '^/$$'  | grep -q '^0$$'
+	symlink file symlink1
+	symlinkat file . symlink2
+	IAMROOT_ROOT=$(CURDIR) /symlinkat file . symlink3
 	utimes file 0x3fffffff 0x3fffffff
-	lutimes symlink 0x3fffffff 0x3fffffff
+	lutimes symlink0 0x3fffffff 0x3fffffff
 	utimensat . file 0x3fffffff 0x3fffffff
 	IAMROOT_ROOT=$(CURDIR) /utimensat . /file 0x3fffffff 0x3fffffff
 	unlink file

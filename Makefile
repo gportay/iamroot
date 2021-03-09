@@ -51,6 +51,8 @@ libiamroot.so: path_resolution.o
 libiamroot.so: path_resolutionat.o
 libiamroot.so: readlink.o
 libiamroot.so: stat.o
+libiamroot.so: symlink.o
+libiamroot.so: symlinkat.o
 libiamroot.so: umount.o
 libiamroot.so: umount2.o
 libiamroot.so: unlink.o

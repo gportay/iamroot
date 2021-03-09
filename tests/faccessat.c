@@ -29,7 +29,7 @@ int main(int argc, char * const argv[])
 	flags = strtoul(argv[4], NULL, 0);
 
 	if (__strncmp(argv[1], "-") != 0) {
-		fd = open(".", O_RDONLY);
+		fd = open(".", O_DIRECTORY);
 		if (fd == -1) {
 			perror("open");
 			return EXIT_FAILURE;

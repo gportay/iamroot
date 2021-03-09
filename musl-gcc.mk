@@ -5,7 +5,6 @@
 #
 
 CC = musl-gcc
-CFLAGS += -DARG_MAX=$(shell getconf ARG_MAX)
 LDFLAGS += -nolibc
 
 include Makefile

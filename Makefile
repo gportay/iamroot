@@ -5,6 +5,7 @@
 #
 
 override CFLAGS += -fPIC -Wall -Wextra -Werror
+override CFLAGS += -DARG_MAX=$(shell getconf ARG_MAX)
 
 .PHONY: all
 all: libiamroot.so

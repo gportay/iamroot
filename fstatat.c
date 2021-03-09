@@ -18,7 +18,7 @@
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
-int next_fstatat(int fd, const char *path, struct stat *statbuf, int flag)
+int next_fstatat(int fd, const char *path, struct stat *statbuf, int flags)
 {
 	int (*sym)(int, const char *, struct stat *, int);
 
@@ -28,15 +28,15 @@ int next_fstatat(int fd, const char *path, struct stat *statbuf, int flag)
 		return -1;
 	}
 
-	return sym(fd, path, statbuf, flag);
+	return sym(fd, path, statbuf, flags);
 }
 
-int fstatat(int fd, const char *path, struct stat *statbuf, int flag)
+int fstatat(int fd, const char *path, struct stat *statbuf, int flags)
 {
 	const char *real_path;
 	char buf[PATH_MAX];
 
-	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), flag);
+	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), flags);
 	if (!real_path) {
 		perror("fpath_resolutionat");
 		return -1;
@@ -45,5 +45,5 @@ int fstatat(int fd, const char *path, struct stat *statbuf, int flag)
 	__fprintf(stderr, "%s(fd: %i, path: '%s' -> '%s', ...)\n", __func__, fd,
 			  path, real_path);
 
-	return next_fstatat(fd, real_path, statbuf, flag);
+	return next_fstatat(fd, real_path, statbuf, flags);
 }

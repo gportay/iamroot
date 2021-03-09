@@ -16,7 +16,7 @@
 
 int main(int argc, char * const argv[])
 {
-	int fd = AT_FDCWD, flag = 0, ret = EXIT_FAILURE;
+	int fd = AT_FDCWD, flags = 0, ret = EXIT_FAILURE;
 	struct stat statbuf;
 
 	if (argc < 5) {
@@ -28,7 +28,7 @@ int main(int argc, char * const argv[])
 	}
 
 	if (argc == 3)
-		flag = strtoul(argv[3], NULL, 0);
+		flags = strtoul(argv[3], NULL, 0);
 
 	if (__strncmp(argv[1], "-") != 0) {
 		fd = open(argv[1], O_RDONLY);
@@ -38,7 +38,7 @@ int main(int argc, char * const argv[])
 		}
 	}
 
-	if (fstatat(fd, argv[2], &statbuf, flag)) {
+	if (fstatat(fd, argv[2], &statbuf, flags)) {
 		perror("fstatat");
 		goto exit;
 	}

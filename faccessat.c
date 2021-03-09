@@ -18,7 +18,7 @@
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
-int next_faccessat(int fd, const char *path, int mode, int flag)
+int next_faccessat(int fd, const char *path, int mode, int flags)
 {
 	int (*sym)(int, const char *, int, int);
 
@@ -28,15 +28,15 @@ int next_faccessat(int fd, const char *path, int mode, int flag)
 		return -1;
 	}
 
-	return sym(fd, path, mode, flag);
+	return sym(fd, path, mode, flags);
 }
 
-int faccessat(int fd, const char *path, int mode, int flag)
+int faccessat(int fd, const char *path, int mode, int flags)
 {
 	const char *real_path;
 	char buf[PATH_MAX];
 
-	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), flag);
+	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), flags);
 	if (!real_path) {
 		perror("fpath_resolutionat");
 		return -1;
@@ -45,5 +45,5 @@ int faccessat(int fd, const char *path, int mode, int flag)
 	__fprintf(stderr, "%s(fd: %i, path: '%s' -> '%s')\n", __func__, fd,
 			  path, real_path);
 
-	return next_faccessat(fd, real_path, mode, flag);
+	return next_faccessat(fd, real_path, mode, flags);
 }

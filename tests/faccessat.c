@@ -15,7 +15,7 @@
 
 int main(int argc, char * const argv[])
 {
-	int mode, flag, fd = AT_FDCWD, ret = EXIT_FAILURE;
+	int mode, flags, fd = AT_FDCWD, ret = EXIT_FAILURE;
 
 	if (argc < 5) {
 		fprintf(stderr, "Too few arguments\n");
@@ -26,7 +26,7 @@ int main(int argc, char * const argv[])
 	}
 
 	mode = strtoul(argv[3], NULL, 0);
-	flag = strtoul(argv[4], NULL, 0);
+	flags = strtoul(argv[4], NULL, 0);
 
 	if (__strncmp(argv[1], "-") != 0) {
 		fd = open(".", O_RDONLY);
@@ -36,7 +36,7 @@ int main(int argc, char * const argv[])
 		}
 	}
 
-	if (faccessat(fd, argv[2], mode, flag)) {
+	if (faccessat(fd, argv[2], mode, flags)) {
 		perror("faccessat");
 		goto exit;
 	}

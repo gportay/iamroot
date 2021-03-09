@@ -15,7 +15,7 @@
 
 int main(int argc, char * const argv[])
 {
-	int fd = AT_FDCWD, flag = 0, ret = EXIT_FAILURE;
+	int fd = AT_FDCWD, flags = 0, ret = EXIT_FAILURE;
 	uid_t owner;
 	gid_t group;
 
@@ -30,7 +30,7 @@ int main(int argc, char * const argv[])
 	owner = strtoul(argv[3], NULL, 0);
 	group = strtoul(argv[4], NULL, 0);
 	if (argc == 6)
-		flag = strtoul(argv[5], NULL, 0);
+		flags = strtoul(argv[5], NULL, 0);
 
 	if (__strncmp(argv[1], "-") != 0) {
 		fd = open(argv[1], O_RDONLY);
@@ -40,7 +40,7 @@ int main(int argc, char * const argv[])
 		}
 	}
 
-	if (fchownat(fd, argv[2], owner, group, flag)) {
+	if (fchownat(fd, argv[2], owner, group, flags)) {
 		perror("fchownat");
 		goto exit;
 	}

@@ -19,6 +19,8 @@ TESTS += mknodat
 TESTS += mount
 TESTS += openat
 TESTS += sanitize
+TESTS += unlink
+TESTS += unlinkat
 TESTS += unshare
 
 .PHONY: all
@@ -28,7 +30,7 @@ all: $(TESTS)
 tests: PATH := $(CURDIR):$(PATH)
 tests: ALPINE_MINIROOTFS ?= .
 tests:
-	rm -f file symlink
+	rm -f dev* file* symlink*
 	access Makefile 0
 	IAMROOT_ROOT=$(CURDIR) /access /Makefile 0
 	chroot $(ALPINE_MINIROOTFS) whoami
@@ -51,8 +53,10 @@ tests:
 	IAMROOT_ROOT=$(CURDIR) /openat . /file
 	sanitize . ./ ././ | tee /dev/stderr | grep -vc '^\.$$' | grep -q '^0$$'
 	sanitize / // ///  | tee /dev/stderr | grep -vc '^/$$'  | grep -q '^0$$'
+	unlink file
+	unlinkat . dev1 0
+	IAMROOT_ROOT=$(CURDIR) /unlinkat - /dev2 0
 	unshare whoami
-	rm -f file symlink dev dev1 dev2 dev3 dev4
 
 .PHONY: clean
 clean:

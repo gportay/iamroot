@@ -50,6 +50,8 @@ libiamroot.so: readlink.o
 libiamroot.so: stat.o
 libiamroot.so: umount.o
 libiamroot.so: umount2.o
+libiamroot.so: unlink.o
+libiamroot.so: unlinkat.o
 libiamroot.so: unshare.o
 libiamroot.so: whereami.o
 libiamroot.so: whoami.o

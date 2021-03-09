@@ -14,6 +14,8 @@ TESTS += fchown
 TESTS += fchownat
 TESTS += fstatat
 TESTS += lchown
+TESTS += link
+TESTS += linkat
 TESTS += lutimes
 TESTS += mknod
 TESTS += mknodat
@@ -33,7 +35,7 @@ all: $(TESTS)
 tests: PATH := $(CURDIR):$(PATH)
 tests: ALPINE_MINIROOTFS ?= .
 tests:
-	rm -f dev* file* symlink*
+	rm -f dev* file* symlink* link[0-9]*
 	access Makefile 0
 	IAMROOT_ROOT=$(CURDIR) /access /Makefile 0
 	chroot $(ALPINE_MINIROOTFS) whoami
@@ -46,6 +48,9 @@ tests:
 	IAMROOT_ROOT=$(CURDIR) /fstatat - /file 0 0
 	lchown symlink 0 0
 	IAMROOT_ROOT=$(CURDIR) /fchownat - /file 0 0
+	link file link1
+	linkat - file - link2 0
+	IAMROOT_ROOT=$(CURDIR) /linkat - /file - /link3 0
 	mknod dev 0644 0 0
 	mknodat - dev1 0666 0 1
 	mknodat . dev2 0666 0 2

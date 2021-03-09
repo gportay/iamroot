@@ -38,6 +38,8 @@ libiamroot.so: getcwd.o
 libiamroot.so: geteuid.o
 libiamroot.so: getwd.o
 libiamroot.so: lchown.o
+libiamroot.so: link.o
+libiamroot.so: linkat.o
 libiamroot.so: lstat.o
 libiamroot.so: lutimes.o
 libiamroot.so: mknod.o

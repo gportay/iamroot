@@ -6,16 +6,16 @@
 
 #define _GNU_SOURCE
 
-#include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <limits.h>
-#include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <fcntl.h>
+
+#include <unistd.h>
 
 int whereami(char *buf, size_t bufsize) __attribute__ ((weak));
 

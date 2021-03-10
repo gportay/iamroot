@@ -45,6 +45,7 @@ libiamroot.so: lchown.o
 libiamroot.so: lgetxattr.o
 libiamroot.so: link.o
 libiamroot.so: linkat.o
+libiamroot.so: lremovexattr.o
 libiamroot.so: lsetxattr.o
 libiamroot.so: lstat.o
 libiamroot.so: lutimes.o
@@ -59,6 +60,7 @@ libiamroot.so: opendir.o
 libiamroot.so: path_resolution.o
 libiamroot.so: path_resolutionat.o
 libiamroot.so: readlink.o
+libiamroot.so: removexattr.o
 libiamroot.so: rename.o
 libiamroot.so: renameat.o
 libiamroot.so: renameat2.o

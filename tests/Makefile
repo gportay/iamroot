@@ -30,6 +30,7 @@ TESTS += renameat
 TESTS += renameat2
 TESTS += rmdir
 TESTS += sanitize
+TESTS += statfs
 TESTS += symlink
 TESTS += symlinkat
 TESTS += unlink
@@ -84,6 +85,7 @@ tests:
 	rmdir proc
 	rmdir sys
 	IAMROOT_ROOT=$(CURDIR) /rmdir /tmp
+	statfs .
 	sanitize / // ///  | tee /dev/stderr | grep -vc '^/$$'  | grep -q '^0$$'
 	symlink file symlink1
 	symlinkat file . symlink2

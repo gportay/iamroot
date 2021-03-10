@@ -59,6 +59,7 @@ libiamroot.so: renameat.o
 libiamroot.so: renameat2.o
 libiamroot.so: rmdir.o
 libiamroot.so: stat.o
+libiamroot.so: statfs.o
 libiamroot.so: symlink.o
 libiamroot.so: symlinkat.o
 libiamroot.so: umount.o

@@ -18,6 +18,7 @@
 
 #include "fpath_resolutionat.h"
 
+#define __strlcmp(s1, s2) strncmp(s1, s2, strlen(s2))
 #define __strncmp(s1, s2) strncmp(s1, s2, sizeof(s2)-1)
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
@@ -76,6 +77,9 @@ const char *fpath_resolutionat(int fd, const char *path, char *buf,
 		root = getrootdir();
 		if (strcmp(root, "/") == 0)
 			root = "";
+		else if (__strlcmp(path, root) == 0)
+			fprintf(stderr, "Warning: %s: contains root '%s'\n",
+					path, root);
 
 		size = snprintf(buf, bufsize, "%s%s", root, path);
 		if (size < 0) {

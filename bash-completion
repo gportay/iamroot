@@ -26,7 +26,7 @@ _iamroot-shell()
 
 	if [[ "$shell" != 1 ]]
 	then
-		COMPREPLY+=(--force)
+		COMPREPLY+=(--force --debug)
 	fi
 } &&
 complete -F _iamroot-shell iamroot-shell

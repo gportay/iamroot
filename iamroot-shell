@@ -7,7 +7,7 @@
 
 usage() {
 	cat <<EOF
-Usage: ${0##*/} [--force] [--help] [--] [SHELL_ARGUMENTS...]
+Usage: ${0##*/} [--debug] [--force] [--help] [--] [SHELL_ARGUMENTS...]
 EOF
 }
 
@@ -22,6 +22,10 @@ do
 	then
 		IAMROOT_FORCE=1
 		export IAMROOT_FORCE
+	elif [[ "$1" == "--debug" ]]
+	then
+		IAMROOT_DEBUG="$((IAMROOT_DEBUG+1))"
+		export IAMROOT_DEBUG
 	elif [[ "$1" == "--" ]]
 	then
 		shift

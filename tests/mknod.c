@@ -4,16 +4,16 @@
  * SPDX-License-Identifier: LGPL-2.1
  */
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
 #include <sys/sysmacros.h>
 
-#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
 
 int mknod(const char *pathname, mode_t mode, dev_t dev);
 

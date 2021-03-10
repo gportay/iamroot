@@ -4,15 +4,15 @@
  * SPDX-License-Identifier: LGPL-2.1
  */
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/sysmacros.h>
 
-#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
 
 #define __strncmp(s1, s2) strncmp(s1, s2, sizeof(s2)-1)
 

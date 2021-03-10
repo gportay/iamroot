@@ -20,6 +20,8 @@ libiamroot.so: chroot.o
 libiamroot.so: creat.o
 libiamroot.so: dlmopen.o
 libiamroot.so: dlopen.o
+libiamroot.so: eaccess.o
+libiamroot.so: euidaccess.o
 libiamroot.so: execl.o
 libiamroot.so: execle.o
 libiamroot.so: execlp.o

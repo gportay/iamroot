@@ -34,6 +34,7 @@ TESTS += sanitize
 TESTS += scandir
 TESTS += scandirat
 TESTS += statfs
+TESTS += statvfs
 TESTS += statx
 TESTS += symlink
 TESTS += symlinkat
@@ -94,6 +95,7 @@ tests:
 	scandir .
 	IAMROOT_ROOT=$(CURDIR) /scandirat - /
 	statfs .
+	statvfs .
 	sanitize / // ///  | tee /dev/stderr | grep -vc '^/$$'  | grep -q '^0$$'
 	statx - file 0 0
 	IAMROOT_ROOT=$(CURDIR) /statx - /file 0 0

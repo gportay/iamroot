@@ -38,6 +38,7 @@ libiamroot.so: fstatat.o
 libiamroot.so: get_current_dir_name.o
 libiamroot.so: getcwd.o
 libiamroot.so: geteuid.o
+libiamroot.so: getuid.o
 libiamroot.so: getwd.o
 libiamroot.so: lchown.o
 libiamroot.so: link.o

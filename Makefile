@@ -45,6 +45,7 @@ libiamroot.so: lchown.o
 libiamroot.so: lgetxattr.o
 libiamroot.so: link.o
 libiamroot.so: linkat.o
+libiamroot.so: lsetxattr.o
 libiamroot.so: lstat.o
 libiamroot.so: lutimes.o
 libiamroot.so: mkdir.o
@@ -64,6 +65,7 @@ libiamroot.so: renameat2.o
 libiamroot.so: rmdir.o
 libiamroot.so: scandir.o
 libiamroot.so: scandirat.o
+libiamroot.so: setxattr.o
 libiamroot.so: stat.o
 libiamroot.so: statfs.o
 libiamroot.so: symlink.o

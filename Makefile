@@ -44,6 +44,8 @@ libiamroot.so: link.o
 libiamroot.so: linkat.o
 libiamroot.so: lstat.o
 libiamroot.so: lutimes.o
+libiamroot.so: mkdir.o
+libiamroot.so: mkdirat.o
 libiamroot.so: mknod.o
 libiamroot.so: mknodat.o
 libiamroot.so: mount.o
@@ -55,6 +57,7 @@ libiamroot.so: readlink.o
 libiamroot.so: rename.o
 libiamroot.so: renameat.o
 libiamroot.so: renameat2.o
+libiamroot.so: rmdir.o
 libiamroot.so: stat.o
 libiamroot.so: symlink.o
 libiamroot.so: symlinkat.o

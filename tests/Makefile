@@ -19,6 +19,8 @@ TESTS += lchown
 TESTS += link
 TESTS += linkat
 TESTS += lutimes
+TESTS += mkdir
+TESTS += mkdirat
 TESTS += mknod
 TESTS += mknodat
 TESTS += mount
@@ -26,6 +28,7 @@ TESTS += openat
 TESTS += rename
 TESTS += renameat
 TESTS += renameat2
+TESTS += rmdir
 TESTS += sanitize
 TESTS += symlink
 TESTS += symlinkat
@@ -42,7 +45,7 @@ all: $(TESTS)
 tests: PATH := $(CURDIR):$(PATH)
 tests: ALPINE_MINIROOTFS ?= .
 tests:
-	rm -f dev* file* symlink[0-9] link[0-9]*
+	rm -Rf proc sys tmp dev* file* symlink[0-9] link[0-9]*
 	touch file
 	access Makefile 0
 	IAMROOT_ROOT=$(CURDIR) /access /Makefile 0
@@ -62,6 +65,9 @@ tests:
 	link file link1
 	linkat - file - link2 0
 	IAMROOT_ROOT=$(CURDIR) /linkat - /file - /link3 0
+	mkdir proc 0555
+	mkdirat . sys 0555
+	IAMROOT_ROOT=$(CURDIR) /mkdirat . /tmp 0755
 	mknod dev 0644 0 0
 	mknodat - dev1 0666 0 1
 	mknodat . dev2 0666 0 2
@@ -75,6 +81,9 @@ tests:
 	renameat - file1 - file2
 	IAMROOT_ROOT=$(CURDIR) /renameat - /file2 - /file3
 	IAMROOT_ROOT=$(CURDIR) /renameat2 - /file3 - /file 0
+	rmdir proc
+	rmdir sys
+	IAMROOT_ROOT=$(CURDIR) /rmdir /tmp
 	sanitize / // ///  | tee /dev/stderr | grep -vc '^/$$'  | grep -q '^0$$'
 	symlink file symlink1
 	symlinkat file . symlink2

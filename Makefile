@@ -45,6 +45,8 @@ libiamroot.so: lchown.o
 libiamroot.so: lgetxattr.o
 libiamroot.so: link.o
 libiamroot.so: linkat.o
+libiamroot.so: listxattr.o
+libiamroot.so: llistxattr.o
 libiamroot.so: lremovexattr.o
 libiamroot.so: lsetxattr.o
 libiamroot.so: lstat.o

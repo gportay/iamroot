@@ -94,6 +94,30 @@ exit:
 	return ret;
 }
 
+const char *getrootdir()
+{
+	char *root;
+
+	root = getenv("IAMROOT_ROOT");
+	if (!root)
+		return "/";
+
+	return root;
+}
+
+int chrootdir(const char *path)
+{
+	const char *root;
+
+	root = getrootdir();
+	if (strstr(path, root) == NULL) {
+		__fprintf(stderr, "Exiting chroot: '%s'\n", root);
+		return unsetenv("IAMROOT_ROOT");
+	}
+
+	return 0;
+}
+
 int chroot(const char *path)
 {
 	const char *real_path;
@@ -130,6 +154,7 @@ int chroot(const char *path)
 		return -1;
 	}
 
+	__fprintf(stderr, "Enterring chroot: '%s'\n", real_path);
 	__fprintf(stderr, "%s(path: '%s' -> '%s') IAMROOT_ROOT='%s'\n",
 			  __func__, path, real_path,
 			  getenv("IAMROOT_ROOT") ?: "");

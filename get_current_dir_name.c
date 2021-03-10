@@ -15,6 +15,7 @@
 #include <unistd.h>
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
+extern const char *getrootdir();
 
 char *next_get_current_dir_name()
 {
@@ -31,8 +32,9 @@ char *next_get_current_dir_name()
 
 char *get_current_dir_name()
 {
-	char *root, *ret;
+	const char *root;
 	size_t len;
+	char *ret;
 
 	ret = next_get_current_dir_name();
 	if (!ret) {
@@ -40,8 +42,13 @@ char *get_current_dir_name()
 		return NULL;
 	}
 
-	root = getenv("IAMROOT_ROOT");
-	if (!root)
+	root = getrootdir();
+	if (!root) {
+		perror("getrootdir");
+		return NULL;
+	}
+
+	if (strcmp(root, "/") == 0)
 		goto exit;
 
 	len = strlen(root);
@@ -52,7 +59,7 @@ char *get_current_dir_name()
 		strcpy(ret, "/");
 
 exit:
-	__fprintf(stderr, "%s(): IAMROOT_ROOT: '%s'\n", __func__, root);
+	__fprintf(stderr, "%s()\n", __func__);
 
 	return ret;
 }

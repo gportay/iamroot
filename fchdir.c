@@ -6,9 +6,7 @@
 
 #define _GNU_SOURCE
 
-#include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
 #include <errno.h>
 #include <limits.h>
 #include <dlfcn.h>
@@ -17,6 +15,7 @@
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern char *next_getcwd(char *, size_t);
+extern int chrootdir(const char *);
 
 int next_fchdir(int fd)
 {
@@ -34,7 +33,6 @@ int next_fchdir(int fd)
 int fchdir(int fd)
 {
 	char cwd[PATH_MAX];
-	char *root;
 	int ret;
 
 	ret = next_fchdir(fd);
@@ -43,21 +41,16 @@ int fchdir(int fd)
 		goto exit;
 	}
 
-	root = getenv("IAMROOT_ROOT");
-	if (!root)
-		goto exit;
-
 	if (next_getcwd(cwd, sizeof(cwd)) == NULL) {
 		perror("getcwd");
 		goto exit;
 	}
 
-	if (strstr(cwd, root) == NULL)
-		unsetenv("IAMROOT_ROOT");
+	if (chrootdir(cwd))
+		perror("chrootdir");
 
 exit:
-	__fprintf(stderr, "%s(fd: %i '%s'): IAMROOT_ROOT: '%s'\n", __func__,
-			  fd, cwd, root);
+	__fprintf(stderr, "%s(fd: %i '%s')\n", __func__, fd, cwd);
 
 	return ret;
 }

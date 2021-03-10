@@ -6,7 +6,6 @@
 
 #define _GNU_SOURCE
 
-#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
@@ -15,6 +14,7 @@
 #include <unistd.h>
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
+extern const char *getrootdir();
 
 char *next_getcwd(char *buf, size_t size)
 {
@@ -31,8 +31,9 @@ char *next_getcwd(char *buf, size_t size)
 
 char *getcwd(char *buf, size_t size)
 {
-	char *root, *ret;
+	const char *root;
 	size_t len;
+	char *ret;
 
 	ret = next_getcwd(buf, size);
 	if (!ret) {
@@ -40,8 +41,13 @@ char *getcwd(char *buf, size_t size)
 		return NULL;
 	}
 
-	root = getenv("IAMROOT_ROOT");
-	if (!root)
+	root = getrootdir();
+	if (!root) {
+		perror("getrootdir");
+		return NULL;
+	}
+
+	if (strcmp(root, "/") == 0)
 		goto exit;
 
 	len = strlen(root);
@@ -52,7 +58,7 @@ char *getcwd(char *buf, size_t size)
 		strcpy(ret, "/");
 
 exit:
-	__fprintf(stderr, "%s(...): IAMROOT_ROOT: '%s'\n", __func__, root);
+	__fprintf(stderr, "%s(...)\n", __func__);
 
 	return ret;
 }

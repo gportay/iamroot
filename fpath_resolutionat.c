@@ -7,7 +7,6 @@
 #define _GNU_SOURCE
 
 #include <unistd.h>
-#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
@@ -27,6 +26,7 @@ extern int next_lstat(const char *, struct stat *);
 extern void __procfdname(char *, unsigned);
 extern const char *path_resolution(const char *path, char *buf, size_t bufsize,
 				   int flags);
+extern const char *getrootdir();
 
 static inline ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
 {
@@ -70,8 +70,14 @@ const char *fpath_resolutionat(int fd, const char *path, char *buf,
 		return path;
 
 	if (*path == '/') {
-		char *root = getenv("IAMROOT_ROOT") ?: "";
-		int size = snprintf(buf, bufsize, "%s%s", root, path);
+		const char *root;
+		int size;
+
+		root = getrootdir();
+		if (strcmp(root, "/") == 0)
+			root = "";
+
+		size = snprintf(buf, bufsize, "%s%s", root, path);
 		if (size < 0) {
 			errno = EINVAL;
 			return NULL;

@@ -17,17 +17,22 @@
 #define __strchrnul strchrnul
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
+extern const char *getrootdir();
 
 int __execve(const char *path, char * const argv[], char * const envp[])
 {
+	const char *root;
 	ssize_t len;
-	char *root;
 
-	root = getenv("IAMROOT_ROOT") ?: "";
+	root = getrootdir();
+	if (strcmp(root, "/") == 0)
+		goto exit;
+
 	len = strlen(root);
 	if (strncmp(path, root, len) == 0)
 		path += len;
 
+exit:
 	return execve(path, argv, envp);
 }
 

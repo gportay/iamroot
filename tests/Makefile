@@ -25,11 +25,14 @@ TESTS += mknod
 TESTS += mknodat
 TESTS += mount
 TESTS += openat
+TESTS += opendir
 TESTS += rename
 TESTS += renameat
 TESTS += renameat2
 TESTS += rmdir
 TESTS += sanitize
+TESTS += scandir
+TESTS += scandirat
 TESTS += statfs
 TESTS += symlink
 TESTS += symlinkat
@@ -77,6 +80,8 @@ tests:
 	mount -t procfs none /proc
 	openat - file
 	IAMROOT_ROOT=$(CURDIR) /openat . /file
+	opendir proc
+	IAMROOT_ROOT=$(CURDIR) /opendir /proc
 	sanitize . ./ ././ | tee /dev/stderr | grep -vc '^\.$$' | grep -q '^0$$'
 	rename file file1
 	renameat - file1 - file2
@@ -85,6 +90,8 @@ tests:
 	rmdir proc
 	rmdir sys
 	IAMROOT_ROOT=$(CURDIR) /rmdir /tmp
+	scandir .
+	IAMROOT_ROOT=$(CURDIR) /scandirat - /
 	statfs .
 	sanitize / // ///  | tee /dev/stderr | grep -vc '^/$$'  | grep -q '^0$$'
 	symlink file symlink1

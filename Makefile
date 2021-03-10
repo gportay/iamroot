@@ -52,6 +52,7 @@ libiamroot.so: mknodat.o
 libiamroot.so: mount.o
 libiamroot.so: open.o
 libiamroot.so: openat.o
+libiamroot.so: opendir.o
 libiamroot.so: path_resolution.o
 libiamroot.so: path_resolutionat.o
 libiamroot.so: readlink.o
@@ -59,6 +60,8 @@ libiamroot.so: rename.o
 libiamroot.so: renameat.o
 libiamroot.so: renameat2.o
 libiamroot.so: rmdir.o
+libiamroot.so: scandir.o
+libiamroot.so: scandirat.o
 libiamroot.so: stat.o
 libiamroot.so: statfs.o
 libiamroot.so: symlink.o

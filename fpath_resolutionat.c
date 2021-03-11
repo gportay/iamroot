@@ -67,7 +67,8 @@ const char *fpath_resolutionat(int fd, const char *path, char *buf,
 
 	if ((__strncmp(path, "/proc/") == 0) ||
 	    (__strncmp(path, "/sys/") == 0) ||
-	    (__strncmp(path, "/dev/") == 0))
+	    (__strncmp(path, "/dev/") == 0) ||
+	    (__strncmp(path, "/run/") == 0))
 		return path;
 
 	if (*path == '/') {

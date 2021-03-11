@@ -596,23 +596,26 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	char buf[PATH_MAX], hashbangbuf[PATH_MAX], loaderbuf[PATH_MAX];
 	char hashbang[HASHBANG_MAX], loader[HASHBANG_MAX];
 	char *real_path, *real_hashbang = NULL;
-	char *interparg[10+1] = { NULL }; /*  0 ARGV0
+	char *interparg[12+1] = { NULL }; /*  0 ARGV0
 					   *  1 /lib/ld.so
-					   *  2 --preload
-					   *  3 libiamroot.so:libc.so:libdl.so
-					   *  4 --library-path
-					   *  3 /usr/lib:/lib
-					   *  6 --argv0
-					   *  7 ARGV0
-					   *  8 /bin/sh
-					   *  9 -x
-					   * 10 script.sh
-					   * 11 NULL
+					   *  2 LD_LINUX_ARGV1
+					   *  3 --preload
+					   *  4 libiamroot.so:libc.so:libdl.so
+					   *  5 --library-path
+					   *  6 /usr/lib:/lib
+					   *  7 --argv0
+					   *  8 ARGV0
+					   *  9 /bin/sh
+					   * 10 HASHBANG_ARGV1
+					   * 11 -x
+					   * 12 script.sh
+					   * 13 NULL
 					   */
 	char *interpargv0 = *argv;
 	char *interppath = NULL;
 	int i = 0, j, argc, ret;
 	char * const *arg;
+	char *xargv1;
 	ssize_t siz;
 	size_t len;
 	char *exec;
@@ -622,7 +625,6 @@ int execve(const char *path, char * const argv[], char * const envp[])
 		__notice("%s: Ignored\n", path);
 		goto exec_sh;
 	}
-
 	/*
 	 * Follows symlink as the subsequent calls to issuid(), getinterp() and
 	 * gethashbang() use stat() and open() which are functions that follow
@@ -690,6 +692,10 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	/* Reset argv0 */
 	interparg[0] = hashbang; /* hashbang as argv0 */
 
+	/* Add extra argument */
+	xargv1 = getenv("IAMROOT_EXEC_HASHBANG_ARGV1");
+	if (xargv1)
+		interparg[i++] = xargv1; /* extra argument as argv1 */
 	/* Add optional argument */
 	len = strlen(hashbang);
 	if (len < (size_t)siz)
@@ -786,6 +792,7 @@ loader:
 		 * Shift enough room in interparg to prepend:
 		 *   - the path to the interpreter (i.e. the absolute path in
 		 *     host, including the chroot; argv0)
+		 *   - the optional extra argument as argv1
 		 *   - the option --ld-preload and its argument (i.e. the path
 		 *     in host environment to the interpreter's libiamroot.so,
 		 *     and the path in chroot environment to the interpreter's
@@ -799,6 +806,9 @@ loader:
 		 * Note: the binary's arguments are the original argv shifted
 		 *       by one (i.e. without argv0; following arguments).
 		 */
+		xargv1 = getenv("IAMROOT_EXEC_LD_ARGV1");
+		if (xargv1)
+			shift++;
 		if (has_argv0)
 			shift += 2;
 		if (ld_preload)
@@ -811,6 +821,10 @@ loader:
 		/* Add path to interpreter (host, argv0) */
 		i = 0;
 		interparg[i++] = real_path;
+
+		/* Add extra argument as argv1 */
+		if (xargv1)
+			interparg[i++] = xargv1;
 
 		/*
 		 * Add --preload and interpreter's libraries:

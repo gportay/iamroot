@@ -4,17 +4,30 @@
  * SPDX-License-Identifier: LGPL-2.1
  */
 
+#define _GNU_SOURCE
+
+#include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
 #include <limits.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 #include <unistd.h>
 
 #include "path_resolution.h"
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
+extern int next_stat(const char *, struct stat *);
+extern int next_lstat(const char *, struct stat *);
+extern int next_fstatat(int, const char *, struct stat *, int);
+#ifdef __GLIBC__
+extern int next_statx(int, const char *, int, unsigned int, struct statx *);
+#endif
+extern uid_t next_geteuid();
 
 static int prependenv(const char *root, const char *name, const char *value,
 		      int overwrite)
@@ -117,6 +130,97 @@ int chrootdir(const char *path)
 
 	return 0;
 }
+
+int rootstat(const char *path, struct stat *buf)
+{
+	uid_t uid;
+	gid_t gid;
+	int ret;
+
+	ret = next_stat(path, buf);
+	if (ret == -1)
+		goto exit;
+
+	uid = next_geteuid();
+	if (buf->st_uid == uid)
+		buf->st_uid = geteuid();
+
+	gid = getegid();
+	if (buf->st_gid == gid)
+		buf->st_gid = 0;
+
+exit:
+	return ret;
+}
+
+int lrootstat(const char *path, struct stat *buf)
+{
+	uid_t uid;
+	gid_t gid;
+	int ret;
+
+	ret = next_lstat(path, buf);
+	if (ret == -1)
+		goto exit;
+
+	uid = next_geteuid();
+	if (buf->st_uid == uid)
+		buf->st_uid = geteuid();
+
+	gid = getegid();
+	if (buf->st_gid == gid)
+		buf->st_gid = 0;
+
+exit:
+	return ret;
+}
+
+int frootstatat(int fd, const char *path, struct stat *buf, int flags)
+{
+	uid_t uid;
+	gid_t gid;
+	int ret;
+
+	ret = next_fstatat(fd, path, buf, flags);
+	if (ret == -1)
+		goto exit;
+
+	uid = next_geteuid();
+	if (buf->st_uid == uid)
+		buf->st_uid = geteuid();
+
+	gid = getegid();
+	if (buf->st_gid == gid)
+		buf->st_gid = 0;
+
+exit:
+	return ret;
+}
+
+#ifdef __GLIBC__
+int rootstatx(int fd, const char *path, int flags, unsigned int mask,
+	      struct statx *buf)
+{
+	uid_t uid;
+	gid_t gid;
+	int ret;
+
+	ret = next_statx(fd, path, flags, mask, buf);
+	if (ret == -1)
+		goto exit;
+
+	uid = next_geteuid();
+	if (buf->stx_uid == uid)
+		buf->stx_uid = geteuid();
+
+	gid = getegid();
+	if (buf->stx_gid == gid)
+		buf->stx_gid = 0;
+
+exit:
+	return ret;
+}
+#endif
 
 int chroot(const char *path)
 {

@@ -38,4 +38,4 @@ done
 
 IAMROOTLVL="$((IAMROOTLVL+1))" \
 LD_PRELOAD="$PWD/libiamroot.so${LD_PRELOAD+:$LD_PRELOAD}" \
-exec fakeroot "${SHELL:-/bin/sh}" "${argv[@]}" "$@"
+exec "${SHELL:-/bin/sh}" "${argv[@]}" "$@"

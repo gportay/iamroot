@@ -17,6 +17,7 @@
 
 #define __strncmp(s1, s2) strncmp(s1, s2, sizeof(s2)-1)
 
+#ifdef __GLIBC__
 int main(int argc, char * const argv[])
 {
 	int fd = AT_FDCWD, flags = 0, ret = EXIT_FAILURE;
@@ -56,3 +57,4 @@ exit:
 
 	return ret;
 }
+#endif

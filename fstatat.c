@@ -17,6 +17,7 @@
 #include "fpath_resolutionat.h"
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
+extern int frootstatat(int, const char *, struct stat *, int);
 
 int next_fstatat(int fd, const char *path, struct stat *statbuf, int flags)
 {
@@ -35,6 +36,7 @@ int fstatat(int fd, const char *path, struct stat *statbuf, int flags)
 {
 	const char *real_path;
 	char buf[PATH_MAX];
+	int ret;
 
 	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), flags);
 	if (!real_path) {
@@ -42,8 +44,10 @@ int fstatat(int fd, const char *path, struct stat *statbuf, int flags)
 		return -1;
 	}
 
+	ret = frootstatat(fd, real_path, statbuf, flags);
+
 	__fprintf(stderr, "%s(fd: %i, path: '%s' -> '%s', ...)\n", __func__, fd,
 			  path, real_path);
 
-	return next_fstatat(fd, real_path, statbuf, flags);
+	return ret;
 }

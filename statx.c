@@ -18,7 +18,9 @@
 
 #include "fpath_resolutionat.h"
 
+#ifdef __GLIBC__
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
+extern int rootstatx(int, const char *, int, unsigned int, struct statx *);
 
 int next_statx(int fd, const char *path, int flags, unsigned int mask,
 	       struct statx *statxbuf)
@@ -49,5 +51,6 @@ int statx(int fd, const char *path, int flags, unsigned int mask,
 	__fprintf(stderr, "%s(fd: %i, path: '%s' -> '%s', ...)\n", __func__, fd,
 			  path, real_path);
 
-	return next_statx(fd, real_path, flags, mask, statxbuf);
+	return rootstatx(fd, real_path, flags, mask, statxbuf);
 }
+#endif

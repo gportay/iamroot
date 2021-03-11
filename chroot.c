@@ -107,11 +107,24 @@ exit:
 	return ret;
 }
 
+static inline char *rootdir()
+{
+	return getenv("IAMROOT_ROOT");
+}
+
+static inline int setrootdir(const char *path)
+{
+	if (!path)
+		return unsetenv("IAMROOT_ROOT");
+
+	return setenv("IAMROOT_ROOT", path, 0);
+}
+
 const char *getrootdir()
 {
 	char *root;
 
-	root = getenv("IAMROOT_ROOT");
+	root = rootdir();
 	if (!root)
 		return "/";
 
@@ -125,7 +138,7 @@ int chrootdir(const char *path)
 	root = getrootdir();
 	if (strstr(path, root) == NULL) {
 		__fprintf(stderr, "Exiting chroot: '%s'\n", root);
-		return unsetenv("IAMROOT_ROOT");
+		return setrootdir(NULL);
 	}
 
 	return 0;
@@ -253,10 +266,8 @@ int chroot(const char *path)
 	setenv("PATH", "/bin:/usr/bin", 1);
 	prependenv(real_path, "LD_LIBRARY_PATH", "/usr/lib:/lib", 1);
 
-	if (setenv("IAMROOT_ROOT", real_path, 1)) {
-		perror("setenv");
+	if (setrootdir(real_path))
 		return -1;
-	}
 
 	__fprintf(stderr, "Enterring chroot: '%s'\n", real_path);
 	__fprintf(stderr, "%s(path: '%s' -> '%s') IAMROOT_ROOT='%s'\n",

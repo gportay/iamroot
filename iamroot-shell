@@ -7,7 +7,7 @@
 
 usage() {
 	cat <<EOF
-Usage: ${0##*/} [--debug] [--force] [--help] [--] [SHELL_ARGUMENTS...]
+Usage: ${0##*/} [--chroot DIR] [--debug] [--force] [--help] [--] [SHELL_ARGUMENTS...]
 EOF
 }
 
@@ -26,6 +26,11 @@ do
 	then
 		IAMROOT_DEBUG="$((IAMROOT_DEBUG+1))"
 		export IAMROOT_DEBUG
+	elif [[ "$1" == "--chroot" ]]
+	then
+		shift
+		IAMROOT_ROOT="$1"
+		export IAMROOT_ROOT
 	elif [[ "$1" == "--" ]]
 	then
 		shift

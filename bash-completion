@@ -9,6 +9,13 @@ _iamroot-shell()
 	local cur prev words cword
 	_init_completion || return
 
+	case "$prev" in
+	--chroot)
+		_filedir -d
+		return
+		;;
+	esac
+
 	COMP_WORDS=("${SHELL:sh}" "${COMP_WORDS[@]:2}" "$cur")
 	COMP_LINE="${COMP_WORDS[*]}"
 	COMP_POINT="${#COMP_LINE}"
@@ -26,7 +33,7 @@ _iamroot-shell()
 
 	if [[ "$shell" != 1 ]]
 	then
-		COMPREPLY+=(--force --debug)
+		COMPREPLY+=(--force --debug --chroot)
 	fi
 } &&
 complete -F _iamroot-shell iamroot-shell

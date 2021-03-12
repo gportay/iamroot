@@ -21,6 +21,7 @@
 #include "path_resolution.h"
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
+extern char *next_getcwd(char *, size_t);
 extern int next_stat(const char *, struct stat *);
 extern int next_lstat(const char *, struct stat *);
 extern int next_fstatat(int, const char *, struct stat *, int);
@@ -132,14 +133,21 @@ const char *getrootdir()
 	return root;
 }
 
-int chrootdir(const char *path)
+int chrootdir(const char *cwd)
 {
+	char buf[PATH_MAX];
 	const char *root;
 
+	if (cwd == NULL)
+		cwd = next_getcwd(buf, sizeof(buf));
+
+	if (cwd == NULL)
+		return -1;
+
 	root = getrootdir();
-	if (strstr(path, root) == NULL) {
+	if (strstr(cwd, root) == NULL) {
 		__fprintf(stderr, "Exiting chroot: '%s'\n", root);
-		return setrootdir(NULL);
+		return unsetenv("IAMROOT_ROOT");
 	}
 
 	return 0;

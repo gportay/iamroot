@@ -32,25 +32,15 @@ int next_fchdir(int fd)
 
 int fchdir(int fd)
 {
-	char cwd[PATH_MAX];
 	int ret;
 
 	ret = next_fchdir(fd);
 	if (ret) {
 		perror("fchdir");
-		goto exit;
+		return ret;
 	}
 
-	if (next_getcwd(cwd, sizeof(cwd)) == NULL) {
-		perror("getcwd");
-		goto exit;
-	}
+	__fprintf(stderr, "%s(fd: %i)\n", __func__, fd);
 
-	if (chrootdir(cwd))
-		perror("chrootdir");
-
-exit:
-	__fprintf(stderr, "%s(fd: %i '%s')\n", __func__, fd, cwd);
-
-	return ret;
+	return chrootdir(NULL);
 }

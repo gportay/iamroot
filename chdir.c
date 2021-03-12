@@ -46,15 +46,11 @@ int chdir(const char *path)
 	ret = next_chdir(real_path);
 	if (ret) {
 		perror("chdir");
-		goto exit;
+		return ret;
 	}
 
-	if (chrootdir(real_path))
-		perror("chrootdir");
-
-exit:
 	__fprintf(stderr, "%s(path: '%s' -> '%s')\n", __func__, path,
 			  real_path);
 
-	return ret;
+	return chrootdir(NULL);
 }

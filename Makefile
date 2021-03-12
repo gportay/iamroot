@@ -105,6 +105,11 @@ libiamroot.so: whereami.o
 libiamroot.so: whoami.o
 libiamroot.so: override LDLIBS += -ldl
 
+.PHONY: ci
+ci:
+	$(MAKE) clean tests
+	$(SHELL) make-musl-gcc.sh clean all
+
 .PHONY: tests
 tests: alpine-tests
 tests: shell-tests

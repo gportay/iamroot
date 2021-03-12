@@ -78,6 +78,7 @@ libiamroot.so: fstat.o
 libiamroot.so: fstat64.o
 libiamroot.so: fstatat.o
 libiamroot.so: fstatat64.o
+libiamroot.so: ftw.o
 libiamroot.so: futimesat.o
 libiamroot.so: gen_tempname_len.o
 libiamroot.so: get_current_dir_name.o
@@ -113,6 +114,7 @@ libiamroot.so: mkstemp64.o
 libiamroot.so: mkstemps.o
 libiamroot.so: mkstemps64.o
 libiamroot.so: mount.o
+libiamroot.so: nftw.o
 libiamroot.so: open.o
 libiamroot.so: open64.o
 libiamroot.so: openat.o

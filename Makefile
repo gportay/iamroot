@@ -21,11 +21,15 @@ QEMU += -serial mon:stdio
 all: libiamroot.so
 
 libiamroot.so: __fxstatat.o
+libiamroot.so: __fxstatat64.o
 libiamroot.so: __lxstat.o
+libiamroot.so: __lxstat64.o
 libiamroot.so: __statfs.o
+libiamroot.so: __statfs64.o
 libiamroot.so: __xmknod.o
 libiamroot.so: __xmknodat.o
 libiamroot.so: __xstat.o
+libiamroot.so: __xstat64.o
 libiamroot.so: __fprintf.o
 libiamroot.so: __printf.o
 libiamroot.so: access.o
@@ -35,6 +39,7 @@ libiamroot.so: chmod.o
 libiamroot.so: chown.o
 libiamroot.so: chroot.o
 libiamroot.so: creat.o
+libiamroot.so: creat64.o
 libiamroot.so: dlmopen.o
 libiamroot.so: dlopen.o
 libiamroot.so: eaccess.o
@@ -53,9 +58,12 @@ libiamroot.so: fchown.o
 libiamroot.so: fchownat.o
 libiamroot.so: fexecve.o
 libiamroot.so: fopen.o
+libiamroot.so: fopen64.o
 libiamroot.so: fpath_resolutionat.o
 libiamroot.so: freopen.o
+libiamroot.so: freopen64.o
 libiamroot.so: fstatat.o
+libiamroot.so: fstatat64.o
 libiamroot.so: futimesat.o
 libiamroot.so: get_current_dir_name.o
 libiamroot.so: getcwd.o
@@ -73,6 +81,7 @@ libiamroot.so: llistxattr.o
 libiamroot.so: lremovexattr.o
 libiamroot.so: lsetxattr.o
 libiamroot.so: lstat.o
+libiamroot.so: lstat64.o
 libiamroot.so: lutimes.o
 libiamroot.so: mkdir.o
 libiamroot.so: mkdirat.o
@@ -81,13 +90,20 @@ libiamroot.so: mkfifoat.o
 libiamroot.so: mknod.o
 libiamroot.so: mknodat.o
 libiamroot.so: mkostemp.o
+libiamroot.so: mkostemp64.o
 libiamroot.so: mkostemps.o
+libiamroot.so: mkostemps64.o
 libiamroot.so: mkstemp.o
+libiamroot.so: mkstemp64.o
 libiamroot.so: mkstemps.o
+libiamroot.so: mkstemps64.o
 libiamroot.so: mount.o
 libiamroot.so: open.o
+libiamroot.so: open64.o
 libiamroot.so: openat.o
+libiamroot.so: openat64.o
 libiamroot.so: opendir.o
+libiamroot.so: opendir64.o
 libiamroot.so: path_resolution.o
 libiamroot.so: readlink.o
 libiamroot.so: readlinkat.o
@@ -102,8 +118,11 @@ libiamroot.so: scandir.o
 libiamroot.so: scandirat.o
 libiamroot.so: setxattr.o
 libiamroot.so: stat.o
+libiamroot.so: stat64.o
 libiamroot.so: statfs.o
+libiamroot.so: statfs64.o
 libiamroot.so: statvfs.o
+libiamroot.so: statvfs64.o
 libiamroot.so: statx.o
 libiamroot.so: symlink.o
 libiamroot.so: symlinkat.o
@@ -258,20 +277,20 @@ alpine-minirootfs-3.13.0-x86_64.tar.gz:
 	wget http://dl-cdn.alpinelinux.org/alpine/v3.13/releases/x86_64/alpine-minirootfs-3.13.0-x86_64.tar.gz
 
 .PHONY: arch-rootfs
-arch-rootfs: | arch-rootfs/usr/bin/pacman
+arch-rootfs: | arch-rootfs/etc/machine-id
 
 arch-rootfs/boot/vmlinuz-linux: export LD_PRELOAD = $(CURDIR)/libiamroot.so
 arch-rootfs/boot/vmlinuz-linux: export IAMROOT_EXEC = $(CURDIR)/exec.sh
 arch-rootfs/boot/vmlinuz-linux: export EUID = 0
 arch-rootfs/boot/vmlinuz-linux: export IAMROOT_FORCE = 1
-arch-rootfs/boot/vmlinuz-linux: libiamroot.so | arch-rootfs/usr/bin/pacman
+arch-rootfs/boot/vmlinuz-linux: libiamroot.so | arch-rootfs/etc/machine-id
 	pacman -r arch-rootfs --noconfirm -S linux
 
-arch-rootfs/usr/bin/pacman: export LD_PRELOAD = $(CURDIR)/libiamroot.so
-arch-rootfs/usr/bin/pacman: export IAMROOT_EXEC = $(CURDIR)/exec.sh
-arch-rootfs/usr/bin/pacman: export EUID = 0
-arch-rootfs/usr/bin/pacman: export IAMROOT_FORCE = 1
-arch-rootfs/usr/bin/pacman: libiamroot.so
+arch-rootfs/etc/machine-id: export LD_PRELOAD = $(CURDIR)/libiamroot.so
+arch-rootfs/etc/machine-id: export IAMROOT_EXEC = $(CURDIR)/exec.sh
+arch-rootfs/etc/machine-id: export EUID = 0
+arch-rootfs/etc/machine-id: export IAMROOT_FORCE = 1
+arch-rootfs/etc/machine-id: libiamroot.so
 	mkdir -p arch-rootfs
 	pacstrap arch-rootfs
 

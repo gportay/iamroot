@@ -18,7 +18,7 @@ case "${1##*/}" in
 mount|umount)
 	log "Warning:" "Command is skipped:" "$@"
 	;;
-systemd-sysusers|systemd-tmpfiles)
+systemd-sysusers)
 	if [[ "${IAMROOT_ROOT:-/}" != / ]]
 	then
 		set -- "$@" --root "${IAMROOT_ROOT}"

@@ -26,11 +26,6 @@ int main(int argc, char * const argv[])
 	owner = strtoul(argv[2], NULL, 0);
 	group = strtoul(argv[3], NULL, 0);
 
-	if (symlink("file", argv[1])) {
-		perror("symlink");
-		return EXIT_FAILURE;
-	}
-
 	if (lchown(argv[1], owner, group)) {
 		perror("lchown");
 		return EXIT_FAILURE;

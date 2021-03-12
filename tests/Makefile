@@ -53,6 +53,7 @@ tests: ALPINE_MINIROOTFS ?= .
 tests:
 	rm -Rf proc sys tmp dev* file* symlink[0-9] link[0-9]*
 	touch file
+	ln -s file symlink0
 	access Makefile 0
 	IAMROOT_ROOT=$(CURDIR) /access /Makefile 0
 	chroot $(ALPINE_MINIROOTFS) whoami

@@ -27,6 +27,7 @@ extern int next_lstat(const char *, struct stat *);
 extern int next_fstatat(int, const char *, struct stat *, int);
 #ifdef __GLIBC__
 extern int next___xstat(int, const char *, struct stat *);
+extern int next___lxstat(int, const char *, struct stat *);
 extern int next___fxstatat(int, int, const char *, struct stat *, int);
 extern int next_statx(int, const char *, int, unsigned int, struct statx *);
 #endif
@@ -228,6 +229,28 @@ int __rootxstat(int ver, const char *path, struct stat *buf)
 	int ret;
 
 	ret = next___xstat(ver, path, buf);
+	if (ret == -1)
+		goto exit;
+
+	uid = next_geteuid();
+	if (buf->st_uid == uid)
+		buf->st_uid = geteuid();
+
+	gid = getegid();
+	if (buf->st_gid == gid)
+		buf->st_gid = 0;
+
+exit:
+	return ret;
+}
+
+int __rootlxstat(int ver, const char *path, struct stat *buf)
+{
+	uid_t uid;
+	gid_t gid;
+	int ret;
+
+	ret = next___lxstat(ver, path, buf);
 	if (ret == -1)
 		goto exit;
 

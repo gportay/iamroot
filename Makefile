@@ -12,6 +12,8 @@ all: libiamroot.so
 
 libiamroot.so: __fxstatat.o
 libiamroot.so: __lxstat.o
+libiamroot.so: __xmknod.o
+libiamroot.so: __xmknodat.o
 libiamroot.so: __xstat.o
 libiamroot.so: __fprintf.o
 libiamroot.so: __printf.o

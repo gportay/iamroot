@@ -8,13 +8,11 @@
 
 #include <stdio.h>
 #include <errno.h>
-#include <limits.h>
 #include <dlfcn.h>
 
 #include <unistd.h>
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
-extern char *next_getcwd(char *, size_t);
 extern int chrootdir(const char *);
 
 __attribute__((visibility("hidden")))

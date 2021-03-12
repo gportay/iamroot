@@ -10,6 +10,7 @@ override CFLAGS += -DARG_MAX=$(shell getconf ARG_MAX)
 .PHONY: all
 all: libiamroot.so
 
+libiamroot.so: __fxstatat.o
 libiamroot.so: __xstat.o
 libiamroot.so: __fprintf.o
 libiamroot.so: __printf.o

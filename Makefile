@@ -78,6 +78,7 @@ libiamroot.so: fstat.o
 libiamroot.so: fstat64.o
 libiamroot.so: fstatat.o
 libiamroot.so: fstatat64.o
+libiamroot.so: fts_open.o
 libiamroot.so: ftw.o
 libiamroot.so: futimesat.o
 libiamroot.so: gen_tempname_len.o

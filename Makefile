@@ -90,6 +90,7 @@ libiamroot.so: getwd.o
 libiamroot.so: getxattr.o
 libiamroot.so: lchmod.o
 libiamroot.so: lchown.o
+libiamroot.so: lckpwdf.o
 libiamroot.so: lgetxattr.o
 libiamroot.so: link.o
 libiamroot.so: linkat.o
@@ -148,6 +149,7 @@ libiamroot.so: tempnam.o
 libiamroot.so: tmpnam.o
 libiamroot.so: tmpnam_r.o
 libiamroot.so: truncate.o
+libiamroot.so: ulckpwdf.o
 libiamroot.so: umount.o
 libiamroot.so: umount2.o
 libiamroot.so: unlink.o

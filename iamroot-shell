@@ -47,5 +47,5 @@ do
 done
 
 IAMROOTLVL="$((IAMROOTLVL+1))" \
-LD_PRELOAD="${IAMROOT_LIB:-$PWD/libiamroot.so}${LD_PRELOAD+:$LD_PRELOAD}" \
+LD_PRELOAD="${IAMROOT_LIB:-/usr/lib/iamroot/libiamroot.so}${LD_PRELOAD+:$LD_PRELOAD}" \
 exec "${SHELL:-/bin/sh}" "${argv[@]}" "$@"

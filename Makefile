@@ -4,6 +4,8 @@
 # SPDX-License-Identifier: GPL-2.1
 #
 
+PREFIX ?= /usr/local
+
 override CFLAGS += -fPIC -Wall -Wextra -Werror
 override CFLAGS += -DARG_MAX=$(shell getconf ARG_MAX)
 
@@ -105,6 +107,29 @@ libiamroot.so: whereami.o
 libiamroot.so: whoami.o
 libiamroot.so: override LDLIBS += -ldl
 
+.PHONY: install
+install:
+	install -D -m 755 iamroot-shell $(DESTDIR)$(PREFIX)/bin/iamroot-shell
+	sed -e "s,/usr/local/,$(PREFIX)/," -i $(DESTDIR)$(PREFIX)/bin/iamroot-shell
+	install -D -m 755 libiamroot.so $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
+	completionsdir=$${BASHCOMPLETIONSDIR:-$$(pkg-config --define-variable=prefix=$(PREFIX) \
+	                             --variable=completionsdir \
+	                             bash-completion)}; \
+	if [ -n "$$completionsdir" ]; then \
+		install -D -m 644 bash-completion $(DESTDIR)$$completionsdir/iamroot-shell; \
+	fi
+
+.PHONY: uninstall
+uninstall:
+	rm -f $(DESTDIR)$(PREFIX)/bin/iamroot-shell
+	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
+	completionsdir=$${BASHCOMPLETIONSDIR:-$$(pkg-config --define-variable=prefix=$(PREFIX) \
+	                             --variable=completionsdir \
+	                             bash-completion)}; \
+	if [ -n "$$completionsdir" ]; then \
+		rm -f $(DESTDIR)$$completionsdir/iamroot-shell; \
+	fi
+
 .PHONY: ci
 ci:
 	$(MAKE) clean tests
@@ -127,6 +152,7 @@ static-tests: libiamroot.so | static-rootfs
 
 .PHONY: shell-tests
 shell-tests: export PATH := $(CURDIR):$(PATH)
+shell-tests: export IAMROOT_LIB = $(CURDIR)/libiamroot.so
 shell-tests: libiamroot.so | static-rootfs
 	iamroot-shell -c "whoami" | tee /dev/stderr | grep -q "^root\$$"
 	iamroot-shell -c "stat --print '%u:%g\n' ." | tee /dev/stderr | grep -q "^0:0$$"
@@ -140,6 +166,7 @@ alpine-tests: libiamroot.so | alpine-minirootfs
 
 .PHONY: shell
 shell: export PATH := $(CURDIR):$(PATH)
+shell: export IAMROOT_LIB = $(CURDIR)/libiamroot.so
 shell: libiamroot.so
 	iamroot-shell
 

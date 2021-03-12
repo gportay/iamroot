@@ -36,7 +36,9 @@ libiamroot.so: fchmodat.o
 libiamroot.so: fchown.o
 libiamroot.so: fchownat.o
 libiamroot.so: fexecve.o
+libiamroot.so: fopen.o
 libiamroot.so: fpath_resolutionat.o
+libiamroot.so: freopen.o
 libiamroot.so: fstatat.o
 libiamroot.so: futimesat.o
 libiamroot.so: get_current_dir_name.o

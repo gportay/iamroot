@@ -6,7 +6,6 @@
 
 #define _GNU_SOURCE
 
-#include <unistd.h>
 #include <stdio.h>
 #include <errno.h>
 #include <limits.h>
@@ -36,7 +35,6 @@ int mknodat(int fd, const char *path, mode_t mode, dev_t dev)
 {
 	const char *real_path;
 	char buf[PATH_MAX];
-	(void)dev;
 
 	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), 0);
 	if (!real_path) {
@@ -47,13 +45,5 @@ int mknodat(int fd, const char *path, mode_t mode, dev_t dev)
 	__fprintf(stderr, "%s(fd %i, path: '%s' -> '%s')\n", __func__, fd, path,
 			real_path);
 
-	fd = creat(real_path, mode);
-	if (fd == -1)
-		return -1;
-
-	if (close(fd))
-		perror("close");
-
-	errno = 0;
-	return 0;
+	return next_mknodat(fd, real_path, mode, dev);
 }

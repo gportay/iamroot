@@ -6,12 +6,10 @@
 
 #define _GNU_SOURCE
 
-#include <unistd.h>
 #include <stdio.h>
 #include <errno.h>
 #include <limits.h>
 #include <dlfcn.h>
-#include <fcntl.h>
 
 #include <sys/stat.h>
 
@@ -36,8 +34,6 @@ int mknod(const char *path, mode_t mode, dev_t dev)
 {
 	const char *real_path;
 	char buf[PATH_MAX];
-	int fd;
-	(void)dev;
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {
@@ -48,13 +44,5 @@ int mknod(const char *path, mode_t mode, dev_t dev)
 	__fprintf(stderr, "%s(path: '%s' -> '%s')\n", __func__, path,
 			real_path);
 
-	fd = creat(path, mode);
-	if (fd == -1)
-		return -1;
-
-	if (close(fd))
-		perror("close");
-
-	errno = 0;
-	return 0;
+	return next_mknod(real_path, mode, dev);
 }

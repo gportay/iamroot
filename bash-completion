@@ -10,6 +10,10 @@ _iamroot-shell()
 	_init_completion || return
 
 	case "$prev" in
+	--library)
+		_filedir so
+		return
+		;;
 	--chroot)
 		_filedir -d
 		return
@@ -33,7 +37,7 @@ _iamroot-shell()
 
 	if [[ "$shell" != 1 ]]
 	then
-		COMPREPLY+=($(compgen -W "--force --debug --chroot" -- "$cur"))
+		COMPREPLY+=($(compgen -W "--force --debug --library --chroot" -- "$cur"))
 	fi
 } &&
 complete -F _iamroot-shell iamroot-shell

@@ -7,7 +7,7 @@
 
 usage() {
 	cat <<EOF
-Usage: ${0##*/} [--chroot DIR] [--debug] [--force] [--help] [--] [SHELL_ARGUMENTS...]
+Usage: ${0##*/} [--chroot DIR] [--library LIB] [--debug] [--force] [--help] [--] [SHELL_ARGUMENTS...]
 EOF
 }
 
@@ -26,6 +26,11 @@ do
 	then
 		IAMROOT_DEBUG="$((IAMROOT_DEBUG+1))"
 		export IAMROOT_DEBUG
+	elif [[ "$1" == "--library" ]]
+	then
+		shift
+		IAMROOT_LIB="$1"
+		export IAMROOT_LIB
 	elif [[ "$1" == "--chroot" ]]
 	then
 		shift
@@ -42,5 +47,5 @@ do
 done
 
 IAMROOTLVL="$((IAMROOTLVL+1))" \
-LD_PRELOAD="$PWD/libiamroot.so${LD_PRELOAD+:$LD_PRELOAD}" \
+LD_PRELOAD="${IAMROOT_LIB:-$PWD/libiamroot.so}${LD_PRELOAD+:$LD_PRELOAD}" \
 exec "${SHELL:-/bin/sh}" "${argv[@]}" "$@"

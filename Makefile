@@ -135,9 +135,13 @@ user-%:
 	$(MAKE) $* PREFIX=$$HOME/.local BASHCOMPLETIONSDIR=$$HOME/.local/share/bash-completion/completions
 
 .PHONY: ci
-ci:
+ci: check
 	$(MAKE) clean tests
 	$(SHELL) make-musl-gcc.sh clean all
+
+.PHONY: check
+check:
+	shellcheck iamroot-shell
 
 .PHONY: tests
 tests: alpine-tests

@@ -56,6 +56,8 @@ libiamroot.so: lstat.o
 libiamroot.so: lutimes.o
 libiamroot.so: mkdir.o
 libiamroot.so: mkdirat.o
+libiamroot.so: mkfifo.o
+libiamroot.so: mkfifoat.o
 libiamroot.so: mknod.o
 libiamroot.so: mknodat.o
 libiamroot.so: mount.o

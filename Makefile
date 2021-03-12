@@ -79,6 +79,7 @@ libiamroot.so: fstat64.o
 libiamroot.so: fstatat.o
 libiamroot.so: fstatat64.o
 libiamroot.so: futimesat.o
+libiamroot.so: gen_tempname_len.o
 libiamroot.so: get_current_dir_name.o
 libiamroot.so: getcwd.o
 libiamroot.so: geteuid.o

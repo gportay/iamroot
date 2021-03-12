@@ -19,7 +19,7 @@
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern const char *getrootdir();
 
-int __execve(const char *path, char * const argv[], char * const envp[])
+static int __execve(const char *path, char * const argv[], char * const envp[])
 {
 	const char *root;
 	ssize_t len;
@@ -37,7 +37,7 @@ exit:
 }
 
 /* Stolen from musl (src/process/execvp.c) */
-int __execvpe(const char *file, char *const argv[], char *const envp[])
+static int __execvpe(const char *file, char *const argv[], char *const envp[])
 {
 	const char *p, *z, *path = getenv("PATH");
 	size_t l, k;

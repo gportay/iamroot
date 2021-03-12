@@ -15,7 +15,7 @@
 #define __syscall syscall
 
 /* Slolen from musl (src/internal/syscall_ret.c) */
-long __syscall_ret(unsigned long r)
+static long __syscall_ret(unsigned long r)
 {
 	if (r > -4096UL) {
 		errno = -r;

@@ -100,6 +100,9 @@ libiamroot.so: statvfs.o
 libiamroot.so: statx.o
 libiamroot.so: symlink.o
 libiamroot.so: symlinkat.o
+libiamroot.so: tempnam.o
+libiamroot.so: tmpnam.o
+libiamroot.so: tmpnam_r.o
 libiamroot.so: truncate.o
 libiamroot.so: umount.o
 libiamroot.so: umount2.o

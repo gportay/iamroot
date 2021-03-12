@@ -148,6 +148,7 @@ libiamroot.so: running_in_chroot.o
 libiamroot.so: scandir.o
 libiamroot.so: scandirat.o
 libiamroot.so: setxattr.o
+libiamroot.so: shadow.o
 libiamroot.so: stat.o
 libiamroot.so: stat64.o
 libiamroot.so: statfs.o
@@ -171,7 +172,7 @@ libiamroot.so: utimensat.o
 libiamroot.so: utimes.o
 libiamroot.so: whereami.o
 libiamroot.so: whoami.o
-libiamroot.so: override LDLIBS += -ldl
+libiamroot.so: override LDLIBS += -ldl -lpthread
 
 .PHONY: doc
 doc: iamroot-shell.1.gz iamroot.7.gz

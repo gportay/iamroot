@@ -67,10 +67,16 @@ libiamroot.so: lstat.o
 libiamroot.so: lutimes.o
 libiamroot.so: mkdir.o
 libiamroot.so: mkdirat.o
+libiamroot.so: mkdtemp.o
 libiamroot.so: mkfifo.o
 libiamroot.so: mkfifoat.o
 libiamroot.so: mknod.o
 libiamroot.so: mknodat.o
+libiamroot.so: mkostemp.o
+libiamroot.so: mkostemps.o
+libiamroot.so: mkstemp.o
+libiamroot.so: mkstemps.o
+libiamroot.so: mktemp.o
 libiamroot.so: mount.o
 libiamroot.so: open.o
 libiamroot.so: openat.o

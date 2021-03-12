@@ -18,6 +18,7 @@
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
+__attribute__((visibility("hidden")))
 int next_faccessat(int fd, const char *path, int mode, int flags)
 {
 	int (*sym)(int, const char *, int, int);

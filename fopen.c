@@ -18,6 +18,7 @@
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
+__attribute__((visibility("hidden")))
 FILE *next_fopen(const char *path, const char *mode)
 {
 	FILE *(*sym)(const char *, const char *);

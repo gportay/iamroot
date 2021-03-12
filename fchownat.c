@@ -19,6 +19,7 @@
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern uid_t next_geteuid();
 
+__attribute__((visibility("hidden")))
 int next_fchownat(int fd, const char *path, uid_t owner, gid_t group, int flags)
 {
 	int (*sym)(int, const char *, uid_t, gid_t, int);

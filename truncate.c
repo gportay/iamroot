@@ -20,6 +20,7 @@ int truncate(const char *path, off_t length);
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
+__attribute__((visibility("hidden")))
 int next_truncate(const char *path, off_t length)
 {
 	int (*sym)(const char *, off_t);

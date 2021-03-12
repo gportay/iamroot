@@ -124,6 +124,7 @@ static inline int setrootdir(const char *path)
 	return setenv("IAMROOT_ROOT", path, 0);
 }
 
+__attribute__((visibility("hidden")))
 const char *getrootdir()
 {
 	char *root;
@@ -135,6 +136,7 @@ const char *getrootdir()
 	return root;
 }
 
+__attribute__((visibility("hidden")))
 int chrootdir(const char *cwd)
 {
 	char buf[PATH_MAX];
@@ -155,6 +157,7 @@ int chrootdir(const char *cwd)
 	return 0;
 }
 
+__attribute__((visibility("hidden")))
 int rootstat(const char *path, struct stat *buf)
 {
 	uid_t uid;
@@ -177,6 +180,7 @@ exit:
 	return ret;
 }
 
+__attribute__((visibility("hidden")))
 int lrootstat(const char *path, struct stat *buf)
 {
 	uid_t uid;
@@ -199,6 +203,7 @@ exit:
 	return ret;
 }
 
+__attribute__((visibility("hidden")))
 int frootstatat(int fd, const char *path, struct stat *buf, int flags)
 {
 	uid_t uid;
@@ -222,6 +227,7 @@ exit:
 }
 
 #ifdef __GLIBC__
+__attribute__((visibility("hidden")))
 int __rootxstat(int ver, const char *path, struct stat *buf)
 {
 	uid_t uid;
@@ -244,6 +250,7 @@ exit:
 	return ret;
 }
 
+__attribute__((visibility("hidden")))
 int __rootlxstat(int ver, const char *path, struct stat *buf)
 {
 	uid_t uid;
@@ -266,6 +273,7 @@ exit:
 	return ret;
 }
 
+__attribute__((visibility("hidden")))
 int __fxrootstatat(int ver, int fd, const char *path, struct stat *buf,
 		   int flags)
 {
@@ -289,6 +297,7 @@ exit:
 	return ret;
 }
 
+__attribute__((visibility("hidden")))
 int rootstatx(int fd, const char *path, int flags, unsigned int mask,
 	      struct statx *buf)
 {

@@ -18,6 +18,7 @@
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
+__attribute__((visibility("hidden")))
 DIR *next_opendir(const char *path)
 {
 	DIR *(*sym)(const char *);

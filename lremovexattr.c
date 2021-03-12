@@ -18,6 +18,7 @@
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
+__attribute__((visibility("hidden")))
 int next_lremovexattr(const char *path, const char *name)
 {
 	int (*sym)(const char *, const char *);

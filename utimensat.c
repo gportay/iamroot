@@ -19,6 +19,7 @@
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
+__attribute__((visibility("hidden")))
 int next_utimensat(int fd, const char *path, const struct timespec times[2],
 		   int flags)
 {

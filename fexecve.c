@@ -25,6 +25,7 @@ long __syscall_ret(unsigned long r)
 }
 
 /* Slolen from musl (src/internal/procfdname.c) */
+__attribute__((visibility("hidden")))
 void __procfdname(char *buf, unsigned fd)
 {
 	unsigned i, j;

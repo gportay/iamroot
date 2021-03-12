@@ -17,6 +17,7 @@
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
+__attribute__((visibility("hidden")))
 ssize_t next_readlinkat(int fd, const char *path, char *buf, size_t bufsize)
 {
 	ssize_t (*sym)(int, const char *, char *, size_t);

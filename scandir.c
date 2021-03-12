@@ -17,6 +17,7 @@
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
+__attribute__((visibility("hidden")))
 int next_scandir(const char *path, struct dirent ***namelist,
 		 int (*filter)(const struct dirent *),
 		 int (*compar)(const struct dirent **, const struct dirent **))

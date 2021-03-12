@@ -17,6 +17,7 @@
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
+__attribute__((visibility("hidden")))
 int next_chmod(const char *path, mode_t mode)
 {
 	int (*sym)(const char *, mode_t);

@@ -17,6 +17,7 @@
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern const char *getrootdir();
 
+__attribute__((visibility("hidden")))
 char *next_getwd(char *buf)
 {
 	char *(*sym)(char *);

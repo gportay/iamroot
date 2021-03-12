@@ -17,6 +17,7 @@
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
+__attribute__((visibility("hidden")))
 int next_renameat2(int oldfd, const char *oldpath, int newfd, const char *newpath,
 		   unsigned int flags)
 {

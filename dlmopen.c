@@ -18,6 +18,7 @@
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
+__attribute__((visibility("hidden")))
 void *next_dlmopen(Lmid_t lmid, const char *path, int flags)
 
 {

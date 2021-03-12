@@ -17,6 +17,7 @@ extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,
 extern char *next_getcwd(char *, size_t);
 extern int chrootdir(const char *);
 
+__attribute__((visibility("hidden")))
 int next_fchdir(int fd)
 {
 	int (*sym)(int);

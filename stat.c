@@ -19,6 +19,7 @@
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern int rootstat(const char *, struct stat *);
 
+__attribute__((visibility("hidden")))
 int next_stat(const char *path, struct stat *statbuf)
 {
 	int (*sym)(const char *, struct stat *);

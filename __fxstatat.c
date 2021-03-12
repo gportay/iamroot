@@ -19,6 +19,7 @@
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern int __fxrootstatat(int, int, const char *, struct stat *, int);
 
+__attribute__((visibility("hidden")))
 int next___fxstatat(int ver, int fd, const char *path, struct stat *statbuf,
 		    int flags)
 {

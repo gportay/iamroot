@@ -18,6 +18,7 @@
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
+__attribute__((visibility("hidden")))
 ssize_t next_llistxattr(const char *path, char *list, size_t size)
 {
 	ssize_t (*sym)(const char *, char *, size_t);

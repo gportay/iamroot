@@ -17,6 +17,7 @@
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
+__attribute__((visibility("hidden")))
 int next_link(const char *oldpath, const char *newpath)
 {
 	int (*sym)(const char *, const char *);

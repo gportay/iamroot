@@ -158,6 +158,7 @@ static inline int canpreload(const char *path)
 	return 1;
 }
 
+__attribute__((visibility("hidden")))
 int next_execve(const char *path, char * const argv[], char * const envp[])
 {
 	int (*sym)(const char *, char * const argv[], char * const envp[]);

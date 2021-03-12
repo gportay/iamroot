@@ -17,6 +17,7 @@
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
+__attribute__((visibility("hidden")))
 int next_utime(const char *path, const struct utimbuf *times)
 {
 	int (*sym)(const char *, const struct utimbuf *);

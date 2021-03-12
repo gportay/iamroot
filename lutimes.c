@@ -17,6 +17,7 @@
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
+__attribute__((visibility("hidden")))
 int next_lutimes(const char *path, const struct timeval times[2])
 {
 	int (*sym)(const char *, const struct timeval[2]);

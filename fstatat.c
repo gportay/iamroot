@@ -19,6 +19,7 @@
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern int frootstatat(int, const char *, struct stat *, int);
 
+__attribute__((visibility("hidden")))
 int next_fstatat(int fd, const char *path, struct stat *statbuf, int flags)
 {
 	int (*sym)(int, const char *, struct stat *, int);

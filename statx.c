@@ -22,6 +22,7 @@
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern int rootstatx(int, const char *, int, unsigned int, struct statx *);
 
+__attribute__((visibility("hidden")))
 int next_statx(int fd, const char *path, int flags, unsigned int mask,
 	       struct statx *statxbuf)
 {

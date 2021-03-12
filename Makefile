@@ -130,6 +130,10 @@ uninstall:
 		rm -f $(DESTDIR)$$completionsdir/iamroot-shell; \
 	fi
 
+user-install user-uninstall:
+user-%:
+	$(MAKE) $* PREFIX=$$HOME/.local BASHCOMPLETIONSDIR=$$HOME/.local/share/bash-completion/completions
+
 .PHONY: ci
 ci:
 	$(MAKE) clean tests

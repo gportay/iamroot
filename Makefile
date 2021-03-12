@@ -88,6 +88,7 @@ libiamroot.so: umount2.o
 libiamroot.so: unlink.o
 libiamroot.so: unlinkat.o
 libiamroot.so: unshare.o
+libiamroot.so: utime.o
 libiamroot.so: utimensat.o
 libiamroot.so: utimes.o
 libiamroot.so: whereami.o

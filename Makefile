@@ -21,6 +21,7 @@ libiamroot.so: __xstat.o
 libiamroot.so: __fprintf.o
 libiamroot.so: __printf.o
 libiamroot.so: access.o
+libiamroot.so: canonicalize_file_name.o
 libiamroot.so: chdir.o
 libiamroot.so: chmod.o
 libiamroot.so: chown.o
@@ -82,6 +83,7 @@ libiamroot.so: opendir.o
 libiamroot.so: path_resolution.o
 libiamroot.so: readlink.o
 libiamroot.so: readlinkat.o
+libiamroot.so: realpath.o
 libiamroot.so: remove.o
 libiamroot.so: removexattr.o
 libiamroot.so: rename.o

@@ -119,6 +119,8 @@ libiamroot.so: openat64.o
 libiamroot.so: opendir.o
 libiamroot.so: opendir64.o
 libiamroot.so: path_resolution.o
+libiamroot.so: posix_spawn.o
+libiamroot.so: posix_spawnp.o
 libiamroot.so: readlink.o
 libiamroot.so: readlinkat.o
 libiamroot.so: realpath.o

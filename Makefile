@@ -24,6 +24,14 @@ libiamroot.so: __fxstatat.o
 libiamroot.so: __fxstatat64.o
 libiamroot.so: __lxstat.o
 libiamroot.so: __lxstat64.o
+libiamroot.so: __open.o
+libiamroot.so: __open64.o
+libiamroot.so: __open64_2.o
+libiamroot.so: __open_2.o
+libiamroot.so: __openat64_2.o
+libiamroot.so: __openat_2.o
+libiamroot.so: __opendir.o
+libiamroot.so: __opendirat.o
 libiamroot.so: __statfs.o
 libiamroot.so: __statfs64.o
 libiamroot.so: __xmknod.o

@@ -59,7 +59,7 @@ const char *fpath_resolutionat(int fd, const char *path, char *buf,
 {
 	struct stat statbuf;
 
-	if (fd == -1 || !path || !*path) {
+	if (fd == -1 || !path) {
 		errno = EINVAL;
 		return NULL;
 	}

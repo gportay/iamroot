@@ -24,6 +24,8 @@
 
 #include "path_resolution.h"
 
+#define __strncmp(s1, s2) strncmp(s1, s2, sizeof(s2)-1)
+
 /* See https://www.in-ulm.de/~mascheck/various/shebang/#results */
 #define HASHBANG_MAX NAME_MAX
 
@@ -158,6 +160,28 @@ static inline int canpreload(const char *path)
 	return 1;
 }
 
+static inline char *getpreload(char * const * envp)
+{
+	char * const *env;
+
+	env = envp;
+	while (*env && __strncmp(*env, "LD_PRELOAD=") != 0)
+		env++;
+
+	return *env;
+}
+
+static inline const char *setpreload(const char *value, int overwrite)
+{
+	if (!value)
+		value = "libiamroot.so";
+
+	if (setenv("LD_PRELOAD", value, overwrite))
+		return NULL;
+
+	return value;
+}
+
 __attribute__((visibility("hidden")))
 int next_execve(const char *path, char * const argv[], char * const envp[])
 {
@@ -194,6 +218,19 @@ int execve(const char *path, char *const argv[], char * const envp[])
 
 		errno = ENOEXEC;
 		return -1;
+	}
+
+	if (!getpreload(envp)) {
+		const char *preload;
+		
+		fprintf(stderr, "Warning: %s: LD_PRELOAD was unset\n", path);
+		preload = setpreload(getenv("IAMROOT_LIB"), 1);
+		if (!preload) {
+			perror("setpreload");
+			return -1;
+		}
+
+		fprintf(stderr, "         %s: LD_PRELOAD=%s\n", path, preload);
 	}
 
 	if (strcmp(path, real_path) == 0)

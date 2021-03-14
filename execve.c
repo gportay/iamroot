@@ -68,6 +68,10 @@ static inline int isstatic(const char *path)
 	if (memcmp(hdr.e_ident, ELFMAG, 4) != 0)
 		goto close;
 
+	/* TODO: Support class ELF32 */
+	if (hdr.e_ident[EI_CLASS] != ELFCLASS64)
+		goto close;
+
 	ret = (hdr.e_type == ET_EXEC);
 	if (ret != 0)
 		fprintf(stderr, "Warning: %s: statically linked\n", path);

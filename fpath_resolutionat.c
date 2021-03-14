@@ -35,7 +35,7 @@ static inline ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
 {
 	char tmp[sizeof("/proc/self/fd/") + 4];
 	__procfdname(tmp, fd);
-	return readlink(tmp, buf, bufsize);
+	return next_readlink(tmp, buf, bufsize);
 }
 
 static regex_t *re;

@@ -19,6 +19,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <elf.h>
 
 #include <unistd.h>
 
@@ -30,20 +31,6 @@
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern int next_open(const char *, int, mode_t);
 extern int next_stat(const char *, struct stat *);
-
-/* Stolen from musl (src/network/ntohl.c) */
-static inline uint32_t ntohl(uint32_t n)
-{
-	union { int i; char c; } u = { 1 };
-	return u.c ? bswap_32(n) : n;
-}
-
-/* Stolen from musl (src/network/htonl.c) */
-static inline uint32_t htonl(uint32_t n)
-{
-	union { int i; char c; } u = { 1 };
-	return u.c ? bswap_32(n) : n;
-}
 
 static inline int issuid(const char *path)
 {
@@ -63,13 +50,8 @@ static inline int issuid(const char *path)
 
 static inline int isstatic(const char *path)
 {
-	struct elf_header {
-		uint32_t magic;
-		unsigned char unused[12];
-		uint16_t type;
-		unsigned char unused2[46];
-	} hdr;
 	int ret = -1, fd;
+	Elf64_Ehdr hdr;
 	ssize_t s;
 
 	fd = next_open(path, O_RDONLY, 0);
@@ -82,7 +64,11 @@ static inline int isstatic(const char *path)
 	else if ((size_t)s < sizeof(hdr))
 		goto close;
 
-	ret = (hdr.magic == htonl(0x7f454c46)) && (hdr.type == 2);
+	/* Not an ELF */
+	if (memcmp(hdr.e_ident, ELFMAG, 4) != 0)
+		goto close;
+
+	ret = (hdr.e_type == ET_EXEC);
 	if (ret != 0)
 		fprintf(stderr, "Warning: %s: statically linked\n", path);
 

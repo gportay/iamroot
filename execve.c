@@ -50,9 +50,10 @@ static inline int issuid(const char *path)
 
 static inline int isstatic(const char *path)
 {
-	int ret = -1, fd;
+	int ret = -1, fd, i, num;
 	Elf64_Ehdr hdr;
 	ssize_t s;
+	off_t off;
 
 	fd = next_open(path, O_RDONLY, 0);
 	if (fd == -1)
@@ -72,9 +73,35 @@ static inline int isstatic(const char *path)
 	if (hdr.e_ident[EI_CLASS] != ELFCLASS64)
 		goto close;
 
-	ret = (hdr.e_type == ET_EXEC);
-	if (ret != 0)
-		fprintf(stderr, "Warning: %s: statically linked\n", path);
+	ret = 0;
+
+	/* Not a linked program or shared object */
+	if ((hdr.e_type != ET_EXEC) && (hdr.e_type != ET_DYN))
+		goto close;
+
+	/* Look for the .interp section */
+	ret = 1;
+	off = hdr.e_phoff;
+	num = hdr.e_phnum;
+	for (i = 0; i < num; i++) {
+		Elf64_Phdr hdr;
+
+		s = pread(fd, &hdr, sizeof(hdr), off);
+		if (s == -1)
+			goto close;
+		else if ((size_t)s < sizeof(hdr))
+			goto close;
+
+		off += sizeof(hdr);
+
+		if (hdr.p_type != PT_INTERP)
+			continue;
+
+		ret = 0;
+		goto close;
+	}
+
+	fprintf(stderr, "Warning: %s: statically linked\n", path);
 
 close:
 	if (close(fd))

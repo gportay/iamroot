@@ -41,6 +41,7 @@ char *next_realpath(const char *filename, char *resolved)
 	char stack[PATH_MAX+1];
 	char output[PATH_MAX];
 	size_t p, q, l, l0, cnt=0, nup=0;
+	int errno_save = errno;
 	int check_dir=0;
 
 	if (!filename) {
@@ -125,6 +126,7 @@ restart:
 		}
 		if (k<0) {
 			if (errno != EINVAL) return 0;
+			errno = 0;
 skip_readlink:
 			check_dir = 0;
 			if (up) {
@@ -172,6 +174,7 @@ skip_readlink:
 		q = l + q-p;
 	}
 
+	errno = errno_save;
 	if (resolved) return memcpy(resolved, output, q+1);
 	else return strdup(output);
 

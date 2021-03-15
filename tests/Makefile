@@ -89,6 +89,14 @@ tests:
 	IAMROOT_ROOT=$(CURDIR) /mknodat - /dev3 0666 0 3
 	IAMROOT_ROOT=$(CURDIR) /mknodat . /dev4 0666 0 4
 	mount -t procfs none /proc
+	path_resolution / | tee /dev/stderr | grep -q "^/\$$"
+	path_resolution /proc/ | tee /dev/stderr | grep -q "^/proc/\$$"
+	IAMROOT_ROOT=$(CURDIR) /path_resolution /sys/ | tee /dev/stderr | grep -q "^/sys/\$$"
+	IAMROOT_ROOT=$(CURDIR) /path_resolution /dev/ | tee /dev/stderr | grep -q "^/dev/\$$"
+	IAMROOT_ROOT=$(CURDIR) /path_resolution /run/ | tee /dev/stderr | grep -q "^/run/\$$"
+	IAMROOT_ROOT=$(CURDIR) /path_resolution /etc/passwd | tee /dev/stderr | grep -q "^$(CURDIR)/etc/passwd\$$"
+	IAMROOT_PATH_RESOLUTION_IGNORE="^/(proc|sys)/|$$IAMROOT_LIB" \
+	IAMROOT_ROOT=$(CURDIR) /path_resolution "$$IAMROOT_LIB"  | tee /dev/stderr | grep -q "^$$IAMROOT_LIB$$"
 	openat - file
 	IAMROOT_ROOT=$(CURDIR) /openat . /file
 	opendir proc
@@ -119,8 +127,6 @@ tests:
 	unlinkat . dev1 0
 	IAMROOT_ROOT=$(CURDIR) /unlinkat - /dev2 0
 	unshare whoami
-	path_resolution /proc | tee /dev/stderr | grep -q "^/proc\$$"
-	IAMROOT_ROOT=$(CURDIR) /path_resolution /sys | tee /dev/stderr | grep -q "^$(CURDIR)/sys\$$"
 
 .PHONY: clean
 clean:

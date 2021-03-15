@@ -7,12 +7,14 @@
 #define _GNU_SOURCE
 
 #include <unistd.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
 #include <limits.h>
 #include <dlfcn.h>
 #include <sys/stat.h>
+#include <regex.h>
 
 #include <fcntl.h>
 
@@ -21,6 +23,7 @@
 #define __strlcmp(s1, s2) strncmp(s1, s2, strlen(s2))
 #define __strncmp(s1, s2) strncmp(s1, s2, sizeof(s2)-1)
 
+extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern ssize_t next_readlink(const char *, char *, size_t);
 extern int next_lstat(const char *, struct stat *);
 extern void __procfdname(char *, unsigned);
@@ -33,6 +36,70 @@ static inline ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
 	char tmp[sizeof("/proc/self/fd/") + 4];
 	__procfdname(tmp, fd);
 	return readlink(tmp, buf, bufsize);
+}
+
+static regex_t *re;
+
+static void __regex_perror(const char *s, regex_t *regex, int err)
+{
+	char buf[128];
+	regerror(err, regex, buf, sizeof(buf));
+	if (!s) {
+		fprintf(stderr, "%s\n", buf);
+		return;
+	}
+
+	fprintf(stderr, "%s: %s\n", s, buf);
+}
+
+__attribute__((constructor))
+void init()
+{
+	static regex_t regex;
+	char *ignore;
+	int ret;
+
+	if (re)
+		return;
+
+	ignore = getenv("IAMROOT_PATH_RESOLUTION_IGNORE");
+	if (!ignore)
+		ignore = "^/(proc|sys|dev|run)/";
+
+	ret = regcomp(&regex, ignore, REG_EXTENDED);
+	if (ret) {
+		__regex_perror("regcomp", &regex, ret);
+		return;
+	}
+
+	__fprintf(stderr, "IAMROOT_PATH_RESOLUTION_IGNORE=%s\n", ignore);
+	re = &regex;
+}
+
+__attribute__((destructor))
+void fini()
+{
+	if (!re)
+		return;
+
+	regfree(re);
+	re = NULL;
+}
+
+static inline int ignore(const char *path)
+{
+	int ret = 0;
+
+	if (!re)
+		return 0;
+
+	ret = regexec(re, path, 0, NULL, 0);
+	if (ret == -1) {
+		__regex_perror("regcomp", re, ret);
+		return 0;
+	}
+
+	return !ret;
 }
 
 char *sanitize(char *path, size_t bufsize)
@@ -65,10 +132,7 @@ char *fpath_resolutionat(int fd, const char *path, char *buf, size_t bufsize,
 		return NULL;
 	}
 
-	if ((__strncmp(path, "/proc/") == 0) ||
-	    (__strncmp(path, "/sys/") == 0) ||
-	    (__strncmp(path, "/dev/") == 0) ||
-	    (__strncmp(path, "/run/") == 0))
+	if (ignore(path))
 		return strncpy(buf, path, bufsize);
 
 	if (*path == '/') {

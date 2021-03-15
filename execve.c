@@ -97,6 +97,46 @@ static int ignore(const char *path)
 	return !ret;
 }
 
+/* Stolen from musl (src/network/ntohs.c) */
+uint16_t ntohs(uint16_t n)
+{
+	union { int i; char c; } u = { 1 };
+	return u.c ? bswap_16(n) : n;
+}
+
+/* Stolen from musl (src/network/htons.c) */
+uint16_t htons(uint16_t n)
+{
+	union { int i; char c; } u = { 1 };
+	return u.c ? bswap_16(n) : n;
+}
+
+/* Stolen from musl (src/network/ntohl.c) */
+static inline uint32_t ntohl(uint32_t n)
+{
+	union { int i; char c; } u = { 1 };
+	return u.c ? bswap_32(n) : n;
+}
+
+/* Stolen from musl (src/network/htonl.c) */
+static inline uint32_t htonl(uint32_t n)
+{
+	union { int i; char c; } u = { 1 };
+	return u.c ? bswap_32(n) : n;
+}
+
+static inline uint64_t ntohll(uint64_t n)
+{
+	union { int i; char c; } u = { 1 };
+	return u.c ? bswap_64(n) : n;
+}
+
+static inline uint64_t htonll(uint64_t n)
+{
+	union { int i; char c; } u = { 1 };
+	return u.c ? bswap_64(n) : n;
+}
+
 static int issuid(const char *path)
 {
 	struct stat statbuf;

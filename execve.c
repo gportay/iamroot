@@ -156,25 +156,6 @@ close:
 	return siz;
 }
 
-static inline int canpreload(const char *path)
-{
-	int ret = -1;
-
-	ret = issuid(path);
-	if (ret == -1)
-		return -1;
-	else if (ret == 1)
-		return 0;
-
-	ret = isstatic(path);
-	if (ret == -1)
-		return -1;
-	else if (ret == 1)
-		return 0;
-
-	return 1;
-}
-
 __attribute__((visibility("hidden")))
 int next_execve(const char *path, char * const argv[], char * const envp[])
 {
@@ -194,6 +175,7 @@ int execve(const char *path, char *const argv[], char * const envp[])
 	char interp[HASHBANG_MAX];
 	char buf[PATH_MAX];
 	char *real_path;
+	int ret, forced;
 	ssize_t siz;
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
@@ -202,20 +184,32 @@ int execve(const char *path, char *const argv[], char * const envp[])
 		return -1;
 	}
 
-	if (canpreload(real_path) == 0) {
-		int force = strtoul(getenv("IAMROOT_FORCE") ?: "0", NULL, 0);
-		fprintf(stderr, "%s: %s: Cannot support LD_PRELOAD\n",
-				force == 0 ? "Error" : "Warning", real_path);
-		if (force)
-			_exit(0);
+	/*
+	 * In secure-execution mode, preload pathnames containing slashes are
+	 * ignored. Furthermore, shared objects are preloaded only from the
+	 * standard search directories and only if they have set-user-ID mode
+	 * bit enabled (which is not typical).
+	 */
 
-		errno = ENOEXEC;
+	ret = issuid(real_path);
+	if (ret == -1)
 		return -1;
-	}
+	else if (ret)
+		goto force;
 
-	if (strcmp(path, real_path) == 0)
-		goto next;
+	ret = isstatic(real_path);
+	if (ret == -1)
+		goto hashbang;
+	else if (ret)
+		goto force;
 
+	__fprintf(stderr, "%s(path: '%s' -> '%s', argv: '%s'... , envp: @%p...)\n",
+			  __func__, path, real_path, argv[0], envp[0]);
+
+	return next_execve(real_path, argv, envp);
+
+hashbang:
+	/* Get the interpeter directive stored after the hashbang */
 	siz = ishashbang(real_path, interp, sizeof(interp));
 	if (siz == -1) {
 		return -1;
@@ -256,9 +250,13 @@ int execve(const char *path, char *const argv[], char * const envp[])
 		return -1;
 	}
 
-next:
-	__fprintf(stderr, "%s(path: '%s' -> '%s', argv: '%s'... , envp: @%p...)\n",
-			  __func__, path, real_path, argv[0], envp[0]);
+force:
+	forced = strtoul(getenv("IAMROOT_FORCE") ?: "0", NULL, 0);
+	fprintf(stderr, "%s: %s: Cannot support LD_PRELOAD\n",
+			forced == 0 ? "Error" : "Warning", real_path);
+	if (forced)
+		_exit(0);
 
-	return next_execve(real_path, argv, envp);
+	errno = ENOEXEC;
+	return -1;
 }

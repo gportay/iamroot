@@ -9,10 +9,10 @@
 
 #include "path_resolution.h"
 
-extern char *path_resolutionat(const char *path, char *buf, size_t bufsize,
-			       int flags);
+extern char *fpath_resolutionat(int fd, const char *path, char *buf,
+				size_t bufsize, int flags);
 
 char *path_resolution(const char *path, char *buf, size_t bufsize, int flags)
 {
-	return path_resolutionat(path, buf, bufsize, flags);
+	return fpath_resolutionat(AT_FDCWD, path, buf, bufsize, flags);
 }

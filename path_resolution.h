@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Gaël PORTAY
+ * Copyright 2020-2021 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1
  */

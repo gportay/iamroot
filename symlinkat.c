@@ -34,8 +34,8 @@ int next_symlinkat(const char *string, int fd, const char *path)
 
 int symlinkat(const char *string, int fd, const char *path)
 {
-	const char *real_path;
 	char buf[PATH_MAX];
+	char *real_path;
 
 	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), 0);
 	if (!real_path) {

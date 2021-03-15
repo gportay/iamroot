@@ -34,8 +34,8 @@ int next_openat(int fd, const char *path, int flags, mode_t mode)
 
 int openat(int fd, const char *path, int flags, ...)
 {
-	const char *real_path = path;
 	char buf[PATH_MAX];
+	char *real_path;
 	mode_t mode = 0;
 
 	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), flags);

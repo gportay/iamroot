@@ -34,8 +34,8 @@ ssize_t next_llistxattr(const char *path, char *list, size_t size)
 
 ssize_t llistxattr(const char *path, char *list, size_t size)
 {
-	const char *real_path;
 	char buf[PATH_MAX];
+	char *real_path;
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {

@@ -34,8 +34,8 @@ int next_chdir(const char *path)
 
 int chdir(const char *path)
 {
-	const char *real_path;
 	char buf[PATH_MAX];
+	char *real_path;
 	int ret;
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);

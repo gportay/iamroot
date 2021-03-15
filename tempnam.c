@@ -32,8 +32,8 @@ char *next_tempnam(const char *path, const char *pfx)
 
 char *tempnam(const char *path, const char *pfx)
 {
-	const char *real_path;
 	char buf[PATH_MAX];
+	char *real_path;
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {

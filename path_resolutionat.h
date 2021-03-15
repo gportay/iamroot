@@ -11,8 +11,7 @@
 extern "C" {
 #endif
 
-const char *path_resolutionat(const char *path, char *buf, size_t bufsize,
-			      int flags);
+char *path_resolutionat(const char *path, char *buf, size_t bufsize, int flags);
 
 #ifdef __cplusplus
 }

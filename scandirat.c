@@ -40,8 +40,8 @@ int scandirat(int fd, const char *path, struct dirent ***namelist,
 	      int (*filter)(const struct dirent *),
 	      int (*compar)(const struct dirent **, const struct dirent **))
 {
-	const char *real_path = path;
 	char buf[PATH_MAX];
+	char *real_path;
 
 	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), 0);
 	if (!real_path) {

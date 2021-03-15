@@ -36,8 +36,8 @@ int next_lsetxattr(const char *path, const char *name, const void *value,
 int lsetxattr(const char *path, const char *name, const void *value,
 	     size_t size, int flags)
 {
-	const char *real_path;
 	char buf[PATH_MAX];
+	char *real_path;
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {

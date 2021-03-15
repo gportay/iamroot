@@ -34,8 +34,8 @@ int next_renameat(int oldfd, const char *oldpath, int newfd,
 
 int renameat(int oldfd, const char *oldpath, int newfd, const char *newpath)
 {
-	const char *real_oldpath, *real_newpath;
 	char oldbuf[PATH_MAX], newbuf[PATH_MAX];
+	char *real_oldpath, *real_newpath;
 
 	real_oldpath = fpath_resolutionat(oldfd, oldpath, oldbuf,
 					  sizeof(oldbuf), 0);

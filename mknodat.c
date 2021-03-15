@@ -34,8 +34,8 @@ int next_mknodat(int fd, const char *path, mode_t mode, dev_t dev)
 
 int mknodat(int fd, const char *path, mode_t mode, dev_t dev)
 {
-	const char *real_path;
 	char buf[PATH_MAX];
+	char *real_path;
 
 	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), 0);
 	if (!real_path) {

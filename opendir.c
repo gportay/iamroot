@@ -34,8 +34,8 @@ DIR *next_opendir(const char *path)
 
 DIR *opendir(const char *path)
 {
-	const char *real_path = path;
 	char buf[PATH_MAX];
+	char *real_path;
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {

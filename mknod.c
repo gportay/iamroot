@@ -33,8 +33,8 @@ int next_mknod(const char *path, mode_t mode, dev_t dev)
 
 int mknod(const char *path, mode_t mode, dev_t dev)
 {
-	const char *real_path;
 	char buf[PATH_MAX];
+	char *real_path;
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {

@@ -33,8 +33,8 @@ int next_lutimes(const char *path, const struct timeval times[2])
 
 int lutimes(const char *path, const struct timeval times[2])
 {
-	const char *real_path;
 	char buf[PATH_MAX];
+	char *real_path;
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {

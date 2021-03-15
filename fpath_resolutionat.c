@@ -24,8 +24,8 @@
 extern ssize_t next_readlink(const char *, char *, size_t);
 extern int next_lstat(const char *, struct stat *);
 extern void __procfdname(char *, unsigned);
-extern const char *path_resolution(const char *path, char *buf, size_t bufsize,
-				   int flags);
+extern char *path_resolution(const char *path, char *buf, size_t bufsize,
+			     int flags);
 extern const char *getrootdir();
 
 static inline ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
@@ -54,10 +54,11 @@ char *sanitize(char *path, size_t bufsize)
 	return path;
 }
 
-const char *fpath_resolutionat(int fd, const char *path, char *buf,
-			       size_t bufsize, int flags)
+char *fpath_resolutionat(int fd, const char *path, char *buf, size_t bufsize,
+			 int flags)
 {
 	struct stat statbuf;
+	char *real_path;
 
 	if (fd == -1 || !path) {
 		errno = EINVAL;
@@ -68,7 +69,7 @@ const char *fpath_resolutionat(int fd, const char *path, char *buf,
 	    (__strncmp(path, "/sys/") == 0) ||
 	    (__strncmp(path, "/dev/") == 0) ||
 	    (__strncmp(path, "/run/") == 0))
-		return path;
+		return strncpy(buf, path, bufsize);
 
 	if (*path == '/') {
 		const char *root;
@@ -92,7 +93,7 @@ const char *fpath_resolutionat(int fd, const char *path, char *buf,
 			return NULL;
 		}
 
-		path = buf;
+		real_path = buf;
 	} else if (fd != AT_FDCWD) {
 		char dir[PATH_MAX];
 		ssize_t siz;
@@ -116,26 +117,24 @@ const char *fpath_resolutionat(int fd, const char *path, char *buf,
 			return NULL;
 		}
 
-		path = buf;
+		real_path = buf;
 	} else {
-		strncpy(buf, path, bufsize);
-
-		path = buf;
+		real_path = strncpy(buf, path, bufsize);
 	}
 
-	path = sanitize(buf, bufsize);
+	real_path = sanitize(buf, bufsize);
 
 	if (flags == AT_SYMLINK_NOFOLLOW)
 		goto exit;
 
-	if (next_lstat(path, &statbuf) != 0)
+	if (next_lstat(real_path, &statbuf) != 0)
 		goto exit;
 
 	if (S_ISLNK(statbuf.st_mode)) {
 		char tmp[NAME_MAX];
 		ssize_t s;
 
-		s = next_readlink(path, tmp, sizeof(tmp) - 1);
+		s = next_readlink(real_path, tmp, sizeof(tmp) - 1);
 		if (s == -1) {
 			perror("readlink");
 			return NULL;
@@ -147,5 +146,5 @@ const char *fpath_resolutionat(int fd, const char *path, char *buf,
 	}
 
 exit:
-	return path;
+	return real_path;
 }

@@ -35,8 +35,8 @@ int next_fchownat(int fd, const char *path, uid_t owner, gid_t group, int flags)
 
 int fchownat(int fd, const char *path, uid_t owner, gid_t group, int flags)
 {
-	const char *real_path;
 	char buf[PATH_MAX];
+	char *real_path;
 
 	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), flags);
 	if (!real_path) {

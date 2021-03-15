@@ -33,8 +33,8 @@ int next_statfs(const char *path, struct statfs *statfsbuf)
 
 int statfs(const char *path, struct statfs *statfsbuf)
 {
-	const char *real_path;
 	char buf[PATH_MAX];
+	char *real_path;
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {

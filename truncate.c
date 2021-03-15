@@ -36,8 +36,8 @@ int next_truncate(const char *path, off_t length)
 
 int truncate(const char *path, off_t length)
 {
-	const char *real_path;
 	char buf[PATH_MAX];
+	char *real_path;
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {

@@ -34,8 +34,8 @@ int next_fchmodat(int fd, const char *path, mode_t mode, int flags)
 
 int fchmodat(int fd, const char *path, mode_t mode, int flags)
 {
-	const char *real_path;
 	char buf[PATH_MAX];
+	char *real_path;
 
 	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), flags);
 	if (!real_path) {

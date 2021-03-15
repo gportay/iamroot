@@ -34,8 +34,8 @@ int next_futimesat(int fd, const char *path, const struct timeval times[2])
 
 int futimesat(int fd, const char *path, const struct timeval times[2])
 {
-	const char *real_path = path;
 	char buf[PATH_MAX];
+	char *real_path;
 
 	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), 0);
 	if (!real_path) {

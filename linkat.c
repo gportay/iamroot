@@ -36,8 +36,8 @@ int next_linkat(int oldfd, const char *oldpath, int newfd, const char *newpath,
 int linkat(int oldfd, const char *oldpath, int newfd, const char *newpath,
 	     int flags)
 {
-	const char *real_oldpath, *real_newpath;
 	char oldbuf[PATH_MAX], newbuf[PATH_MAX];
+	char *real_oldpath, *real_newpath;
 
 	real_oldpath = fpath_resolutionat(oldfd, oldpath, oldbuf,
 					  sizeof(oldbuf), flags);

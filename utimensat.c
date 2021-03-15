@@ -37,8 +37,8 @@ int next_utimensat(int fd, const char *path, const struct timespec times[2],
 int utimensat(int fd, const char *path, const struct timespec times[2],
 	      int flags)
 {
-	const char *real_path;
 	char buf[PATH_MAX];
+	char *real_path;
 
 	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), 0);
 	if (!real_path) {

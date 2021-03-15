@@ -35,8 +35,8 @@ ssize_t next_lgetxattr(const char *path, const char *name, void *value,
 
 ssize_t lgetxattr(const char *path, const char *name, void *value, size_t size)
 {
-	const char *real_path;
 	char buf[PATH_MAX];
+	char *real_path;
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {

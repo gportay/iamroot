@@ -34,8 +34,8 @@ FILE *next_freopen(const char *path, const char *mode, FILE *stream)
 
 FILE *freopen(const char *path, const char *mode, FILE *stream)
 {
-	const char *real_path;
 	char buf[PATH_MAX];
+	char *real_path;
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {

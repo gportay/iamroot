@@ -33,8 +33,8 @@ int next_statvfs(const char *path, struct statvfs *statvfsbuf)
 
 int statvfs(const char *path, struct statvfs *statvfsbuf)
 {
-	const char *real_path;
 	char buf[PATH_MAX];
+	char *real_path;
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {

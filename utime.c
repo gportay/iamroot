@@ -33,8 +33,8 @@ int next_utime(const char *path, const struct utimbuf *times)
 
 int utime(const char *path, const struct utimbuf *times)
 {
-	const char *real_path;
 	char buf[PATH_MAX];
+	char *real_path;
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {

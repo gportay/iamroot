@@ -37,8 +37,8 @@ int next___fxstatat(int ver, int fd, const char *path, struct stat *statbuf,
 int __fxstatat(int ver, int fd, const char *path, struct stat *statbuf,
 	       int flags)
 {
-	const char *real_path;
 	char buf[PATH_MAX];
+	char *real_path;
 	int ret;
 
 	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), flags);

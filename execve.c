@@ -174,9 +174,9 @@ int next_execve(const char *path, char * const argv[], char * const envp[])
 
 int execve(const char *path, char *const argv[], char * const envp[])
 {
-	const char *real_path;
 	char interp[HASHBANG_MAX];
 	char buf[PATH_MAX];
+	char *real_path;
 	ssize_t siz;
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);

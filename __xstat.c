@@ -35,8 +35,8 @@ int next___xstat(int ver, const char *path, struct stat *statbuf)
 
 int __xstat(int ver, const char *path, struct stat *statbuf)
 {
-	const char *real_path;
 	char buf[PATH_MAX];
+	char *real_path;
 	int ret;
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);

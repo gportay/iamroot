@@ -34,8 +34,8 @@ int next_unlinkat(int fd, const char *path, int flags)
 
 int unlinkat(int fd, const char *path, int flags)
 {
-	const char *real_path = path;
 	char buf[PATH_MAX];
+	char *real_path;
 
 	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), flags);
 	if (!real_path) {

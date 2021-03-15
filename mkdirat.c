@@ -34,8 +34,8 @@ int next_mkdirat(int fd, const char *path, mode_t mode)
 
 int mkdirat(int fd, const char *path, mode_t mode)
 {
-	const char *real_path = path;
 	char buf[PATH_MAX];
+	char *real_path;
 
 	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), 0);
 	if (!real_path) {

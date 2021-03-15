@@ -33,8 +33,8 @@ int next_access(const char *path, int mode)
 
 int access(const char *path, int mode)
 {
-	const char *real_path;
 	char buf[PATH_MAX];
+	char *real_path;
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {

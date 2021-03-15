@@ -324,8 +324,8 @@ exit:
 
 int chroot(const char *path)
 {
-	const char *real_path;
 	char buf[PATH_MAX];
+	char *real_path;
 
 	/* prepend the current working directory for relative paths */
 	if (path[0] != '/') {

@@ -32,8 +32,8 @@ int next_rename(const char *oldpath, const char *newpath)
 
 int rename(const char *oldpath, const char *newpath)
 {
-	const char *real_oldpath, *real_newpath;
 	char oldbuf[PATH_MAX], newbuf[PATH_MAX];
+	char *real_oldpath, *real_newpath;
 
 	real_oldpath = path_resolution(oldpath, oldbuf, sizeof(oldbuf), 0);
 	if (!real_oldpath) {

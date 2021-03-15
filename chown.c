@@ -34,8 +34,8 @@ int next_chown(const char *path, uid_t owner, gid_t group)
 
 int chown(const char *path, uid_t owner, gid_t group)
 {
-	const char *real_path;
 	char buf[PATH_MAX];
+	char *real_path;
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {

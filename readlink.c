@@ -33,8 +33,8 @@ ssize_t next_readlink(const char *path, char *buf, size_t bufsize)
 
 ssize_t readlink(const char *path, char *buf, size_t bufsize)
 {
-	const char *real_path;
 	char tmp[PATH_MAX];
+	char *real_path;
 
 	real_path = path_resolution(path, tmp, sizeof(tmp), 0);
 	if (!real_path) {

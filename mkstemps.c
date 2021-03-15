@@ -33,10 +33,10 @@ int next_mkstemps(char *path, int suffixlen)
 
 int mkstemps(char *path, int suffixlen)
 {
-	char *real_path;
 	char buf[PATH_MAX];
+	char *real_path;
 
-	real_path = (char *)path_resolution(path, buf, sizeof(buf), 0);
+	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {
 		perror("path_resolution");
 		return -1;

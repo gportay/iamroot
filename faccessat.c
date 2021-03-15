@@ -34,8 +34,8 @@ int next_faccessat(int fd, const char *path, int mode, int flags)
 
 int faccessat(int fd, const char *path, int mode, int flags)
 {
-	const char *real_path;
 	char buf[PATH_MAX];
+	char *real_path;
 
 	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), flags);
 	if (!real_path) {

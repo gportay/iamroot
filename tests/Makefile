@@ -26,6 +26,7 @@ TESTS += mknodat
 TESTS += mount
 TESTS += openat
 TESTS += opendir
+TESTS += path_resolution
 TESTS += rename
 TESTS += renameat
 TESTS += renameat2
@@ -45,10 +46,17 @@ TESTS += utimensat
 TESTS += utimes
 
 .PHONY: all
+all: libiamnotroot.so
 all: $(TESTS)
+
+libiamnotroot.so: iamnotroot.o
+
+path_resolution: libiamnotroot.so
+path_resolution: override LDLIBS += libiamnotroot.so
 
 .PHONY: tests
 tests: PATH := $(CURDIR):$(PATH)
+tests: export LD_LIBRARY_PATH := $(CURDIR):$(LD_LIBRARY_PATH)
 tests: ALPINE_MINIROOTFS ?= .
 tests:
 	rm -Rf proc sys tmp dev* file* symlink[0-9] link[0-9]*
@@ -111,7 +119,13 @@ tests:
 	unlinkat . dev1 0
 	IAMROOT_ROOT=$(CURDIR) /unlinkat - /dev2 0
 	unshare whoami
+	path_resolution /proc | tee /dev/stderr | grep -q "^/proc\$$"
+	IAMROOT_ROOT=$(CURDIR) /path_resolution /sys | tee /dev/stderr | grep -q "^$(CURDIR)/sys\$$"
 
 .PHONY: clean
 clean:
-	rm -f $(TESTS)
+	rm -f libiamnotroot.so *.o $(TESTS)
+
+%.so: override LDFLAGS += -shared
+%.so:
+	$(LINK.o) $^ $(LOADLIBES) $(LDLIBS) -o $@

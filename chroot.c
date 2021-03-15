@@ -25,10 +25,10 @@ extern char *next_getcwd(char *, size_t);
 extern int next_stat(const char *, struct stat *);
 extern int next_lstat(const char *, struct stat *);
 extern int next_fstatat(int, const char *, struct stat *, int);
-#ifdef __GLIBC__
 extern int next___xstat(int, const char *, struct stat *);
 extern int next___lxstat(int, const char *, struct stat *);
 extern int next___fxstatat(int, int, const char *, struct stat *, int);
+#ifdef __GLIBC__
 extern int next_statx(int, const char *, int, unsigned int, struct statx *);
 #endif
 extern uid_t next_geteuid();
@@ -226,7 +226,6 @@ exit:
 	return ret;
 }
 
-#ifdef __GLIBC__
 __attribute__((visibility("hidden")))
 int __rootxstat(int ver, const char *path, struct stat *buf)
 {
@@ -297,6 +296,7 @@ exit:
 	return ret;
 }
 
+#ifdef __GLIBC__
 __attribute__((visibility("hidden")))
 int rootstatx(int fd, const char *path, int flags, unsigned int mask,
 	      struct statx *buf)

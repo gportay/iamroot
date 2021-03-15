@@ -7,12 +7,15 @@
 
 usage() {
 	cat <<EOF
-Usage: ${0##*/} [--chroot DIR] [--library LIB] [--debug] [--force] [--help] [--] [SHELL_ARGUMENTS...]
+Usage: ${0##*/} [--chroot DIR] [--exec FILE] [--library LIB] [--debug] [--force] [--help] [--] [SHELL_ARGUMENTS...]
 EOF
 }
 
 IAMROOT_LIB="${IAMROOT_LIB:-/usr/lib/iamroot/libiamroot.so}"
 export IAMROOT_LIB
+
+IAMROOT_EXEC="${IAMROOT_EXEC:-/usr/lib/iamroot/exec.sh}"
+export IAMROOT_EXEC
 
 argv=()
 while [[ "$#" -ne 0 ]]
@@ -34,6 +37,11 @@ do
 		shift
 		IAMROOT_LIB="$1"
 		export IAMROOT_LIB
+	elif [[ "$1" == "--exec" ]]
+	then
+		shift
+		IAMROOT_EXEC="$1"
+		export IAMROOT_EXEC
 	elif [[ "$1" == "--chroot" ]]
 	then
 		shift

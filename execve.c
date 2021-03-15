@@ -198,10 +198,11 @@ int next_execve(const char *path, char * const argv[], char * const envp[])
 
 int execve(const char *path, char *const argv[], char * const envp[])
 {
-	char interp[HASHBANG_MAX];
+	char *interparg, interp[HASHBANG_MAX];
+	int argc = -1, ret, forced;
+	char *real_path, *exec;
 	char buf[PATH_MAX];
-	char *real_path;
-	int ret, forced;
+	char * const *arg;
 	ssize_t siz;
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
@@ -220,7 +221,7 @@ int execve(const char *path, char *const argv[], char * const envp[])
 	if (ret == -1)
 		return -1;
 	else if (ret)
-		goto force;
+		goto exec;
 
 	/*
 	 * Get the dynamic linker stored in the .interp section of the ELF
@@ -249,15 +250,12 @@ hashbang:
 	if (siz == -1) {
 		/* Not an hashbang interpreter directive */
 		if (errno == ENOEXEC)
-			goto force;
+			goto exec;
 
 		perror("gethashbang");
 		return -1;
 	} else if (siz > 0) {
-		char * const *arg;
-		char *interparg;
 		size_t len;
-		int argc;
 
 		argc = 1;
 		arg = argv;
@@ -269,25 +267,39 @@ hashbang:
 		if (interparg)
 			argc++;
 
-		if (argc < ARG_MAX) {
-			char *nargv[argc + 1];
-			char **narg;
+		goto interp;
+	}
 
-			narg = nargv;
-			*narg++ = (char *)interp;
-			if (interparg)
-				*narg++ = (char *)interparg;
+exec:
+	exec = getenv("IAMROOT_EXEC") ?: "/usr/lib/iamroot/exec.sh";
+	if (!*exec)
+		goto force;
 
-			arg = argv;
-			while (*arg)
-				*narg++ = *arg++;
-			*narg++ = NULL;
+	strcpy(interp, getenv("SHELL") ?: "/bin/bash");
+	interparg = exec;
 
-			return execve(interp, nargv, environ);
-		}
+	argc = 2;
+	arg = argv;
+	while (*arg++)
+		argc++;
 
-		errno = EINVAL;
-		return -1;
+interp:
+	if ((argc != -1) && (argc < ARG_MAX)) {
+		char *nargv[argc + 1];
+		char **narg;
+
+		/* Prepend the interpreter and its optional argument */
+		narg = nargv;
+		*narg++ = interp;
+		if (interparg)
+			*narg++ = interparg;
+
+		arg = argv;
+		while (*arg)
+			*narg++ = *arg++;
+		*narg++ = NULL;
+
+		return execve(interp, nargv, environ);
 	}
 
 force:

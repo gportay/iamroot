@@ -14,6 +14,10 @@ _iamroot-shell()
 		_filedir so
 		return
 		;;
+	--exec)
+		_filedir
+		return
+		;;
 	--chroot)
 		_filedir -d
 		return
@@ -37,7 +41,7 @@ _iamroot-shell()
 
 	if [[ "$shell" != 1 ]]
 	then
-		COMPREPLY+=($(compgen -W "--force --debug --library --chroot" -- "$cur"))
+		COMPREPLY+=($(compgen -W "--force --debug --library --exec --chroot" -- "$cur"))
 	fi
 } &&
 complete -F _iamroot-shell iamroot-shell

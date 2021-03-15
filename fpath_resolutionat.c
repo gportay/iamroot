@@ -55,8 +55,9 @@ static void __regex_perror(const char *s, regex_t *regex, int err)
 __attribute__((constructor))
 void init()
 {
+	char *ignore, *library, *exec;
 	static regex_t regex;
-	char *ignore;
+	char buf[BUFSIZ];
 	int ret;
 
 	if (re)
@@ -66,13 +67,25 @@ void init()
 	if (!ignore)
 		ignore = "^/(proc|sys|dev|run)/";
 
-	ret = regcomp(&regex, ignore, REG_EXTENDED);
+	library = getenv("IAMROOT_LIBRARY");
+	if (!library)
+		library = "^/usr/lib/iamroot/libiamroot.so$";
+
+	exec = getenv("IAMROOT_EXEC");
+	if (!exec)
+		exec = "^/usr/lib/iamroot/exec.sh$";
+
+	snprintf(buf, sizeof(buf)-1, "%s|%s|%s", ignore, library, exec);
+
+	ret = regcomp(&regex, buf, REG_EXTENDED);
 	if (ret) {
 		__regex_perror("regcomp", &regex, ret);
 		return;
 	}
 
-	__fprintf(stderr, "IAMROOT_PATH_RESOLUTION_IGNORE=%s\n", ignore);
+	__fprintf(stderr, "IAMROOT_PATH_RESOLUTION_IGNORE|IAMROOT_LIBRARY|IAMROOT_EXEC=%s\n",
+			  buf);
+
 	re = &regex;
 }
 

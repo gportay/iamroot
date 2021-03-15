@@ -167,6 +167,7 @@ static-tests: libiamroot.so | static-rootfs
 .PHONY: shell-tests
 shell-tests: export PATH := $(CURDIR):$(PATH)
 shell-tests: export IAMROOT_LIB = $(CURDIR)/libiamroot.so
+shell-tests: export IAMROOT_EXEC = $(CURDIR)/exec.sh
 shell-tests: libiamroot.so | static-rootfs
 	iamroot-shell -c "whoami" | tee /dev/stderr | grep -q "^root\$$"
 	iamroot-shell -c "stat --print '%u:%g\n' ." | tee /dev/stderr | grep -q "^0:0$$"
@@ -174,6 +175,7 @@ shell-tests: libiamroot.so | static-rootfs
 
 .PHONY: alpine-tests
 alpine-tests: export LD_PRELOAD = $(CURDIR)/libiamroot.so
+alpine-tests: export IAMROOT_EXEC = $(CURDIR)/exec.sh
 alpine-tests: libiamroot.so | alpine-minirootfs
 	chroot alpine-minirootfs pwd | tee /dev/stderr | grep -q "^/\$$"
 	chroot alpine-minirootfs cat /etc/os-release | tee /dev/stderr | grep 'NAME="Alpine Linux"'
@@ -181,17 +183,20 @@ alpine-tests: libiamroot.so | alpine-minirootfs
 .PHONY: shell
 shell: export PATH := $(CURDIR):$(PATH)
 shell: export IAMROOT_LIB = $(CURDIR)/libiamroot.so
+shell: export IAMROOT_EXEC = $(CURDIR)/exec.sh
 shell: libiamroot.so
 	iamroot-shell
 
 .PHONY: chroot
 chroot: export LD_PRELOAD = $(CURDIR)/libiamroot.so
+chroot: export IAMROOT_EXEC = $(CURDIR)/exec.sh
 chroot: export PATH := $(CURDIR):/bin:/sbin
 chroot: libiamroot.so | static-rootfs
 	chroot static-rootfs /bin/sh
 
 .PHONY: alpine-chroot
 alpine-chroot: export LD_PRELOAD = $(CURDIR)/libiamroot.so
+alpine-chroot: export IAMROOT_EXEC = $(CURDIR)/exec.sh
 alpine-chroot: export PATH := $(CURDIR):/bin:/sbin
 alpine-chroot: libiamroot.so | alpine-minirootfs
 	chroot alpine-minirootfs /bin/sh
@@ -234,6 +239,7 @@ alpine-minirootfs-3.13.0-x86_64.tar.gz:
 arch-rootfs: | arch-rootfs/usr/bin/pacman
 
 arch-rootfs/usr/bin/pacman: export LD_PRELOAD = $(CURDIR)/libiamroot.so
+arch-rootfs/usr/bin/pacman: export IAMROOT_EXEC = $(CURDIR)/exec.sh
 arch-rootfs/usr/bin/pacman: export EUID = 0
 arch-rootfs/usr/bin/pacman: export IAMROOT_FORCE = 1
 arch-rootfs/usr/bin/pacman: libiamroot.so

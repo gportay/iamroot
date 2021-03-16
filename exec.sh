@@ -18,6 +18,20 @@ case "${1##*/}" in
 mount|umount)
 	log "Warning:" "Command is skipped:" "$@"
 	;;
+ldconfig)
+	if [[ "${IAMROOT_ROOT:-/}" != / ]]
+	then
+		set -- "$@" -r "$IAMROOT_ROOT"
+
+		shift
+		set -- "$IAMROOT_ROOT/usr/bin/ldconfig" "$@"
+	fi
+
+	unset LD_PRELOAD
+	unset IAMROOT_ROOT
+
+	exec "$@"
+	;;
 *)
 	log "Warning:" "Command not handled:" "$@"
 	;;

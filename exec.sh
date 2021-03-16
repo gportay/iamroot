@@ -18,6 +18,17 @@ case "${1##*/}" in
 mount|umount)
 	log "Warning:" "Command is skipped:" "$@"
 	;;
+systemd-sysusers|systemd-tmpfiles)
+	if [[ "${IAMROOT_ROOT:-/}" != / ]]
+	then
+		set -- "$@" --root "${IAMROOT_ROOT}"
+	fi
+
+	unset LD_PRELOAD
+	unset IAMROOT_ROOT
+
+	exec "$@"
+	;;
 ldconfig)
 	if [[ "${IAMROOT_ROOT:-/}" != / ]]
 	then

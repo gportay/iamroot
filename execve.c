@@ -20,6 +20,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <elf.h>
+#include <regex.h>
 
 #include <unistd.h>
 
@@ -31,6 +32,70 @@
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern int next_open(const char *, int, mode_t);
 extern int next_stat(const char *, struct stat *);
+
+static regex_t *re;
+
+static void __regex_perror(const char *s, regex_t *regex, int err)
+{
+	char buf[128];
+	regerror(err, regex, buf, sizeof(buf));
+	if (!s) {
+		fprintf(stderr, "%s\n", buf);
+		return;
+	}
+
+	fprintf(stderr, "%s: %s\n", s, buf);
+}
+
+__attribute__((constructor))
+void execve_init()
+{
+	static regex_t regex;
+	char *ignore;
+	int ret;
+
+	if (re)
+		return;
+
+	ignore = getenv("IAMROOT_EXEC_IGNORE");
+	if (!ignore)
+		ignore = "^/usr/bin/systemd-tmpfiles$|^/usr/bin/systemd-sysusers$";
+
+	ret = regcomp(&regex, ignore, REG_EXTENDED);
+	if (ret) {
+		__regex_perror("regcomp", &regex, ret);
+		return;
+	}
+
+	__fprintf(stderr, "IAMROOT_EXEC_IGNORE=%s\n", ignore);
+	re = &regex;
+}
+
+__attribute__((destructor))
+void execve_fini()
+{
+	if (!re)
+		return;
+
+	regfree(re);
+	re = NULL;
+}
+
+static int ignore(const char *path)
+{
+	int ret = 0;
+
+	if (!re)
+		return 0;
+
+	ret = regexec(re, path, 0, NULL, 0);
+	if (ret == -1) {
+		__regex_perror("regcomp", re, ret);
+		return 0;
+	}
+
+	return !ret;
+}
 
 static int issuid(const char *path)
 {
@@ -199,6 +264,9 @@ int execve(const char *path, char *const argv[], char * const envp[])
 	char buf[PATH_MAX];
 	char * const *arg;
 	ssize_t siz;
+
+	if (ignore(path))
+		goto exec;
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {

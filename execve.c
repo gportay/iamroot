@@ -48,7 +48,7 @@ static inline int issuid(const char *path)
 	return ret;
 }
 
-static inline ssize_t isstatic(const char *path, char *buf, size_t bufsize)
+static inline ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 {
 	ssize_t s, ret = -1;
 	int fd, i, num;
@@ -128,7 +128,7 @@ close:
 	return ret;
 }
 
-static ssize_t ishashbang(const char *path, char *buf, size_t bufsize)
+static ssize_t gethashbang(const char *path, char *buf, size_t bufsize)
 {
 	ssize_t siz;
 	char *d, *s;
@@ -211,7 +211,6 @@ int execve(const char *path, char *const argv[], char * const envp[])
 	 * standard search directories and only if they have set-user-ID mode
 	 * bit enabled (which is not typical).
 	 */
-
 	ret = issuid(real_path);
 	if (ret == -1)
 		return -1;
@@ -222,13 +221,13 @@ int execve(const char *path, char *const argv[], char * const envp[])
 	 * Get the dynamic linker stored in the .interp section of the ELF
 	 * linked program.
 	 */
-	siz = isstatic(real_path, interp, sizeof(interp));
+	siz = getinterp(real_path, interp, sizeof(interp));
 	if (siz == -1) {
 		/* Not an ELF linked program */
 		if (errno == ENOEXEC)
 			goto hashbang;
 
-		perror("isstatic");
+		perror("getinterp");
 		return -1;
 	} else if (siz == 0) {
 		goto force;
@@ -241,13 +240,13 @@ int execve(const char *path, char *const argv[], char * const envp[])
 
 hashbang:
 	/* Get the interpeter directive stored after the hashbang */
-	siz = ishashbang(real_path, interp, sizeof(interp));
+	siz = gethashbang(real_path, interp, sizeof(interp));
 	if (siz == -1) {
 		/* Not an hashbang interpreter directive */
 		if (errno == ENOEXEC)
 			goto force;
 
-		perror("ishashbang");
+		perror("gethashbang");
 		return -1;
 	} else if (siz > 0) {
 		char * const *arg;

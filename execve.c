@@ -32,7 +32,7 @@ extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,
 extern int next_open(const char *, int, mode_t);
 extern int next_stat(const char *, struct stat *);
 
-static inline int issuid(const char *path)
+static int issuid(const char *path)
 {
 	struct stat statbuf;
 	int ret = -1;
@@ -48,7 +48,7 @@ static inline int issuid(const char *path)
 	return ret;
 }
 
-static inline ssize_t getinterp(const char *path, char *buf, size_t bufsize)
+static ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 {
 	ssize_t s, ret = -1;
 	int fd, i, num;

@@ -48,11 +48,11 @@ static inline int issuid(const char *path)
 	return ret;
 }
 
-static inline int isstatic(const char *path)
+static inline ssize_t isstatic(const char *path, char *buf, size_t bufsize)
 {
-	int ret = -1, fd, i, num;
+	ssize_t s, ret = -1;
+	int fd, i, num;
 	Elf64_Ehdr hdr;
-	ssize_t s;
 	off_t off;
 
 	fd = next_open(path, O_RDONLY, 0);
@@ -80,7 +80,6 @@ static inline int isstatic(const char *path)
 		goto close;
 
 	/* Look for the .interp section */
-	ret = 1;
 	off = hdr.e_phoff;
 	num = hdr.e_phnum;
 	for (i = 0; i < num; i++) {
@@ -97,7 +96,18 @@ static inline int isstatic(const char *path)
 		if (hdr.p_type != PT_INTERP)
 			continue;
 
-		ret = 0;
+		if (bufsize < hdr.p_filesz) {
+			errno = ENAMETOOLONG;
+			goto close;
+		}
+
+		s = pread(fd, buf, hdr.p_filesz, hdr.p_offset);
+		if (s == -1)
+			goto close;
+		else if ((size_t)s < hdr.p_filesz)
+			goto close;
+
+		ret = s;
 		goto close;
 	}
 
@@ -197,10 +207,14 @@ int execve(const char *path, char *const argv[], char * const envp[])
 	else if (ret)
 		goto force;
 
-	ret = isstatic(real_path);
-	if (ret == -1)
+	/*
+	 * Get the dynamic linker stored in the .interp section of the ELF
+	 * linked program.
+	 */
+	siz = isstatic(real_path, interp, sizeof(interp));
+	if (siz == -1)
 		goto hashbang;
-	else if (ret)
+	else if (siz == 0)
 		goto force;
 
 	__fprintf(stderr, "%s(path: '%s' -> '%s', argv: '%s'... , envp: @%p...)\n",

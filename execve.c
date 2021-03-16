@@ -177,6 +177,11 @@ close:
 	return siz;
 }
 
+static int force()
+{
+	return strtoul(getenv("IAMROOT_FORCE") ?: "0", NULL, 0);
+}
+
 __attribute__((visibility("hidden")))
 int next_execve(const char *path, char * const argv[], char * const envp[])
 {
@@ -286,7 +291,7 @@ hashbang:
 	}
 
 force:
-	forced = strtoul(getenv("IAMROOT_FORCE") ?: "0", NULL, 0);
+	forced = force();
 	fprintf(stderr, "%s: %s: Cannot support LD_PRELOAD\n",
 			forced == 0 ? "Error" : "Warning", real_path);
 	if (forced)

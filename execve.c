@@ -66,18 +66,24 @@ static inline ssize_t isstatic(const char *path, char *buf, size_t bufsize)
 		goto close;
 
 	/* Not an ELF */
-	if (memcmp(hdr.e_ident, ELFMAG, 4) != 0)
+	if (memcmp(hdr.e_ident, ELFMAG, 4) != 0) {
+		errno = ENOEXEC;
 		goto close;
+	}
 
 	/* TODO: Support class ELF32 */
-	if (hdr.e_ident[EI_CLASS] != ELFCLASS64)
+	if (hdr.e_ident[EI_CLASS] != ELFCLASS64) {
+		errno = ENOEXEC;
 		goto close;
+	}
 
 	ret = 0;
 
 	/* Not a linked program or shared object */
-	if ((hdr.e_type != ET_EXEC) && (hdr.e_type != ET_DYN))
+	if ((hdr.e_type != ET_EXEC) && (hdr.e_type != ET_DYN)) {
+		errno = ENOEXEC;
 		goto close;
+	}
 
 	/* Look for the .interp section */
 	off = hdr.e_phoff;
@@ -112,6 +118,8 @@ static inline ssize_t isstatic(const char *path, char *buf, size_t bufsize)
 	}
 
 	fprintf(stderr, "Warning: %s: statically linked\n", path);
+	errno = ENOEXEC;
+	ret = -1;
 
 close:
 	if (close(fd))
@@ -135,8 +143,11 @@ static ssize_t ishashbang(const char *path, char *buf, size_t bufsize)
 		goto close;
 
 	buf[siz] = 0;
+
+	/* Not an hashbang interpreter directive */
 	if ((siz < 2) || (buf[0] != '#') || (buf[1] != '!')) {
-		siz = 0;
+		errno = ENOEXEC;
+		siz = -1;
 		goto close;
 	}
 
@@ -212,10 +223,16 @@ int execve(const char *path, char *const argv[], char * const envp[])
 	 * linked program.
 	 */
 	siz = isstatic(real_path, interp, sizeof(interp));
-	if (siz == -1)
-		goto hashbang;
-	else if (siz == 0)
+	if (siz == -1) {
+		/* Not an ELF linked program */
+		if (errno == ENOEXEC)
+			goto hashbang;
+
+		perror("isstatic");
+		return -1;
+	} else if (siz == 0) {
 		goto force;
+	}
 
 	__fprintf(stderr, "%s(path: '%s' -> '%s', argv: '%s'... , envp: @%p...)\n",
 			  __func__, path, real_path, argv[0], envp[0]);
@@ -226,6 +243,11 @@ hashbang:
 	/* Get the interpeter directive stored after the hashbang */
 	siz = ishashbang(real_path, interp, sizeof(interp));
 	if (siz == -1) {
+		/* Not an hashbang interpreter directive */
+		if (errno == ENOEXEC)
+			goto force;
+
+		perror("ishashbang");
 		return -1;
 	} else if (siz > 0) {
 		char * const *arg;

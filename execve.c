@@ -41,11 +41,7 @@ static int issuid(const char *path)
 	if (ret == -1)
 		return -1;
 
-	ret = (statbuf.st_mode & S_ISUID) != 0;
-	if (ret != 0)
-		fprintf(stderr, "Warning: %s: SUID set\n", path);
-
-	return ret;
+	return (statbuf.st_mode & S_ISUID) != 0;
 }
 
 static ssize_t getinterp(const char *path, char *buf, size_t bufsize)
@@ -117,7 +113,6 @@ static ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 		goto close;
 	}
 
-	fprintf(stderr, "Warning: %s: statically linked\n", path);
 	errno = ENOEXEC;
 	ret = -1;
 

@@ -29,6 +29,16 @@ systemd-sysusers|systemd-tmpfiles)
 
 	exec "$@"
 	;;
+ldd)
+	unset LD_PRELOAD
+	unset LD_LIBRARY_PATH
+	unset IAMROOT_ROOT
+
+	shift
+	set -- "$IAMROOT_ROOT/usr/bin/ldd" "$@"
+
+	exec "$@"
+	;;
 ldconfig)
 	if [[ "${IAMROOT_ROOT:-/}" != / ]]
 	then

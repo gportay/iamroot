@@ -20,6 +20,10 @@ QEMU += -serial mon:stdio
 .PHONY: all
 all: libiamroot.so
 
+libiamroot.so: __fstat.o
+libiamroot.so: __fstat64.o
+libiamroot.so: __fxstat.o
+libiamroot.so: __fxstat64.o
 libiamroot.so: __fxstatat.o
 libiamroot.so: __fxstatat64.o
 libiamroot.so: __lxstat.o
@@ -70,6 +74,8 @@ libiamroot.so: fopen64.o
 libiamroot.so: fpath_resolutionat.o
 libiamroot.so: freopen.o
 libiamroot.so: freopen64.o
+libiamroot.so: fstat.o
+libiamroot.so: fstat64.o
 libiamroot.so: fstatat.o
 libiamroot.so: fstatat64.o
 libiamroot.so: futimesat.o

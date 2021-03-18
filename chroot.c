@@ -23,13 +23,19 @@
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern char *next_getcwd(char *, size_t);
 extern int next_stat(const char *, struct stat *);
+extern int next_fstat(int, const struct stat *);
 extern int next_lstat(const char *, struct stat *);
 extern int next_fstatat(int, const char *, struct stat *, int);
 extern int next_stat64(const char *, struct stat64 *);
+extern int next_fstat64(int, const struct stat64 *);
 extern int next_lstat64(const char *, struct stat64 *);
 extern int next_fstatat64(int, const char *, struct stat64 *, int);
+extern int next___fstat(int, struct stat *);
+extern int next___fstat64(int, struct stat64 *);
 extern int next___xstat(int, const char *, struct stat *);
 extern int next___xstat64(int, const char *, struct stat64 *);
+extern int next___fxstat(int, int, struct stat *);
+extern int next___fxstat64(int, int, struct stat64 *);
 extern int next___lxstat(int, const char *, struct stat *);
 extern int next___lxstat64(int, const char *, struct stat64 *);
 extern int next___fxstatat(int, int, const char *, struct stat *, int);
@@ -187,6 +193,29 @@ exit:
 }
 
 __attribute__((visibility("hidden")))
+int rootfstat(int fd, struct stat *buf)
+{
+	uid_t uid;
+	gid_t gid;
+	int ret;
+
+	ret = next_fstat(fd, buf);
+	if (ret == -1)
+		goto exit;
+
+	uid = next_geteuid();
+	if (buf->st_uid == uid)
+		buf->st_uid = geteuid();
+
+	gid = getegid();
+	if (buf->st_gid == gid)
+		buf->st_gid = 0;
+
+exit:
+	return ret;
+}
+
+__attribute__((visibility("hidden")))
 int lrootstat(const char *path, struct stat *buf)
 {
 	uid_t uid;
@@ -257,6 +286,29 @@ exit:
 }
 
 __attribute__((visibility("hidden")))
+int rootfstat64(int fd, struct stat64 *buf)
+{
+	uid_t uid;
+	gid_t gid;
+	int ret;
+
+	ret = next_fstat64(fd, buf);
+	if (ret == -1)
+		goto exit;
+
+	uid = next_geteuid();
+	if (buf->st_uid == uid)
+		buf->st_uid = geteuid();
+
+	gid = getegid();
+	if (buf->st_gid == gid)
+		buf->st_gid = 0;
+
+exit:
+	return ret;
+}
+
+__attribute__((visibility("hidden")))
 int lrootstat64(const char *path, struct stat64 *buf)
 {
 	uid_t uid;
@@ -303,6 +355,52 @@ exit:
 }
 
 __attribute__((visibility("hidden")))
+int __rootfstat(int fd, struct stat *buf)
+{
+	uid_t uid;
+	gid_t gid;
+	int ret;
+
+	ret = next___fstat(fd, buf);
+	if (ret == -1)
+		goto exit;
+
+	uid = next_geteuid();
+	if (buf->st_uid == uid)
+		buf->st_uid = geteuid();
+
+	gid = getegid();
+	if (buf->st_gid == gid)
+		buf->st_gid = 0;
+
+exit:
+	return ret;
+}
+
+__attribute__((visibility("hidden")))
+int __rootfstat64(int fd, struct stat64 *buf)
+{
+	uid_t uid;
+	gid_t gid;
+	int ret;
+
+	ret = next___fstat64(fd, buf);
+	if (ret == -1)
+		goto exit;
+
+	uid = next_geteuid();
+	if (buf->st_uid == uid)
+		buf->st_uid = geteuid();
+
+	gid = getegid();
+	if (buf->st_gid == gid)
+		buf->st_gid = 0;
+
+exit:
+	return ret;
+}
+
+__attribute__((visibility("hidden")))
 int __rootxstat(int ver, const char *path, struct stat *buf)
 {
 	uid_t uid;
@@ -333,6 +431,52 @@ int __rootxstat64(int ver, const char *path, struct stat64 *buf)
 	int ret;
 
 	ret = next___xstat64(ver, path, buf);
+	if (ret == -1)
+		goto exit;
+
+	uid = next_geteuid();
+	if (buf->st_uid == uid)
+		buf->st_uid = geteuid();
+
+	gid = getegid();
+	if (buf->st_gid == gid)
+		buf->st_gid = 0;
+
+exit:
+	return ret;
+}
+
+__attribute__((visibility("hidden")))
+int __rootfxstat(int ver, int fd, struct stat *buf)
+{
+	uid_t uid;
+	gid_t gid;
+	int ret;
+
+	ret = next___fxstat(ver, fd, buf);
+	if (ret == -1)
+		goto exit;
+
+	uid = next_geteuid();
+	if (buf->st_uid == uid)
+		buf->st_uid = geteuid();
+
+	gid = getegid();
+	if (buf->st_gid == gid)
+		buf->st_gid = 0;
+
+exit:
+	return ret;
+}
+
+__attribute__((visibility("hidden")))
+int __rootfxstat64(int ver, int fd, struct stat64 *buf)
+{
+	uid_t uid;
+	gid_t gid;
+	int ret;
+
+	ret = next___fxstat64(ver, fd, buf);
 	if (ret == -1)
 		goto exit;
 

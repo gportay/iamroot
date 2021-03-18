@@ -7,6 +7,7 @@
 #define _GNU_SOURCE
 
 #include <stdio.h>
+#include <string.h>
 #include <errno.h>
 #include <limits.h>
 #include <dlfcn.h>
@@ -35,6 +36,8 @@ int mkstemp(char *path)
 {
 	char buf[PATH_MAX];
 	char *real_path;
+	size_t len;
+	int ret;
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {
@@ -42,8 +45,16 @@ int mkstemp(char *path)
 		return -1;
 	}
 
+	ret = next_mkstemp(real_path);
+	if (ret == -1)
+		goto exit;
+
+	len = strlen(path);
+	memcpy(path, real_path+strlen(real_path)-len, len);
+
+exit:
 	__fprintf(stderr, "%s(path: '%s' -> '%s')\n", __func__, path,
 			  real_path);
 
-	return next_mkstemp(real_path);
+	return ret;
 }

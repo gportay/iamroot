@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: LGPL-2.1
  */
 
-#ifdef __GLIBC__
-
 #define _GNU_SOURCE
 
 #include <stdio.h>
@@ -16,6 +14,7 @@
 
 #include "path_resolution.h"
 
+#ifdef __GLIBC__
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 __attribute__((visibility("hidden")))

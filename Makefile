@@ -73,6 +73,7 @@ libiamroot.so: execvp.o
 libiamroot.so: execvpe.o
 libiamroot.so: faccessat.o
 libiamroot.so: fchdir.o
+libiamroot.so: fchmod.o
 libiamroot.so: fchmodat.o
 libiamroot.so: fchown.o
 libiamroot.so: fchownat.o

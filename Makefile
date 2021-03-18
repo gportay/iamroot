@@ -196,6 +196,10 @@ alpine-chroot: export PATH := $(CURDIR):/bin:/sbin
 alpine-chroot: libiamroot.so | alpine-minirootfs
 	chroot alpine-minirootfs /bin/sh
 
+.PHONY: arch-chroot
+arch-chroot: | arch-rootfs
+	bash iamroot-shell --library $(CURDIR)/libiamroot.so --exec $(CURDIR)/exec.sh -c "chroot arch-rootfs"
+
 .PHONY: static-rootfs
 static-rootfs: static-rootfs/usr/bin/sh
 static-rootfs: static-rootfs/bin

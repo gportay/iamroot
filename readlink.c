@@ -43,6 +43,17 @@ ssize_t readlink(const char *path, char *buf, size_t bufsize)
 	ssize_t ret;
 	size_t len;
 
+	root = getrootdir();
+	len = strlen(root);
+
+	if (strcmp(path, "/proc/self/root") == 0) {
+		ret = len;
+		if ((size_t)ret > bufsize)
+			ret = bufsize;
+		memcpy(buf, root, ret);
+		goto exit;
+	}
+
 	real_path = path_resolution(path, tmp, sizeof(tmp), 0);
 	if (!real_path) {
 		perror("path_resolution");
@@ -53,14 +64,12 @@ ssize_t readlink(const char *path, char *buf, size_t bufsize)
 	if (ret == -1)
 		goto exit;
 
-	root = getrootdir();
 	if (strncmp(root, "/", ret) == 0)
 		goto exit;
 
 	if (__strlcmp(buf, getrootdir()) != 0)
 		goto exit;
 
-	len = strlen(root);
 	memmove(buf, buf+len, strlen(buf)-len+1);
 	ret -= len;
 

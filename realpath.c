@@ -185,8 +185,8 @@ toolong:
 
 char *realpath(const char *path, char *resolved_path)
 {
-	const char *real_path;
 	char buf[PATH_MAX];
+	char *real_path;
 	size_t len;
 	char *ret;
 

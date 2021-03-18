@@ -9,6 +9,14 @@ PREFIX ?= /usr/local
 override CFLAGS += -fPIC -Wall -Wextra -Werror
 override CFLAGS += -DARG_MAX=$(shell getconf ARG_MAX)
 
+QEMU ?= qemu-system-x86_64
+QEMU += -enable-kvm -m 4G -machine q35 -smp 4 -cpu host
+ifndef NO_SPICE
+QEMU += -vga virtio -display egl-headless,gl=on
+QEMU += -spice port=5924,disable-ticketing -device virtio-serial-pci -device virtserialport,chardev=spicechannel0,name=com.redhat.spice.0 -chardev spicevmc,id=spicechannel0,name=vdagent
+endif
+QEMU += -serial mon:stdio
+
 .PHONY: all
 all: libiamroot.so
 
@@ -147,6 +155,18 @@ ci: check
 	$(MAKE) clean tests
 	$(SHELL) make-musl-gcc.sh clean all
 
+.PHONY: run-qemu
+run-qemu: export LD_PRELOAD = $(CURDIR)/libiamroot.so
+run-qemu: export EUID = 0
+run-qemu: export IAMROOT_FORCE = 1
+run-qemu: export IAMROOT_EXEC = $(CURDIR)/exec.sh
+run-qemu: override QEMUFLAGS += -append "console=ttyS0 root=host0 rootfstype=9p rootflags=trans=virtio debug"
+run-qemu: override QEMUFLAGS += -kernel arch-rootfs/boot/vmlinuz-linux
+run-qemu: override QEMUFLAGS += -initrd arch-rootfs/boot/initramfs-linux-fallback.img
+run-qemu: override QEMUFLAGS += -virtfs local,path=$(CURDIR)/arch-rootfs,mount_tag=host0,security_model=passthrough,id=host0
+run-qemu: | arch-rootfs/boot/vmlinuz-linux
+	$(QEMU) $(QEMUFLAGS)
+
 .PHONY: check
 check:
 	shellcheck iamroot-shell
@@ -239,6 +259,13 @@ alpine-minirootfs-3.13.0-x86_64.tar.gz:
 
 .PHONY: arch-rootfs
 arch-rootfs: | arch-rootfs/usr/bin/pacman
+
+arch-rootfs/boot/vmlinuz-linux: export LD_PRELOAD = $(CURDIR)/libiamroot.so
+arch-rootfs/boot/vmlinuz-linux: export IAMROOT_EXEC = $(CURDIR)/exec.sh
+arch-rootfs/boot/vmlinuz-linux: export EUID = 0
+arch-rootfs/boot/vmlinuz-linux: export IAMROOT_FORCE = 1
+arch-rootfs/boot/vmlinuz-linux: libiamroot.so | arch-rootfs/usr/bin/pacman
+	pacman -r arch-rootfs --noconfirm -S linux
 
 arch-rootfs/usr/bin/pacman: export LD_PRELOAD = $(CURDIR)/libiamroot.so
 arch-rootfs/usr/bin/pacman: export IAMROOT_EXEC = $(CURDIR)/exec.sh

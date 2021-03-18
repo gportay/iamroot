@@ -138,7 +138,9 @@ char *fpath_resolutionat(int fd, const char *path, char *buf, size_t bufsize,
 			 int flags)
 {
 	struct stat statbuf;
+	const char *root;
 	char *real_path;
+	size_t len;
 
 	if (fd == -1 || !path) {
 		errno = EINVAL;
@@ -200,6 +202,14 @@ char *fpath_resolutionat(int fd, const char *path, char *buf, size_t bufsize,
 	}
 
 	real_path = sanitize(buf, bufsize);
+
+	root = getrootdir();
+	if (strcmp(root, "/") == 0)
+		root = "";
+	len = strlen(root);
+
+	if (ignore(real_path+len))
+		return memcpy(buf, real_path+len, strlen(real_path+len)+1);
 
 	if (flags == AT_SYMLINK_NOFOLLOW)
 		goto exit;

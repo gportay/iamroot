@@ -45,7 +45,7 @@ ldconfig)
 		set -- "$@" -r "$IAMROOT_ROOT"
 
 		shift
-		set -- "$IAMROOT_ROOT/usr/bin/ldconfig" "$@"
+		set -- "$IAMROOT_ROOT/usr/sbin/ldconfig" "$@"
 	fi
 
 	unset LD_PRELOAD

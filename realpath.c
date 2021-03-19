@@ -21,6 +21,7 @@
 #define __strchrnul strchrnul
 #define readlink next_readlink
 #define getcwd next_getcwd
+#define __strlcmp(s1, s2) strncmp(s1, s2, strlen(s2))
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern const char *getrootdir();
@@ -186,6 +187,7 @@ toolong:
 char *realpath(const char *path, char *resolved_path)
 {
 	char buf[PATH_MAX];
+	const char *root;
 	char *real_path;
 	size_t len;
 	char *ret;
@@ -196,23 +198,32 @@ char *realpath(const char *path, char *resolved_path)
 		return NULL;
 	}
 
-	__fprintf(stderr, "%s(path: '%s' -> '%s', ...)\n", __func__, path,
-			  real_path);
-
 	ret = next_realpath(real_path, resolved_path);
 	if (!ret)
-		return ret;
+		goto exit;
 
-	len = strlen(getrootdir());
-	if (len < 2)
-		return ret;
+	root = getrootdir();
+	len = strlen(root);
+
+	if (strcmp(root, "/") == 0)
+		goto exit;
+
+	if (__strlcmp(ret, getrootdir()) != 0)
+		goto exit;
 
 	if (!resolved_path) {
 		resolved_path = strdup(ret+len);
 		free(ret);
 		ret = resolved_path;
-		return ret;
+		goto exit;
 	}
 
-	return memmove(resolved_path, resolved_path+len, strlen(ret)-len+1);
+	ret = memmove(resolved_path, ret+len, strlen(ret)-len+1);
+
+exit:
+	__fprintf(stderr, "%s(path: '%s' -> '%s', ...)\n", __func__, path,
+			  real_path);
+
+	return ret;
+
 }

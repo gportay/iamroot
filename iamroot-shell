@@ -57,6 +57,9 @@ Environment variables:
 
       IAMROOT_LIB               Set absolute path to library to use.
                                 Equivalent to --library LIB.
+
+      IAMROOT_EXEC_DEBUG        Set debug mode for execve().
+
       IAMROOT_DEBUG             Set debug mode.
                                 Equivalent to --debug.
 EOF

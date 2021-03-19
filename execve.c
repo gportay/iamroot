@@ -241,15 +241,39 @@ close:
 	return siz;
 }
 
+static int exec_debug()
+{
+	return strtoul(getenv("IAMROOT_EXEC_DEBUG") ?: "0", NULL, 0);
+}
+
 __attribute__((visibility("hidden")))
 int next_execve(const char *path, char * const argv[], char * const envp[])
 {
 	int (*sym)(const char *, char * const argv[], char * const envp[]);
+	int debug;
 
 	sym = dlsym(RTLD_NEXT, "execve");
 	if (!sym) {
 		errno = ENOSYS;
 		return -1;
+	}
+
+	debug = exec_debug();
+	if (debug > 0) {
+		char * const *p;
+
+		fprintf(stderr, "Debug: execve(): pid: %i: path %s: argv:",
+			getpid(), path);
+		p = argv;
+		while (*p)
+			fprintf(stderr, " %s", *p++);
+		if (debug > 1) {
+			fprintf(stderr, ": envp:\n");
+			p = envp;
+			while (*p)
+				fprintf(stderr, "                 %s\n", *p++);
+		}
+		fprintf(stderr, "\n");
 	}
 
 	return sym(path, argv, envp);

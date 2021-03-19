@@ -30,6 +30,7 @@
 #define HASHBANG_MAX NAME_MAX
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
+extern const char *getrootdir();
 extern int next_open(const char *, int, mode_t);
 extern int next_stat(const char *, struct stat *);
 
@@ -308,6 +309,10 @@ int execve(const char *path, char *const argv[], char * const envp[])
 	return next_execve(real_path, argv, envp);
 
 hashbang:
+	/* Do not proceed to interpreter hack if not in chroot */
+	if (strcmp(getrootdir(), "/") == 0)
+		return next_execve(path, argv, envp);
+
 	/* Get the interpeter directive stored after the hashbang */
 	siz = gethashbang(real_path, interp, sizeof(interp));
 	if (siz == -1) {

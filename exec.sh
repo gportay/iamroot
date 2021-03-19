@@ -15,7 +15,7 @@ log() {
 }
 
 case "${1##*/}" in
-mount|umount)
+mount|umount|systemctl)
 	log "Warning:" "Command is skipped:" "$@"
 	;;
 ldd)

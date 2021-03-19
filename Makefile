@@ -290,6 +290,11 @@ alpine-%-chroot: | alpine-%-rootfs
 arch-chroot: | arch-rootfs
 	bash iamroot-shell -c "chroot arch-rootfs"
 
+fedora-34-chroot:
+fedora-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/systemd:/usr/lib:/lib
+fedora-%-chroot: | fedora-%-rootfs
+	bash iamroot-shell -c "chroot fedora-$*-rootfs"
+
 .PHONY: static-rootfs
 static-rootfs: static-rootfs/usr/bin/sh
 static-rootfs: static-rootfs/bin
@@ -340,8 +345,19 @@ arch-rootfs/etc/machine-id: | libiamroot.so
 	mkdir -p arch-rootfs
 	bash iamroot-shell -c "pacstrap arch-rootfs"
 
+fedora-34-rootfs: | fedora-34-rootfs/etc/machine-id
+
+fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/systemd:/usr/lib:/lib
+fedora-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|getent|useradd
+fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/
+fedora-%-rootfs/etc/machine-id: | libiamroot.so
+	install -D -m644 fedora.repo fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
+	bash iamroot-shell -c "dnf --releasever $* --assumeyes --installroot $(CURDIR)/fedora-$*-rootfs group install minimal-environment"
+	rm -f fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
+
 qemu-system-x86_64-alpine-3.14 qemu-system-x86_64-alpine-edge:
 qemu-system-x86_64-arch:
+qemu-system-x86_64-fedora-34: override CMDLINE += rw
 qemu-system-x86_64-%: override CMDLINE += panic=5
 qemu-system-x86_64-%: override CMDLINE += console=ttyS0
 qemu-system-x86_64-%: override QEMUSYSTEMFLAGS += -enable-kvm -m 4G -machine q35 -smp 4 -cpu host
@@ -400,6 +416,7 @@ initrd-rootfs/lib/modules/$(KVER)/modules.%: initrd-rootfs/bin/busybox | initrd-
 
 vmlinux-alpine-3.14 vmlinux-alpine-edge:
 vmlinux-arch:
+vmlinux-fedora-34:
 vmlinux-%: override VMLINUXFLAGS+=panic=5
 vmlinux-%: override VMLINUXFLAGS+=console=tty0 con0=fd:0,fd:1 con=none
 vmlinux-%: override VMLINUXFLAGS+=mem=256M
@@ -452,6 +469,20 @@ arch-postrootfs:
 	mkdir -p arch-rootfs/var/lib/systemd/linger
 	rm -f arch-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
 	bash iamroot-shell --chroot $(CURDIR)/arch-rootfs -c "systemctl enable getty@tty0.service"
+
+fedora-34-postrootfs:
+fedora-%-postrootfs: export LD_LIBRARY_PATH = $(CURDIR)/fedora-$*-rootfs/usr/lib/systemd:$(CURDIR)/fedora-$*-rootfs/usr/lib:$(CURDIR)/fedora-$*-rootfs/lib
+fedora-%-postrootfs:
+	sed -e '/^root:x:/s,^root:x:,root::,' \
+	    -i fedora-$*-rootfs/etc/passwd
+	sed -e '/^root::/s,^root::,root:x:,' \
+	    -i fedora-$*-rootfs/etc/shadow
+	touch fedora-$*-rootfs/etc/systemd/zram-generator.conf
+	mkdir -p fedora-$*-rootfs/var/lib/systemd/linger
+	rm -f fedora-$*-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
+	bash iamroot-shell --chroot $(CURDIR)/fedora-$*-rootfs -c "systemctl enable getty@tty0.service"
+	rm -f fedora-$*-rootfs/etc/systemd/system/multi-user.target.wants/sshd.service
+	bash iamroot-shell --chroot $(CURDIR)/fedora-$*-rootfs -c "systemctl disable sshd.service"
 
 .PHONY: %-postrootfs
 %-postrootfs:

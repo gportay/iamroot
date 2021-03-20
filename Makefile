@@ -112,6 +112,7 @@ libiamroot.so: mkstemp64.o
 libiamroot.so: mkstemps.o
 libiamroot.so: mkstemps64.o
 libiamroot.so: mount.o
+libiamroot.so: name_to_handle_at.o
 libiamroot.so: open.o
 libiamroot.so: open64.o
 libiamroot.so: openat.o

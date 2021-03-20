@@ -17,7 +17,7 @@
 #include "path_resolution.h"
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
-extern int lrootstat(const char *, struct stat *);
+extern int rootlstat(const char *, struct stat *);
 
 __attribute__((visibility("hidden")))
 int next_lstat(const char *path, struct stat *statbuf)
@@ -45,7 +45,7 @@ int lstat(const char *path, struct stat *statbuf)
 		return -1;
 	}
 
-	ret = lrootstat(real_path, statbuf);
+	ret = rootlstat(real_path, statbuf);
 
 	__fprintf(stderr, "%s(path: '%s' -> '%s', ...)\n", __func__, path,
 			  real_path);

@@ -216,7 +216,7 @@ exit:
 }
 
 __attribute__((visibility("hidden")))
-int lrootstat(const char *path, struct stat *buf)
+int rootlstat(const char *path, struct stat *buf)
 {
 	uid_t uid;
 	gid_t gid;
@@ -239,7 +239,7 @@ exit:
 }
 
 __attribute__((visibility("hidden")))
-int frootstatat(int fd, const char *path, struct stat *buf, int flags)
+int rootfstatat(int fd, const char *path, struct stat *buf, int flags)
 {
 	uid_t uid;
 	gid_t gid;
@@ -309,7 +309,7 @@ exit:
 }
 
 __attribute__((visibility("hidden")))
-int lrootstat64(const char *path, struct stat64 *buf)
+int rootlstat64(const char *path, struct stat64 *buf)
 {
 	uid_t uid;
 	gid_t gid;
@@ -332,7 +332,7 @@ exit:
 }
 
 __attribute__((visibility("hidden")))
-int frootstatat64(int fd, const char *path, struct stat64 *buf, int flags)
+int rootfstatat64(int fd, const char *path, struct stat64 *buf, int flags)
 {
 	uid_t uid;
 	gid_t gid;

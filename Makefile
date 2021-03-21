@@ -313,6 +313,7 @@ arch-rootfs/etc/machine-id: libiamroot.so
 .PHONY: clean
 clean:
 	rm -f libiamroot.so *.o
+	-chmod +w arch-rootfs/etc/ca-certificates/extracted/cadir
 	rm -Rf static-rootfs/ alpine-minirootfs/ arch-rootfs/
 	$(MAKE) -C tests $@
 

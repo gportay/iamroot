@@ -234,9 +234,11 @@ shell-tests: libiamroot.so | static-rootfs
 .PHONY: alpine-tests
 alpine-tests: export LD_PRELOAD = $(CURDIR)/libiamroot.so
 alpine-tests: export IAMROOT_EXEC = $(CURDIR)/exec.sh
+alpine-tests: export IAMROOT_PATH = /sbin:/usr/sbin:/bin:/usr/bin
 alpine-tests: libiamroot.so | alpine-minirootfs
 	chroot alpine-minirootfs pwd | tee /dev/stderr | grep -q "^/\$$"
 	chroot alpine-minirootfs cat /etc/os-release | tee /dev/stderr | grep 'NAME="Alpine Linux"'
+	chroot alpine-minirootfs chroot . cat /etc/os-release | tee /dev/stderr | grep 'NAME="Alpine Linux"'
 
 .PHONY: shell
 shell: export PATH := $(CURDIR):$(PATH)

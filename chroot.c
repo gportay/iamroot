@@ -23,6 +23,7 @@
 #define __strlcmp(s1, s2) strncmp(s1, s2, strlen(s2))
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
+extern char *sanitize(char *, size_t);
 extern char *next_getcwd(char *, size_t);
 extern int next_stat(const char *, struct stat *);
 extern int next_fstat(int, const struct stat *);
@@ -646,6 +647,8 @@ int chroot(const char *path)
 			return -1;
 		}
 	}
+
+	real_path = sanitize(buf, sizeof(buf));
 
 	setenv("PATH", getenv("IAMROOT_PATH") ?: "/bin:/usr/bin", 1);
 	prependenv(real_path, "LD_LIBRARY_PATH",

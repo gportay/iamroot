@@ -101,7 +101,6 @@ tests:
 	IAMROOT_ROOT=$(CURDIR) /openat . /file
 	opendir proc
 	IAMROOT_ROOT=$(CURDIR) /opendir /proc
-	sanitize . ./ ././ | tee /dev/stderr | grep -vc '^\.$$' | grep -q '^0$$'
 	rename file file1
 	renameat - file1 - file2
 	IAMROOT_ROOT=$(CURDIR) /renameat - /file2 - /file3
@@ -109,11 +108,12 @@ tests:
 	rmdir proc
 	rmdir sys
 	IAMROOT_ROOT=$(CURDIR) /rmdir /tmp
+	sanitize . ./ ././ | tee /dev/stderr | grep -vc '^\.$$' | grep -q '^0$$'
+	sanitize / // ///  | tee /dev/stderr | grep -vc '^/$$'  | grep -q '^0$$'
 	scandir .
 	IAMROOT_ROOT=$(CURDIR) /scandirat - /
 	statfs .
 	statvfs .
-	sanitize / // ///  | tee /dev/stderr | grep -vc '^/$$'  | grep -q '^0$$'
 	statx - file 0 0
 	IAMROOT_ROOT=$(CURDIR) /statx - /file 0 0
 	symlink file symlink1

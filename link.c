@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <limits.h>
+#include <fcntl.h>
 #include <dlfcn.h>
 
 #include <unistd.h>
@@ -36,13 +37,15 @@ int link(const char *oldpath, const char *newpath)
 	char oldbuf[PATH_MAX], newbuf[PATH_MAX];
 	char *real_oldpath, *real_newpath;
 
-	real_oldpath = path_resolution(oldpath, oldbuf, sizeof(oldbuf), 0);
+	real_oldpath = path_resolution(oldpath, oldbuf, sizeof(oldbuf),
+				       AT_SYMLINK_NOFOLLOW);
 	if (!real_oldpath) {
 		perror("path_resolution");
 		return -1;
 	}
 
-	real_newpath = path_resolution(newpath, newbuf, sizeof(newbuf), 0);
+	real_newpath = path_resolution(newpath, newbuf, sizeof(newbuf),
+				       AT_SYMLINK_NOFOLLOW);
 	if (!real_newpath) {
 		perror("path_resolution");
 		return -1;

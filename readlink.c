@@ -10,6 +10,7 @@
 #include <string.h>
 #include <errno.h>
 #include <limits.h>
+#include <fcntl.h>
 #include <dlfcn.h>
 
 #include <unistd.h>
@@ -54,7 +55,8 @@ ssize_t readlink(const char *path, char *buf, size_t bufsize)
 		goto exit;
 	}
 
-	real_path = path_resolution(path, tmp, sizeof(tmp), 0);
+	real_path = path_resolution(path, tmp, sizeof(tmp),
+				    AT_SYMLINK_NOFOLLOW);
 	if (!real_path) {
 		perror("path_resolution");
 		return -1;

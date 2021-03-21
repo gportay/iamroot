@@ -630,7 +630,7 @@ int chroot(const char *path)
 		size_t len;
 		char *cwd;
 
-		cwd = getcwd(buf, sizeof(buf));
+		cwd = next_getcwd(buf, sizeof(buf));
 		len = strlen(cwd);
 		if (len + 1 + strlen(path) + 1 > sizeof(buf)) {
 			errno = ENAMETOOLONG;

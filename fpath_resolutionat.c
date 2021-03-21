@@ -134,6 +134,10 @@ char *sanitize(char *path, size_t bufsize)
 		path[len-1] = 0;
 		len--;
 	}
+	if (len == 0) {
+		path[len++] = '.';
+		path[len] = 0;
+	}
 
 	return path;
 }

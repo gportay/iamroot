@@ -46,18 +46,14 @@ extern int next_statx(int, const char *, int, unsigned int, struct statx *);
 #endif
 extern uid_t next_geteuid();
 
-static int prependenv(const char *root, const char *name, const char *value,
+static int pathsetenv(const char *root, const char *name, const char *value,
 		      int overwrite)
 {
-	char *old_value, *new_value = NULL, *tmp = NULL;
+	char *new_value = NULL, *tmp = NULL;
 	char *token, *saveptr;
 	size_t len = 0;
 	int ret = -1;
 	char *str;
-
-	old_value = getenv(name);
-	if (old_value && *old_value)
-		len += strlen(old_value);
 
 	tmp = strdup(value);
 	if (!tmp)
@@ -68,8 +64,6 @@ static int prependenv(const char *root, const char *name, const char *value,
 	token = strtok_r(tmp, ":", &saveptr);
 	if (token && *token) {
 		len += strlen(root);
-		if (old_value && *old_value)
-			len++;
 		while ((token = strtok_r(NULL, ":", &saveptr)))
 			len += strlen(root);
 	}
@@ -102,19 +96,6 @@ static int prependenv(const char *root, const char *name, const char *value,
 		}
 	}
 
-	if (old_value && *old_value) {
-		int n;
-
-		if (old_value && *old_value) {
-		   *str++ = ':';
-		   len--;
-		}
-
-		n = snprintf(str, len, "%s", old_value);
-		str += n;
-		len -= n;
-	}
-
 	ret = setenv(name, new_value, overwrite);
 
 exit:
@@ -134,7 +115,7 @@ static inline int setrootdir(const char *path)
 	if (!path)
 		return unsetenv("IAMROOT_ROOT");
 
-	return setenv("IAMROOT_ROOT", path, 0);
+	return setenv("IAMROOT_ROOT", path, 1);
 }
 
 __attribute__((visibility("hidden")))
@@ -615,29 +596,36 @@ exit:
 int chroot(const char *path)
 {
 	char buf[PATH_MAX];
-	const char *root;
 	char *real_path;
 
-	/* Is it supported correcly? */
-	root = getrootdir();
-	if (strcmp(root, "/") != 0)
-		fprintf(stderr, "Warning: Already chroot: '%s'\n", root);
-
-	/* prepend the current working directory for relative paths */
+	/* Prepend chroot and current working directory for relative paths */
 	if (path[0] != '/') {
-		size_t len;
+		size_t len, rootlen;
+		const char *root;
 		char *cwd;
 
-		cwd = next_getcwd(buf, sizeof(buf));
+		len = 0;
+		cwd = buf;
+		root = getrootdir();
+		rootlen = strlen(root);
+		if (strcmp(root, "/") != 0) {
+			strcpy(cwd, root);
+			cwd += rootlen;
+		}
+
+		cwd = getcwd(cwd, sizeof(buf)-rootlen);
 		len = strlen(cwd);
-		if (len + 1 + strlen(path) + 1 > sizeof(buf)) {
+		if (rootlen + len + 1 + strlen(path) + 1 > sizeof(buf)) {
 			errno = ENAMETOOLONG;
 			return -1;
 		}
 
 		cwd[len++] = '/';
 		cwd[len] = 0;
-		real_path = strncat(cwd, path, sizeof(buf) - len);
+
+		strncat(cwd, path, sizeof(buf) - len);
+
+		real_path = buf;
 	} else {
 		real_path = path_resolution(path, buf, sizeof(buf),
 					    AT_SYMLINK_NOFOLLOW);
@@ -650,7 +638,7 @@ int chroot(const char *path)
 	real_path = sanitize(buf, sizeof(buf));
 
 	setenv("PATH", getenv("IAMROOT_PATH") ?: "/bin:/usr/bin", 1);
-	prependenv(real_path, "LD_LIBRARY_PATH",
+	pathsetenv(real_path, "LD_LIBRARY_PATH",
 		   getenv("IAMROOT_LD_LIBRARY_PATH") ?: "/usr/lib:/lib", 1);
 
 	if (setrootdir(real_path))

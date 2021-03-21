@@ -20,6 +20,8 @@
 
 #include "path_resolution.h"
 
+#define __strlcmp(s1, s2) strncmp(s1, s2, strlen(s2))
+
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern char *next_getcwd(char *, size_t);
 extern int next_stat(const char *, struct stat *);
@@ -161,7 +163,7 @@ int chrootdir(const char *cwd)
 		return -1;
 
 	root = getrootdir();
-	if (strstr(cwd, root) == NULL) {
+	if (__strlcmp(cwd, root) != 0) {
 		__fprintf(stderr, "Exiting chroot: '%s'\n", root);
 		return unsetenv("IAMROOT_ROOT");
 	}

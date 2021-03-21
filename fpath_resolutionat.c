@@ -126,6 +126,10 @@ char *sanitize(char *path, size_t bufsize)
 			*s = *(s+2);
 		len -= 2;
 	}
+	while ((len > 2) && (__strncmp(&path[len-2], "/.") == 0)) {
+		path[len-2] = 0;
+		len -= 2;
+	}
 	while ((len > 1) && (path[len-1] == '/')) {
 		path[len-1] = 0;
 		len--;

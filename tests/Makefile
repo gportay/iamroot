@@ -108,8 +108,8 @@ tests:
 	rmdir proc
 	rmdir sys
 	IAMROOT_ROOT=$(CURDIR) /rmdir /tmp
-	sanitize . ./ ././ | tee /dev/stderr | grep -vc '^\.$$' | grep -q '^0$$'
-	sanitize / // ///  | tee /dev/stderr | grep -vc '^/$$'  | grep -q '^0$$'
+	sanitize . ./ ././ ./. ././. | tee /dev/stderr | grep -vc '^\.$$' | grep -q '^0$$'
+	sanitize / // ///  //. //./. | tee /dev/stderr | grep -vc '^/$$'  | grep -q '^0$$'
 	scandir .
 	IAMROOT_ROOT=$(CURDIR) /scandirat - /
 	statfs .

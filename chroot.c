@@ -614,7 +614,13 @@ exit:
 int chroot(const char *path)
 {
 	char buf[PATH_MAX];
+	const char *root;
 	char *real_path;
+
+	/* Is it supported correcly? */
+	root = getrootdir();
+	if (strcmp(root, "/") != 0)
+		fprintf(stderr, "Warning: Already chroot: '%s'\n", root);
 
 	/* prepend the current working directory for relative paths */
 	if (path[0] != '/') {

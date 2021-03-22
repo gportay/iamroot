@@ -49,60 +49,49 @@ extern uid_t next_geteuid();
 static int pathsetenv(const char *root, const char *name, const char *value,
 		      int overwrite)
 {
-	char *new_value = NULL, *tmp = NULL;
-	char *token, *saveptr;
-	size_t len = 0;
-	int ret = -1;
-	char *str;
+	size_t rootlen, vallen, newlen;
 
-	tmp = strdup(value);
-	if (!tmp)
-		goto exit;
+	newlen = 0;
+	rootlen = strlen(root);
 
-	len += strlen(tmp);
+	vallen = strlen(value);
+	if (vallen > 0) {
+		char *token, *saveptr, val[vallen];
 
-	token = strtok_r(tmp, ":", &saveptr);
-	if (token && *token) {
-		len += strlen(root);
-		while ((token = strtok_r(NULL, ":", &saveptr)))
-			len += strlen(root);
+		newlen = vallen;
+		newlen += rootlen;
+		newlen++; /* NUL */
+
+		strcpy(val, value);
+		token = strtok_r(val, ":", &saveptr);
+		if (token && *token)
+			while ((token = strtok_r(NULL, ":", &saveptr)))
+				newlen += rootlen;
 	}
 
-	if (!len) {
-		ret = 0;
-		goto exit;
-	}
+	if (newlen > 0) {
+		char *str, *token, *saveptr, val[vallen], new_value[newlen];
 
-	len++; /* NUL */
-	new_value = malloc(len);
-	if (!new_value)
-		goto exit;
+		str = new_value;
+		strcpy(val, value);
+		token = strtok_r(val, ":", &saveptr);
+		if (token && *token) {
+			int n;
 
-	*new_value = 0;
-	str = new_value;
-
-	strcpy(tmp, value);
-	token = strtok_r(tmp, ":", &saveptr);
-	if (token && *token) {
-		int n;
-
-		n = snprintf(str, len, "%s%s", root, token);
-		str += n;
-		len -= n;
-		while ((token = strtok_r(NULL, ":", &saveptr))) {
-			n = snprintf(str, len, ":%s%s", root, token);
+			n = snprintf(str, newlen, "%s%s", root, token);
 			str += n;
-			len -= n;
+			newlen -= n;
+			while ((token = strtok_r(NULL, ":", &saveptr))) {
+				n = snprintf(str, newlen, ":%s%s", root, token);
+				str += n;
+				newlen -= n;
+			}
 		}
+
+		return setenv(name, new_value, overwrite);
 	}
 
-	ret = setenv(name, new_value, overwrite);
-
-exit:
-	free(tmp);
-	free(new_value);
-
-	return ret;
+	return setenv(name, value, overwrite);
 }
 
 static inline char *rootdir()

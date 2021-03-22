@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <limits.h>
+#include <fcntl.h>
 #include <dlfcn.h>
 
 #include <utime.h>
@@ -38,7 +39,8 @@ int utime(const char *path, const struct utimbuf *times)
 	char buf[PATH_MAX];
 	char *real_path;
 
-	real_path = path_resolution(path, buf, sizeof(buf), 0);
+	real_path = path_resolution(path, buf, sizeof(buf),
+				    AT_SYMLINK_NOFOLLOW);
 	if (!real_path) {
 		perror("path_resolution");
 		return -1;

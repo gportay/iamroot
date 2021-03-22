@@ -39,7 +39,8 @@ int futimesat(int fd, const char *path, const struct timeval times[2])
 	char buf[PATH_MAX];
 	char *real_path;
 
-	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), 0);
+	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf),
+				       AT_SYMLINK_NOFOLLOW);
 	if (!real_path) {
 		perror("fpath_resolutionat");
 		return -1;

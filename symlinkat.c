@@ -39,7 +39,8 @@ int symlinkat(const char *string, int fd, const char *path)
 	char buf[PATH_MAX];
 	char *real_path;
 
-	real_path = path_resolution(fd, path, buf, sizeof(buf), 0);
+	real_path = path_resolution(fd, path, buf, sizeof(buf),
+				       AT_SYMLINK_NOFOLLOW);
 	if (!real_path) {
 		__pathperror(path, "path_resolution");
 		return -1;

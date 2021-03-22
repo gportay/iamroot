@@ -50,8 +50,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   [dynamic loader][ld.so(8)] and its arguments if the command as less arguments
   that the shift
 - Fix the following symlink behaviour for the at functions `readlinkat()`,
-  `renameat2()` and `unlinkat()` by forwarding AT flag `AT_SYMLINK_NOFOLLOW`
-  to `path_resolution()`
+  `renameat2()`, `symlink()`, `symlinkat()` and `unlinkat()` by forwarding AT
+  flag `AT_SYMLINK_NOFOLLOW` to `path_resolution()`
 - Fix the adding of an empty hashbang argument
 
 ### Security

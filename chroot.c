@@ -586,6 +586,7 @@ int chroot(const char *path)
 {
 	char buf[PATH_MAX];
 	char *real_path;
+	int ret;
 
 	/* Prepend chroot and current working directory for relative paths */
 	if (path[0] != '/') {
@@ -626,14 +627,23 @@ int chroot(const char *path)
 
 	real_path = sanitize(buf, sizeof(buf));
 
-	setenv("PATH", getenv("IAMROOT_PATH") ?: "/bin:/usr/bin", 1);
-	pathsetenv(real_path, "LD_LIBRARY_PATH",
-		   getenv("IAMROOT_LD_LIBRARY_PATH") ?: "/usr/lib:/lib", 1);
+	ret = setenv("PATH", getenv("IAMROOT_PATH") ?: "/bin:/usr/bin", 1);
+	if (ret)
+		goto exit;
 
-	if (setrootdir(real_path))
-		return -1;
+	ret = pathsetenv(real_path, "LD_LIBRARY_PATH",
+		         getenv("IAMROOT_LD_LIBRARY_PATH") ?: "/usr/lib:/lib",
+			 1);
+	if (ret)
+		goto exit;
+
+	ret = setrootdir(real_path);
+	if (ret == -1)
+		goto exit;
 
 	__fprintf(stderr, "Enterring chroot: '%s'\n", real_path);
+
+exit:
 	__fprintf(stderr, "%s(path: '%s' -> '%s') IAMROOT_ROOT='%s'\n",
 			  __func__, path, real_path,
 			  getenv("IAMROOT_ROOT") ?: "");

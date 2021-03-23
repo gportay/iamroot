@@ -660,6 +660,8 @@ int chroot(const char *path)
 	__fprintf(stderr, "%s(path: '%s' -> '%s') IAMROOT_ROOT='%s'\n",
 			  __func__, path, real_path,
 			  getenv("IAMROOT_ROOT") ?: "");
+	__fprintf(stderr, "PATH=%s\n", getenv("PATH"));
+	__fprintf(stderr, "LD_LIBRARY_PATH=%s\n", getenv("LD_LIBRARY_PATH"));
 
 	return 0;
 }

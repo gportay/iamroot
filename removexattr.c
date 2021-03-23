@@ -23,7 +23,7 @@ int next_removexattr(const char *path, const char *name)
 
 	sym = dlsym(RTLD_NEXT, "removexattr");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

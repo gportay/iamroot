@@ -23,7 +23,7 @@ int next_chdir(const char *path)
 
 	sym = dlsym(RTLD_NEXT, "chdir");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

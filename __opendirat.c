@@ -24,7 +24,7 @@ DIR *next___opendirat(int fd, const char *path)
 
 	sym = dlsym(RTLD_NEXT, "__opendirat");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return NULL;
 	}
 

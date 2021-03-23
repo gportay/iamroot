@@ -22,7 +22,7 @@ void *next_dlopen(const char *path, int flags)
 
 	sym = dlsym(RTLD_NEXT, "dlopen");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return NULL;
 	}
 

@@ -23,7 +23,7 @@ int next_chown(const char *path, uid_t owner, gid_t group)
 
 	sym = dlsym(RTLD_NEXT, "chown");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

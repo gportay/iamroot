@@ -25,7 +25,7 @@ int next___fxstatat(int ver, int fd, const char *path, struct stat *statbuf,
 
 	sym = dlsym(RTLD_NEXT, "__fxstatat");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

@@ -24,7 +24,7 @@ int next_fstatat(int fd, const char *path, struct stat *statbuf, int flags)
 
 	sym = dlsym(RTLD_NEXT, "fstatat");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

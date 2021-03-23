@@ -22,7 +22,7 @@ int next_access(const char *path, int mode)
 
 	sym = dlsym(RTLD_NEXT, "access");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

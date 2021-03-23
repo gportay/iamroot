@@ -23,7 +23,7 @@ DIR *next_opendir(const char *path)
 
 	sym = dlsym(RTLD_NEXT, "opendir");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return NULL;
 	}
 

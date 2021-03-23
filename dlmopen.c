@@ -23,7 +23,7 @@ void *next_dlmopen(Lmid_t lmid, const char *path, int flags)
 
 	sym = dlsym(RTLD_NEXT, "dlmopen");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return NULL;
 	}
 

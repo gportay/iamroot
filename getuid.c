@@ -20,7 +20,7 @@ uid_t next_getuid()
 
 	sym = dlsym(RTLD_NEXT, "geteuid");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

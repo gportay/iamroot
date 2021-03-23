@@ -23,7 +23,7 @@ int next___fstat(int fd, struct stat *statbuf)
 
 	sym = dlsym(RTLD_NEXT, "__fstat");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

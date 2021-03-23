@@ -248,7 +248,7 @@ int next_execve(const char *path, char * const argv[], char * const envp[])
 
 	sym = dlsym(RTLD_NEXT, "execve");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

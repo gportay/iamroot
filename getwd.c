@@ -22,7 +22,7 @@ char *next_getwd(char *buf)
 
 	sym = dlsym(RTLD_NEXT, "getwd");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return NULL;
 	}
 

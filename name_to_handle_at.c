@@ -25,7 +25,7 @@ int next_name_to_handle_at(int fd, const char *path, struct file_handle *handle,
 
 	sym = dlsym(RTLD_NEXT, "name_to_handle_at");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

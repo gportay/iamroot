@@ -24,7 +24,7 @@ FILE *next_fopen64(const char *path, const char *mode)
 
 	sym = dlsym(RTLD_NEXT, "fopen64");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return NULL;
 	}
 

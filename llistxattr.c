@@ -24,7 +24,7 @@ ssize_t next_llistxattr(const char *path, char *list, size_t size)
 
 	sym = dlsym(RTLD_NEXT, "llistxattr");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

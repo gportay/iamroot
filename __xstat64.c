@@ -24,7 +24,7 @@ int next___xstat64(int ver, const char *path, struct stat64 *stat64buf)
 
 	sym = dlsym(RTLD_NEXT, "__xstat64");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

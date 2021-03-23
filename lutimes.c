@@ -23,7 +23,7 @@ int next_lutimes(const char *path, const struct timeval times[2])
 
 	sym = dlsym(RTLD_NEXT, "lutimes");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

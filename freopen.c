@@ -23,7 +23,7 @@ FILE *next_freopen(const char *path, const char *mode, FILE *stream)
 
 	sym = dlsym(RTLD_NEXT, "freopen");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return NULL;
 	}
 

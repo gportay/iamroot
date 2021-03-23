@@ -23,7 +23,7 @@ int next_mkfifo(const char *path, mode_t mode)
 
 	sym = dlsym(RTLD_NEXT, "mkfifo");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

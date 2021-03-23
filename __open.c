@@ -26,7 +26,7 @@ int next___open(const char *path, int flags, mode_t mode)
 
 	sym = dlsym(RTLD_NEXT, "__open");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

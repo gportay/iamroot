@@ -28,7 +28,7 @@ int next_statx(int fd, const char *path, int flags, unsigned int mask,
 
 	sym = dlsym(RTLD_NEXT, "statx");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

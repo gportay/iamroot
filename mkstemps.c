@@ -23,7 +23,7 @@ int next_mkstemps(char *path, int suffixlen)
 
 	sym = dlsym(RTLD_NEXT, "mkstemps");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

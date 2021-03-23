@@ -24,7 +24,7 @@ int next_lchown(const char *path, uid_t owner, gid_t group)
 
 	sym = dlsym(RTLD_NEXT, "lchown");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

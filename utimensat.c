@@ -25,7 +25,7 @@ int next_utimensat(int fd, const char *path, const struct timespec times[2],
 
 	sym = dlsym(RTLD_NEXT, "utimensat");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

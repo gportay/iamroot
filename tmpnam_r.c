@@ -21,7 +21,7 @@ char *next_tmpnam_r(char *path)
 
 	sym = dlsym(RTLD_NEXT, "tmpnam_r");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return NULL;
 	}
 

@@ -22,7 +22,7 @@ int next_statfs(const char *path, struct statfs *statfsbuf)
 
 	sym = dlsym(RTLD_NEXT, "statfs");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

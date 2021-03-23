@@ -23,7 +23,7 @@ int next_statfs64(const char *path, struct statfs64 *statfs64buf)
 
 	sym = dlsym(RTLD_NEXT, "statfs64");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

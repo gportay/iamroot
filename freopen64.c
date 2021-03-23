@@ -24,7 +24,7 @@ FILE *next_freopen64(const char *path, const char *mode, FILE *stream)
 
 	sym = dlsym(RTLD_NEXT, "freopen64");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return NULL;
 	}
 

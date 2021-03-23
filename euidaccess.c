@@ -22,7 +22,7 @@ int next_euidaccess(const char *path, int mode)
 
 	sym = dlsym(RTLD_NEXT, "euidaccess");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

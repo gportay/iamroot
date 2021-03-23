@@ -23,7 +23,7 @@ int next_mkdir(const char *path, mode_t mode)
 
 	sym = dlsym(RTLD_NEXT, "mkdir");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

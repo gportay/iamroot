@@ -24,7 +24,7 @@ int next_fchownat(int fd, const char *path, uid_t owner, gid_t group, int flags)
 
 	sym = dlsym(RTLD_NEXT, "fchownat");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

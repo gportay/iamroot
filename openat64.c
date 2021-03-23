@@ -24,7 +24,7 @@ int next_openat64(int fd, const char *path, int flags, mode_t mode)
 
 	sym = dlsym(RTLD_NEXT, "openat64");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

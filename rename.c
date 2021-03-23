@@ -22,7 +22,7 @@ int next_rename(const char *oldpath, const char *newpath)
 
 	sym = dlsym(RTLD_NEXT, "rename");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

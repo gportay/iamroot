@@ -23,7 +23,7 @@ FILE *next_fopen(const char *path, const char *mode)
 
 	sym = dlsym(RTLD_NEXT, "fopen");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return NULL;
 	}
 

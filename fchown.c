@@ -21,7 +21,7 @@ int next_fchown(int fd, uid_t owner, gid_t group)
 
 	sym = dlsym(RTLD_NEXT, "fchown");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

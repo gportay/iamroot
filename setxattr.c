@@ -24,7 +24,7 @@ int next_setxattr(const char *path, const char *name, const void *value,
 
 	sym = dlsym(RTLD_NEXT, "setxattr");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

@@ -23,7 +23,7 @@ int next_fchmodat(int fd, const char *path, mode_t mode, int flags)
 
 	sym = dlsym(RTLD_NEXT, "fchmodat");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

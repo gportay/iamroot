@@ -23,7 +23,7 @@ int next_unlink(const char *path)
 
 	sym = dlsym(RTLD_NEXT, "unlink");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

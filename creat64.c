@@ -24,7 +24,7 @@ int next_creat64(const char *path, mode_t mode)
 
 	sym = dlsym(RTLD_NEXT, "creat64");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

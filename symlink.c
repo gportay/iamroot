@@ -22,7 +22,7 @@ int next_symlink(const char *string, const char *path)
 
 	sym = dlsym(RTLD_NEXT, "symlink");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

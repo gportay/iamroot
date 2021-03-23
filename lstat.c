@@ -25,7 +25,7 @@ int next_lstat(const char *path, struct stat *statbuf)
 
 	sym = dlsym(RTLD_NEXT, "lstat");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

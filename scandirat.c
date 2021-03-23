@@ -27,7 +27,7 @@ int next_scandirat(int fd, const char *path, struct dirent ***namelist,
 
 	sym = dlsym(RTLD_NEXT, "scandirat");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

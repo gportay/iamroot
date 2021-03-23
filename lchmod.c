@@ -23,7 +23,7 @@ int next_lchmod(const char *path, mode_t mode)
 
 	sym = dlsym(RTLD_NEXT, "lchmod");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

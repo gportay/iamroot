@@ -22,7 +22,7 @@ int next_utimes(const char *path, const struct timeval times[2])
 
 	sym = dlsym(RTLD_NEXT, "utimes");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

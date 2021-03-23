@@ -22,7 +22,7 @@ int next_chmod(const char *path, mode_t mode)
 
 	sym = dlsym(RTLD_NEXT, "chmod");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

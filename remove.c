@@ -22,7 +22,7 @@ int next_remove(const char *path)
 
 	sym = dlsym(RTLD_NEXT, "remove");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

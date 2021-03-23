@@ -26,7 +26,7 @@ int next___open64(const char *path, int flags, mode_t mode)
 
 	sym = dlsym(RTLD_NEXT, "__open64");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

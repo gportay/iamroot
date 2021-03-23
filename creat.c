@@ -23,7 +23,7 @@ int next_creat(const char *path, mode_t mode)
 
 	sym = dlsym(RTLD_NEXT, "creat");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

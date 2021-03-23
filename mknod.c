@@ -22,7 +22,7 @@ int next_mknod(const char *path, mode_t mode, dev_t dev)
 
 	sym = dlsym(RTLD_NEXT, "mknod");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

@@ -24,7 +24,7 @@ ssize_t next_getxattr(const char *path, const char *name, void *value,
 
 	sym = dlsym(RTLD_NEXT, "getxattr");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

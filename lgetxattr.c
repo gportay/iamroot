@@ -25,7 +25,7 @@ ssize_t next_lgetxattr(const char *path, const char *name, void *value,
 
 	sym = dlsym(RTLD_NEXT, "lgetxattr");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

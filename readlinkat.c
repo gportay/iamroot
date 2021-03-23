@@ -26,7 +26,7 @@ ssize_t next_readlinkat(int fd, const char *path, char *buf, size_t bufsize)
 
 	sym = dlsym(RTLD_NEXT, "readlinkat");
 	if (!sym) {
-		errno = ENOTSUP;
+		errno = ENOSYS;
 		return -1;
 	}
 

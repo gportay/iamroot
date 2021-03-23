@@ -5,6 +5,7 @@
 #
 
 override CFLAGS += -fPIC -Wall -Wextra -Werror
+override CFLAGS += -D_GNU_SOURCE
 
 TESTS += access
 TESTS += chmod

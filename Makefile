@@ -7,6 +7,7 @@
 PREFIX ?= /usr/local
 
 override CFLAGS += -fPIC -Wall -Wextra -Werror
+override CFLAGS += -D_GNU_SOURCE
 override CFLAGS += -DARG_MAX=$(shell getconf ARG_MAX)
 
 QEMU ?= qemu-system-x86_64

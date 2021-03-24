@@ -1,0 +1,213 @@
+= iamroot-shell(1)
+:doctype: manpage
+:author: Gaël PORTAY
+:email: gael.portay@gmail.com
+:lang: en
+:man manual: iamroot-shell Manual
+:man source: iamroot-shell
+
+== NAME
+
+iamroot-shell - run a shell ready to emulate the syscall chroot(2) for
+unprivileged users.
+
+== SYNOPSIS
+
+*iamroot-shell* [OPTIONS] [--]    [SCRIPT_FILE  [ARGS...]]
+
+*iamroot-shell* [OPTIONS] [--] -c COMMAND [NAME [ARGS...]]
+
+*iamroot-shell* [OPTIONS] [--] -s [ARGS...]
+
+== DESCRIPTION
+
+Runs the _command_ process in an _iamroot_ environment ready to emulate the
+*chroot(2)* syscall for unprivileged _users_.
+
+When called without arguments, *iamroot-shell* defaults to running an
+interactive shell.
+
+Under the hood, *iamroot-shell* preloads a library which intercepts some
+*libc(7)* functions to emulates *chroot(2)* in a pure unprivileged process.
+
+For a more thorough description of *sh(1)*, *bash(1)*, *zsh(1)* or any other
+shells, please refers to their manuals.
+
+== OPTIONS
+
+*POSIX Shell related options*
+
+**-c**::
+	Read commands from command-line.
+
+**-i**::
+	Set interactive.
+
+**-s**::
+	Read commands from standard-input.
+
+*iamroot specific options*
+
+**--chroot DIR**::
+	Absolute path to the root directory to chroot in.
+
+**--exec FILE**::
+	Absolute path to the iamroot exec script to use.
+
+**--library LIB**::
+	Absolute path to the iamroot library to use.
+
+**--debug**::
+	Turn on debug mode.
+
+**--force**::
+	Turn on force mode.
+
+**--help**::
+	Print usage.
+
+== ENVIRONMENT VARIABLES
+
+**SHELL**::
+	The shell interpreter to use.
+
+**IAMROOTLVL**::
+	Incremented by one each time an instance of iamroot-shell is started.
+
+**IAMROOT_ROOT**::
+	Set absolute path to root directory to chroot in.
+	Equivalent to --chroot DIR.
+
+**IAMROOT_EXEC**::
+	Set absolute path to exec script to use.
+	Equivalent to --exec EXEC.
+
+**IAMROOT_LIB**::
+	Set absolute path to library to use.
+	Equivalent to --library LIB.
+
+**IAMROOT_DEBUG**::
+	Set debug mode.
+	Equivalent to --debug.
+
+**IAMROOT_FORCE**::
+	Set force mode.
+	Equivalent to --force.
+
+== EXAMPLES
+
+Run an _interactive shell_ in an _iamroot_ environment
+
+	[gportay@archlinux ~]$ iamroot-shell
+	[root@archlinux ~]# 
+
+Print _effective_ user name
+
+	[root@archlinux ~]# whoami
+	root
+
+Change root directory via *chroot(1)*
+
+	[gportay@archlinux ~]$ mkdir -p alpine-minirootfs
+	[gportay@archlinux ~]$ wget http://dl-cdn.alpinelinux.org/alpine/v3.13/releases/x86_64/alpine-minirootfs-3.13.0-x86_64.tar.gz
+	[gportay@archlinux ~]$ tar xf alpine-minirootfs-3.13.0-x86_64.tar.gz -C alpine-minirootfs
+	[gportay@archlinux ~]$ iamroot-shell
+	[root@archlinux ~]# chroot alpine-minirootfs /bin/ash
+	/ # cat /etc/os-release 
+	NAME="Alpine Linux"
+	ID=alpine
+	VERSION_ID=3.13.0
+	PRETTY_NAME="Alpine Linux v3.13"
+	HOME_URL="https://alpinelinux.org/"
+	BUG_REPORT_URL="https://bugs.alpinelinux.org/"
+	/ # sh --help
+	BusyBox v1.32.1 () multi-call binary.
+	
+	Usage: sh [-/+OPTIONS] [-/+o OPT]... [-c 'SCRIPT' [ARG0 [ARGS]] / FILE [ARGS] / -s [ARGS]]
+	
+	Unix shell interpreter
+	/ # ls /proc/self/cwd -l
+	lrwxrwxrwx    1 root     root             0 Mar 24 20:53 /proc/self/cwd -> /
+        / # ls -l /proc/self/root                               
+	lrwxrwxrwx    1 root     root             0 Mar 24 20:53 /proc/self/root -> /home/gportay/alpine-minirootfs
+
+Create a new Arch Linux system installation from scratch via *pacstrap(8)*
+
+	[gportay@archlinux ~]$ mkdir rootfs
+	[gportay@archlinux ~]$ EUID=0 iamroot-shell -c "pacstrap rootfs" && echo done
+	==> Creating install root at rootfs
+	cp: cannot access '/etc/pacman.d/gnupg/crls.d': Permission denied
+	cp: cannot access '/etc/pacman.d/gnupg/openpgp-revocs.d': Permission denied
+	cp: cannot access '/etc/pacman.d/gnupg/private-keys-v1.d': Permission denied
+	cp: cannot open '/etc/pacman.d/gnupg/secring.gpg' for reading: Permission denied
+	==> Installing packages to rootfs
+	(...)	
+	Optional dependencies for base
+	    linux: bare metal support
+	:: Running post-transaction hooks...
+	( 1/10) Creating system user accounts...
+	( 2/10) Updating journal message catalog...
+	( 3/10) Reloading system manager configuration...
+	Failed to reload daemon: Transport endpoint is not connected
+	error: command failed to execute correctly
+	( 4/10) Updating udev hardware database...
+	( 5/10) Applying kernel sysctl settings...
+	Not setting net/ipv4/conf/all/rp_filter (explicit setting exists).
+	Not setting net/ipv4/conf/default/rp_filter (explicit setting exists).
+	Not setting net/ipv4/conf/all/accept_source_route (explicit setting exists).
+	Not setting net/ipv4/conf/default/accept_source_route (explicit setting exists).
+	Not setting net/ipv4/conf/all/promote_secondaries (explicit setting exists).
+	Not setting net/ipv4/conf/default/promote_secondaries (explicit setting exists).
+	( 6/10) Creating temporary files...
+	Failed to create directory or subvolume "/run/systemd/netif/links": Permission denied
+	Failed to create directory or subvolume "/run/systemd/netif/leases": Permission denied
+	Failed to create directory or subvolume "/run/systemd/netif/lldp": Permission denied
+	fchmod() of /dev/snd/seq failed: Operation not permitted
+	fchmod() of /dev/snd/timer failed: Operation not permitted
+	fchmod() of /dev/net/tun failed: Operation not permitted
+	Setting access ACL "u::rwx,g::r-x,g:wheel:r-x,g:adm:r-x,m::r-x,o::r-x" on /run/log/journal failed: Operation not permitted
+	fchownat() of /run/log/journal failed: Permission denied
+	error: command failed to execute correctly
+	( 7/10) Reloading device manager configuration...
+	Failed to send reload request: Permission denied
+	error: command failed to execute correctly
+	( 8/10) Arming ConditionNeedsUpdate...
+	( 9/10) Rebuilding certificate stores...
+	(10/10) Reloading system bus configuration...
+	Failed to reload-or-try-restart dbus.service: Transport endpoint is not connected
+	See system logs and 'systemctl status dbus.service' for details.
+	error: command failed to execute correctly
+	done
+
+Note: Some post-transaction hooks failed due to lack of privileges.
+
+Change root directory via *arch-chroot(8)*
+
+	[gportay@archlinux ~]$ iamroot-shell
+	[root@archlinux ~]# arch-chroot rootfs
+	==> WARNING: rootfs is not a mountpoint. This may have undesirable side effects.
+	[root@archlinux /]# ls -l /proc/self/cwd
+	lrwxrwxrwx 1 root root 0 Mar 24 21:14 /proc/self/cwd -> /
+	[root@archlinux /]# ls -l /proc/self/root
+	lrwxrwxrwx 1 root root 0 Mar 24 21:14 /proc/self/root -> /home/gportay/rootfs
+
+== BUGS
+
+Report bugs at *https://github.com/gportay/iamroot/issues*
+
+== AUTHOR
+
+Written by Gaël PORTAY *gael.portay@gmail.com*
+
+== COPYRIGHT
+
+Copyright (c) 2021 Gaël PORTAY
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free
+Software Foundation, either version 2.1 of the License, or (at your option) any
+later version.
+
+== SEE ALSO
+
+*iamroot(7)*, *sh(1)*, *chroot(2)*

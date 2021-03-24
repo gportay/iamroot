@@ -37,7 +37,7 @@ iamroot is a proof-of-concept, therefore expect the unexpectable!
 
 # SEE ALSO
 
-[chroot(2)], [path_resolution(7)], [fakechroot(1)]
+[iamroot-shell(1)], [chroot(2)], [path_resolution(7)], [fakechroot(1)]
 
 [chdir(2)]: https://linux.die.net/man/2/chdir
 [chown(2)]: https://linux.die.net/man/2/chown
@@ -45,6 +45,7 @@ iamroot is a proof-of-concept, therefore expect the unexpectable!
 [fakechroot(1)]: https://linux.die.net/man/1/fakechroot
 [fchdir(2)]: https://linux.die.net/man/2/fchdir
 [fopen(3)]: https://linux.die.net/man/3/fopen
+[iamroot-shell(1)]: iamroot-shell.1.adoc
 [open(2)]: https://linux.die.net/man/2/open
 [pacstrap(8)]: https://man.archlinux.org/man/pacstrap.8
 [path_resolution(7)]: https://linux.die.net/man/7/path_resolution

@@ -162,11 +162,15 @@ libiamroot.so: whereami.o
 libiamroot.so: whoami.o
 libiamroot.so: override LDLIBS += -ldl
 
+.PHONY: doc
+doc: iamroot-shell.1.gz
+
 .PHONY: install
 install:
 	install -D -m 755 iamroot-shell $(DESTDIR)$(PREFIX)/bin/iamroot-shell
 	sed -e "s,/usr/local/,$(PREFIX)/," -i $(DESTDIR)$(PREFIX)/bin/iamroot-shell
 	install -D -m 755 libiamroot.so $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
+	install -D -m 644 iamroot-shell.1.gz $(DESTDIR)$(PREFIX)/share/man/man1/iamroot-shell.1.gz
 	completionsdir=$${BASHCOMPLETIONSDIR:-$$(pkg-config --define-variable=prefix=$(PREFIX) \
 	                             --variable=completionsdir \
 	                             bash-completion)}; \
@@ -330,3 +334,9 @@ mrproper: clean
 %.so: override LDFLAGS += -shared
 %.so:
 	$(LINK.o) $^ $(LOADLIBES) $(LDLIBS) -o $@
+
+%.1: %.1.adoc
+	asciidoctor -b manpage -o $@ $<
+
+%.gz: %
+	gzip -c $< >$@

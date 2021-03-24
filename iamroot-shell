@@ -7,7 +7,52 @@
 
 usage() {
 	cat <<EOF
-Usage: ${0##*/} [--chroot DIR] [--exec FILE] [--library LIB] [--debug] [--force] [--help] [--] [SHELL_ARGUMENTS...]
+Usage: ${0##*/} [OPTIONS] [--]    [SCRIPT_FILE  [ARGS...]]
+       ${0##*/} [OPTIONS] [--] -c COMMAND [NAME [ARGS...]]
+       ${0##*/} [OPTIONS] [--] -s [ARGS...]
+
+Runs the command process in an iamroot environment ready to emulate the
+chroot(2) syscall for unprivileged users.
+
+For a more thorough description of sh(1), bash(1), zsh(1) or any other shells,
+please refers to their manuals.
+
+POSIX Shell related options:
+
+      -c                        Read commands from command-line.
+      -i                        Set interactive.
+      -s                        Read commands from standard-input.
+
+iamroot specific options:
+      --chroot DIR              Absolute path to the root directory to chroot
+                                in.
+      --exec FILE               Absolute path to the iamroot exec script to
+                                use.
+      --library LIB             Absolute path to the iamroot library to use.
+      --debug                   Turn on debug mode.
+      --force                   Turn on force mode.
+      --help                    Print usage.
+
+Environment variables:
+      SHELL                     The shell interpreter to use.
+
+      IAMROOTLVL                Incremented by one each time an instance of
+                                iamroot-shell is started.
+
+      IAMROOT_ROOT              Set absolute path to root directory to chroot
+                                in. Equivalent to --chroot DIR.
+
+      IAMROOT_EXEC              Set absolute path to exec script to use.
+                                Equivalent to --exec EXEC.
+
+      IAMROOT_LIB               Set absolute path to library to use.
+                                Equivalent to --library LIB.
+
+      IAMROOT_DEBUG             Set debug mode.
+                                Equivalent to --debug.
+
+      IAMROOT_FORCE             Set force mode.
+                                Equivalent to --force.
 EOF
 }
 

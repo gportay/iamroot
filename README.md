@@ -44,8 +44,8 @@ iamroot is a proof-of-concept, therefore expect the unexpectable!
 [chroot(2)]: https://linux.die.net/man/2/chroot
 [fakechroot(1)]: https://linux.die.net/man/1/fakechroot
 [fchdir(2)]: https://linux.die.net/man/2/fchdir
-[open(2)]: https://linux.die.net/man/2/open
 [fopen(3)]: https://linux.die.net/man/3/fopen
+[open(2)]: https://linux.die.net/man/2/open
 [pacstrap(8)]: https://man.archlinux.org/man/pacstrap.8
 [path_resolution(7)]: https://linux.die.net/man/7/path_resolution
 [readlink(2)]: https://linux.die.net/man/2/readlink

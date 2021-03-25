@@ -68,6 +68,14 @@ Environment variables:
 
       IAMROOT_DEBUG             Set debug mode.
                                 Equivalent to --debug.
+
+      IAMROOT_EXEC_IGNORE       Set executable path to ignore in execve().
+                                Equivalent to --exec-ignore.
+
+      IAMROOT_PATH_RESOLUTION_IGNORE
+                                Set path to ignore for path resolution in
+                                chroot.
+                                Equivalent to --path-resolution-ignore.
 EOF
 }
 

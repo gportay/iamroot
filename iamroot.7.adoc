@@ -59,9 +59,24 @@ library stores the absolute path of the _pathname_ given in parameter in the
 environment *IAMROOT_ROOT*. The library resolves every absolute _pathname_ of
 the subsequent intercepted calls using this environment variable.
 
-The script _exec.sh_ is run to workaround the impossible; i.e. to handle the
+If the process changes the _current_ working directory using either *chdir(3p)*
+or *fchdir(3p)*, the library intercepts these functions as well and it checks
+if the process breaks from its "chroot jail". If it exits, the library resets
+the environment *IAMROOT_ROOT* and it resolves every absolute _pathname_ of the
+subsequent intercepted calls normally.
+
+The library _libiamroot.so_ does not gain the superuser permissions, as a
+consequence, the functions can end with _EACCESS_ or _EPERM_ errors. However,
+the script _exec.sh_ is run to workaround the impossible; i.e. to handle the
 lack of permissions or to handle the binaries which can not support library
 preloading (SUID executables or not dynamically linked objects).
+
+*iamroot(7)* was been tested to make minimal linux rootfs with *pacstrap(1)* or
+*alpine-make-rootfs*. Nevertheless, it is a proof-of-concept, therefore expect
+the unexpectable!
+
+_Note:_ The library _libiamroot.so_ replaces *fakechroot(1)*; but it is not a
+replacant for *fakeroot(1)* as it provides a minimal subset of its features.
 
 == BUGS
 

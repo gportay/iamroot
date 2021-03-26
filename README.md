@@ -54,7 +54,8 @@ later version.
 
 # SEE ALSO
 
-[iamroot-shell(1)], [chroot(2)], [path_resolution(7)], [fakechroot(1)]
+[iamroot(7)], [iamroot-shell(1)], [chroot(2)], [path_resolution(7)],
+[fakechroot(1)]
 
 [chdir(2)]: https://linux.die.net/man/2/chdir
 [chown(2)]: https://linux.die.net/man/2/chown
@@ -62,6 +63,7 @@ later version.
 [fakechroot(1)]: https://linux.die.net/man/1/fakechroot
 [fchdir(2)]: https://linux.die.net/man/2/fchdir
 [fopen(3)]: https://linux.die.net/man/3/fopen
+[iamroot(7)]: iamroot.7.adoc
 [iamroot-shell(1)]: iamroot-shell.1.adoc
 [open(2)]: https://linux.die.net/man/2/open
 [pacstrap(8)]: https://man.archlinux.org/man/pacstrap.8

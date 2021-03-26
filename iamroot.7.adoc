@@ -1,0 +1,85 @@
+= iamroot(7)
+:doctype: manpage
+:author: Gaël PORTAY
+:email: gael.portay@gmail.com
+:lang: en
+:man manual: iamroot Manual
+:man source: iamroot
+
+== NAME
+
+iamroot - Emulate the syscall chroot(2) for unprivileged users.
+
+== DESCRIPTION
+
+Only a privileged process can run *chroot(2)*.
+
+*iamroot(7)* intends to emulate the behaviour of the *chroot(2)* syscall for
+unprivileged users as far as the permissions grant it; *iamroot(7)* cannot
+bypass the permissions such as reading or writing to files that do not belongs
+to the user.
+
+*iamroot(7)* consists of an ELF library and a shell script which workaround the
+needs for privileges to run processes that call *chroot(2)* and for executables
+with the SUID bit set or for not dynamically linked objects.
+
+== PREREQUISITE
+
+A _pathname_ starting with _/_ is called an *absolute* _pathname_; otherwise it
+is called a *relative* _pathname_.
+
+Every processes inherits two related path ingredients from its parent:
+
+	- _cwd_ for the current working directory
+	- _root_ for the root directory
+
+The _cwd_ can be changed using *chdir(2)* or *fchdir(2)*; the _root_ can be
+changed using *chroot(2)*.
+
+Both ingredients are checked in _/proc/<pid>/cwd_ and _/proc/<pid>/root_.
+
+	[gportay@archlinux ~]$ readlink /proc/self/cwd
+	/home/gportay	
+	[gportay@archlinux ~]$ readlink /proc/self/root
+	/
+
+See *path_resolution(7)* for a more thorough description of path resolution; in
+short, the _root_ is prepended to absolute _pathnames_.
+
+== HOW IT WORKS
+
+The library _libiamroot.so_ is preloaded by *ld.so(8)* using *LD_PRELOAD* and
+intercepts the calls to *libc(7)* with a _pathname_ in parameter. It resolves
+the _pathname_ internally before calling the real symbol with the _pathname_
+modified.
+
+If the process changes the _root_ directory using *chroot(2)*, the library
+intercepts the function and does not call the real symbol then. Instead, the
+library stores the absolute path of the _pathname_ given in parameter in the
+environment *IAMROOT_ROOT*. The library resolves every absolute _pathname_ of
+the subsequent intercepted calls using this environment variable.
+
+The script _exec.sh_ is run to workaround the impossible; i.e. to handle the
+lack of permissions or to handle the binaries which can not support library
+preloading (SUID executables or not dynamically linked objects).
+
+== BUGS
+
+Report bugs at *https://github.com/gportay/iamroot/issues*
+
+== AUTHOR
+
+Written by Gaël PORTAY *gael.portay@gmail.com*
+
+== COPYRIGHT
+
+Copyright (c) 2021 Gaël PORTAY
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free
+Software Foundation, either version 2.1 of the License, or (at your option) any
+later version.
+
+== SEE ALSO
+
+*iamroot-shell(1)*, *chroot(2)*, *path_resolution(7)*

@@ -163,7 +163,7 @@ libiamroot.so: whoami.o
 libiamroot.so: override LDLIBS += -ldl
 
 .PHONY: doc
-doc: iamroot-shell.1.gz
+doc: iamroot-shell.1.gz iamroot.7.gz
 
 .PHONY: install
 install:
@@ -171,6 +171,7 @@ install:
 	sed -e "s,\$$PWD,$(PREFIX)/lib/iamroot," -i $(DESTDIR)$(PREFIX)/bin/iamroot-shell
 	install -D -m 755 libiamroot.so $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
 	install -D -m 644 iamroot-shell.1.gz $(DESTDIR)$(PREFIX)/share/man/man1/iamroot-shell.1.gz
+	install -D -m 644 iamroot.7.gz $(DESTDIR)$(PREFIX)/share/man/man7/iamroot.7.gz
 	completionsdir=$${BASHCOMPLETIONSDIR:-$$(pkg-config --define-variable=prefix=$(PREFIX) \
 	                             --variable=completionsdir \
 	                             bash-completion)}; \
@@ -308,6 +309,9 @@ mrproper: clean
 	$(LINK.o) $^ $(LOADLIBES) $(LDLIBS) -o $@
 
 %.1: %.1.adoc
+	asciidoctor -b manpage -o $@ $<
+
+%.7: %.7.adoc
 	asciidoctor -b manpage -o $@ $<
 
 %.gz: %

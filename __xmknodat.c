@@ -44,5 +44,5 @@ int __xmknodat(int ver, int fd, const char *path, mode_t mode, dev_t dev)
 	__fprintf(stderr, "%s(fd %i, path: '%s' -> '%s')\n", __func__, fd, path,
 			real_path);
 
-	return __xmknodat(ver, fd, path, mode, dev);
+	return next___xmknodat(ver, fd, path, mode, dev);
 }

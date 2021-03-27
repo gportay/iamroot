@@ -35,6 +35,23 @@ will end with `EACCESS` or `EPERM` as of reading or writing files in `/proc`,
 
 iamroot is a proof-of-concept, therefore expect the unexpectable!
 
+# BUGS
+
+Report bugs at *https://github.com/gportay/iamroot/issues*
+
+# AUTHOR
+
+Written by Gaël PORTAY *gael.portay@gmail.com*
+
+# COPYRIGHT
+
+Copyright (c) 2021 Gaël PORTAY
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free
+Software Foundation, either version 2.1 of the License, or (at your option) any
+later version.
+
 # SEE ALSO
 
 [iamroot-shell(1)], [chroot(2)], [path_resolution(7)], [fakechroot(1)]

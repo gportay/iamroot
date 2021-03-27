@@ -273,7 +273,17 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	if (ignore(path))
 		goto exec;
 
-	real_path = path_resolution(path, buf, sizeof(buf), 0);
+	/*
+	 * Follows symlink as the subsequent calls to issuid(), getinterp() and
+	 * gethashbang() use stat() and open() which are functions that follow
+	 * symlinks.
+	 *
+	 * However, path_resolution() follows symlink by default; adding that
+	 * AT flag and this comment emphasizes the need to follow symlinks and
+	 * makes sure all the functions that use real_path in parameter resolve
+	 * the exact same path.
+	 */
+	real_path = path_resolution(path, buf, sizeof(buf), AT_SYMLINK_FOLLOW);
 	if (!real_path) {
 		perror("path_resolution");
 		return -1;

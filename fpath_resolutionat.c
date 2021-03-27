@@ -217,7 +217,7 @@ char *fpath_resolutionat(int fd, const char *path, char *buf, size_t bufsize,
 	if (ignore(real_path+len))
 		return memcpy(buf, real_path+len, strlen(real_path+len)+1);
 
-	if (flags == AT_SYMLINK_NOFOLLOW)
+	if ((flags & AT_SYMLINK_NOFOLLOW) != 0)
 		goto exit;
 
 	if (next_lstat(real_path, &statbuf) != 0)

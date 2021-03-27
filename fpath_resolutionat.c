@@ -97,7 +97,7 @@ void path_resolution_fini()
 	re = NULL;
 }
 
-static inline int ignore(const char *path)
+static int ignore(const char *path)
 {
 	int ret = 0;
 

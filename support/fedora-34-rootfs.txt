@@ -720,8 +720,6 @@ Created symlink /etc/systemd/system/multi-user.target.wants/auditd.service → /
   Running scriptlet: NetworkManager XXX/XXX
   Installing       : NetworkManager XXX/XXX
   Running scriptlet: NetworkManager XXX/XXX
-Running in chroot, ignoring request.
-Running in chroot, ignoring request.
 Created symlink /etc/systemd/system/multi-user.target.wants/NetworkManager.service → /usr/lib/systemd/system/NetworkManager.service.
 Created symlink /etc/systemd/system/dbus-org.freedesktop.nm-dispatcher.service → /usr/lib/systemd/system/NetworkManager-dispatcher.service.
 Created symlink /etc/systemd/system/network-online.target.wants/NetworkManager-wait-online.service → /usr/lib/systemd/system/NetworkManager-wait-online.service.
@@ -754,8 +752,6 @@ Running in chroot, ignoring command 'set-property'
 
   Running scriptlet: firewalld XXX/XXX
   Running scriptlet: rootfiles XXX/XXX
-Running in chroot, ignoring request.
-
   Verifying        : NetworkManager XXX/XXX
   Verifying        : NetworkManager-libnm XXX/XXX
   Verifying        : acl XXX/XXX

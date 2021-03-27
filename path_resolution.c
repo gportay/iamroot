@@ -64,6 +64,7 @@ ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
 	return next_readlink(tmp, buf, bufsize);
 }
 
+static regex_t *re_allow;
 static regex_t *re_ignore;
 
 static void __regex_perror(const char *s, regex_t *regex, int err)
@@ -81,15 +82,29 @@ static void __regex_perror(const char *s, regex_t *regex, int err)
 __attribute__((constructor,visibility("hidden")))
 void path_resolution_init()
 {
-	const char *ignore, *exec;
-	static __regex_t regex_ignore;
+	static __regex_t regex_allow, regex_ignore;
+	const char *allow, *ignore, *exec;
 	char buf[BUFSIZ];
 	int ret;
 	int n;
 
-	if (re_ignore)
-		return;
+	if (re_allow)
+		goto ignore;
 
+	allow = getenv("IAMROOT_PATH_RESOLUTION_ALLOW");
+	if (!allow)
+		allow = "^$";
+
+	ret = regcomp(&regex_allow.re, allow, REG_NOSUB|REG_EXTENDED);
+	if (ret) {
+		__regex_perror("regcomp", &regex_allow.re, ret);
+		return;
+	}
+
+	__info("IAMROOT_PATH_RESOLUTION_ALLOW=%s\n", allow);
+	re_allow = &regex_allow.re;
+
+ignore:
 	ignore = getenv("IAMROOT_PATH_RESOLUTION_IGNORE");
 	if (!ignore)
 		ignore = "^/proc/|/sys/|"_PATH_DEV"|"_PATH_VARRUN"|/run/";
@@ -117,22 +132,32 @@ void path_resolution_init()
 __attribute__((destructor,visibility("hidden")))
 void path_resolution_fini()
 {
-	if (!re_ignore)
-		return;
-
-	regfree(re_ignore);
-	re_ignore = NULL;
-
 	/*
 	 * Workaround: reset the chroot directory for later destructors call
 	 * such as __gcov_exit().
 	 */
 	unsetenv("IAMROOT_ROOT");
+
+	if (!re_ignore)
+		goto allow;
+
+	regfree(re_ignore);
+	re_ignore = NULL;
+
+allow:
+	if (!re_allow)
+		return;
+
+	regfree(re_allow);
+	re_allow = NULL;
 }
 
 static int ignore(const char *path)
 {
 	int ret = 0;
+
+	if (!re_allow)
+		return 0;
 
 	if (!re_ignore)
 		return 0;
@@ -140,11 +165,13 @@ static int ignore(const char *path)
 	if (!*path)
 		return 0;
 
-	/*
-	 * TODO Create a new environment variable to white list paths to be
-	 * ignored?
-	 */
-	if (__strncmp(path, "/run/systemd") == 0)
+	ret = regexec(re_allow, path, 0, NULL, 0);
+	if (ret == -1) {
+		__regex_perror("regexec", re_allow, ret);
+		return 0;
+	}
+
+	if (!ret)
 		return 0;
 
 	ret = regexec(re_ignore, path, 0, NULL, 0);

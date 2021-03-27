@@ -115,7 +115,7 @@ _iamroot-shell()
 		COMPREPLY=($(compgen -P "$prefix" -W "${wordlist[*]}" -S '\|' -- "$realcur"))
 		return 0
 		;;
-	--path-resolution-ignore)
+	--path-resolution-allow|--path-resolution-ignore)
 		local prefix realcur wordlist
 		realcur="${cur##*\|}"
 		prefix="${cur%$realcur}"

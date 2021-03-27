@@ -14,6 +14,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Add the `iamroot-shell`'s option `--debug-allow` and its environment variable
   `IAMROOT_DEBUG_ALLOW` to allow output the debug traces for the given
   functions
+- Add the `iamroot-shell`'s option `--path-resolution-allow` and its
+  environment variable `IAMROOT_PATH_RESOLUTION_ALLOW` to resolve the given
+  paths in the chroot, even if the path is resolved as ignored
 
 ### Changed
 

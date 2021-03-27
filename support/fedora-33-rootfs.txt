@@ -745,8 +745,6 @@ Running in chroot, ignoring command 'try-restart'
 
   Running scriptlet: firewalld XXX/XXX
   Running scriptlet: rootfiles XXX/XXX
-Running in chroot, ignoring request.
-
   Verifying        : NetworkManager XXX/XXX
   Verifying        : NetworkManager-libnm XXX/XXX
   Verifying        : acl XXX/XXX

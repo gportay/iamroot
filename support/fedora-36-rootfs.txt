@@ -804,8 +804,6 @@ Created symlink /etc/systemd/system/timers.target.wants/unbound-anchor.timer →
   Installing       : udisks2 XXX/XXX
   Running scriptlet: udisks2 XXX/XXX
 Created symlink /etc/systemd/system/graphical.target.wants/udisks2.service → /usr/lib/systemd/system/udisks2.service.
-Running in chroot, ignoring request.
-Running in chroot, ignoring request.
 
   Installing       : fwupd-plugin-flashrom XXX/XXX
   Installing       : fwupd-plugin-uefi-capsule-data XXX/XXX
@@ -852,8 +850,6 @@ Created symlink /etc/systemd/system/multi-user.target.wants/auditd.service → /
   Running scriptlet: NetworkManager XXX/XXX
   Installing       : NetworkManager XXX/XXX
   Running scriptlet: NetworkManager XXX/XXX
-Running in chroot, ignoring request.
-Running in chroot, ignoring request.
 Created symlink /etc/systemd/system/multi-user.target.wants/NetworkManager.service → /usr/lib/systemd/system/NetworkManager.service.
 Created symlink /etc/systemd/system/dbus-org.freedesktop.nm-dispatcher.service → /usr/lib/systemd/system/NetworkManager-dispatcher.service.
 Created symlink /etc/systemd/system/network-online.target.wants/NetworkManager-wait-online.service → /usr/lib/systemd/system/NetworkManager-wait-online.service.
@@ -892,8 +888,6 @@ Warning: Command is rewritten to: /bin/mountpoint -q /fedora-36-rootfs/boot/efi
   Running scriptlet: sssd-common XXX/XXX
   Running scriptlet: firewalld XXX/XXX
   Running scriptlet: rootfiles XXX/XXX
-Running in chroot, ignoring request.
-
   Verifying        : ModemManager-glib XXX/XXX
   Verifying        : NetworkManager XXX/XXX
   Verifying        : NetworkManager-libnm XXX/XXX

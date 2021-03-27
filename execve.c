@@ -120,10 +120,12 @@ static ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 		return -1;
 
 	s = read(fd, &hdr, sizeof(hdr));
-	if (s == -1)
+	if (s == -1) {
 		goto close;
-	else if ((size_t)s < sizeof(hdr))
+	} else if ((size_t)s < sizeof(hdr)) {
+		errno = ENOEXEC;
 		goto close;
+	}
 
 	/* Not an ELF */
 	if (memcmp(hdr.e_ident, ELFMAG, 4) != 0) {
@@ -152,10 +154,12 @@ static ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 		Elf64_Phdr hdr;
 
 		s = pread(fd, &hdr, sizeof(hdr), off);
-		if (s == -1)
+		if (s == -1) {
 			goto close;
-		else if ((size_t)s < sizeof(hdr))
+		} else if ((size_t)s < sizeof(hdr)) {
+			errno = ENOEXEC;
 			goto close;
+		}
 
 		off += sizeof(hdr);
 
@@ -168,10 +172,12 @@ static ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 		}
 
 		s = pread(fd, buf, hdr.p_filesz, hdr.p_offset);
-		if (s == -1)
+		if (s == -1) {
 			goto close;
-		else if ((size_t)s < hdr.p_filesz)
+		} else if ((size_t)s < hdr.p_filesz) {
+			errno = ENOEXEC;
 			goto close;
+		}
 
 		ret = s;
 		goto close;

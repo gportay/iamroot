@@ -261,9 +261,43 @@ int next_execve(const char *path, char * const argv[], char * const envp[])
 	return sym(path, argv, envp);
 }
 
+static int interpexecve(const char *path, char * const interp[],
+			char * const argv[], char * const envp[])
+{
+	char * const *arg;
+	int argc;
+
+	argc = 1;
+	arg = interp;
+	while (*arg++)
+		argc++;
+	arg = argv;
+	while (*arg++)
+		argc++;
+
+	if ((argc > 0) && (argc < ARG_MAX)) {
+		char *nargv[argc+1]; /* NULL */
+		char **narg;
+
+		narg = nargv;
+		arg = interp;
+		while (*arg)
+			*narg++ = *arg++;
+		arg = argv;
+		while (*arg)
+			*narg++ = *arg++;
+		*narg++ = NULL;
+
+		return next_execve(path, nargv, envp);
+	}
+
+	errno = EINVAL;
+	return -1;
+}
+
 int execve(const char *path, char * const argv[], char * const envp[])
 {
-	char *interparg, interp[HASHBANG_MAX];
+	char *interparg[2] = { NULL }, interp[HASHBANG_MAX];
 	int argc = -1, ret, forced;
 	char *real_path, *exec;
 	char buf[PATH_MAX];
@@ -317,6 +351,21 @@ int execve(const char *path, char * const argv[], char * const envp[])
 		goto force;
 	}
 
+	/*
+	 * Hack for busybox hashbang.
+	 */
+	if ((strcmp(basename(real_path), "busybox") == 0) && 
+	    (gethashbang(argv[0], interp, sizeof(interp)) > 0)) {
+		interparg[0] = (char *)path;
+		interparg[1] = NULL;
+
+		__fprintf(stderr, "%s(path: '%s' -> '%s', argv: '%s', '%s'... , envp: @%p...)\n",
+			  	  __func__, path, real_path, interparg[0],
+				  argv[0], envp[0]);
+
+		return interpexecve(real_path, interparg, argv, envp);
+	}
+
 	__fprintf(stderr, "%s(path: '%s' -> '%s', argv: '%s'... , envp: @%p...)\n",
 			  __func__, path, real_path, argv[0], envp[0]);
 
@@ -345,8 +394,9 @@ hashbang:
 			argc++;
 
 		len = strlen(interp);
-		interparg = (len < (size_t)siz) ? &interp[len+1] : NULL;
-		if (interparg)
+		interparg[0] = (len < (size_t)siz) ? &interp[len+1] : NULL;
+		interparg[1] = NULL;
+		if (interparg[0])
 			argc++;
 
 		goto interp;
@@ -358,7 +408,8 @@ exec:
 		goto force;
 
 	strcpy(interp, getenv("SHELL") ?: "/bin/bash");
-	interparg = exec;
+	interparg[0] = exec;
+	interparg[1] = NULL;
 
 	argc = 2;
 	arg = argv;
@@ -370,12 +421,44 @@ interp:
 		char *nargv[argc + 1];
 		char **narg;
 
-		/* Prepend the interpreter and its optional argument */
+		/*
+		 * Preserve original path in arg0 and prepend the interpreter
+		 * arguments.
+		 *
+		 * The busybox binary requires the real applet name in first
+		 * argument:
+		 *
+		 *	$ path [arguments...]
+		 *
+		 * The next call to execve() resolves to:
+		 *
+		 * 	$ busybox applet [arguments...]
+		 * 	          ^path   ^argv[1]...
+		 * 	
+		 * Where applet is path and arguments is argv[1]..argv[n].
+		 *
+		 * In case of the path is an bashbang and the interpreter is a
+		 * symlink to busybox, the script name must be preserved for
+		 * the subsequent call to execve() that will resolve hashbang:
+		 *
+		 *	$ script [arguments...]
+		 *
+		 * The next call to execve() resolves to:
+		 *
+		 * 	$ busybox interp [interparg] script [arguments...]
+		 * 	          ^-------^hashbang  ^path   ^argv[1]...
+		 *
+		 * Where interp and interparg is hashbang, script is path and
+		 * arguments is argv[1]..argv[n].
+		 *
+		 * Preserving original path in arg0 both keeps a track of the
+		 * original path and satisfies the needs for busybox.
+		 */
 		narg = nargv;
-		*narg++ = interp;
-		if (interparg)
-			*narg++ = interparg;
-
+		*narg++ = (char *)path; /* preserve original path in arg0 */
+		arg = interparg;
+		while (*arg)
+			*narg++ = *arg++;
 		arg = argv;
 		while (*arg)
 			*narg++ = *arg++;

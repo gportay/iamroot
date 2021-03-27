@@ -51,7 +51,7 @@ static void __regex_perror(const char *s, regex_t *regex, int err)
 }
 
 __attribute__((constructor))
-void init()
+void path_resolution_init()
 {
 	char *ignore, *library, *exec;
 	static regex_t regex;
@@ -88,7 +88,7 @@ void init()
 }
 
 __attribute__((destructor))
-void fini()
+void path_resolution_fini()
 {
 	if (!re)
 		return;

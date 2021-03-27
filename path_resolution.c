@@ -57,7 +57,7 @@ ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
 	return next_readlink(tmp, buf, bufsize);
 }
 
-static regex_t *re;
+static regex_t *re_ignore;
 
 static void __regex_perror(const char *s, regex_t *regex, int err)
 {
@@ -76,15 +76,15 @@ __attribute__((constructor,visibility("hidden")))
 void path_resolution_init()
 {
 	const char *ignore, *exec;
-	static regex_t regex;
+	static regex_t regex_ignore;
 #ifndef JIMREGEXP_H
-	__attribute__((unused)) static char jimpad[40];
+	__attribute__((unused)) static char jimpad_ignore[40];
 #endif
 	char buf[BUFSIZ];
 	int ret;
 	int n;
 
-	if (re)
+	if (re_ignore)
 		return;
 
 	ignore = getenv("IAMROOT_PATH_RESOLUTION_IGNORE");
@@ -101,25 +101,25 @@ void path_resolution_init()
 		return;
 	}
 
-	ret = regcomp(&regex, buf, REG_NOSUB|REG_EXTENDED);
+	ret = regcomp(&regex_ignore, buf, REG_NOSUB|REG_EXTENDED);
 	if (ret) {
-		__regex_perror("regcomp", &regex, ret);
+		__regex_perror("regcomp", &regex_ignore, ret);
 		return;
 	}
 
 	__info("IAMROOT_PATH_RESOLUTION_IGNORE|IAMROOT_EXEC=%s\n", buf);
 
-	re = &regex;
+	re_ignore = &regex_ignore;
 }
 
 __attribute__((destructor,visibility("hidden")))
 void path_resolution_fini()
 {
-	if (!re)
+	if (!re_ignore)
 		return;
 
-	regfree(re);
-	re = NULL;
+	regfree(re_ignore);
+	re_ignore = NULL;
 
 	/*
 	 * Workaround: reset the chroot directory for later destructors call
@@ -132,7 +132,7 @@ static int ignore(const char *path)
 {
 	int ret = 0;
 
-	if (!re)
+	if (!re_ignore)
 		return 0;
 
 	if (!*path)
@@ -145,9 +145,9 @@ static int ignore(const char *path)
 	if (__strncmp(path, "/run/systemd") == 0)
 		return 0;
 
-	ret = regexec(re, path, 0, NULL, 0);
+	ret = regexec(re_ignore, path, 0, NULL, 0);
 	if (ret == -1) {
-		__regex_perror("regexec", re, ret);
+		__regex_perror("regexec", re_ignore, ret);
 		return 0;
 	}
 

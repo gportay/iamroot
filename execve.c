@@ -261,7 +261,7 @@ int next_execve(const char *path, char * const argv[], char * const envp[])
 	return sym(path, argv, envp);
 }
 
-int execve(const char *path, char *const argv[], char * const envp[])
+int execve(const char *path, char * const argv[], char * const envp[])
 {
 	char *interparg, interp[HASHBANG_MAX];
 	int argc = -1, ret, forced;

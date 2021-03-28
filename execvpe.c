@@ -35,7 +35,8 @@ exit:
 }
 
 /* Stolen from musl (src/process/execvp.c) */
-static int __execvpe(const char *file, char *const argv[], char *const envp[])
+static int __execvpe(const char *file, char * const argv[],
+		     char * const envp[])
 {
 	const char *p, *z, *path = getenv("PATH");
 	size_t l, k;

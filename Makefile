@@ -261,11 +261,11 @@ chroot: export PATH := $(CURDIR):/bin:/sbin
 chroot: libiamroot.so | static-rootfs
 	chroot static-rootfs /bin/sh
 
-.PHONY: alpine-chroot
-alpine-chroot: export LD_PRELOAD = $(CURDIR)/libiamroot.so
-alpine-chroot: export IAMROOT_EXEC = $(CURDIR)/exec.sh
-alpine-chroot: export PATH := $(CURDIR):/bin:/sbin
-alpine-chroot: libiamroot.so | alpine-minirootfs
+.PHONY: mini-chroot
+mini-chroot: export LD_PRELOAD = $(CURDIR)/libiamroot.so
+mini-chroot: export IAMROOT_EXEC = $(CURDIR)/exec.sh
+mini-chroot: export PATH := $(CURDIR):/bin:/sbin
+mini-chroot: libiamroot.so | alpine-minirootfs
 	chroot alpine-minirootfs /bin/sh
 
 .PHONY: arch-chroot

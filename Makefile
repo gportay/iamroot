@@ -168,7 +168,7 @@ doc: iamroot-shell.1.gz
 .PHONY: install
 install:
 	install -D -m 755 iamroot-shell $(DESTDIR)$(PREFIX)/bin/iamroot-shell
-	sed -e "s,/usr/local/,$(PREFIX)/," -i $(DESTDIR)$(PREFIX)/bin/iamroot-shell
+	sed -e "s,\$$PWD,$(PREFIX)/lib/iamroot," -i $(DESTDIR)$(PREFIX)/bin/iamroot-shell
 	install -D -m 755 libiamroot.so $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
 	install -D -m 644 iamroot-shell.1.gz $(DESTDIR)$(PREFIX)/share/man/man1/iamroot-shell.1.gz
 	completionsdir=$${BASHCOMPLETIONSDIR:-$$(pkg-config --define-variable=prefix=$(PREFIX) \
@@ -231,8 +231,6 @@ static-tests: libiamroot.so | static-rootfs
 
 .PHONY: shell-tests
 shell-tests: export PATH := $(CURDIR):$(PATH)
-shell-tests: export IAMROOT_LIB = $(CURDIR)/libiamroot.so
-shell-tests: export IAMROOT_EXEC = $(CURDIR)/exec.sh
 shell-tests: libiamroot.so | static-rootfs
 	iamroot-shell -c "whoami" | tee /dev/stderr | grep -q "^root\$$"
 	iamroot-shell -c "stat --print '%u:%g\n' ." | tee /dev/stderr | grep -q "^0:0$$"
@@ -240,7 +238,6 @@ shell-tests: libiamroot.so | static-rootfs
 
 .PHONY: alpine-tests
 alpine-tests: export LD_PRELOAD = $(CURDIR)/libiamroot.so
-alpine-tests: export IAMROOT_EXEC = $(CURDIR)/exec.sh
 alpine-tests: export IAMROOT_PATH = /sbin:/usr/sbin:/bin:/usr/bin
 alpine-tests: libiamroot.so | alpine-minirootfs
 	chroot alpine-minirootfs pwd | tee /dev/stderr | grep -q "^/\$$"

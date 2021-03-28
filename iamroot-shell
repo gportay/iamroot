@@ -56,10 +56,10 @@ Environment variables:
 EOF
 }
 
-IAMROOT_LIB="${IAMROOT_LIB:-/usr/lib/iamroot/libiamroot.so}"
+IAMROOT_LIB="${IAMROOT_LIB:-$PWD/libiamroot.so}"
 export IAMROOT_LIB
 
-IAMROOT_EXEC="${IAMROOT_EXEC:-/usr/lib/iamroot/exec.sh}"
+IAMROOT_EXEC="${IAMROOT_EXEC:-$PWD/exec.sh}"
 export IAMROOT_EXEC
 
 argv=()

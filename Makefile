@@ -248,25 +248,16 @@ alpine-tests: libiamroot.so | alpine-minirootfs
 	chroot alpine-minirootfs chroot . cat /etc/os-release | tee /dev/stderr | grep 'NAME="Alpine Linux"'
 
 .PHONY: shell
-shell: export PATH := $(CURDIR):$(PATH)
-shell: export IAMROOT_LIB = $(CURDIR)/libiamroot.so
-shell: export IAMROOT_EXEC = $(CURDIR)/exec.sh
 shell: libiamroot.so
-	iamroot-shell
+	bash iamroot-shell --library $(CURDIR)/libiamroot.so --exec $(CURDIR)/exec.sh
 
 .PHONY: chroot
-chroot: export LD_PRELOAD = $(CURDIR)/libiamroot.so
-chroot: export IAMROOT_EXEC = $(CURDIR)/exec.sh
-chroot: export PATH := $(CURDIR):/bin:/sbin
 chroot: libiamroot.so | static-rootfs
-	chroot static-rootfs /bin/sh
+	bash iamroot-shell --library $(CURDIR)/libiamroot.so --exec $(CURDIR)/exec.sh -c "chroot static-rootfs/bin/sh"
 
 .PHONY: mini-chroot
-mini-chroot: export LD_PRELOAD = $(CURDIR)/libiamroot.so
-mini-chroot: export IAMROOT_EXEC = $(CURDIR)/exec.sh
-mini-chroot: export PATH := $(CURDIR):/bin:/sbin
 mini-chroot: libiamroot.so | alpine-minirootfs
-	chroot alpine-minirootfs /bin/sh
+	bash iamroot-shell --library $(CURDIR)/libiamroot.so --exec $(CURDIR)/exec.sh -c "chroot alpine-minirootfs /bin/sh"
 
 .PHONY: arch-chroot
 arch-chroot: | arch-rootfs

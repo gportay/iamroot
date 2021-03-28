@@ -297,7 +297,7 @@ static int interpexecve(const char *path, char * const interp[],
 
 int execve(const char *path, char * const argv[], char * const envp[])
 {
-	char *interparg[2] = { NULL }, interp[HASHBANG_MAX];
+	char *interparg[3] = { NULL }, interp[HASHBANG_MAX];
 	int argc = -1, ret, forced;
 	char *real_path, *exec;
 	char buf[PATH_MAX];
@@ -407,14 +407,12 @@ exec:
 	if (!*exec)
 		goto force;
 
-	strcpy(interp, getenv("SHELL") ?: "/bin/bash");
-	interparg[0] = exec;
-	interparg[1] = NULL;
+	strncpy(buf, getenv("SHELL") ?: "/bin/bash", sizeof(buf)-1);
+	interparg[0] = (char *)path;
+	interparg[1] = exec;
+	interparg[2] = NULL;
 
-	argc = 2;
-	arg = argv;
-	while (*arg++)
-		argc++;
+	return interpexecve(buf, interparg, argv, envp);
 
 interp:
 	if ((argc != -1) && (argc < ARG_MAX)) {

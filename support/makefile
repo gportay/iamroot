@@ -705,6 +705,18 @@ umount-alpine-3.14:
 umount-alpine-3.15:
 umount-alpine-edge:
 endif
+
+gcompat/ld-linux.so.2 gcompat/libgcompat.so.0: | gcompat/Makefile
+	$(MAKE) -C gcompat CC=musl-gcc
+
+gcompat/Makefile:
+	git clone https://code.foxkit.us/adelie/gcompat.git
+
+clean: clean-gcompat
+
+.PHONY: clean-gcompat
+clean-gcompat:
+	$(MAKE) -C gcompat clean
 endif
 
 ifneq ($(shell command -v pacstrap),)

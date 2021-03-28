@@ -30,6 +30,8 @@ libiamroot-%.so.1 libiamroot-%.so.2: $(wildcard *.c) | output-%
 output-%:
 	mkdir $@
 
+alpine-rootfs/bin/busybox: libiamroot-musl-x86_64.so.1
+
 alpine-tests: libiamroot-musl-x86_64.so.1
 
 tests: alpine-tests
@@ -42,6 +44,8 @@ clean:
 	$(MAKE) -f Makefile $@
 	rm -Rf output-*/
 	rm -f libiamroot*.so*
+
+alpine-chroot: libiamroot-musl-x86_64.so
 
 %:
 	$(MAKE) -f Makefile $@

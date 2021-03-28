@@ -46,6 +46,14 @@ passwd|su)
 	echo "Error:" "Command not handled:" "$@" >&2
 	exit 1
 	;;
+bbsuid)
+	unset LD_PRELOAD
+
+	for i in /bin/mount /bin/umount /bin/su /usr/bin/crontab /usr/bin/passwd /usr/bin/traceroute /usr/bin/traceroute6 /usr/bin/vlock
+	do
+		ln -sf /bin/bbsuid "$IAMROOT_ROOT$i"
+	done
+	;;
 busybox)
 	if [[ "${IAMROOT_ROOT:-/}" != / ]]
 	then

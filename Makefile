@@ -267,6 +267,10 @@ chroot: libiamroot.so | static-rootfs
 mini-chroot: libiamroot.so | alpine-minirootfs
 	bash iamroot-shell -c "chroot alpine-minirootfs /bin/sh"
 
+.PHONY: alpine-chroot
+alpine-chroot: | alpine-rootfs
+	bash iamroot-shell -c "chroot alpine-rootfs /bin/ash"
+
 .PHONY: arch-chroot
 arch-chroot: | arch-rootfs
 	bash iamroot-shell -c "chroot arch-rootfs"
@@ -307,6 +311,12 @@ alpine-minirootfs-3.13.0-x86_64.tar.gz:
 arch-rootfs/usr/bin/%: support/% | arch-rootfs
 	cp $< $@
 
+.PHONY: alpine-rootfs
+alpine-rootfs: | alpine-rootfs/bin/busybox
+
+alpine-rootfs/bin/busybox: | libiamroot.so
+	bash iamroot-shell -c "alpine-make-rootfs alpine-rootfs --mirror-uri http://nl.alpinelinux.org/alpine --branch latest-stable"
+
 .PHONY: arch-rootfs
 arch-rootfs: | arch-rootfs/etc/machine-id
 
@@ -324,7 +334,7 @@ arch-rootfs/etc/machine-id: | libiamroot.so
 clean:
 	rm -f libiamroot.so *.o
 	chmod -f +w arch-rootfs/etc/ca-certificates/extracted/cadir || true
-	rm -Rf static-rootfs/ alpine-minirootfs/ arch-rootfs/
+	rm -Rf static-rootfs/ alpine-minirootfs/ arch-rootfs/ alpine-rootfs/
 	$(MAKE) -C tests $@
 
 .PHONY: mrproper

@@ -293,8 +293,8 @@ static int interpexecve(const char *path, char * const interp[],
 int execve(const char *path, char * const argv[], char * const envp[])
 {
 	char *interparg[4] = { NULL }, interp[HASHBANG_MAX];
-	char *real_path, *exec;
 	char buf[PATH_MAX];
+	char *real_path;
 	ssize_t siz;
 	size_t len;
 	int i, ret;
@@ -419,10 +419,9 @@ hashbang:
 	return interpexecve(real_path, interparg, argv, envp);
 
 exec:
-	exec = getenv("IAMROOT_EXEC") ?: "/usr/lib/iamroot/exec.sh";
 	strncpy(buf, getenv("SHELL") ?: "/bin/bash", sizeof(buf)-1);
 	interparg[0] = (char *)path;
-	interparg[1] = exec;
+	interparg[1] = getenv("IAMROOT_EXEC") ?: "/usr/lib/iamroot/exec.sh";
 	interparg[2] = NULL;
 
 	return interpexecve(buf, interparg, argv, envp);

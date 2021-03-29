@@ -297,12 +297,12 @@ static int interpexecve(const char *path, char * const interp[],
 
 int execve(const char *path, char * const argv[], char * const envp[])
 {
-	char *interparg[3] = { NULL }, interp[HASHBANG_MAX];
-	int argc = -1, ret, forced;
+	char *interparg[4] = { NULL }, interp[HASHBANG_MAX];
 	char *real_path, *exec;
 	char buf[PATH_MAX];
-	char * const *arg;
+	int i, ret, forced;
 	ssize_t siz;
+	size_t len;
 
 	if (ignore(path))
 		goto exec;
@@ -351,21 +351,6 @@ int execve(const char *path, char * const argv[], char * const envp[])
 		goto force;
 	}
 
-	/*
-	 * Hack for busybox hashbang.
-	 */
-	if ((strcmp(basename(real_path), "busybox") == 0) && 
-	    (gethashbang(argv[0], interp, sizeof(interp)) > 0)) {
-		interparg[0] = (char *)path;
-		interparg[1] = NULL;
-
-		__fprintf(stderr, "%s(path: '%s' -> '%s', argv: '%s', '%s'... , envp: @%p...)\n",
-			  	  __func__, path, real_path, interparg[0],
-				  argv[0], envp[0]);
-
-		return interpexecve(real_path, interparg, argv, envp);
-	}
-
 	__fprintf(stderr, "%s(path: '%s' -> '%s', argv: '%s'... , envp: @%p...)\n",
 			  __func__, path, real_path, argv[0], envp[0]);
 
@@ -385,22 +370,58 @@ hashbang:
 
 		perror("gethashbang");
 		return -1;
-	} else if (siz > 0) {
-		size_t len;
-
-		argc = 1;
-		arg = argv;
-		while (*arg++)
-			argc++;
-
-		len = strlen(interp);
-		interparg[0] = (len < (size_t)siz) ? &interp[len+1] : NULL;
-		interparg[1] = NULL;
-		if (interparg[0])
-			argc++;
-
-		goto interp;
+	} else if (siz == 0) {
+		goto exec;
 	}
+
+	/*
+	 * Preserve original path in arg0 and prepend the interpreter
+	 * arguments.
+	 *
+	 * The busybox binary requires the real applet name in first argument:
+	 *
+	 *	$ path [arguments...]
+	 *
+	 * The next call to execve() resolves to:
+	 *
+	 * 	$ busybox applet [arguments...]
+	 * 	          ^path   ^argv[1]...
+	 * 	
+	 * Where applet is path and arguments is argv[1]..argv[n].
+	 *
+	 * In case of the path is an bashbang and the interpreter is a symlink
+	 * to busybox, the script name must be preserved for the subsequent
+	 * call to execve() that will resolve hashbang:
+	 *
+	 *	$ script [arguments...]
+	 *
+	 * The next call to execve() resolves to:
+	 *
+	 * 	$ busybox interp [interparg] script [arguments...]
+	 * 	          ^-------^hashbang  ^path   ^argv[1]...
+	 *
+	 * Where interp and interparg is hashbang, script is path and arguments
+	 * is argv[1]..argv[n].
+	 *
+	 * Preserving original path in arg0 both keeps a track of the original
+	 * path and satisfies the needs for busybox.
+	 */
+	real_path = path_resolution(interp, buf, sizeof(buf),
+				    AT_SYMLINK_FOLLOW);
+	if (!real_path) {
+		perror("path_resolution");
+		return -1;
+	}
+
+	len = strlen(interp);
+	i = 0;
+	if (strcmp(basename(real_path), "busybox") == 0)
+		interparg[i++] = interp;
+	interparg[i++] = (char *)path;
+	interparg[i++] = (len < (size_t)siz) ? &interp[len+1] : NULL;
+	interparg[i++] = NULL;
+
+	return interpexecve(real_path, interparg, argv, envp);
 
 exec:
 	exec = getenv("IAMROOT_EXEC") ?: "/usr/lib/iamroot/exec.sh";
@@ -413,57 +434,6 @@ exec:
 	interparg[2] = NULL;
 
 	return interpexecve(buf, interparg, argv, envp);
-
-interp:
-	if ((argc != -1) && (argc < ARG_MAX)) {
-		char *nargv[argc + 1];
-		char **narg;
-
-		/*
-		 * Preserve original path in arg0 and prepend the interpreter
-		 * arguments.
-		 *
-		 * The busybox binary requires the real applet name in first
-		 * argument:
-		 *
-		 *	$ path [arguments...]
-		 *
-		 * The next call to execve() resolves to:
-		 *
-		 * 	$ busybox applet [arguments...]
-		 * 	          ^path   ^argv[1]...
-		 * 	
-		 * Where applet is path and arguments is argv[1]..argv[n].
-		 *
-		 * In case of the path is an bashbang and the interpreter is a
-		 * symlink to busybox, the script name must be preserved for
-		 * the subsequent call to execve() that will resolve hashbang:
-		 *
-		 *	$ script [arguments...]
-		 *
-		 * The next call to execve() resolves to:
-		 *
-		 * 	$ busybox interp [interparg] script [arguments...]
-		 * 	          ^-------^hashbang  ^path   ^argv[1]...
-		 *
-		 * Where interp and interparg is hashbang, script is path and
-		 * arguments is argv[1]..argv[n].
-		 *
-		 * Preserving original path in arg0 both keeps a track of the
-		 * original path and satisfies the needs for busybox.
-		 */
-		narg = nargv;
-		*narg++ = (char *)path; /* preserve original path in arg0 */
-		arg = interparg;
-		while (*arg)
-			*narg++ = *arg++;
-		arg = argv;
-		while (*arg)
-			*narg++ = *arg++;
-		*narg++ = NULL;
-
-		return execve(interp, nargv, environ);
-	}
 
 force:
 	forced = force();

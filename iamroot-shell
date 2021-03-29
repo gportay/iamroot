@@ -30,7 +30,6 @@ iamroot specific options:
                                 use.
       --library LIB             Absolute path to the iamroot library to use.
       --debug                   Turn on debug mode.
-      --force                   Turn on force mode.
       --help                    Print usage.
 
 Environment variables:
@@ -50,9 +49,6 @@ Environment variables:
 
       IAMROOT_DEBUG             Set debug mode.
                                 Equivalent to --debug.
-
-      IAMROOT_FORCE             Set force mode.
-                                Equivalent to --force.
 EOF
 }
 
@@ -69,10 +65,6 @@ do
 	then
 		usage
 		exit 0
-	elif [[ "$1" == "--force" ]]
-	then
-		IAMROOT_FORCE=1
-		export IAMROOT_FORCE
 	elif [[ "$1" == "--debug" ]]
 	then
 		IAMROOT_DEBUG="$((IAMROOT_DEBUG+1))"

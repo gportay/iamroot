@@ -41,7 +41,7 @@ _iamroot-shell()
 
 	if [[ "$shell" != 1 ]]
 	then
-		COMPREPLY+=($(compgen -W "--force --debug --library --exec --chroot" -- "$cur"))
+		COMPREPLY+=($(compgen -W "--debug --library --exec --chroot" -- "$cur"))
 	fi
 } &&
 complete -F _iamroot-shell iamroot-shell

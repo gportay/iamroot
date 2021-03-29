@@ -60,9 +60,6 @@ shells, please refers to their manuals.
 **--debug**::
 	Turn on debug mode.
 
-**--force**::
-	Turn on force mode.
-
 **--help**::
 	Print usage.
 
@@ -89,10 +86,6 @@ shells, please refers to their manuals.
 **IAMROOT_DEBUG**::
 	Set debug mode.
 	Equivalent to --debug.
-
-**IAMROOT_FORCE**::
-	Set force mode.
-	Equivalent to --force.
 
 == EXAMPLES
 

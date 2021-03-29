@@ -201,7 +201,6 @@ ci: check
 .PHONY: run-qemu
 run-qemu: export LD_PRELOAD = $(CURDIR)/libiamroot.so
 run-qemu: export EUID = 0
-run-qemu: export IAMROOT_FORCE = 1
 run-qemu: export IAMROOT_EXEC = $(CURDIR)/exec.sh
 run-qemu: override QEMUFLAGS += -append "console=ttyS0 root=host0 rootfstype=9p rootflags=trans=virtio debug"
 run-qemu: override QEMUFLAGS += -kernel arch-rootfs/boot/vmlinuz-linux
@@ -296,14 +295,12 @@ arch-rootfs: | arch-rootfs/etc/machine-id
 arch-rootfs/boot/vmlinuz-linux: export LD_PRELOAD = $(CURDIR)/libiamroot.so
 arch-rootfs/boot/vmlinuz-linux: export IAMROOT_EXEC = $(CURDIR)/exec.sh
 arch-rootfs/boot/vmlinuz-linux: export EUID = 0
-arch-rootfs/boot/vmlinuz-linux: export IAMROOT_FORCE = 1
 arch-rootfs/boot/vmlinuz-linux: libiamroot.so | arch-rootfs/etc/machine-id
 	pacman -r arch-rootfs --noconfirm -S linux
 
 arch-rootfs/etc/machine-id: export LD_PRELOAD = $(CURDIR)/libiamroot.so
 arch-rootfs/etc/machine-id: export IAMROOT_EXEC = $(CURDIR)/exec.sh
 arch-rootfs/etc/machine-id: export EUID = 0
-arch-rootfs/etc/machine-id: export IAMROOT_FORCE = 1
 arch-rootfs/etc/machine-id: libiamroot.so
 	mkdir -p arch-rootfs
 	pacstrap arch-rootfs

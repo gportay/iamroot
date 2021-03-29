@@ -242,11 +242,6 @@ close:
 	return siz;
 }
 
-static int force()
-{
-	return strtoul(getenv("IAMROOT_FORCE") ?: "0", NULL, 0);
-}
-
 __attribute__((visibility("hidden")))
 int next_execve(const char *path, char * const argv[], char * const envp[])
 {
@@ -300,9 +295,9 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	char *interparg[4] = { NULL }, interp[HASHBANG_MAX];
 	char *real_path, *exec;
 	char buf[PATH_MAX];
-	int i, ret, forced;
 	ssize_t siz;
 	size_t len;
+	int i, ret;
 
 	if (ignore(path))
 		goto exec;
@@ -348,7 +343,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 		perror("getinterp");
 		return -1;
 	} else if (siz == 0) {
-		goto force;
+		goto exec;
 	}
 
 	__fprintf(stderr, "%s(path: '%s' -> '%s', argv: '%s'... , envp: @%p...)\n",
@@ -425,23 +420,10 @@ hashbang:
 
 exec:
 	exec = getenv("IAMROOT_EXEC") ?: "/usr/lib/iamroot/exec.sh";
-	if (!*exec)
-		goto force;
-
 	strncpy(buf, getenv("SHELL") ?: "/bin/bash", sizeof(buf)-1);
 	interparg[0] = (char *)path;
 	interparg[1] = exec;
 	interparg[2] = NULL;
 
 	return interpexecve(buf, interparg, argv, envp);
-
-force:
-	forced = force();
-	fprintf(stderr, "%s: %s: Cannot support LD_PRELOAD\n",
-			forced == 0 ? "Error" : "Warning", real_path);
-	if (forced)
-		_exit(0);
-
-	errno = ENOEXEC;
-	return -1;
 }

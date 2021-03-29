@@ -199,7 +199,6 @@ ci: check
 	$(SHELL) make-musl-gcc.sh clean all
 
 .PHONY: run-qemu
-run-qemu: export EUID = 0
 run-qemu: override QEMUFLAGS += -append "console=ttyS0 root=host0 rootfstype=9p rootflags=trans=virtio debug"
 run-qemu: override QEMUFLAGS += -kernel arch-rootfs/boot/vmlinuz-linux
 run-qemu: override QEMUFLAGS += -initrd arch-rootfs/boot/initramfs-linux-fallback.img
@@ -286,11 +285,9 @@ alpine-minirootfs-3.13.0-x86_64.tar.gz:
 .PHONY: arch-rootfs
 arch-rootfs: | arch-rootfs/etc/machine-id
 
-arch-rootfs/boot/vmlinuz-linux: export EUID = 0
 arch-rootfs/boot/vmlinuz-linux: libiamroot.so | arch-rootfs/etc/machine-id
 	bash iamroot-shell -c "pacman -r arch-rootfs --noconfirm -S linux"
 
-arch-rootfs/etc/machine-id: export EUID = 0
 arch-rootfs/etc/machine-id: libiamroot.so
 	mkdir -p arch-rootfs
 	bash iamroot-shell -c "pacstrap arch-rootfs"

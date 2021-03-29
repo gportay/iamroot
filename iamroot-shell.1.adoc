@@ -141,7 +141,7 @@ Change root directory via *chroot(1)*
 Create a new Arch Linux system installation from scratch via *pacstrap(8)*
 
 	[gportay@archlinux ~]$ mkdir rootfs
-	[gportay@archlinux ~]$ EUID=0 iamroot-shell -c "pacstrap rootfs" && echo done
+	[gportay@archlinux ~]$ iamroot-shell -c "pacstrap rootfs" && echo done
 	==> Creating install root at rootfs
 	cp: cannot access '/etc/pacman.d/gnupg/crls.d': Permission denied
 	cp: cannot access '/etc/pacman.d/gnupg/openpgp-revocs.d': Permission denied

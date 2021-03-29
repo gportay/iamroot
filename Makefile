@@ -199,9 +199,7 @@ ci: check
 	$(SHELL) make-musl-gcc.sh clean all
 
 .PHONY: run-qemu
-run-qemu: export LD_PRELOAD = $(CURDIR)/libiamroot.so
 run-qemu: export EUID = 0
-run-qemu: export IAMROOT_EXEC = $(CURDIR)/exec.sh
 run-qemu: override QEMUFLAGS += -append "console=ttyS0 root=host0 rootfstype=9p rootflags=trans=virtio debug"
 run-qemu: override QEMUFLAGS += -kernel arch-rootfs/boot/vmlinuz-linux
 run-qemu: override QEMUFLAGS += -initrd arch-rootfs/boot/initramfs-linux-fallback.img
@@ -223,41 +221,37 @@ tests: | libiamroot.so alpine-minirootfs
 
 .PHONY: static-tests
 static-tests: SHELL = /bin/bash
-static-tests: export LD_PRELOAD = $(CURDIR)/libiamroot.so
 static-tests: libiamroot.so | static-rootfs
-	whoami | tee /dev/stderr | grep -q "^root\$$"
-	IAMROOT_GETEUID=$$EUID whoami | tee /dev/stderr | grep -q "^$$USER\$$"
+	bash iamroot-shell -c "whoami | tee /dev/stderr | grep -q \"^root\$$\""
+	bash iamroot-shell -c "IAMROOT_GETEUID=$$EUID whoami | tee /dev/stderr | grep -q \"^$$USER\$$\""
 
 .PHONY: shell-tests
-shell-tests: export PATH := $(CURDIR):$(PATH)
 shell-tests: libiamroot.so | static-rootfs
-	iamroot-shell -c "whoami" | tee /dev/stderr | grep -q "^root\$$"
-	iamroot-shell -c "stat --print '%u:%g\n' ." | tee /dev/stderr | grep -q "^0:0$$"
-	iamroot-shell -c "echo \$$IAMROOTLVL" | tee /dev/stderr | grep -q "^[0-9]\+$$"
+	bash iamroot-shell -c "whoami" | tee /dev/stderr | grep -q "^root\$$"
+	bash iamroot-shell -c "stat --print '%u:%g\n' ." | tee /dev/stderr | grep -q "^0:0$$"
+	bash iamroot-shell -c "echo \$$IAMROOTLVL" | tee /dev/stderr | grep -q "^[0-9]\+$$"
 
 .PHONY: alpine-tests
-alpine-tests: export LD_PRELOAD = $(CURDIR)/libiamroot.so
-alpine-tests: export IAMROOT_PATH = /sbin:/usr/sbin:/bin:/usr/bin
 alpine-tests: libiamroot.so | alpine-minirootfs
-	chroot alpine-minirootfs pwd | tee /dev/stderr | grep -q "^/\$$"
-	chroot alpine-minirootfs cat /etc/os-release | tee /dev/stderr | grep 'NAME="Alpine Linux"'
-	chroot alpine-minirootfs chroot . cat /etc/os-release | tee /dev/stderr | grep 'NAME="Alpine Linux"'
+	bash iamroot-shell -c "chroot alpine-minirootfs pwd" | tee /dev/stderr | grep -q "^/\$$"
+	bash iamroot-shell -c "chroot alpine-minirootfs cat /etc/os-release" | tee /dev/stderr | grep 'NAME="Alpine Linux"'
+	bash iamroot-shell --path /bin:/usr/bin:/sbin:/usr/sbin -c "chroot alpine-minirootfs chroot . cat /etc/os-release" | tee /dev/stderr | grep 'NAME="Alpine Linux"'
 
 .PHONY: shell
 shell: libiamroot.so
-	bash iamroot-shell --library $(CURDIR)/libiamroot.so --exec $(CURDIR)/exec.sh
+	bash iamroot-shell
 
 .PHONY: chroot
 chroot: libiamroot.so | static-rootfs
-	bash iamroot-shell --library $(CURDIR)/libiamroot.so --exec $(CURDIR)/exec.sh -c "chroot static-rootfs/bin/sh"
+	bash iamroot-shell -c "chroot static-rootfs/bin/sh"
 
 .PHONY: mini-chroot
 mini-chroot: libiamroot.so | alpine-minirootfs
-	bash iamroot-shell --library $(CURDIR)/libiamroot.so --exec $(CURDIR)/exec.sh -c "chroot alpine-minirootfs /bin/sh"
+	bash iamroot-shell -c "chroot alpine-minirootfs /bin/sh"
 
 .PHONY: arch-chroot
 arch-chroot: | arch-rootfs
-	bash iamroot-shell --library $(CURDIR)/libiamroot.so --exec $(CURDIR)/exec.sh -c "chroot arch-rootfs"
+	bash iamroot-shell -c "chroot arch-rootfs"
 
 .PHONY: static-rootfs
 static-rootfs: static-rootfs/usr/bin/sh
@@ -292,18 +286,14 @@ alpine-minirootfs-3.13.0-x86_64.tar.gz:
 .PHONY: arch-rootfs
 arch-rootfs: | arch-rootfs/etc/machine-id
 
-arch-rootfs/boot/vmlinuz-linux: export LD_PRELOAD = $(CURDIR)/libiamroot.so
-arch-rootfs/boot/vmlinuz-linux: export IAMROOT_EXEC = $(CURDIR)/exec.sh
 arch-rootfs/boot/vmlinuz-linux: export EUID = 0
 arch-rootfs/boot/vmlinuz-linux: libiamroot.so | arch-rootfs/etc/machine-id
-	pacman -r arch-rootfs --noconfirm -S linux
+	bash iamroot-shell -c "pacman -r arch-rootfs --noconfirm -S linux"
 
-arch-rootfs/etc/machine-id: export LD_PRELOAD = $(CURDIR)/libiamroot.so
-arch-rootfs/etc/machine-id: export IAMROOT_EXEC = $(CURDIR)/exec.sh
 arch-rootfs/etc/machine-id: export EUID = 0
 arch-rootfs/etc/machine-id: libiamroot.so
 	mkdir -p arch-rootfs
-	pacstrap arch-rootfs
+	bash iamroot-shell -c "pacstrap arch-rootfs"
 
 .PHONY: clean
 clean:

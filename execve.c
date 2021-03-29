@@ -416,7 +416,7 @@ hashbang:
 	interparg[i++] = (len < (size_t)siz) ? &interp[len+1] : NULL;
 	interparg[i++] = NULL;
 
-	return interpexecve(real_path, interparg, argv, envp);
+	goto interp;
 
 exec:
 	strncpy(buf, getenv("SHELL") ?: "/bin/bash", sizeof(buf)-1);
@@ -424,5 +424,6 @@ exec:
 	interparg[1] = getenv("IAMROOT_EXEC") ?: "/usr/lib/iamroot/exec.sh";
 	interparg[2] = NULL;
 
+interp:
 	return interpexecve(buf, interparg, argv, envp);
 }

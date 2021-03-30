@@ -27,10 +27,6 @@ extern int next_stat(const char *, struct stat *);
 extern int next_fstat(int, const struct stat *);
 extern int next_lstat(const char *, struct stat *);
 extern int next_fstatat(int, const char *, struct stat *, int);
-extern int next_stat64(const char *, struct stat64 *);
-extern int next_fstat64(int, const struct stat64 *);
-extern int next_lstat64(const char *, struct stat64 *);
-extern int next_fstatat64(int, const char *, struct stat64 *, int);
 extern int next___fstat(int, struct stat *);
 extern int next___fstat64(int, struct stat64 *);
 extern int next___xstat(int, const char *, struct stat *);
@@ -42,6 +38,10 @@ extern int next___lxstat64(int, const char *, struct stat64 *);
 extern int next___fxstatat(int, int, const char *, struct stat *, int);
 extern int next___fxstatat64(int, int, const char *, struct stat64 *, int);
 #ifdef __GLIBC__
+extern int next_stat64(const char *, struct stat64 *);
+extern int next_fstat64(int, const struct stat64 *);
+extern int next_lstat64(const char *, struct stat64 *);
+extern int next_fstatat64(int, const char *, struct stat64 *, int);
 extern int next_statx(int, const char *, int, unsigned int, struct statx *);
 #endif
 extern uid_t next_geteuid();
@@ -217,98 +217,6 @@ int rootfstatat(int fd, const char *path, struct stat *buf, int flags)
 	int ret;
 
 	ret = next_fstatat(fd, path, buf, flags);
-	if (ret == -1)
-		goto exit;
-
-	uid = next_geteuid();
-	if (buf->st_uid == uid)
-		buf->st_uid = geteuid();
-
-	gid = getegid();
-	if (buf->st_gid == gid)
-		buf->st_gid = 0;
-
-exit:
-	return ret;
-}
-
-__attribute__((visibility("hidden")))
-int rootstat64(const char *path, struct stat64 *buf)
-{
-	uid_t uid;
-	gid_t gid;
-	int ret;
-
-	ret = next_stat64(path, buf);
-	if (ret == -1)
-		goto exit;
-
-	uid = next_geteuid();
-	if (buf->st_uid == uid)
-		buf->st_uid = geteuid();
-
-	gid = getegid();
-	if (buf->st_gid == gid)
-		buf->st_gid = 0;
-
-exit:
-	return ret;
-}
-
-__attribute__((visibility("hidden")))
-int rootfstat64(int fd, struct stat64 *buf)
-{
-	uid_t uid;
-	gid_t gid;
-	int ret;
-
-	ret = next_fstat64(fd, buf);
-	if (ret == -1)
-		goto exit;
-
-	uid = next_geteuid();
-	if (buf->st_uid == uid)
-		buf->st_uid = geteuid();
-
-	gid = getegid();
-	if (buf->st_gid == gid)
-		buf->st_gid = 0;
-
-exit:
-	return ret;
-}
-
-__attribute__((visibility("hidden")))
-int rootlstat64(const char *path, struct stat64 *buf)
-{
-	uid_t uid;
-	gid_t gid;
-	int ret;
-
-	ret = next_lstat64(path, buf);
-	if (ret == -1)
-		goto exit;
-
-	uid = next_geteuid();
-	if (buf->st_uid == uid)
-		buf->st_uid = geteuid();
-
-	gid = getegid();
-	if (buf->st_gid == gid)
-		buf->st_gid = 0;
-
-exit:
-	return ret;
-}
-
-__attribute__((visibility("hidden")))
-int rootfstatat64(int fd, const char *path, struct stat64 *buf, int flags)
-{
-	uid_t uid;
-	gid_t gid;
-	int ret;
-
-	ret = next_fstatat64(fd, path, buf, flags);
 	if (ret == -1)
 		goto exit;
 
@@ -557,6 +465,98 @@ exit:
 }
 
 #ifdef __GLIBC__
+__attribute__((visibility("hidden")))
+int rootstat64(const char *path, struct stat64 *buf)
+{
+	uid_t uid;
+	gid_t gid;
+	int ret;
+
+	ret = next_stat64(path, buf);
+	if (ret == -1)
+		goto exit;
+
+	uid = next_geteuid();
+	if (buf->st_uid == uid)
+		buf->st_uid = geteuid();
+
+	gid = getegid();
+	if (buf->st_gid == gid)
+		buf->st_gid = 0;
+
+exit:
+	return ret;
+}
+
+__attribute__((visibility("hidden")))
+int rootfstat64(int fd, struct stat64 *buf)
+{
+	uid_t uid;
+	gid_t gid;
+	int ret;
+
+	ret = next_fstat64(fd, buf);
+	if (ret == -1)
+		goto exit;
+
+	uid = next_geteuid();
+	if (buf->st_uid == uid)
+		buf->st_uid = geteuid();
+
+	gid = getegid();
+	if (buf->st_gid == gid)
+		buf->st_gid = 0;
+
+exit:
+	return ret;
+}
+
+__attribute__((visibility("hidden")))
+int rootlstat64(const char *path, struct stat64 *buf)
+{
+	uid_t uid;
+	gid_t gid;
+	int ret;
+
+	ret = next_lstat64(path, buf);
+	if (ret == -1)
+		goto exit;
+
+	uid = next_geteuid();
+	if (buf->st_uid == uid)
+		buf->st_uid = geteuid();
+
+	gid = getegid();
+	if (buf->st_gid == gid)
+		buf->st_gid = 0;
+
+exit:
+	return ret;
+}
+
+__attribute__((visibility("hidden")))
+int rootfstatat64(int fd, const char *path, struct stat64 *buf, int flags)
+{
+	uid_t uid;
+	gid_t gid;
+	int ret;
+
+	ret = next_fstatat64(fd, path, buf, flags);
+	if (ret == -1)
+		goto exit;
+
+	uid = next_geteuid();
+	if (buf->st_uid == uid)
+		buf->st_uid = geteuid();
+
+	gid = getegid();
+	if (buf->st_gid == gid)
+		buf->st_gid = 0;
+
+exit:
+	return ret;
+}
+
 __attribute__((visibility("hidden")))
 int rootstatx(int fd, const char *path, int flags, unsigned int mask,
 	      struct statx *buf)

@@ -16,7 +16,7 @@
 
 #ifdef __GLIBC__
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
-extern int __fxrootstatat64(int, int, const char *, struct stat *, int);
+extern int __rootfxstatat64(int, int, const char *, struct stat *, int);
 
 __attribute__((visibility("hidden")))
 int next___fxstatat64(int ver, int fd, const char *path, struct stat *statbuf,
@@ -46,7 +46,7 @@ int __fxstatat64(int ver, int fd, const char *path, struct stat *statbuf,
 		return -1;
 	}
 
-	ret = __fxrootstatat64(ver, fd, real_path, statbuf, flags);
+	ret = __rootfxstatat64(ver, fd, real_path, statbuf, flags);
 
 	__fprintf(stderr, "%s(fd: %i, path: '%s' -> '%s', ...)\n", __func__, fd,
 			  path, real_path);

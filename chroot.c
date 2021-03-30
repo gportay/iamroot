@@ -325,7 +325,7 @@ exit:
 }
 
 __attribute__((visibility("hidden")))
-int __fxrootstatat(int ver, int fd, const char *path, struct stat *buf,
+int __rootfxstatat(int ver, int fd, const char *path, struct stat *buf,
 		   int flags)
 {
 	uid_t uid;
@@ -534,7 +534,7 @@ exit:
 }
 
 __attribute__((visibility("hidden")))
-int __fxrootstatat64(int ver, int fd, const char *path, struct stat64 *buf,
+int __rootfxstatat64(int ver, int fd, const char *path, struct stat64 *buf,
 		     int flags)
 {
 	uid_t uid;

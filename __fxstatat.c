@@ -15,7 +15,7 @@
 #include "fpath_resolutionat.h"
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
-extern int __fxrootstatat(int, int, const char *, struct stat *, int);
+extern int __rootfxstatat(int, int, const char *, struct stat *, int);
 
 __attribute__((visibility("hidden")))
 int next___fxstatat(int ver, int fd, const char *path, struct stat *statbuf,
@@ -45,7 +45,7 @@ int __fxstatat(int ver, int fd, const char *path, struct stat *statbuf,
 		return -1;
 	}
 
-	ret = __fxrootstatat(ver, fd, real_path, statbuf, flags);
+	ret = __rootfxstatat(ver, fd, real_path, statbuf, flags);
 
 	__fprintf(stderr, "%s(fd: %i, path: '%s' -> '%s', ...)\n", __func__, fd,
 			  path, real_path);

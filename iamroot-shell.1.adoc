@@ -51,6 +51,12 @@ shells, please refers to their manuals.
 **--chroot DIR**::
 	Absolute path to the root directory to chroot in.
 
+**--path PATH**
+	PATH to use in chroot.
+
+**--ld-library-path PATH**
+	LD_LIBRARY_PATH to use in chroot.
+
 **--exec FILE**::
 	Absolute path to the iamroot exec script to use.
 
@@ -74,6 +80,14 @@ shells, please refers to their manuals.
 **IAMROOT_ROOT**::
 	Set absolute path to root directory to chroot in.
 	Equivalent to --chroot DIR.
+
+**IAMROOT_PATH**:
+	Set PATH to use in chroot.
+	Equivalent to --path PATH.
+
+**IAMROOT_LD_LIBRARY_PATH**::
+	Set LD_LIBRARY_PATH to use in chroot.
+	Equivalent to --ld-library-path PATH.
 
 **IAMROOT_EXEC**::
 	Set absolute path to exec script to use.

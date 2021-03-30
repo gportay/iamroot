@@ -26,6 +26,8 @@ POSIX Shell related options:
 iamroot specific options:
       --chroot DIR              Absolute path to the root directory to chroot
                                 in.
+      --path PATH               PATH to use in chroot.
+      --ld-library-path PATH    LD_LIBRARY_PATH to use in chroot.
       --exec FILE               Absolute path to the iamroot exec script to
                                 use.
       --library LIB             Absolute path to the iamroot library to use.
@@ -41,12 +43,17 @@ Environment variables:
       IAMROOT_ROOT              Set absolute path to root directory to chroot
                                 in. Equivalent to --chroot DIR.
 
+      IAMROOT_PATH              Set PATH to use in chroot.
+                                Equivalent to --path PATH.
+
+      IAMROOT_LD_LIBRARY_PATH   Set LD_LIBRARY_PATH to use in chroot.
+                                Equivalent to --ld-library-path PATH.
+
       IAMROOT_EXEC              Set absolute path to exec script to use.
                                 Equivalent to --exec EXEC.
 
       IAMROOT_LIB               Set absolute path to library to use.
                                 Equivalent to --library LIB.
-
       IAMROOT_DEBUG             Set debug mode.
                                 Equivalent to --debug.
 EOF
@@ -84,6 +91,16 @@ do
 		shift
 		IAMROOT_ROOT="$1"
 		export IAMROOT_ROOT
+	elif [[ "$1" == "--path" ]]
+	then
+		shift
+		IAMROOT_PATH="$1"
+		export IAMROOT_PATH
+	elif [[ "$1" == "--ld-library-path" ]]
+	then
+		shift
+		IAMROOT_LD_LIBRARY_PATH="$1"
+		export IAMROOT_LD_LIBRARY_PATH
 	elif [[ "$1" == "--" ]]
 	then
 		shift

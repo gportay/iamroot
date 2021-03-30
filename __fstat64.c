@@ -13,6 +13,7 @@
 
 #include "fpath_resolutionat.h"
 
+#ifdef __GLIBC__
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern int __rootfstat64(int, struct stat64 *);
 
@@ -36,3 +37,4 @@ int __fstat64(int fd, struct stat64 *stat64buf)
 
 	return __rootfstat64(fd, stat64buf);
 }
+#endif

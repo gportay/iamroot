@@ -14,6 +14,7 @@
 
 #include "path_resolution.h"
 
+#ifdef __GLIBC__
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern int __rootlxstat64(int, const char *, struct stat64 *);
 
@@ -51,3 +52,4 @@ int __lxstat64(int ver, const char *path, struct stat64 *stat64buf)
 
 	return ret;
 }
+#endif

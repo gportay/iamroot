@@ -14,6 +14,7 @@
 
 #include "fpath_resolutionat.h"
 
+#ifdef __GLIBC__
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern int __fxrootstatat64(int, int, const char *, struct stat *, int);
 
@@ -52,3 +53,4 @@ int __fxstatat64(int ver, int fd, const char *path, struct stat *statbuf,
 
 	return ret;
 }
+#endif

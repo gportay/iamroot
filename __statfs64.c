@@ -13,6 +13,7 @@
 
 #include "path_resolution.h"
 
+#ifdef __GLIBC__
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 __attribute__((visibility("hidden")))
@@ -45,3 +46,4 @@ int __statfs64(const char *path, struct statfs64 *statfs64buf)
 
 	return next___statfs64(real_path, statfs64buf);
 }
+#endif

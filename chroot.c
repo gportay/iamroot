@@ -232,7 +232,6 @@ exit:
 	return ret;
 }
 
-#ifdef __GLIBC__
 __attribute__((visibility("hidden")))
 int rootstat64(const char *path, struct stat64 *buf)
 {
@@ -557,6 +556,7 @@ exit:
 	return ret;
 }
 
+#ifdef __GLIBC__
 __attribute__((visibility("hidden")))
 int rootstatx(int fd, const char *path, int flags, unsigned int mask,
 	      struct statx *buf)

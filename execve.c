@@ -23,6 +23,7 @@
 #include <unistd.h>
 
 extern char *path_resolution(const char *, char *, size_t, int);
+#define __strncmp(s1, s2) strncmp(s1, s2, sizeof(s2)-1)
 /* See https://www.in-ulm.de/~mascheck/various/shebang/#results */
 #define HASHBANG_MAX NAME_MAX
 
@@ -422,6 +423,12 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	real_path = real_hashbang;
 
 loader:
+	/*
+	 * Run the dynamic linker directly
+	 */
+	if (__strncmp(path, "/lib/ld") == 0)
+		return next_execve(real_path, argv, envp);
+
 	/*
 	 * Get the dynamic linker stored in the .interp section of the ELF
 	 * linked program.

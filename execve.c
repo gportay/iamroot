@@ -419,11 +419,11 @@ hashbang:
 	goto interp;
 
 exec:
-	strncpy(buf, getenv("SHELL") ?: "/bin/bash", sizeof(buf)-1);
+	real_path = strncpy(buf, getenv("SHELL") ?: "/bin/bash", sizeof(buf)-1);
 	interparg[0] = (char *)path;
 	interparg[1] = getenv("IAMROOT_EXEC") ?: "/usr/lib/iamroot/exec.sh";
 	interparg[2] = NULL;
 
 interp:
-	return interpexecve(buf, interparg, argv, envp);
+	return interpexecve(real_path, interparg, argv, envp);
 }

@@ -315,13 +315,15 @@ static int interpexecve(const char *path, char * const interp[],
 
 int execve(const char *path, char * const argv[], char * const envp[])
 {
-	char *interparg[4] = { NULL }, interp[HASHBANG_MAX];
-	char buf[PATH_MAX];
-	char *real_path;
+	char hashbang[HASHBANG_MAX], loader[HASHBANG_MAX];
+	char buf[PATH_MAX], hashbangbuf[PATH_MAX];
+	char *real_path, *real_hashbang;
+	char *interparg[9] = { NULL };
+	int i = 0, ret;
 	ssize_t siz;
 	size_t len;
-	int i, ret;
 
+	/* Run exec.sh script */
 	if (ignore(path))
 		goto exec;
 
@@ -353,43 +355,21 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	else if (ret)
 		goto exec;
 
-	/*
-	 * Get the dynamic linker stored in the .interp section of the ELF
-	 * linked program.
-	 */
-	siz = getinterp(real_path, interp, sizeof(interp));
-	if (siz == -1) {
-		/* Not an ELF linked program */
-		if (errno == ENOEXEC)
-			goto hashbang;
-
-		perror("getinterp");
-		return -1;
-	} else if (siz == 0) {
-		goto exec;
-	}
-
-	__fprintf(stderr, "%s(path: '%s' -> '%s', argv: '%s'... , envp: @%p...)\n",
-			  __func__, path, real_path, argv[0], envp[0]);
-
-	return next_execve(real_path, argv, envp);
-
-hashbang:
-	/* Do not proceed to interpreter hack if not in chroot */
+	/* Do not proceed to any hack if not in chroot */
 	if (strcmp(getrootdir(), "/") == 0)
 		return next_execve(path, argv, envp);
 
 	/* Get the interpeter directive stored after the hashbang */
-	siz = gethashbang(real_path, interp, sizeof(interp));
+	siz = gethashbang(real_path, hashbang, sizeof(hashbang));
 	if (siz == -1) {
 		/* Not an hashbang interpreter directive */
 		if (errno == ENOEXEC)
-			goto exec;
+			goto loader;
 
 		perror("gethashbang");
 		return -1;
 	} else if (siz == 0) {
-		goto exec;
+		goto loader;
 	}
 
 	/*
@@ -424,22 +404,41 @@ hashbang:
 	 * Preserving original path in arg0 both keeps a track of the original
 	 * path and satisfies the needs for busybox.
 	 */
-	real_path = path_resolution(interp, buf, sizeof(buf),
-				    AT_SYMLINK_FOLLOW);
-	if (!real_path) {
+	real_hashbang = path_resolution(hashbang, hashbangbuf,
+					sizeof(hashbangbuf),
+					AT_SYMLINK_FOLLOW);
+	if (!real_hashbang) {
 		perror("path_resolution");
 		return -1;
 	}
 
-	len = strlen(interp);
-	i = 0;
-	if (strcmp(basename(real_path), "busybox") == 0)
-		interparg[i++] = interp;
+	len = strlen(hashbang);
+	if (strcmp(basename(real_hashbang), "busybox") == 0)
+		interparg[i++] = hashbang;
 	interparg[i++] = (char *)path;
-	interparg[i++] = (len < (size_t)siz) ? &interp[len+1] : NULL;
+	interparg[i++] = (len < (size_t)siz) ? &hashbang[len+1] : NULL;
 	interparg[i++] = NULL;
 
-	goto interp;
+	real_path = real_hashbang;
+
+loader:
+	/*
+	 * Get the dynamic linker stored in the .interp section of the ELF
+	 * linked program.
+	 */
+	siz = getinterp(real_path, loader, sizeof(loader));
+	if (siz == -1) {
+		/* Not an ELF linked program */
+		if (errno == ENOEXEC)
+			goto exec;
+
+		perror("getinterp");
+		return -1;
+	} else if (siz == 0) {
+		goto exec;
+	}
+
+	return interpexecve(real_path, interparg, argv, envp);
 
 exec:
 	real_path = strncpy(buf, getenv("SHELL") ?: "/bin/bash", sizeof(buf)-1);
@@ -447,6 +446,5 @@ exec:
 	interparg[1] = getenv("IAMROOT_EXEC") ?: "/usr/lib/iamroot/exec.sh";
 	interparg[2] = NULL;
 
-interp:
 	return interpexecve(real_path, interparg, argv, envp);
 }

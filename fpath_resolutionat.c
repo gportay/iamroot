@@ -50,7 +50,7 @@ static void __regex_perror(const char *s, regex_t *regex, int err)
 __attribute__((constructor))
 void path_resolution_init()
 {
-	char *ignore, *library, *exec;
+	char *ignore, *library, *library_musl_x86_64, *exec;
 	static regex_t regex;
 	char buf[BUFSIZ];
 	int ret;
@@ -66,11 +66,16 @@ void path_resolution_init()
 	if (!library)
 		library = "^/usr/lib/iamroot/libiamroot.so$";
 
+	library_musl_x86_64 = getenv("IAMROOT_LIB_MUSL_X86_64");
+	if (!library_musl_x86_64)
+		library_musl_x86_64 = "^/usr/lib/iamroot/ld-musl-x86_64.so.1$";
+
 	exec = getenv("IAMROOT_EXEC");
 	if (!exec)
 		exec = "^/usr/lib/iamroot/exec.sh$";
 
-	snprintf(buf, sizeof(buf)-1, "%s|%s|%s", ignore, library, exec);
+	snprintf(buf, sizeof(buf)-1, "%s|%s|%s|%s", ignore, library,
+		 library_musl_x86_64, exec);
 
 	ret = regcomp(&regex, buf, REG_EXTENDED);
 	if (ret) {
@@ -78,7 +83,7 @@ void path_resolution_init()
 		return;
 	}
 
-	__fprintf(stderr, "IAMROOT_PATH_RESOLUTION_IGNORE|IAMROOT_LIB|IAMROOT_EXEC=%s\n",
+	__fprintf(stderr, "IAMROOT_PATH_RESOLUTION_IGNORE|IAMROOT_LIB|IAMROOT_LIB_MUSL_X86_64|IAMROOT_EXEC=%s\n",
 			  buf);
 
 	re = &regex;

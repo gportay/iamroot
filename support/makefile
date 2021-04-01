@@ -30,6 +30,11 @@ libiamroot-%.so.1 libiamroot-%.so.2: $(wildcard *.c) | output-%
 output-%:
 	mkdir $@
 
+alpine-tests: libiamroot-musl-x86_64.so.1
+
+tests: alpine-tests
+
+ci: alpine-tests
 ci: libiamroot-musl-x86_64.so.1
 
 .PHONY: clean

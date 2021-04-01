@@ -213,7 +213,6 @@ check:
 	shellcheck iamroot-shell
 
 .PHONY: tests
-tests: alpine-tests
 tests: shell-tests
 tests: static-tests
 tests: | libiamroot.so alpine-minirootfs

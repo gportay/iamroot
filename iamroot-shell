@@ -58,6 +58,12 @@ Environment variables:
       IAMROOT_LIB               Set absolute path to library to use.
                                 Equivalent to --library LIB.
 
+      IAMROOT_LIB_LINUX_X86_64  Set absolute path to library to use with loader
+                                ld-linux-x86-64.so.2
+
+      IAMROOT_LIB_MUSL_X86_64   Set absolute path to library to use with loader
+                                ld-musl-x86_64.so.1
+
       IAMROOT_EXEC_DEBUG        Set debug mode for execve().
 
       IAMROOT_DEBUG             Set debug mode.
@@ -67,6 +73,12 @@ EOF
 
 IAMROOT_LIB="${IAMROOT_LIB:-$PWD/libiamroot.so}"
 export IAMROOT_LIB
+
+IAMROOT_LIB_LINUX_X86_64="${IAMROOT_LIB_LINUX_X86_64:-$PWD/libiamroot-linux-x86-64.so.2}"
+export IAMROOT_LIB_LINUX_X86_64
+
+IAMROOT_LIB_MUSL_X86_64="${IAMROOT_LIB_MUSL_X86_64:-$PWD/libiamroot-musl-x86_64.so.1}"
+export IAMROOT_LIB_MUSL_X86_64
 
 IAMROOT_EXEC="${IAMROOT_EXEC:-$PWD/exec.sh}"
 export IAMROOT_EXEC

@@ -321,12 +321,13 @@ static int interpexecve(const char *path, char * const interp[],
 
 int execve(const char *path, char * const argv[], char * const envp[])
 {
+	char buf[PATH_MAX], hashbangbuf[PATH_MAX], loaderbuf[PATH_MAX];
 	char hashbang[HASHBANG_MAX], loader[HASHBANG_MAX];
-	char buf[PATH_MAX], hashbangbuf[PATH_MAX];
-	char *real_path, *real_hashbang;
+	char *real_path, *real_hashbang = NULL;
 	char * const *interargv = argv;
 	char *interparg[9] = { NULL };
-	int i = 0, ret;
+	int i = 0, j, ret;
+	char *ld_preload;
 	ssize_t siz;
 	size_t len;
 
@@ -468,6 +469,73 @@ loader:
 		return -1;
 	} else if (siz == 0) {
 		goto exec_sh;
+	}
+
+	/*
+	 * The interpreter has to preload its libiamroot.so library.
+	 *
+	 * TODO: Detect *real* change in interpreter. It is assumed for now the
+	 * interpreter is /lib64/ld-linux-x86-64.so.2 (aka glibc's x86_64 ld).
+	 */
+	if (strcmp(loader, "/lib/ld-musl-x86_64.so.1") == 0) {
+		real_path = path_resolution(loader, loaderbuf,
+					    sizeof(loaderbuf),
+					    AT_SYMLINK_FOLLOW);
+		if (!real_path) {
+			perror("path_resolution");
+			return -1;
+		}
+
+		/*
+		 * Shift enough interparg to prepend:
+		 *   - the path to the interpreter (i.e. the full path in host,
+		 *     including the chroot; argv0)
+		 *   - the option --ld-preload and its argument (i.e. the path
+		 *     in host to the interpreter's libiamroot.so to preload)
+		 *   - the path to the binary (i.e. the full path in chroot,
+		 *     *not* including chroot; first positional argument)
+		 */
+		for (j = 0; j < i; j++)
+			interparg[j+4] = interparg[j];
+
+		/* Add path to interpreter (host, argv0) */
+		i = 0;
+		interparg[i++] = real_path;
+
+		/*
+		 * Strip libiamroot.so from LD_PRELOAD
+		 *
+		 * TODO: Remove *real* libiamroot.so. It is assumed for now the
+		 * library is at the first place.
+		 */
+		ld_preload = getenv("LD_PRELOAD");
+		if (ld_preload) {
+			char *n, *s = ld_preload;
+
+			n = strchr(s, ':');
+			if (n)
+				n++;
+
+			ld_preload = n;
+			if (ld_preload && *ld_preload)
+				setenv("LD_PRELOAD", ld_preload, 1);
+			else
+				unsetenv("LD_PRELOAD");
+		}
+
+		/* Add --preload and interpreter's library (host) */
+		interparg[i++] = "--preload";
+		interparg[i++] = getenv("IAMROOT_LIB_MUSL_X86_64") ?: "/usr/lib/iamroot/libiamroot-musl-x86_64.so.1";
+
+		/* Add path to binary (in chroot, first positional argument) */
+		if (real_hashbang)
+			interparg[i++] = real_hashbang;
+		else
+			interparg[i++] = buf;
+		i += j;
+
+		extern char **__environ;
+		envp = __environ;
 	}
 
 	return interpexecve(real_path, interparg, interargv, envp);

@@ -370,7 +370,7 @@ hashbang:
 	}
 
 	/*
-	 * Preserve original path in arg0 and prepend the interpreter
+	 * Preserve original path in argv0 and prepend the interpreter
 	 * arguments.
 	 *
 	 * The busybox binary requires the real applet name in first argument:

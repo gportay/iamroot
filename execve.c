@@ -402,7 +402,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	 * Where interp and interparg is hashbang, script is path and arguments
 	 * is argv[1]..argv[n].
 	 *
-	 * Preserving original path in arg0 both keeps a track of the original
+	 * Preserving original path in argv0 both keeps a track of the original
 	 * path and satisfies the needs for busybox.
 	 */
 	real_hashbang = path_resolution(hashbang, hashbangbuf,

@@ -65,7 +65,7 @@ void path_resolution_init()
 	if (!ignore)
 		ignore = "^/(proc|sys|dev|run)/";
 
-	library = getenv("IAMROOT_LIBRARY");
+	library = getenv("IAMROOT_LIB");
 	if (!library)
 		library = "^/usr/lib/iamroot/libiamroot.so$";
 
@@ -81,7 +81,7 @@ void path_resolution_init()
 		return;
 	}
 
-	__fprintf(stderr, "IAMROOT_PATH_RESOLUTION_IGNORE|IAMROOT_LIBRARY|IAMROOT_EXEC=%s\n",
+	__fprintf(stderr, "IAMROOT_PATH_RESOLUTION_IGNORE|IAMROOT_LIB|IAMROOT_EXEC=%s\n",
 			  buf);
 
 	re = &regex;

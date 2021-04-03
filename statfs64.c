@@ -13,9 +13,9 @@
 
 #include "path_resolution.h"
 
+#ifdef __GLIBC__
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
-#ifdef __GLIBC__
 __attribute__((visibility("hidden")))
 int next_statfs64(const char *path, struct statfs64 *statfs64buf)
 {

@@ -18,6 +18,7 @@ __attribute__((visibility("hidden")))
 char *next_getwd(char *buf)
 {
 	char *(*sym)(char *);
+	char *ret;
 
 	sym = dlsym(RTLD_NEXT, "getwd");
 	if (!sym) {
@@ -26,7 +27,11 @@ char *next_getwd(char *buf)
 		return NULL;
 	}
 
-	return sym(buf);
+	ret = sym(buf);
+	if (!ret)
+		__perror(NULL, __func__);
+
+	return ret;
 }
 
 char *getwd(char *buf)

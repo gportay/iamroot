@@ -18,6 +18,7 @@ __attribute__((visibility("hidden")))
 int next_link(const char *oldpath, const char *newpath)
 {
 	int (*sym)(const char *, const char *);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "link");
 	if (!sym) {
@@ -26,7 +27,11 @@ int next_link(const char *oldpath, const char *newpath)
 		return -1;
 	}
 
-	return sym(oldpath, newpath);
+	ret = sym(oldpath, newpath);
+	if (ret == -1)
+		__perror2(oldpath, newpath, __func__);
+
+	return ret;
 }
 
 int link(const char *oldpath, const char *newpath)

@@ -20,6 +20,7 @@ __attribute__((visibility("hidden")))
 DIR *next___opendirat(int fd, const char *path)
 {
 	DIR *(*sym)(int, const char *);
+	DIR *ret;
 
 	sym = dlsym(RTLD_NEXT, "__opendirat");
 	if (!sym) {
@@ -28,7 +29,11 @@ DIR *next___opendirat(int fd, const char *path)
 		return NULL;
 	}
 
-	return sym(fd, path);
+	ret = sym(fd, path);
+	if (!ret)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 DIR *__opendirat(int fd, const char *path)

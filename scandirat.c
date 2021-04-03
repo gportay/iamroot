@@ -22,6 +22,7 @@ int next_scandirat(int fd, const char *path, struct dirent ***namelist,
 	int (*sym)(int, const char *, struct dirent ***,
 		   int (*)(const struct dirent *),
 		   int (*)(const struct dirent **, const struct dirent **));
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "scandirat");
 	if (!sym) {
@@ -30,7 +31,11 @@ int next_scandirat(int fd, const char *path, struct dirent ***namelist,
 		return -1;
 	}
 
-	return sym(fd, path, namelist, filter, compar);
+	ret = sym(fd, path, namelist, filter, compar);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int scandirat(int fd, const char *path, struct dirent ***namelist,

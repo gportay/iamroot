@@ -17,6 +17,7 @@ __attribute__((visibility("hidden")))
 int next_remove(const char *path)
 {
 	int (*sym)(const char *);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "remove");
 	if (!sym) {
@@ -25,7 +26,11 @@ int next_remove(const char *path)
 		return -1;
 	}
 
-	return sym(path);
+	ret = sym(path);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int remove(const char *path)

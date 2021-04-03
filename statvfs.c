@@ -17,6 +17,7 @@ __attribute__((visibility("hidden")))
 int next_statvfs(const char *path, struct statvfs *statvfsbuf)
 {
 	int (*sym)(const char *, struct statvfs *);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "statvfs");
 	if (!sym) {
@@ -25,7 +26,11 @@ int next_statvfs(const char *path, struct statvfs *statvfsbuf)
 		return -1;
 	}
 
-	return sym(path, statvfsbuf);
+	ret = sym(path, statvfsbuf);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int statvfs(const char *path, struct statvfs *statvfsbuf)

@@ -22,6 +22,7 @@ __attribute__((visibility("hidden")))
 int next_open64(const char *path, int flags, mode_t mode)
 {
 	int (*sym)(const char *, int, ...);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "open64");
 	if (!sym) {
@@ -30,7 +31,11 @@ int next_open64(const char *path, int flags, mode_t mode)
 		return -1;
 	}
 
-	return sym(path, flags, mode);
+	ret = sym(path, flags, mode);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int open64(const char *path, int flags, ...)

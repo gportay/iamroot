@@ -20,6 +20,7 @@ int next_utimensat(int fd, const char *path, const struct timespec times[2],
 		   int flags)
 {
 	int (*sym)(int, const char *, const struct timespec[2], int);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "utimensat");
 	if (!sym) {
@@ -28,7 +29,11 @@ int next_utimensat(int fd, const char *path, const struct timespec times[2],
 		return -1;
 	}
 
-	return sym(fd, path, times, flags);
+	ret = sym(fd, path, times, flags);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int utimensat(int fd, const char *path, const struct timespec times[2],

@@ -18,6 +18,7 @@ __attribute__((visibility("hidden")))
 char *next_get_current_dir_name()
 {
 	char *(*sym)();
+	char *ret;
 
 	sym = dlsym(RTLD_NEXT, "get_current_dir_name");
 	if (!sym) {
@@ -26,7 +27,11 @@ char *next_get_current_dir_name()
 		return NULL;
 	}
 
-	return sym();
+	ret = sym();
+	if (!ret)
+		__perror(NULL, __func__);
+
+	return ret;
 }
 
 char *get_current_dir_name()

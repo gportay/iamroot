@@ -18,6 +18,7 @@ __attribute__((visibility("hidden")))
 ssize_t next_readlinkat(int fd, const char *path, char *buf, size_t bufsize)
 {
 	ssize_t (*sym)(int, const char *, char *, size_t);
+	ssize_t ret;
 
 	sym = dlsym(RTLD_NEXT, "readlinkat");
 	if (!sym) {
@@ -26,7 +27,11 @@ ssize_t next_readlinkat(int fd, const char *path, char *buf, size_t bufsize)
 		return -1;
 	}
 
-	return sym(fd, path, buf, bufsize);
+	ret = sym(fd, path, buf, bufsize);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 ssize_t readlinkat(int fd, const char *path, char *buf, size_t bufsize)

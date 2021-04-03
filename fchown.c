@@ -19,6 +19,7 @@ __attribute__((visibility("hidden")))
 int next_fchown(int fd, uid_t owner, gid_t group)
 {
 	int (*sym)(int, uid_t, gid_t);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "fchown");
 	if (!sym) {
@@ -27,7 +28,11 @@ int next_fchown(int fd, uid_t owner, gid_t group)
 		return -1;
 	}
 
-	return sym(fd, owner, group);
+	ret = sym(fd, owner, group);
+	if (ret == -1)
+		__fperror(fd, __func__);
+
+	return ret;
 }
 
 int fchown(int fd, uid_t owner, gid_t group)

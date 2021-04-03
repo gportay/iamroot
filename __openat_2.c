@@ -19,6 +19,7 @@ __attribute__((visibility("hidden")))
 int next___openat_2(int fd, const char *path, int flags)
 {
 	int (*sym)(int, const char *, int);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "__openat_2");
 	if (!sym) {
@@ -27,7 +28,11 @@ int next___openat_2(int fd, const char *path, int flags)
 		return -1;
 	}
 
-	return sym(fd, path, flags);
+	ret = sym(fd, path, flags);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int __openat_2(int fd, const char *path, int flags)

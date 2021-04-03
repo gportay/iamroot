@@ -18,6 +18,7 @@ __attribute__((visibility("hidden")))
 int next_lchmod(const char *path, mode_t mode)
 {
 	int (*sym)(const char *, mode_t);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "lchmod");
 	if (!sym) {
@@ -26,7 +27,11 @@ int next_lchmod(const char *path, mode_t mode)
 		return -1;
 	}
 
-	return sym(path, mode);
+	ret = sym(path, mode);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int lchmod(const char *path, mode_t mode)

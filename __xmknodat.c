@@ -18,6 +18,7 @@ __attribute__((visibility("hidden")))
 int next___xmknodat(int ver, int fd, const char *path, mode_t mode, dev_t *dev)
 {
 	int (*sym)(int, int, const char *, mode_t, dev_t *);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "__xmknodat");
 	if (!sym) {
@@ -26,7 +27,11 @@ int next___xmknodat(int ver, int fd, const char *path, mode_t mode, dev_t *dev)
 		return -1;
 	}
 
-	return sym(ver, fd, path, mode, dev);
+	ret = sym(ver, fd, path, mode, dev);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int __xmknodat(int ver, int fd, const char *path, mode_t mode, dev_t *dev)

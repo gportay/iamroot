@@ -20,6 +20,7 @@ __attribute__((visibility("hidden")))
 int next___xstat(int ver, const char *path, struct stat *statbuf)
 {
 	int (*sym)(int, const char *, struct stat *);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "__xstat");
 	if (!sym) {
@@ -28,7 +29,11 @@ int next___xstat(int ver, const char *path, struct stat *statbuf)
 		return -1;
 	}
 
-	return sym(ver, path, statbuf);
+	ret = sym(ver, path, statbuf);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int __xstat(int ver, const char *path, struct stat *statbuf)

@@ -16,6 +16,7 @@ __attribute__((visibility("hidden")))
 int next_fchdir(int fd)
 {
 	int (*sym)(int);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "fchdir");
 	if (!sym) {
@@ -24,7 +25,11 @@ int next_fchdir(int fd)
 		return -1;
 	}
 
-	return sym(fd);
+	ret = sym(fd);
+	if (ret == -1)
+		__fperror(fd, __func__);
+
+	return ret;
 }
 
 int fchdir(int fd)

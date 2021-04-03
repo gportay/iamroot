@@ -17,6 +17,7 @@ __attribute__((visibility("hidden")))
 int next_euidaccess(const char *path, int mode)
 {
 	int (*sym)(const char *, int);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "euidaccess");
 	if (!sym) {
@@ -25,7 +26,11 @@ int next_euidaccess(const char *path, int mode)
 		return -1;
 	}
 
-	return sym(path, mode);
+	ret = sym(path, mode);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int euidaccess(const char *path, int mode)

@@ -18,6 +18,7 @@ __attribute__((visibility("hidden")))
 int next_futimesat(int fd, const char *path, const struct timeval times[2])
 {
 	int (*sym)(int, const char *, const struct timeval [2]);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "futimesat");
 	if (!sym) {
@@ -26,7 +27,11 @@ int next_futimesat(int fd, const char *path, const struct timeval times[2])
 		return -1;
 	}
 
-	return sym(fd, path, times);
+	ret = sym(fd, path, times);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int futimesat(int fd, const char *path, const struct timeval times[2])

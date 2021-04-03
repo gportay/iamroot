@@ -19,6 +19,7 @@ __attribute__((visibility("hidden")))
 int next___fxstat(int ver, int fd, struct stat *statbuf)
 {
 	int (*sym)(int, int, struct stat *);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "__fxstat");
 	if (!sym) {
@@ -27,7 +28,11 @@ int next___fxstat(int ver, int fd, struct stat *statbuf)
 		return -1;
 	}
 
-	return sym(ver, fd, statbuf);
+	ret = sym(ver, fd, statbuf);
+	if (ret == -1)
+		__fperror(fd, __func__);
+
+	return ret;
 }
 
 int __fxstat(int ver, int fd, struct stat *statbuf)

@@ -18,6 +18,7 @@ __attribute__((visibility("hidden")))
 int next_fchmodat(int fd, const char *path, mode_t mode, int flags)
 {
 	int (*sym)(int, const char *, mode_t, int);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "fchmodat");
 	if (!sym) {
@@ -26,7 +27,11 @@ int next_fchmodat(int fd, const char *path, mode_t mode, int flags)
 		return -1;
 	}
 
-	return sym(fd, path, mode, flags);
+	ret = sym(fd, path, mode, flags);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int fchmodat(int fd, const char *path, mode_t mode, int flags)

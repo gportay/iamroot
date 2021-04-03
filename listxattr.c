@@ -18,6 +18,7 @@ __attribute__((visibility("hidden")))
 ssize_t next_listxattr(const char *path, char *list, size_t size)
 {
 	ssize_t (*sym)(const char *, char *, size_t);
+	ssize_t ret;
 
 	sym = dlsym(RTLD_NEXT, "listxattr");
 	if (!sym) {
@@ -26,7 +27,11 @@ ssize_t next_listxattr(const char *path, char *list, size_t size)
 		return -1;
 	}
 
-	return sym(path, list, size);
+	ret = sym(path, list, size);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 ssize_t listxattr(const char *path, char *list, size_t size)

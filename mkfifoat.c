@@ -18,6 +18,7 @@ __attribute__((visibility("hidden")))
 int next_mkfifoat(int fd, const char *path, mode_t mode)
 {
 	int (*sym)(int, const char *, mode_t);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "mkfifoat");
 	if (!sym) {
@@ -26,7 +27,11 @@ int next_mkfifoat(int fd, const char *path, mode_t mode)
 		return -1;
 	}
 
-	return sym(fd, path, mode);
+	ret = sym(fd, path, mode);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int mkfifoat(int fd, const char *path, mode_t mode)

@@ -21,6 +21,7 @@ int next_posix_spawn(pid_t *pid, const char *path,
 {
 	int (*sym)(pid_t *, const char *, const posix_spawn_file_actions_t *,
 		   const posix_spawnattr_t *, char * const [], char * const []);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "posix_spawn");
 	if (!sym) {
@@ -29,7 +30,11 @@ int next_posix_spawn(pid_t *pid, const char *path,
 		return -1;
 	}
 
-	return sym(pid, path, file_actions, attrp, argv, envp);
+	ret = sym(pid, path, file_actions, attrp, argv, envp);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int posix_spawn(pid_t *pid, const char *path,

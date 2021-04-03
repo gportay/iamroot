@@ -263,6 +263,7 @@ int next_execve(const char *path, char * const argv[], char * const envp[])
 #endif
 	int (*sym)(const char *, char * const argv[], char * const envp[]);
 	int debug;
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "execve");
 	if (!sym) {
@@ -295,7 +296,11 @@ int next_execve(const char *path, char * const argv[], char * const envp[])
 		}
 	}
 
-	return sym(path, argv, envp);
+	ret = sym(path, argv, envp);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 static int interpexecve(const char *path, char * const interp[],

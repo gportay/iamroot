@@ -16,6 +16,7 @@ __attribute__((visibility("hidden")))
 char *next_tempnam(const char *path, const char *pfx)
 {
 	char *(*sym)(const char *, const char *);
+	char *ret;
 
 	sym = dlsym(RTLD_NEXT, "tempnam");
 	if (!sym) {
@@ -24,7 +25,11 @@ char *next_tempnam(const char *path, const char *pfx)
 		return NULL;
 	}
 
-	return sym(path, pfx);
+	ret = sym(path, pfx);
+	if (!ret)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 char *tempnam(const char *path, const char *pfx)

@@ -17,6 +17,7 @@ __attribute__((visibility("hidden")))
 int next_utimes(const char *path, const struct timeval times[2])
 {
 	int (*sym)(const char *, const struct timeval[2]);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "utimes");
 	if (!sym) {
@@ -25,7 +26,11 @@ int next_utimes(const char *path, const struct timeval times[2])
 		return -1;
 	}
 
-	return sym(path, times);
+	ret = sym(path, times);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int utimes(const char *path, const struct timeval times[2])

@@ -19,6 +19,7 @@ __attribute__((visibility("hidden")))
 int next_chown(const char *path, uid_t owner, gid_t group)
 {
 	int (*sym)(const char *, uid_t, gid_t);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "chown");
 	if (!sym) {
@@ -27,7 +28,11 @@ int next_chown(const char *path, uid_t owner, gid_t group)
 		return -1;
 	}
 
-	return sym(path, owner, group);
+	ret = sym(path, owner, group);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int chown(const char *path, uid_t owner, gid_t group)

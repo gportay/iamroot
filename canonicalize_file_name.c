@@ -17,6 +17,7 @@ __attribute__((visibility("hidden")))
 char *next_canonicalize_file_name(const char *path)
 {
 	char *(*sym)(const char *);
+	char *ret;
 
 	sym = dlsym(RTLD_NEXT, "canonicalize_file_name");
 	if (!sym) {
@@ -25,7 +26,11 @@ char *next_canonicalize_file_name(const char *path)
 		return NULL;
 	}
 
-	return sym(path);
+	ret = sym(path);
+	if (!ret)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 char *canonicalize_file_name(const char *path)

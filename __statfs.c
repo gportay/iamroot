@@ -17,6 +17,7 @@ __attribute__((visibility("hidden")))
 int next___statfs(const char *path, struct statfs *statfsbuf)
 {
 	int (*sym)(const char *, struct statfs *);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "__statfs");
 	if (!sym) {
@@ -25,7 +26,11 @@ int next___statfs(const char *path, struct statfs *statfsbuf)
 		return -1;
 	}
 
-	return sym(path, statfsbuf);
+	ret = sym(path, statfsbuf);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int __statfs(const char *path, struct statfs *statfsbuf)

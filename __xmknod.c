@@ -17,6 +17,7 @@ __attribute__((visibility("hidden")))
 int next___xmknod(int ver, const char *path, mode_t mode, dev_t *dev)
 {
 	int (*sym)(int, const char *, mode_t, dev_t *);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "__xmknod");
 	if (!sym) {
@@ -25,7 +26,11 @@ int next___xmknod(int ver, const char *path, mode_t mode, dev_t *dev)
 		return -1;
 	}
 
-	return sym(ver, path, mode, dev);
+	ret = sym(ver, path, mode, dev);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int __xmknod(int ver, const char *path, mode_t mode, dev_t *dev)

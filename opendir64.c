@@ -18,6 +18,7 @@ __attribute__((visibility("hidden")))
 DIR *next_open64dir(const char *path)
 {
 	DIR *(*sym)(const char *);
+	DIR *ret;
 
 	sym = dlsym(RTLD_NEXT, "open64dir");
 	if (!sym) {
@@ -26,7 +27,11 @@ DIR *next_open64dir(const char *path)
 		return NULL;
 	}
 
-	return sym(path);
+	ret = sym(path);
+	if (!ret)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 DIR *open64dir(const char *path)

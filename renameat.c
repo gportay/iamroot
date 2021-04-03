@@ -18,6 +18,7 @@ int next_renameat(int oldfd, const char *oldpath, int newfd,
 		  const char *newpath)
 {
 	int (*sym)(int, const char *, int, const char *);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "renameat");
 	if (!sym) {
@@ -26,7 +27,11 @@ int next_renameat(int oldfd, const char *oldpath, int newfd,
 		return -1;
 	}
 
-	return sym(oldfd, oldpath, newfd, newpath);
+	ret = sym(oldfd, oldpath, newfd, newpath);
+	if (ret == -1)
+		__perror2(oldpath, newpath, __func__);
+
+	return ret;
 }
 
 int renameat(int oldfd, const char *oldpath, int newfd, const char *newpath)

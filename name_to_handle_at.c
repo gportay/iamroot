@@ -20,6 +20,7 @@ int next_name_to_handle_at(int fd, const char *path, struct file_handle *handle,
 			   int *mount_id, int flags)
 {
 	int (*sym)(int, const char *, struct file_handle *, int *, int);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "name_to_handle_at");
 	if (!sym) {
@@ -28,7 +29,11 @@ int next_name_to_handle_at(int fd, const char *path, struct file_handle *handle,
 		return -1;
 	}
 
-	return sym(fd, path, handle, mount_id, flags);
+	ret = sym(fd, path, handle, mount_id, flags);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int name_to_handle_at(int fd, const char *path, struct file_handle *handle,

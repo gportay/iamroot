@@ -19,6 +19,7 @@ __attribute__((visibility("hidden")))
 int next_lremovexattr(const char *path, const char *name)
 {
 	int (*sym)(const char *, const char *);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "lremovexattr");
 	if (!sym) {
@@ -27,7 +28,11 @@ int next_lremovexattr(const char *path, const char *name)
 		return -1;
 	}
 
-	return sym(path, name);
+	ret = sym(path, name);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int lremovexattr(const char *path, const char *name)

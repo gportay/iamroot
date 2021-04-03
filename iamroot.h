@@ -31,6 +31,10 @@ int __fprintf(FILE *f, const char *fmt, ...) __attribute__ ((format(printf,2,3))
 
 #define __verbose(fmt, ...) __fprintf(stderr, fmt, __VA_ARGS__)
 
+extern void __perror(const char *, const char *);
+extern void __perror2(const char *, const char *, const char *);
+extern void __fperror(int, const char *);
+
 #define __dl_perror(s) fprintf(stderr, "%s: %s\n", s, dlerror())
 
 #ifdef __cplusplus

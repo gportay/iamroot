@@ -20,6 +20,7 @@ __attribute__((visibility("hidden")))
 int next_fstat64(int fd, struct stat64 *stat64buf)
 {
 	int (*sym)(int, struct stat64 *);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "fstat64");
 	if (!sym) {
@@ -28,7 +29,11 @@ int next_fstat64(int fd, struct stat64 *stat64buf)
 		return -1;
 	}
 
-	return sym(fd, stat64buf);
+	ret = sym(fd, stat64buf);
+	if (ret == -1)
+		__fperror(fd, __func__);
+
+	return ret;
 }
 
 int fstat64(int fd, struct stat64 *stat64buf)

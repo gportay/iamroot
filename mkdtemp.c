@@ -18,6 +18,7 @@ __attribute__((visibility("hidden")))
 char *next_mkdtemp(char *path)
 {
 	char *(*sym)(char *);
+	char *ret;
 
 	sym = dlsym(RTLD_NEXT, "mkdtemp");
 	if (!sym) {
@@ -26,7 +27,11 @@ char *next_mkdtemp(char *path)
 		return NULL;
 	}
 
-	return sym(path);
+	ret = sym(path);
+	if (!ret)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 char *mkdtemp(char *path)

@@ -18,6 +18,7 @@ __attribute__((visibility("hidden")))
 FILE *next_freopen(const char *path, const char *mode, FILE *stream)
 {
 	FILE *(*sym)(const char *, const char *, FILE *);
+	FILE *ret;
 
 	sym = dlsym(RTLD_NEXT, "freopen");
 	if (!sym) {
@@ -26,7 +27,11 @@ FILE *next_freopen(const char *path, const char *mode, FILE *stream)
 		return NULL;
 	}
 
-	return sym(path, mode, stream);
+	ret = sym(path, mode, stream);
+	if (!ret)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 FILE *freopen(const char *path, const char *mode, FILE *stream)

@@ -15,6 +15,7 @@ __attribute__((visibility("hidden")))
 int next_running_in_chroot(void)
 {
 	int (*sym)(void);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "running_in_chroot");
 	if (!sym) {
@@ -23,7 +24,11 @@ int next_running_in_chroot(void)
 		return -1;
 	}
 
-	return sym();
+	ret = sym();
+	if (ret < 0)
+		__perror(NULL, __func__);
+
+	return ret;
 }
 
 int running_in_chroot(void)

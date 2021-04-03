@@ -21,6 +21,7 @@ __attribute__((visibility("hidden")))
 int next___lxstat64(int ver, const char *path, struct stat64 *stat64buf)
 {
 	int (*sym)(int, const char *, struct stat64 *);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "__lxstat64");
 	if (!sym) {
@@ -29,7 +30,11 @@ int next___lxstat64(int ver, const char *path, struct stat64 *stat64buf)
 		return -1;
 	}
 
-	return sym(ver, path, stat64buf);
+	ret = sym(ver, path, stat64buf);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int __lxstat64(int ver, const char *path, struct stat64 *stat64buf)

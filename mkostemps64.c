@@ -20,6 +20,7 @@ __attribute__((visibility("hidden")))
 int next_mkostemps64(char *path, int suffixlen, int flags)
 {
 	int (*sym)(char *, int, int);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "mkostemps64");
 	if (!sym) {
@@ -28,7 +29,11 @@ int next_mkostemps64(char *path, int suffixlen, int flags)
 		return -1;
 	}
 
-	return sym(path, suffixlen, flags);
+	ret = sym(path, suffixlen, flags);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int mkostemps64(char *path, int suffixlen, int flags)

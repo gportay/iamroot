@@ -17,6 +17,7 @@ void *next_dlopen(const char *path, int flags)
 
 {
 	void *(*sym)(const char *, int);
+	void *ret;
 
 	sym = dlsym(RTLD_NEXT, "dlopen");
 	if (!sym) {
@@ -25,7 +26,11 @@ void *next_dlopen(const char *path, int flags)
 		return NULL;
 	}
 
-	return sym(path, flags);
+	ret = sym(path, flags);
+	if (!ret)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 void *dlopen(const char *path, int flags)

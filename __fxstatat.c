@@ -21,6 +21,7 @@ int next___fxstatat(int ver, int fd, const char *path, struct stat *statbuf,
 		    int flags)
 {
 	int (*sym)(int, int, const char *, struct stat *, int);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "__fxstatat");
 	if (!sym) {
@@ -29,7 +30,11 @@ int next___fxstatat(int ver, int fd, const char *path, struct stat *statbuf,
 		return -1;
 	}
 
-	return sym(ver, fd, path, statbuf, flags);
+	ret = sym(ver, fd, path, statbuf, flags);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int __fxstatat(int ver, int fd, const char *path, struct stat *statbuf,

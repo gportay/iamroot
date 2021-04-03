@@ -17,6 +17,7 @@ __attribute__((visibility("hidden")))
 FILE *next___nss_files_fopen(const char * path)
 {
 	FILE *(*sym)(const char *);
+	FILE *ret;
 
 	sym = dlsym(RTLD_NEXT, "__nss_files_fopen");
 	if (!sym) {
@@ -25,7 +26,11 @@ FILE *next___nss_files_fopen(const char * path)
 		return NULL;
 	}
 
-	return sym(path);
+	ret = sym(path);
+	if (!ret)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 FILE *__nss_files_fopen(const char * path)

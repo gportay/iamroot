@@ -20,6 +20,7 @@ __attribute__((visibility("hidden")))
 DIR *next___opendir(const char *path)
 {
 	DIR *(*sym)(const char *);
+	DIR *ret;
 
 	sym = dlsym(RTLD_NEXT, "__opendir");
 	if (!sym) {
@@ -28,7 +29,11 @@ DIR *next___opendir(const char *path)
 		return NULL;
 	}
 
-	return sym(path);
+	ret = sym(path);
+	if (!ret)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 DIR *__opendir(const char *path)

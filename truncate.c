@@ -20,6 +20,7 @@ __attribute__((visibility("hidden")))
 int next_truncate(const char *path, off_t length)
 {
 	int (*sym)(const char *, off_t);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "truncate");
 	if (!sym) {
@@ -28,7 +29,11 @@ int next_truncate(const char *path, off_t length)
 		return -1;
 	}
 
-	return sym(path, length);
+	ret = sym(path, length);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int truncate(const char *path, off_t length)

@@ -20,6 +20,7 @@ __attribute__((visibility("hidden")))
 int next_creat64(const char *path, mode_t mode)
 {
 	int (*sym)(const char *, mode_t);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "creat64");
 	if (!sym) {
@@ -28,7 +29,11 @@ int next_creat64(const char *path, mode_t mode)
 		return -1;
 	}
 
-	return sym(path, mode);
+	ret = sym(path, mode);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int creat64(const char *path, mode_t mode)

@@ -21,6 +21,7 @@ int next_scandir(const char *path, struct dirent ***namelist,
 	int (*sym)(const char *, struct dirent ***,
 		   int (*)(const struct dirent *),
 		   int (*)(const struct dirent **, const struct dirent **));
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "scandir");
 	if (!sym) {
@@ -29,7 +30,11 @@ int next_scandir(const char *path, struct dirent ***namelist,
 		return -1;
 	}
 
-	return sym(path, namelist, filter, compar);
+	ret = sym(path, namelist, filter, compar);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int scandir(const char *path, struct dirent ***namelist,

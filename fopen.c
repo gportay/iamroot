@@ -18,6 +18,7 @@ __attribute__((visibility("hidden")))
 FILE *next_fopen(const char *path, const char *mode)
 {
 	FILE *(*sym)(const char *, const char *);
+	FILE *ret;
 
 	sym = dlsym(RTLD_NEXT, "fopen");
 	if (!sym) {
@@ -26,7 +27,11 @@ FILE *next_fopen(const char *path, const char *mode)
 		return NULL;
 	}
 
-	return sym(path, mode);
+	ret = sym(path, mode);
+	if (!ret)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 FILE *fopen(const char *path, const char *mode)

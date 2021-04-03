@@ -18,6 +18,7 @@ __attribute__((visibility("hidden")))
 int next_mknodat(int fd, const char *path, mode_t mode, dev_t dev)
 {
 	int (*sym)(int, const char *, mode_t, dev_t);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "mknodat");
 	if (!sym) {
@@ -26,7 +27,11 @@ int next_mknodat(int fd, const char *path, mode_t mode, dev_t dev)
 		return -1;
 	}
 
-	return sym(fd, path, mode, dev);
+	ret = sym(fd, path, mode, dev);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int mknodat(int fd, const char *path, mode_t mode, dev_t dev)

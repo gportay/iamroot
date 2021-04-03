@@ -19,6 +19,7 @@ int next_setxattr(const char *path, const char *name, const void *value,
 		  size_t size, int flags)
 {
 	int (*sym)(const char *, const char *, const void *, size_t, int);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "setxattr");
 	if (!sym) {
@@ -27,7 +28,11 @@ int next_setxattr(const char *path, const char *name, const void *value,
 		return -1;
 	}
 
-	return sym(path, name, value, size, flags);
+	ret = sym(path, name, value, size, flags);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int setxattr(const char *path, const char *name, const void *value,

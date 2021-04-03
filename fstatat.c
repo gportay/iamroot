@@ -20,6 +20,7 @@ __attribute__((visibility("hidden")))
 int next_fstatat(int fd, const char *path, struct stat *statbuf, int flags)
 {
 	int (*sym)(int, const char *, struct stat *, int);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "fstatat");
 	if (!sym) {
@@ -28,7 +29,11 @@ int next_fstatat(int fd, const char *path, struct stat *statbuf, int flags)
 		return -1;
 	}
 
-	return sym(fd, path, statbuf, flags);
+	ret = sym(fd, path, statbuf, flags);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int fstatat(int fd, const char *path, struct stat *statbuf, int flags)

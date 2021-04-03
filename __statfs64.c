@@ -19,6 +19,7 @@ __attribute__((visibility("hidden")))
 int next___statfs64(const char *path, struct statfs64 *statfs64buf)
 {
 	int (*sym)(const char *, struct statfs64 *);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "__statfs64");
 	if (!sym) {
@@ -27,7 +28,11 @@ int next___statfs64(const char *path, struct statfs64 *statfs64buf)
 		return -1;
 	}
 
-	return sym(path, statfs64buf);
+	ret = sym(path, statfs64buf);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int __statfs64(const char *path, struct statfs64 *statfs64buf)

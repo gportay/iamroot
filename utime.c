@@ -17,6 +17,7 @@ __attribute__((visibility("hidden")))
 int next_utime(const char *path, const struct utimbuf *times)
 {
 	int (*sym)(const char *, const struct utimbuf *);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "utime");
 	if (!sym) {
@@ -25,7 +26,11 @@ int next_utime(const char *path, const struct utimbuf *times)
 		return -1;
 	}
 
-	return sym(path, times);
+	ret = sym(path, times);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int utime(const char *path, const struct utimbuf *times)

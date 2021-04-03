@@ -18,6 +18,7 @@ __attribute__((visibility("hidden")))
 int next_rmdir(const char *path)
 {
 	int (*sym)(const char *);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "rmdir");
 	if (!sym) {
@@ -26,7 +27,11 @@ int next_rmdir(const char *path)
 		return -1;
 	}
 
-	return sym(path);
+	ret = sym(path);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int rmdir(const char *path)

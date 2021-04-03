@@ -19,6 +19,7 @@ ssize_t next_getxattr(const char *path, const char *name, void *value,
 		      size_t size)
 {
 	ssize_t (*sym)(const char *, const char *, void *, size_t);
+	ssize_t ret;
 
 	sym = dlsym(RTLD_NEXT, "getxattr");
 	if (!sym) {
@@ -27,7 +28,11 @@ ssize_t next_getxattr(const char *path, const char *name, void *value,
 		return -1;
 	}
 
-	return sym(path, name, value, size);
+	ret = sym(path, name, value, size);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 ssize_t getxattr(const char *path, const char *name, void *value, size_t size)

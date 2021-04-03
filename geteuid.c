@@ -17,6 +17,7 @@ __attribute__((visibility("hidden")))
 uid_t next_geteuid()
 {
 	uid_t (*sym)();
+	uid_t ret;
 
 	sym = dlsym(RTLD_NEXT, "geteuid");
 	if (!sym) {
@@ -25,7 +26,11 @@ uid_t next_geteuid()
 		return -1;
 	}
 
-	return sym();
+	ret = sym();
+	if (ret == (uid_t)-1)
+		__perror(NULL, __func__);
+
+	return ret;
 }
 
 uid_t geteuid(void)

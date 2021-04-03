@@ -18,6 +18,7 @@ __attribute__((visibility("hidden")))
 int next_symlinkat(const char *string, int fd, const char *path)
 {
 	int (*sym)(const char *, int, const char *);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "symlinkat");
 	if (!sym) {
@@ -26,7 +27,11 @@ int next_symlinkat(const char *string, int fd, const char *path)
 		return -1;
 	}
 
-	return sym(string, fd, path);
+	ret = sym(string, fd, path);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int symlinkat(const char *string, int fd, const char *path)

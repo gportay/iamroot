@@ -24,6 +24,7 @@ int next_statx(int fd, const char *path, int flags, unsigned int mask,
 	       struct statx *statxbuf)
 {
 	int (*sym)(int, const char *, int, unsigned int, struct statx *);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "statx");
 	if (!sym) {
@@ -32,7 +33,11 @@ int next_statx(int fd, const char *path, int flags, unsigned int mask,
 		return -1;
 	}
 
-	return sym(fd, path, flags, mask, statxbuf);
+	ret = sym(fd, path, flags, mask, statxbuf);
+	if (ret == -1)
+		__perror(path, __func__);
+
+	return ret;
 }
 
 int statx(int fd, const char *path, int flags, unsigned int mask,

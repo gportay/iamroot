@@ -19,6 +19,7 @@ int next_linkat(int oldfd, const char *oldpath, int newfd, const char *newpath,
 		int flags)
 {
 	int (*sym)(int, const char *, int, const char *, int);
+	int ret;
 
 	sym = dlsym(RTLD_NEXT, "linkat");
 	if (!sym) {
@@ -27,7 +28,11 @@ int next_linkat(int oldfd, const char *oldpath, int newfd, const char *newpath,
 		return -1;
 	}
 
-	return sym(oldfd, oldpath, newfd, newpath, flags);
+	ret = sym(oldfd, oldpath, newfd, newpath, flags);
+	if (ret == -1)
+		__perror2(oldpath, newpath, __func__);
+
+	return ret;
 }
 
 int linkat(int oldfd, const char *oldpath, int newfd, const char *newpath,

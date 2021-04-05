@@ -12,10 +12,11 @@
 
 #include <fcntl.h>
 
+#include "iamroot.h"
+
 extern char *fpath_resolutionat(int, const char *, char *, size_t, int);
 #define __strlcmp(s1, s2) strncmp(s1, s2, strlen(s2))
 
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern const char *getrootdir();
 
 __attribute__((visibility("hidden")))
@@ -74,8 +75,8 @@ ssize_t readlinkat(int fd, const char *path, char *buf, size_t bufsize)
 		buf[ret++] = '/';
 
 exit:
-	__fprintf(stderr, "%s(fd: %i, path: '%s' -> '%s', ...)\n", __func__, fd,
-			  path, real_path);
+	__verbose("%s(fd: %i, path: '%s' -> '%s', ...)\n", __func__, fd, path,
+		  real_path);
 
 	return ret;
 }

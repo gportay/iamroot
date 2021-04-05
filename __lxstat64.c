@@ -12,9 +12,10 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 
+#include "iamroot.h"
+
 extern char *path_resolution(const char *, char *, size_t, int);
 #ifdef __GLIBC__
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern int __rootlxstat64(int, const char *, struct stat64 *);
 
 __attribute__((visibility("hidden")))
@@ -46,8 +47,7 @@ int __lxstat64(int ver, const char *path, struct stat64 *stat64buf)
 
 	ret = __rootlxstat64(ver, real_path, stat64buf);
 
-	__fprintf(stderr, "%s(path: '%s' -> '%s', ...)\n", __func__, path,
-			  real_path);
+	__verbose("%s(path: '%s' -> '%s', ...)\n", __func__, path, real_path);
 
 	return ret;
 }

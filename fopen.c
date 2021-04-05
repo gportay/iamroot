@@ -12,8 +12,9 @@
 
 #include <stdio.h>
 
+#include "iamroot.h"
+
 extern char *path_resolution(const char *, char *, size_t, int);
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 __attribute__((visibility("hidden")))
 FILE *next_fopen(const char *path, const char *mode)
@@ -40,8 +41,7 @@ FILE *fopen(const char *path, const char *mode)
 		return NULL;
 	}
 
-	__fprintf(stderr, "%s(path: '%s' -> '%s')\n", __func__, path,
-			  real_path);
+	__verbose("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
 
 	return next_fopen(real_path, mode);
 }

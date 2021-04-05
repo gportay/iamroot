@@ -22,11 +22,12 @@
 
 #include <unistd.h>
 
+#include "iamroot.h"
+
 extern char *path_resolution(const char *, char *, size_t, int);
 /* See https://www.in-ulm.de/~mascheck/various/shebang/#results */
 #define HASHBANG_MAX NAME_MAX
 
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern const char *getrootdir();
 extern int next_open(const char *, int, mode_t);
 extern int next_stat(const char *, struct stat *);
@@ -65,7 +66,7 @@ void execve_init()
 		return;
 	}
 
-	__fprintf(stderr, "IAMROOT_EXEC_IGNORE=%s\n", ignore);
+	__verbose("IAMROOT_EXEC_IGNORE=%s\n", ignore);
 	re = &regex;
 }
 
@@ -345,8 +346,8 @@ int execve(const char *path, char * const argv[], char * const envp[])
 		goto exec;
 	}
 
-	__fprintf(stderr, "%s(path: '%s' -> '%s', argv: '%s'... , envp: @%p...)\n",
-			  __func__, path, real_path, argv[0], envp[0]);
+	__verbose("%s(path: '%s' -> '%s', argv: '%s'... , envp: @%p...)\n",
+		  __func__, path, real_path, argv[0], envp[0]);
 
 	return next_execve(real_path, argv, envp);
 

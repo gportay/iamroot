@@ -11,8 +11,9 @@
 
 #include <sys/stat.h>
 
+#include "iamroot.h"
+
 extern char *fpath_resolutionat(int, const char *, char *, size_t, int);
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern int __rootfstat(int, struct stat *);
 
 __attribute__((visibility("hidden")))
@@ -31,7 +32,7 @@ int next___fstat(int fd, struct stat *statbuf)
 
 int __fstat(int fd, struct stat *statbuf)
 {
-	__fprintf(stderr, "%s(fd: %i, ...)\n", __func__, fd);
+	__verbose("%s(fd: %i, ...)\n", __func__, fd);
 
 	return __rootfstat(fd, statbuf);
 }

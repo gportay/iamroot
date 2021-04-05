@@ -10,8 +10,9 @@
 #include <string.h>
 #include <regex.h>
 
+#include "iamroot.h"
+
 extern int __vfprintf(FILE *, const char *, va_list);
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 static regex_t *re;
 
@@ -47,7 +48,7 @@ void fverbosef_init()
 		return;
 	}
 
-	__fprintf(stderr, "IAMROOT_VERBOSE=%s\n", verbose);
+	__verbose("IAMROOT_VERBOSE=%s\n", verbose);
 	re = &regex;
 }
 

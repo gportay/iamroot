@@ -10,7 +10,8 @@
 
 #include <unistd.h>
 
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
+#include "iamroot.h"
+
 extern int chrootdir(const char *);
 
 __attribute__((visibility("hidden")))
@@ -37,7 +38,7 @@ int fchdir(int fd)
 		return ret;
 	}
 
-	__fprintf(stderr, "%s(fd: %i)\n", __func__, fd);
+	__verbose("%s(fd: %i)\n", __func__, fd);
 
 	return chrootdir(NULL);
 }

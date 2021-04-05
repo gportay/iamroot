@@ -12,8 +12,9 @@
 
 #include <unistd.h>
 
+#include "iamroot.h"
+
 extern char *path_resolution(const char *, char *, size_t, int);
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 __attribute__((visibility("hidden")))
 int next_link(const char *oldpath, const char *newpath)
@@ -48,9 +49,8 @@ int link(const char *oldpath, const char *newpath)
 		return -1;
 	}
 
-	__fprintf(stderr, "%s(oldpath: '%s' -> '%s', newpath: '%s' -> '%s')\n",
-			  __func__, oldpath, real_oldpath, newpath,
-			  real_newpath);
+	__verbose("%s(oldpath: '%s' -> '%s', newpath: '%s' -> '%s')\n",
+		  __func__, oldpath, real_oldpath, newpath, real_newpath);
 
 	return next_link(real_oldpath, real_newpath);
 }

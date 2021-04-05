@@ -16,13 +16,15 @@
 
 #include <fcntl.h>
 
+#include "iamroot.h"
+
 #define __strlcmp(s1, s2) strncmp(s1, s2, strlen(s2))
 #define __strncmp(s1, s2) strncmp(s1, s2, sizeof(s2)-1)
 
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern ssize_t next_readlink(const char *, char *, size_t);
 extern int next_lstat(const char *, struct stat *);
 extern void __procfdname(char *, unsigned);
+
 extern char *path_resolution(const char *, char *, size_t, int);
 extern const char *getrootdir();
 
@@ -78,8 +80,8 @@ void path_resolution_init()
 		return;
 	}
 
-	__fprintf(stderr, "IAMROOT_PATH_RESOLUTION_IGNORE|IAMROOT_LIB|IAMROOT_EXEC=%s\n",
-			  buf);
+	__verbose("IAMROOT_PATH_RESOLUTION_IGNORE|IAMROOT_LIB|IAMROOT_EXEC=%s\n",
+		  buf);
 
 	re = &regex;
 }

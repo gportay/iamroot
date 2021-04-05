@@ -11,7 +11,7 @@
 
 #include <unistd.h>
 
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
+#include "iamroot.h"
 
 int execlp(const char *file, const char *arg, ...)
 {
@@ -34,8 +34,8 @@ int execlp(const char *file, const char *arg, ...)
 			argv[i] = va_arg(ap, char *);
 		va_end(ap);
 
-		__fprintf(stderr, "%s(file: '%s', arg: '%s'...)\n", __func__,
-				  file, arg);
+		__verbose("%s(file: '%s', arg: '%s'...)\n", __func__, file,
+			  arg);
 
 		return execvpe(file, argv, environ);
 	}

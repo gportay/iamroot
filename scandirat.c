@@ -12,8 +12,9 @@
 #include <fcntl.h>
 #include <dirent.h>
 
+#include "iamroot.h"
+
 extern char *fpath_resolutionat(int, const char *, char *, size_t, int);
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 __attribute__((visibility("hidden")))
 int next_scandirat(int fd, const char *path, struct dirent ***namelist,
@@ -46,8 +47,7 @@ int scandirat(int fd, const char *path, struct dirent ***namelist,
 		return -1;
 	}
 
-	__fprintf(stderr, "%s(path: '%s' -> '%s')\n", __func__, path,
-			  real_path);
+	__verbose("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
 
 	return next_scandirat(fd, real_path, namelist, filter, compar);
 }

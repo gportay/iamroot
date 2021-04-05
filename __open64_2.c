@@ -13,9 +13,10 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#include "iamroot.h"
+
 extern char *path_resolution(const char *, char *, size_t, int);
 #ifdef __GLIBC__
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 __attribute__((visibility("hidden")))
 int next___open64_2(const char *path, int flags)
@@ -42,8 +43,7 @@ int __open64_2(const char *path, int flags)
 		return -1;
 	}
 
-	__fprintf(stderr, "%s(path: '%s' -> '%s')\n", __func__, path,
-			  real_path);
+	__verbose("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
 
 	return next___open64_2(real_path, flags);
 }

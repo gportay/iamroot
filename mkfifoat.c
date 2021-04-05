@@ -12,8 +12,9 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 
+#include "iamroot.h"
+
 extern char *fpath_resolutionat(int, const char *, char *, size_t, int);
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 __attribute__((visibility("hidden")))
 int next_mkfifoat(int fd, const char *path, mode_t mode)
@@ -40,8 +41,8 @@ int mkfifoat(int fd, const char *path, mode_t mode)
 		return -1;
 	}
 
-	__fprintf(stderr, "%s(fd: %d, path: '%s' -> '%s')\n", __func__, fd,
-			  path, real_path);
+	__verbose("%s(fd: %d, path: '%s' -> '%s')\n", __func__, fd, path,
+		  real_path);
 
 	return next_mkfifoat(fd, real_path, mode);
 }

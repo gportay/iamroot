@@ -12,8 +12,9 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#include "iamroot.h"
+
 extern char *fpath_resolutionat(int, const char *, char *, size_t, int);
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 __attribute__((visibility("hidden")))
 int next_symlinkat(const char *string, int fd, const char *path)
@@ -40,8 +41,8 @@ int symlinkat(const char *string, int fd, const char *path)
 		return -1;
 	}
 
-	__fprintf(stderr, "%s(string: '%s', fd: %i, path: '%s' -> '%s')\n",
-			  __func__, string, fd, path, real_path);
+	__verbose("%s(string: '%s', fd: %i, path: '%s' -> '%s')\n", __func__,
+		  string, fd, path, real_path);
 
 	return next_symlinkat(string, fd, real_path);
 }

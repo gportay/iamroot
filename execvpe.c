@@ -12,9 +12,10 @@
 
 #include <unistd.h>
 
+#include "iamroot.h"
+
 #define __strchrnul strchrnul
 
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern const char *getrootdir();
 
 static int __execve(const char *path, char * const argv[], char * const envp[])
@@ -84,8 +85,7 @@ static int __execvpe(const char *file, char * const argv[],
 
 int execvpe(const char *file, char * const argv[], char * const envp[])
 {
-	__fprintf(stderr, "%s(file: '%s', argv: '%s'...)\n", __func__, file,
-			  argv[0]);
+	__verbose("%s(file: '%s', argv: '%s'...)\n", __func__, file, argv[0]);
 
 	return __execvpe(file, argv, envp);
 }

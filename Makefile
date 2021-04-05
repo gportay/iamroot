@@ -134,6 +134,7 @@ libiamroot.so: rename.o
 libiamroot.so: renameat.o
 libiamroot.so: renameat2.o
 libiamroot.so: rmdir.o
+libiamroot.so: running_in_chroot.o
 libiamroot.so: scandir.o
 libiamroot.so: scandirat.o
 libiamroot.so: setxattr.o

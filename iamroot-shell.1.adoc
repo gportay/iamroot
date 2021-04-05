@@ -159,13 +159,8 @@ Create a new Arch Linux system installation from scratch via *pacstrap(8)*
 	error: command failed to execute correctly
 	( 4/10) Updating udev hardware database...
 	( 5/10) Applying kernel sysctl settings...
-	Not setting net/ipv4/conf/all/rp_filter (explicit setting exists).
-	Not setting net/ipv4/conf/default/rp_filter (explicit setting exists).
-	Not setting net/ipv4/conf/all/accept_source_route (explicit setting exists).
-	Not setting net/ipv4/conf/default/accept_source_route (explicit setting exists).
-	Not setting net/ipv4/conf/all/promote_secondaries (explicit setting exists).
-	Not setting net/ipv4/conf/default/promote_secondaries (explicit setting exists).
 	( 6/10) Creating temporary files...
+	fchownat() of /run/systemd/netif failed: Operation not permitted
 	Failed to create directory or subvolume "/run/systemd/netif/links": Permission denied
 	Failed to create directory or subvolume "/run/systemd/netif/leases": Permission denied
 	Failed to create directory or subvolume "/run/systemd/netif/lldp": Permission denied
@@ -173,7 +168,7 @@ Create a new Arch Linux system installation from scratch via *pacstrap(8)*
 	fchmod() of /dev/snd/timer failed: Operation not permitted
 	fchmod() of /dev/net/tun failed: Operation not permitted
 	Setting access ACL "u::rwx,g::r-x,g:wheel:r-x,g:adm:r-x,m::r-x,o::r-x" on /run/log/journal failed: Operation not permitted
-	fchownat() of /run/log/journal failed: Permission denied
+	fchownat() of /run/log/journal failed: Operation not permitted
 	error: command failed to execute correctly
 	( 7/10) Reloading device manager configuration...
 	Failed to send reload request: Permission denied

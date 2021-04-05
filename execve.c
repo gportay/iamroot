@@ -22,8 +22,7 @@
 
 #include <unistd.h>
 
-#include "path_resolution.h"
-
+extern char *path_resolution(const char *, char *, size_t, int);
 /* See https://www.in-ulm.de/~mascheck/various/shebang/#results */
 #define HASHBANG_MAX NAME_MAX
 

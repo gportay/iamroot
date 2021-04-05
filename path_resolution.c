@@ -7,8 +7,6 @@
 #include <stddef.h>
 #include <fcntl.h>
 
-#include "path_resolution.h"
-
 extern char *fpath_resolutionat(int fd, const char *path, char *buf,
 				size_t bufsize, int flags);
 

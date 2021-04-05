@@ -16,8 +16,6 @@
 
 #include <fcntl.h>
 
-#include "fpath_resolutionat.h"
-
 #define __strlcmp(s1, s2) strncmp(s1, s2, strlen(s2))
 #define __strncmp(s1, s2) strncmp(s1, s2, sizeof(s2)-1)
 

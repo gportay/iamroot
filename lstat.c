@@ -13,8 +13,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 
-#include "path_resolution.h"
-
+extern char *path_resolution(const char *, char *, size_t, int);
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern int rootlstat(const char *, struct stat *);
 

@@ -14,8 +14,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#include "path_resolution.h"
-
+extern char *path_resolution(const char *, char *, size_t, int);
 #ifdef __GLIBC__
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 

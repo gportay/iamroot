@@ -16,8 +16,7 @@
 
 #include <unistd.h>
 
-#include "path_resolution.h"
-
+extern char *path_resolution(const char *, char *, size_t, int);
 #define __strlcmp(s1, s2) strncmp(s1, s2, strlen(s2))
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));

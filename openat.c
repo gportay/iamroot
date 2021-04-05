@@ -12,8 +12,7 @@
 
 #include <fcntl.h>
 
-#include "fpath_resolutionat.h"
-
+extern char *fpath_resolutionat(int, const char *, char *, size_t, int);
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 __attribute__((visibility("hidden")))

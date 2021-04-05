@@ -36,9 +36,9 @@ int chrootdir(const char *);
 int inchroot();
 
 int __debug();
-int __fprintf(FILE *f, const char *fmt, ...) __attribute__ ((format(printf,2,3)));
+int __verbosef(const char *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
-#define __verbose(fmt, ...) __fprintf(stderr, fmt, __VA_ARGS__)
+#define __verbose(fmt, ...) __verbosef(__func__, fmt, __VA_ARGS__)
 
 extern void __perror(const char *, const char *);
 extern void __perror2(const char *, const char *, const char *);

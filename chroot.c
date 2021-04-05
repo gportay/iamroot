@@ -62,6 +62,123 @@ int _snprintf(char *buf, size_t bufsize, const char *fmt, ...)
 	return -1;
 }
 
+__attribute__((visibility("hidden")))
+int fissymlinkat(int fd, const char *path, int flags)
+{
+	struct stat statbuf;
+	int ret;
+
+	ret = next_fstatat(fd, path, &statbuf, flags);
+	if (ret == -1)
+		return ret;
+
+	return S_ISLNK(statbuf.st_mode);
+}
+
+__attribute__((visibility("hidden")))
+int fissymlink(int fd)
+{
+	struct stat statbuf;
+	int ret;
+
+	ret = next_fstat(fd, &statbuf);
+	if (ret == -1)
+		return ret;
+
+	return S_ISLNK(statbuf.st_mode);
+}
+
+__attribute__((visibility("hidden")))
+int issymlink(const char *path)
+{
+	struct stat statbuf;
+	int ret;
+
+	ret = next_lstat(path, &statbuf);
+	if (ret == -1)
+		return ret;
+
+	return S_ISLNK(statbuf.st_mode);
+}
+
+__attribute__((visibility("hidden")))
+int fisdirectoryat(int fd, const char *path, int flags)
+{
+	struct stat statbuf;
+	int ret;
+
+	ret = next_fstatat(fd, path, &statbuf, flags);
+	if (ret == -1)
+		return ret;
+
+	return S_ISDIR(statbuf.st_mode);
+}
+
+__attribute__((visibility("hidden")))
+int isdirectory(const char *path)
+{
+	struct stat statbuf;
+	int ret;
+
+	ret = next_lstat(path, &statbuf);
+	if (ret == -1)
+		return ret;
+
+	return S_ISDIR(statbuf.st_mode);
+}
+
+__attribute__((visibility("hidden")))
+int fisdirectory(int fd)
+{
+	struct stat statbuf;
+	int ret;
+
+	ret = next_fstat(fd, &statbuf);
+	if (ret == -1)
+		return ret;
+
+	return S_ISDIR(statbuf.st_mode);
+}
+
+__attribute__((visibility("hidden")))
+int fisfileat(int fd, const char *path, int flags)
+{
+	struct stat statbuf;
+	int ret;
+
+	ret = next_fstatat(fd, path, &statbuf, flags);
+	if (ret == -1)
+		return ret;
+
+	return S_ISREG(statbuf.st_mode);
+}
+
+__attribute__((visibility("hidden")))
+int fisfile(int fd)
+{
+	struct stat statbuf;
+	int ret;
+
+	ret = next_fstat(fd, &statbuf);
+	if (ret == -1)
+		return ret;
+
+	return S_ISREG(statbuf.st_mode);
+}
+
+__attribute__((visibility("hidden")))
+int isfile(const char *path)
+{
+	struct stat statbuf;
+	int ret;
+
+	ret = next_lstat(path, &statbuf);
+	if (ret == -1)
+		return ret;
+
+	return S_ISREG(statbuf.st_mode);
+}
+
 int pathsetenv(const char *root, const char *name, const char *value,
 	       int overwrite)
 {

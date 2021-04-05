@@ -27,6 +27,15 @@ static inline const char *__libc()
 #endif
 }
 
+int fissymlinkat(int, const char *, int);
+int fissymlink(int);
+int issymlink(const char *);
+int fisdirectoryat(int, const char *, int);
+int fisdirectory(int);
+int isdirectory(const char *);
+int fisfileat(int, const char *, int);
+int fisfile(int);
+int isfile(const char *);
 int pathsetenv(const char *, const char *, const char *, int);
 
 char *sanitize(char *, size_t);

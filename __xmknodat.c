@@ -12,8 +12,9 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 
+#include "iamroot.h"
+
 extern char *fpath_resolutionat(int, const char *, char *, size_t, int);
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 __attribute__((visibility("hidden")))
 int next___xmknodat(int ver, int fd, const char *path, mode_t mode, dev_t dev)
@@ -40,8 +41,8 @@ int __xmknodat(int ver, int fd, const char *path, mode_t mode, dev_t dev)
 		return -1;
 	}
 
-	__fprintf(stderr, "%s(fd %i, path: '%s' -> '%s')\n", __func__, fd, path,
-			real_path);
+	__verbose("%s(fd %i, path: '%s' -> '%s')\n", __func__, fd, path,
+		  real_path);
 
 	return next___xmknodat(ver, fd, path, mode, dev);
 }

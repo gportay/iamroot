@@ -12,8 +12,9 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#include "iamroot.h"
+
 extern char *fpath_resolutionat(int, const char *, char *, size_t, int);
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern uid_t next_geteuid();
 
 __attribute__((visibility("hidden")))
@@ -44,8 +45,8 @@ int fchownat(int fd, const char *path, uid_t owner, gid_t group, int flags)
 	owner = next_geteuid();
 	group = getegid();
 
-	__fprintf(stderr, "%s(fd: %i, path: '%s' -> '%s', owner: %i, group: %i)\n",
-			  __func__, fd, path, real_path, owner, group);
+	__verbose("%s(fd: %i, path: '%s' -> '%s', owner: %i, group: %i)\n",
+		  __func__, fd, path, real_path, owner, group);
 
 	return next_fchownat(fd, real_path, owner, group, flags);
 }

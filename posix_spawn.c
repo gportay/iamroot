@@ -11,8 +11,9 @@
 
 #include <spawn.h>
 
+#include "iamroot.h"
+
 extern char *path_resolution(const char *, char *, size_t, int);
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 __attribute__((visibility("hidden")))
 int next_posix_spawn(pid_t *pid, const char *path,

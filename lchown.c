@@ -12,8 +12,9 @@
 
 #include <unistd.h>
 
+#include "iamroot.h"
+
 extern char *path_resolution(const char *, char *, size_t, int);
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern uid_t next_geteuid();
 
 __attribute__((visibility("hidden")))
@@ -45,8 +46,8 @@ int lchown(const char *path, uid_t owner, gid_t group)
 	owner = next_geteuid();
 	group = getegid();
 
-	__fprintf(stderr, "%s(path: '%s' -> '%s', owner: %i, group: %i)\n",
-			  __func__, path, real_path, owner, group);
+	__verbose("%s(path: '%s' -> '%s', owner: %i, group: %i)\n", __func__,
+		  path, real_path, owner, group);
 
 	return next_lchown(real_path, owner, group);
 }

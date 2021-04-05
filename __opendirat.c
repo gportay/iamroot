@@ -12,9 +12,10 @@
 #include <sys/types.h>
 #include <dirent.h>
 
+#include "iamroot.h"
+
 extern char *fpath_resolutionat(int, const char *, char *, size_t, int);
 #ifdef __GLIBC__
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 __attribute__((visibility("hidden")))
 DIR *next___opendirat(int fd, const char *path)
@@ -41,8 +42,8 @@ DIR *__opendirat(int fd, const char *path)
 		return NULL;
 	}
 
-	__fprintf(stderr, "%s(fd: %d, path: '%s' -> '%s')\n", __func__, fd,
-			  path, real_path);
+	__verbose("%s(fd: %d, path: '%s' -> '%s')\n", __func__, fd, path,
+		  real_path);
 
 	return next___opendirat(fd, real_path);
 }

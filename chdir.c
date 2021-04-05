@@ -11,8 +11,9 @@
 
 #include <unistd.h>
 
+#include "iamroot.h"
+
 extern char *path_resolution(const char *, char *, size_t, int);
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern int chrootdir(const char *);
 
 __attribute__((visibility("hidden")))
@@ -47,8 +48,7 @@ int chdir(const char *path)
 		return ret;
 	}
 
-	__fprintf(stderr, "%s(path: '%s' -> '%s')\n", __func__, path,
-			  real_path);
+	__verbose("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
 
 	return chrootdir(NULL);
 }

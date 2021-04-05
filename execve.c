@@ -22,12 +22,12 @@
 
 #include <unistd.h>
 
+#include "iamroot.h"
+
 extern char *path_resolution(const char *, char *, size_t, int);
 #define __strncmp(s1, s2) strncmp(s1, s2, sizeof(s2)-1)
 /* See https://www.in-ulm.de/~mascheck/various/shebang/#results */
 #define HASHBANG_MAX NAME_MAX
-
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern int inchroot();
 extern int next_open(const char *, int, mode_t);
 extern int next_stat(const char *, struct stat *);
@@ -66,7 +66,7 @@ void execve_init()
 		return;
 	}
 
-	__fprintf(stderr, "IAMROOT_EXEC_IGNORE=%s\n", ignore);
+	__verbose("IAMROOT_EXEC_IGNORE=%s\n", ignore);
 	re = &regex;
 }
 

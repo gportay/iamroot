@@ -12,9 +12,10 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 
+#include "iamroot.h"
+
 extern char *fpath_resolutionat(int, const char *, char *, size_t, int);
 #ifdef __GLIBC__
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern int rootfstatat64(int, const char *, struct stat64 *, int);
 
 __attribute__((visibility("hidden")))
@@ -45,8 +46,8 @@ int fstatat64(int fd, const char *path, struct stat64 *statbuf, int flags)
 
 	ret = rootfstatat64(fd, real_path, statbuf, flags);
 
-	__fprintf(stderr, "%s(fd: %i, path: '%s' -> '%s', ...)\n", __func__, fd,
-			  path, real_path);
+	__verbose("%s(fd: %i, path: '%s' -> '%s', ...)\n", __func__, fd, path,
+		  real_path);
 
 	return ret;
 }

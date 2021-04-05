@@ -11,8 +11,9 @@
 
 #include <unistd.h>
 
+#include "iamroot.h"
+
 extern char *path_resolution(const char *, char *, size_t, int);
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 __attribute__((visibility("hidden")))
 int next_symlink(const char *string, const char *path)
@@ -39,8 +40,8 @@ int symlink(const char *string, const char *path)
 		return -1;
 	}
 
-	__fprintf(stderr, "%s(string: '%s': path: '%s' -> '%s')\n", __func__,
-			  string, path, real_path);
+	__verbose("%s(string: '%s': path: '%s' -> '%s')\n", __func__, string,
+		  path, real_path);
 
 	return next_symlink(string, real_path);
 }

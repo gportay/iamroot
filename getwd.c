@@ -12,7 +12,8 @@
 
 #include <unistd.h>
 
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
+#include "iamroot.h"
+
 extern const char *getrootdir();
 
 __attribute__((visibility("hidden")))
@@ -53,7 +54,7 @@ char *getwd(char *buf)
 		strcpy(ret, "/");
 
 exit:
-	__fprintf(stderr, "%s(...)\n", __func__);
+	__verbose("%s(...)\n", __func__);
 
 	return ret;
 }

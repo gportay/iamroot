@@ -9,7 +9,8 @@
 #include <errno.h>
 #include <dlfcn.h>
 
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
+#include "iamroot.h"
+
 extern int inchroot();
 
 __attribute__((visibility("hidden")))
@@ -28,7 +29,7 @@ int next_running_in_chroot(void)
 
 int running_in_chroot(void)
 {
-	__fprintf(stderr, "%s()\n", __func__);
+	__verbose("%s()\n", __func__);
 
 	if (inchroot())
 		return 1;

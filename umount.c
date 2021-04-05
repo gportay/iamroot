@@ -10,11 +10,11 @@
 
 #include <sys/mount.h>
 
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
+#include "iamroot.h"
 
 int umount(const char *target)
 {
-	__fprintf(stderr, "%s(target: '%s', ...)\n", __func__, target);
+	__verbose("%s(target: '%s', ...)\n", __func__, target);
 
 	return 0;
 }

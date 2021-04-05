@@ -12,9 +12,10 @@
 
 #include <stdio.h>
 
+#include "iamroot.h"
+
 extern char *path_resolution(const char *, char *, size_t, int);
 #ifdef __GLIBC__
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 __attribute__((visibility("hidden")))
 FILE *next_freopen64(const char *path, const char *mode, FILE *stream)
@@ -41,8 +42,7 @@ FILE *freopen64(const char *path, const char *mode, FILE *stream)
 		return NULL;
 	}
 
-	__fprintf(stderr, "%s(path: '%s' -> '%s')\n", __func__, path,
-			  real_path);
+	__verbose("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
 
 	return next_freopen64(real_path, mode, stream);
 }

@@ -16,10 +16,11 @@
 
 #include <unistd.h>
 
+#include "iamroot.h"
+
 extern char *path_resolution(const char *, char *, size_t, int);
 #define __strlcmp(s1, s2) strncmp(s1, s2, strlen(s2))
 
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern char *sanitize(char *, size_t);
 extern char *next_getcwd(char *, size_t);
 extern int next_stat(const char *, struct stat *);
@@ -132,7 +133,7 @@ int chrootdir(const char *cwd)
 
 	root = getrootdir();
 	if (__strlcmp(cwd, root) != 0) {
-		__fprintf(stderr, "Exiting chroot: '%s'\n", root);
+		__verbose("Exiting chroot: '%s'\n", root);
 		return unsetenv("IAMROOT_ROOT");
 	}
 
@@ -646,14 +647,14 @@ int chroot(const char *path)
 	if (ret == -1)
 		goto exit;
 
-	__fprintf(stderr, "Enterring chroot: '%s'\n", real_path);
+	__verbose("Enterring chroot: '%s'\n", real_path);
 
 exit:
-	__fprintf(stderr, "%s(path: '%s' -> '%s')\n", __func__, path,
+	__verbose("%s(path: '%s' -> '%s')\n", __func__, path,
 			  real_path);
-	__fprintf(stderr, "IAMROOT_PATH=%s\n", getenv("IAMROOT_ROOT"));
-	__fprintf(stderr, "PATH=%s\n", getenv("PATH"));
-	__fprintf(stderr, "LD_LIBRARY_PATH=%s\n", getenv("LD_LIBRARY_PATH"));
+	__verbose("IAMROOT_PATH=%s\n", getenv("IAMROOT_ROOT"));
+	__verbose("PATH=%s\n", getenv("PATH"));
+	__verbose("LD_LIBRARY_PATH=%s\n", getenv("LD_LIBRARY_PATH"));
 
 	return 0;
 }

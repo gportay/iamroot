@@ -11,7 +11,8 @@
 
 #include <sys/stat.h>
 
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
+#include "iamroot.h"
+
 extern int __rootfxstat(int, int, struct stat *);
 
 __attribute__((visibility("hidden")))
@@ -30,7 +31,7 @@ int next___fxstat(int ver, int fd, struct stat *statbuf)
 
 int __fxstat(int ver, int fd, struct stat *statbuf)
 {
-	__fprintf(stderr, "%s(fd: %i, ...)\n", __func__, fd);
+	__verbose("%s(fd: %i, ...)\n", __func__, fd);
 
 	return __rootfxstat(ver, fd, statbuf);
 }

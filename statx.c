@@ -14,9 +14,10 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+#include "iamroot.h"
+
 extern char *fpath_resolutionat(int, const char *, char *, size_t, int);
 #ifdef __GLIBC__
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern int rootstatx(int, const char *, int, unsigned int, struct statx *);
 
 __attribute__((visibility("hidden")))
@@ -46,8 +47,8 @@ int statx(int fd, const char *path, int flags, unsigned int mask,
 		return -1;
 	}
 
-	__fprintf(stderr, "%s(fd: %i, path: '%s' -> '%s', ...)\n", __func__, fd,
-			  path, real_path);
+	__verbose("%s(fd: %i, path: '%s' -> '%s', ...)\n", __func__, fd, path,
+		  real_path);
 
 	return rootstatx(fd, real_path, flags, mask, statxbuf);
 }

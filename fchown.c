@@ -11,7 +11,8 @@
 
 #include <unistd.h>
 
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
+#include "iamroot.h"
+
 extern uid_t next_geteuid();
 
 __attribute__((visibility("hidden")))
@@ -33,8 +34,8 @@ int fchown(int fd, uid_t owner, gid_t group)
 	owner = next_geteuid();
 	group = getegid();
 
-	__fprintf(stderr, "%s(fd: %i, owner: %i, group: %i)\n", __func__, fd,
-			  owner, group);
+	__verbose("%s(fd: %i, owner: %i, group: %i)\n", __func__, fd, owner,
+		  group);
 
 	return next_fchown(fd, owner, group);
 }

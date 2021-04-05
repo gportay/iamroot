@@ -9,11 +9,11 @@
 
 #include <sched.h>
 
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
+#include "iamroot.h"
 
 int unshare(int flags)
 {
-	__fprintf(stderr, "%s(flags: 0x%x)\n", __func__, flags);
+	__verbose("%s(flags: 0x%x)\n", __func__, flags);
 
 	return 0;
 }

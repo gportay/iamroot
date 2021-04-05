@@ -13,8 +13,9 @@
 #include <sys/types.h>
 #include <sys/xattr.h>
 
+#include "iamroot.h"
+
 extern char *path_resolution(const char *, char *, size_t, int);
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 __attribute__((visibility("hidden")))
 ssize_t next_lgetxattr(const char *path, const char *name, void *value,
@@ -43,8 +44,7 @@ ssize_t lgetxattr(const char *path, const char *name, void *value, size_t size)
 		return -1;
 	}
 
-	__fprintf(stderr, "%s(path: '%s' -> '%s', ...)\n", __func__, path,
-			  real_path);
+	__verbose("%s(path: '%s' -> '%s', ...)\n", __func__, path, real_path);
 
 	return next_lgetxattr(real_path, name, value, size);
 }

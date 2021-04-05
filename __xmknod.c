@@ -11,8 +11,9 @@
 
 #include <sys/stat.h>
 
+#include "iamroot.h"
+
 extern char *path_resolution(const char *, char *, size_t, int);
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 __attribute__((visibility("hidden")))
 int next___xmknod(int ver, const char *path, mode_t mode, dev_t dev)
@@ -39,8 +40,7 @@ int __xmknod(int ver, const char *path, mode_t mode, dev_t dev)
 		return -1;
 	}
 
-	__fprintf(stderr, "%s(path: '%s' -> '%s')\n", __func__, path,
-			real_path);
+	__verbose("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
 
 	return next___xmknod(ver, path, mode, dev);
 }

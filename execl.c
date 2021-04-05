@@ -11,7 +11,7 @@
 
 #include <unistd.h>
 
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
+#include "iamroot.h"
 
 int execl(const char *path, const char *arg, ...)
 {
@@ -34,8 +34,8 @@ int execl(const char *path, const char *arg, ...)
 			argv[i] = va_arg(ap, char *);
 		va_end(ap);
 
-		__fprintf(stderr, "%s(path: '%s', arg: '%s'...)\n", __func__,
-				  path, arg);
+		__verbose("%s(path: '%s', arg: '%s'...)\n", __func__, path,
+			  arg);
 
 		return execve(path, argv, environ);
 	}

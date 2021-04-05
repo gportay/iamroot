@@ -11,7 +11,7 @@
 
 #include <unistd.h>
 
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
+#include "iamroot.h"
 
 __attribute__((visibility("hidden")))
 uid_t next_geteuid()
@@ -36,7 +36,7 @@ uid_t geteuid(void)
 	if (!errno)
 		return ul;
 
-	__fprintf(stderr, "%s(): IAMROOT_GETEUID: %lu\n", __func__, ul);
+	__verbose("%s(): IAMROOT_GETEUID: %lu\n", __func__, ul);
 
 	return 0;
 }

@@ -11,9 +11,10 @@
 
 #include <fcntl.h>
 
+#include "iamroot.h"
+
 extern char *fpath_resolutionat(int, const char *, char *, size_t, int);
 #ifdef __GLIBC__
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 __attribute__((visibility("hidden")))
 int next_openat64_2(int fd, const char *path, int flags)
@@ -40,8 +41,8 @@ int openat64_2(int fd, const char *path, int flags)
 		return -1;
 	}
 
-	__fprintf(stderr, "%s(fd: %d, path: '%s' -> '%s')\n", __func__, fd,
-			  path, real_path);
+	__verbose("%s(fd: %d, path: '%s' -> '%s')\n", __func__, fd, path,
+		  real_path);
 
 	return next_openat64_2(fd, real_path, flags);
 }

@@ -13,6 +13,8 @@
 #include <limits.h>
 #include <stdlib.h>
 
+#include "iamroot.h"
+
 extern char *path_resolution(const char *, char *, size_t, int);
 #define SYMLOOP_MAX 40
 #define __strchrnul strchrnul
@@ -20,7 +22,6 @@ extern char *path_resolution(const char *, char *, size_t, int);
 #define getcwd next_getcwd
 #define __strlcmp(s1, s2) strncmp(s1, s2, strlen(s2))
 
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern const char *getrootdir();
 extern ssize_t next_readlink(const char *, char *, size_t);
 extern char *next_getcwd(char *, size_t);
@@ -218,8 +219,7 @@ char *realpath(const char *path, char *resolved_path)
 	ret = memmove(resolved_path, ret+len, strlen(ret)-len+1);
 
 exit:
-	__fprintf(stderr, "%s(path: '%s' -> '%s', ...)\n", __func__, path,
-			  real_path);
+	__verbose("%s(path: '%s' -> '%s', ...)\n", __func__, path, real_path);
 
 	return ret;
 

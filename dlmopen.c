@@ -10,9 +10,10 @@
 
 #include <dlfcn.h>
 
+#include "iamroot.h"
+
 extern char *path_resolution(const char *, char *, size_t, int);
 #ifdef __GLIBC__
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 __attribute__((visibility("hidden")))
 void *next_dlmopen(Lmid_t lmid, const char *path, int flags)
@@ -40,8 +41,7 @@ void *dlmopen(Lmid_t lmid, const char *path, int flags)
 		return NULL;
 	}
 
-	__fprintf(stderr, "%s(..., path: '%s' -> '%s')\n", __func__, path,
-			  real_path);
+	__verbose("%s(..., path: '%s' -> '%s')\n", __func__, path, real_path);
 
 	return next_dlmopen(lmid, path, flags);
 }

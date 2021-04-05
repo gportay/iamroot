@@ -11,8 +11,9 @@
 
 #include <sys/time.h>
 
+#include "iamroot.h"
+
 extern char *path_resolution(const char *, char *, size_t, int);
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 __attribute__((visibility("hidden")))
 int next_utimes(const char *path, const struct timeval times[2])
@@ -39,8 +40,7 @@ int utimes(const char *path, const struct timeval times[2])
 		return -1;
 	}
 
-	__fprintf(stderr, "%s(path: '%s' -> '%s')\n", __func__, path,
-			  real_path);
+	__verbose("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
 
 	return next_utimes(real_path, times);
 }

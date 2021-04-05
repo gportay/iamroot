@@ -11,8 +11,9 @@
 
 #include <sys/stat.h>
 
+#include "iamroot.h"
+
 #ifdef __GLIBC__
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern int __rootfxstat64(int, int, struct stat64 *);
 
 __attribute__((visibility("hidden")))
@@ -31,7 +32,7 @@ int next___fxstat64(int ver, int fd, struct stat64 *stat64buf)
 
 int __fxstat64(int ver, int fd, struct stat64 *stat64buf)
 {
-	__fprintf(stderr, "%s(fd: %i, ...)\n", __func__, fd);
+	__verbose("%s(fd: %i, ...)\n", __func__, fd);
 
 	return __rootfxstat64(ver, fd, stat64buf);
 }

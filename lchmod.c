@@ -12,8 +12,9 @@
 
 #include <sys/stat.h>
 
+#include "iamroot.h"
+
 extern char *path_resolution(const char *, char *, size_t, int);
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
 __attribute__((visibility("hidden")))
 int next_lchmod(const char *path, mode_t mode)
@@ -41,8 +42,7 @@ int lchmod(const char *path, mode_t mode)
 		return -1;
 	}
 
-	__fprintf(stderr, "%s(path: '%s' -> '%s')\n", __func__, path,
-			  real_path);
+	__verbose("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
 
 	return next_lchmod(real_path, mode);
 }

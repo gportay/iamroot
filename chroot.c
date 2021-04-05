@@ -632,7 +632,7 @@ int chroot(const char *path)
 		goto exit;
 
 	ret = pathsetenv(real_path, "LD_LIBRARY_PATH",
-		         getenv("IAMROOT_LD_LIBRARY_PATH") ?: "/usr/lib:/lib",
+			 getenv("IAMROOT_LD_LIBRARY_PATH") ?: "/usr/lib:/lib",
 			 1);
 	if (ret)
 		goto exit;

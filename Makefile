@@ -45,6 +45,8 @@ libiamroot.so: __xstat.o
 libiamroot.so: __xstat64.o
 libiamroot.so: __fprintf.o
 libiamroot.so: __printf.o
+libiamroot.so: __fverbosef.o
+libiamroot.so: __verbosef.o
 libiamroot.so: access.o
 libiamroot.so: canonicalize_file_name.o
 libiamroot.so: chdir.o

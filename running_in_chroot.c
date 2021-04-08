@@ -10,7 +10,7 @@
 #include <dlfcn.h>
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
-extern const char *getrootdir();
+extern int inchroot();
 
 __attribute__((visibility("hidden")))
 int next_running_in_chroot(void)
@@ -30,7 +30,7 @@ int running_in_chroot(void)
 {
 	__fprintf(stderr, "%s()\n", __func__);
 
-	if (strcmp(getrootdir(), "/") != 0)
+	if (inchroot())
 		return 1;
 
 	return next_running_in_chroot();

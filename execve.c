@@ -28,7 +28,7 @@ extern char *path_resolution(const char *, char *, size_t, int);
 #define HASHBANG_MAX NAME_MAX
 
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
-extern const char *getrootdir();
+extern int inchroot();
 extern int next_open(const char *, int, mode_t);
 extern int next_stat(const char *, struct stat *);
 
@@ -358,7 +358,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 		goto exec_sh;
 
 	/* Do not proceed to any hack if not in chroot */
-	if (strcmp(getrootdir(), "/") == 0)
+	if (!inchroot())
 		return next_execve(path, argv, envp);
 
 	/* Get the interpeter directive stored after the hashbang */

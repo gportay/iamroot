@@ -140,6 +140,12 @@ int chrootdir(const char *cwd)
 }
 
 __attribute__((visibility("hidden")))
+int inchroot()
+{
+	return strcmp(getrootdir(), "/") != 0;
+}
+
+__attribute__((visibility("hidden")))
 int rootstat(const char *path, struct stat *buf)
 {
 	uid_t uid;

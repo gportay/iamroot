@@ -17,6 +17,8 @@ int mount(const char *source, const char *target, const char *filesystemtype,
 {
 	(void)filesystemtype;
 	(void)mountflags;
+	(void)source;
+	(void)target;
 	(void)data;
 
 	__verbose("%s(source: '%s', target: '%s', ...)\n", __func__, source,

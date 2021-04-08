@@ -13,6 +13,8 @@
 
 int unshare(int flags)
 {
+	(void)flags;
+
 	__verbose("%s(flags: 0x%x)\n", __func__, flags);
 
 	return 0;

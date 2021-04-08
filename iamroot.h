@@ -38,7 +38,11 @@ int inchroot();
 int __debug();
 int __verbosef(const char *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
+#if !defined(NVERBOSE)
 #define __verbose(fmt, ...) __verbosef(__func__, fmt, __VA_ARGS__)
+#else
+#define __verbose(fmt, ...)
+#endif
 
 extern void __perror(const char *, const char *);
 extern void __perror2(const char *, const char *, const char *);

@@ -42,11 +42,6 @@ char *getwd(char *buf)
 	}
 
 	root = getrootdir();
-	if (!root) {
-		perror("getrootdir");
-		return NULL;
-	}
-
 	if (strcmp(root, "/") == 0)
 		goto exit;
 

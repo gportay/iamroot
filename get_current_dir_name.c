@@ -42,11 +42,6 @@ char *get_current_dir_name()
 	}
 
 	root = getrootdir();
-	if (!root) {
-		perror("getrootdir");
-		return NULL;
-	}
-
 	if (strcmp(root, "/") == 0)
 		goto exit;
 

@@ -103,7 +103,7 @@ static int ignore(const char *path)
 
 	ret = regexec(re, path, 0, NULL, 0);
 	if (ret == -1) {
-		__regex_perror("regcomp", re, ret);
+		__regex_perror("regexec", re, ret);
 		return 0;
 	}
 

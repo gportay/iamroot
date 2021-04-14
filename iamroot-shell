@@ -5,6 +5,8 @@
 # SPDX-License-Identifier: GPL-2.1
 #
 
+VERSION=1
+
 usage() {
 	cat <<EOF
 Usage: ${0##*/} [OPTIONS] [--]    [SCRIPT_FILE  [ARGS...]]
@@ -32,6 +34,7 @@ iamroot specific options:
                                 use.
       --library LIB             Absolute path to the iamroot library to use.
       --debug                   Turn on debug mode.
+      --version                 Print version.
       --help                    Print usage.
 
 Environment variables:
@@ -71,6 +74,10 @@ do
 	if [[ "$1" == "--help" ]]
 	then
 		usage
+		exit 0
+	elif [[ "$1" == "--version" ]]
+	then
+		echo "$VERSION"
 		exit 0
 	elif [[ "$1" == "--debug" ]]
 	then

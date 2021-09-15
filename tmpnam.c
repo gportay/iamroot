@@ -11,7 +11,10 @@
 #include <stdio.h>
 
 extern char *path_resolution(const char *, char *, size_t, int);
+#ifdef __GLIBC__                                                                
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
+
+#include <features.h>
 
 __attribute__((visibility("hidden")))
 char *next_tmpnam(char *path)
@@ -27,12 +30,16 @@ char *next_tmpnam(char *path)
 	return sym(path);
 }
 
+#if __GLIBC_PREREQ(2, 34)
+char *tmpnam(char path[L_tmpnam])
+#else
 char *tmpnam(char *path)
+#endif
 {
 	char buf[PATH_MAX];
 	char *real_path;
 
-	real_path = path_resolution(path, buf, sizeof(buf), 0);
+	real_path = path_resolution((char *)path, buf, sizeof(buf), 0);
 	if (!real_path) {
 		perror("path_resolution");
 		return NULL;
@@ -43,3 +50,5 @@ char *tmpnam(char *path)
 
 	return next_tmpnam(real_path);
 }
+
+#endif

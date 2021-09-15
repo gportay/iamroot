@@ -18,17 +18,6 @@ case "${1##*/}" in
 mount|umount)
 	log "Warning:" "Command is skipped:" "$@"
 	;;
-systemd-sysusers)
-	if [[ "${IAMROOT_ROOT:-/}" != / ]]
-	then
-		set -- "$@" --root "${IAMROOT_ROOT}"
-	fi
-
-	unset LD_PRELOAD
-	unset IAMROOT_ROOT
-
-	exec "$@"
-	;;
 ldd)
 	unset LD_PRELOAD
 	unset LD_LIBRARY_PATH

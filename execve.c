@@ -57,7 +57,7 @@ void execve_init()
 
 	ignore = getenv("IAMROOT_EXEC_IGNORE");
 	if (!ignore)
-		ignore = "^(/usr/bin/|/bin/|)systemd-sysusers$|ldd";
+		ignore = "ldd";
 
 	ret = regcomp(&regex, ignore, REG_EXTENDED);
 	if (ret) {

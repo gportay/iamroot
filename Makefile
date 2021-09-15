@@ -30,6 +30,7 @@ libiamroot.so: __fxstatat.o
 libiamroot.so: __fxstatat64.o
 libiamroot.so: __lxstat.o
 libiamroot.so: __lxstat64.o
+libiamroot.so: __nss_files_fopen.o
 libiamroot.so: __open.o
 libiamroot.so: __open64.o
 libiamroot.so: __open64_2.o

@@ -30,7 +30,7 @@ int running_in_chroot(void)
 {
 	__fprintf(stderr, "%s()\n", __func__);
 
-	if (strcmp(getrootdir(), "/") != 0)                                     
+	if (strcmp(getrootdir(), "/") != 0)
 		return 1;
 
 	return next_running_in_chroot();

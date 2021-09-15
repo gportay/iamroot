@@ -120,7 +120,7 @@ Change root directory via *chroot(1)*
 	[gportay@archlinux ~]$ tar xf alpine-minirootfs-3.13.0-x86_64.tar.gz -C alpine-minirootfs
 	[gportay@archlinux ~]$ iamroot-shell
 	[root@archlinux ~]# chroot alpine-minirootfs /bin/ash
-	/ # cat /etc/os-release 
+	/ # cat /etc/os-release
 	NAME="Alpine Linux"
 	ID=alpine
 	VERSION_ID=3.13.0
@@ -135,7 +135,7 @@ Change root directory via *chroot(1)*
 	Unix shell interpreter
 	/ # ls /proc/self/cwd -l
 	lrwxrwxrwx    1 root     root             0 Mar 24 20:53 /proc/self/cwd -> /
-        / # ls -l /proc/self/root                               
+        / # ls -l /proc/self/root
 	lrwxrwxrwx    1 root     root             0 Mar 24 20:53 /proc/self/root -> /home/gportay/alpine-minirootfs
 
 Create a new Arch Linux system installation from scratch via *pacstrap(8)*
@@ -148,7 +148,7 @@ Create a new Arch Linux system installation from scratch via *pacstrap(8)*
 	cp: cannot access '/etc/pacman.d/gnupg/private-keys-v1.d': Permission denied
 	cp: cannot open '/etc/pacman.d/gnupg/secring.gpg' for reading: Permission denied
 	==> Installing packages to rootfs
-	(...)	
+	(...)
 	Optional dependencies for base
 	    linux: bare metal support
 	:: Running post-transaction hooks...

@@ -380,7 +380,7 @@ hashbang:
 	 *
 	 * 	$ busybox applet [arguments...]
 	 * 	          ^path   ^argv[1]...
-	 * 	
+	 *
 	 * Where applet is path and arguments is argv[1]..argv[n].
 	 *
 	 * In case of the path is an bashbang and the interpreter is a symlink

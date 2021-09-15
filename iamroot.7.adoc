@@ -39,7 +39,7 @@ changed using *chroot(2)*.
 Both ingredients are checked in _/proc/<pid>/cwd_ and _/proc/<pid>/root_.
 
 	[gportay@archlinux ~]$ readlink /proc/self/cwd
-	/home/gportay	
+	/home/gportay
 	[gportay@archlinux ~]$ readlink /proc/self/root
 	/
 

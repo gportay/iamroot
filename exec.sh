@@ -42,6 +42,10 @@ ldconfig)
 
 	exec "$@"
 	;;
+passwd|su)
+	echo "Error:" "Command not handled:" "$@" >&2
+	exit 1
+	;;
 *)
 	echo "Warning:" "Command not handled:" "$@" >&2
 	;;

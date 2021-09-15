@@ -43,6 +43,6 @@ ldconfig)
 	exec "$@"
 	;;
 *)
-	log "Warning:" "Command not handled:" "$@"
+	echo "Warning:" "Command not handled:" "$@" >&2
 	;;
 esac

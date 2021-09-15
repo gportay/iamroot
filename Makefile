@@ -198,9 +198,7 @@ user-%:
 	$(MAKE) $* PREFIX=$$HOME/.local BASHCOMPLETIONSDIR=$$HOME/.local/share/bash-completion/completions
 
 .PHONY: ci
-ci: check
-	$(MAKE) clean tests
-	$(SHELL) make-musl-gcc.sh clean all
+ci: check tests
 
 .PHONY: run-qemu
 run-qemu: override QEMUFLAGS += -append "console=ttyS0 root=host0 rootfstype=9p rootflags=trans=virtio debug"
@@ -317,6 +315,9 @@ clean:
 .PHONY: mrproper
 mrproper: clean
 	rm -f busybox alpine-minirootfs-3.13.0-x86_64.tar.gz
+
+%.o: ../%.c
+	$(COMPILE.c) $(OUTPUT_OPTION) $<
 
 %.so: override LDFLAGS += -shared
 %.so:

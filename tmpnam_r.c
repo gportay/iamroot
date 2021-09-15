@@ -12,10 +12,22 @@
 
 #include "iamroot.h"
 
+#ifndef __GLIBC_PREREQ
+#define __GLIBC_PREREQ(maj,min) 0
+#endif
+
 __attribute__((visibility("hidden")))
+#if defined __GLIBC__ && __GLIBC_PREREQ(2,34)
+char *next_tmpnam_r(char path[L_tmpnam])
+#else
 char *next_tmpnam_r(char *path)
+#endif
 {
+#if defined __GLIBC__ && !__GLIBC_PREREQ(2,34)
+	char *(*sym)(char []);
+#else
 	char *(*sym)(char *);
+#endif
 	char *ret;
 
 	sym = dlsym(RTLD_NEXT, "tmpnam_r");
@@ -32,7 +44,11 @@ char *next_tmpnam_r(char *path)
 	return ret;
 }
 
+#if defined __GLIBC__ && __GLIBC_PREREQ(2,34)
+char *tmpnam_r(char path[L_tmpnam])
+#else
 char *tmpnam_r(char *path)
+#endif
 {
 	char buf[PATH_MAX];
 	char *real_path;

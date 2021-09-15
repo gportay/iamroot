@@ -21,6 +21,6 @@ libiamroot-musl.so: libiamroot.so
 
 .PHONY: musl-clean
 musl-clean:
-	rm -f libiamroot-musl.so
+	rm -f libiamroot-musl.so *.o
 
 include Makefile

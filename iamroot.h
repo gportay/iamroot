@@ -45,6 +45,18 @@ static inline const char *__libc()
 #endif
 }
 
+static inline const char *__arch()
+{
+#if defined(__aarch64__)
+	return "aarch64";
+#elif defined(__x86_64__)
+	return "x86_64";
+#else
+	return "unknown";
+#endif
+}
+
+
 int fissymlinkat(int, const char *, int);
 int fissymlink(int);
 int issymlink(const char *);

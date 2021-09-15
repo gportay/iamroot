@@ -73,7 +73,50 @@ alpine-test: IAMROOT_LIB_MUSL_X86_64 = $(CURDIR)/libiamroot-musl-x86_64.so
 alpine-test: libiamroot-musl-x86_64.so | alpine-minirootfs
 	$(MAKE) -f Makefile $@
 	bash iamroot-shell -c "chroot alpine-minirootfs /lib/ld-musl-x86_64.so.1 --preload "$(IAMROOT_LIB_MUSL_X86_64)" bin/busybox"
+endif
 
+ifneq ($(shell command -v aarch64-linux-gnu-gcc),)
+all: libiamroot-linux-aarch64.so
+
+rootfs: | libiamroot-linux-aarch64.so
+
+.PRECIOUS: libiamroot-musl-aarch64.so
+libiamroot-linux-aarch64.so: libiamroot-linux-aarch64.so.1
+	ln -sf $< $@
+
+libiamroot-linux-aarch64.so.1:
+libiamroot-linux-aarch64.so.1: export CC = aarch64-linux-gnu-gcc
+
+install: install-exec-linux-aarch64
+
+.PHONY: install-exec-linux-aarch64
+install-exec-linux-aarch64:
+	install -D -m 755 libiamroot-linux-aarch64.so.1 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-aarch64.so.1
+	ln -sf libiamroot-linux-aarch64.so.1 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-aarch64.so
+
+uninstall: uninstall-exec-linux-aarch64
+
+.PHONY: uninstall-exec-linux-aarch64
+uninstall-exec-linux-aarch64:
+	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-aarch64.so.1
+	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-aarch64.so
+
+all rootfs aarch64-arch-rootfs aarch64-arch-chroot: IAMROOT_LIB_LINUX_AARCH64 = $(CURDIR)/libiamroot-linux-aarch64.so
+all rootfs aarch64-arch-rootfs aarch64-arch-chroot: libiamroot-linux-aarch64.so
+
+.PHONY: aarch64-arch-chroot
+aarch64-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-arch-rootfs
+aarch64-arch-chroot: | aarch64-arch-rootfs
+	bash iamroot-shell -c "chroot aarch64-arch-rootfs"
+
+.PHONY: aarch64-arch-rootfs
+aarch64-arch-rootfs: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-arch-rootfs
+aarch64-arch-rootfs: | aarch64-arch-rootfs/etc/machine-id
+
+aarch64-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-arch-rootfs
+aarch64-arch-rootfs/etc/machine-id: | libiamroot-linux-aarch64.so libiamroot.so
+	mkdir -p aarch64-arch-rootfs
+	bash iamroot-shell -c "pacstrap -C support/aarch64-pacman.conf aarch64-arch-rootfs"
 endif
 
 all: | libiamroot-linux-x86-64.so.2

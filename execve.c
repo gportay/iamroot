@@ -411,8 +411,8 @@ static void verbose_exec(const char *path, char * const argv[],
 	} else {
 		char * const *p;
 
-		dprintf(STDERR_FILENO, "Debug: %s: pid: %i: execve(path: '%s', argv: {",
-			__libc(), getpid(), path);
+		dprintf(STDERR_FILENO, "Debug: %s: %s: pid: %i: execve(path: '%s', argv: {",
+			__libc(), __arch(), getpid(), path);
 		p = argv;
 		while (*p)
 			dprintf(STDERR_FILENO, " '%s',", *p++);
@@ -561,6 +561,50 @@ static char *__ld_library_path_interp()
 
 	return getenv("LD_LIBRARY_PATH_INTERP");
 }
+
+static char *__getlib_linux_aarch64()
+{
+	char *ret;
+
+	ret = getenv("IAMROOT_LIB_LINUX_AARCH64");
+	if (!ret)
+		return "/usr/lib/iamroot/libiamroot-linux-aarch64.so.1";
+
+	return ret;
+}
+
+static char *__getld_preload_linux_aarch64()
+{
+	char *ret;
+
+	ret = getenv("IAMROOT_LD_PRELOAD_LINUX_AARCH64");
+	if (!ret)
+		return "/usr/lib/libc.so.6:/usr/lib/libdl.so.2";
+
+	return ret;
+}
+
+static char *__ld_preload_linux_aarch64()
+{
+	int ret;
+
+	ret = pathsetenv(getrootdir(), "LD_PRELOAD_LINUX_AARCH64",
+			 __getld_preload_linux_aarch64(), 1);
+	if (ret) {
+		perror("pathsetenv");
+		return NULL;
+	}
+
+	ret = pathprependenv("LD_PRELOAD_LINUX_AARCH64",
+			     __getlib_linux_aarch64(), 1);
+	if (ret) {
+		perror("pathprependenv");
+		return NULL;
+	}
+
+	return getenv("LD_PRELOAD_LINUX_AARCH64");
+}
+
 
 static char *__getexec()
 {
@@ -849,6 +893,93 @@ loader:
 		 */
 		interparg[i++] = "--preload";
 		interparg[i++] = __ld_preload_linux_x86_64();
+
+		/* Add --library-path (chroot) */
+		interparg[i++] = "--library-path";
+		interparg[i++] = __ld_library_path_interp();
+
+		/* Add --argv0 and original argv0 */
+		if (has_argv0) {
+			interparg[i++] = "--argv0";
+			interparg[i++] = interpargv0;
+		}
+
+		/* Add path to binary (in chroot, first positional argument) */
+		interparg[i++] = interppath;
+
+		/*
+		 * Strip libiamroot.so from LD_PRELOAD
+		 *
+		 * TODO: Remove *real* libiamroot.so. It is assumed for now the
+		 * library is at the first place.
+		 */
+		ld_preload = getenv("LD_PRELOAD");
+		if (ld_preload) {
+			char *n, *s = ld_preload;
+
+			n = strchr(s, ':');
+			if (n)
+				n++;
+
+			ld_preload = n;
+			if (ld_preload && *ld_preload)
+				setenv("LD_PRELOAD", ld_preload, 1);
+			else
+				unsetenv("LD_PRELOAD");
+		}
+
+		extern char **__environ;
+		envp = __environ;
+	} else if (strcmp(loader, "/lib/ld-linux-aarch64.so.1") == 0) {
+		int has_argv0, shift = 5;
+
+		has_argv0 = __ld_linux_has_argv0_option(loader);
+		if (has_argv0 == -1) {
+			__pathperror(loader, "__ld_linux_has_argv0_option");
+			return -1;
+		}
+
+		real_path = path_resolution(loader, loaderbuf,
+					    sizeof(loaderbuf),
+					    AT_SYMLINK_FOLLOW);
+		if (!real_path) {
+			__pathperror(loader, "path_resolution");
+			return -1;
+		}
+
+		/*
+		 * Shift enough room in interparg to prepend:
+		 *   - the path to the interpreter (i.e. the absolute path in
+		 *     host, including the chroot; argv0)
+		 *   - the option --ld-preload and its argument (i.e. the path
+		 *     in host environment to the interpreter's libiamroot.so,
+		 *     and the path in chroot environment to the interpreter's
+		 *     libc.so and libdl.so)
+		 *   - the option --library-path and its argument (i.e. the
+		 *     path in chroot environment to the libraries)
+		 *   - the option --argv0 and its argument (i.e. the original
+		 *     path in host to the binary).
+		 *   - the path to the binary (i.e. the full path in chroot,
+		 *     *not* including chroot; first positional argument)
+		 * Note: the binary's arguments are the original argv shifted
+		 *       by one (i.e. without argv0; following arguments).
+		 */
+		if (has_argv0)
+			shift += 2;
+		for (j = 0; j < i; j++)
+			interparg[j+shift] = interparg[j];
+
+		/* Add path to interpreter (host, argv0) */
+		i = 0;
+		interparg[i++] = real_path;
+
+		/*
+		 * Add --preload and interpreter's libraries:
+		 *  - libiamroot.so (from host)
+		 *  - libc.so and libdl.so (from chroot)
+		 */
+		interparg[i++] = "--preload";
+		interparg[i++] = __ld_preload_linux_aarch64();
 
 		/* Add --library-path (chroot) */
 		interparg[i++] = "--library-path";

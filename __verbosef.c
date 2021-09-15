@@ -108,7 +108,8 @@ static int __vdverbosef(int fd, int lvl, const char *func, const char *fmt,
 	ret = dprintf(fd, "%s: ", lvl == 0 ? "Warning" : "Debug");
 
 	if (debug > 2)
-		ret += dprintf(fd, "%s: pid: %u: ", __libc(), getpid());
+		ret += dprintf(fd, "%s: %s: pid: %u: ", __libc(), __arch(),
+			       getpid());
 
 	ret += vdprintf(fd, fmt, ap);
 	return ret;

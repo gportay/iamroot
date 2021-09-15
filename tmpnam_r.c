@@ -16,7 +16,7 @@ extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,
 __attribute__((visibility("hidden")))
 char *next_tmpnam_r(char *path)
 {
-	char *(*sym)(const char *);
+	char *(*sym)(char *);
 
 	sym = dlsym(RTLD_NEXT, "tmpnam_r");
 	if (!sym) {

@@ -326,7 +326,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 
 	/* Run exec.sh script */
 	if (ignore(path))
-		goto exec;
+		goto exec_sh;
 
 	/*
 	 * Follows symlink as the subsequent calls to issuid(), getinterp() and
@@ -354,7 +354,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	if (ret == -1)
 		return -1;
 	else if (ret)
-		goto exec;
+		goto exec_sh;
 
 	/* Do not proceed to any hack if not in chroot */
 	if (strcmp(getrootdir(), "/") == 0)
@@ -439,17 +439,17 @@ loader:
 	if (siz == -1) {
 		/* Not an ELF linked program */
 		if (errno == ENOEXEC)
-			goto exec;
+			goto exec_sh;
 
 		perror("getinterp");
 		return -1;
 	} else if (siz == 0) {
-		goto exec;
+		goto exec_sh;
 	}
 
 	return interpexecve(real_path, interparg, argv, envp);
 
-exec:
+exec_sh:
 	real_path = strncpy(buf, getenv("SHELL") ?: "/bin/bash", sizeof(buf)-1);
 	interparg[0] = (char *)path;
 	interparg[1] = getenv("IAMROOT_EXEC") ?: "/usr/lib/iamroot/exec.sh";

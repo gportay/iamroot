@@ -22,6 +22,7 @@ QEMU += -serial mon:stdio
 .PHONY: all
 all: libiamroot.so
 
+libiamroot.so: __fprintf.o
 libiamroot.so: __fstat.o
 libiamroot.so: __fstat64.o
 libiamroot.so: __fxstat.o
@@ -39,14 +40,13 @@ libiamroot.so: __openat64_2.o
 libiamroot.so: __openat_2.o
 libiamroot.so: __opendir.o
 libiamroot.so: __opendirat.o
+libiamroot.so: __printf.o
 libiamroot.so: __statfs.o
 libiamroot.so: __statfs64.o
 libiamroot.so: __xmknod.o
 libiamroot.so: __xmknodat.o
 libiamroot.so: __xstat.o
 libiamroot.so: __xstat64.o
-libiamroot.so: __fprintf.o
-libiamroot.so: __printf.o
 libiamroot.so: access.o
 libiamroot.so: canonicalize_file_name.o
 libiamroot.so: chdir.o

@@ -417,7 +417,9 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	if (strcmp(basename(real_hashbang), "busybox") == 0)
 		interparg[i++] = hashbang;
 	interparg[i++] = (char *)path;
-	interparg[i++] = (len < (size_t)siz) ? &hashbang[len+1] : NULL;
+	/* Add optional argument */
+	if (len < (size_t)siz)
+		interparg[i++] = &hashbang[len+1];
 	interparg[i++] = NULL;
 
 	real_path = real_hashbang;

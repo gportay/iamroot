@@ -562,6 +562,17 @@ static char *__ld_library_path_interp()
 	return getenv("LD_LIBRARY_PATH_INTERP");
 }
 
+static char *__getlib_musl_aarch64()
+{
+	char *ret;
+
+	ret = getenv("IAMROOT_LIB_MUSL_AARCH64");
+	if (!ret)
+		return "/usr/lib/iamroot/libiamroot-musl-aarch64.so.1";
+
+	return ret;
+}
+
 static char *__getlib_linux_aarch64()
 {
 	char *ret;
@@ -927,6 +938,75 @@ loader:
 			else
 				unsetenv("LD_PRELOAD");
 		}
+
+		extern char **__environ;
+		envp = __environ;
+	} else if (strcmp(loader, "/lib/ld-musl-aarch64.so.1") == 0) {
+		real_path = path_resolution(loader, loaderbuf,
+					    sizeof(loaderbuf),
+					    AT_SYMLINK_FOLLOW);
+		if (!real_path) {
+			__pathperror(loader, "path_resolution");
+			return -1;
+		}
+
+		/*
+		 * Shift enough interparg to prepend:
+		 *   - the path to the interpreter (i.e. the full path in host,
+		 *     including the chroot; argv0)
+		 *   - the option --ld-preload and its argument (i.e. the path
+		 *     in host to the interpreter's libiamroot.so to preload)
+		 *   - the option --library-path and its argument (i.e. the
+		 *     path in chroot environment to the libraries)
+		 *   - the option --argv0 and its argument (i.e. the original
+		 *     path in host to the binary).
+		 *   - the path to the binary (i.e. the full path in chroot,
+		 *     *not* including chroot; first positional argument)
+		 * Note: the binary's arguments are the original argv shifted
+		 *       by one (i.e. without argv0; following arguments).
+		 */
+		for (j = 0; j < i; j++)
+			interparg[j+7] = interparg[j];
+
+		/* Add path to interpreter (host, argv0) */
+		i = 0;
+		interparg[i++] = real_path;
+
+		/*
+		 * Strip libiamroot.so from LD_PRELOAD
+		 *
+		 * TODO: Remove *real* libiamroot.so. It is assumed for now the
+		 * library is at the first place.
+		 */
+		ld_preload = getenv("LD_PRELOAD");
+		if (ld_preload) {
+			char *n, *s = ld_preload;
+
+			n = strchr(s, ':');
+			if (n)
+				n++;
+
+			ld_preload = n;
+			if (ld_preload && *ld_preload)
+				setenv("LD_PRELOAD", ld_preload, 1);
+			else
+				unsetenv("LD_PRELOAD");
+		}
+
+		/* Add --preload and interpreter's library (host) */
+		interparg[i++] = "--preload";
+		interparg[i++] = __getlib_musl_aarch64();
+
+		/* Add --library-path (chroot) */
+		interparg[i++] = "--library-path";
+		interparg[i++] = __ld_library_path_interp();
+
+		/* Add --argv0 and original argv0 */
+		interparg[i++] = "--argv0";
+		interparg[i++] = interpargv0;
+
+		/* Add path to binary (in chroot, first positional argument) */
+		interparg[i++] = interppath;
 
 		extern char **__environ;
 		envp = __environ;

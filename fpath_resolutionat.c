@@ -46,7 +46,7 @@ __attribute__((constructor))
 void path_resolution_init()
 {
 	const char *library_musl_x86_64, *library_linux_x86_64,
-		   *library_linux_aarch64;
+		   *library_musl_aarch64, *library_linux_aarch64;
 	const char *ignore, *library, *exec;
 	static regex_t regex;
 #ifndef JIMREGEXP_H
@@ -74,6 +74,10 @@ void path_resolution_init()
 	if (!library_linux_x86_64)
 		library_linux_x86_64 = "^/usr/lib/iamroot/ld-linux-x86-64.so.2$";
 
+	library_musl_aarch64 = getenv("IAMROOT_LIB_MUSL_AARCH64");
+	if (!library_musl_aarch64)
+		library_musl_aarch64 = "^/usr/lib/iamroot/libiamroot-musl-aarch64.so.1$";
+
 	library_linux_aarch64 = getenv("IAMROOT_LIB_LINUX_AARCH64");
 	if (!library_linux_aarch64)
 		library_linux_aarch64 = "^/usr/lib/iamroot/libiamroot-linux-aarch64.so.1$";
@@ -82,9 +86,9 @@ void path_resolution_init()
 	if (!exec)
 		exec = "^/usr/lib/iamroot/exec.sh$";
 
-	snprintf(buf, sizeof(buf)-1, "%s|%s|%s|%s|%s|%s", ignore, library,
+	snprintf(buf, sizeof(buf)-1, "%s|%s|%s|%s|%s|%s|%s", ignore, library,
 		 library_musl_x86_64, library_linux_x86_64,
-		 library_linux_aarch64, exec);
+		 library_musl_aarch64, library_linux_aarch64, exec);
 
 	ret = regcomp(&regex, buf, REG_NOSUB|REG_EXTENDED);
 	if (ret) {
@@ -92,7 +96,7 @@ void path_resolution_init()
 		return;
 	}
 
-	__info("IAMROOT_PATH_RESOLUTION_IGNORE|IAMROOT_LIB|IAMROOT_LIB_MUSL_X86_64|IAMROOT_LIB_LINUX_X86_64|IAMROOT_LIB_LINUX_AARCH64|IAMROOT_EXEC=%s\n",
+	__info("IAMROOT_PATH_RESOLUTION_IGNORE|IAMROOT_LIB|IAMROOT_LIB_MUSL_X86_64|IAMROOT_LIB_LINUX_X86_64|IAMROOT_LIB_MUSL_AARCH64|IAMROOT_LIB_LINUX_AARCH64|IAMROOT_EXEC=%s\n",
 	       buf);
 
 	re = &regex;

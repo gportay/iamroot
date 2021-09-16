@@ -119,6 +119,49 @@ aarch64-arch-rootfs/etc/machine-id: | libiamroot-linux-aarch64.so libiamroot.so
 	bash iamroot-shell -c "pacstrap -C support/aarch64-pacman.conf aarch64-arch-rootfs"
 endif
 
+ifneq ($(shell command -v aarch64-linux-musl-gcc),)
+all: libiamroot-musl-aarch64.so
+
+.PRECIOUS: libiamroot-musl-aarch64.so
+libiamroot-musl-aarch64.so: libiamroot-musl-aarch64.so.1
+	ln -sf $< $@
+
+libiamroot-musl-aarch64.so.1:
+libiamroot-musl-aarch64.so.1: export CC = aarch64-linux-musl-gcc
+
+install: install-exec-musl-aarch64
+
+.PHONY: install-exec-musl-aarch64
+install-exec-musl-aarch64:
+	install -D -m 755 libiamroot-musl-aarch64.so.1 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-musl-aarch64.so.1
+	ln -sf libiamroot-musl-aarch64.so.1 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-musl-aarch64.so
+
+uninstall: uninstall-exec-musl-aarch64
+
+.PHONY: uninstall-exec-musl-aarch64
+uninstall-exec-musl-aarch64:
+	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-musl-aarch64.so.1
+	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-musl-aarch64.so
+
+all rootfs aarch64-alpine-minirootfs aarch64-mini-chroot: libiamroot-musl-aarch64.so
+all rootfs aarch64-alpine-minirootfs aarch64-mini-chroot: IAMROOT_LIB_MUSL_AARCH64 = $(CURDIR)/libiamroot-linux-aarch64.so
+
+aarch64-mini-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-mini-rootfs
+aarch64-mini-chroot: | libiamroot-musl-aarch64.so libiamroot.so aarch64-alpine-minirootfs
+	bash iamroot-shell -c "chroot aarch64-alpine-minirootfs /bin/sh"
+
+.PHONY: aarch64-alpine-minirootfs
+aarch64-alpine-minirootfs: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-alpine-minirootfs
+aarch64-alpine-minirootfs: | aarch64-alpine-minirootfs/bin/busybox
+
+aarch64-alpine-minirootfs/bin/busybox: | alpine-minirootfs-3.13.0-aarch64.tar.gz
+	mkdir -p aarch64-alpine-minirootfs
+	tar xf alpine-minirootfs-3.13.0-aarch64.tar.gz -C aarch64-alpine-minirootfs
+
+alpine-minirootfs-3.13.0-aarch64.tar.gz:
+	wget http://dl-cdn.alpinelinux.org/alpine/v3.13/releases/aarch64/alpine-minirootfs-3.13.0-aarch64.tar.gz
+endif
+
 all: | libiamroot-linux-x86-64.so.2
 
 %-debug %-debug1:

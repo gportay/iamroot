@@ -235,12 +235,18 @@ shell-tests: libiamroot.so | static-rootfs
 	bash iamroot-shell -c "echo \$$IAMROOTLVL" | tee /dev/stderr | grep -q "^[0-9]\+$$"
 
 .PHONY: alpine-tests
+alpine-tests: | alpine-minirootfs/usr/bin/shebang.sh
+alpine-tests: | alpine-minirootfs/usr/bin/shebang-arg.sh
+alpine-tests: | alpine-minirootfs/usr/bin/shebang-busybox.sh
 alpine-tests: libiamroot.so | alpine-minirootfs
 	bash iamroot-shell -c "chroot alpine-minirootfs pwd" | tee /dev/stderr | grep -q "^/\$$"
 	bash iamroot-shell -c "chroot alpine-minirootfs cat /etc/os-release" | tee /dev/stderr | grep 'NAME="Alpine Linux"'
 	bash iamroot-shell --path /bin:/usr/bin:/sbin:/usr/sbin -c "chroot alpine-minirootfs chroot . cat /etc/os-release" | tee /dev/stderr | grep 'NAME="Alpine Linux"'
 	bash iamroot-shell -c "chroot alpine-minirootfs /bin/busybox"
 	bash iamroot-shell -c "chroot alpine-minirootfs /lib/ld-musl-x86_64.so.1 bin/busybox"
+	bash iamroot-shell --path /bin:/usr/bin:/sbin:/usr/sbin -c "chroot alpine-minirootfs shebang.sh one two three"
+	bash iamroot-shell --path /bin:/usr/bin:/sbin:/usr/sbin -c "chroot alpine-minirootfs shebang-arg.sh one two three"
+	bash iamroot-shell --path /bin:/usr/bin:/sbin:/usr/sbin -c "chroot alpine-minirootfs shebang-busybox.sh one two three"
 
 .PHONY: shell
 shell: libiamroot.so
@@ -277,6 +283,9 @@ static-rootfs/bin: | static-rootfs/usr/bin
 
 static-rootfs/usr/bin static-rootfs/root:
 	mkdir -p $@
+
+alpine-minirootfs/usr/bin/%: support/% | alpine-minirootfs
+	cp $< $@
 
 .PHONY: alpine-minirootfs
 alpine-minirootfs: | alpine-minirootfs/bin/busybox

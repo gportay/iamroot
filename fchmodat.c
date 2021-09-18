@@ -45,8 +45,8 @@ int fchmodat(int fd, const char *path, mode_t mode, int flags)
 		return -1;
 	}
 
-	__verbose("%s(fd: %i, path: '%s' -> '%s')\n", __func__, fd, path,
-		  real_path);
+	__verbose("%s(fd: %i, path: '%s' -> '%s', mode: %o)\n", __func__, fd,
+		  path, real_path, mode);
 
 	return next_fchmodat(fd, real_path, mode, flags);
 }

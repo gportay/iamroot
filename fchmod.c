@@ -35,7 +35,7 @@ int next_fchmod(int fd, mode_t mode)
 
 int fchmod(int fd, mode_t mode)
 {
-	__verbose("%s(fd: %i)\n", __func__, fd);
+	__verbose("%s(fd: %i, mode: %o)\n", __func__, fd, mode);
 
 	return next_fchmod(fd, mode);
 }

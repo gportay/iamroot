@@ -44,7 +44,8 @@ int mknod(const char *path, mode_t mode, dev_t dev)
 		return -1;
 	}
 
-	__verbose("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
+	__verbose("%s(path: '%s' -> '%s', mode: %o)\n", __func__, path,
+		  real_path, mode);
 
 	return next_mknod(real_path, mode, dev);
 }

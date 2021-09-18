@@ -45,8 +45,8 @@ int mknodat(int fd, const char *path, mode_t mode, dev_t dev)
 		return -1;
 	}
 
-	__verbose("%s(fd %i, path: '%s' -> '%s')\n", __func__, fd, path,
-		  real_path);
+	__verbose("%s(fd %i, path: '%s' -> '%s', mode: %o)\n", __func__, fd,
+		  path, real_path, mode);
 
 	return next_mknodat(fd, real_path, mode, dev);
 }

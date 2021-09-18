@@ -56,7 +56,8 @@ int __open(const char *path, int flags, ...)
 		va_end(ap);
 	}
 
-	__verbose("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
+	__verbose("%s(path: '%s' -> '%s', flags: %x, mode: %o)\n", __func__,
+		  path, real_path, flags, mode);
 
 	return next___open(real_path, flags, mode);
 }

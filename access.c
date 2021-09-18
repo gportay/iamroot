@@ -44,7 +44,8 @@ int access(const char *path, int mode)
 		return -1;
 	}
 
-	__verbose("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
+	__verbose("%s(path: '%s' -> '%s', mode: %o)\n", __func__, path,
+		  real_path, mode);
 
 	return next_access(real_path, mode);
 }

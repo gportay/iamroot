@@ -332,9 +332,6 @@ clean:
 mrproper: clean
 	rm -f busybox alpine-minirootfs-3.13.0-x86_64.tar.gz
 
-%.o: ../%.c
-	$(COMPILE.c) $(OUTPUT_OPTION) $<
-
 %.so: override LDFLAGS += -shared
 %.so:
 	$(LINK.o) $^ $(LOADLIBES) $(LDLIBS) -o $@

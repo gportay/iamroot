@@ -23,7 +23,7 @@ libiamroot-musl-x86_64.so.1: export LDFLAGS += -nolibc
 
 .PRECIOUS: libiamroot-%.so
 libiamroot-%.so.1 libiamroot-%.so.2: $(wildcard *.c) | output-%
-	$(MAKE) -f $(CURDIR)/Makefile -C output-$* libiamroot.so
+	$(MAKE) -f $(CURDIR)/Makefile -C output-$* libiamroot.so VPATH=$(CURDIR)
 	cp output-$*/libiamroot.so $@
 
 .PRECIOUS: output-%

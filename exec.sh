@@ -46,6 +46,20 @@ passwd|su)
 	echo "Error:" "Command not handled:" "$@" >&2
 	exit 1
 	;;
+busybox)
+	if [[ "${IAMROOT_ROOT:-/}" != / ]]
+	then
+		set -- "$@"
+
+		shift
+		set -- "$IAMROOT_ROOT/bin/busybox" "$@"
+	fi
+
+	unset LD_PRELOAD
+	unset IAMROOT_ROOT
+
+	exec "$@"
+	;;
 *)
 	echo "Warning:" "Command not handled:" "$@" >&2
 	;;

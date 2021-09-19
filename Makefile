@@ -246,6 +246,16 @@ alpine-tests: libiamroot.so | alpine-minirootfs
 	bash iamroot-shell --path /bin:/usr/bin:/sbin:/usr/sbin -c "chroot alpine-minirootfs shebang-arg.sh one two three"
 	bash iamroot-shell --path /bin:/usr/bin:/sbin:/usr/sbin -c "chroot alpine-minirootfs shebang-busybox.sh one two three"
 
+.PHONY: arch-tests 
+arch-tests: | arch-rootfs/usr/bin/shebang.sh
+arch-tests: | arch-rootfs/usr/bin/shebang-arg.sh
+arch-tests: | arch-rootfs/usr/bin/shebang-busybox.sh
+arch-tests: libiamroot.so | arch-rootfs/usr/bin/busybox
+	bash iamroot-shell -c "chroot arch-rootfs /bin/busybox"
+	bash iamroot-shell -c "chroot arch-rootfs shebang.sh one two three"
+	bash iamroot-shell -c "chroot arch-rootfs shebang-arg.sh one two three"
+	bash iamroot-shell -c "chroot arch-rootfs shebang-busybox.sh one two three"
+
 .PHONY: shell
 shell: libiamroot.so
 	bash iamroot-shell
@@ -295,8 +305,14 @@ alpine-minirootfs/bin/busybox: | alpine-minirootfs-3.13.0-x86_64.tar.gz
 alpine-minirootfs-3.13.0-x86_64.tar.gz:
 	wget http://dl-cdn.alpinelinux.org/alpine/v3.13/releases/x86_64/alpine-minirootfs-3.13.0-x86_64.tar.gz
 
+arch-rootfs/usr/bin/%: support/% | arch-rootfs
+	cp $< $@
+
 .PHONY: arch-rootfs
 arch-rootfs: | arch-rootfs/etc/machine-id
+
+arch-rootfs/usr/bin/busybox: libiamroot.so | arch-rootfs/etc/machine-id
+	bash iamroot-shell -c "pacman -r arch-rootfs --noconfirm -S busybox"
 
 arch-rootfs/boot/vmlinuz-linux: libiamroot.so | arch-rootfs/etc/machine-id
 	bash iamroot-shell -c "pacman -r arch-rootfs --noconfirm -S linux"

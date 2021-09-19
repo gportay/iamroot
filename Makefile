@@ -311,13 +311,13 @@ arch-rootfs/usr/bin/%: support/% | arch-rootfs
 .PHONY: arch-rootfs
 arch-rootfs: | arch-rootfs/etc/machine-id
 
-arch-rootfs/usr/bin/busybox: libiamroot.so | arch-rootfs/etc/machine-id
+arch-rootfs/usr/bin/busybox: | libiamroot.so arch-rootfs/etc/machine-id
 	bash iamroot-shell -c "pacman -r arch-rootfs --noconfirm -S busybox"
 
-arch-rootfs/boot/vmlinuz-linux: libiamroot.so | arch-rootfs/etc/machine-id
+arch-rootfs/boot/vmlinuz-linux: | libiamroot.so arch-rootfs/etc/machine-id
 	bash iamroot-shell -c "pacman -r arch-rootfs --noconfirm -S linux"
 
-arch-rootfs/etc/machine-id: libiamroot.so
+arch-rootfs/etc/machine-id: | libiamroot.so
 	mkdir -p arch-rootfs
 	bash iamroot-shell -c "pacstrap arch-rootfs"
 

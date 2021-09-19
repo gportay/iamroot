@@ -246,7 +246,7 @@ alpine-tests: libiamroot.so | alpine-minirootfs
 	bash iamroot-shell --path /bin:/usr/bin:/sbin:/usr/sbin -c "chroot alpine-minirootfs shebang-arg.sh one two three"
 	bash iamroot-shell --path /bin:/usr/bin:/sbin:/usr/sbin -c "chroot alpine-minirootfs shebang-busybox.sh one two three"
 
-.PHONY: arch-tests 
+.PHONY: arch-tests
 arch-tests: | arch-rootfs/usr/bin/shebang.sh
 arch-tests: | arch-rootfs/usr/bin/shebang-arg.sh
 arch-tests: | arch-rootfs/usr/bin/shebang-busybox.sh

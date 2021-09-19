@@ -415,7 +415,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	}
 
 	len = strlen(hashbang);
-	/* 
+	/*
 	 * Handle the busybox case by prepending the hashbang (i.e. the busybox
 	 * applet) and its optional hashbang argument before the executable
 	 * (path)

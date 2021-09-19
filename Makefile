@@ -198,7 +198,7 @@ user-%:
 	$(MAKE) $* PREFIX=$$HOME/.local BASHCOMPLETIONSDIR=$$HOME/.local/share/bash-completion/completions
 
 .PHONY: ci
-ci: check tests
+ci: check test
 
 .PHONY: run-qemu
 run-qemu: override QEMUFLAGS += -append "console=ttyS0 root=host0 rootfstype=9p rootflags=trans=virtio debug"
@@ -212,30 +212,30 @@ run-qemu: | arch-rootfs/boot/vmlinuz-linux
 check:
 	shellcheck iamroot-shell
 
-.PHONY: tests
-tests: shell-tests
-tests: static-tests
-tests: | libiamroot.so alpine-minirootfs
+.PHONY: test
+test: shell-test
+test: static-test
+test: | libiamroot.so alpine-minirootfs
 	$(MAKE) -C tests
 	$(MAKE) -C tests $@ LD_PRELOAD=$(CURDIR)/libiamroot.so IAMROOT_LIB=$(CURDIR)/libiamroot.so ALPINE_MINIROOTFS=$(CURDIR)/alpine-minirootfs
 
-.PHONY: static-tests
-static-tests: SHELL = /bin/bash
-static-tests: libiamroot.so | static-rootfs
+.PHONY: static-test
+static-test: SHELL = /bin/bash
+static-test: libiamroot.so | static-rootfs
 	bash iamroot-shell -c "whoami | tee /dev/stderr | grep -q \"^root\$$\""
 	bash iamroot-shell -c "IAMROOT_GETEUID=$$EUID whoami | tee /dev/stderr | grep -q \"^$$USER\$$\""
 
-.PHONY: shell-tests
-shell-tests: libiamroot.so | static-rootfs
+.PHONY: shell-test
+shell-test: libiamroot.so | static-rootfs
 	bash iamroot-shell -c "whoami" | tee /dev/stderr | grep -q "^root\$$"
 	bash iamroot-shell -c "stat --print '%u:%g\n' ." | tee /dev/stderr | grep -q "^0:0$$"
 	bash iamroot-shell -c "echo \$$IAMROOTLVL" | tee /dev/stderr | grep -q "^[0-9]\+$$"
 
-.PHONY: alpine-tests
-alpine-tests: | alpine-minirootfs/usr/bin/shebang.sh
-alpine-tests: | alpine-minirootfs/usr/bin/shebang-arg.sh
-alpine-tests: | alpine-minirootfs/usr/bin/shebang-busybox.sh
-alpine-tests: libiamroot.so | alpine-minirootfs
+.PHONY: alpine-test
+alpine-test: | alpine-minirootfs/usr/bin/shebang.sh
+alpine-test: | alpine-minirootfs/usr/bin/shebang-arg.sh
+alpine-test: | alpine-minirootfs/usr/bin/shebang-busybox.sh
+alpine-test: libiamroot.so | alpine-minirootfs
 	bash iamroot-shell -c "chroot alpine-minirootfs pwd" | tee /dev/stderr | grep -q "^/\$$"
 	bash iamroot-shell -c "chroot alpine-minirootfs cat /etc/os-release" | tee /dev/stderr | grep 'NAME="Alpine Linux"'
 	bash iamroot-shell --path /bin:/usr/bin:/sbin:/usr/sbin -c "chroot alpine-minirootfs chroot . cat /etc/os-release" | tee /dev/stderr | grep 'NAME="Alpine Linux"'
@@ -245,11 +245,11 @@ alpine-tests: libiamroot.so | alpine-minirootfs
 	bash iamroot-shell --path /bin:/usr/bin:/sbin:/usr/sbin -c "chroot alpine-minirootfs shebang-arg.sh one two three"
 	bash iamroot-shell --path /bin:/usr/bin:/sbin:/usr/sbin -c "chroot alpine-minirootfs shebang-busybox.sh one two three"
 
-.PHONY: arch-tests
-arch-tests: | arch-rootfs/usr/bin/shebang.sh
-arch-tests: | arch-rootfs/usr/bin/shebang-arg.sh
-arch-tests: | arch-rootfs/usr/bin/shebang-busybox.sh
-arch-tests: libiamroot.so | arch-rootfs/usr/bin/busybox
+.PHONY: arch-test
+arch-test: | arch-rootfs/usr/bin/shebang.sh
+arch-test: | arch-rootfs/usr/bin/shebang-arg.sh
+arch-test: | arch-rootfs/usr/bin/shebang-busybox.sh
+arch-test: libiamroot.so | arch-rootfs/usr/bin/busybox
 	bash iamroot-shell -c "chroot arch-rootfs /bin/busybox"
 	bash iamroot-shell -c "chroot arch-rootfs shebang.sh one two three"
 	bash iamroot-shell -c "chroot arch-rootfs shebang-arg.sh one two three"

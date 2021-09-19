@@ -32,11 +32,11 @@ output-%:
 
 alpine-rootfs/bin/busybox: libiamroot-musl-x86_64.so.1
 
-alpine-tests: libiamroot-musl-x86_64.so.1
+alpine-test: libiamroot-musl-x86_64.so.1
 
-tests: alpine-tests
+test: alpine-test
 
-ci: alpine-tests
+ci: alpine-test
 ci: libiamroot-musl-x86_64.so.1
 
 .PHONY: clean

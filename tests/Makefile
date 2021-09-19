@@ -55,11 +55,11 @@ libiamnotroot.so: iamnotroot.o
 path_resolution: libiamnotroot.so
 path_resolution: override LDLIBS += libiamnotroot.so
 
-.PHONY: tests
-tests: PATH := $(CURDIR):$(PATH)
-tests: export LD_LIBRARY_PATH := $(CURDIR):$(LD_LIBRARY_PATH)
-tests: ALPINE_MINIROOTFS ?= .
-tests:
+.PHONY: test
+test: PATH := $(CURDIR):$(PATH)
+test: export LD_LIBRARY_PATH := $(CURDIR):$(LD_LIBRARY_PATH)
+test: ALPINE_MINIROOTFS ?= .
+test:
 	rm -Rf proc sys tmp dev* file* symlink[0-9] link[0-9]*
 	touch file
 	ln -s file symlink0

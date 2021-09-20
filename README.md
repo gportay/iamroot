@@ -24,10 +24,10 @@ jail" and in [fpath_resolutionat.c](fpath_resolutionat.c) for resolving
 pathnames.
 
 iamroot aims to provide an alternative to [fakechroot(1)], which does great but
-does not run well for creating rootfs with [pacstrap(8)]. Its existing world
-would likely break if it is hacked to address the rootfs-creation related
-issues (i.e. fixing entering-exiting chroot and absolute symlink resolution in
-short).
+does not run well for creating rootfs with [pacstrap(8)] (Arch Linux) or
+[alpine-make-rootfs] (Alpine Linux). Its existing world would likely break if
+it is hacked to address the rootfs-creation related issues (i.e. fixing
+entering-exiting chroot and absolute symlink resolution in short).
 
 Of course, iamroot cannot substitute to the superuser permissions, and commands
 will end with `EACCESS` or `EPERM` as of reading or writing files in `/proc`,
@@ -57,6 +57,7 @@ later version.
 [iamroot(7)], [iamroot-shell(1)], [chroot(2)], [path_resolution(7)],
 [fakechroot(1)]
 
+[alpine-make-rootfs]: https://github.com/alpinelinux/alpine-make-rootfs/blob/master/README.adoc
 [chdir(2)]: https://linux.die.net/man/2/chdir
 [chown(2)]: https://linux.die.net/man/2/chown
 [chroot(2)]: https://linux.die.net/man/2/chroot

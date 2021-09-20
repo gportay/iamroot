@@ -189,6 +189,43 @@ Change root directory via *arch-chroot(8)*
 	[root@archlinux /]# ls -l /proc/self/root
 	lrwxrwxrwx 1 root root 0 Mar 24 21:14 /proc/self/root -> /home/gportay/rootfs
 
+Create a new Alpine Linux system installation from scratch via *alpine-make-rootfs*
+
+	[gportay@archlinux ~]$ iamroot-shell -c "alpine-make-rootfs alpine-rootfs --mirror-uri http://nl.alpinelinux.org/alpine --branch latest-stable" && echo done
+	
+	> Installing system
+	fetch http://nl.alpinelinux.org/alpine/latest-stable/main/x86_64/APKINDEX.tar.gz
+	fetch http://nl.alpinelinux.org/alpine/latest-stable/community/x86_64/APKINDEX.tar.gz
+	(1/6) Installing musl (1.2.2-r3)
+	(2/6) Installing busybox (1.33.1-r3)
+	Executing busybox-1.33.1-r3.post-install
+	(3/6) Installing alpine-baselayout (3.2.0-r16)
+	Executing alpine-baselayout-3.2.0-r16.pre-install
+	Executing alpine-baselayout-3.2.0-r16.post-install
+	chown: unknown user/group root:shadow
+	(4/6) Installing busybox-suid (1.33.1-r3)
+	(5/6) Installing scanelf (1.3.2-r0)
+	(6/6) Installing musl-utils (1.2.2-r3)
+	Executing busybox-1.33.1-r3.trigger
+	OK: 2 MiB in 6 packages
+	tar: Ignoring unknown extended header keyword 'APK-TOOLS.checksum.SHA1'
+	tar: Ignoring unknown extended header keyword 'APK-TOOLS.checksum.SHA1'
+	tar: Ignoring unknown extended header keyword 'APK-TOOLS.checksum.SHA1'
+	
+	> Cleaning-up rootfs
+	done
+
+Change root directory via *chroot(8)*
+
+	[gportay@archlinux ~]$ iamroot-shell
+	[root@archlinux ~]# chroot alpine-rootfs /bin/ash
+	lrwxrwxrwx 1 root root 0 Mar 24 21:14 /proc/self/root -> /home/gportay/rootfs
+	[root@archlinux iamroot-multi-arch]# chroot alpine-rootfs /bin/sh
+	/ # ls -l /proc/self/cwd
+	lrwxrwxrwx    1 root     root             0 Sep 20 12:35 /proc/self/cwd -> /
+	/ # ls -l /proc/self/root
+	lrwxrwxrwx    1 root     root             0 Sep 20 12:35 /proc/self/root -> /home/gportay/src/iamroot-multi-arch/alpine-rootfs
+
 == BUGS
 
 Report bugs at *https://github.com/gportay/iamroot/issues*

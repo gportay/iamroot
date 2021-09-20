@@ -132,6 +132,7 @@ libiamroot.so: openat.o
 libiamroot.so: openat64.o
 libiamroot.so: opendir.o
 libiamroot.so: opendir64.o
+libiamroot.so: passwd.o
 libiamroot.so: path_resolution.o
 libiamroot.so: posix_spawn.o
 libiamroot.so: posix_spawnp.o

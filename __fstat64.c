@@ -11,7 +11,6 @@
 
 #include <sys/stat.h>
 
-extern char *fpath_resolutionat(int, const char *, char *, size_t, int);
 #ifdef __GLIBC__
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 extern int __rootfstat64(int, struct stat64 *);

@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-2.1
 #
 
-VERSION = 1
+VERSION = 2
 PREFIX ?= /usr/local
 
 override CFLAGS += -fPIC -Wall -Wextra -Werror

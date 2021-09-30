@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [unreleased]
+
 ## [v2] - 2021-10-01
 
 ### Added
@@ -39,5 +41,6 @@ Initial release.
 [passwd(1)]: https://linux.die.net/man/1/passwd
 [su(1)]: https://linux.die.net/man/1/su
 [systemd-sysusers(8)]: https://www.freedesktop.org/software/systemd/man/systemd-sysusers.html
+[unreleased]: https://github.com/gportay/iamroot/compare/v2...master
 [v1]: https://github.com/gportay/iamroot/releases/tag/v1
 [v2]: https://github.com/gportay/iamroot/compare/v1...v2

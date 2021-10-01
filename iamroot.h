@@ -14,17 +14,17 @@ extern "C" {
 #define __strlcmp(s1, s2) strncmp(s1, s2, strlen(s2))
 #define __strncmp(s1, s2) strncmp(s1, s2, sizeof(s2)-1)
 
-extern char *sanitize(char *, size_t);
-extern char *path_resolution(const char *, char *, size_t, int);
-extern char *fpath_resolutionat(int, const char *, char *, size_t, int);
+char *sanitize(char *, size_t);
+char *path_resolution(const char *, char *, size_t, int);
+char *fpath_resolutionat(int, const char *, char *, size_t, int);
 
-extern void __procfdname(char *, unsigned);
+void __procfdname(char *, unsigned);
 
-extern const char *getrootdir();
-extern int chrootdir(const char *);
-extern int inchroot();
+const char *getrootdir();
+int chrootdir(const char *);
+int inchroot();
 
-extern int __fprintf(FILE *f, const char *fmt, ...) __attribute__ ((format(printf,2,3)));
+int __fprintf(FILE *f, const char *fmt, ...) __attribute__ ((format(printf,2,3)));
 
 #define __verbose(fmt, ...) __fprintf(stderr, fmt, __VA_ARGS__)
 

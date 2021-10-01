@@ -9,7 +9,7 @@
 
 #include <stdio.h>
 
-extern int inchroot();
+#include "iamroot.h"
 
 int __vfprintf(FILE *f, const char *fmt, va_list ap)
 {

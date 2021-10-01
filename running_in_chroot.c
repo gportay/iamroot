@@ -11,8 +11,6 @@
 
 #include "iamroot.h"
 
-extern int inchroot();
-
 __attribute__((visibility("hidden")))
 int next_running_in_chroot(void)
 {

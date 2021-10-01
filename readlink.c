@@ -15,8 +15,6 @@
 
 #include "iamroot.h"
 
-#define __strlcmp(s1, s2) strncmp(s1, s2, strlen(s2))
-
 __attribute__((visibility("hidden")))
 ssize_t next_readlink(const char *path, char *buf, size_t bufsize)
 {

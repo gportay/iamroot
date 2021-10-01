@@ -24,7 +24,6 @@
 
 #include "iamroot.h"
 
-#define __strncmp(s1, s2) strncmp(s1, s2, sizeof(s2)-1)
 /* See https://www.in-ulm.de/~mascheck/various/shebang/#results */
 #define HASHBANG_MAX NAME_MAX
 extern int next_open(const char *, int, mode_t);

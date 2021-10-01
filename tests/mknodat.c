@@ -14,7 +14,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#define __strncmp(s1, s2) strncmp(s1, s2, sizeof(s2)-1)
+#include "iamroot.h"
 
 int main(int argc, char * const argv[])
 {

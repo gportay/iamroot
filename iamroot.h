@@ -11,6 +11,9 @@
 extern "C" {
 #endif
 
+#define __strlcmp(s1, s2) strncmp(s1, s2, strlen(s2))
+#define __strncmp(s1, s2) strncmp(s1, s2, sizeof(s2)-1)
+
 extern char *sanitize(char *, size_t);
 extern char *path_resolution(const char *, char *, size_t, int);
 extern char *fpath_resolutionat(int, const char *, char *, size_t, int);

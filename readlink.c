@@ -17,8 +17,6 @@
 
 #define __strlcmp(s1, s2) strncmp(s1, s2, strlen(s2))
 
-extern const char *getrootdir();
-
 __attribute__((visibility("hidden")))
 ssize_t next_readlink(const char *path, char *buf, size_t bufsize)
 {

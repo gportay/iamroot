@@ -13,8 +13,6 @@
 
 #include "iamroot.h"
 
-extern const char *getrootdir();
-
 __attribute__((visibility("hidden")))
 char *next_getcwd(char *buf, size_t size)
 {

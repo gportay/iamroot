@@ -14,8 +14,6 @@
 
 #include "iamroot.h"
 
-extern const char *getrootdir();
-
 __attribute__((visibility("hidden")))
 char *next_getwd(char *buf)
 {

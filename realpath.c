@@ -21,7 +21,6 @@
 #define getcwd next_getcwd
 #define __strlcmp(s1, s2) strncmp(s1, s2, strlen(s2))
 
-extern const char *getrootdir();
 extern ssize_t next_readlink(const char *, char *, size_t);
 extern char *next_getcwd(char *, size_t);
 

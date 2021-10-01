@@ -16,8 +16,6 @@
 
 #define __strchrnul strchrnul
 
-extern const char *getrootdir();
-
 static int __execve(const char *path, char * const argv[], char * const envp[])
 {
 	const char *root;

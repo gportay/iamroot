@@ -14,8 +14,6 @@
 
 #include "iamroot.h"
 
-extern char *fpath_resolutionat(int, const char *, char *, size_t, int);
-
 __attribute__((visibility("hidden")))
 int next_linkat(int oldfd, const char *oldpath, int newfd, const char *newpath,
 		int flags)

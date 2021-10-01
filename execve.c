@@ -24,7 +24,6 @@
 
 #include "iamroot.h"
 
-extern char *path_resolution(const char *, char *, size_t, int);
 #define __strncmp(s1, s2) strncmp(s1, s2, sizeof(s2)-1)
 /* See https://www.in-ulm.de/~mascheck/various/shebang/#results */
 #define HASHBANG_MAX NAME_MAX

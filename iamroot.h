@@ -11,6 +11,9 @@
 extern "C" {
 #endif
 
+extern char *path_resolution(const char *, char *, size_t, int);
+extern char *fpath_resolutionat(int, const char *, char *, size_t, int);
+
 extern int __fprintf(FILE *f, const char *fmt, ...) __attribute__ ((format(printf,2,3)));
 
 #define __verbose(fmt, ...) __fprintf(stderr, fmt, __VA_ARGS__)

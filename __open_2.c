@@ -15,7 +15,6 @@
 
 #include "iamroot.h"
 
-extern char *path_resolution(const char *, char *, size_t, int);
 #ifdef __GLIBC__
 
 __attribute__((visibility("hidden")))

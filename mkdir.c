@@ -14,8 +14,6 @@
 
 #include "iamroot.h"
 
-extern char *path_resolution(const char *, char *, size_t, int);
-
 __attribute__((visibility("hidden")))
 int next_mkdir(const char *path, mode_t mode)
 {

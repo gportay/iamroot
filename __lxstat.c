@@ -14,7 +14,6 @@
 
 #include "iamroot.h"
 
-extern char *path_resolution(const char *, char *, size_t, int);
 extern int __rootlxstat(int, const char *, struct stat *);
 
 __attribute__((visibility("hidden")))

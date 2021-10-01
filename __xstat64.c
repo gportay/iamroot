@@ -14,7 +14,6 @@
 
 #include "iamroot.h"
 
-extern char *path_resolution(const char *, char *, size_t, int);
 #ifdef __GLIBC__
 extern int __rootxstat64(int, const char *, struct stat64 *);
 

@@ -14,7 +14,6 @@
 
 #include "iamroot.h"
 
-extern char *fpath_resolutionat(int, const char *, char *, size_t, int);
 #define __strlcmp(s1, s2) strncmp(s1, s2, strlen(s2))
 
 extern const char *getrootdir();

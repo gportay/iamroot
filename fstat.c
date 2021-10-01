@@ -13,7 +13,6 @@
 
 #include "iamroot.h"
 
-extern char *fpath_resolutionat(int, const char *, char *, size_t, int);
 extern int rootfstat(int, struct stat *);
 
 __attribute__((visibility("hidden")))

@@ -15,7 +15,6 @@
 
 #include "iamroot.h"
 
-extern char *path_resolution(const char *, char *, size_t, int);
 #define SYMLOOP_MAX 40
 #define __strchrnul strchrnul
 #define readlink next_readlink

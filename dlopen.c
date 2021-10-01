@@ -12,8 +12,6 @@
 
 #include "iamroot.h"
 
-extern char *path_resolution(const char *, char *, size_t, int);
-
 __attribute__((visibility("hidden")))
 void *next_dlopen(const char *path, int flags)
 

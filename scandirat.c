@@ -14,8 +14,6 @@
 
 #include "iamroot.h"
 
-extern char *fpath_resolutionat(int, const char *, char *, size_t, int);
-
 __attribute__((visibility("hidden")))
 int next_scandirat(int fd, const char *path, struct dirent ***namelist,
 		  int (*filter)(const struct dirent *),

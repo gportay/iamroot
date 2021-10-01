@@ -14,8 +14,6 @@
 
 #include "iamroot.h"
 
-extern char *path_resolution(const char *, char *, size_t, int);
-
 __attribute__((visibility("hidden")))
 FILE *next_fopen(const char *path, const char *mode)
 {

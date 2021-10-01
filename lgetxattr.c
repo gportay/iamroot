@@ -15,8 +15,6 @@
 
 #include "iamroot.h"
 
-extern char *path_resolution(const char *, char *, size_t, int);
-
 __attribute__((visibility("hidden")))
 ssize_t next_lgetxattr(const char *path, const char *name, void *value,
 		      size_t size)

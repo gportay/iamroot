@@ -15,8 +15,6 @@
 
 #include "iamroot.h"
 
-extern char *path_resolution(const char *, char *, size_t, int);
-
 __attribute__((visibility("hidden")))
 ssize_t next_llistxattr(const char *path, char *list, size_t size)
 {

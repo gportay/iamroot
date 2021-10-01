@@ -15,8 +15,6 @@
 
 #include "iamroot.h"
 
-extern char *fpath_resolutionat(int, const char *, char *, size_t, int);
-
 __attribute__((visibility("hidden")))
 int next_name_to_handle_at(int fd, const char *path, struct file_handle *handle,
 			   int *mount_id, int flags)

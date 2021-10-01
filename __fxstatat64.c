@@ -14,7 +14,6 @@
 
 #include "iamroot.h"
 
-extern char *fpath_resolutionat(int, const char *, char *, size_t, int);
 #ifdef __GLIBC__
 extern int __rootfxstatat64(int, int, const char *, struct stat *, int);
 

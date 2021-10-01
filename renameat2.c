@@ -13,8 +13,6 @@
 
 #include "iamroot.h"
 
-extern char *fpath_resolutionat(int, const char *, char *, size_t, int);
-
 __attribute__((visibility("hidden")))
 int next_renameat2(int oldfd, const char *oldpath, int newfd, const char *newpath,
 		   unsigned int flags)

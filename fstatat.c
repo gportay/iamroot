@@ -14,7 +14,6 @@
 
 #include "iamroot.h"
 
-extern char *fpath_resolutionat(int, const char *, char *, size_t, int);
 extern int rootfstatat(int, const char *, struct stat *, int);
 
 __attribute__((visibility("hidden")))

@@ -16,8 +16,6 @@ int truncate(const char *path, off_t length);
 
 #include "iamroot.h"
 
-extern char *path_resolution(const char *, char *, size_t, int);
-
 __attribute__((visibility("hidden")))
 int next_truncate(const char *path, off_t length)
 {

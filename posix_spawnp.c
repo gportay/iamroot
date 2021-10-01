@@ -13,8 +13,6 @@
 
 #include "iamroot.h"
 
-extern char *path_resolution(const char *, char *, size_t, int);
-
 __attribute__((visibility("hidden")))
 int next_posix_spawnp(pid_t *pid, const char *path,
 		      const posix_spawn_file_actions_t *file_actions,

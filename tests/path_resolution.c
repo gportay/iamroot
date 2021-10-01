@@ -9,8 +9,7 @@
 #include <errno.h>
 #include <limits.h>
 
-extern char *path_resolution(const char *path, char *buf, size_t bufsize,
-			     int flags);
+#include "iamroot.h"
 
 int main(int argc, char * const argv[])
 {

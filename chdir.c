@@ -13,7 +13,6 @@
 
 #include "iamroot.h"
 
-extern char *path_resolution(const char *, char *, size_t, int);
 extern int chrootdir(const char *);
 
 __attribute__((visibility("hidden")))

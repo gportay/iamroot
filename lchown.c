@@ -14,7 +14,6 @@
 
 #include "iamroot.h"
 
-extern char *path_resolution(const char *, char *, size_t, int);
 extern uid_t next_geteuid();
 
 __attribute__((visibility("hidden")))

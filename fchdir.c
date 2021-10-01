@@ -12,8 +12,6 @@
 
 #include "iamroot.h"
 
-extern int chrootdir(const char *);
-
 __attribute__((visibility("hidden")))
 int next_fchdir(int fd)
 {

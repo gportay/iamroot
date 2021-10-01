@@ -23,7 +23,6 @@
 
 extern ssize_t next_readlink(const char *, char *, size_t);
 extern int next_lstat(const char *, struct stat *);
-extern void __procfdname(char *, unsigned);
 
 static inline ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
 {

@@ -15,6 +15,8 @@ extern char *sanitize(char *, size_t);
 extern char *path_resolution(const char *, char *, size_t, int);
 extern char *fpath_resolutionat(int, const char *, char *, size_t, int);
 
+extern void __procfdname(char *, unsigned);
+
 extern const char *getrootdir();
 extern int chrootdir(const char *);
 extern int inchroot();

@@ -11,6 +11,7 @@
 extern "C" {
 #endif
 
+extern char *sanitize(char *, size_t);
 extern char *path_resolution(const char *, char *, size_t, int);
 extern char *fpath_resolutionat(int, const char *, char *, size_t, int);
 

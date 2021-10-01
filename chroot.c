@@ -20,7 +20,6 @@
 
 #define __strlcmp(s1, s2) strncmp(s1, s2, strlen(s2))
 
-extern char *sanitize(char *, size_t);
 extern char *next_getcwd(char *, size_t);
 extern int next_stat(const char *, struct stat *);
 extern int next_fstat(int, const struct stat *);

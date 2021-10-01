@@ -12,17 +12,30 @@
 
 #include "iamroot.h"
 
+__attribute__((visibility("hidden")))
+int __debug()
+{
+	return strtol(getenv("IAMROOT_DEBUG") ?: "0", NULL, 0);
+}
+
 int __vfprintf(FILE *f, const char *fmt, va_list ap)
 {
-	int ret = 0;
+#ifdef __GLIBC__
+	const char *libc = "glibc";
+#else
+	const char *libc = "libc";
+#endif
 	int debug;
+	int ret;
 
 	debug = strtoul(getenv("IAMROOT_DEBUG") ?: "0", NULL, 0);
 	if (debug < 1 || !inchroot())
 		return 0;
 
+	ret = fprintf(stderr, "Debug: ");
+
 	if (debug > 2)
-		ret += fprintf(stderr, "pid: %u: ", getpid());
+		ret += fprintf(stderr, "%s: pid: %u: ", libc, getpid());
 
 	ret += vfprintf(f, fmt, ap);
 	return ret;

@@ -26,6 +26,15 @@
 
 /* See https://www.in-ulm.de/~mascheck/various/shebang/#results */
 #define HASHBANG_MAX NAME_MAX
+#define max(a,b) \
+	({ __typeof__ (a) _a = (a); \
+	  __typeof__ (b) _b = (b); \
+	  _a > _b ? _a : _b; })
+#define min(a,b) \
+	({ __typeof__ (a) _a = (a); \
+	  __typeof__ (b) _b = (b); \
+	  _a < _b ? _a : _b; })
+
 extern int next_open(const char *, int, mode_t);
 extern int next_stat(const char *, struct stat *);
 
@@ -263,21 +272,27 @@ int next_execve(const char *path, char * const argv[], char * const envp[])
 	}
 
 	debug = exec_debug();
+	if (debug <= 0)
+		debug = max(__debug() - 2, 0);
+
 	if (debug > 0) {
 		char * const *p;
 
-		fprintf(stderr, "Debug: %s: execve(): pid: %i: path %s: argv:",
+		fprintf(stderr, "Debug: %s: pid: %i: execve(path: '%s', argv: {",
 			libc, getpid(), path);
 		p = argv;
 		while (*p)
-			fprintf(stderr, " %s", *p++);
-		if (debug > 1) {
-			fprintf(stderr, ": envp:\n");
+			fprintf(stderr, " '%s',", *p++);
+		fprintf(stderr, " NULL }, ");
+		if (debug == 1) {
+			fprintf(stderr, "...)\n");
+		} else if (debug > 1) {
+			fprintf(stderr, "envp:");
 			p = envp;
 			while (*p)
-				fprintf(stderr, "                 %s\n", *p++);
+				fprintf(stderr, " %s", *p++);
+			fprintf(stderr, " }\n");
 		}
-		fprintf(stderr, "\n");
 	}
 
 	return sym(path, argv, envp);

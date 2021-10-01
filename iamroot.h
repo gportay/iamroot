@@ -26,6 +26,7 @@ const char *getrootdir();
 int chrootdir(const char *);
 int inchroot();
 
+int __debug();
 int __fprintf(FILE *f, const char *fmt, ...) __attribute__ ((format(printf,2,3)));
 
 #define __verbose(fmt, ...) __fprintf(stderr, fmt, __VA_ARGS__)

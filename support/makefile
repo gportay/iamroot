@@ -4,6 +4,8 @@
 # SPDX-License-Identifier: GPL-2.1
 #
 
+-include local.mk
+
 MAKEFLAGS += --no-print-directory
 
 .PHONY: all

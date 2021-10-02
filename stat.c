@@ -14,11 +14,19 @@
 
 #include "iamroot.h"
 
+#ifndef __GLIBC_PREREQ
+#define __GLIBC_PREREQ(maj,min) 0
+#endif
+
 extern int rootstat(const char *, struct stat *);
 
 __attribute__((visibility("hidden")))
 int next_stat(const char *path, struct stat *statbuf)
 {
+#if defined __GLIBC__ && !__GLIBC_PREREQ(2,33)
+	int next___xstat(int, const char *, struct stat *);
+	return next___xstat(_STAT_VER, path, statbuf);
+#else
 	int (*sym)(const char *, struct stat *);
 	int ret;
 
@@ -34,6 +42,7 @@ int next_stat(const char *path, struct stat *statbuf)
 		__perror(path, __func__);
 
 	return ret;
+#endif
 }
 
 int stat(const char *path, struct stat *statbuf)

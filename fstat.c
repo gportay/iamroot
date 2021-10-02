@@ -13,11 +13,19 @@
 
 #include "iamroot.h"
 
+#ifndef __GLIBC_PREREQ
+#define __GLIBC_PREREQ(maj,min) 0
+#endif
+
 extern int rootfstat(int, struct stat *);
 
 __attribute__((visibility("hidden")))
 int next_fstat(int fd, struct stat *statbuf)
 {
+#if defined __GLIBC__ && !__GLIBC_PREREQ(2,33)
+	int next___fxstat(int, int, struct stat *);
+	return next___fxstat(_STAT_VER, fd, statbuf);
+#else
 	int (*sym)(int, struct stat *);
 	int ret;
 
@@ -33,6 +41,7 @@ int next_fstat(int fd, struct stat *statbuf)
 		__fperror(fd, __func__);
 
 	return ret;
+#endif
 }
 
 int fstat(int fd, struct stat *statbuf)

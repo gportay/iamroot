@@ -20,6 +20,10 @@ extern int rootstat64(const char *, struct stat64 *);
 __attribute__((visibility("hidden")))
 int next_stat64(const char *path, struct stat64 *statbuf)
 {
+#if defined __GLIBC__ && !__GLIBC_PREREQ(2,33)
+	int next___xstat64(int, const char *, struct stat64 *);
+	return next___xstat64(_STAT_VER, path, statbuf);
+#else
 	int (*sym)(const char *, struct stat64 *);
 	int ret;
 
@@ -35,6 +39,7 @@ int next_stat64(const char *path, struct stat64 *statbuf)
 		__perror(path, __func__);
 
 	return ret;
+#endif
 }
 
 int stat64(const char *path, struct stat64 *statbuf)

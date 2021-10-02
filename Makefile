@@ -228,7 +228,7 @@ static-test: libiamroot.so | static-rootfs
 .PHONY: shell-test
 shell-test: libiamroot.so | static-rootfs
 	bash iamroot-shell -c "whoami" | tee /dev/stderr | grep -q "^root\$$"
-	bash iamroot-shell -c "stat --print '%u:%g\n' ." | tee /dev/stderr | grep -q "^0:0$$"
+	bash iamroot-shell -c "stat -c '%u:%g' ." | tee /dev/stderr | grep -q "^0:0$$"
 	bash iamroot-shell -c "echo \$$IAMROOTLVL" | tee /dev/stderr | grep -q "^[0-9]\+$$"
 
 .PHONY: alpine-test

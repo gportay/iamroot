@@ -15,9 +15,9 @@
 #include "iamroot.h"
 
 __attribute__((visibility("hidden")))
-int next___xmknodat(int ver, int fd, const char *path, mode_t mode, dev_t dev)
+int next___xmknodat(int ver, int fd, const char *path, mode_t mode, dev_t *dev)
 {
-	int (*sym)(int, int, const char *, mode_t, dev_t);
+	int (*sym)(int, int, const char *, mode_t, dev_t *);
 
 	sym = dlsym(RTLD_NEXT, "__xmknodat");
 	if (!sym) {
@@ -29,7 +29,7 @@ int next___xmknodat(int ver, int fd, const char *path, mode_t mode, dev_t dev)
 	return sym(ver, fd, path, mode, dev);
 }
 
-int __xmknodat(int ver, int fd, const char *path, mode_t mode, dev_t dev)
+int __xmknodat(int ver, int fd, const char *path, mode_t mode, dev_t *dev)
 {
 	char buf[PATH_MAX];
 	char *real_path;

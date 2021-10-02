@@ -16,6 +16,7 @@ TESTS += fchmodat
 TESTS += fchown
 TESTS += fchownat
 TESTS += fstatat
+TESTS += get_current_dir_name
 TESTS += lchown
 TESTS += link
 TESTS += linkat
@@ -83,6 +84,8 @@ test:
 	IAMROOT_ROOT=$(CURDIR) /fstatat - /file 0 0
 	lchown symlink0 0 0
 	IAMROOT_ROOT=$(CURDIR) /fchownat - /file 0 0
+	get_current_dir_name | tee /dev/stderr | grep -q '$(CURDIR)'
+	IAMROOT_ROOT=$(CURDIR) /get_current_dir_name | tee /dev/stderr | grep -q '/'
 	link file link1
 	linkat - file - link2 0
 	IAMROOT_ROOT=$(CURDIR) /linkat - /file - /link3 0

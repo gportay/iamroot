@@ -15,13 +15,13 @@
 #include "iamroot.h"
 
 #ifdef __GLIBC__
-extern int __rootfxstatat64(int, int, const char *, struct stat *, int);
+extern int __rootfxstatat64(int, int, const char *, struct stat64 *, int);
 
 __attribute__((visibility("hidden")))
-int next___fxstatat64(int ver, int fd, const char *path, struct stat *statbuf,
-		    int flags)
+int next___fxstatat64(int ver, int fd, const char *path,
+		      struct stat64 *statbuf, int flags)
 {
-	int (*sym)(int, int, const char *, struct stat *, int);
+	int (*sym)(int, int, const char *, struct stat64 *, int);
 
 	sym = dlsym(RTLD_NEXT, "__fxstatat64");
 	if (!sym) {
@@ -33,7 +33,7 @@ int next___fxstatat64(int ver, int fd, const char *path, struct stat *statbuf,
 	return sym(ver, fd, path, statbuf, flags);
 }
 
-int __fxstatat64(int ver, int fd, const char *path, struct stat *statbuf,
+int __fxstatat64(int ver, int fd, const char *path, struct stat64 *statbuf,
 	       int flags)
 {
 	char buf[PATH_MAX];

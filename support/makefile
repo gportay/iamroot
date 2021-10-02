@@ -1,7 +1,7 @@
 #
-## Copyright (C) 2021 Gaël PORTAY
+# Copyright 2021 Gaël PORTAY
 #
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-License-Identifier: GPL-2.1
 #
 
 MAKEFLAGS += --no-print-directory

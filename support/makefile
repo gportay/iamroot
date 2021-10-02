@@ -8,7 +8,6 @@ MAKEFLAGS += --no-print-directory
 
 .PHONY: all
 all: libiamroot-linux-x86-64.so
-all: libiamroot-musl-x86_64.so
 
 libiamroot-linux-x86-64.so: libiamroot-linux-x86-64.so.2
 	ln -sf $< $@
@@ -30,6 +29,17 @@ libiamroot-%.so.1 libiamroot-%.so.2: $(wildcard *.c) | output-%
 output-%:
 	mkdir $@
 
+.PHONY: clean
+clean:
+	$(MAKE) -f Makefile $@
+	rm -Rf output-*/
+	rm -f libiamroot*.so*
+
+alpine-chroot: libiamroot-musl-x86_64.so
+
+ifneq ($(shell command -v musl-gcc),)
+all: libiamroot-musl-x86_64.so
+
 alpine-rootfs/bin/busybox: libiamroot-musl-x86_64.so.1
 
 alpine-test: libiamroot-musl-x86_64.so.1
@@ -38,14 +48,7 @@ test: alpine-test
 
 ci: alpine-test
 ci: libiamroot-musl-x86_64.so.1
-
-.PHONY: clean
-clean:
-	$(MAKE) -f Makefile $@
-	rm -Rf output-*/
-	rm -f libiamroot*.so*
-
-alpine-chroot: libiamroot-musl-x86_64.so
+endif
 
 %:
 	$(MAKE) -f Makefile $@

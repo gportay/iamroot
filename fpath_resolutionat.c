@@ -72,7 +72,7 @@ void path_resolution_init()
 	snprintf(buf, sizeof(buf)-1, "%s|%s|%s|%s", ignore, library,
 		 library_musl_x86_64, exec);
 
-	ret = regcomp(&regex, buf, REG_EXTENDED);
+	ret = regcomp(&regex, buf, REG_NOSUB|REG_EXTENDED);
 	if (ret) {
 		__regex_perror("regcomp", &regex, ret);
 		return;

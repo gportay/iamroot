@@ -57,7 +57,7 @@ void execve_init()
 	if (!ignore)
 		ignore = "ldd";
 
-	ret = regcomp(&regex, ignore, REG_EXTENDED);
+	ret = regcomp(&regex, ignore, REG_NOSUB|REG_EXTENDED);
 	if (ret) {
 		__regex_perror("regcomp", &regex, ret);
 		return;

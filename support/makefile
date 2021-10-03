@@ -9,6 +9,7 @@
 MAKEFLAGS += --no-print-directory
 
 .PHONY: all
+all: libiamroot.so
 all: libiamroot-linux-x86-64.so
 
 .PRECIOUS: libiamroot-linux-x86-64.so

@@ -11,9 +11,11 @@ MAKEFLAGS += --no-print-directory
 .PHONY: all
 all: libiamroot-linux-x86-64.so
 
+.PRECIOUS: libiamroot-linux-x86-64.so
 libiamroot-linux-x86-64.so: libiamroot-linux-x86-64.so.2
 	ln -sf $< $@
 
+.PRECIOUS: libiamroot-musl-x86_64.so
 libiamroot-musl-x86_64.so: libiamroot-musl-x86_64.so.1
 	ln -sf $< $@
 
@@ -22,7 +24,7 @@ libiamroot.so: $(wildcard *.c)
 libiamroot-musl-x86_64.so.1: export CC = musl-gcc
 libiamroot-musl-x86_64.so.1: export LDFLAGS += -nolibc
 
-.PRECIOUS: libiamroot-%.so
+.PRECIOUS: libiamroot-%.so.1 libiamroot-%.so.2
 libiamroot-%.so.1 libiamroot-%.so.2: $(wildcard *.c) | output-%
 	$(MAKE) -f $(CURDIR)/Makefile -C output-$* libiamroot.so VPATH=$(CURDIR)
 	cp output-$*/libiamroot.so $@

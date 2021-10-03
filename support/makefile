@@ -25,9 +25,12 @@ libiamroot-musl-x86_64.so.1: export CC = musl-gcc
 libiamroot-musl-x86_64.so.1: export LDFLAGS += -nolibc
 
 .PRECIOUS: libiamroot-%.so.1 libiamroot-%.so.2
-libiamroot-%.so.1 libiamroot-%.so.2: $(wildcard *.c) | output-%
-	$(MAKE) -f $(CURDIR)/Makefile -C output-$* libiamroot.so VPATH=$(CURDIR)
+libiamroot-%.so.1 libiamroot-%.so.2: output-%/libiamroot.so
 	cp output-$*/libiamroot.so $@
+
+.PRECIOUS: output-%/libiamroot.so
+output-%/libiamroot.so: $(wildcard *.c) | output-%
+	$(MAKE) -f $(CURDIR)/Makefile -C output-$* libiamroot.so VPATH=$(CURDIR)
 
 .PRECIOUS: output-%
 output-%:

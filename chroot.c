@@ -5,6 +5,7 @@
  */
 
 #include <stdlib.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
@@ -40,6 +41,26 @@ extern int next___fxstatat64(int, int, const char *, struct stat64 *, int);
 extern int next_statx(int, const char *, int, unsigned int, struct statx *);
 #endif
 extern uid_t next_geteuid();
+
+__attribute__((visibility("hidden")))
+int _snprintf(char *buf, size_t bufsize, const char *fmt, ...)
+{
+	va_list ap;
+	int ret;
+
+	va_start(ap, fmt);
+	ret = vsnprintf(buf, bufsize, fmt, ap);
+	va_end(ap);
+
+	if (ret == -1)
+		return -1;
+
+	if ((size_t)ret < bufsize)
+		return ret;
+
+	errno = ENOSPC;
+	return -1;
+}
 
 int pathsetenv(const char *root, const char *name, const char *value,
 	       int overwrite)

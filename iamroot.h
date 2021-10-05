@@ -16,6 +16,8 @@ extern "C" {
 #define __strlcpy(s1, s2) ({ strncpy(s1, s2, strlen(s2));   s1[strlen(s2)]   = 0; s1; })
 #define __strncpy(s1, s2) ({ strncpy(s1, s2, sizeof(s1)-1); s1[sizeof(s1)-1] = 0; s1; })
 
+int _snprintf(char *buf, size_t bufsize, const char *fmt, ...) __attribute__((format(printf,3,4)));
+
 static inline const char *__libc()
 {
 #ifdef __GLIBC__

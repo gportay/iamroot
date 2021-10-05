@@ -13,7 +13,6 @@
 #include "iamroot.h"
 
 #ifdef __GLIBC__
-
 __attribute__((visibility("hidden")))
 void *next_dlmopen(Lmid_t lmid, const char *path, int flags)
 

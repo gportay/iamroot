@@ -15,7 +15,6 @@
 #include "iamroot.h"
 
 #ifdef __GLIBC__
-
 __attribute__((visibility("hidden")))
 DIR *next___opendir(const char *path)
 {

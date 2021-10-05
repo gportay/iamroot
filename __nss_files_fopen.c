@@ -12,7 +12,6 @@
 #include "iamroot.h"
 
 #ifdef __GLIBC__
-
 __attribute__((visibility("hidden")))
 FILE *next___nss_files_fopen(const char * path)
 {

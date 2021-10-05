@@ -15,7 +15,6 @@
 #include "iamroot.h"
 
 #ifdef __GLIBC__
-
 __attribute__((visibility("hidden")))
 int next_mkstemps64(char *path, int suffixlen)
 {

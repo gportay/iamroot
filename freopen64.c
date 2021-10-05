@@ -15,7 +15,6 @@
 #include "iamroot.h"
 
 #ifdef __GLIBC__
-
 __attribute__((visibility("hidden")))
 FILE *next_freopen64(const char *path, const char *mode, FILE *stream)
 {

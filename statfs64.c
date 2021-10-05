@@ -14,7 +14,6 @@
 #include "iamroot.h"
 
 #ifdef __GLIBC__
-
 __attribute__((visibility("hidden")))
 int next_statfs64(const char *path, struct statfs64 *statfs64buf)
 {

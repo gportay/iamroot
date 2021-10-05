@@ -16,7 +16,6 @@
 #include "iamroot.h"
 
 #ifdef __GLIBC__
-
 __attribute__((visibility("hidden")))
 int next___open_2(const char *path, int flags)
 {

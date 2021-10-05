@@ -15,7 +15,6 @@
 #include "iamroot.h"
 
 #ifdef __GLIBC__
-
 __attribute__((visibility("hidden")))
 int next_creat64(const char *path, mode_t mode)
 {

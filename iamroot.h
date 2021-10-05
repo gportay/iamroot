@@ -16,6 +16,15 @@ extern "C" {
 #define __strlcpy(s1, s2) strncpy(s1, s2, strlen(s1))
 #define __strncpy(s1, s2) strncpy(s1, s2, sizeof(s1)-1)
 
+static inline const char *__libc()
+{
+#ifdef __GLIBC__
+	return "glibc";
+#else
+	return "libc";
+#endif
+}
+
 char *sanitize(char *, size_t);
 char *path_resolution(const char *, char *, size_t, int);
 char *fpath_resolutionat(int, const char *, char *, size_t, int);

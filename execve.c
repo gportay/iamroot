@@ -256,11 +256,6 @@ static int exec_debug()
 __attribute__((visibility("hidden")))
 int next_execve(const char *path, char * const argv[], char * const envp[])
 {
-#ifdef __GLIBC__
-	const char *libc = "glibc";
-#else
-	const char *libc = "libc";
-#endif
 	int (*sym)(const char *, char * const argv[], char * const envp[]);
 	int debug;
 	int ret;
@@ -280,7 +275,7 @@ int next_execve(const char *path, char * const argv[], char * const envp[])
 		char * const *p;
 
 		fprintf(stderr, "Debug: %s: pid: %i: execve(path: '%s', argv: {",
-			libc, getpid(), path);
+			__libc(), getpid(), path);
 		p = argv;
 		while (*p)
 			fprintf(stderr, " '%s',", *p++);

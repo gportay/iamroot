@@ -20,11 +20,6 @@ int __debug()
 
 int __vfprintf(FILE *f, const char *fmt, va_list ap)
 {
-#ifdef __GLIBC__
-	const char *libc = "glibc";
-#else
-	const char *libc = "libc";
-#endif
 	int debug;
 	int ret;
 
@@ -35,7 +30,7 @@ int __vfprintf(FILE *f, const char *fmt, va_list ap)
 	ret = fprintf(stderr, "Debug: ");
 
 	if (debug > 2)
-		ret += fprintf(stderr, "%s: pid: %u: ", libc, getpid());
+		ret += fprintf(stderr, "%s: pid: %u: ", __libc(), getpid());
 
 	ret += vfprintf(f, fmt, ap);
 	return ret;

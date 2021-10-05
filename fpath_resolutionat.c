@@ -174,8 +174,6 @@ char *fpath_resolutionat(int fd, const char *path, char *buf, size_t bufsize,
 			errno = ENAMETOOLONG;
 			return NULL;
 		}
-
-		real_path = buf;
 	} else if (fd != AT_FDCWD) {
 		char dir[PATH_MAX];
 		ssize_t siz;
@@ -198,10 +196,8 @@ char *fpath_resolutionat(int fd, const char *path, char *buf, size_t bufsize,
 			errno = ENAMETOOLONG;
 			return NULL;
 		}
-
-		real_path = buf;
 	} else {
-		real_path = strncpy(buf, path, bufsize);
+		strncpy(buf, path, bufsize);
 	}
 
 	real_path = sanitize(buf, bufsize);

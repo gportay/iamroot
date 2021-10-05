@@ -530,7 +530,6 @@ loader:
 			interparg[i++] = real_hashbang;
 		else
 			interparg[i++] = buf;
-		i += j;
 
 		extern char **__environ;
 		envp = __environ;

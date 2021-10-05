@@ -61,7 +61,7 @@ static int pathsetenv(const char *root, const char *name, const char *value,
 		__strncpy(val, value);
 		token = strtok_r(val, ":", &saveptr);
 		if (token && *token)
-			while ((token = strtok_r(NULL, ":", &saveptr)))
+			while (strtok_r(NULL, ":", &saveptr))
 				newlen += rootlen;
 	}
 
@@ -596,7 +596,6 @@ int chroot(const char *path)
 		const char *root;
 		char *cwd;
 
-		len = 0;
 		cwd = buf;
 		root = getrootdir();
 		rootlen = strlen(root);
@@ -616,8 +615,6 @@ int chroot(const char *path)
 		cwd[len] = 0;
 
 		strncat(cwd, path, sizeof(buf) - len);
-
-		real_path = buf;
 	} else {
 		real_path = path_resolution(path, buf, sizeof(buf),
 					    AT_SYMLINK_NOFOLLOW);

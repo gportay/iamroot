@@ -13,6 +13,8 @@ extern "C" {
 
 #define __strlcmp(s1, s2) strncmp(s1, s2, strlen(s2))
 #define __strncmp(s1, s2) strncmp(s1, s2, sizeof(s2)-1)
+#define __strlcpy(s1, s2) strncpy(s1, s2, strlen(s1))
+#define __strncpy(s1, s2) strncpy(s1, s2, sizeof(s1)-1)
 
 char *sanitize(char *, size_t);
 char *path_resolution(const char *, char *, size_t, int);

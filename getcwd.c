@@ -46,7 +46,7 @@ char *getcwd(char *buf, size_t size)
 
 	len = strlen(root);
 	if (strncmp(root, ret, len) == 0)
-		strcpy(ret, &ret[len]);
+		__strlcpy(ret, &ret[len]);
 
 	if (!*ret)
 		strcpy(ret, "/");

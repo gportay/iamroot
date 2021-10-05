@@ -58,7 +58,7 @@ static int pathsetenv(const char *root, const char *name, const char *value,
 		newlen += rootlen;
 		newlen++; /* NUL */
 
-		strcpy(val, value);
+		__strncpy(val, value);
 		token = strtok_r(val, ":", &saveptr);
 		if (token && *token)
 			while ((token = strtok_r(NULL, ":", &saveptr)))
@@ -69,7 +69,7 @@ static int pathsetenv(const char *root, const char *name, const char *value,
 		char *str, *token, *saveptr, val[vallen], new_value[newlen];
 
 		str = new_value;
-		strcpy(val, value);
+		__strncpy(val, value);
 		token = strtok_r(val, ":", &saveptr);
 		if (token && *token) {
 			int n;

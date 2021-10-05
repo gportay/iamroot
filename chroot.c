@@ -600,7 +600,7 @@ int chroot(const char *path)
 		root = getrootdir();
 		rootlen = strlen(root);
 		if (strcmp(root, "/") != 0) {
-			strcpy(cwd, root);
+			__strncpy(buf, root);
 			cwd += rootlen;
 		}
 

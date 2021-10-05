@@ -32,7 +32,7 @@ char *next_getwd(char *buf)
 char *getwd(char *buf)
 {
 	const char *root;
-	size_t len;
+	size_t len, size;
 	char *ret;
 
 	ret = next_getwd(buf);
@@ -45,12 +45,13 @@ char *getwd(char *buf)
 	if (strcmp(root, "/") == 0)
 		goto exit;
 
+	size = strlen(buf);
 	len = strlen(root);
 	if (strncmp(root, ret, len) == 0)
 		__strlcpy(ret, &ret[len]);
 
 	if (!*ret)
-		strcpy(ret, "/");
+		strncpy(ret, "/", size-1);
 
 exit:
 	__verbose("%s(...)\n", __func__);

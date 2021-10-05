@@ -49,7 +49,7 @@ char *getcwd(char *buf, size_t size)
 		__strlcpy(ret, &ret[len]);
 
 	if (!*ret)
-		strcpy(ret, "/");
+		strncpy(ret, "/", size);
 
 exit:
 	__verbose("%s(...)\n", __func__);

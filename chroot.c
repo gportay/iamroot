@@ -75,10 +75,18 @@ static int pathsetenv(const char *root, const char *name, const char *value,
 			int n;
 
 			n = snprintf(str, newlen, "%s%s", root, token);
+			if ((n == -1) || (newlen < (size_t)n)) {
+				errno = EOVERFLOW;
+				return -1;
+			}
 			str += n;
 			newlen -= n;
 			while ((token = strtok_r(NULL, ":", &saveptr))) {
 				n = snprintf(str, newlen, ":%s%s", root, token);
+				if ((n == -1) || (newlen < (size_t)n)) {
+					errno = EOVERFLOW;
+					return -1;
+				}
 				str += n;
 				newlen -= n;
 			}

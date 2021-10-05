@@ -34,7 +34,7 @@ void fverbosef_init()
 #ifndef JIMREGEXP_H
 	__attribute__((unused)) static char jimpad[40];
 #endif
-	char *ignore;
+	const char *ignore;
 	int ret;
 
 	if (re)

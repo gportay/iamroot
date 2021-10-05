@@ -45,7 +45,7 @@ static void __regex_perror(const char *s, regex_t *regex, int err)
 __attribute__((constructor))
 void path_resolution_init()
 {
-	char *ignore, *library, *library_musl_x86_64, *exec;
+	const char *ignore, *library, *library_musl_x86_64, *exec;
 	static regex_t regex;
 #ifndef JIMREGEXP_H
 	__attribute__((unused)) static char jimpad[40];

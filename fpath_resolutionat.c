@@ -47,6 +47,9 @@ void path_resolution_init()
 {
 	char *ignore, *library, *library_musl_x86_64, *exec;
 	static regex_t regex;
+#ifndef JIMREGEXP_H
+	__attribute__((unused)) static char jimpad[40];
+#endif
 	char buf[BUFSIZ];
 	int ret;
 

@@ -56,6 +56,9 @@ __attribute__((constructor))
 void execve_init()
 {
 	static regex_t regex;
+#ifndef JIMREGEXP_H
+	__attribute__((unused)) static char jimpad[40];
+#endif
 	char *ignore;
 	int ret;
 

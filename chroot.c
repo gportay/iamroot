@@ -47,6 +47,9 @@ static int pathsetenv(const char *root, const char *name, const char *value,
 {
 	size_t rootlen, vallen, newlen;
 
+	if (!root || !value)
+		goto setenv;
+
 	newlen = 0;
 	rootlen = strlen(root);
 
@@ -95,6 +98,7 @@ static int pathsetenv(const char *root, const char *name, const char *value,
 		return setenv(name, new_value, overwrite);
 	}
 
+setenv:
 	return setenv(name, value, overwrite);
 }
 

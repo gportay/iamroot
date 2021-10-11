@@ -52,7 +52,7 @@ static int pathsetenv(const char *root, const char *name, const char *value,
 
 	vallen = strlen(value);
 	if (vallen > 0) {
-		char *token, *saveptr, val[vallen];
+		char *token, *saveptr, val[vallen+1];
 
 		newlen = vallen;
 		newlen += rootlen;
@@ -66,7 +66,7 @@ static int pathsetenv(const char *root, const char *name, const char *value,
 	}
 
 	if (newlen > 0) {
-		char *str, *token, *saveptr, val[vallen], new_value[newlen];
+		char *str, *token, *saveptr, val[vallen+1], new_value[newlen+1];
 
 		str = new_value;
 		__strncpy(val, value);

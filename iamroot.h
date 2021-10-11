@@ -25,6 +25,8 @@ static inline const char *__libc()
 #endif
 }
 
+int pathsetenv(const char *, const char *, const char *, int);
+
 char *sanitize(char *, size_t);
 char *path_resolution(const char *, char *, size_t, int);
 char *fpath_resolutionat(int, const char *, char *, size_t, int);

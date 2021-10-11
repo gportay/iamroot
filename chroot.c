@@ -42,8 +42,8 @@ extern int next_statx(int, const char *, int, unsigned int, struct statx *);
 #endif
 extern uid_t next_geteuid();
 
-static int pathsetenv(const char *root, const char *name, const char *value,
-		      int overwrite)
+int pathsetenv(const char *root, const char *name, const char *value,
+	       int overwrite)
 {
 	size_t rootlen, vallen, newlen;
 

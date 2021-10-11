@@ -8,6 +8,18 @@
 #include <errno.h>
 #include <fcntl.h>
 
+int pathsetenv(const char *root, const char *name, const char *value,
+	       int overwrite)
+{
+	(void)root;
+	(void)name;
+	(void)value;
+	(void)overwrite;
+
+	errno = ENOSYS;
+	return -1;
+}
+
 char *fpath_resolutionat(int fd, const char *path, char *buf, size_t bufsize,
 			 int flags)
 {

@@ -28,6 +28,7 @@ TESTS += mount
 TESTS += openat
 TESTS += opendir
 TESTS += path_resolution
+TESTS += pathsetenv
 TESTS += rename
 TESTS += renameat
 TESTS += renameat2
@@ -54,6 +55,9 @@ libiamnotroot.so: iamnotroot.o
 
 path_resolution: libiamnotroot.so
 path_resolution: override LDLIBS += libiamnotroot.so
+
+pathsetenv: libiamnotroot.so
+pathsetenv: override LDLIBS += libiamnotroot.so
 
 .PHONY: test
 test: PATH := $(CURDIR):$(PATH)
@@ -98,6 +102,8 @@ test:
 	IAMROOT_ROOT=$(CURDIR) /path_resolution /etc/passwd | tee /dev/stderr | grep -q "^$(CURDIR)/etc/passwd\$$"
 	IAMROOT_PATH_RESOLUTION_IGNORE="^/(proc|sys)/|$$IAMROOT_LIB" \
 	IAMROOT_ROOT=$(CURDIR) /path_resolution "$$IAMROOT_LIB"  | tee /dev/stderr | grep -q "^$$IAMROOT_LIB$$"
+	pathsetenv LD_LIBRARY_PATH /usr/local/lib:/usr/lib:/lib  | tee /dev/stderr | grep -q "^/usr/local/lib:/usr/lib:/lib$$"
+	IAMROOT_ROOT=$(CURDIR) /pathsetenv LD_LIBRARY_PATH /usr/local/lib:/usr/lib:/lib  | tee /dev/stderr | grep -q "^$(CURDIR)/usr/local/lib:$(CURDIR)/usr/lib:$(CURDIR)/lib$$"
 	openat - file
 	IAMROOT_ROOT=$(CURDIR) /openat . /file
 	opendir proc

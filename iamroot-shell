@@ -34,6 +34,9 @@ iamroot specific options:
                                 use.
       --library LIB             Absolute path to the iamroot library to use.
       --debug                   Turn on debug mode.
+      --debug-ignore REGEX      Regular expression of functions to ignore in
+                                debug mode.
+                                Does not imply --debug.
       --version                 Print version.
       --help                    Print usage.
 
@@ -69,6 +72,9 @@ Environment variables:
       IAMROOT_DEBUG             Set debug mode.
                                 Equivalent to --debug.
 
+      IAMROOT_DEBUG_IGNORE      Set functions to ignore in debug mode. 
+                                Equivalent to --debug-ignore.
+
       IAMROOT_EXEC_IGNORE       Set executable path to ignore in execve().
                                 Equivalent to --exec-ignore.
 
@@ -102,6 +108,11 @@ do
 	then
 		echo "$VERSION"
 		exit 0
+	elif [[ "$1" == "--debug-ignore" ]]
+	then
+		shift
+		IAMROOT_DEBUG_IGNORE="$1"
+		export IAMROOT_DEBUG_IGNORE 
 	elif [[ "$1" == "--debug" ]]
 	then
 		IAMROOT_DEBUG="$((IAMROOT_DEBUG+1))"

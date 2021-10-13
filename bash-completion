@@ -32,6 +32,11 @@ _iamroot-shell()
 		truncate umount umount2 unlink unlinkat unshare utime utimensat
 		utimes)
 
+	COMMON_PATH=(/bin /sbin /usr/bin /usr/sbin /usr/local/bin
+		/usr/local/sbin)
+
+	COMMON_LD_LIBRARY_PATH=(/lib /usr/lib /usr/local/lib)
+
 	case "$prev" in
 	--library)
 		_filedir so
@@ -44,6 +49,36 @@ _iamroot-shell()
 	--chroot)
 		_filedir -d
 		return
+		;;
+	--path)
+		local prefix realcur wordlist
+		realcur="${cur##*\:}"
+		prefix="${cur%$realcur}"
+		for WORD in "${COMMON_PATH[@]}"
+		do
+			if ! [[ $prefix == *"$WORD"* ]]
+			then
+				wordlist+=("$WORD")
+			fi
+		done
+		compopt -o nospace
+		COMPREPLY=($(compgen -P "$prefix" -W "${wordlist[*]}" -S '\:' -- "$realcur"))
+		return 0
+		;;
+	--ld-library-path)
+		local prefix realcur wordlist
+		realcur="${cur##*\:}"
+		prefix="${cur%$realcur}"
+		for WORD in "${COMMON_LD_LIBRARY_PATH[@]}"
+		do
+			if ! [[ $prefix == *"$WORD"* ]]
+			then
+				wordlist+=("$WORD")
+			fi
+		done
+		compopt -o nospace
+		COMPREPLY=($(compgen -P "$prefix" -W "${wordlist[*]}" -S '\:' -- "$realcur"))
+		return 0
 		;;
 	--debug-ignore)
 		local prefix realcur wordlist 
@@ -79,7 +114,7 @@ _iamroot-shell()
 
 	if [[ "$shell" != 1 ]]
 	then
-		COMPREPLY+=($(compgen -W "--debug --library --exec --chroot --debug-ignore" -- "$cur"))
+		COMPREPLY+=($(compgen -W "--debug --path --ld-library-path --library --exec --chroot --debug-ignore --version" -- "$cur"))
 	fi
 } &&
 complete -F _iamroot-shell iamroot-shell

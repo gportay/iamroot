@@ -38,16 +38,16 @@ _iamroot-shell()
 	COMMON_LD_LIBRARY_PATH=(/lib /usr/lib /usr/local/lib)
 
 	case "$prev" in
-	--library)
-		_filedir so
+	--chroot)
+		_filedir -d
 		return
 		;;
 	--exec)
 		_filedir
 		return
 		;;
-	--chroot)
-		_filedir -d
+	--library)
+		_filedir so
 		return
 		;;
 	--path)
@@ -114,7 +114,7 @@ _iamroot-shell()
 
 	if [[ "$shell" != 1 ]]
 	then
-		COMPREPLY+=($(compgen -W "--debug --path --ld-library-path --library --exec --chroot --debug-ignore --version" -- "$cur"))
+		COMPREPLY+=($(compgen -W "--chroot --path --ld-library-path --exec --library --debug --debug-ignore --version" -- "$cur"))
 	fi
 } &&
 complete -F _iamroot-shell iamroot-shell

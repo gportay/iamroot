@@ -81,7 +81,7 @@ _iamroot-shell()
 		return 0
 		;;
 	--debug-ignore)
-		local prefix realcur wordlist 
+		local prefix realcur wordlist
 		realcur="${cur##*\|}"
 		prefix="${cur%$realcur}"
 		for WORD in "${DEBUG_IGNORE[@]}"

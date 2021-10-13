@@ -77,7 +77,7 @@ Environment variables:
       IAMROOT_DEBUG             Set debug mode.
                                 Equivalent to --debug.
 
-      IAMROOT_DEBUG_IGNORE      Set functions to ignore in debug mode. 
+      IAMROOT_DEBUG_IGNORE      Set functions to ignore in debug mode.
                                 Equivalent to --debug-ignore.
 
       IAMROOT_EXEC_IGNORE       Set executable path to ignore in execve().
@@ -127,7 +127,7 @@ do
 	then
 		shift
 		IAMROOT_DEBUG_IGNORE="$1"
-		export IAMROOT_DEBUG_IGNORE 
+		export IAMROOT_DEBUG_IGNORE
 	elif [[ "$1" == "--debug" ]]
 	then
 		IAMROOT_DEBUG="$((IAMROOT_DEBUG+1))"

@@ -12,6 +12,10 @@ MAKEFLAGS += --no-print-directory
 all: libiamroot.so
 all: libiamroot-linux-x86-64.so
 
+.PRECIOUS: libiamroot.so
+libiamroot.so: libiamroot-linux-x86-64.so
+	ln -sf $< $@
+
 .PRECIOUS: libiamroot-linux-x86-64.so
 libiamroot-linux-x86-64.so: libiamroot-linux-x86-64.so.2
 	ln -sf $< $@

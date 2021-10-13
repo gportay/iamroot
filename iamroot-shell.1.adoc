@@ -70,6 +70,12 @@ shells, please refers to their manuals.
 	Regular expression of functions to ignore in debug mode.
 	Does not imply --debug.
 
+**--exec-ignore REGEX**::
+	Regular expression of executable path to ignore at execve().
+
+**--path-resolution-ignore REGEX**::
+	Regular expression of path to ignore for path resolution in chroot.
+
 **--version**::
 	Print version.
 

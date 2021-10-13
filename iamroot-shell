@@ -37,6 +37,11 @@ iamroot specific options:
       --debug-ignore REGEX      Regular expression of functions to ignore in
                                 debug mode.
                                 Does not imply --debug.
+      --exec-ignore REGEX       Regular expression of executable path to ignore
+                                at execve().
+      --path-resolution-ignore REGEX
+                                Regular expression of path to ignore for path
+                                resolution in chroot.
       --version                 Print version.
       --help                    Print usage.
 
@@ -108,6 +113,16 @@ do
 	then
 		echo "$VERSION"
 		exit 0
+	elif [[ "$1" == "--path-resolution-ignore" ]]
+	then
+		shift
+		IAMROOT_PATH_RESOLUTION_IGNORE="$1"
+		export IAMROOT_PATH_RESOLUTION_IGNORE
+	elif [[ "$1" == "--exec-ignore" ]]
+	then
+		shift
+		IAMROOT_EXEC_IGNORE="$1"
+		export IAMROOT_EXEC_IGNORE
 	elif [[ "$1" == "--debug-ignore" ]]
 	then
 		shift

@@ -95,6 +95,38 @@ _iamroot-shell()
 		COMPREPLY=($(compgen -P "$prefix" -W "${wordlist[*]}" -S '\|' -- "$realcur"))
 		return 0
 		;;
+	--exec-ignore)
+		local prefix realcur wordlist
+		realcur="${cur##*\|}"
+		prefix="${cur%$realcur}"
+		COMPREPLY=($(compgen -c -- "${realcur}"))
+		for WORD in "${COMPREPLY[@]}"
+		do
+			if ! [[ $prefix == *"$WORD"* ]]
+			then
+				wordlist+=("$WORD")
+			fi
+		done
+		compopt -o nospace
+		COMPREPLY=($(compgen -P "$prefix" -W "${wordlist[*]}" -S '\|' -- "$realcur"))
+		return 0
+		;;
+	--path-resolution-ignore)
+		local prefix realcur wordlist
+		realcur="${cur##*\|}"
+		prefix="${cur%$realcur}"
+		COMPREPLY=($(compgen -d -S '/' -- "${realcur}"))
+		for WORD in "${COMPREPLY[@]}"
+		do
+			if ! [[ $prefix == *"$WORD"* ]]
+			then
+				wordlist+=("$WORD")
+			fi
+		done
+		compopt -o nospace
+		COMPREPLY=($(compgen -P "$prefix" -W "${wordlist[*]}" -S '\|' -- "$realcur"))
+		return 0
+		;;
 	esac
 
 	COMP_WORDS=("${SHELL:sh}" "${COMP_WORDS[@]:2}" "$cur")
@@ -114,7 +146,7 @@ _iamroot-shell()
 
 	if [[ "$shell" != 1 ]]
 	then
-		COMPREPLY+=($(compgen -W "--chroot --path --ld-library-path --exec --library --debug --debug-ignore --version" -- "$cur"))
+		COMPREPLY+=($(compgen -W "--chroot --path --ld-library-path --exec --library --debug --debug-ignore --exec-ignore --path-resolution-ignore --version" -- "$cur"))
 	fi
 } &&
 complete -F _iamroot-shell iamroot-shell

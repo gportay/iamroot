@@ -27,7 +27,7 @@ int __vfprintf(FILE *f, int lvl, const char *fmt, va_list ap)
 	if (debug < lvl || !inchroot())
 		return 0;
 
-	ret = fprintf(f, "Debug: ");
+	ret = fprintf(f, "%s: ", lvl == 0 ? "Warning" : "Debug");
 
 	if (debug > 2)
 		ret += fprintf(f, "%s: pid: %u: ", __libc(), getpid());

@@ -15,7 +15,7 @@ void __perror2(const char *oldpath, const char *newpath, const char *s)
 	if ((errno != EPERM) && (errno != EACCES))
 		return;
 
-	__verbose("Warning: %s: %s: %s: %m\n", oldpath, newpath, s);
+	__warning("%s: %s: %s: %m\n", oldpath, newpath, s);
 	if (__fatal())
 		raise(SIGABRT);
 }

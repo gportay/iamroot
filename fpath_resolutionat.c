@@ -164,8 +164,7 @@ char *fpath_resolutionat(int fd, const char *path, char *buf, size_t bufsize,
 		if (strcmp(root, "/") == 0)
 			root = "";
 		else if (__strlcmp(path, root) == 0)
-			fprintf(stderr, "Warning: %s: contains root '%s'\n",
-					path, root);
+			__warning("%s: contains root '%s'\n", path, root);
 
 		size = snprintf(buf, bufsize, "%s%s", root, path);
 		if (size < 0) {

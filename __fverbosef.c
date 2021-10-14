@@ -86,7 +86,7 @@ __attribute__((visibility("hidden")))
 int __vfverbosef(FILE *f, int lvl, const char *func, const char *fmt,
 		 va_list ap)
 {
-	if (ignore(func))
+	if (lvl != 0 && ignore(func))
 		return 0;
 
 	return __vfprintf(f, lvl, fmt, ap);

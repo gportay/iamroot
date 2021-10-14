@@ -46,8 +46,8 @@ ssize_t readlinkat(int fd, const char *path, char *buf, size_t bufsize)
 	len = strlen(root);
 
 	if (strcmp(path, "/proc/self/root") == 0) {
-		__verbose("Warning: %s: ignoring path resolution '%s'\n",
-			  __func__, path);
+		__warning("%s: ignoring path resolution '%s'\n", __func__,
+			  path);
 		ret = len;
 		if ((size_t)ret > bufsize)
 			ret = bufsize;

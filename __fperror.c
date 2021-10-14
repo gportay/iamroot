@@ -15,7 +15,7 @@ void __fperror(int fd, const char *s)
 	if ((errno != EPERM) && (errno != EACCES))
 		return;
 
-	__verbose("Warning: %i: %s: %m\n", fd, s);
+	__warning("%i: %s: %m\n", fd, s);
 	if (__fatal())
 		raise(SIGABRT);
 }

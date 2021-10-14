@@ -11,7 +11,7 @@
 
 void __fperror(int fd, const char *s)
 {
-	if (errno != EPERM)
+	if ((errno != EPERM) && (errno != EACCES))
 		return;
 
 	__verbose("Warning: %i: %s: %m\n", fd, s);

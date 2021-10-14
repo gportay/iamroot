@@ -11,7 +11,7 @@
 
 void __perror(const char *path, const char *s)
 {
-	if (errno != EPERM)
+	if ((errno != EPERM) && (errno != EACCES))
 		return;
 
 	__verbose("Warning: %s: %s: %m\n", path, s);

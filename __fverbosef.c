@@ -10,6 +10,8 @@
 #include <string.h>
 #include <regex.h>
 
+#include "iamroot.h"
+
 extern int __vfprintf(FILE *, const char *, va_list);
 extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
 
@@ -50,7 +52,7 @@ void fverbosef_init()
 		return;
 	}
 
-	__fprintf(stderr, "IAMROOT_DEBUG_IGNORE=%s\n", ignore);
+	__verbose("IAMROOT_DEBUG_IGNORE=%s\n", ignore);
 	re = &regex;
 }
 

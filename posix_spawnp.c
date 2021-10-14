@@ -51,8 +51,7 @@ int posix_spawnp(pid_t *pid, const char *path,
 		return -1;
 	}
 
-	fprintf(stderr, "%s(path: '%s' -> '%s')\n", __func__, path,
-			  real_path);
+	__verbose("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
 
 	return next_posix_spawnp(pid, real_path, file_actions, attrp, argv,
 				 envp);

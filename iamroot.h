@@ -38,10 +38,10 @@ int chrootdir(const char *);
 int inchroot();
 
 int __debug();
-int __verbosef(const char *, const char *, ...) __attribute__ ((format(printf,2,3)));
+int __verbosef(int, const char *, const char *, ...) __attribute__ ((format(printf,3,4)));
 
 #if !defined(NVERBOSE)
-#define __verbose(fmt, ...) __verbosef(__func__, fmt, __VA_ARGS__)
+#define __verbose(fmt, ...) __verbosef(1, __func__, fmt, __VA_ARGS__)
 #else
 #define __verbose(fmt, ...)
 #endif

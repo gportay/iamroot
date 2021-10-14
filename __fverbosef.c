@@ -12,8 +12,8 @@
 
 #include "iamroot.h"
 
-extern int __vfprintf(FILE *, const char *, va_list);
-extern int __fprintf(FILE *, const char *, ...) __attribute__ ((format(printf,2,3)));
+extern int __vfprintf(FILE *, int, const char *, va_list);
+extern int __fprintf(FILE *, int, const char *, ...) __attribute__ ((format(printf,3,4)));
 
 static regex_t *re;
 
@@ -83,22 +83,23 @@ static int ignore(const char *func)
 }
 
 __attribute__((visibility("hidden")))
-int __vfverbosef(FILE *f, const char *func, const char *fmt, va_list ap)
+int __vfverbosef(FILE *f, int lvl, const char *func, const char *fmt,
+		 va_list ap)
 {
 	if (ignore(func))
 		return 0;
 
-	return __vfprintf(f, fmt, ap);
+	return __vfprintf(f, lvl, fmt, ap);
 }
 
 __attribute__((visibility("hidden")))
-int __fverbosef(const char *func, const char *fmt, ...)
+int __fverbosef(int lvl, const char *func, const char *fmt, ...)
 {
 	va_list ap;
 	int ret;
 
 	va_start(ap, fmt);
-	ret = __vfverbosef(stderr, func, fmt, ap);
+	ret = __vfverbosef(stderr, lvl, func, fmt, ap);
 	va_end(ap);
 	return ret;
 }

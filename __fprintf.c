@@ -18,13 +18,13 @@ int __debug()
 	return strtol(getenv("IAMROOT_DEBUG") ?: "0", NULL, 0);
 }
 
-int __vfprintf(FILE *f, const char *fmt, va_list ap)
+int __vfprintf(FILE *f, int lvl, const char *fmt, va_list ap)
 {
 	int debug;
 	int ret;
 
 	debug = strtoul(getenv("IAMROOT_DEBUG") ?: "0", NULL, 0);
-	if (debug < 1 || !inchroot())
+	if (debug < lvl || !inchroot())
 		return 0;
 
 	ret = fprintf(f, "Debug: ");
@@ -36,13 +36,13 @@ int __vfprintf(FILE *f, const char *fmt, va_list ap)
 	return ret;
 }
 
-int __fprintf(FILE *f, const char *fmt, ...)
+int __fprintf(FILE *f, int lvl, const char *fmt, ...)
 {
 	va_list ap;
 	int ret;
 
 	va_start(ap, fmt);
-	ret = __vfprintf(f, fmt, ap);
+	ret = __vfprintf(f, lvl, fmt, ap);
 	va_end(ap);
 	return ret;
 }

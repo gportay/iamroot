@@ -27,10 +27,10 @@ int __vfprintf(FILE *f, const char *fmt, va_list ap)
 	if (debug < 1 || !inchroot())
 		return 0;
 
-	ret = fprintf(stderr, "Debug: ");
+	ret = fprintf(f, "Debug: ");
 
 	if (debug > 2)
-		ret += fprintf(stderr, "%s: pid: %u: ", __libc(), getpid());
+		ret += fprintf(f, "%s: pid: %u: ", __libc(), getpid());
 
 	ret += vfprintf(f, fmt, ap);
 	return ret;

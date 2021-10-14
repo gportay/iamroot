@@ -47,6 +47,7 @@ int fchmodat(int fd, const char *path, mode_t mode, int flags)
 
 	__verbose("%s(fd: %i, path: '%s' -> '%s', mode: 0%03o)\n", __func__,
 		  fd, path, real_path, mode);
+	__fwarn_if_insuffisant_user_modeat(fd, real_path, mode, flags);
 
 	return next_fchmodat(fd, real_path, mode, flags);
 }

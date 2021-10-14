@@ -36,6 +36,7 @@ int next_fchmod(int fd, mode_t mode)
 int fchmod(int fd, mode_t mode)
 {
 	__verbose("%s(fd: %i, mode: 0%03o)\n", __func__, fd, mode);
+	__fwarn_if_insuffisant_user_mode(fd, mode);
 
 	return next_fchmod(fd, mode);
 }

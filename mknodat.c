@@ -47,6 +47,7 @@ int mknodat(int fd, const char *path, mode_t mode, dev_t dev)
 
 	__verbose("%s(fd %i, path: '%s' -> '%s', mode: 0%03o)\n", __func__, fd,
 		  path, real_path, mode);
+	__fwarn_if_insuffisant_user_modeat(fd, real_path, mode, 0);
 
 	return next_mknodat(fd, real_path, mode, dev);
 }

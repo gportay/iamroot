@@ -58,6 +58,8 @@ int __open64(const char *path, int flags, ...)
 
 	__verbose("%s(path: '%s' -> '%s', flags: %x, mode: 0%03o)\n", __func__,
 		  path, real_path, flags, mode);
+	if (flags & O_CREAT)
+		__warn_if_insuffisant_user_mode(path, mode);
 
 	return next___open64(real_path, flags, mode);
 }

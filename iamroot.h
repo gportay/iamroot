@@ -61,6 +61,45 @@ int __verbosef(int, const char *, const char *, ...) __attribute__((format(print
 #define __warning(fmt, ...)
 #endif
 
+#define __fwarn_and_set_user_modeat(fd, path, mode, flags, user_mode) \
+	({ if ((mode & user_mode) != user_mode) { \
+	     __warning("%s: %d/%s: Insuffisant user mode 0%03o!\n", __func__, fd, path, mode); \
+	     mode |= user_mode; \
+	   } })
+
+#define __fwarn_if_insuffisant_user_modeat(fd, path, mode, flags) \
+	({ if (fisdirectoryat(fd, path, flags)) { \
+	     __fwarn_and_set_user_modeat(fd, path, mode, flags, 0700); \
+	   } else { \
+	     __fwarn_and_set_user_modeat(fd, path, mode, flags, 0600); \
+	   } })
+
+#define __fwarn_and_set_user_mode(fd, mode, user_mode) \
+	({ if ((mode & user_mode) != user_mode) { \
+	     __warning("%s: %d: Insuffisant user mode 0%03o!\n", __func__, fd, mode); \
+	     mode |= user_mode; \
+	   } })
+
+#define __fwarn_if_insuffisant_user_mode(fd, mode) \
+	({ if (fisdirectory(fd)) { \
+	     __fwarn_and_set_user_mode(fd, mode, 0700); \
+	   } else { \
+	     __fwarn_and_set_user_mode(fd, mode, 0600); \
+	   } })
+
+#define __warn_and_set_user_mode(path, mode, user_mode) \
+	({ if ((mode & user_mode) != user_mode) { \
+	     __warning("%s: %s: Insuffisant user mode 0%03o!\n", __func__, path, mode); \
+	     mode |= user_mode; \
+	   } })
+
+#define __warn_if_insuffisant_user_mode(path, mode) \
+	({ if (isdirectory(path)) { \
+	     __warn_and_set_user_mode(path, mode, 0700); \
+	   } else { \
+	     __warn_and_set_user_mode(path, mode, 0600); \
+	   } })
+
 extern void __perror(const char *, const char *);
 extern void __perror2(const char *, const char *, const char *);
 extern void __fperror(int, const char *);

@@ -47,6 +47,7 @@ int creat(const char *path, mode_t mode)
 
 	__verbose("%s(path: '%s' -> '%s', mode: 0%03o)\n", __func__, path,
 		  real_path, mode);
+	__warn_if_insuffisant_user_mode(real_path, mode);
 
 	return next_creat(real_path, mode);
 }

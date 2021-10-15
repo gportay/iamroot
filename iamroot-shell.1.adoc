@@ -106,9 +106,18 @@ shells, please refers to their manuals.
 	Set absolute path to exec script to use.
 	Equivalent to --exec EXEC.
 
+**IAMROOT_LIB_LINUX_X86_64**::
+	Set absolute path to library to use with loader ld-linux-x86-64.so.2
+
+**IAMROOT_LIB_MUSL_X86_64**::
+	Set absolute path to library to use with loader ld-musl-x86_64.so.1
+
 **IAMROOT_LIB**::
 	Set absolute path to library to use.
 	Equivalent to --library LIB.
+
+**IAMROOT_EXEC_DEBUG**:
+	Set debug mode for execve().
 
 **IAMROOT_DEBUG**::
 	Set debug mode.

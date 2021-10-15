@@ -24,7 +24,7 @@ int __vfprintf(FILE *f, int lvl, const char *fmt, va_list ap)
 	int ret;
 
 	debug = __debug();
-	if (debug < lvl || !inchroot())
+	if (debug < lvl || (!inchroot() && debug < 5))
 		return 0;
 
 	ret = fprintf(f, "%s: ", lvl == 0 ? "Warning" : "Debug");

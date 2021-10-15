@@ -63,6 +63,9 @@ shells, please refers to their manuals.
 **--library LIB**::
 	Absolute path to the iamroot library to use.
 
+**--fatal**::
+	Abort on error.
+
 **--debug**::
 	Turn on debug mode.
 
@@ -115,6 +118,10 @@ shells, please refers to their manuals.
 **IAMROOT_LIB**::
 	Set absolute path to library to use.
 	Equivalent to --library LIB.
+
+**IAMROOT_FATAL**::
+	Set abort on error.
+	Equivalent to --fatal.
 
 **IAMROOT_EXEC_DEBUG**:
 	Set debug mode for execve().

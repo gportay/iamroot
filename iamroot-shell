@@ -33,6 +33,7 @@ iamroot specific options:
       --exec FILE               Absolute path to the iamroot exec script to
                                 use.
       --library LIB             Absolute path to the iamroot library to use.
+      --fatal                   Abort on error.
       --debug                   Turn on debug mode.
       --debug-ignore REGEX      Regular expression of functions to ignore in
                                 debug mode.
@@ -71,6 +72,9 @@ Environment variables:
 
       IAMROOT_LIB_MUSL_X86_64   Set absolute path to library to use with loader
                                 ld-musl-x86_64.so.1
+
+      IAMROOT_FATAL             Set abort on error.
+                                Equivalent to --fatal.
 
       IAMROOT_EXEC_DEBUG        Set debug mode for execve().
 
@@ -132,6 +136,10 @@ do
 	then
 		IAMROOT_DEBUG="$((IAMROOT_DEBUG+1))"
 		export IAMROOT_DEBUG
+	elif [[ "$1" == "--fatal" ]]
+	then
+		IAMROOT_FATAL="1"
+		export IAMROOT_FATAL
 	elif [[ "$1" == "--library" ]]
 	then
 		shift

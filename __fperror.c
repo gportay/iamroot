@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <errno.h>
+#include <signal.h>
 
 #include "iamroot.h"
 
@@ -15,4 +16,6 @@ void __fperror(int fd, const char *s)
 		return;
 
 	__verbose("Warning: %i: %s: %m\n", fd, s);
+	if (__fatal())
+		raise(SIGABRT);
 }

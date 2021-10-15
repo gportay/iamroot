@@ -101,6 +101,12 @@ setenv:
 	return setenv(name, value, overwrite);
 }
 
+__attribute__((visibility("hidden")))
+int __fatal()
+{
+	return strtol(getenv("IAMROOT_FATAL") ?: "0", NULL, 0);
+}
+
 static inline char *rootdir()
 {
 	return getenv("IAMROOT_ROOT");

@@ -37,6 +37,8 @@ const char *getrootdir();
 int chrootdir(const char *);
 int inchroot();
 
+int __fatal();
+
 int __debug();
 int __verbosef(int, const char *, const char *, ...) __attribute__((format(printf,3,4)));
 

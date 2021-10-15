@@ -19,7 +19,7 @@
 
 extern char *next_getcwd(char *, size_t);
 extern int next_stat(const char *, struct stat *);
-extern int next_fstat(int, const struct stat *);
+extern int next_fstat(int, struct stat *);
 extern int next_lstat(const char *, struct stat *);
 extern int next_fstatat(int, const char *, struct stat *, int);
 extern int next___fstat(int, struct stat *);
@@ -29,7 +29,7 @@ extern int next___lxstat(int, const char *, struct stat *);
 extern int next___fxstatat(int, int, const char *, struct stat *, int);
 #ifdef __GLIBC__
 extern int next_stat64(const char *, struct stat64 *);
-extern int next_fstat64(int, const struct stat64 *);
+extern int next_fstat64(int, struct stat64 *);
 extern int next_lstat64(const char *, struct stat64 *);
 extern int next_fstatat64(int, const char *, struct stat64 *, int);
 extern int next___fstat64(int, struct stat64 *);

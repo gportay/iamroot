@@ -12,7 +12,7 @@
 
 int main(int argc, char * const argv[])
 {
-	mode_t mode = 0;
+	mode_t mode;
 
 	if (argc < 3) {
 		fprintf(stderr, "Too few arguments\n");

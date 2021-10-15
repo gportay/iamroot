@@ -48,5 +48,5 @@ int __xmknodat(int ver, int fd, const char *path, mode_t mode, dev_t *dev)
 	__verbose("%s(fd %i, path: '%s' -> '%s', mode: %o)\n", __func__, fd,
 		  path, real_path, mode);
 
-	return next___xmknodat(ver, fd, path, mode, dev);
+	return next___xmknodat(ver, fd, real_path, mode, dev);
 }

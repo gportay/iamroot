@@ -49,6 +49,6 @@ int creat64(const char *path, mode_t mode)
 	__verbose("%s(path: '%s' -> '%s', mode: %o)\n", __func__, path,
 		  real_path, mode);
 
-	return next_creat64(path, mode);
+	return next_creat64(real_path, mode);
 }
 #endif

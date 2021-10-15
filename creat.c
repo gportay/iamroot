@@ -48,5 +48,5 @@ int creat(const char *path, mode_t mode)
 	__verbose("%s(path: '%s' -> '%s', mode: %o)\n", __func__, path,
 		  real_path, mode);
 
-	return next_creat(path, mode);
+	return next_creat(real_path, mode);
 }

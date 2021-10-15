@@ -38,7 +38,7 @@ int next_fsetxattr(int fd, const char *name, const void *value, size_t size,
 int fsetxattr(int fd, const char *name, const void *value, size_t size,
 	      int flags)
 {
-	__verbose("%s(fd: %i, ...)\n", __func__, fd);
+	__verbose("%s(fd: %i, name: '%s', ...)\n", __func__, fd, name);
 
 	return next_fsetxattr(fd, name, value, size, flags);
 }

@@ -36,7 +36,7 @@ ssize_t next_fgetxattr(int fd, const char *name, void *value, size_t size)
 
 ssize_t fgetxattr(int fd, const char *name, void *value, size_t size)
 {
-	__verbose("%s(fd: %i, ...)\n", __func__, fd);
+	__verbose("%s(fd: %i, name: '%s', ...)\n", __func__, fd, name);
 
 	return next_fgetxattr(fd, name, value, size);
 }

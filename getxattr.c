@@ -46,7 +46,8 @@ ssize_t getxattr(const char *path, const char *name, void *value, size_t size)
 		return -1;
 	}
 
-	__verbose("%s(path: '%s' -> '%s', ...)\n", __func__, path, real_path);
+	__verbose("%s(path: '%s' -> '%s', name: '%s', ...)\n", __func__, path,
+		  real_path, name);
 
 	return next_getxattr(real_path, name, value, size);
 }

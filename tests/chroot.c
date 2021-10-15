@@ -15,7 +15,7 @@
 
 #include <unistd.h>
 
-int whereami(char *buf, size_t bufsize) __attribute__ ((weak));
+int whereami(char *buf, size_t bufsize) __attribute__((weak));
 
 static pid_t execvpf(const char *file, char * const argv[])
 {

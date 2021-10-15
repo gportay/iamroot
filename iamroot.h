@@ -38,7 +38,7 @@ int chrootdir(const char *);
 int inchroot();
 
 int __debug();
-int __verbosef(int, const char *, const char *, ...) __attribute__ ((format(printf,3,4)));
+int __verbosef(int, const char *, const char *, ...) __attribute__((format(printf,3,4)));
 
 #if !defined(NVERBOSE)
 #define __verbose(fmt, ...) __verbosef(1, __func__, fmt, __VA_ARGS__)

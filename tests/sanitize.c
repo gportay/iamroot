@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 
-extern char *sanitize(char *path, size_t bufsize) __attribute__ ((weak));
+extern char *sanitize(char *path, size_t bufsize) __attribute__((weak));
 
 int main(int argc, char * const argv[])
 {

@@ -6,8 +6,12 @@
 
 #include <stdio.h>
 #include <errno.h>
+#include <string.h>
 #include <limits.h>
 #include <dlfcn.h>
+#ifdef __linux__
+#include <linux/limits.h>
+#endif
 
 #include <sys/types.h>
 #include <sys/xattr.h>
@@ -36,8 +40,12 @@ ssize_t next_listxattr(const char *path, char *list, size_t size)
 
 ssize_t listxattr(const char *path, char *list, size_t size)
 {
+	char xbuf[XATTR_LIST_MAX + 1];
 	char buf[PATH_MAX];
 	char *real_path;
+	ssize_t siz = size;
+	ssize_t xsize;
+	ssize_t i, ret;
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {
@@ -47,5 +55,28 @@ ssize_t listxattr(const char *path, char *list, size_t size)
 
 	__verbose("%s(path: '%s' -> '%s', ...)\n", __func__, path, real_path);
 
-	return next_listxattr(real_path, list, size);
+	xsize = next_listxattr(real_path, xbuf, sizeof(xbuf)-1);
+	if (xsize == -1)
+		return -1;
+
+	xbuf[xsize] = 0; /* ensure NULL terminated */
+
+	ret = 0;
+	i = 0;
+	do {
+		size_t len = strlen(&xbuf[i]);
+		size_t off = 0;
+
+		if (__strncmp(&xbuf[i], "user.iamroot.") == 0)
+			off += sizeof("user.iamroot.") - 1;
+
+		if (list)
+			strcpy(&list[ret], &xbuf[i+off]);
+
+		i += len + 1;
+		ret += len + 1 - off;
+		siz -= len + 1 - off;
+	} while (i < xsize);
+
+	return ret;
 }

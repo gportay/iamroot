@@ -6,8 +6,12 @@
 
 #include <stdio.h>
 #include <errno.h>
+#include <string.h>
 #include <limits.h>
 #include <dlfcn.h>
+#ifdef __linux__
+#include <linux/limits.h>
+#endif
 
 #include <sys/types.h>
 #include <sys/xattr.h>
@@ -38,7 +42,22 @@ int next_fsetxattr(int fd, const char *name, const void *value, size_t size,
 int fsetxattr(int fd, const char *name, const void *value, size_t size,
 	      int flags)
 {
+	char xbuf[XATTR_NAME_MAX + 1];
+
 	__verbose("%s(fd: %i, name: '%s', ...)\n", __func__, fd, name);
+
+	if (__strncmp(name, "user") != 0) {
+		int ret;
+
+		ret = _snprintf(xbuf, sizeof(xbuf), "%s.%s",
+				"user.iamroot", name);
+		if (ret == -1) {
+			errno = ERANGE;
+			return -1;
+		}
+
+		name = xbuf;
+	}
 
 	return next_fsetxattr(fd, name, value, size, flags);
 }

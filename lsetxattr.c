@@ -6,9 +6,13 @@
 
 #include <stdio.h>
 #include <errno.h>
+#include <string.h>
 #include <limits.h>
 #include <fcntl.h>
 #include <dlfcn.h>
+#ifdef __linux__
+#include <linux/limits.h>
+#endif
 
 #include <sys/types.h>
 #include <sys/xattr.h>
@@ -39,6 +43,7 @@ int next_lsetxattr(const char *path, const char *name, const void *value,
 int lsetxattr(const char *path, const char *name, const void *value,
 	     size_t size, int flags)
 {
+	char xbuf[XATTR_NAME_MAX + 1];
 	char buf[PATH_MAX];
 	char *real_path;
 
@@ -51,6 +56,19 @@ int lsetxattr(const char *path, const char *name, const void *value,
 
 	__verbose("%s(path: '%s' -> '%s', name: '%s', ...)\n", __func__, path,
 		  real_path, name);
+
+	if (__strncmp(name, "user") != 0) {
+		int ret;
+
+		ret = _snprintf(xbuf, sizeof(xbuf), "%s.%s",
+				"user.iamroot", name);
+		if (ret == -1) {
+			errno = ERANGE;
+			return -1;
+		}
+
+		name = xbuf;
+	}
 
 	return next_lsetxattr(real_path, name, value, size, flags);
 }

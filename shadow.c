@@ -173,7 +173,7 @@ struct spwd *getspnam(const char *name)
 	return res;
 }
 
-/* Stolen from musl (src/passwd/fgetspent.c) */
+/* Stolen and hacked from musl (src/passwd/fgetspent.c) */
 #include <pthread.h>
 
 struct spwd *fgetspent(FILE *f)
@@ -185,6 +185,7 @@ struct spwd *fgetspent(FILE *f)
 	int cs;
 	pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &cs);
 	if (getline(&line, &size, f) >= 0 && __parsespent(line, &sp) >= 0) res = &sp;
+	else errno = ENOENT;
 	pthread_setcancelstate(cs, 0);
 	return res;
 }

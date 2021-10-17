@@ -48,7 +48,7 @@ int __getgrent_a(FILE *f, struct group *gr, char **line, size_t *size, char ***m
 	pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &cs);
 	for (;;) {
 		if ((l=getline(line, size, f)) < 0) {
-			rv = ferror(f) ? errno : 0;
+			rv = ferror(f) ? errno : ENOENT;
 			free(*line);
 			*line = 0;
 			gr = 0;

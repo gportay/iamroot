@@ -47,6 +47,11 @@ clean:
 	rm -Rf output-*/
 	rm -f libiamroot*.so*
 
+alpine-test: IAMROOT_LIB_MUSL_X86_64 = $(CURDIR)/libiamroot-musl-x86_64.so
+alpine-test: libiamroot-musl-x86_64.so | alpine-minirootfs
+	$(MAKE) -f Makefile $@
+	bash iamroot-shell -c "chroot alpine-minirootfs /lib/ld-musl-x86_64.so.1 --preload "$(IAMROOT_LIB_MUSL_X86_64)" bin/busybox"
+
 alpine-chroot: libiamroot-musl-x86_64.so
 
 ifneq ($(shell command -v musl-gcc),)

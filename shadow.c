@@ -2,7 +2,7 @@
  * Copyright      2021 Gaël PORTAY
  *           2005-2020 Rich Felker, et al.
  *
- * SPDX-License-Identifier: LGPL-2.1-or-later or MIT
+ * SPDX-License-Identifier: LGPL-2.1-or-later AND MIT
  */
 
 /* Stolen from musl (src/include/features.h) */

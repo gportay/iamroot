@@ -19,6 +19,8 @@ QEMU += -spice port=5924,disable-ticketing -device virtio-serial-pci -device vir
 endif
 QEMU += -serial mon:stdio
 
+VMLINUX_KVER ?= $(shell vmlinux --version)
+
 .PHONY: all
 all: libiamroot.so
 
@@ -340,9 +342,74 @@ arch-rootfs/etc/machine-id: | libiamroot.so
 	mkdir -p arch-rootfs
 	bash iamroot-shell -c "pacstrap arch-rootfs"
 
+vmlinux-alpine:
+vmlinux-%: override VMLINUXFLAGS+=panic=5
+vmlinux-%: override VMLINUXFLAGS+=console=tty0 con0=fd:0,fd:1 con=none
+vmlinux-%: override VMLINUXFLAGS+=mem=256M
+vmlinux-%: override VMLINUXFLAGS+=rw
+vmlinux-%: override VMLINUXFLAGS+=ubd0=$*.ext4
+vmlinux-%: override VMLINUXFLAGS+=$(CMDLINE)
+vmlinux-%: | %-rootfs/usr/lib/modules/$(VMLINUX_KVER) %.ext4
+	settings=$$(stty -g); \
+	if ! vmlinux $(VMLINUXFLAGS); then \
+		stty "$$settings"; \
+		false; \
+	fi; \
+	stty "$$settings"
+
+.PRECIOUS: %.ext4
+alpine.ext4:
+%.ext4:
+%.ext4: | libiamroot.so
+	$(MAKE) $*-postrootfs
+	rm -f $@.tmp
+	fallocate --length 2G $@.tmp
+	bash iamroot-shell -c "mkfs.ext4 -d $*-rootfs $@.tmp"
+	mv $@.tmp $@
+
+.PRECIOUS: %-rootfs/usr/lib/modules/$(VMLINUX_KVER)
+%-rootfs/usr/lib/modules/$(VMLINUX_KVER): | libiamroot.so %-rootfs
+	rm -Rf $@.tmp $@
+	mkdir -p $(@D)
+	bash iamroot-shell -c "rsync -a /usr/lib/modules/$(VMLINUX_KVER) $@.tmp"
+	mv $@.tmp $@
+
+alpine-postrootfs:
+	sed -e '/^root:x:/s,^root:x:,root::,' \
+	    -i alpine-rootfs/etc/passwd
+	sed -e '/^UNKNOWN$$:/d' \
+	    -e '1iUNKNOWN' \
+	    -i alpine-rootfs/etc/securetty
+	sed -e '/^tty[1-9]:/s,^,#,' \
+	    -e '/^#ttyS0/{s,^#,,;s,ttyS0,tty0,g}' \
+	    -i alpine-rootfs/etc/inittab
+	chmod +r alpine-rootfs/bin/bbsuid
+
+.PHONY: %-postrootfs
+%-postrootfs:
+
+chroot-alpine: PATH = /usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin
+chroot-alpine: SHELL = /bin/sh
+chroot-alpine:
+chroot-%:
+	$(MAKE) mount-$*
+	-sudo chroot mnt $(SHELL)
+	$(MAKE) umount-$*
+
+mount-alpine:
+mount-%: | %.ext4 mnt
+	sudo mount -oloop $*.ext4 mnt
+
+umount-alpine:
+umount-%: | mnt
+	sudo umount mnt
+
+mnt:
+	mkdir -p $@
+
 .PHONY: clean
 clean:
-	rm -f libiamroot.so *.o
+	rm -f libiamroot.so *.o *.ext4
 	chmod -f +w arch-rootfs/etc/ca-certificates/extracted/cadir || true
 	rm -Rf static-rootfs/ alpine-minirootfs/ arch-rootfs/ alpine-rootfs/
 	$(MAKE) -C tests $@

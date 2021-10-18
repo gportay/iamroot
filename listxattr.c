@@ -64,8 +64,11 @@ ssize_t listxattr(const char *path, char *list, size_t size)
 	ret = 0;
 	i = 0;
 	do {
-		size_t len = strlen(&xbuf[i]);
-		size_t off = 0;
+		size_t len, off = 0;
+
+		len = strlen(&xbuf[i]);
+		if (!len)
+			break;
 
 		if (__strncmp(&xbuf[i], "user.iamroot.") == 0)
 			off += sizeof("user.iamroot.") - 1;

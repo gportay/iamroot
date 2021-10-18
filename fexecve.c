@@ -12,7 +12,13 @@
 
 #define __syscall syscall
 
-/* Slolen from musl (src/internal/syscall_ret.c) */
+/*
+ * Slolen from musl (src/internal/syscall_ret.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 static long __syscall_ret(unsigned long r)
 {
 	if (r > -4096UL) {
@@ -22,7 +28,13 @@ static long __syscall_ret(unsigned long r)
 	return r;
 }
 
-/* Slolen from musl (src/internal/procfdname.c) */
+/*
+ * Slolen from musl (src/internal/procfdname.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 __attribute__((visibility("hidden")))
 void __procfdname(char *buf, unsigned fd)
 {
@@ -38,7 +50,13 @@ void __procfdname(char *buf, unsigned fd)
 	for (; fd; fd/=10) buf[--i] = '0' + fd%10;
 }
 
-/* Slolen from musl (src/process/fexecve.c) */
+/*
+ * Slolen from musl (src/process/fexecve.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 int fexecve(int fd, char * const argv[], char * const envp[])
 {
 	int r = __syscall(SYS_execveat, fd, "", argv, envp, AT_EMPTY_PATH);

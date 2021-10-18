@@ -33,7 +33,13 @@ exit:
 	return execve(path, argv, envp);
 }
 
-/* Stolen from musl (src/process/execvp.c) */
+/*
+ * Stolen from musl (src/process/execvp.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 static int __execvpe(const char *file, char * const argv[],
 		     char * const envp[])
 {

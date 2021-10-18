@@ -23,7 +23,13 @@
 extern ssize_t next_readlink(const char *, char *, size_t);
 extern char *next_getcwd(char *, size_t);
 
-/* Stolen from musl (src/misc/realpath.c) */
+/*
+ * Stolen from musl (src/misc/realpath.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 static size_t slash_len(const char *s)
 {
 	const char *s0 = s;
@@ -31,7 +37,13 @@ static size_t slash_len(const char *s)
 	return s-s0;
 }
 
-/* Stolen from musl (src/misc/realpath.c) */
+/*
+ * Stolen from musl (src/misc/realpath.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 char *next_realpath(const char *filename, char *resolved)
 {
 	char stack[PATH_MAX+1];

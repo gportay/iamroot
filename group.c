@@ -1,17 +1,28 @@
 /*
- * Copyright      2021 Gaël PORTAY
- *           2005-2020 Rich Felker, et al.
+ * Copyright 2021 Gaël PORTAY
  *
- * SPDX-License-Identifier: LGPL-2.1-or-later AND MIT
+ * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
-/* Stolen from musl (src/include/features.h) */
+/*
+ * Stolen from musl (src/include/features.h)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 #define weak __attribute__((__weak__))
 #define hidden __attribute__((__visibility__("hidden")))
 #define weak_alias(old, new) \
 	extern __typeof(old) new __attribute__((__weak__, __alias__(#old)))
 
-/* Stolen from musl (src/passwd/pwf.h) */
+/*
+ * Stolen from musl (src/passwd/pwf.h)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 #include <pwd.h>
 #include <grp.h>
 #include <shadow.h>
@@ -28,7 +39,13 @@ hidden int __getgrent_a(FILE *f, struct group *gr, char **line, size_t *size, ch
 hidden int __getgr_a(const char *name, gid_t gid, struct group *gr, char **buf, size_t *size, char ***mem, size_t *nmem, struct group **res);
 hidden int __parsespent(char *s, struct spwd *sp);
 
-/* Stolen and hacked from musl (src/passwd/getgrent_a.c) */
+/*
+ * Stolen and hacked from musl (src/passwd/getgrent_a.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 #include <pthread.h>
 
 static unsigned atou(char **s)
@@ -97,7 +114,13 @@ end:
 	return rv;
 }
 
-/* Stolen and hacked from musl (src/passwd/getgr_a.c) */
+/*
+ * Stolen and hacked from musl (src/passwd/getgr_a.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 #include <pthread.h>
 #include <byteswap.h>
 #include <string.h>
@@ -132,7 +155,13 @@ done:
 	return rv;
 }
 
-/* Stolen from musl (src/passwd/getgr_r.c) */
+/*
+ * Stolen from musl (src/passwd/getgr_r.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 #include <pthread.h>
 
 #define FIX(x) (gr->gr_##x = gr->gr_##x-line+buf)
@@ -182,7 +211,13 @@ int getgrgid_r(gid_t gid, struct group *gr, char *buf, size_t size, struct group
 	return getgr_r(0, gid, gr, buf, size, res);
 }
 
-/* Stolen from musl (src/passwd/fgetgrent.c) */
+/*
+ * Stolen from musl (src/passwd/fgetgrent.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 struct group *fgetgrent(FILE *f)
 {
 	static char *line, **mem;
@@ -193,7 +228,13 @@ struct group *fgetgrent(FILE *f)
 	return res;
 }
 
-/* Stolen from musl (src/passwd/getgrent.c) */
+/*
+ * Stolen from musl (src/passwd/getgrent.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 static FILE *f;
 static char *line, **mem;
 static struct group gr;
@@ -232,7 +273,13 @@ struct group *getgrnam(const char *name)
 	return res;
 }
 
-/* Stolen from musl (src/passwd/putgrent.c) */
+/*
+ * Stolen from musl (src/passwd/putgrent.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 #include <grp.h>
 #include <stdio.h>
 
@@ -250,7 +297,13 @@ done:
 	return r<0 ? -1 : 0;
 }
 
-/* Stolen an hacked from musl (src/passwd/getgrouplist.c) */
+/*
+ * Stolen an hacked from musl (src/passwd/getgrouplist.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 #include <grp.h>
 #include <string.h>
 #include <limits.h>

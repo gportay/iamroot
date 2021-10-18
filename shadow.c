@@ -1,17 +1,28 @@
 /*
- * Copyright      2021 Gaël PORTAY
- *           2005-2020 Rich Felker, et al.
+ * Copyright 2021 Gaël PORTAY
  *
- * SPDX-License-Identifier: LGPL-2.1-or-later AND MIT
+ * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
-/* Stolen from musl (src/include/features.h) */
+/*
+ * Stolen from musl (src/include/features.h)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 #define weak __attribute__((__weak__))
 #define hidden __attribute__((__visibility__("hidden")))
 #define weak_alias(old, new) \
 	extern __typeof(old) new __attribute__((__weak__, __alias__(#old)))
 
-/* Stolen from musl (src/passwd/pwf.h) */
+/*
+ * Stolen from musl (src/passwd/pwf.h)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 #include <pwd.h>
 #include <grp.h>
 #include <shadow.h>
@@ -28,7 +39,13 @@ hidden int __getgrent_a(FILE *f, struct group *gr, char **line, size_t *size, ch
 hidden int __getgr_a(const char *name, gid_t gid, struct group *gr, char **buf, size_t *size, char ***mem, size_t *nmem, struct group **res);
 hidden int __parsespent(char *s, struct spwd *sp);
 
-/* Stolen and hacked from musl (src/passwd/getspnam_r.c) */
+/*
+ * Stolen and hacked from musl (src/passwd/getspnam_r.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/stat.h>
@@ -155,7 +172,13 @@ int getspnam_r(const char *name, struct spwd *sp, char *buf, size_t size, struct
 }
 
 
-/* Stolen from musl (src/passwd/getspnam.c) */
+/*
+ * Stolen from musl (src/passwd/getspnam.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 #define LINE_LIM 256
 
 struct spwd *getspnam(const char *name)
@@ -173,7 +196,13 @@ struct spwd *getspnam(const char *name)
 	return res;
 }
 
-/* Stolen and hacked from musl (src/passwd/fgetspent.c) */
+/*
+ * Stolen and hacked from musl (src/passwd/fgetspent.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 #include <pthread.h>
 
 struct spwd *fgetspent(FILE *f)
@@ -190,7 +219,13 @@ struct spwd *fgetspent(FILE *f)
 	return res;
 }
 
-/* Stolen from musl (src/passwd/getspent.c) */
+/*
+ * Stolen from musl (src/passwd/getspent.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 void setspent()
 {
 }
@@ -204,7 +239,13 @@ struct spwd *getspent()
 	return 0;
 }
 
-/* Stolen and hacked from musl (src/passwd/putspent.c) */
+/*
+ * Stolen and hacked from musl (src/passwd/putspent.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 #include <shadow.h>
 #include <stdio.h>
 

@@ -1,17 +1,28 @@
 /*
- * Copyright      2021 Gaël PORTAY
- *           2005-2020 Rich Felker, et al.
+ * Copyright 2021 Gaël PORTAY
  *
- * SPDX-License-Identifier: LGPL-2.1-or-later AND MIT
+ * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
-/* Stolen from musl (src/include/features.h) */
+/*
+ * Stolen from musl (src/include/features.h)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 #define weak __attribute__((__weak__))
 #define hidden __attribute__((__visibility__("hidden")))
 #define weak_alias(old, new) \
 	extern __typeof(old) new __attribute__((__weak__, __alias__(#old)))
 
-/* Stolen from musl (src/passwd/pwf.h) */
+/*
+ * Stolen from musl (src/passwd/pwf.h)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 #include <pwd.h>
 #include <grp.h>
 #include <shadow.h>
@@ -28,7 +39,13 @@ hidden int __getgrent_a(FILE *f, struct group *gr, char **line, size_t *size, ch
 hidden int __getgr_a(const char *name, gid_t gid, struct group *gr, char **buf, size_t *size, char ***mem, size_t *nmem, struct group **res);
 hidden int __parsespent(char *s, struct spwd *sp);
 
-/* Stolen and hacked from musl (src/passwd/getpwent_a.c) */
+/*
+ * Stolen and hacked from musl (src/passwd/getpwent_a.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 #include <pthread.h>
 
 static unsigned atou(char **s)
@@ -83,7 +100,13 @@ int __getpwent_a(FILE *f, struct passwd *pw, char **line, size_t *size, struct p
 	return rv;
 }
 
-/* Stolen and hacked from musl (src/passwd/getpw_a.c) */
+/*
+ * Stolen and hacked from musl (src/passwd/getpw_a.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 #include <pthread.h>
 #include <byteswap.h>
 #include <string.h>
@@ -118,7 +141,13 @@ done:
 	return rv;
 }
 
-/* Stolen from musl (src/passwd/getpw_r.c) */
+/*
+ * Stolen from musl (src/passwd/getpw_r.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 #include <pthread.h>
 
 #define FIX(x) (pw->pw_##x = pw->pw_##x-line+buf)
@@ -161,7 +190,13 @@ int getpwuid_r(uid_t uid, struct passwd *pw, char *buf, size_t size, struct pass
 	return getpw_r(0, uid, pw, buf, size, res);
 }
 
-/* Stolen from musl (src/passwd/fgetpwent.c) */
+/*
+ * Stolen from musl (src/passwd/fgetpwent.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 struct passwd *fgetpwent(FILE *f)
 {
 	static char *line;
@@ -172,7 +207,13 @@ struct passwd *fgetpwent(FILE *f)
 	return res;
 }
 
-/* Stolen from musl (src/passwd/getpwent.c) */
+/*
+ * Stolen from musl (src/passwd/getpwent.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 static FILE *f;
 static char *line;
 static struct passwd pw;
@@ -209,7 +250,13 @@ struct passwd *getpwnam(const char *name)
 	return res;
 }
 
-/* Stolen from musl (src/passwd/putpwent.c) */
+/*
+ * Stolen from musl (src/passwd/putpwent.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 #include <pwd.h>
 #include <stdio.h>
 

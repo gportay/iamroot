@@ -429,7 +429,7 @@ alpine.ext4:
 %-rootfs/usr/lib/modules/$(VMLINUX_KVER): | libiamroot.so %-rootfs
 	rm -Rf $@.tmp $@
 	mkdir -p $(@D)
-	bash iamroot-shell -c "rsync -a /usr/lib/modules/$(VMLINUX_KVER) $@.tmp"
+	bash iamroot-shell -c "rsync -a /usr/lib/modules/$(VMLINUX_KVER)/. $@.tmp/."
 	mv $@.tmp $@
 
 alpine-postrootfs:

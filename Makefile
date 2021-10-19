@@ -19,6 +19,7 @@ QEMU += -spice port=5924,disable-ticketing -device virtio-serial-pci -device vir
 endif
 QEMU += -serial mon:stdio
 
+KVER ?= $(shell uname -r)
 VMLINUX_KVER ?= $(shell vmlinux --version)
 
 .PHONY: all
@@ -342,6 +343,63 @@ arch-rootfs/etc/machine-id: | libiamroot.so
 	mkdir -p arch-rootfs
 	bash iamroot-shell -c "pacstrap arch-rootfs"
 
+qemu-system-x86_64-alpine:
+qemu-system-x86_64-%: override CMDLINE += panic=5
+qemu-system-x86_64-%: override CMDLINE += console=ttyS0
+qemu-system-x86_64-%: override QEMUSYSTEMFLAGS += -enable-kvm -m 4G -machine q35 -smp 4 -cpu host
+qemu-system-x86_64-%: override QEMUSYSTEMFLAGS += -nographic -serial mon:stdio
+qemu-system-x86_64-%: override QEMUSYSTEMFLAGS += -kernel /boot/vmlinuz-linux
+qemu-system-x86_64-%: override QEMUSYSTEMFLAGS += -initrd initrd-rootfs.cpio
+qemu-system-x86_64-%: override QEMUSYSTEMFLAGS += -drive file=$*.ext4,if=virtio
+qemu-system-x86_64-%: override QEMUSYSTEMFLAGS += -append "$(CMDLINE)"
+qemu-system-x86_64-%: | %-rootfs/lib/modules/$(KVER) %.ext4 initrd-rootfs.cpio
+	qemu-system-x86_64 $(QEMUSYSTEMFLAGS)
+
+.PRECIOUS: %-rootfs/lib/modules/$(KVER) %-rootfs/usr/lib/modules/$(KVER)
+%-rootfs/lib/modules/$(KVER) %-rootfs/usr/lib/modules/$(KVER): | %-rootfs
+	rm -Rf $@.tmp $@
+	mkdir -p $@.tmp
+	rsync -a --include '*/' --include '*.ko*' --exclude '*' /usr/lib/modules/$(KVER)/. $@.tmp/.
+	find $@.tmp -name "*.zst" -exec unzstd -q --rm {} \;
+	mv $@.tmp $@
+
+initrd-rootfs.cpio: initrd-rootfs/init
+initrd-rootfs.cpio: initrd-rootfs/bin/sh
+initrd-rootfs.cpio: initrd-rootfs/etc/passwd
+initrd-rootfs.cpio: initrd-rootfs/etc/group
+initrd-rootfs.cpio: initrd-rootfs/etc/mdev.conf
+initrd-rootfs.cpio: initrd-rootfs/lib/modules/$(KVER)
+initrd-rootfs.cpio: initrd-rootfs/lib/modules/$(KVER)/modules.dep
+initrd-rootfs.cpio: initrd-rootfs/lib/modules/$(KVER)/modules.alias
+initrd-rootfs.cpio: initrd-rootfs/lib/modules/$(KVER)/modules.symbols
+
+initrd-rootfs/init: tinird.sh | initrd-rootfs
+	cp $< $@
+
+initrd-rootfs/bin/sh: | initrd-rootfs/bin/busybox initrd-rootfs/bin
+	ln -sf busybox $@
+
+initrd-rootfs/bin/busybox: busybox | initrd-rootfs/bin
+	cp $< $@
+
+initrd-rootfs/etc/passwd: | initrd-rootfs/etc
+	echo "root::0:0:root:/root:/bin/sh" >$@
+
+initrd-rootfs/etc/group: | initrd-rootfs/etc
+	echo "root:x:0:root" >$@
+
+initrd-rootfs/etc/mdev.conf: | initrd-rootfs/etc
+	echo '$$MODALIAS=.* root:root 660 @busybox modprobe "$$MODALIAS"' >$@
+
+initrd-rootfs initrd-rootfs/bin initrd-rootfs/etc:
+	mkdir -p $@
+
+initrd-rootfs/lib/modules/$(KVER)/modules.%: initrd-rootfs/bin/busybox | initrd-rootfs/lib/modules/$(KVER)
+	initrd-rootfs/bin/busybox depmod -b initrd-rootfs $(KVER) $(F@)
+
+%.cpio:
+	cd $* && find . | cpio -H newc -o -R root:root >$(CURDIR)/$@
+
 vmlinux-alpine:
 vmlinux-%: override VMLINUXFLAGS+=panic=5
 vmlinux-%: override VMLINUXFLAGS+=console=tty0 con0=fd:0,fd:1 con=none
@@ -380,8 +438,9 @@ alpine-postrootfs:
 	sed -e '/^UNKNOWN$$:/d' \
 	    -e '1iUNKNOWN' \
 	    -i alpine-rootfs/etc/securetty
-	sed -e '/^tty[1-9]:/s,^,#,' \
-	    -e '/^#ttyS0/{s,^#,,;s,ttyS0,tty0,g}' \
+	sed -e '/^tty1:/itty0::respawn:/sbin/getty 38400 tty0' \
+	    -e '/^tty[1-9]:/s,^,#,' \
+	    -e '/^#ttyS0:/s,^#,,g' \
 	    -i alpine-rootfs/etc/inittab
 	chmod +r alpine-rootfs/bin/bbsuid
 
@@ -409,7 +468,7 @@ mnt:
 
 .PHONY: clean
 clean:
-	rm -f libiamroot.so *.o *.ext4
+	rm -f libiamroot.so *.o *.ext4 *.cpio
 	chmod -f +w arch-rootfs/etc/ca-certificates/extracted/cadir || true
 	rm -Rf static-rootfs/ alpine-minirootfs/ arch-rootfs/ alpine-rootfs/
 	$(MAKE) -C tests $@

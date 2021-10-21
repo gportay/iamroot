@@ -352,11 +352,11 @@ qemu-system-x86_64-%: override QEMUSYSTEMFLAGS += -kernel /boot/vmlinuz-linux
 qemu-system-x86_64-%: override QEMUSYSTEMFLAGS += -initrd initrd-rootfs.cpio
 qemu-system-x86_64-%: override QEMUSYSTEMFLAGS += -drive file=$*.ext4,if=virtio
 qemu-system-x86_64-%: override QEMUSYSTEMFLAGS += -append "$(CMDLINE)"
-qemu-system-x86_64-%: | %-rootfs/lib/modules/$(KVER) %.ext4 initrd-rootfs.cpio
+qemu-system-x86_64-%: | %-rootfs/usr/lib/modules/$(KVER) %.ext4 initrd-rootfs.cpio
 	qemu-system-x86_64 $(QEMUSYSTEMFLAGS)
 
 .PRECIOUS: %-rootfs/lib/modules/$(KVER) %-rootfs/usr/lib/modules/$(KVER)
-%-rootfs/lib/modules/$(KVER) %-rootfs/usr/lib/modules/$(KVER): | %-rootfs
+%-rootfs/lib/modules/$(KVER): | %-rootfs
 	rm -Rf $@.tmp $@
 	mkdir -p $@.tmp
 	rsync -a --include '*/' --include '*.ko*' --exclude '*' /usr/lib/modules/$(KVER)/. $@.tmp/.
@@ -425,11 +425,11 @@ alpine.ext4:
 	bash iamroot-shell -c "mkfs.ext4 -d $*-rootfs $@.tmp"
 	mv $@.tmp $@
 
-.PRECIOUS: %-rootfs/usr/lib/modules/$(VMLINUX_KVER)
-%-rootfs/usr/lib/modules/$(VMLINUX_KVER): | libiamroot.so %-rootfs
+.PRECIOUS: %-rootfs/usr/lib/modules/$(KVER) %-rootfs/usr/lib/modules/$(VMLINUX_KVER)
+%-rootfs/usr/lib/modules/$(KVER) %-rootfs/usr/lib/modules/$(VMLINUX_KVER): | libiamroot.so %-rootfs
 	rm -Rf $@.tmp $@
 	mkdir -p $(@D)
-	bash iamroot-shell -c "rsync -a /usr/lib/modules/$(VMLINUX_KVER)/. $@.tmp/."
+	bash iamroot-shell -c "rsync -a /usr/lib/modules/$(@F)/. $@.tmp/."
 	mv $@.tmp $@
 
 alpine-postrootfs:

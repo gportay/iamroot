@@ -343,7 +343,7 @@ arch-rootfs/etc/machine-id: | libiamroot.so
 	mkdir -p arch-rootfs
 	bash iamroot-shell -c "pacstrap arch-rootfs"
 
-qemu-system-x86_64-alpine:
+qemu-system-x86_64-alpine qemu-system-x86_64-arch:
 qemu-system-x86_64-%: override CMDLINE += panic=5
 qemu-system-x86_64-%: override CMDLINE += console=ttyS0
 qemu-system-x86_64-%: override QEMUSYSTEMFLAGS += -enable-kvm -m 4G -machine q35 -smp 4 -cpu host
@@ -400,7 +400,7 @@ initrd-rootfs/lib/modules/$(KVER)/modules.%: initrd-rootfs/bin/busybox | initrd-
 %.cpio:
 	cd $* && find . | cpio -H newc -o -R root:root >$(CURDIR)/$@
 
-vmlinux-alpine:
+vmlinux-alpine vmlinux-arch:
 vmlinux-%: override VMLINUXFLAGS+=panic=5
 vmlinux-%: override VMLINUXFLAGS+=console=tty0 con0=fd:0,fd:1 con=none
 vmlinux-%: override VMLINUXFLAGS+=mem=256M
@@ -444,22 +444,30 @@ alpine-postrootfs:
 	    -i alpine-rootfs/etc/inittab
 	chmod +r alpine-rootfs/bin/bbsuid
 
+arch-postrootfs:
+	sed -e '/^root:x:/s,^root:x:,root::,' \
+	    -i arch-rootfs/etc/passwd
+	sed -e '/^root::/s,^root::,root:x:,' \
+	    -i arch-rootfs/etc/shadow
+	mkdir -p arch-rootfs/var/lib/systemd/linger
+	bash iamroot-shell --chroot $(CURDIR)/arch-rootfs -c "systemctl enable getty@tty0.service"
+
 .PHONY: %-postrootfs
 %-postrootfs:
 
 chroot-alpine: PATH = /usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin
 chroot-alpine: SHELL = /bin/sh
-chroot-alpine:
+chroot-alpine chroot-arch:
 chroot-%:
 	$(MAKE) mount-$*
 	-sudo chroot mnt $(SHELL)
 	$(MAKE) umount-$*
 
-mount-alpine:
+mount-alpine mount-arch:
 mount-%: | %.ext4 mnt
 	sudo mount -oloop $*.ext4 mnt
 
-umount-alpine:
+umount-alpine umount-arch:
 umount-%: | mnt
 	sudo umount mnt
 

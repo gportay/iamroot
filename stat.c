@@ -40,7 +40,6 @@ int stat(const char *path, struct stat *statbuf)
 {
 	char buf[PATH_MAX];
 	char *real_path;
-	int ret;
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {
@@ -48,9 +47,7 @@ int stat(const char *path, struct stat *statbuf)
 		return -1;
 	}
 
-	ret = rootstat(real_path, statbuf);
-
 	__verbose("%s(path: '%s' -> '%s', ...)\n", __func__, path, real_path);
 
-	return ret;
+	return rootstat(real_path, statbuf);
 }

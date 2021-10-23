@@ -41,7 +41,6 @@ int __xstat64(int ver, const char *path, struct stat64 *stat64buf)
 {
 	char buf[PATH_MAX];
 	char *real_path;
-	int ret;
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {
@@ -49,10 +48,8 @@ int __xstat64(int ver, const char *path, struct stat64 *stat64buf)
 		return -1;
 	}
 
-	ret = __rootxstat64(ver, real_path, stat64buf);
-
 	__verbose("%s(path: '%s' -> '%s', ...)\n", __func__, path, real_path);
 
-	return ret;
+	return __rootxstat64(ver, real_path, stat64buf);
 }
 #endif

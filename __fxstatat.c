@@ -42,7 +42,6 @@ int __fxstatat(int ver, int fd, const char *path, struct stat *statbuf,
 {
 	char buf[PATH_MAX];
 	char *real_path;
-	int ret;
 
 	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), flags);
 	if (!real_path) {
@@ -50,10 +49,8 @@ int __fxstatat(int ver, int fd, const char *path, struct stat *statbuf,
 		return -1;
 	}
 
-	ret = __rootfxstatat(ver, fd, real_path, statbuf, flags);
-
 	__verbose("%s(fd: %i, path: '%s' -> '%s', ...)\n", __func__, fd, path,
 		  real_path);
 
-	return ret;
+	return __rootfxstatat(ver, fd, real_path, statbuf, flags);
 }

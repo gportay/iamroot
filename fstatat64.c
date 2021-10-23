@@ -41,7 +41,6 @@ int fstatat64(int fd, const char *path, struct stat64 *statbuf, int flags)
 {
 	char buf[PATH_MAX];
 	char *real_path;
-	int ret;
 
 	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), flags);
 	if (!real_path) {
@@ -49,11 +48,9 @@ int fstatat64(int fd, const char *path, struct stat64 *statbuf, int flags)
 		return -1;
 	}
 
-	ret = rootfstatat64(fd, real_path, statbuf, flags);
-
 	__verbose("%s(fd: %i, path: '%s' -> '%s', ...)\n", __func__, fd, path,
 		  real_path);
 
-	return ret;
+	return rootfstatat64(fd, real_path, statbuf, flags);
 }
 #endif

@@ -419,7 +419,7 @@ vmlinux-%: | %-rootfs/usr/lib/modules/$(VMLINUX_KVER) %.ext4
 .PRECIOUS: %.ext4
 alpine.ext4:
 %.ext4:
-%.ext4: | libiamroot.so
+%.ext4: | libiamroot.so %-rootfs
 	$(MAKE) $*-postrootfs
 	rm -f $@.tmp
 	fallocate --length 2G $@.tmp

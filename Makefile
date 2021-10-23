@@ -167,6 +167,7 @@ libiamroot.so: tempnam.o
 libiamroot.so: tmpnam.o
 libiamroot.so: tmpnam_r.o
 libiamroot.so: truncate.o
+libiamroot.so: umask.o
 libiamroot.so: umount.o
 libiamroot.so: umount2.o
 libiamroot.so: unlink.o

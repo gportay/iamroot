@@ -29,8 +29,8 @@ _iamroot-shell()
 		rename renameat renameat2 rmdir running_in_chroot scandir
 		scandirat setxattr stat stat64 statfs statfs64 statvfs
 		statvfs64 statx symlink symlinkat tempnam tmpnam tmpnam_r
-		truncate umount umount2 unlink unlinkat unshare utime utimensat
-		utimes)
+		truncate umask umount umount2 unlink unlinkat unshare utime
+		utimensat utimes)
 
 	COMMON_PATH=(/bin /sbin /usr/bin /usr/sbin /usr/local/bin
 		/usr/local/sbin)

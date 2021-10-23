@@ -36,7 +36,7 @@ int next_linkat(int oldfd, const char *oldpath, int newfd, const char *newpath,
 }
 
 int linkat(int oldfd, const char *oldpath, int newfd, const char *newpath,
-	     int flags)
+	   int flags)
 {
 	char oldbuf[PATH_MAX], newbuf[PATH_MAX];
 	char *real_oldpath, *real_newpath;

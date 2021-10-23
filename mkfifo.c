@@ -45,7 +45,7 @@ int mkfifo(const char *path, mode_t mode)
 		return -1;
 	}
 
-	__verbose("%s(path: '%s' -> '%s', mode: %o)\n", __func__, path,
+	__verbose("%s(path: '%s' -> '%s', mode: 0%03o)\n", __func__, path,
 		  real_path, mode);
 
 	return next_mkfifo(real_path, mode);

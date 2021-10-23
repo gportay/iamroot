@@ -451,6 +451,7 @@ arch-postrootfs:
 	sed -e '/^root::/s,^root::,root:x:,' \
 	    -i arch-rootfs/etc/shadow
 	mkdir -p arch-rootfs/var/lib/systemd/linger
+	rm -f arch-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
 	bash iamroot-shell --chroot $(CURDIR)/arch-rootfs -c "systemctl enable getty@tty0.service"
 
 .PHONY: %-postrootfs

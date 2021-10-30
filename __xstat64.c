@@ -18,7 +18,7 @@
 extern int __rootxstat64(int, const char *, struct stat64 *);
 
 __attribute__((visibility("hidden")))
-int next___xstat64(int ver, const char *path, struct stat64 *stat64buf)
+int next___xstat64(int ver, const char *path, struct stat64 *statbuf)
 {
 	int (*sym)(int, const char *, struct stat64 *);
 	int ret;
@@ -30,14 +30,14 @@ int next___xstat64(int ver, const char *path, struct stat64 *stat64buf)
 		return -1;
 	}
 
-	ret = sym(ver, path, stat64buf);
+	ret = sym(ver, path, statbuf);
 	if (ret == -1)
 		__perror(path, __func__);
 
 	return ret;
 }
 
-int __xstat64(int ver, const char *path, struct stat64 *stat64buf)
+int __xstat64(int ver, const char *path, struct stat64 *statbuf)
 {
 	char buf[PATH_MAX];
 	char *real_path;
@@ -50,6 +50,6 @@ int __xstat64(int ver, const char *path, struct stat64 *stat64buf)
 
 	__verbose("%s(path: '%s' -> '%s', ...)\n", __func__, path, real_path);
 
-	return __rootxstat64(ver, real_path, stat64buf);
+	return __rootxstat64(ver, real_path, statbuf);
 }
 #endif

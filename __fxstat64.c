@@ -17,7 +17,7 @@
 extern int __rootfxstat64(int, int, struct stat64 *);
 
 __attribute__((visibility("hidden")))
-int next___fxstat64(int ver, int fd, struct stat64 *stat64buf)
+int next___fxstat64(int ver, int fd, struct stat64 *statbuf)
 {
 	int (*sym)(int, int, struct stat64 *);
 	int ret;
@@ -29,17 +29,17 @@ int next___fxstat64(int ver, int fd, struct stat64 *stat64buf)
 		return -1;
 	}
 
-	ret = sym(ver, fd, stat64buf);
+	ret = sym(ver, fd, statbuf);
 	if (ret == -1)
 		__fperror(fd, __func__);
 
 	return ret;
 }
 
-int __fxstat64(int ver, int fd, struct stat64 *stat64buf)
+int __fxstat64(int ver, int fd, struct stat64 *statbuf)
 {
 	__verbose("%s(fd: %i, ...)\n", __func__, fd);
 
-	return __rootfxstat64(ver, fd, stat64buf);
+	return __rootfxstat64(ver, fd, statbuf);
 }
 #endif

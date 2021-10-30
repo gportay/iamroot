@@ -15,7 +15,7 @@
 
 #ifdef __GLIBC__
 __attribute__((visibility("hidden")))
-int next_statvfs64(const char *path, struct statvfs64 *statvfs64buf)
+int next_statvfs64(const char *path, struct statvfs64 *statvfsbuf)
 {
 	int (*sym)(const char *, struct statvfs64 *);
 	int ret;
@@ -27,14 +27,14 @@ int next_statvfs64(const char *path, struct statvfs64 *statvfs64buf)
 		return -1;
 	}
 
-	ret = sym(path, statvfs64buf);
+	ret = sym(path, statvfsbuf);
 	if (ret == -1)
 		__perror(path, __func__);
 
 	return ret;
 }
 
-int statvfs64(const char *path, struct statvfs64 *statvfs64buf)
+int statvfs64(const char *path, struct statvfs64 *statvfsbuf)
 {
 	char buf[PATH_MAX];
 	char *real_path;
@@ -47,6 +47,6 @@ int statvfs64(const char *path, struct statvfs64 *statvfs64buf)
 
 	__verbose("%s(path: '%s' -> '%s', ...)\n", __func__, path, real_path);
 
-	return next_statvfs64(real_path, statvfs64buf);
+	return next_statvfs64(real_path, statvfsbuf);
 }
 #endif

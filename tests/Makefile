@@ -15,11 +15,13 @@ TESTS += faccessat
 TESTS += fchmodat
 TESTS += fchown
 TESTS += fchownat
+TESTS += fstat
 TESTS += fstatat
 TESTS += get_current_dir_name
 TESTS += lchown
 TESTS += link
 TESTS += linkat
+TESTS += lstat
 TESTS += lutimes
 TESTS += mkdir
 TESTS += mkdirat
@@ -37,6 +39,7 @@ TESTS += rmdir
 TESTS += sanitize
 TESTS += scandir
 TESTS += scandirat
+TESTS += stat
 TESTS += statfs
 TESTS += statvfs
 TESTS += statx
@@ -80,6 +83,12 @@ test:
 	IAMROOT_ROOT=$(CURDIR) /faccessat - /Makefile 0 0
 	fchown file 0 0
 	fchownat - file 0 0
+	stat file
+	IAMROOT_ROOT=$(CURDIR) /stat /file
+	lstat symlink0
+	IAMROOT_ROOT=$(CURDIR) /lstat /symlink0
+	fstat file
+	IAMROOT_ROOT=$(CURDIR) /fstat file
 	fstatat - file 0 0
 	IAMROOT_ROOT=$(CURDIR) /fstatat - /file 0 0
 	lchown symlink0 0 0

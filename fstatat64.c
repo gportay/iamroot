@@ -18,9 +18,9 @@
 extern int rootfstatat64(int, const char *, struct stat64 *, int);
 
 __attribute__((visibility("hidden")))
-int next_fstatat64(int fd, const char *path, struct stat *statbuf, int flags)
+int next_fstatat64(int fd, const char *path, struct stat64 *statbuf, int flags)
 {
-	int (*sym)(int, const char *, struct stat *, int);
+	int (*sym)(int, const char *, struct stat64 *, int);
 	int ret;
 
 	sym = dlsym(RTLD_NEXT, "fstatat64");

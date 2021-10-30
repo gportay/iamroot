@@ -23,7 +23,7 @@ int __vfprintf(FILE *f, int lvl, const char *fmt, va_list ap)
 	int debug;
 	int ret;
 
-	debug = strtoul(getenv("IAMROOT_DEBUG") ?: "0", NULL, 0);
+	debug = __debug();
 	if (debug < lvl || !inchroot())
 		return 0;
 

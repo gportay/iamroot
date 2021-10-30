@@ -417,7 +417,7 @@ vmlinux-%: | %-rootfs/usr/lib/modules/$(VMLINUX_KVER) %.ext4
 	stty "$$settings"
 
 .PRECIOUS: %.ext4
-alpine.ext4:
+alpine.ext4 arch.ext4:
 %.ext4:
 %.ext4: | libiamroot.so %-rootfs
 	$(MAKE) $*-postrootfs

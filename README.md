@@ -15,9 +15,7 @@ userspace.
 The project targets the *Linux* userlands [glibc] and [musl]; the works to
 support *BSD* userlands such as [FreeBSD] or [OpenBSD] is on-going.
 
-Also, the project compiles and runs on [Arch Linux]; it will be tested accross
-the [Debian] versions `unstable`, `testing` and `stable`, and `oldstable` and
-`oldoldstable`
+The project compiles and runs on [Arch Linux] and [Debian].
 
 ## HOW IT WORKS
 

@@ -33,6 +33,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `stat()` and `stat64()` calls the internal functions `__rootfxstatat()`,
   `__rootfxstatat64()`, `rootfstatat()` and `rootfstatat64()`
 - Output the architecture, the libc and the pid on level 6 and above
+- Output the architecture and the libc as platform
 
 ### Fixed
 

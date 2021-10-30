@@ -179,8 +179,8 @@ static int __vdverbosef(int fd, int lvl, const char *func, const char *fmt,
 		dprintf(fd, "\033[0m");
 
 	if (debug > 5)
-		ret += dprintf(fd, "%s: %s: pid: %u: ", __libc(), __arch(),
-			       getpid());
+		ret += dprintf(fd, "platform: %s/%s: pid: %u: ", __libc(),
+			       __arch(), getpid());
 
 	ret += vdprintf(fd, fmt, ap);
 	return ret;

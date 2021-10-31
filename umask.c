@@ -57,5 +57,7 @@ mode_t umask(mode_t mask)
 	next_umask(real_mask);
 	__setumask(mask);
 
+	__warn_if_too_restrictive_umask(mask);
+
 	return ret;
 }

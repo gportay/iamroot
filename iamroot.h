@@ -100,6 +100,15 @@ int __verbosef(int, const char *, const char *, ...) __attribute__((format(print
 	     __warn_and_set_user_mode(path, mode, 0600); \
 	   } })
 
+#define __warn_and_set_umask(mask, user_mask) \
+	({ if (mask & user_mask) { \
+	     __warning("%s: Too restrictive umask 0%03o!\n", __func__, mask); \
+	     mask &= ~(user_mask); \
+	   } })
+
+#define __warn_if_too_restrictive_umask(mask) \
+	({ __warn_and_set_umask(mask, 0400); })
+
 extern void __perror(const char *, const char *);
 extern void __perror2(const char *, const char *, const char *);
 extern void __fperror(int, const char *);

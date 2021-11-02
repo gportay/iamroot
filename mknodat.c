@@ -15,6 +15,8 @@
 
 #include "iamroot.h"
 
+extern int next_creat(const char *, mode_t);
+
 __attribute__((visibility("hidden")))
 int next_mknodat(int fd, const char *path, mode_t mode, dev_t dev)
 {
@@ -51,7 +53,7 @@ int mknodat(int fd, const char *path, mode_t mode, dev_t dev)
 		  path, real_path, mode);
 	__fwarn_if_insuffisant_user_modeat(fd, real_path, mode, 0);
 
-	fd = creat(real_path, mode);
+	fd = next_creat(real_path, mode);
 	if (fd == -1)
 		return -1;
 

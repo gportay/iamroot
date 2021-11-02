@@ -15,6 +15,8 @@
 
 #include "iamroot.h"
 
+extern int next_creat(const char *, mode_t);
+
 __attribute__((visibility("hidden")))
 int next_mknod(const char *path, mode_t mode, dev_t dev)
 {
@@ -52,7 +54,7 @@ int mknod(const char *path, mode_t mode, dev_t dev)
 		  real_path, mode);
 	__warn_if_insuffisant_user_mode(real_path, mode);
 
-	fd = creat(path, mode);
+	fd = next_creat(path, mode);
 	if (fd == -1)
 		return -1;
 

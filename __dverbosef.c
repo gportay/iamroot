@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -21,11 +22,11 @@ static void __regex_perror(const char *s, regex_t *regex, int err)
 	char buf[128];
 	regerror(err, regex, buf, sizeof(buf));
 	if (!s) {
-		fprintf(stderr, "%s\n", buf);
+		dprintf(STDERR_FILENO, "%s\n", buf);
 		return;
 	}
 
-	fprintf(stderr, "%s: %s\n", s, buf);
+	dprintf(STDERR_FILENO, "%s: %s\n", s, buf);
 }
 
 __attribute__((constructor))

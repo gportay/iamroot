@@ -113,7 +113,7 @@ extern void __perror(const char *, const char *);
 extern void __perror2(const char *, const char *, const char *);
 extern void __fperror(int, const char *);
 
-#define __dl_perror(s) fprintf(stderr, "%s: %s\n", s, dlerror())
+#define __dl_perror(s) dprintf(2, "%s: %s\n", s, dlerror())
 
 #ifdef __cplusplus
 }

@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#include <unistd.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -45,11 +46,11 @@ static void __regex_perror(const char *s, regex_t *regex, int err)
 	char buf[128];
 	regerror(err, regex, buf, sizeof(buf));
 	if (!s) {
-		fprintf(stderr, "%s\n", buf);
+		dprintf(STDERR_FILENO, "%s\n", buf);
 		return;
 	}
 
-	fprintf(stderr, "%s: %s\n", s, buf);
+	dprintf(STDERR_FILENO, "%s: %s\n", s, buf);
 }
 
 __attribute__((constructor))
@@ -269,20 +270,20 @@ static void verbose_exec(const char *path, char * const argv[],
 	if (debug > 0) {
 		char * const *p;
 
-		fprintf(stderr, "Debug: %s: pid: %i: execve(path: '%s', argv: {",
+		dprintf(STDERR_FILENO, "Debug: %s: pid: %i: execve(path: '%s', argv: {",
 			__libc(), getpid(), path);
 		p = argv;
 		while (*p)
-			fprintf(stderr, " '%s',", *p++);
-		fprintf(stderr, " NULL }, ");
+			dprintf(STDERR_FILENO, " '%s',", *p++);
+		dprintf(STDERR_FILENO, " NULL }, ");
 		if (debug == 1) {
-			fprintf(stderr, "...)\n");
+			dprintf(STDERR_FILENO, "...)\n");
 		} else if (debug > 1) {
-			fprintf(stderr, "envp:");
+			dprintf(STDERR_FILENO, "envp:");
 			p = envp;
 			while (*p)
-				fprintf(stderr, " %s", *p++);
-			fprintf(stderr, " }\n");
+				dprintf(STDERR_FILENO, " %s", *p++);
+			dprintf(STDERR_FILENO, " }\n");
 		}
 	}
 }

@@ -92,13 +92,13 @@ int __vfverbosef(FILE *f, int lvl, const char *func, const char *fmt,
 }
 
 __attribute__((visibility("hidden")))
-int __fverbosef(int lvl, const char *func, const char *fmt, ...)
+int __fverbosef(FILE *f, int lvl, const char *func, const char *fmt, ...)
 {
 	va_list ap;
 	int ret;
 
 	va_start(ap, fmt);
-	ret = __vfverbosef(stderr, lvl, func, fmt, ap);
+	ret = __vfverbosef(f, lvl, func, fmt, ap);
 	va_end(ap);
 	return ret;
 }

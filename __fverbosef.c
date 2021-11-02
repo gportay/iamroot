@@ -13,7 +13,6 @@
 #include "iamroot.h"
 
 extern int __vfprintf(FILE *, int, const char *, va_list);
-extern int __fprintf(FILE *, int, const char *, ...) __attribute__((format(printf,3,4)));
 
 static regex_t *re;
 

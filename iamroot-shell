@@ -35,6 +35,7 @@ iamroot specific options:
       --library LIB             Absolute path to the iamroot library to use.
       --fatal                   Abort on error.
       --debug                   Turn on debug mode.
+      --debug-fd FD             Set debug fd.
       --debug-ignore REGEX      Regular expression of functions to ignore in
                                 debug mode.
                                 Does not imply --debug.
@@ -80,6 +81,9 @@ Environment variables:
 
       IAMROOT_DEBUG             Set debug mode.
                                 Equivalent to --debug.
+
+      IAMROOT_DEBUG_FD          Set debug fd.
+                                Equivalent to --debug-fd.
 
       IAMROOT_DEBUG_IGNORE      Set functions to ignore in debug mode.
                                 Equivalent to --debug-ignore.
@@ -132,6 +136,11 @@ do
 		shift
 		IAMROOT_DEBUG_IGNORE="$1"
 		export IAMROOT_DEBUG_IGNORE
+	elif [[ "$1" == "--debug-fd" ]]
+	then
+		shift
+		IAMROOT_DEBUG_FD="$1"
+		export IAMROOT_DEBUG_FD
 	elif [[ "$1" == "--debug" ]]
 	then
 		IAMROOT_DEBUG="$((IAMROOT_DEBUG+1))"
@@ -174,6 +183,11 @@ do
 	fi
 	shift
 done
+
+if [[ "${IAMROOT_DEBUG_FD:-}" ]] && [[ ! -e "/proc/$$/$IAMROOT_DEBUG_FD" ]]
+then
+	exec {IAMROOT_DEBUG_FD}>&2
+fi
 
 EUID=0 \
 IAMROOTLVL="$((IAMROOTLVL+1))" \

@@ -13,6 +13,11 @@
 
 #include "iamroot.h"
 
+int __debug_fd()
+{
+	return STDERR_FILENO;
+}
+
 int pathsetenv(const char *root, const char *name, const char *value,
 	       int overwrite)
 {

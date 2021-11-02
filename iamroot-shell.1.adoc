@@ -69,6 +69,9 @@ shells, please refers to their manuals.
 **--debug**::
 	Turn on debug mode.
 
+**--debug-fd FD**::
+	Set debug fd.
+
 **--debug-ignore REGEX**::
 	Regular expression of functions to ignore in debug mode.
 	Does not imply --debug.
@@ -129,6 +132,10 @@ shells, please refers to their manuals.
 **IAMROOT_DEBUG**::
 	Set debug mode.
 	Equivalent to --debug.
+
+**IAMROOT_DEBUG_FD**::
+	Set debug fd.
+	Equivalent to --debug-fd.
 
 **IAMROOT_DEBUG_IGNORE**::
 	Set functions to ignore in debug mode.

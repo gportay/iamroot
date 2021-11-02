@@ -80,6 +80,12 @@ _iamroot-shell()
 		COMPREPLY=($(compgen -P "$prefix" -W "${wordlist[*]}" -S '\:' -- "$realcur"))
 		return 0
 		;;
+	--debug-fd)
+		local fds
+		mapfile -t fds < <(for fd in /proc/self/fd/*; do echo "${fd##*/}"; done)
+		COMPREPLY=($(compgen -W "${fds[*]}" -- "$cur"))
+		return 0
+		;;
 	--debug-ignore)
 		local prefix realcur wordlist
 		realcur="${cur##*\|}"
@@ -146,7 +152,7 @@ _iamroot-shell()
 
 	if [[ "$shell" != 1 ]]
 	then
-		COMPREPLY+=($(compgen -W "--chroot --path --ld-library-path --exec --library --fatal --debug --debug-ignore --exec-ignore --path-resolution-ignore --version" -- "$cur"))
+		COMPREPLY+=($(compgen -W "--chroot --path --ld-library-path --exec --library --fatal --debug --debug-fd --debug-ignore --exec-ignore --path-resolution-ignore --version" -- "$cur"))
 	fi
 } &&
 complete -F _iamroot-shell iamroot-shell

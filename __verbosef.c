@@ -19,6 +19,12 @@ int __debug()
 	return strtol(getenv("IAMROOT_DEBUG") ?: "0", NULL, 0);
 }
 
+__attribute__((visibility("hidden")))
+int __debug_fd()
+{
+	return strtol(getenv("IAMROOT_DEBUG_FD") ?: "2", NULL, 0);
+}
+
 static regex_t *re;
 
 static void __regex_perror(const char *s, regex_t *regex, int err)
@@ -26,11 +32,11 @@ static void __regex_perror(const char *s, regex_t *regex, int err)
 	char buf[128];
 	regerror(err, regex, buf, sizeof(buf));
 	if (!s) {
-		dprintf(STDERR_FILENO, "%s\n", buf);
+		dprintf(DEBUG_FILENO, "%s\n", buf);
 		return;
 	}
 
-	dprintf(STDERR_FILENO, "%s: %s\n", s, buf);
+	dprintf(DEBUG_FILENO, "%s: %s\n", s, buf);
 }
 
 __attribute__((constructor))
@@ -115,7 +121,7 @@ int __verbosef(int lvl, const char *func, const char *fmt, ...)
 	int ret;
 
 	va_start(ap, fmt);
-	ret = __vdverbosef(STDERR_FILENO, lvl, func, fmt, ap);
+	ret = __vdverbosef(DEBUG_FILENO, lvl, func, fmt, ap);
 	va_end(ap);
 	return ret;
 }

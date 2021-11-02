@@ -4,10 +4,12 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#include <unistd.h>
 #include <stdio.h>
 #include <errno.h>
 #include <limits.h>
 #include <dlfcn.h>
+#include <fcntl.h>
 
 #include <sys/stat.h>
 
@@ -37,6 +39,8 @@ int mknod(const char *path, mode_t mode, dev_t dev)
 {
 	char buf[PATH_MAX];
 	char *real_path;
+	int fd;
+	(void)dev;
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {
@@ -48,5 +52,13 @@ int mknod(const char *path, mode_t mode, dev_t dev)
 		  real_path, mode);
 	__warn_if_insuffisant_user_mode(real_path, mode);
 
-	return next_mknod(real_path, mode, dev);
+	fd = creat(path, mode);
+	if (fd == -1)
+		return -1;
+
+	if (close(fd))
+		perror("close");
+
+	errno = 0;
+	return 0;
 }

@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#include <unistd.h>
 #include <stdio.h>
 #include <errno.h>
 #include <limits.h>
@@ -38,6 +39,8 @@ int __xmknodat(int ver, int fd, const char *path, mode_t mode, dev_t *dev)
 {
 	char buf[PATH_MAX];
 	char *real_path;
+	(void)ver;
+	(void)dev;
 
 	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), 0);
 	if (!real_path) {
@@ -49,5 +52,13 @@ int __xmknodat(int ver, int fd, const char *path, mode_t mode, dev_t *dev)
 		  path, real_path, mode);
 	__warn_if_insuffisant_user_mode(real_path, mode);
 
-	return next___xmknodat(ver, fd, real_path, mode, dev);
+	fd = creat(real_path, mode);
+	if (fd == -1)
+		return -1;
+
+	if (close(fd))
+		perror("close");
+
+	errno = 0;
+	return 0;
 }

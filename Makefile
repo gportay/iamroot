@@ -25,7 +25,6 @@ VMLINUX_KVER ?= $(shell vmlinux --version)
 .PHONY: all
 all: libiamroot.so
 
-libiamroot.so: __dprintf.o
 libiamroot.so: __dverbosef.o
 libiamroot.so: __fperror.o
 libiamroot.so: __fstat.o

@@ -13,7 +13,29 @@
 
 #include "iamroot.h"
 
-extern int __vdprintf(int, int, const char *, va_list);
+__attribute__((visibility("hidden")))
+int __debug()
+{
+	return strtol(getenv("IAMROOT_DEBUG") ?: "0", NULL, 0);
+}
+
+static int __vdprintf(int fd, int lvl, const char *fmt, va_list ap)
+{
+	int debug;
+	int ret;
+
+	debug = __debug();
+	if (debug < lvl || (!inchroot() && debug < 5))
+		return 0;
+
+	ret = dprintf(fd, "%s: ", lvl == 0 ? "Warning" : "Debug");
+
+	if (debug > 2)
+		ret += dprintf(fd, "%s: pid: %u: ", __libc(), getpid());
+
+	ret += vdprintf(fd, fmt, ap);
+	return ret;
+}
 
 static regex_t *re;
 

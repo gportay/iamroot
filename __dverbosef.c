@@ -12,7 +12,7 @@
 
 #include "iamroot.h"
 
-extern int __vfprintf(FILE *, int, const char *, va_list);
+extern int __vdprintf(int, int, const char *, va_list);
 
 static regex_t *re;
 
@@ -29,7 +29,7 @@ static void __regex_perror(const char *s, regex_t *regex, int err)
 }
 
 __attribute__((constructor))
-void fverbosef_init()
+void dverbosef_init()
 {
 	static regex_t regex;
 #ifndef JIMREGEXP_H
@@ -56,7 +56,7 @@ void fverbosef_init()
 }
 
 __attribute__((destructor))
-void fverbosef_fini()
+void dverbosef_fini()
 {
 	if (!re)
 		return;
@@ -82,23 +82,23 @@ static int ignore(const char *func)
 }
 
 __attribute__((visibility("hidden")))
-int __vfverbosef(FILE *f, int lvl, const char *func, const char *fmt,
+int __vdverbosef(int fd, int lvl, const char *func, const char *fmt,
 		 va_list ap)
 {
 	if (lvl != 0 && ignore(func))
 		return 0;
 
-	return __vfprintf(f, lvl, fmt, ap);
+	return __vdprintf(fd, lvl, fmt, ap);
 }
 
 __attribute__((visibility("hidden")))
-int __fverbosef(FILE *f, int lvl, const char *func, const char *fmt, ...)
+int __dverbosef(int fd, int lvl, const char *func, const char *fmt, ...)
 {
 	va_list ap;
 	int ret;
 
 	va_start(ap, fmt);
-	ret = __vfverbosef(f, lvl, func, fmt, ap);
+	ret = __vdverbosef(fd, lvl, func, fmt, ap);
 	va_end(ap);
 	return ret;
 }

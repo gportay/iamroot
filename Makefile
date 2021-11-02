@@ -26,11 +26,10 @@ VMLINUX_KVER ?= $(shell vmlinux --version)
 all: libiamroot.so
 
 libiamroot.so: __dprintf.o
+libiamroot.so: __dverbosef.o
 libiamroot.so: __fperror.o
-libiamroot.so: __fprintf.o
 libiamroot.so: __fstat.o
 libiamroot.so: __fstat64.o
-libiamroot.so: __fverbosef.o
 libiamroot.so: __fxstat.o
 libiamroot.so: __fxstat64.o
 libiamroot.so: __fxstatat.o
@@ -48,7 +47,6 @@ libiamroot.so: __opendir.o
 libiamroot.so: __opendirat.o
 libiamroot.so: __perror.o
 libiamroot.so: __perror2.o
-libiamroot.so: __printf.o
 libiamroot.so: __statfs.o
 libiamroot.so: __statfs64.o
 libiamroot.so: __verbosef.o

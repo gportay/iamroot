@@ -12,6 +12,12 @@
 
 #include "iamroot.h"
 
+__attribute__((visibility("hidden")))
+int __debug()
+{
+	return strtol(getenv("IAMROOT_DEBUG") ?: "0", NULL, 0);
+}
+
 int __vdprintf(int fd, int lvl, const char *fmt, va_list ap)
 {
 	int debug;

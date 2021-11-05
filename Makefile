@@ -315,6 +315,7 @@ arch-chroot: | arch-rootfs
 
 fedora-33-chroot:
 fedora-34-chroot:
+fedora-35-chroot:
 fedora-%-chroot: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
 fedora-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64 = /usr/lib64/libc.so.6:/usr/lib64/libdl.so.2
 fedora-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64:/usr/lib64/sssd:/usr/lib:/lib:/usr/lib/systemd
@@ -322,7 +323,7 @@ fedora-%-chroot: | fedora-%-rootfs
 	bash iamroot-shell -c "chroot fedora-$*-rootfs"
 
 .PHONY: rootfs
-rootfs: alpine-3.14-rootfs alpine-edge-rootfs arch-rootfs fedora-33-rootfs fedora-34-rootfs
+rootfs: alpine-3.14-rootfs alpine-edge-rootfs arch-rootfs fedora-33-rootfs fedora-34-rootfs fedora-35-rootfs
 
 .PHONY: static-rootfs
 static-rootfs: static-rootfs/usr/bin/sh
@@ -376,6 +377,7 @@ arch-rootfs/etc/machine-id: | libiamroot-linux-x86-64.so.2
 
 fedora-33-rootfs: | fedora-33-rootfs/etc/machine-id
 fedora-34-rootfs: | fedora-34-rootfs/etc/machine-id
+fedora-35-rootfs: | fedora-35-rootfs/etc/machine-id
 
 fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64 = /usr/lib64/libc.so.6:/usr/lib64/libdl.so.2
 fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64:/usr/lib64/sssd:/usr/lib:/lib:/usr/lib/systemd

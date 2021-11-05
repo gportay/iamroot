@@ -38,11 +38,11 @@ uid_t geteuid(void)
 	unsigned long ul;
 
 	errno = 0;
-	ul = strtoul(getenv("IAMROOT_GETEUID") ?: "0", NULL, 0);
+	ul = strtoul(getenv("IAMROOT_EUID") ?: "0", NULL, 0);
 	if (!errno)
 		return ul;
 
-	__verbose("%s(): IAMROOT_GETEUID: %lu\n", __func__, ul);
+	__verbose("%s(): IAMROOT_EUID: %lu\n", __func__, ul);
 
 	return 0;
 }

@@ -152,6 +152,10 @@ libiamroot.so: rmdir.o
 libiamroot.so: running_in_chroot.o
 libiamroot.so: scandir.o
 libiamroot.so: scandirat.o
+libiamroot.so: setegid.o
+libiamroot.so: setegid.o
+libiamroot.so: setgid.o
+libiamroot.so: setuid.o
 libiamroot.so: setxattr.o
 libiamroot.so: shadow.o
 libiamroot.so: stat.o
@@ -238,7 +242,7 @@ test: | libiamroot.so alpine-minirootfs
 static-test: SHELL = /bin/bash
 static-test: libiamroot.so | static-rootfs
 	bash iamroot-shell -c "whoami | tee /dev/stderr | grep -q \"^root\$$\""
-	bash iamroot-shell -c "IAMROOT_GETEUID=$$EUID whoami | tee /dev/stderr | grep -q \"^$$USER\$$\""
+	bash iamroot-shell -c "IAMROOT_EUID=$$EUID whoami | tee /dev/stderr | grep -q \"^$$USER\$$\""
 
 .PHONY: shell-test
 shell-test: libiamroot.so | static-rootfs

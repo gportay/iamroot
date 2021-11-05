@@ -14,35 +14,30 @@
 #include "iamroot.h"
 
 __attribute__((visibility("hidden")))
-uid_t next_getuid()
+int next_setgid(gid_t gid)
 {
-	uid_t (*sym)();
-	uid_t ret;
+	int (*sym)(gid_t);
+	int ret;
 
-	sym = dlsym(RTLD_NEXT, "geteuid");
+	sym = dlsym(RTLD_NEXT, "setgid");
 	if (!sym) {
 		__dl_perror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}
 
-	ret = sym();
-	if (ret == (uid_t)-1)
+	ret = sym(gid);
+	if (ret == -1)
 		__perror(NULL, __func__);
 
 	return ret;
 }
 
-uid_t getuid()
+int setgid(gid_t gid)
 {
-	unsigned long ul;
+	char buf[BUFSIZ];
 
-	errno = 0;
-	ul = strtoul(getenv("IAMROOT_UID") ?: "0", NULL, 0);
-	if (!errno)
-		return ul;
+	_snprintf(buf, sizeof(buf), "%u", gid);
 
-	__verbose("%s(): IAMROOT_UID: %lu\n", __func__, ul);
-
-	return 0;
+	return setenv("IAMROOT_GID", buf, 1);
 }

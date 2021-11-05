@@ -27,7 +27,6 @@ libiamroot-musl-x86_64.so: libiamroot-musl-x86_64.so.1
 libiamroot.so: $(wildcard *.c)
 
 libiamroot-musl-x86_64.so.1: export CC = musl-gcc
-libiamroot-musl-x86_64.so.1: export LDFLAGS += -nolibc
 
 .PRECIOUS: libiamroot-%.so.1 libiamroot-%.so.2
 libiamroot-%.so.1 libiamroot-%.so.2: output-%/libiamroot.so

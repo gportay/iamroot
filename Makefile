@@ -10,6 +10,7 @@ PREFIX ?= /usr/local
 %.o: override CFLAGS += -fPIC -Wall -Wextra -Werror
 %.o: override CFLAGS += -D_GNU_SOURCE
 %.o: override CFLAGS += -DARG_MAX=$(shell getconf ARG_MAX)
+%.so: override LDFLAGS += -nolibc
 
 QEMU ?= qemu-system-x86_64
 QEMU += -enable-kvm -m 4G -machine q35 -smp 4 -cpu host

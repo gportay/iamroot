@@ -256,19 +256,11 @@ static int exec_debug()
 	return strtoul(getenv("IAMROOT_EXEC_DEBUG") ?: "0", NULL, 0);
 }
 
-__attribute__((visibility("hidden")))
-int next_execve(const char *path, char * const argv[], char * const envp[])
+#if !defined(NVERBOSE)
+static void verbose_exec(const char *path, char * const argv[],
+			 char * const envp[])
 {
-	int (*sym)(const char *, char * const argv[], char * const envp[]);
 	int debug;
-	int ret;
-
-	sym = dlsym(RTLD_NEXT, "execve");
-	if (!sym) {
-		__dl_perror(__func__);
-		errno = ENOSYS;
-		return -1;
-	}
 
 	debug = exec_debug();
 	if (debug <= 0)
@@ -292,6 +284,25 @@ int next_execve(const char *path, char * const argv[], char * const envp[])
 				fprintf(stderr, " %s", *p++);
 			fprintf(stderr, " }\n");
 		}
+	}
+}
+#else
+#define verbose_exec()
+#endif
+
+__attribute__((visibility("hidden")))
+int next_execve(const char *path, char * const argv[], char * const envp[])
+{
+	int (*sym)(const char *, char * const argv[], char * const envp[]);
+	int ret;
+
+	verbose_exec(path, argv, envp);
+
+	sym = dlsym(RTLD_NEXT, "execve");
+	if (!sym) {
+		__dl_perror(__func__);
+		errno = ENOSYS;
+		return -1;
 	}
 
 	ret = sym(path, argv, envp);

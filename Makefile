@@ -483,7 +483,6 @@ mnt:
 .PHONY: clean
 clean:
 	rm -f libiamroot.so *.o *.ext4 *.cpio
-	chmod -f +w arch-rootfs/etc/ca-certificates/extracted/cadir || true
 	rm -Rf static-rootfs/ alpine-minirootfs/ arch-rootfs/ alpine-rootfs/
 	$(MAKE) -C tests $@
 

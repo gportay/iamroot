@@ -354,7 +354,7 @@ qemu-system-x86_64-%: override QEMUSYSTEMFLAGS += -kernel /boot/vmlinuz-linux
 qemu-system-x86_64-%: override QEMUSYSTEMFLAGS += -initrd initrd-rootfs.cpio
 qemu-system-x86_64-%: override QEMUSYSTEMFLAGS += -drive file=$*.ext4,if=virtio
 qemu-system-x86_64-%: override QEMUSYSTEMFLAGS += -append "$(CMDLINE)"
-qemu-system-x86_64-%: | %-rootfs/usr/lib/modules/$(KVER) %.ext4 initrd-rootfs.cpio
+qemu-system-x86_64-%: | %.ext4 initrd-rootfs.cpio
 	qemu-system-x86_64 $(QEMUSYSTEMFLAGS)
 
 .PRECIOUS: %-rootfs/lib/modules/$(KVER) %-rootfs/usr/lib/modules/$(KVER)
@@ -409,7 +409,7 @@ vmlinux-%: override VMLINUXFLAGS+=mem=256M
 vmlinux-%: override VMLINUXFLAGS+=rw
 vmlinux-%: override VMLINUXFLAGS+=ubd0=$*.ext4
 vmlinux-%: override VMLINUXFLAGS+=$(CMDLINE)
-vmlinux-%: | %-rootfs/usr/lib/modules/$(VMLINUX_KVER) %.ext4
+vmlinux-%: | %.ext4
 	settings=$$(stty -g); \
 	if ! vmlinux $(VMLINUXFLAGS); then \
 		stty "$$settings"; \
@@ -420,7 +420,7 @@ vmlinux-%: | %-rootfs/usr/lib/modules/$(VMLINUX_KVER) %.ext4
 .PRECIOUS: %.ext4
 alpine.ext4 arch.ext4:
 %.ext4:
-%.ext4: | libiamroot.so %-rootfs
+%.ext4: | libiamroot.so %-rootfs/usr/lib/modules/$(KVER) %-rootfs/usr/lib/modules/$(VMLINUX_KVER) %-rootfs
 	$(MAKE) $*-postrootfs
 	rm -f $@.tmp
 	fallocate --length 2G $@.tmp

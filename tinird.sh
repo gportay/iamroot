@@ -37,8 +37,27 @@ busybox xargs -0 busybox cat | \
 busybox xargs    busybox modprobe -a -b -q || \
 echo "Warning: Cannot modprobe all modules!" >&2
 
+# Parse command-line
+rootoptions=ro
+rootfstype=ext4
+root=/dev/vda
+for word in $(busybox cat /proc/cmdline)
+do
+	if [ "${word%%=*}" = "$word" ]
+	then
+		word="$word=1"
+	fi
+	eval "$(echo "$word")"
+done
+
+# Set root options
+if [ ! "$ro" ] && [ $rw ]
+then
+	rootoptions=rw
+fi
+
 # Wait for root device
-while ! test -b /dev/vda
+while ! test -b "$root"
 do
 	busybox mdev -s
 	busybox sleep 1
@@ -47,7 +66,7 @@ done
 # Mount root
 busybox mkdir /new_root
 busybox modprobe -a ext4 crc32c
-busybox mount -o ro -t ext4 /dev/vda /new_root
+busybox mount -o "$rootoptions" -t "$rootfstype" "$root" /new_root
 
 # Switch root
 busybox mount --move /proc /new_root/proc

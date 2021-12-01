@@ -282,9 +282,9 @@ chroot: libiamroot.so | static-rootfs
 mini-chroot: libiamroot.so | alpine-minirootfs
 	bash iamroot-shell -c "chroot alpine-minirootfs /bin/sh"
 
-.PHONY: alpine-chroot
-alpine-chroot: | alpine-rootfs
-	bash iamroot-shell -c "chroot alpine-rootfs /bin/ash"
+alpine-3.14-chroot:
+alpine-%-chroot: | alpine-%-rootfs
+	bash iamroot-shell -c "chroot alpine-$*-rootfs /bin/ash"
 
 .PHONY: arch-chroot
 arch-chroot: | arch-rootfs
@@ -321,11 +321,10 @@ alpine-minirootfs-3.13.0-x86_64.tar.gz:
 arch-rootfs/usr/bin/%: support/% | arch-rootfs
 	cp $< $@
 
-.PHONY: alpine-rootfs
-alpine-rootfs: | alpine-rootfs/bin/busybox
+alpine-3.14-rootfs: | alpine-3.14-rootfs/bin/busybox
 
-alpine-rootfs/bin/busybox: | libiamroot.so
-	bash iamroot-shell -c "alpine-make-rootfs alpine-rootfs --mirror-uri http://nl.alpinelinux.org/alpine --branch latest-stable"
+alpine-%-rootfs/bin/busybox: | libiamroot.so
+	bash iamroot-shell -c "alpine-make-rootfs alpine-$*-rootfs --mirror-uri http://nl.alpinelinux.org/alpine --branch $*"
 
 .PHONY: arch-rootfs
 arch-rootfs: | arch-rootfs/etc/machine-id
@@ -340,7 +339,7 @@ arch-rootfs/etc/machine-id: | libiamroot.so
 	mkdir -p arch-rootfs
 	bash iamroot-shell -c "pacstrap arch-rootfs"
 
-qemu-system-x86_64-alpine qemu-system-x86_64-arch:
+qemu-system-x86_64-alpine-3.14 qemu-system-x86_64-arch:
 qemu-system-x86_64-%: override CMDLINE += panic=5
 qemu-system-x86_64-%: override CMDLINE += console=ttyS0
 qemu-system-x86_64-%: override QEMUSYSTEMFLAGS += -enable-kvm -m 4G -machine q35 -smp 4 -cpu host
@@ -397,7 +396,7 @@ initrd-rootfs/lib/modules/$(KVER)/modules.%: initrd-rootfs/bin/busybox | initrd-
 %.cpio:
 	cd $* && find . | cpio -H newc -o -R root:root >$(CURDIR)/$@
 
-vmlinux-alpine vmlinux-arch:
+vmlinux-alpine-3.14 vmlinux-arch:
 vmlinux-%: override VMLINUXFLAGS+=panic=5
 vmlinux-%: override VMLINUXFLAGS+=console=tty0 con0=fd:0,fd:1 con=none
 vmlinux-%: override VMLINUXFLAGS+=mem=256M
@@ -413,7 +412,7 @@ vmlinux-%: | %.ext4
 	stty "$$settings"
 
 .PRECIOUS: %.ext4
-alpine.ext4 arch.ext4:
+alpine-3.14.ext4 arch.ext4:
 %.ext4:
 %.ext4: | libiamroot.so %-rootfs/usr/lib/modules/$(KVER) %-rootfs/usr/lib/modules/$(VMLINUX_KVER) %-rootfs
 	$(MAKE) $*-postrootfs
@@ -429,17 +428,17 @@ alpine.ext4 arch.ext4:
 	bash iamroot-shell -c "rsync -a /usr/lib/modules/$(@F)/. $@.tmp/."
 	mv $@.tmp $@
 
-alpine-postrootfs:
+alpine-%-postrootfs:
 	sed -e '/^root:x:/s,^root:x:,root::,' \
-	    -i alpine-rootfs/etc/passwd
+	    -i alpine-$*-rootfs/etc/passwd
 	sed -e '/^UNKNOWN$$:/d' \
 	    -e '1iUNKNOWN' \
-	    -i alpine-rootfs/etc/securetty
+	    -i alpine-$*-rootfs/etc/securetty
 	sed -e '/^tty1:/itty0::respawn:/sbin/getty 38400 tty0' \
 	    -e '/^tty[1-9]:/s,^,#,' \
 	    -e '/^#ttyS0:/s,^#,,g' \
-	    -i alpine-rootfs/etc/inittab
-	chmod +r alpine-rootfs/bin/bbsuid
+	    -i alpine-$*-rootfs/etc/inittab
+	chmod +r alpine-$*-rootfs/bin/bbsuid
 
 arch-postrootfs:
 	sed -e '/^root:x:/s,^root:x:,root::,' \
@@ -453,19 +452,19 @@ arch-postrootfs:
 .PHONY: %-postrootfs
 %-postrootfs:
 
-chroot-alpine: PATH = /usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin
-chroot-alpine: SHELL = /bin/sh
-chroot-alpine chroot-arch:
+chroot-alpine-%: PATH = /usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin
+chroot-alpine-%: SHELL = /bin/sh
+chroot-alpine-3.14 chroot-arch:
 chroot-%:
 	$(MAKE) mount-$*
 	-sudo chroot mnt $(SHELL)
 	$(MAKE) umount-$*
 
-mount-alpine mount-arch:
+mount-alpine-3.14 mount-arch:
 mount-%: | %.ext4 mnt
 	sudo mount -oloop $*.ext4 mnt
 
-umount-alpine umount-arch:
+umount-alpine-3.14 umount-arch:
 umount-%: | mnt
 	sudo umount mnt
 
@@ -498,7 +497,7 @@ mnt:
 .PHONY: clean
 clean:
 	rm -f libiamroot.so *.o *.ext4 *.cpio
-	rm -Rf static-rootfs/ alpine-minirootfs/ arch-rootfs/ alpine-rootfs/
+	rm -Rf *-rootfs/
 	$(MAKE) -C tests $@
 
 .PHONY: mrproper

@@ -48,8 +48,8 @@ clean:
 	rm -f libiamroot*.so*
 
 ifneq ($(shell command -v musl-gcc),)
-all test ci alpine-minirootfs alpine-rootfs alpine-chroot vmlinux-alpine qemu-system-x86_64-alpine: IAMROOT_LIB_MUSL_X86_64 = $(CURDIR)/libiamroot-musl-x86_64.so
-all test ci alpine-minirootfs alpine-rootfs alpine-chroot vmlinux-alpine qemu-system-x86_64-alpine: libiamroot-musl-x86_64.so
+all test ci alpine-minirootfs alpine-3.14-rootfs alpine-3.14-chroot vmlinux-alpine-3.14 qemu-system-x86_64-alpine-3.14: IAMROOT_LIB_MUSL_X86_64 = $(CURDIR)/libiamroot-musl-x86_64.so
+all test ci alpine-minirootfs alpine-3.14-rootfs alpine-3.14-chroot vmlinux-alpine-3.14 qemu-system-x86_64-alpine-3.14: libiamroot-musl-x86_64.so
 
 alpine-test: IAMROOT_LIB_MUSL_X86_64 = $(CURDIR)/libiamroot-musl-x86_64.so
 alpine-test: libiamroot-musl-x86_64.so | alpine-minirootfs

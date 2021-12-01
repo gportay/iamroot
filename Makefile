@@ -7,9 +7,9 @@
 VERSION = 2
 PREFIX ?= /usr/local
 
-override CFLAGS += -fPIC -Wall -Wextra -Werror
-override CFLAGS += -D_GNU_SOURCE
-override CFLAGS += -DARG_MAX=$(shell getconf ARG_MAX)
+%.o: override CFLAGS += -fPIC -Wall -Wextra -Werror
+%.o: override CFLAGS += -D_GNU_SOURCE
+%.o: override CFLAGS += -DARG_MAX=$(shell getconf ARG_MAX)
 
 QEMU ?= qemu-system-x86_64
 QEMU += -enable-kvm -m 4G -machine q35 -smp 4 -cpu host
@@ -296,13 +296,8 @@ static-rootfs: static-rootfs/bin
 static-rootfs: static-rootfs/root
 
 static-rootfs/usr/bin/sh: PATH := $(CURDIR):$(PATH)
-static-rootfs/usr/bin/sh: | busybox static-rootfs/usr/bin
-	busybox --install $(@D)
-
-busybox:
-	wget https://busybox.net/downloads/binaries/1.31.0-defconfig-multiarch-musl/busybox-x86_64
-	chmod +x busybox-x86_64
-	mv busybox-x86_64 $@
+static-rootfs/usr/bin/sh: | busybox-static static-rootfs/usr/bin
+	busybox-static --install $(@D)
 
 static-rootfs/bin: | static-rootfs/usr/bin
 	ln -sf usr/bin $@
@@ -381,7 +376,7 @@ initrd-rootfs/init: tinird.sh | initrd-rootfs
 initrd-rootfs/bin/sh: | initrd-rootfs/bin/busybox initrd-rootfs/bin
 	ln -sf busybox $@
 
-initrd-rootfs/bin/busybox: busybox | initrd-rootfs/bin
+initrd-rootfs/bin/busybox: busybox-static | initrd-rootfs/bin
 	cp $< $@
 
 initrd-rootfs/etc/passwd: | initrd-rootfs/etc
@@ -474,6 +469,29 @@ umount-alpine umount-arch:
 umount-%: | mnt
 	sudo umount mnt
 
+busybox-static: busybox/busybox
+	cp $< $@
+
+.SILENT: busybox/busybox
+busybox/busybox: busybox/.config
+	$(MAKE) -C busybox CONFIG_STATIC=y CC=musl-gcc LD=musl-gcc
+
+.SILENT: busybox/.config
+busybox/.config: busybox/Makefile
+	echo CONFIG_MODPROBE_SMALL=n >$@
+	yes "" | $(MAKE) -C busybox oldconfig
+
+.SILENT: busybox/Makefile
+busybox/Makefile:
+	wget -qO- https://www.busybox.net | \
+	sed -n '/<li><b>.* -- BusyBox .* (stable)<\/b>/,/<\/li>/{/<p>/s,.*<a.*href="\(.*\)">BusyBox \(.*\)</a>.*,wget -qO- \1 | tar xvj \&\& ln -sf busybox-\2 busybox,p}' | \
+	head -n 1 | \
+	$(SHELL)
+
+busybox_menuconfig:
+busybox_%:
+	$(MAKE) -C busybox $* CONFIG_STATIC=y CC=musl-gcc LD=musl-gcc
+
 mnt:
 	mkdir -p $@
 
@@ -485,7 +503,8 @@ clean:
 
 .PHONY: mrproper
 mrproper: clean
-	rm -f busybox alpine-minirootfs-3.13.0-x86_64.tar.gz
+	rm -f busybox-static alpine-minirootfs-3.13.0-x86_64.tar.gz
+	rm -Rf busybox/
 
 %.so: override LDFLAGS += -shared
 %.so:

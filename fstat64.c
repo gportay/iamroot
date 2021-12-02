@@ -47,7 +47,19 @@ int next_fstat64(int fd, struct stat64 *statbuf)
 
 int fstat64(int fd, struct stat64 *statbuf)
 {
-	__verbose("%s(fd: %i, ...)\n", __func__, fd);
+	char buf[PATH_MAX];
+	char *real_path;
+	ssize_t siz;
+
+	siz = __procfdreadlink(fd, buf, sizeof(buf));
+	if (siz == -1) {
+		perror("__procfdreadlink");
+		return -1;
+	}
+	buf[siz] = 0;
+	real_path = buf;
+
+	__verbose("%s(fd: %i <-> '%s', ...)\n", __func__, fd, real_path);
 
 	return rootfstat64(fd, statbuf);
 }

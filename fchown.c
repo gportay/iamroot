@@ -37,11 +37,23 @@ int next_fchown(int fd, uid_t owner, gid_t group)
 
 int fchown(int fd, uid_t owner, gid_t group)
 {
+	char buf[PATH_MAX];
+	char *real_path;
+	ssize_t siz;
+
+	siz = __procfdreadlink(fd, buf, sizeof(buf));
+	if (siz == -1) {
+		perror("__procfdreadlink");
+		return -1;
+	}
+	buf[siz] = 0;
+	real_path = buf;
+
 	owner = next_geteuid();
 	group = getegid();
 
-	__verbose("%s(fd: %i, owner: %i, group: %i)\n", __func__, fd, owner,
-		  group);
+	__verbose("%s(fd: %i -> '%s', owner: %i, group: %i)\n", __func__, fd,
+		  real_path, owner, group);
 
 	return next_fchown(fd, owner, group);
 }

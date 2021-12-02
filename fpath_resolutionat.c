@@ -13,7 +13,7 @@
 #include <dlfcn.h>
 #include <sys/stat.h>
 #include <regex.h>
-
+#include <assert.h>
 #include <fcntl.h>
 
 #include "iamroot.h"
@@ -21,7 +21,7 @@
 extern ssize_t next_readlink(const char *, char *, size_t);
 extern int next_lstat(const char *, struct stat *);
 
-static inline ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
+ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
 {
 	char tmp[sizeof("/proc/self/fd/") + 4];
 	__procfdname(tmp, fd);

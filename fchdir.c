@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <errno.h>
+#include <limits.h>
 #include <dlfcn.h>
 
 #include <unistd.h>
@@ -34,7 +35,18 @@ int next_fchdir(int fd)
 
 int fchdir(int fd)
 {
+	char buf[PATH_MAX];
+	char *real_path;
+	ssize_t siz;
 	int ret;
+
+	siz = __procfdreadlink(fd, buf, sizeof(buf));
+	if (siz == -1) {
+		perror("__procfdreadlink");
+		return -1;
+	}
+	buf[siz] = 0;
+	real_path = buf;
 
 	ret = next_fchdir(fd);
 	if (ret) {
@@ -42,7 +54,7 @@ int fchdir(int fd)
 		return ret;
 	}
 
-	__verbose("%s(fd: %i)\n", __func__, fd);
+	__verbose("%s(fd: %i -> '%s')\n", __func__, fd, real_path);
 
 	return chrootdir(NULL);
 }

@@ -352,7 +352,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	char buf[PATH_MAX], hashbangbuf[PATH_MAX], loaderbuf[PATH_MAX];
 	char hashbang[HASHBANG_MAX], loader[HASHBANG_MAX];
 	char *real_path, *real_hashbang = NULL;
-	char * const *interargv = argv;
+	char * const *interpargv = argv;
 	char *interparg[9] = { NULL };
 	int i = 0, j, ret;
 	char *ld_preload;
@@ -463,7 +463,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	 */
 	if (strcmp(basename(real_hashbang), "busybox") == 0) {
 		interparg[i++] = hashbang; /* busybox applet */
-		interargv++; /* shift argv0 */
+		interpargv++; /* shift argv0 */
 
 		/* Add optional argument */
 		if (len < (size_t)siz)
@@ -575,7 +575,7 @@ loader:
 		envp = __environ;
 	}
 
-	return interpexecve(real_path, interparg, interargv, envp);
+	return interpexecve(real_path, interparg, interpargv, envp);
 
 exec_sh:
 	real_path = strncpy(buf, getenv("SHELL") ?: "/bin/bash", sizeof(buf)-1);

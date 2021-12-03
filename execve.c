@@ -360,8 +360,10 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	size_t len;
 
 	/* Run exec.sh script */
-	if (ignore(path))
+	if (ignore(path)) {
+		__verbose("%s: Ignored\n", path);
 		goto exec_sh;
+	}
 
 	/*
 	 * Follows symlink as the subsequent calls to issuid(), getinterp() and
@@ -389,10 +391,12 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	 * bit enabled (which is not typical).
 	 */
 	ret = issuid(real_path);
-	if (ret == -1)
+	if (ret == -1) {
 		return -1;
-	else if (ret)
+	} else if (ret) {
+		__verbose("%s: SUID\n", real_path);
 		goto exec_sh;
+	}
 
 	/* Do not proceed to any hack if not in chroot */
 	if (!inchroot())
@@ -493,12 +497,15 @@ loader:
 	siz = getinterp(real_path, loader, sizeof(loader));
 	if (siz == -1) {
 		/* Not an ELF linked program */
-		if (errno == ENOEXEC)
+		if (errno == ENOEXEC) {
+			__verbose("%s: Not an ELF linked program\n", real_path);
 			goto exec_sh;
+		}
 
 		perror("getinterp");
 		return -1;
 	} else if (siz == 0) {
+		__verbose("%s: No such .interp section\n", real_path);
 		goto exec_sh;
 	}
 

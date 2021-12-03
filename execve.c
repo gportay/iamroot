@@ -455,30 +455,18 @@ int execve(const char *path, char * const argv[], char * const envp[])
 		return -1;
 	}
 
-	len = strlen(hashbang);
-	/*
-	 * Handle the busybox case by prepending the hashbang (i.e. the busybox
-	 * applet) and its optional hashbang argument before the executable
-	 * (path)
-	 */
-	if (strcmp(basename(real_hashbang), "busybox") == 0) {
+	/* Set argv0 */
+	if (strcmp(basename(real_hashbang), "busybox") == 0)
 		interparg[i++] = hashbang; /* busybox applet */
-		interpargv++; /* shift argv0 */
+	else
+		interparg[i++] = (char *)path; /* original path */
+	interpargv++; /* shift argv0 */
 
-		/* Add optional argument */
-		if (len < (size_t)siz)
-			interparg[i++] = &hashbang[len+1];
-		interparg[i++] = (char *)path;
-		interparg[i++] = NULL;
-
-		real_path = real_hashbang;
-		goto loader;
-	}
-
-	interparg[i++] = (char *)path;
 	/* Add optional argument */
+	len = strlen(hashbang);
 	if (len < (size_t)siz)
 		interparg[i++] = &hashbang[len+1];
+	interparg[i++] = (char *)path;
 	interparg[i++] = NULL;
 
 	real_path = real_hashbang;

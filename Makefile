@@ -349,7 +349,7 @@ fedora-34-rootfs: | fedora-34-rootfs/etc/machine-id
 
 fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/systemd:/usr/lib:/lib
 fedora-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|getent|useradd
-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/
+fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|$(CURDIR)/fedora-$*-rootfs/var/log/dnf.rpm.log
 fedora-%-rootfs/etc/machine-id: | libiamroot.so
 	install -D -m644 fedora.repo fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
 	bash iamroot-shell -c "dnf --releasever $* --assumeyes --installroot $(CURDIR)/fedora-$*-rootfs group install minimal-environment"

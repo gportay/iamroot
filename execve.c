@@ -367,6 +367,28 @@ static char *__libiamroot_musl_x86_64()
 	return ret;
 }
 
+static char *__libiamroot_linux_x86_64()
+{
+	char *ret;
+
+	ret = getenv("IAMROOT_LIB_LINUX_X86_64");
+	if (!ret)
+		return "/usr/lib/iamroot/libiamroot-linux-x86-64.so.2";
+
+	return ret;
+}
+
+static char *__ld_preload_linux_x86_64()
+{
+	char *ret;
+
+	ret = getenv("IAMROOT_LD_PRELOAD_LINUX_X86_64");
+	if (!ret)
+		return "/usr/lib64/libc.so.6:/usr/lib64/libdl.so.2";
+
+	return ret;
+}
+
 int execve(const char *path, char * const argv[], char * const envp[])
 {
 	char buf[PATH_MAX], hashbangbuf[PATH_MAX], loaderbuf[PATH_MAX];
@@ -554,6 +576,53 @@ loader:
 		/* Add --argv0 and original argv0 */
 		interparg[i++] = "--argv0";
 		interparg[i++] = interpargv0;
+
+		/* Add path to binary (in chroot, first positional argument) */
+		interparg[i++] = interppath;
+
+		extern char **__environ;
+		envp = __environ;
+	} else if (strcmp(loader, "/lib64/ld-linux-x86-64.so.2") == 0) {
+		real_path = path_resolution(loader, loaderbuf,
+					    sizeof(loaderbuf),
+					    AT_SYMLINK_FOLLOW);
+		if (!real_path) {
+			perror("path_resolution");
+			return -1;
+		}
+
+		/*
+		 * Shift enough room in interparg to prepend:
+		 *   - the path to the interpreter (i.e. the absolute path in
+		 *     host, including the chroot; argv0)
+		 *   - the option --ld-preload and its argument (i.e. the path
+		 *     in host to the interpreter's libiamroot.so to preload)
+		 *   - another option --ld-preload and its argument (i.e. the
+		 *     path in chroot environment to the interpreter's libc.so
+		 *     and libdl.so to preload)
+		 *   - the path to the binary (i.e. the full path in chroot,
+		 *     *not* including chroot; first positional argument)
+		 */
+		for (j = 0; j < i; j++)
+			interparg[j+5] = interparg[j];
+
+		/* Add path to interpreter (host, argv0) */
+		i = 0;
+		interparg[i++] = real_path;
+
+		/* Add --preload and interpreter's libraries */
+		/* libiamroot.so (from host) */
+		interparg[i++] = "--preload";
+		interparg[i++] = __libiamroot_linux_x86_64();
+		/* libc.so and libdl.so (from chroot) */
+		ret = pathsetenv(getrootdir(), "LD_PRELOAD_LINUX_X86_64",
+				 __ld_preload_linux_x86_64(), 1);
+		if (ret) {
+			perror("pathsetenv");
+			return -1;
+		}
+		interparg[i++] = "--preload";
+		interparg[i++] = getenv("LD_PRELOAD_LINUX_X86_64");
 
 		/* Add path to binary (in chroot, first positional argument) */
 		interparg[i++] = interppath;

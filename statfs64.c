@@ -45,7 +45,8 @@ int statfs64(const char *path, struct statfs64 *statfsbuf)
 		return -1;
 	}
 
-	__verbose("%s(path: '%s' -> '%s', ...)\n", __func__, path, real_path);
+	__verbose_func("%s(path: '%s' -> '%s', ...)\n", __func__, path,
+		       real_path);
 
 	return next_statfs64(real_path, statfsbuf);
 }

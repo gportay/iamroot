@@ -33,7 +33,7 @@ int next_running_in_chroot(void)
 
 int running_in_chroot(void)
 {
-	__verbose("%s()\n", __func__);
+	__verbose_func("%s()\n", __func__);
 
 	if (inchroot())
 		return 1;

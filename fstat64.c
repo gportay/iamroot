@@ -59,7 +59,7 @@ int fstat64(int fd, struct stat64 *statbuf)
 	buf[siz] = 0;
 	real_path = buf;
 
-	__verbose("%s(fd: %i <-> '%s', ...)\n", __func__, fd, real_path);
+	__verbose_func("%s(fd: %i <-> '%s', ...)\n", __func__, fd, real_path);
 
 	return rootfstat64(fd, statbuf);
 }

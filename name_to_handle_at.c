@@ -48,7 +48,8 @@ int name_to_handle_at(int fd, const char *path, struct file_handle *handle,
 		return -1;
 	}
 
-	__verbose("%s(path: '%s' -> '%s', ...)\n", __func__, path, real_path);
+	__verbose_func("%s(path: '%s' -> '%s', ...)\n", __func__, path,
+		       real_path);
 
 	return next_name_to_handle_at(fd, real_path, handle, mount_id, flags);
 }

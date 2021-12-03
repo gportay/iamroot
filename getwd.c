@@ -59,7 +59,7 @@ char *getwd(char *buf)
 		strncpy(ret, "/", size-1);
 
 exit:
-	__verbose("%s(...)\n", __func__);
+	__verbose_func("%s(...)\n", __func__);
 
 	return ret;
 }

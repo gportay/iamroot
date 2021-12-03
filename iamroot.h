@@ -58,14 +58,18 @@ int __debug_fd();
 int __verbosef(int, const char *, const char *, ...) __attribute__((format(printf,3,4)));
 
 #if !defined(NVERBOSE)
+#define __verbose3(fmt, ...) __verbosef(3, __func__, fmt, __VA_ARGS__)
 #define __verbose2(fmt, ...) __verbosef(2, __func__, fmt, __VA_ARGS__)
 #define __verbose(fmt, ...) __verbosef(1, __func__, fmt, __VA_ARGS__)
 #define __warning(fmt, ...) __verbosef(0, __func__, fmt, __VA_ARGS__)
 #else
+#define __verbose3(fmt, ...)
 #define __verbose2(fmt, ...)
 #define __verbose(fmt, ...)
 #define __warning(fmt, ...)
 #endif
+
+#define __verbose_func(fmt, ...) __verbose3(fmt, __VA_ARGS__)
 
 #define __fwarn_and_set_user_modeat(fd, path, mode, flags, user_mode) \
 	({ if ((mode & user_mode) != user_mode) { \

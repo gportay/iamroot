@@ -59,7 +59,7 @@ char *tmpnam_r(char *path)
 		return NULL;
 	}
 
-	__verbose("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
+	__verbose_func("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
 
 	return next_tmpnam_r(real_path);
 }

@@ -42,7 +42,7 @@ uid_t geteuid(void)
 	if (!errno)
 		return ul;
 
-	__verbose("%s(): IAMROOT_EUID: %lu\n", __func__, ul);
+	__verbose_func("%s(): IAMROOT_EUID: %lu\n", __func__, ul);
 
 	return 0;
 }

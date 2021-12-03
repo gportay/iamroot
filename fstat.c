@@ -46,7 +46,7 @@ int next_fstat(int fd, struct stat *statbuf)
 
 int fstat(int fd, struct stat *statbuf)
 {
-	__verbose("%s(fd: %i, ...)\n", __func__, fd);
+	__verbose_func("%s(fd: %i, ...)\n", __func__, fd);
 
 	return rootfstat(fd, statbuf);
 }

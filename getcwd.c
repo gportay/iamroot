@@ -57,7 +57,7 @@ char *getcwd(char *buf, size_t size)
 		strncpy(ret, "/", size);
 
 exit:
-	__verbose("%s(...)\n", __func__);
+	__verbose_func("%s(...)\n", __func__);
 
 	return ret;
 }

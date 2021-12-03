@@ -51,8 +51,8 @@ int __xmknod(int ver, const char *path, mode_t mode, dev_t *dev)
 		return -1;
 	}
 
-	__verbose("%s(path: '%s' -> '%s', mode: 0%03o)\n", __func__, path,
-		  real_path, mode);
+	__verbose_func("%s(path: '%s' -> '%s', mode: 0%03o)\n", __func__, path,
+		       real_path, mode);
 	__warn_if_insuffisant_user_mode(real_path, mode);
 
 	fd = next_creat(path, mode);

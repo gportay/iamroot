@@ -49,8 +49,8 @@ int utimensat(int fd, const char *path, const struct timespec times[2],
 		return -1;
 	}
 
-	__verbose("%s(fd: %i, path: '%s' -> '%s')\n", __func__, fd, path,
-		  real_path);
+	__verbose_func("%s(fd: %i, path: '%s' -> '%s')\n", __func__, fd, path,
+		       real_path);
 
 	return next_utimensat(fd, real_path, times, flags);
 }

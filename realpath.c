@@ -228,7 +228,8 @@ char *realpath(const char *path, char *resolved_path)
 	ret = memmove(resolved_path, ret+len, strlen(ret)-len+1);
 
 exit:
-	__verbose("%s(path: '%s' -> '%s', ...)\n", __func__, path, real_path);
+	__verbose_func("%s(path: '%s' -> '%s', ...)\n", __func__, path,
+		       real_path);
 
 	return ret;
 

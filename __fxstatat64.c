@@ -50,8 +50,8 @@ int __fxstatat64(int ver, int fd, const char *path, struct stat64 *statbuf,
 		return -1;
 	}
 
-	__verbose("%s(fd: %i, path: '%s' -> '%s', ...)\n", __func__, fd, path,
-		  real_path);
+	__verbose_func("%s(fd: %i, path: '%s' -> '%s', ...)\n", __func__, fd,
+		       path, real_path);
 
 	return __rootfxstatat64(ver, fd, real_path, statbuf, flags);
 }

@@ -12,7 +12,8 @@
 
 int execvp(const char *file, char * const argv[])
 {
-	__verbose("%s(file: '%s', argv: '%s'...)\n", __func__, file, argv[0]);
+	__verbose_func("%s(file: '%s', argv: '%s'...)\n", __func__, file,
+		       argv[0]);
 
 	return execvpe(file, argv, environ);
 }

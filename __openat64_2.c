@@ -45,8 +45,8 @@ int openat64_2(int fd, const char *path, int flags)
 		return -1;
 	}
 
-	__verbose("%s(fd: %d, path: '%s' -> '%s')\n", __func__, fd, path,
-		  real_path);
+	__verbose_func("%s(fd: %d, path: '%s' -> '%s')\n", __func__, fd, path,
+		       real_path);
 
 	return next_openat64_2(fd, real_path, flags);
 }

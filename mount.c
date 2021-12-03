@@ -21,8 +21,8 @@ int mount(const char *source, const char *target, const char *filesystemtype,
 	(void)target;
 	(void)data;
 
-	__verbose("%s(source: '%s', target: '%s', ...)\n", __func__, source,
-		  target);
+	__verbose_func("%s(source: '%s', target: '%s', ...)\n", __func__,
+		       source, target);
 
 	return 0;
 }

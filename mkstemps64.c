@@ -56,7 +56,7 @@ int mkstemps64(char *path, int suffixlen)
 	memcpy(path, real_path+strlen(real_path)-len, len);
 
 exit:
-	__verbose("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
+	__verbose_func("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
 
 	return ret;
 }

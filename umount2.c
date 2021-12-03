@@ -17,7 +17,7 @@ int umount2(const char *target, int flags)
 	(void)target;
 	(void)flags;
 
-	__verbose("%s(target: '%s', ...)\n", __func__, target);
+	__verbose_func("%s(target: '%s', ...)\n", __func__, target);
 
 	return 0;
 }

@@ -56,8 +56,8 @@ int fstatat(int fd, const char *path, struct stat *statbuf, int flags)
 		return -1;
 	}
 
-	__verbose("%s(fd: %i, path: '%s' -> '%s', ...)\n", __func__, fd, path,
-		  real_path);
+	__verbose_func("%s(fd: %i, path: '%s' -> '%s', ...)\n", __func__, fd,
+		       path, real_path);
 
 	return rootfstatat(fd, real_path, statbuf, flags);
 }

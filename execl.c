@@ -34,8 +34,8 @@ int execl(const char *path, const char *arg, ...)
 			argv[i] = va_arg(ap, char *);
 		va_end(ap);
 
-		__verbose("%s(path: '%s', arg: '%s'...)\n", __func__, path,
-			  arg);
+		__verbose_func("%s(path: '%s', arg: '%s'...)\n", __func__,
+			       path, arg);
 
 		return execve(path, argv, environ);
 	}

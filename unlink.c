@@ -46,7 +46,7 @@ int unlink(const char *path)
 		return -1;
 	}
 
-	__verbose("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
+	__verbose_func("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
 
 	return next_unlink(real_path);
 }

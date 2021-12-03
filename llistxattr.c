@@ -55,7 +55,8 @@ ssize_t llistxattr(const char *path, char *list, size_t size)
 		return -1;
 	}
 
-	__verbose("%s(path: '%s' -> '%s', ...)\n", __func__, path, real_path);
+	__verbose_func("%s(path: '%s' -> '%s', ...)\n", __func__, path,
+		       real_path);
 
 	xsize = next_llistxattr(real_path, xbuf, sizeof(xbuf)-1);
 	if (xsize == -1)

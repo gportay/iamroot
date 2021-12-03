@@ -45,7 +45,7 @@ FILE *freopen(const char *path, const char *mode, FILE *stream)
 		return NULL;
 	}
 
-	__verbose("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
+	__verbose_func("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
 
 	return next_freopen(real_path, mode, stream);
 }

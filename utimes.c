@@ -46,7 +46,7 @@ int utimes(const char *path, const struct timeval times[2])
 		return -1;
 	}
 
-	__verbose("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
+	__verbose_func("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
 
 	return next_utimes(real_path, times);
 }

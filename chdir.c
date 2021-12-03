@@ -51,7 +51,7 @@ int chdir(const char *path)
 		return ret;
 	}
 
-	__verbose("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
+	__verbose_func("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
 
 	return chrootdir(NULL);
 }

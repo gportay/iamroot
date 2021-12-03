@@ -51,7 +51,7 @@ int scandirat(int fd, const char *path, struct dirent ***namelist,
 		return -1;
 	}
 
-	__verbose("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
+	__verbose_func("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
 
 	return next_scandirat(fd, real_path, namelist, filter, compar);
 }

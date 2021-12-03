@@ -347,6 +347,17 @@ static int interpexecve(const char *path, char * const interp[],
 	return -1;
 }
 
+static char *__libiamroot_musl_x86_64()
+{
+	char *ret;
+
+	ret = getenv("IAMROOT_LIB_MUSL_X86_64");
+	if (!ret)
+		return "/usr/lib/iamroot/libiamroot-musl-x86_64.so.1";
+
+	return ret;
+}
+
 int execve(const char *path, char * const argv[], char * const envp[])
 {
 	char buf[PATH_MAX], hashbangbuf[PATH_MAX], loaderbuf[PATH_MAX];
@@ -551,7 +562,7 @@ loader:
 
 		/* Add --preload and interpreter's library (host) */
 		interparg[i++] = "--preload";
-		interparg[i++] = getenv("IAMROOT_LIB_MUSL_X86_64") ?: "/usr/lib/iamroot/libiamroot-musl-x86_64.so.1";
+		interparg[i++] = __libiamroot_musl_x86_64();
 
 		/* Add path to binary (in chroot, first positional argument) */
 		if (real_hashbang)

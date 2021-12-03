@@ -12,8 +12,8 @@
 
 int execv(const char *path, char * const argv[])
 {
-	__verbose_func("%s(path: '%s', argv: '%s'...)\n", __func__, path,
-		       argv[0]);
+	__verbose_func("%s(path: '%s', argv: { '%s', '%s', ...})\n", __func__,
+		       path, argv[0], argv[1]);
 
 	return execvpe(path, argv, environ);
 }

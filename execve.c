@@ -372,8 +372,9 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	char buf[PATH_MAX], hashbangbuf[PATH_MAX], loaderbuf[PATH_MAX];
 	char hashbang[HASHBANG_MAX], loader[HASHBANG_MAX];
 	char *real_path, *real_hashbang = NULL;
-	char * const *interpargv = argv;
 	char *interparg[9] = { NULL };
+	char *interpargv0 = *argv;
+	char *interppath = NULL;
 	int i = 0, j, ret;
 	char *ld_preload;
 	ssize_t siz;
@@ -403,6 +404,8 @@ int execve(const char *path, char * const argv[], char * const envp[])
 
 	__verbose_exec("%s(path: '%s' -> '%s', argv: { '%s', '%s', ... })\n",
 		       __func__, path, real_path, argv[0], argv[1]);
+	interppath = real_path; /* real program path as binary */
+	interparg[i++] = (char *)path; /* original program path as argv0 */
 
 	/*
 	 * In secure-execution mode, preload pathnames containing slashes are
@@ -436,36 +439,8 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	}
 
 	/*
-	 * Preserve original path in argv0 and prepend the interpreter
-	 * arguments.
-	 *
-	 * The busybox binary requires the real applet name in first argument:
-	 *
-	 *	$ path [arguments...]
-	 *
-	 * The next call to execve() resolves to:
-	 *
-	 * 	$ busybox applet [arguments...]
-	 * 	          ^path   ^argv[1]...
-	 *
-	 * Where applet is path and arguments is argv[1]..argv[n].
-	 *
-	 * In case of the path is an hashbang and the interpreter is a symlink
-	 * to busybox, the script name must be preserved for the subsequent
-	 * call to execve() that will resolve hashbang:
-	 *
-	 *	$ script [arguments...]
-	 *
-	 * The next call to execve() resolves to:
-	 *
-	 * 	$ busybox interp [interparg] script [arguments...]
-	 * 	          ^-------^hashbang  ^path   ^argv[1]...
-	 *
-	 * Where interp and interparg is hashbang, script is path and arguments
-	 * is argv[1]..argv[n].
-	 *
-	 * Preserving original path in argv0 both keeps a track of the original
-	 * path and satisfies the needs for busybox.
+	 * Preserve original path in argv0 and set the interpreter and its
+	 * optional argument (if any).
 	 */
 	real_hashbang = path_resolution(hashbang, hashbangbuf,
 					sizeof(hashbangbuf),
@@ -475,12 +450,8 @@ int execve(const char *path, char * const argv[], char * const envp[])
 		return -1;
 	}
 
-	/* Set argv0 */
-	if (strcmp(basename(real_hashbang), "busybox") == 0)
-		interparg[i++] = hashbang; /* busybox applet */
-	else
-		interparg[i++] = (char *)path; /* original path */
-	interpargv++; /* shift argv0 */
+	/* Reset argv0 */
+	interparg[0] = hashbang; /* original program path as argv0 */
 
 	/* Add optional argument */
 	len = strlen(hashbang);
@@ -489,6 +460,8 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	interparg[i++] = (char *)path;
 	interparg[i++] = NULL;
 
+	interpargv0 = hashbang; /* hashbang as argv0 */
+	interppath = real_hashbang; /* real hashbang as binary */
 	real_path = real_hashbang;
 
 loader:
@@ -538,11 +511,15 @@ loader:
 		 *     including the chroot; argv0)
 		 *   - the option --ld-preload and its argument (i.e. the path
 		 *     in host to the interpreter's libiamroot.so to preload)
+		 *   - the option --argv0 and its argument (i.e. the original
+		 *     path in host to the binary).
 		 *   - the path to the binary (i.e. the full path in chroot,
 		 *     *not* including chroot; first positional argument)
+		 * Note: the binary's arguments are the original argv shifted
+		 *       by one (i.e. without argv0; following arguments).
 		 */
 		for (j = 0; j < i; j++)
-			interparg[j+4] = interparg[j];
+			interparg[j+5] = interparg[j];
 
 		/* Add path to interpreter (host, argv0) */
 		i = 0;
@@ -573,17 +550,18 @@ loader:
 		interparg[i++] = "--preload";
 		interparg[i++] = __libiamroot_musl_x86_64();
 
+		/* Add --argv0 and original argv0 */
+		interparg[i++] = "--argv0";
+		interparg[i++] = interpargv0;
+
 		/* Add path to binary (in chroot, first positional argument) */
-		if (real_hashbang)
-			interparg[i++] = real_hashbang;
-		else
-			interparg[i++] = buf;
+		interparg[i++] = interppath;
 
 		extern char **__environ;
 		envp = __environ;
 	}
 
-	return interpexecve(real_path, interparg, interpargv, envp);
+	return interpexecve(real_path, interparg, ++argv, envp);
 
 exec_sh:
 	real_path = strncpy(buf, getenv("SHELL") ?: "/bin/bash", sizeof(buf)-1);

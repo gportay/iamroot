@@ -381,7 +381,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 		return -1;
 	}
 
-	__verbose_func("%s(path: '%s' -> '%s', argv: { '%s', '%s', ... })\n",
+	__verbose_exec("%s(path: '%s' -> '%s', argv: { '%s', '%s', ... })\n",
 		       __func__, path, real_path, argv[0], argv[1]);
 
 	/*

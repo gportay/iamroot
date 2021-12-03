@@ -34,7 +34,7 @@ int execlp(const char *file, const char *arg, ...)
 			argv[i] = va_arg(ap, char *);
 		va_end(ap);
 
-		__verbose_func("%s(file: '%s', arg: '%s', ...)\n", __func__,
+		__verbose_exec("%s(file: '%s', arg: '%s', ...)\n", __func__,
 			       file, arg);
 
 		return execvpe(file, argv, environ);

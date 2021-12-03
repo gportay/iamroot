@@ -69,6 +69,7 @@ int __verbosef(int, const char *, const char *, ...) __attribute__((format(print
 #define __warning(fmt, ...)
 #endif
 
+#define __verbose_exec(fmt, ...) __verbose2(fmt, __VA_ARGS__)
 #define __verbose_func(fmt, ...) __verbose3(fmt, __VA_ARGS__)
 
 #define __fwarn_and_set_user_modeat(fd, path, mode, flags, user_mode) \

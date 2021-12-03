@@ -61,6 +61,7 @@ int __verbosef(int, const char *, const char *, ...) __attribute__((format(print
 #define __verbose(fmt, ...) __verbosef(1, __func__, fmt, __VA_ARGS__)
 #define __warning(fmt, ...) __verbosef(0, __func__, fmt, __VA_ARGS__)
 #else
+#define __verbose2(fmt, ...)
 #define __verbose(fmt, ...)
 #define __warning(fmt, ...)
 #endif

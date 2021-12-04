@@ -267,7 +267,16 @@ static void verbose_exec(const char *path, char * const argv[],
 	if (debug <= 0)
 		debug = max(__debug() - 2, 0);
 
-	if (debug > 0) {
+	if (debug == 1) {
+		char * const *p;
+
+		dprintf(STDERR_FILENO, "Debug: running");
+
+		p = argv;
+		while (*p)
+			dprintf(STDERR_FILENO, " %s", *p++);
+		dprintf(STDERR_FILENO, "\n");
+	} else if (debug > 1) {
 		char * const *p;
 
 		dprintf(STDERR_FILENO, "Debug: %s: pid: %i: execve(path: '%s', argv: {",
@@ -276,9 +285,9 @@ static void verbose_exec(const char *path, char * const argv[],
 		while (*p)
 			dprintf(STDERR_FILENO, " '%s',", *p++);
 		dprintf(STDERR_FILENO, " NULL }, ");
-		if (debug == 1) {
+		if (debug == 2) {
 			dprintf(STDERR_FILENO, "...)\n");
-		} else if (debug > 1) {
+		} else if (debug > 2) {
 			dprintf(STDERR_FILENO, "envp:");
 			p = envp;
 			while (*p)

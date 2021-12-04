@@ -441,7 +441,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	 *
 	 * Where applet is path and arguments is argv[1]..argv[n].
 	 *
-	 * In case of the path is an bashbang and the interpreter is a symlink
+	 * In case of the path is an hashbang and the interpreter is a symlink
 	 * to busybox, the script name must be preserved for the subsequent
 	 * call to execve() that will resolve hashbang:
 	 *

@@ -561,13 +561,15 @@ loader:
 		envp = __environ;
 	}
 
-	return interpexecve(real_path, interparg, ++argv, envp);
+	goto execve;
 
 exec_sh:
 	real_path = strncpy(buf, getenv("SHELL") ?: "/bin/bash", sizeof(buf)-1);
 	interparg[0] = (char *)path;
 	interparg[1] = getenv("IAMROOT_EXEC") ?: "/usr/lib/iamroot/exec.sh";
-	interparg[2] = NULL;
+	interparg[2] = *argv;
+	interparg[3] = NULL;
 
-	return interpexecve(real_path, interparg, argv, envp);
+execve:
+	return interpexecve(real_path, interparg, ++argv, envp);
 }

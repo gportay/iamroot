@@ -492,6 +492,9 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	interppath = real_hashbang; /* real hashbang as binary */
 	real_path = real_hashbang; /* real hashbang path as binary */
 
+	__verbose("%s: has hashbang: '%s' -> '%s' '%s'\n", path, hashbang,
+		  real_hashbang, len < (size_t)siz ? &hashbang[len+1] : "");
+
 loader:
 	/*
 	 * Run the dynamic linker directly
@@ -517,6 +520,8 @@ loader:
 		__verbose("%s: No such .interp section\n", real_path);
 		goto exec_sh;
 	}
+
+	__verbose("%s: interpreter: '%s'\n", real_path, loader);
 
 	/*
 	 * Run the interpreter from host file-system (i.e. do not use the

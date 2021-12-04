@@ -356,6 +356,11 @@ static int interpexecve(const char *path, char * const interp[],
 	return -1;
 }
 
+static int __use_host_interp()
+{
+	return strtol(getenv("IAMROOT_USE_HOST_INTERP") ?: "0", NULL, 0);
+}
+
 static char *__libiamroot_musl_x86_64()
 {
 	char *ret;
@@ -514,6 +519,16 @@ loader:
 	}
 
 	/*
+	 * Run the interpreter from host file-system (i.e. do not use the
+	 * interpreter from the chroot environment).
+	 */
+	if (__use_host_interp()) {
+		__verbose("%s: use interpreter from host: '%s'\n", real_path,
+			  loader);
+		goto interp;
+	}
+
+	/*
 	 * The interpreter has to preload its libiamroot.so library.
 	 *
 	 * TODO: Detect *real* change in interpreter. It is assumed for now the
@@ -635,6 +650,7 @@ loader:
 		envp = __environ;
 	}
 
+interp:
 	goto execve;
 
 exec_sh:

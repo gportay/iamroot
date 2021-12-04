@@ -67,6 +67,7 @@ pathsetenv: override LDLIBS += libiamnotroot.so
 .PHONY: test
 test: PATH := $(CURDIR):$(PATH)
 test: export LD_LIBRARY_PATH := $(CURDIR):$(LD_LIBRARY_PATH)
+test: export IAMROOT_USE_HOST_INTERP = 1
 test: ALPINE_MINIROOTFS ?= .
 test:
 	rm -Rf proc sys tmp dev* file* symlink[0-9] link[0-9]*
@@ -74,7 +75,7 @@ test:
 	ln -s file symlink0
 	access Makefile 0
 	IAMROOT_ROOT=$(CURDIR) /access /Makefile 0
-	chroot $(ALPINE_MINIROOTFS) whoami
+	IAMROOT_USE_HOST_INTERP= chroot $(ALPINE_MINIROOTFS) whoami
 	chmod file 01644
 	fchmodat . file 02644
 	IAMROOT_ROOT=$(CURDIR) /fchmodat - /file 04644

@@ -348,8 +348,10 @@ arch-rootfs/etc/machine-id: | libiamroot.so
 
 fedora-34-rootfs: | fedora-34-rootfs/etc/machine-id
 
-fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/systemd
-fedora-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|getent|useradd
+fedora-34-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64 = /usr/lib64/libc-2.33.so:/usr/lib64/libdl-2.33.so
+
+fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64:/usr/lib/systemd
+fedora-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd
 fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|$(CURDIR)/fedora-$*-rootfs/var/log/dnf.rpm.log
 fedora-%-rootfs/etc/machine-id: | libiamroot.so
 	install -D -m644 fedora.repo fedora-$*-rootfs/etc/distro.repos.d/fedora.repo

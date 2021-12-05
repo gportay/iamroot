@@ -600,8 +600,12 @@ loader:
 		 *   - another option --ld-preload and its argument (i.e. the
 		 *     path in chroot environment to the interpreter's libc.so
 		 *     and libdl.so to preload)
+		 *   - the option --argv0 and its argument (i.e. the original
+		 *     path in host to the binary).
 		 *   - the path to the binary (i.e. the full path in chroot,
 		 *     *not* including chroot; first positional argument)
+		 * Note: the binary's arguments are the original argv shifted
+		 *       by one (i.e. without argv0; following arguments).
 		 */
 		for (j = 0; j < i; j++)
 			interparg[j+5] = interparg[j];

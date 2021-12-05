@@ -292,7 +292,7 @@ arch-chroot: | arch-rootfs
 	bash iamroot-shell -c "chroot arch-rootfs"
 
 fedora-34-chroot:
-fedora-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/systemd:/usr/lib:/lib
+fedora-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/systemd
 fedora-%-chroot: | fedora-%-rootfs
 	bash iamroot-shell -c "chroot fedora-$*-rootfs"
 
@@ -348,7 +348,7 @@ arch-rootfs/etc/machine-id: | libiamroot.so
 
 fedora-34-rootfs: | fedora-34-rootfs/etc/machine-id
 
-fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/systemd:/usr/lib:/lib
+fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/systemd
 fedora-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|getent|useradd
 fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|$(CURDIR)/fedora-$*-rootfs/var/log/dnf.rpm.log
 fedora-%-rootfs/etc/machine-id: | libiamroot.so
@@ -472,7 +472,7 @@ arch-postrootfs:
 	bash iamroot-shell --chroot $(CURDIR)/arch-rootfs -c "systemctl enable getty@tty0.service"
 
 fedora-34-postrootfs:
-fedora-%-postrootfs: export LD_LIBRARY_PATH = $(CURDIR)/fedora-$*-rootfs/usr/lib/systemd:$(CURDIR)/fedora-$*-rootfs/usr/lib:$(CURDIR)/fedora-$*-rootfs/lib
+fedora-%-postrootfs: export LD_LIBRARY_PATH = $(CURDIR)/fedora-$*-rootfs/usr/lib/systemd
 fedora-%-postrootfs:
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i fedora-$*-rootfs/etc/passwd

@@ -360,6 +360,7 @@ fedora-%-rootfs/etc/machine-id: | libiamroot.so
 
 qemu-system-x86_64-alpine-3.14 qemu-system-x86_64-alpine-edge:
 qemu-system-x86_64-arch:
+qemu-system-x86_64-fedora-34:
 qemu-system-x86_64-fedora-34: override CMDLINE += rw
 qemu-system-x86_64-%: override CMDLINE += panic=5
 qemu-system-x86_64-%: override CMDLINE += console=ttyS0

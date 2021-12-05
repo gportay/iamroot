@@ -63,6 +63,22 @@ ssize_t readlink(const char *path, char *buf, size_t bufsize)
 		return -1;
 	}
 
+	if (strcmp(real_path, "/proc/self/exe") == 0) {
+		const char *exe;
+	       
+		exe = __getexe();
+		if (exe) {
+			ret = strlen(exe);
+			if ((size_t)ret > bufsize)
+				ret = bufsize;
+			memcpy(buf, exe, ret);
+
+			__notice("%s: resolving to '%s'\n", path, exe);
+
+			goto exit;
+		}
+	}
+
 	ret = next_readlink(real_path, buf, bufsize);
 	if (ret == -1)
 		goto exit;

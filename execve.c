@@ -801,8 +801,13 @@ static void verbose_exec(const char *path, char * const argv[],
 		char * const *p;
 		char *argv0;
 		char *root;
+		char *exe;
 
 		dprintf(STDERR_FILENO, "Debug: running");
+
+		exe = __getexe();
+		if (exe)
+			dprintf(STDERR_FILENO, " IAMROOT_EXE=%s", exe);
 
 		root = __getroot();
 		if (root)
@@ -848,6 +853,20 @@ static void verbose_exec(const char *path, char * const argv[],
 #else
 #define verbose_exec(path, argv, envp)
 #endif
+
+static inline int __setexe(const char *path)
+{
+	if (!path)
+		return unsetenv("IAMROOT_EXE");
+
+	return setenv("IAMROOT_EXE", path, 1);
+}
+
+__attribute__((visibility("hidden")))
+char *__getexe()
+{
+	return getenv("IAMROOT_EXE");
+}
 
 __attribute__((visibility("hidden")))
 int next_execve(const char *path, char * const argv[], char * const envp[])
@@ -1506,6 +1525,13 @@ exec_sh:
 	}
 
 execve:
+	/* Set /proc/self/exe */
+	ret = __setexe(path);
+	if (ret == -1) {
+		__pathperror(path, "__setexe");
+		return -1;
+	}
+
 	/*
 	 * envp is updated by the change in the environments (i.e. by calling
 	 * setenv() and unsetenv()).

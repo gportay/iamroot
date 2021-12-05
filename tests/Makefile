@@ -45,6 +45,8 @@ all: test-openat
 all: test-opendir
 all: test-path_resolution
 all: test-pathsetenv
+all: test-readlink
+all: test-readlinkat
 all: test-rename
 all: test-renameat
 all: test-renameat2
@@ -81,6 +83,7 @@ test: export IAMROOT_LIB_LINUX_X86_64_2 = $(IAMROOT_LIB)
 test: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 =
 test: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|$(IAMROOT_LIB)|/lib64/ld-linux-x86-64.so.2
 test: | rootfs
+	IAMROOT_EXE=/usr/bin/ls readlink /proc/self/exe | tee /dev/stderr | grep -q '/usr/bin/ls'
 	rm -Rf rootfs/tmp/* rootfs/dev/*
 	touch rootfs/tmp/file0
 	ln -s file0 rootfs/tmp/symlink0
@@ -159,6 +162,10 @@ test: | rootfs
 	test-symlink file0 rootfs/tmp/symlink1
 	test-symlinkat file0 . rootfs/tmp/symlink2
 	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-symlinkat file0 . /tmp/symlink3
+	test-readlink /proc/self/exe                                                                                       | tee /dev/stderr | grep -q "^$(CURDIR)/test-readlink$$"
+	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs IAMROOT_EXE=/bin/test-readlink test-readlink /proc/self/exe       | tee /dev/stderr | grep -q "^/bin/test-readlink$$"
+	test-readlinkat . /proc/self/exe                                                                                   | tee /dev/stderr | grep -q "^$(CURDIR)/test-readlinkat$$"
+	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs IAMROOT_EXE=/bin/test-readlinkat test-readlinkat . /proc/self/exe | tee /dev/stderr | grep -q "^/bin/test-readlinkat$$"
 	test-utimes rootfs/tmp/file0 0x3fffffff 0x3fffffff
 	test-lutimes rootfs/tmp/symlink0 0x3fffffff 0x3fffffff
 	test-utimensat . rootfs/tmp/file0 0x3fffffff 0x3fffffff

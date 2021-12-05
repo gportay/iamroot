@@ -451,18 +451,19 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	}
 
 	/* Reset argv0 */
-	interparg[0] = hashbang; /* original program path as argv0 */
+	interparg[0] = hashbang; /* hashbang as argv0 */
 
 	/* Add optional argument */
 	len = strlen(hashbang);
 	if (len < (size_t)siz)
 		interparg[i++] = &hashbang[len+1];
-	interparg[i++] = (char *)path;
+	interparg[i++] = (char *)path; /* original program path as first
+					* positional argument */
 	interparg[i++] = NULL;
 
 	interpargv0 = hashbang; /* hashbang as argv0 */
 	interppath = real_hashbang; /* real hashbang as binary */
-	real_path = real_hashbang;
+	real_path = real_hashbang; /* real hashbang path as binary */
 
 loader:
 	/*
@@ -565,9 +566,9 @@ loader:
 
 exec_sh:
 	real_path = strncpy(buf, getenv("SHELL") ?: "/bin/bash", sizeof(buf)-1);
-	interparg[0] = (char *)path;
+	interparg[0] = (char *)path; /* original program path as argv0 */
 	interparg[1] = getenv("IAMROOT_EXEC") ?: "/usr/lib/iamroot/exec.sh";
-	interparg[2] = *argv;
+	interparg[2] = *argv; /* original argv0 as first positional argument */
 	interparg[3] = NULL;
 
 execve:

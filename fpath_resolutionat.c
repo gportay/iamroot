@@ -66,7 +66,7 @@ void path_resolution_init()
 
 	library_musl_x86_64 = getenv("IAMROOT_LIB_MUSL_X86_64");
 	if (!library_musl_x86_64)
-		library_musl_x86_64 = "^/usr/lib/iamroot/ld-musl-x86_64.so.1$";
+		library_musl_x86_64 = "^/usr/lib/iamroot/libiamroot-musl-x86_64.so.1$";
 
 	exec = getenv("IAMROOT_EXEC");
 	if (!exec)

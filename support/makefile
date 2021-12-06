@@ -4,6 +4,8 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
 
+PREFIX ?= /usr/local
+
 -include local.mk
 
 MAKEFLAGS += --no-print-directory
@@ -34,6 +36,24 @@ output-%/libiamroot.so: $(wildcard *.c) | output-%
 output-%:
 	mkdir $@
 
+.PHONY: install
+install: install-linux-x86-64
+	$(MAKE) -f $(CURDIR)/Makefile $@
+
+.PHONY: install-linux-x86-64
+install-linux-x86-64:
+	install -D -m 755 libiamroot-linux-x86-64.so.2 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-x86-64.so.2
+	ln -sf libiamroot-linux-x86-64.so.2 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-x86-64.so
+
+.PHONY: uninstall
+uninstall: uninstall-linux-x86-64
+	$(MAKE) -f $(CURDIR)/Makefile $@
+
+.PHONY: uninstall-linux-x86-64
+uninstall-linux-x86-64:
+	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-x86-64.so.2
+	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-x86-64.so
+
 .PHONY: clean
 clean:
 	$(MAKE) -f Makefile $@
@@ -41,11 +61,27 @@ clean:
 	rm -f libiamroot*.so*
 
 ifneq ($(shell command -v musl-gcc),)
+all: libiamroot-musl-x86_64.so
+
 .PRECIOUS: libiamroot-musl-x86_64.so
 libiamroot-musl-x86_64.so: libiamroot-musl-x86_64.so.1
 	ln -sf $< $@
 
 libiamroot-musl-x86_64.so.1: export CC = musl-gcc
+
+install: install-musl-x86_64
+
+.PHONY: install-musl-x86_64
+install-musl-x86_64:
+	install -D -m 755 libiamroot-musl-x86_64.so.1 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-musl-x86_64.so.1
+	ln -sf libiamroot-musl-x86_64.so.1 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-musl-x86_64.so
+
+uninstall: uninstall-musl-x86_64
+
+.PHONY: uninstall-musl-x86_64
+uninstall-musl-x86_64:
+	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-musl-x86_64.so.1
+	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-musl-x86_64.so
 
 all test ci alpine-minirootfs alpine-3.14-rootfs alpine-3.14-chroot vmlinux-alpine-3.14 qemu-system-x86_64-alpine-3.14 alpine-edge-rootfs alpine-edge-chroot vmlinux-alpine-edge qemu-system-x86_64-alpine-edge: IAMROOT_LIB_MUSL_X86_64 = $(CURDIR)/libiamroot-musl-x86_64.so
 all test ci alpine-minirootfs alpine-3.14-rootfs alpine-3.14-chroot vmlinux-alpine-3.14 qemu-system-x86_64-alpine-3.14 alpine-edge-rootfs alpine-edge-chroot vmlinux-alpine-edge qemu-system-x86_64-alpine-edge: libiamroot-musl-x86_64.so

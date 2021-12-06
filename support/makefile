@@ -20,13 +20,7 @@ libiamroot.so: libiamroot-linux-x86-64.so
 libiamroot-linux-x86-64.so: libiamroot-linux-x86-64.so.2
 	ln -sf $< $@
 
-.PRECIOUS: libiamroot-musl-x86_64.so
-libiamroot-musl-x86_64.so: libiamroot-musl-x86_64.so.1
-	ln -sf $< $@
-
 libiamroot.so: $(wildcard *.c)
-
-libiamroot-musl-x86_64.so.1: export CC = musl-gcc
 
 .PRECIOUS: libiamroot-%.so.1 libiamroot-%.so.2
 libiamroot-%.so.1 libiamroot-%.so.2: output-%/libiamroot.so
@@ -47,6 +41,12 @@ clean:
 	rm -f libiamroot*.so*
 
 ifneq ($(shell command -v musl-gcc),)
+.PRECIOUS: libiamroot-musl-x86_64.so
+libiamroot-musl-x86_64.so: libiamroot-musl-x86_64.so.1
+	ln -sf $< $@
+
+libiamroot-musl-x86_64.so.1: export CC = musl-gcc
+
 all test ci alpine-minirootfs alpine-3.14-rootfs alpine-3.14-chroot vmlinux-alpine-3.14 qemu-system-x86_64-alpine-3.14 alpine-edge-rootfs alpine-edge-chroot vmlinux-alpine-edge qemu-system-x86_64-alpine-edge: IAMROOT_LIB_MUSL_X86_64 = $(CURDIR)/libiamroot-musl-x86_64.so
 all test ci alpine-minirootfs alpine-3.14-rootfs alpine-3.14-chroot vmlinux-alpine-3.14 qemu-system-x86_64-alpine-3.14 alpine-edge-rootfs alpine-edge-chroot vmlinux-alpine-edge qemu-system-x86_64-alpine-edge: libiamroot-musl-x86_64.so
 

@@ -11,18 +11,11 @@ PREFIX ?= /usr/local
 MAKEFLAGS += --no-print-directory
 
 .PHONY: all
-all: libiamroot.so
 all: libiamroot-linux-x86-64.so
-
-.PRECIOUS: libiamroot.so
-libiamroot.so: libiamroot-linux-x86-64.so
-	ln -sf $< $@
 
 .PRECIOUS: libiamroot-linux-x86-64.so
 libiamroot-linux-x86-64.so: libiamroot-linux-x86-64.so.2
 	ln -sf $< $@
-
-libiamroot.so: $(wildcard *.c)
 
 .PRECIOUS: libiamroot-%.so.1 libiamroot-%.so.2
 libiamroot-%.so.1 libiamroot-%.so.2: output-%/libiamroot.so

@@ -20,7 +20,7 @@ QEMU += -spice port=5924,disable-ticketing -device virtio-serial-pci -device vir
 endif
 QEMU += -serial mon:stdio
 
-KVER ?= $(shell uname -r)
+KVER ?= $(shell uname -r 2>/dev/null)
 VMLINUX_KVER ?= $(shell vmlinux --version 2>/dev/null)
 
 .PHONY: all

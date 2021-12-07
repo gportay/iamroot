@@ -373,6 +373,7 @@ qemu-system-x86_64-%: override QEMUSYSTEMFLAGS += -append "$(CMDLINE)"
 qemu-system-x86_64-%: | %.ext4 initrd-rootfs.cpio
 	qemu-system-x86_64 $(QEMUSYSTEMFLAGS)
 
+ifneq ($(KVER),)
 .PRECIOUS: %-rootfs/lib/modules/$(KVER) %-rootfs/usr/lib/modules/$(KVER)
 %-rootfs/lib/modules/$(KVER): | %-rootfs
 	rm -Rf $@.tmp $@
@@ -380,16 +381,19 @@ qemu-system-x86_64-%: | %.ext4 initrd-rootfs.cpio
 	rsync -a --include '*/' --include '*.ko*' --exclude '*' /usr/lib/modules/$(KVER)/. $@.tmp/.
 	find $@.tmp -name "*.zst" -exec unzstd -q --rm {} \;
 	mv $@.tmp $@
+endif
 
 initrd-rootfs.cpio: initrd-rootfs/init
 initrd-rootfs.cpio: initrd-rootfs/bin/sh
 initrd-rootfs.cpio: initrd-rootfs/etc/passwd
 initrd-rootfs.cpio: initrd-rootfs/etc/group
 initrd-rootfs.cpio: initrd-rootfs/etc/mdev.conf
+ifneq ($(KVER),)
 initrd-rootfs.cpio: initrd-rootfs/lib/modules/$(KVER)
 initrd-rootfs.cpio: initrd-rootfs/lib/modules/$(KVER)/modules.dep
 initrd-rootfs.cpio: initrd-rootfs/lib/modules/$(KVER)/modules.alias
 initrd-rootfs.cpio: initrd-rootfs/lib/modules/$(KVER)/modules.symbols
+endif
 
 initrd-rootfs/init: tinird.sh | initrd-rootfs
 	cp $< $@
@@ -412,12 +416,15 @@ initrd-rootfs/etc/mdev.conf: | initrd-rootfs/etc
 initrd-rootfs initrd-rootfs/bin initrd-rootfs/etc:
 	mkdir -p $@
 
+ifneq ($(KVER),)
 initrd-rootfs/lib/modules/$(KVER)/modules.%: initrd-rootfs/bin/busybox | initrd-rootfs/lib/modules/$(KVER)
 	initrd-rootfs/bin/busybox depmod -b initrd-rootfs $(KVER) $(F@)
+endif
 
 %.cpio:
 	cd $* && find . | cpio -H newc -o -R root:root >$(CURDIR)/$@
 
+ifneq ($(VMLINUX_KVER),)
 vmlinux-alpine-3.14 vmlinux-alpine-edge:
 vmlinux-arch:
 vmlinux-fedora-34:
@@ -434,11 +441,13 @@ vmlinux-%: | %.ext4
 		false; \
 	fi; \
 	stty "$$settings"
+endif
 
 .PRECIOUS: %.ext4
 alpine-3.14.ext4 alpine-edge.ext4:
 arch.ext4:
 %.ext4:
+# FIXME: conditionize the host and uml modules in order-only-prerequisites
 %.ext4: | libiamroot.so %-rootfs/usr/lib/modules/$(KVER) %-rootfs/usr/lib/modules/$(VMLINUX_KVER) %-rootfs
 	$(MAKE) $*-postrootfs
 	rm -f $@.tmp

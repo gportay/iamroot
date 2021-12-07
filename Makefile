@@ -348,6 +348,7 @@ arch-rootfs/etc/machine-id: | libiamroot.so
 
 fedora-34-rootfs: | fedora-34-rootfs/etc/machine-id
 
+fedora-34-rootfs/etc/machine-id:
 fedora-34-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64 = /usr/lib64/libc-2.33.so:/usr/lib64/libdl-2.33.so
 
 fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64:/usr/lib64/sssd:/usr/lib/systemd

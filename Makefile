@@ -21,7 +21,7 @@ endif
 QEMU += -serial mon:stdio
 
 KVER ?= $(shell uname -r)
-VMLINUX_KVER ?= $(shell vmlinux --version)
+VMLINUX_KVER ?= $(shell vmlinux --version 2>/dev/null)
 
 .PHONY: all
 all: libiamroot.so

@@ -240,7 +240,7 @@ test: | libiamroot.so alpine-minirootfs
 static-test: SHELL = /bin/bash
 static-test: libiamroot.so | static-rootfs
 	bash iamroot-shell -c "whoami | tee /dev/stderr | grep -q \"^root\$$\""
-	bash iamroot-shell -c "IAMROOT_EUID=$$EUID whoami | tee /dev/stderr | grep -q \"^$$USER\$$\""
+	bash iamroot-shell -c "IAMROOT_EUID=$$EUID whoami | tee /dev/stderr | grep -q \"^$(shell whoami)\$$\""
 
 .PHONY: shell-test
 shell-test: libiamroot.so | static-rootfs

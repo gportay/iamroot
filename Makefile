@@ -446,9 +446,13 @@ endif
 .PRECIOUS: %.ext4
 alpine-3.14.ext4 alpine-edge.ext4:
 arch.ext4:
-%.ext4:
-# FIXME: conditionize the host and uml modules in order-only-prerequisites
-%.ext4: | libiamroot.so %-rootfs/usr/lib/modules/$(KVER) %-rootfs/usr/lib/modules/$(VMLINUX_KVER) %-rootfs
+ifneq ($(KVER),)
+MODULESDIRS += %-rootfs/usr/lib/modules/$(KVER)
+endif
+ifneq ($(VMLINUX_KVER),)
+MODULESDIRS += %-rootfs/usr/lib/modules/$(VMLINUX_KVER)
+endif
+%.ext4: | libiamroot.so %-rootfs $(MODULESDIRS)
 	$(MAKE) $*-postrootfs
 	rm -f $@.tmp
 	fallocate --length 2G $@.tmp

@@ -708,7 +708,7 @@ interp:
 	goto execve;
 
 exec_sh:
-	real_path = strncpy(buf, getenv("SHELL") ?: "/bin/bash", sizeof(buf)-1);
+	real_path = __strncpy(buf, getenv("SHELL") ?: "/bin/bash");
 	interparg[0] = (char *)path; /* original program path as argv0 */
 	interparg[1] = getenv("IAMROOT_EXEC") ?: "/usr/lib/iamroot/exec.sh";
 	interparg[2] = *argv; /* original argv0 as first positional argument */

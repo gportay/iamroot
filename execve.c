@@ -568,9 +568,6 @@ loader:
 
 	/*
 	 * The interpreter has to preload its libiamroot.so library.
-	 *
-	 * TODO: Detect *real* change in interpreter. It is assumed for now the
-	 * interpreter is /lib64/ld-linux-x86-64.so.2 (aka glibc's x86_64 ld).
 	 */
 	if (strcmp(loader, "/lib/ld-musl-x86_64.so.1") == 0) {
 		real_path = path_resolution(loader, loaderbuf,

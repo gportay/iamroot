@@ -15,7 +15,7 @@ void __perror(const char *path, const char *s)
 	if ((errno != EPERM) && (errno != EACCES))
 		return;
 
-	__warning("%s: %s: %m\n", path, s);
+	__notice("%s: %s: %m\n", path, s);
 	if (__fatal())
 		raise(SIGABRT);
 }

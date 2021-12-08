@@ -106,6 +106,38 @@ static int ignore(const char *path)
 	return !ret;
 }
 
+static int __ld_linux_version(const char *path, int *major, int *minor)
+{
+	char buf[sizeof("ld-2.33.so")+1]; 
+	ssize_t siz;
+	int ret;
+
+	siz = readlink(path, buf, sizeof(buf));
+	if (siz == -1) {
+		__perror(path, "readlink");
+		return -1;
+	}
+
+	ret = sscanf(buf, "ld-%i.%i.so", major, minor);
+	if (ret < 2) {
+		errno = ENOTSUP;
+		return -1;
+	}
+
+	return 0;
+}
+
+static int __ld_linux_has_argv0_option(const char *path)
+{
+	int ret, maj = 0, min = 0;
+
+	ret = __ld_linux_version(path, &maj, &min);
+	if (ret == -1)
+		return -1;
+
+	return (maj > 2) || ((maj == 2) && (min >= 33));
+}
+
 static int issuid(const char *path)
 {
 	struct stat statbuf;
@@ -604,6 +636,14 @@ loader:
 		extern char **__environ;
 		envp = __environ;
 	} else if (strcmp(loader, "/lib64/ld-linux-x86-64.so.2") == 0) {
+		int has_argv0, shift = 5;
+
+		has_argv0 = __ld_linux_has_argv0_option(loader);
+		if (has_argv0 == -1) {
+			__perror(loader, "__ld_linux_has_argv0_option");
+			return -1;
+		}
+
 		real_path = path_resolution(loader, loaderbuf,
 					    sizeof(loaderbuf),
 					    AT_SYMLINK_FOLLOW);
@@ -621,13 +661,17 @@ loader:
 		 *   - another option --ld-preload and its argument (i.e. the
 		 *     path in chroot environment to the interpreter's libc.so
 		 *     and libdl.so to preload)
+		 *   - the option --argv0 and its argument (i.e. the original
+		 *     path in host to the binary).
 		 *   - the path to the binary (i.e. the full path in chroot,
 		 *     *not* including chroot; first positional argument)
 		 * Note: the binary's arguments are the original argv shifted
 		 *       by one (i.e. without argv0; following arguments).
 		 */
+		if (has_argv0)
+			shift += 2;
 		for (j = 0; j < i; j++)
-			interparg[j+5] = interparg[j];
+			interparg[j+shift] = interparg[j];
 
 		/* Add path to interpreter (host, argv0) */
 		i = 0;
@@ -646,6 +690,12 @@ loader:
 		}
 		interparg[i++] = "--preload";
 		interparg[i++] = getenv("LD_PRELOAD_LINUX_X86_64");
+
+		/* Add --argv0 and original argv0 */
+		if (has_argv0) {
+			interparg[i++] = "--argv0";
+			interparg[i++] = interpargv0;
+		}
 
 		/* Add path to binary (in chroot, first positional argument) */
 		interparg[i++] = interppath;

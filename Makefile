@@ -292,6 +292,7 @@ arch-chroot: | arch-rootfs
 	bash iamroot-shell -c "chroot arch-rootfs"
 
 fedora-34-chroot:
+fedora-%-chroot: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
 fedora-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64:/usr/lib64/sssd:/usr/lib:/lib:/usr/lib/systemd
 fedora-%-chroot: | fedora-%-rootfs
 	bash iamroot-shell -c "chroot fedora-$*-rootfs"

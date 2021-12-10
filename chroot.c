@@ -769,7 +769,8 @@ int chroot(const char *path)
 		cwd[len++] = '/';
 		cwd[len] = 0;
 
-		strncat(cwd, path, sizeof(buf) - len);
+		cwd = strncat(cwd, path, sizeof(buf) - len - 1);
+		buf[sizeof(buf)-1] = 0;
 	} else {
 		real_path = path_resolution(path, buf, sizeof(buf),
 					    AT_SYMLINK_NOFOLLOW);

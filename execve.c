@@ -328,7 +328,7 @@ static void verbose_exec(const char *path, char * const argv[],
 	}
 }
 #else
-#define verbose_exec()
+#define verbose_exec(path, argv, envp)
 #endif
 
 __attribute__((visibility("hidden")))

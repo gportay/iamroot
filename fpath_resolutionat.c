@@ -159,7 +159,7 @@ char *fpath_resolutionat(int fd, const char *path, char *buf, size_t bufsize,
 	}
 
 	if (ignore(path))
-		return strncpy(buf, path, bufsize);
+		return _strncpy(buf, path, bufsize);
 
 	if (*path == '/') {
 		const char *root;
@@ -204,7 +204,7 @@ char *fpath_resolutionat(int fd, const char *path, char *buf, size_t bufsize,
 			return NULL;
 		}
 	} else {
-		strncpy(buf, path, bufsize);
+		_strncpy(buf, path, bufsize);
 	}
 
 	real_path = sanitize(buf, bufsize);

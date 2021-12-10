@@ -44,9 +44,10 @@ ssize_t llistxattr(const char *path, char *list, size_t size)
 	char xbuf[XATTR_LIST_MAX + 1];
 	char buf[PATH_MAX];
 	char *real_path;
-	ssize_t siz = size;
 	ssize_t xsize;
 	ssize_t i, ret;
+
+	(void)size;
 
 	real_path = path_resolution(path, buf, sizeof(buf),
 				    AT_SYMLINK_NOFOLLOW);
@@ -81,7 +82,6 @@ ssize_t llistxattr(const char *path, char *list, size_t size)
 
 		i += len + 1;
 		ret += len + 1 - off;
-		siz -= len + 1 - off;
 	} while (i < xsize);
 
 	return ret;

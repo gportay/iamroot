@@ -46,9 +46,8 @@ int main(int argc, char * const argv[])
 		goto exit;
 	}
 
-	if (fd2 != -1)
-		if (close(fd2))
-			perror("close");
+	if (close(fd2))
+		perror("close");
 
 	ret = EXIT_SUCCESS;
 

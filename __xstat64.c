@@ -5,31 +5,19 @@
  */
 
 #include <stdio.h>
-#include <errno.h>
-#include <limits.h>
-#include <dlfcn.h>
-
 #include <fcntl.h>
+
 #include <sys/stat.h>
 
 #include "iamroot.h"
 
 #ifdef __GLIBC__
-extern int __rootfxstatat64(int, int, const char *, struct stat64 *, int);
+extern int __fxstatat64(int, int, const char *, struct stat64 *, int);
 
 int __xstat64(int ver, const char *path, struct stat64 *statbuf)
 {
-	char buf[PATH_MAX];
-	ssize_t siz;
+	__debug("%s(path: '%s', ...)\n", __func__, path);
 
-	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
-	if (siz == -1) {
-		__pathperror(path, __func__);
-		return -1;
-	}
-
-	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
-
-	return __rootfxstatat64(ver, AT_FDCWD, buf, statbuf, 0);
+	return __fxstatat64(ver, AT_FDCWD, path, statbuf, 0);
 }
 #endif

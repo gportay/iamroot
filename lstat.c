@@ -5,31 +5,15 @@
  */
 
 #include <stdio.h>
-#include <errno.h>
-#include <limits.h>
 #include <fcntl.h>
-#include <dlfcn.h>
 
-#include <fcntl.h>
 #include <sys/stat.h>
 
 #include "iamroot.h"
 
-extern int rootfstatat(int, const char *, struct stat *, int);
-
 int lstat(const char *path, struct stat *statbuf)
 {
-	char buf[PATH_MAX];
-	ssize_t siz;
+	__debug("%s(path: '%s', ...)\n", __func__, path);
 
-	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
-			      AT_SYMLINK_NOFOLLOW);
-	if (siz == -1) {
-		__pathperror(path, __func__);
-		return -1;
-	}
-
-	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
-
-	return rootfstatat(AT_FDCWD, buf, statbuf, AT_SYMLINK_NOFOLLOW);
+	return fstatat(AT_FDCWD, path, statbuf, AT_SYMLINK_NOFOLLOW);
 }

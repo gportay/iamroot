@@ -5,32 +5,17 @@
  */
 
 #include <stdio.h>
-#include <errno.h>
-#include <limits.h>
 #include <fcntl.h>
-#include <dlfcn.h>
 
 #include <sys/stat.h>
 
 #include "iamroot.h"
 
-extern int rootfstatat(int, const char *, struct stat *, int);
-
 int fstat(int fd, struct stat *statbuf)
 {
-	char buf[PATH_MAX];
-	ssize_t siz;
+	__debug("%s(fd: %i, ...)\n", __func__, fd);
 
-	siz = __procfdreadlink(fd, buf, sizeof(buf));
-	if (siz == -1) {
-		__fpathperror(fd, "__procfdreadlink");
-		return -1;
-	}
-	buf[siz] = 0;
-
-	__debug("%s(fd: %i <-> %s, ...)\n", __func__, fd, buf);
-
-	return rootfstatat(fd, "", statbuf, AT_EMPTY_PATH);
+	return fstatat(fd, "", statbuf, AT_EMPTY_PATH);
 }
 
 #ifdef __GLIBC__

@@ -148,10 +148,10 @@ char *sanitize(char *path, size_t bufsize)
 char *fpath_resolutionat(int fd, const char *path, char *buf, size_t bufsize,
 			 int flags)
 {
-	struct stat statbuf;
 	const char *root;
 	char *real_path;
 	size_t len;
+	int ret;
 
 	if (fd == -1 || !path) {
 		errno = EINVAL;
@@ -225,10 +225,11 @@ char *fpath_resolutionat(int fd, const char *path, char *buf, size_t bufsize,
 		goto exit;
 
 symlink_follow:
-	if (next_lstat(real_path, &statbuf) != 0)
+	ret = issymlink(real_path);
+	if (ret == -1)
 		goto exit;
 
-	if (S_ISLNK(statbuf.st_mode)) {
+	if (ret) {
 		char tmp[NAME_MAX];
 		ssize_t s;
 

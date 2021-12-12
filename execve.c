@@ -37,7 +37,7 @@
 	  _a < _b ? _a : _b; })
 
 extern int next_open(const char *, int, mode_t);
-extern int next_stat(const char *, struct stat *);
+extern int next_fstatat(int, const char *, struct stat *, int);
 
 static regex_t *re;
 
@@ -143,7 +143,7 @@ static int issuid(const char *path)
 	struct stat statbuf;
 	int ret = -1;
 
-	ret = next_stat(path, &statbuf);
+	ret = next_fstatat(AT_FDCWD, path, &statbuf, 0);
 	if (ret == -1)
 		return -1;
 

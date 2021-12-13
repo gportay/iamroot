@@ -297,6 +297,9 @@ fedora-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64:/usr/lib64/s
 fedora-%-chroot: | fedora-%-rootfs
 	bash iamroot-shell -c "chroot fedora-$*-rootfs"
 
+.PHONY: rootfs
+rootfs: alpine-3.14-rootfs alpine-edge-rootfs arch-rootfs fedora-34-rootfs
+
 .PHONY: static-rootfs
 static-rootfs: static-rootfs/usr/bin/sh
 static-rootfs: static-rootfs/bin

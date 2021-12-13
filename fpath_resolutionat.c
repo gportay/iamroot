@@ -158,7 +158,7 @@ char *fpath_resolutionat(int fd, const char *path, char *buf, size_t bufsize,
 		return NULL;
 	}
 
-	if (ignore(path))
+	if (ignore(path) || (flags & AT_EMPTY_PATH) != 0)
 		return _strncpy(buf, path, bufsize);
 
 	if (*path == '/') {

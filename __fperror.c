@@ -25,7 +25,7 @@ void __fperror(int fd, const char *s)
 		perror("__procfdreadlink");
 		return;
 	}
-	buf[siz] = 0;
+	buf[siz] = 0; /* ensure NULL terminated */
 	real_path = buf;
 
 	__notice("%i -> %s: %s: %m\n", fd, real_path, s);

@@ -248,8 +248,7 @@ static ssize_t gethashbang(const char *path, char *buf, size_t bufsize)
 	siz = read(fd, buf, bufsize-1);
 	if (siz == -1)
 		goto close;
-
-	buf[siz] = 0;
+	buf[siz] = 0; /* ensure NULL terminated */
 
 	/* Not an hashbang interpreter directive */
 	if ((siz < 2) || (buf[0] != '#') || (buf[1] != '!')) {

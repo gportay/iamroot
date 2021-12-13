@@ -191,8 +191,8 @@ char *fpath_resolutionat(int fd, const char *path, char *buf, size_t bufsize,
 			perror("__procfdreadlink");
 			return NULL;
 		}
+		dir[siz] = 0; /* ensure NULL terminated */
 
-		dir[siz] = 0;
 		size = snprintf(buf, bufsize, "%s/%s", dir, path);
 		if (size < 0) {
 			errno = EINVAL;
@@ -237,8 +237,8 @@ symlink_follow:
 			perror("readlink");
 			return NULL;
 		}
+		tmp[s] = 0; /* ensure NULL terminated */
 
-		tmp[s] = 0;
 		if (*tmp == '/')
 			return path_resolution(tmp, buf, bufsize, flags);
 	}

@@ -159,7 +159,7 @@ char *fpath_resolutionat(int fd, const char *path, char *buf, size_t bufsize,
 	}
 
 	if (ignore(path) || (flags & AT_EMPTY_PATH) != 0)
-		return _strncpy(buf, path, bufsize);
+		goto ignore;
 
 	if (*path == '/') {
 		const char *root;
@@ -192,6 +192,11 @@ char *fpath_resolutionat(int fd, const char *path, char *buf, size_t bufsize,
 			return NULL;
 		}
 		dir[siz] = 0; /* ensure NULL terminated */
+
+		if (*dir != '/') {
+			__warning("%s: ignore '/proc/self/fd/%d'\n", dir, fd);
+			goto ignore;
+		}
 
 		size = snprintf(buf, bufsize, "%s/%s", dir, path);
 		if (size < 0) {
@@ -246,4 +251,7 @@ symlink_follow:
 
 exit:
 	return real_path;
+
+ignore:
+	return _strncpy(buf, path, bufsize);
 }

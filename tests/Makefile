@@ -5,7 +5,7 @@
 #
 
 override CFLAGS += -fPIC -Wall -Wextra -Werror
-override CFLAGS += -D_GNU_SOURCE
+override CFLAGS += -D_GNU_SOURCE -Wno-error=deprecated-declarations
 
 TESTS += access
 TESTS += chmod
@@ -18,6 +18,8 @@ TESTS += fchownat
 TESTS += fstat
 TESTS += fstatat
 TESTS += get_current_dir_name
+TESTS += getcwd
+TESTS += getwd
 TESTS += lchown
 TESTS += link
 TESTS += linkat
@@ -96,6 +98,10 @@ test:
 	IAMROOT_ROOT=$(CURDIR) /fchownat - /file 0 0
 	get_current_dir_name | tee /dev/stderr | grep -q '$(CURDIR)'
 	IAMROOT_ROOT=$(CURDIR) /get_current_dir_name | tee /dev/stderr | grep -q '/'
+	getcwd | tee /dev/stderr | grep -q '$(CURDIR)'
+	IAMROOT_ROOT=$(CURDIR) /getcwd | tee /dev/stderr | grep -q '/'
+	getwd | tee /dev/stderr | grep -q '$(CURDIR)'
+	IAMROOT_ROOT=$(CURDIR) /getwd | tee /dev/stderr | grep -q '/'
 	link file link1
 	linkat - file - link2 0
 	IAMROOT_ROOT=$(CURDIR) /linkat - /file - /link3 0

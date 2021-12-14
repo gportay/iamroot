@@ -205,6 +205,8 @@ uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/iamroot-shell
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/exec.sh
+	rm -f $(DESTDIR)$(PREFIX)/share/man/man1/iamroot-shell.1.gz
+	rm -f $(DESTDIR)$(PREFIX)/share/man/man7/iamroot.7.gz
 	completionsdir=$${BASHCOMPLETIONSDIR:-$$(pkg-config --define-variable=prefix=$(PREFIX) \
 	                             --variable=completionsdir \
 	                             bash-completion)}; \

@@ -14,8 +14,16 @@ extern "C" {
 #define _strncpy(s1, s2, n1) ({ strncpy(s1, s2, n1-2); s1[n1-1] = 0; s1; })
 #define __strlcmp(s1, s2) strncmp(s1, s2, strlen(s2))
 #define __strncmp(s1, s2) strncmp(s1, s2, sizeof(s2)-1)
-#define __strlcpy(s1, s2) ({ strncpy(s1, s2, strlen(s2));   s1[strlen(s2)]   = 0; s1; })
-#define __strncpy(s1, s2) ({ strncpy(s1, s2, sizeof(s1)-1); s1[sizeof(s1)-1] = 0; s1; })
+#define __strlcpy(s1, s2) \
+	({ const int l = strlen((s2)); \
+	   strncpy((s1), (s2), l); \
+	   (s1)[l] = 0; \
+	   (s1); })
+#define __strncpy(s1, s2) \
+	({ const int l = sizeof((s1))-1; \
+	   strncpy((s1), (s2), l); \
+	   (s1)[l] = 0; \
+	   (s1); })
 
 int _snprintf(char *buf, size_t bufsize, const char *fmt, ...) __attribute__((format(printf,3,4)));
 

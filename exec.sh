@@ -34,7 +34,12 @@ ldconfig)
 		set -- "$@" -r "$IAMROOT_ROOT"
 
 		shift
-		set -- "$IAMROOT_ROOT/usr/sbin/ldconfig" "$@"
+		if ! ldconfig="$(command -v ldconfig)"
+		then
+			echo "$1: No such file" >&2
+			exit 1
+		fi
+		set -- "$IAMROOT_ROOT$ldconfig" "$@"
 	fi
 
 	iamroot_root="${IAMROOT_ROOT:-}"

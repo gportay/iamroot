@@ -312,7 +312,7 @@ static void verbose_exec(const char *path, char * const argv[],
 	if (debug == 1) {
 		char * const *p;
 
-		dprintf(STDERR_FILENO, "Debug: running");
+		dprintf(STDERR_FILENO, "Debug: running IAMROOT_ROOT=%s", getrootdir());
 
 		p = argv;
 		while (*p)

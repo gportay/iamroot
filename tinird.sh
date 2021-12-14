@@ -51,7 +51,7 @@ do
 done
 
 # Set root options
-if [ ! "$ro" ] && [ $rw ]
+if [ ! "$ro" ] && [ "$rw" ]
 then
 	rootoptions=rw
 fi

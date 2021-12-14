@@ -28,6 +28,11 @@ extern "C" {
 	   strncpy((s1), (s2), l); \
 	   (s1)[l] = 0; \
 	   (s1); })
+#define __strncat(s1, s2) \
+	({ const int l = sizeof((s1))-1; \
+	   strncat((s1), (s2), l); \
+	   (s1)[l] = 0; \
+	   (s1); })
 
 int _snprintf(char *buf, size_t bufsize, const char *fmt, ...) __attribute__((format(printf,3,4)));
 
@@ -49,6 +54,7 @@ int isdirectory(const char *);
 int fisfileat(int, const char *, int);
 int fisfile(int);
 int isfile(const char *);
+int pathprependenv(const char *, const char *, int);
 int pathsetenv(const char *, const char *, const char *, int);
 
 char *sanitize(char *, size_t);

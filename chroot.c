@@ -179,6 +179,21 @@ int isfile(const char *path)
 	return S_ISREG(statbuf.st_mode);
 }
 
+int pathprependenv(const char *name, const char *value, int overwrite)
+{
+	char *newval, *oldval;
+	char buf[PATH_MAX];
+
+	newval = __strncpy(buf, value);
+	oldval = getenv(name);
+	if (oldval) {
+		__strncat(buf, ":");
+		__strncat(buf, oldval);
+	}
+
+	return setenv(name, newval, overwrite);
+}
+
 int pathsetenv(const char *root, const char *name, const char *value,
 	       int overwrite)
 {

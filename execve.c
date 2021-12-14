@@ -450,6 +450,27 @@ static char *__getld_preload_linux_x86_64()
 	return ret;
 }
 
+static char *__ld_preload_linux_x86_64()
+{
+	int ret;
+
+	ret = pathsetenv(getrootdir(), "LD_PRELOAD_LINUX_X86_64",
+			 __getld_preload_linux_x86_64(), 1);
+	if (ret) {
+		perror("pathsetenv");
+		return NULL;
+	}
+
+	ret = pathprependenv("LD_PRELOAD_LINUX_X86_64",
+			     __getlib_linux_x86_64(), 1);
+	if (ret) {
+		perror("pathprependenv");
+		return NULL;
+	}
+
+	return getenv("LD_PRELOAD_LINUX_X86_64");
+}
+
 static char *__getexec()
 {
 	char *ret;
@@ -466,19 +487,17 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	char buf[PATH_MAX], hashbangbuf[PATH_MAX], loaderbuf[PATH_MAX];
 	char hashbang[HASHBANG_MAX], loader[HASHBANG_MAX];
 	char *real_path, *real_hashbang = NULL;
-	char *interparg[10+1] = { NULL }; /*  0 ARGV0
-					   *  1 /lib/ld.so
-					   *  2 --preload
-					   *  3 libiamroot.so
-					   *  4 --preload
-					   *  5 libc.so:libdl.so
-					   *  6 --argv0
-					   *  7 ARGV0
-					   *  8 /bin/sh
-					   *  9 -x
-					   * 10 script.sh
-					   * 11 NULL
-					   */
+	char *interparg[8+1] = { NULL }; /* 0 ARGV0
+					  * 1 /lib/ld.so
+					  * 2 --preload
+					  * 3 libiamroot.so:libc.so:libdl.so
+					  * 4 --argv0
+					  * 5 ARGV0
+					  * 6 /bin/sh
+					  * 7 -x
+					  * 8 script.sh
+					  * 9 NULL
+					  */
 	char *interpargv0 = *argv;
 	char *interppath = NULL;
 	int i = 0, j, ret;
@@ -682,7 +701,7 @@ loader:
 		extern char **__environ;
 		envp = __environ;
 	} else if (strcmp(loader, "/lib64/ld-linux-x86-64.so.2") == 0) {
-		int has_argv0, shift = 5;
+		int has_argv0, shift = 3;
 
 		has_argv0 = __ld_linux_has_argv0_option(loader);
 		if (has_argv0 == -1) {
@@ -703,10 +722,9 @@ loader:
 		 *   - the path to the interpreter (i.e. the absolute path in
 		 *     host, including the chroot; argv0)
 		 *   - the option --ld-preload and its argument (i.e. the path
-		 *     in host to the interpreter's libiamroot.so to preload)
-		 *   - another option --ld-preload and its argument (i.e. the
-		 *     path in chroot environment to the interpreter's libc.so
-		 *     and libdl.so to preload)
+		 *     in host environment to the interpreter's libiamroot.so,
+		 *     and the path in chroot environment to the interpreter's
+		 *     libc.so and libdl.so)
 		 *   - the option --argv0 and its argument (i.e. the original
 		 *     path in host to the binary).
 		 *   - the path to the binary (i.e. the full path in chroot,
@@ -723,19 +741,13 @@ loader:
 		i = 0;
 		interparg[i++] = real_path;
 
-		/* Add --preload and interpreter's libraries */
-		/* libiamroot.so (from host) */
+		/*
+		 * Add --preload and interpreter's libraries:
+		 *  - libiamroot.so (from host)
+		 *  - libc.so and libdl.so (from chroot)
+		 */
 		interparg[i++] = "--preload";
-		interparg[i++] = __getlib_linux_x86_64();
-		/* libc.so and libdl.so (from chroot) */
-		ret = pathsetenv(getrootdir(), "LD_PRELOAD_LINUX_X86_64",
-				 __getld_preload_linux_x86_64(), 1);
-		if (ret) {
-			__envperror("LD_LIBRARY_PATH", "pathsetenv");
-			return -1;
-		}
-		interparg[i++] = "--preload";
-		interparg[i++] = getenv("LD_PRELOAD_LINUX_X86_64");
+		interparg[i++] = __ld_preload_linux_x86_64();
 
 		/* Add --argv0 and original argv0 */
 		if (has_argv0) {
@@ -745,6 +757,27 @@ loader:
 
 		/* Add path to binary (in chroot, first positional argument) */
 		interparg[i++] = interppath;
+
+		/*
+		 * Strip libiamroot.so from LD_PRELOAD
+		 *
+		 * TODO: Remove *real* libiamroot.so. It is assumed for now the
+		 * library is at the first place.
+		 */
+		ld_preload = getenv("LD_PRELOAD");
+		if (ld_preload) {
+			char *n, *s = ld_preload;
+
+			n = strchr(s, ':');
+			if (n)
+				n++;
+
+			ld_preload = n;
+			if (ld_preload && *ld_preload)
+				setenv("LD_PRELOAD", ld_preload, 1);
+			else
+				unsetenv("LD_PRELOAD");
+		}
 
 		extern char **__environ;
 		envp = __environ;

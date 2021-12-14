@@ -16,7 +16,7 @@
 int main(int argc, char * const argv[])
 {
 	int flags = 0, fd = AT_FDCWD, fd2 = -1, ret = EXIT_FAILURE;
-	mode_t mode;
+	mode_t mode = 0;
 
 	if (argc < 3) {
 		fprintf(stderr, "Too few arguments\n");

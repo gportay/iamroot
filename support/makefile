@@ -53,6 +53,17 @@ clean:
 	rm -Rf output-*/
 	rm -f libiamroot*.so*
 
+ifneq ($(shell command -v clang),)
+all: libiamroot-linux-x86-64-clang.so
+
+.PRECIOUS: libiamroot-linux-x86-64-clang.so
+libiamroot-linux-x86-64-clang.so: libiamroot-linux-x86-64-clang.so.2
+	ln -sf $< $@
+
+libiamroot-linux-x86-64-clang.so.2:
+libiamroot-linux-x86-64-clang.so.2: export CC = clang
+endif
+
 ifneq ($(shell command -v musl-gcc),)
 all: libiamroot-musl-x86_64.so
 

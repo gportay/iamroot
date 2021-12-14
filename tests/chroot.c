@@ -94,8 +94,8 @@ static int out(int fd)
 int main(int argc, char * const argv[])
 {
 	static char buf[PATH_MAX], cwd[PATH_MAX];
+	int fd = -1, ret = EXIT_FAILURE;
 	const char *root;
-	int fd, ret;
 
 	if (argc < 2) {
 		fprintf(stderr, "Too few arguments\n");
@@ -140,6 +140,8 @@ int main(int argc, char * const argv[])
 
 	if (strcmp(cwd, buf) != 0)
 		ret = EXIT_FAILURE;
+
+	ret = EXIT_SUCCESS;
 
 exit:
 	return ret;

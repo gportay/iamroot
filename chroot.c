@@ -783,22 +783,27 @@ int chroot(const char *path)
 	real_path = sanitize(buf, sizeof(buf));
 
 	ret = setenv("PATH", getenv("IAMROOT_PATH") ?: "/bin:/usr/bin", 1);
-	if (ret)
-		goto exit;
+	if (ret == -1) {
+		perror("setenv");
+		return -1;
+	}
 
 	ret = pathsetenv(real_path, "LD_LIBRARY_PATH",
 			 getenv("IAMROOT_LD_LIBRARY_PATH") ?: "/usr/lib:/lib",
 			 1);
-	if (ret)
-		goto exit;
+	if (ret == -1) {
+		perror("pathsetenv");
+		return -1;
+	}
 
 	ret = setrootdir(real_path);
-	if (ret == -1)
-		goto exit;
+	if (ret == -1) {
+		perror("setrootdir");
+		return -1;
+	}
 
 	__verbose("Enterring chroot: '%s'\n", real_path);
 
-exit:
 	__verbose_func("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
 	__verbose("IAMROOT_PATH=%s\n", getenv("IAMROOT_ROOT"));
 	__verbose("PATH=%s\n", getenv("PATH"));

@@ -45,6 +45,7 @@ ldconfig)
 	iamroot_root="${IAMROOT_ROOT:-}"
 
 	unset LD_PRELOAD
+	unset LD_LIBRARY_PATH
 	unset IAMROOT_ROOT
 
 	# Fixes: $IAMROOT/usr/sbin/ldconfig: need absolute file name for configuration file when using -r

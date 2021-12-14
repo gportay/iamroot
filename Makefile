@@ -24,7 +24,10 @@ KVER ?= $(shell uname -r 2>/dev/null)
 VMLINUX_KVER ?= $(shell vmlinux --version 2>/dev/null)
 
 .PHONY: all
-all: libiamroot.so
+all: libiamroot-linux-x86-64.so.2
+
+libiamroot-linux-x86-64.so.2: libiamroot.so
+	ln -sf $< $@
 
 libiamroot.so: __fperror.o
 libiamroot.so: __fstat.o
@@ -192,7 +195,8 @@ install: install-exec install-doc install-bash-completion
 install-exec:
 	install -D -m 755 iamroot-shell $(DESTDIR)$(PREFIX)/bin/iamroot-shell
 	sed -e "s,\$$PWD,$(PREFIX)/lib/iamroot," -i $(DESTDIR)$(PREFIX)/bin/iamroot-shell
-	install -D -m 755 libiamroot.so $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
+	install -D -m 755 libiamroot.so $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-x86-64.so.2
+	ln -sf libiamroot-linux-x86-64.so.2 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
 	install -D -m 755 exec.sh $(DESTDIR)$(PREFIX)/lib/iamroot/exec.sh
 
 .PHONY: install-doc
@@ -212,6 +216,7 @@ install-bash-completion:
 .PHONY: uninstall
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/iamroot-shell
+	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-x86-64.so.2
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/exec.sh
 	rm -f $(DESTDIR)$(PREFIX)/share/man/man1/iamroot-shell.1.gz
@@ -248,18 +253,18 @@ check:
 .PHONY: test
 test: shell-test
 test: static-test
-test: | libiamroot.so alpine-minirootfs
+test: | libiamroot-linux-x86-64.so.2 alpine-minirootfs
 	$(MAKE) -C tests
-	$(MAKE) -C tests $@ LD_PRELOAD=$(CURDIR)/libiamroot.so IAMROOT_LIB=$(CURDIR)/libiamroot.so ALPINE_MINIROOTFS=$(CURDIR)/alpine-minirootfs
+	$(MAKE) -C tests $@ LD_PRELOAD=$(CURDIR)/libiamroot-linux-x86-64.so.2 IAMROOT_LIB=$(CURDIR)/libiamroot-linux-x86-64.so.2 ALPINE_MINIROOTFS=$(CURDIR)/alpine-minirootfs
 
 .PHONY: static-test
 static-test: SHELL = /bin/bash
-static-test: libiamroot.so | static-rootfs
+static-test: libiamroot-linux-x86-64.so.2 | static-rootfs
 	bash iamroot-shell -c "whoami | tee /dev/stderr | grep -q \"^root\$$\""
 	bash iamroot-shell -c "IAMROOT_EUID=$$EUID whoami | tee /dev/stderr | grep -q \"^$(shell whoami)\$$\""
 
 .PHONY: shell-test
-shell-test: libiamroot.so | static-rootfs
+shell-test: libiamroot-linux-x86-64.so.2 | static-rootfs
 	bash iamroot-shell -c "whoami" | tee /dev/stderr | grep -q "^root\$$"
 	bash iamroot-shell -c "stat -c '%u:%g' ." | tee /dev/stderr | grep -q "^0:0$$"
 	bash iamroot-shell -c "echo \$$IAMROOTLVL" | tee /dev/stderr | grep -q "^[0-9]\+$$"
@@ -268,7 +273,7 @@ shell-test: libiamroot.so | static-rootfs
 alpine-test: | alpine-minirootfs/usr/bin/shebang.sh
 alpine-test: | alpine-minirootfs/usr/bin/shebang-arg.sh
 alpine-test: | alpine-minirootfs/usr/bin/shebang-busybox.sh
-alpine-test: libiamroot.so | alpine-minirootfs
+alpine-test: libiamroot-linux-x86-64.so.2 | alpine-minirootfs
 	bash iamroot-shell -c "chroot alpine-minirootfs pwd" | tee /dev/stderr | grep -q "^/\$$"
 	bash iamroot-shell -c "chroot alpine-minirootfs cat /etc/os-release" | tee /dev/stderr | grep 'NAME="Alpine Linux"'
 	bash iamroot-shell --path /bin:/usr/bin:/sbin:/usr/sbin -c "chroot alpine-minirootfs chroot . cat /etc/os-release" | tee /dev/stderr | grep 'NAME="Alpine Linux"'
@@ -281,22 +286,22 @@ alpine-test: libiamroot.so | alpine-minirootfs
 arch-test: | arch-rootfs/usr/bin/shebang.sh
 arch-test: | arch-rootfs/usr/bin/shebang-arg.sh
 arch-test: | arch-rootfs/usr/bin/shebang-busybox.sh
-arch-test: libiamroot.so | arch-rootfs/usr/bin/busybox
+arch-test: libiamroot-linux-x86-64.so.2 | arch-rootfs/usr/bin/busybox
 	bash iamroot-shell -c "chroot arch-rootfs /bin/busybox"
 	bash iamroot-shell -c "chroot arch-rootfs shebang.sh one two three"
 	bash iamroot-shell -c "chroot arch-rootfs shebang-arg.sh one two three"
 	bash iamroot-shell -c "chroot arch-rootfs shebang-busybox.sh one two three"
 
 .PHONY: shell
-shell: libiamroot.so
+shell: libiamroot-linux-x86-64.so.2
 	bash iamroot-shell
 
 .PHONY: chroot
-chroot: libiamroot.so | static-rootfs
+chroot: libiamroot-linux-x86-64.so.2 | static-rootfs
 	bash iamroot-shell -c "chroot static-rootfs/bin/sh"
 
 .PHONY: mini-chroot
-mini-chroot: libiamroot.so | alpine-minirootfs
+mini-chroot: libiamroot-linux-x86-64.so.2 | alpine-minirootfs
 	bash iamroot-shell -c "chroot alpine-minirootfs /bin/sh"
 
 alpine-3.14-chroot alpine-edge-chroot:
@@ -351,19 +356,19 @@ arch-rootfs/usr/bin/%: support/% | arch-rootfs
 alpine-3.14-rootfs: | alpine-3.14-rootfs/bin/busybox
 alpine-edge-rootfs: | alpine-edge-rootfs/bin/busybox
 
-alpine-%-rootfs/bin/busybox: | libiamroot.so
+alpine-%-rootfs/bin/busybox: | libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "alpine-make-rootfs alpine-$*-rootfs --mirror-uri http://nl.alpinelinux.org/alpine --branch $*"
 
 .PHONY: arch-rootfs
 arch-rootfs: | arch-rootfs/etc/machine-id
 
-arch-rootfs/usr/bin/busybox: | libiamroot.so arch-rootfs/etc/machine-id
+arch-rootfs/usr/bin/busybox: | libiamroot-linux-x86-64.so.2 arch-rootfs/etc/machine-id
 	bash iamroot-shell -c "pacman -r arch-rootfs --noconfirm -S busybox"
 
-arch-rootfs/boot/vmlinuz-linux: | libiamroot.so arch-rootfs/etc/machine-id
+arch-rootfs/boot/vmlinuz-linux: | libiamroot-linux-x86-64.so.2 arch-rootfs/etc/machine-id
 	bash iamroot-shell -c "pacman -r arch-rootfs --noconfirm -S linux"
 
-arch-rootfs/etc/machine-id: | libiamroot.so
+arch-rootfs/etc/machine-id: | libiamroot-linux-x86-64.so.2
 	mkdir -p arch-rootfs
 	bash iamroot-shell -c "pacstrap arch-rootfs"
 
@@ -376,7 +381,7 @@ fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64 = /usr/li
 fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64:/usr/lib64/sssd:/usr/lib:/lib:/usr/lib/systemd
 fedora-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd
 fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|$(CURDIR)/fedora-$*-rootfs/var/log/dnf.rpm.log
-fedora-%-rootfs/etc/machine-id: | libiamroot.so
+fedora-%-rootfs/etc/machine-id: | libiamroot-linux-x86-64.so.2
 	install -D -m644 fedora.repo fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
 	bash iamroot-shell -c "dnf --releasever $* --assumeyes --installroot $(CURDIR)/fedora-$*-rootfs group install minimal-environment"
 	rm -f fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
@@ -475,7 +480,7 @@ endif
 ifneq ($(VMLINUX_KVER),)
 MODULESDIRS += %-rootfs/usr/lib/modules/$(VMLINUX_KVER)
 endif
-%.ext4: | libiamroot.so %-rootfs $(MODULESDIRS)
+%.ext4: | libiamroot-linux-x86-64.so.2 %-rootfs $(MODULESDIRS)
 	$(MAKE) $*-postrootfs
 	rm -f $@.tmp
 	fallocate --length 2G $@.tmp
@@ -483,7 +488,7 @@ endif
 	mv $@.tmp $@
 
 .PRECIOUS: %-rootfs/usr/lib/modules/$(KVER) %-rootfs/usr/lib/modules/$(VMLINUX_KVER)
-%-rootfs/usr/lib/modules/$(KVER) %-rootfs/usr/lib/modules/$(VMLINUX_KVER): | libiamroot.so %-rootfs
+%-rootfs/usr/lib/modules/$(KVER) %-rootfs/usr/lib/modules/$(VMLINUX_KVER): | libiamroot-linux-x86-64.so.2 %-rootfs
 	rm -Rf $@.tmp $@
 	mkdir -p $(@D)
 	bash iamroot-shell -c "rsync -a /usr/lib/modules/$(@F)/. $@.tmp/."
@@ -574,7 +579,7 @@ mnt:
 
 .PHONY: clean
 clean:
-	rm -f libiamroot.so *.o *.ext4 *.cpio
+	rm -f libiamroot-linux-x86-64.so.2 libiamroot.so *.o *.ext4 *.cpio
 	rm -Rf *-rootfs/
 	$(MAKE) -C tests $@
 

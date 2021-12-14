@@ -11,11 +11,7 @@ PREFIX ?= /usr/local
 MAKEFLAGS += --no-print-directory
 
 .PHONY: all
-all: libiamroot-linux-x86-64.so
-
-.PRECIOUS: libiamroot-linux-x86-64.so
-libiamroot-linux-x86-64.so: libiamroot-linux-x86-64.so.2
-	ln -sf $< $@
+all:
 
 .PRECIOUS: libiamroot-%.so.1 libiamroot-%.so.2
 libiamroot-%.so.1 libiamroot-%.so.2: output-%/libiamroot.so
@@ -28,24 +24,6 @@ output-%/libiamroot.so: $(wildcard *.c) | output-%
 .PRECIOUS: output-%
 output-%:
 	mkdir $@
-
-.PHONY: install
-install: install-exec-linux-x86-64
-	$(MAKE) -f $(CURDIR)/Makefile $@
-
-.PHONY: install-exec-linux-x86-64
-install-exec-linux-x86-64:
-	install -D -m 755 libiamroot-linux-x86-64.so.2 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-x86-64.so.2
-	ln -sf libiamroot-linux-x86-64.so.2 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-x86-64.so
-
-.PHONY: uninstall
-uninstall: uninstall-linux-x86-64
-	$(MAKE) -f $(CURDIR)/Makefile $@
-
-.PHONY: uninstall-linux-x86-64
-uninstall-linux-x86-64:
-	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-x86-64.so.2
-	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-x86-64.so
 
 .PHONY: clean
 clean:
@@ -99,6 +77,8 @@ alpine-test: libiamroot-musl-x86_64.so | alpine-minirootfs
 	bash iamroot-shell -c "chroot alpine-minirootfs /lib/ld-musl-x86_64.so.1 --preload "$(IAMROOT_LIB_MUSL_X86_64)" bin/busybox"
 
 endif
+
+all: | libiamroot-linux-x86-64.so.2
 
 %:
 	$(MAKE) -f Makefile $@

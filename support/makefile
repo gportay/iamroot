@@ -30,11 +30,11 @@ output-%:
 	mkdir $@
 
 .PHONY: install
-install: install-linux-x86-64
+install: install-exec-linux-x86-64
 	$(MAKE) -f $(CURDIR)/Makefile $@
 
-.PHONY: install-linux-x86-64
-install-linux-x86-64:
+.PHONY: install-exec-linux-x86-64
+install-exec-linux-x86-64:
 	install -D -m 755 libiamroot-linux-x86-64.so.2 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-x86-64.so.2
 	ln -sf libiamroot-linux-x86-64.so.2 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-x86-64.so
 
@@ -74,10 +74,10 @@ libiamroot-musl-x86_64.so: libiamroot-musl-x86_64.so.1
 libiamroot-musl-x86_64.so.1:
 libiamroot-musl-x86_64.so.1: export CC = musl-gcc
 
-install: install-musl-x86_64
+install: install-exec-musl-x86_64
 
-.PHONY: install-musl-x86_64
-install-musl-x86_64:
+.PHONY: install-exec-musl-x86_64
+install-exec-musl-x86_64:
 	install -D -m 755 libiamroot-musl-x86_64.so.1 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-musl-x86_64.so.1
 	ln -sf libiamroot-musl-x86_64.so.1 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-musl-x86_64.so
 

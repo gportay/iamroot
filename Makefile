@@ -186,13 +186,22 @@ libiamroot.so: override LDLIBS += -ldl -lpthread
 doc: iamroot-shell.1.gz iamroot.7.gz
 
 .PHONY: install
-install:
+install: install-exec install-doc install-bash-completion
+
+.PHONY: install-exec
+install-exec:
 	install -D -m 755 iamroot-shell $(DESTDIR)$(PREFIX)/bin/iamroot-shell
 	sed -e "s,\$$PWD,$(PREFIX)/lib/iamroot," -i $(DESTDIR)$(PREFIX)/bin/iamroot-shell
 	install -D -m 755 libiamroot.so $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
 	install -D -m 755 exec.sh $(DESTDIR)$(PREFIX)/lib/iamroot/exec.sh
+
+.PHONY: install-doc
+install-doc:
 	install -D -m 644 iamroot-shell.1.gz $(DESTDIR)$(PREFIX)/share/man/man1/iamroot-shell.1.gz
 	install -D -m 644 iamroot.7.gz $(DESTDIR)$(PREFIX)/share/man/man7/iamroot.7.gz
+
+.PHONY: install-bash-completion
+install-bash-completion:
 	completionsdir=$${BASHCOMPLETIONSDIR:-$$(pkg-config --define-variable=prefix=$(PREFIX) \
 	                             --variable=completionsdir \
 	                             bash-completion)}; \
@@ -214,7 +223,10 @@ uninstall:
 		rm -f $(DESTDIR)$$completionsdir/iamroot-shell; \
 	fi
 
-user-install user-uninstall:
+.PHONY: user-install
+user-install: user-install-exec user-install-doc user-install-bash-completion
+
+user-install-exec user-install-doc user-install-bash-completion user-uninstall:
 user-%:
 	$(MAKE) $* PREFIX=$$HOME/.local BASHCOMPLETIONSDIR=$$HOME/.local/share/bash-completion/completions
 

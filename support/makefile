@@ -71,6 +71,7 @@ all: libiamroot-musl-x86_64.so
 libiamroot-musl-x86_64.so: libiamroot-musl-x86_64.so.1
 	ln -sf $< $@
 
+libiamroot-musl-x86_64.so.1:
 libiamroot-musl-x86_64.so.1: export CC = musl-gcc
 
 install: install-musl-x86_64

@@ -179,81 +179,6 @@ int isfile(const char *path)
 	return S_ISREG(statbuf.st_mode);
 }
 
-int pathprependenv(const char *name, const char *value, int overwrite)
-{
-	char *newval, *oldval;
-	char buf[PATH_MAX];
-
-	newval = __strncpy(buf, value);
-	oldval = getenv(name);
-	if (oldval) {
-		__strncat(buf, ":");
-		__strncat(buf, oldval);
-	}
-
-	return setenv(name, newval, overwrite);
-}
-
-int pathsetenv(const char *root, const char *name, const char *value,
-	       int overwrite)
-{
-	size_t rootlen, vallen, newlen;
-
-	if (!root || !value)
-		goto setenv;
-
-	newlen = 0;
-	rootlen = strlen(root);
-
-	vallen = strlen(value);
-	if (vallen > 0) {
-		char *token, *saveptr, val[vallen+1];
-
-		newlen = vallen;
-		newlen += rootlen;
-		newlen++; /* NUL */
-
-		__strncpy(val, value);
-		token = strtok_r(val, ":", &saveptr);
-		if (token && *token)
-			while (strtok_r(NULL, ":", &saveptr))
-				newlen += rootlen;
-	}
-
-	if (newlen > 0) {
-		char *str, *token, *saveptr, val[vallen+1], new_value[newlen+1];
-
-		str = new_value;
-		__strncpy(val, value);
-		token = strtok_r(val, ":", &saveptr);
-		if (token && *token) {
-			int n;
-
-			n = snprintf(str, newlen, "%s%s", root, token);
-			if ((n == -1) || (newlen < (size_t)n)) {
-				errno = EOVERFLOW;
-				return -1;
-			}
-			str += n;
-			newlen -= n;
-			while ((token = strtok_r(NULL, ":", &saveptr))) {
-				n = snprintf(str, newlen, ":%s%s", root, token);
-				if ((n == -1) || (newlen < (size_t)n)) {
-					errno = EOVERFLOW;
-					return -1;
-				}
-				str += n;
-				newlen -= n;
-			}
-		}
-
-		return setenv(name, new_value, overwrite);
-	}
-
-setenv:
-	return setenv(name, value, overwrite);
-}
-
 __attribute__((visibility("hidden")))
 int __getfatal()
 {
@@ -804,14 +729,6 @@ int chroot(const char *path)
 		return -1;
 	}
 
-	ret = pathsetenv(real_path, "LD_LIBRARY_PATH",
-			 getenv("IAMROOT_LD_LIBRARY_PATH") ?: "/usr/lib:/lib",
-			 1);
-	if (ret == -1) {
-		__envperror("LD_LIBRARY_PATH", "pathsetenv");
-		return -1;
-	}
-
 	ret = setrootdir(real_path);
 	if (ret == -1) {
 		__pathperror(real_path, "setrootdir");
@@ -819,11 +736,7 @@ int chroot(const char *path)
 	}
 
 	__info("Enterring chroot: '%s'\n", real_path);
-
 	__debug("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
-	__info("IAMROOT_PATH=%s\n", getenv("IAMROOT_ROOT"));
-	__info("PATH=%s\n", getenv("PATH"));
-	__info("LD_LIBRARY_PATH=%s\n", getenv("LD_LIBRARY_PATH"));
 
 	return 0;
 }

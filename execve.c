@@ -40,6 +40,82 @@ static const char *__basename(const char *path)
 	return s+1;
 }
 
+int pathprependenv(const char *name, const char *value, int overwrite)
+{
+	char *newval, *oldval;
+	char buf[PATH_MAX];
+
+	newval = __strncpy(buf, value);
+	oldval = getenv(name);
+	if (oldval) {
+		__strncat(buf, ":");
+		__strncat(buf, oldval);
+	}
+
+	return setenv(name, newval, overwrite);
+}
+
+int pathsetenv(const char *root, const char *name, const char *value,
+		      int overwrite)
+{
+	size_t rootlen, vallen, newlen;
+
+	if (!root || !value)
+		goto setenv;
+
+	newlen = 0;
+	rootlen = strlen(root);
+
+	vallen = strlen(value);
+	if (vallen > 0) {
+		char *token, *saveptr, val[vallen+1];
+
+		newlen = vallen;
+		newlen += rootlen;
+		newlen++; /* NUL */
+
+		__strncpy(val, value);
+		token = strtok_r(val, ":", &saveptr);
+		if (token && *token)
+			while (strtok_r(NULL, ":", &saveptr))
+				newlen += rootlen;
+	}
+
+	if (newlen > 0) {
+		char *str, *token, *saveptr, val[vallen+1], new_value[newlen+1];
+
+		str = new_value;
+		__strncpy(val, value);
+		token = strtok_r(val, ":", &saveptr);
+		if (token && *token) {
+			int n;
+
+			n = snprintf(str, newlen, "%s%s", root, token);
+			if ((n == -1) || (newlen < (size_t)n)) {
+				errno = EOVERFLOW;
+				return -1;
+			}
+			str += n;
+			newlen -= n;
+			while ((token = strtok_r(NULL, ":", &saveptr))) {
+				n = snprintf(str, newlen, ":%s%s", root, token);
+				if ((n == -1) || (newlen < (size_t)n)) {
+					errno = EOVERFLOW;
+					return -1;
+				}
+				str += n;
+				newlen -= n;
+			}
+		}
+
+		return setenv(name, new_value, overwrite);
+	}
+
+setenv:
+	return setenv(name, value, overwrite);
+}
+
+
 static regex_t *re;
 
 static void __regex_perror(const char *s, regex_t *regex, int err)
@@ -471,6 +547,21 @@ static char *__ld_preload_linux_x86_64()
 	return getenv("LD_PRELOAD_LINUX_X86_64");
 }
 
+static char *__ld_library_path_interp()
+{
+	int ret;
+
+	ret = pathsetenv(getrootdir(), "LD_LIBRARY_PATH_INTERP",
+			 getenv("IAMROOT_LD_LIBRARY_PATH") ?: "/usr/lib:/lib",
+			 1);
+	if (ret) {
+		perror("pathprependenv");
+		return NULL;
+	}
+
+	return getenv("LD_LIBRARY_PATH_INTERP");
+}
+
 static char *__getexec()
 {
 	char *ret;
@@ -487,17 +578,19 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	char buf[PATH_MAX], hashbangbuf[PATH_MAX], loaderbuf[PATH_MAX];
 	char hashbang[HASHBANG_MAX], loader[HASHBANG_MAX];
 	char *real_path, *real_hashbang = NULL;
-	char *interparg[8+1] = { NULL }; /* 0 ARGV0
-					  * 1 /lib/ld.so
-					  * 2 --preload
-					  * 3 libiamroot.so:libc.so:libdl.so
-					  * 4 --argv0
-					  * 5 ARGV0
-					  * 6 /bin/sh
-					  * 7 -x
-					  * 8 script.sh
-					  * 9 NULL
-					  */
+	char *interparg[10+1] = { NULL }; /*  0 ARGV0
+					   *  1 /lib/ld.so
+					   *  2 --preload
+					   *  3 libiamroot.so:libc.so:libdl.so
+					   *  4 --library-path
+					   *  3 /usr/lib:/lib
+					   *  6 --argv0
+					   *  7 ARGV0
+					   *  8 /bin/sh
+					   *  9 -x
+					   * 10 script.sh
+					   * 11 NULL
+					   */
 	char *interpargv0 = *argv;
 	char *interppath = NULL;
 	int i = 0, j, ret;
@@ -652,6 +745,8 @@ loader:
 		 *     including the chroot; argv0)
 		 *   - the option --ld-preload and its argument (i.e. the path
 		 *     in host to the interpreter's libiamroot.so to preload)
+		 *   - the option --library-path and its argument (i.e. the
+		 *     path in chroot environment to the libraries)
 		 *   - the option --argv0 and its argument (i.e. the original
 		 *     path in host to the binary).
 		 *   - the path to the binary (i.e. the full path in chroot,
@@ -660,7 +755,7 @@ loader:
 		 *       by one (i.e. without argv0; following arguments).
 		 */
 		for (j = 0; j < i; j++)
-			interparg[j+5] = interparg[j];
+			interparg[j+7] = interparg[j];
 
 		/* Add path to interpreter (host, argv0) */
 		i = 0;
@@ -691,6 +786,10 @@ loader:
 		interparg[i++] = "--preload";
 		interparg[i++] = __getlib_musl_x86_64();
 
+		/* Add --library-path (chroot) */
+		interparg[i++] = "--library-path";
+		interparg[i++] = __ld_library_path_interp();
+
 		/* Add --argv0 and original argv0 */
 		interparg[i++] = "--argv0";
 		interparg[i++] = interpargv0;
@@ -701,7 +800,7 @@ loader:
 		extern char **__environ;
 		envp = __environ;
 	} else if (strcmp(loader, "/lib64/ld-linux-x86-64.so.2") == 0) {
-		int has_argv0, shift = 3;
+		int has_argv0, shift = 5;
 
 		has_argv0 = __ld_linux_has_argv0_option(loader);
 		if (has_argv0 == -1) {
@@ -725,6 +824,8 @@ loader:
 		 *     in host environment to the interpreter's libiamroot.so,
 		 *     and the path in chroot environment to the interpreter's
 		 *     libc.so and libdl.so)
+		 *   - the option --library-path and its argument (i.e. the
+		 *     path in chroot environment to the libraries)
 		 *   - the option --argv0 and its argument (i.e. the original
 		 *     path in host to the binary).
 		 *   - the path to the binary (i.e. the full path in chroot,
@@ -748,6 +849,10 @@ loader:
 		 */
 		interparg[i++] = "--preload";
 		interparg[i++] = __ld_preload_linux_x86_64();
+
+		/* Add --library-path (chroot) */
+		interparg[i++] = "--library-path";
+		interparg[i++] = __ld_library_path_interp();
 
 		/* Add --argv0 and original argv0 */
 		if (has_argv0) {

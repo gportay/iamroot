@@ -39,6 +39,15 @@
 extern int next_open(const char *, int, mode_t);
 extern int next_fstatat(int, const char *, struct stat *, int);
 
+static const char *__basename(const char *path)
+{
+	char *s = strrchr(path, '/');
+	if (!s)
+		return path;
+
+	return s+1;
+}
+
 static regex_t *re;
 
 static void __regex_perror(const char *s, regex_t *regex, int err)
@@ -108,7 +117,8 @@ static int ignore(const char *path)
 
 static int __ld_linux_version(const char *path, int *major, int *minor)
 {
-	char buf[sizeof("ld-2.33.so")+1]; 
+	const char *basename;
+	char buf[PATH_MAX];
 	ssize_t siz;
 	int ret;
 
@@ -118,7 +128,8 @@ static int __ld_linux_version(const char *path, int *major, int *minor)
 		return -1;
 	}
 
-	ret = sscanf(buf, "ld-%i.%i.so", major, minor);
+	basename = __basename(buf);
+	ret = sscanf(basename, "ld-%i.%i.so", major, minor);
 	if (ret < 2) {
 		errno = ENOTSUP;
 		return -1;

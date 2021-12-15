@@ -67,6 +67,8 @@ endif
 ifneq ($(shell command -v musl-gcc),)
 all: libiamroot-musl-x86_64.so
 
+rootfs: | libiamroot-musl-x86_64.so
+
 .PRECIOUS: libiamroot-musl-x86_64.so
 libiamroot-musl-x86_64.so: libiamroot-musl-x86_64.so.1
 	ln -sf $< $@

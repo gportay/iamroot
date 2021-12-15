@@ -444,8 +444,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	char *interparg[9] = { NULL };
 	char *interpargv0 = *argv;
 	char *interppath = NULL;
-	int i = 0, j, argc, ret;
-	char * const *arg;
+	int i = 0, j, ret;
 	char *ld_preload;
 	ssize_t siz;
 	size_t len;
@@ -713,7 +712,7 @@ loader:
 	}
 
 interp:
-	return interpexecve(real_path, interparg, ++argv, envp);
+	goto execve;
 
 exec_sh:
 	real_path = __strncpy(buf, getenv("SHELL") ?: "/bin/bash");
@@ -722,30 +721,6 @@ exec_sh:
 	interparg[2] = *argv; /* original argv0 as first positional argument */
 	interparg[3] = NULL;
 
-	argc = 1;
-	arg = interparg;
-	while (*arg++)
-		argc++;
-	arg = &argv[1];
-	while (*arg++)
-		argc++;
-
-	if ((argc > 0) && (argc < ARG_MAX)) {
-		char *nargv[argc+1]; /* NULL */
-		char **narg;
-
-		narg = nargv;
-		arg = interparg;
-		while (*arg)
-			*narg++ = *arg++;
-		arg = &argv[1];
-		while (*arg)
-			*narg++ = *arg++;
-		*narg++ = NULL;
-
-		return execve(real_path, nargv, envp);
-	}
-
-	errno = EINVAL;
-	return -1;
+execve:
+	return interpexecve(real_path, interparg, ++argv, envp);
 }

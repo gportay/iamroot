@@ -441,7 +441,19 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	char buf[PATH_MAX], hashbangbuf[PATH_MAX], loaderbuf[PATH_MAX];
 	char hashbang[HASHBANG_MAX], loader[HASHBANG_MAX];
 	char *real_path, *real_hashbang = NULL;
-	char *interparg[9] = { NULL };
+	char *interparg[10+1] = { NULL }; /*  0 ARGV0
+					   *  1 /lib/ld.so
+					   *  2 --preload
+					   *  3 libiamroot.so
+					   *  4 --preload
+					   *  5 libc.so:libdl.so
+					   *  6 --argv0
+					   *  7 ARGV0
+					   *  8 /bin/sh
+					   *  9 -x
+					   * 10 script.sh
+					   * 11 NULL
+					   */
 	char *interpargv0 = *argv;
 	char *interppath = NULL;
 	int i = 0, j, ret;

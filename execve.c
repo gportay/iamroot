@@ -1330,13 +1330,13 @@ int __loader(const char *path, char * const argv[], char *interp,
 		 *     host, including the chroot; argv0).
 		 *   - the optional extra argument as argv1.
 		 *   - the option --ld-preload and its argument (i.e. the path
-		 *     in host environment to the interpreter's libiamroot.so,
-		 *     and the path in chroot environment to the interpreter's
-		 *     libc.so and libdl.so).
+		 *     in host environment to the iamroot library and the path
+		 *     in chroot environment to the interpreter's libc.so and
+		 *     libdl.so to preload).
 		 *   - the option --library-path and its argument (i.e. the
-		 *     path in chroot environment to the libraries).
+		 *     path in chroot environment to the libraries paths).
 		 *   - the option --inhibit-rpath and its argument (i.e. the
-		 *     path in host environment to the libbraries).
+		 *     path in host environment to the libbraries to inhibit).
 		 *   - the option --inhibit-cache.
 		 *   - the option --argv0 and its argument (i.e. the original
 		 *     path in host to the binary).

@@ -436,6 +436,17 @@ static char *__ld_preload_linux_x86_64()
 	return ret;
 }
 
+static char *__exec()
+{
+	char *ret;
+
+	ret = getenv("IAMROOT_EXEC");
+	if (!ret)
+		return "/usr/lib/iamroot/exec.sh";
+
+	return ret;
+}
+
 int execve(const char *path, char * const argv[], char * const envp[])
 {
 	char buf[PATH_MAX], hashbangbuf[PATH_MAX], loaderbuf[PATH_MAX];
@@ -456,10 +467,12 @@ int execve(const char *path, char * const argv[], char * const envp[])
 					   */
 	char *interpargv0 = *argv;
 	char *interppath = NULL;
-	int i = 0, j, ret;
+	int i = 0, j, argc, ret;
+	char * const *arg;
 	char *ld_preload;
 	ssize_t siz;
 	size_t len;
+	char *exec;
 
 	/* Run exec.sh script */
 	if (ignore(path)) {
@@ -724,15 +737,40 @@ loader:
 	}
 
 interp:
-	goto execve;
+	return interpexecve(real_path, interparg, ++argv, envp);
 
 exec_sh:
-	real_path = __strncpy(buf, getenv("SHELL") ?: "/bin/bash");
-	interparg[0] = (char *)path; /* original program path as argv0 */
-	interparg[1] = getenv("IAMROOT_EXEC") ?: "/usr/lib/iamroot/exec.sh";
-	interparg[2] = *argv; /* original argv0 as first positional argument */
-	interparg[3] = NULL;
+	exec = __exec();
+	real_path = __strncpy(buf, exec);
+	i = 0;
+	interparg[i++] = exec;
+	interparg[i++] = *argv; /* original argv0 as first positional argument */
+	interparg[i++] = NULL;
 
-execve:
-	return interpexecve(real_path, interparg, ++argv, envp);
+	argc = 1;
+	arg = interparg;
+	while (*arg++)
+		argc++;
+	arg = &argv[1];
+	while (*arg++)
+		argc++;
+
+	if ((argc > 0) && (argc < ARG_MAX)) {
+		char *nargv[argc+1]; /* NULL */
+		char **narg;
+
+		narg = nargv;
+		arg = interparg;
+		while (*arg)
+			*narg++ = *arg++;
+		arg = &argv[1];
+		while (*arg)
+			*narg++ = *arg++;
+		*narg++ = NULL;
+
+		return execve(real_path, nargv, envp);
+	}
+
+	errno = EINVAL;
+	return -1;
 }

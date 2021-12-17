@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # Copyright 2021 Gaël PORTAY
 #
@@ -62,12 +62,17 @@ passwd|su)
 	exit 1
 	;;
 bbsuid)
+	iamroot_root="${IAMROOT_ROOT:-}"
+
 	unset LD_PRELOAD
+	unset LD_LIBRARY_PATH
+	unset IAMROOT_ROOT
 
 	for i in /bin/mount /bin/umount /bin/su /usr/bin/crontab /usr/bin/passwd /usr/bin/traceroute /usr/bin/traceroute6 /usr/bin/vlock
 	do
-		ln -sf /bin/bbsuid "$IAMROOT_ROOT$i"
+		ln -sf /bin/bbsuid "$iamroot$i"
 	done
+	unset iamroot_root
 	;;
 busybox)
 	if [[ "${IAMROOT_ROOT:-/}" != / ]]

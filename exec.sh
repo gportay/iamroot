@@ -6,7 +6,7 @@
 #
 
 log() {
-	if [[ "${IAMROOT_DEBUG:-0}" -lt 1 ]]
+	if [ "${IAMROOT_DEBUG:-0}" -lt 1 ]
 	then
 		return
 	fi
@@ -29,7 +29,7 @@ ldd)
 	exec "$@"
 	;;
 ldconfig)
-	if [[ "${IAMROOT_ROOT:-/}" != / ]]
+	if [ "${IAMROOT_ROOT:-/}" != / ]
 	then
 		set -- "$@" -r "$IAMROOT_ROOT"
 
@@ -75,7 +75,7 @@ bbsuid)
 	unset iamroot_root
 	;;
 busybox)
-	if [[ "${IAMROOT_ROOT:-/}" != / ]]
+	if [ "${IAMROOT_ROOT:-/}" != / ]
 	then
 		set -- "$@"
 

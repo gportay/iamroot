@@ -39,7 +39,6 @@ char *fpath_resolutionat(int fd, const char *path, char *buf, size_t bufsize,
 	(void)bufsize;
 	(void)flags;
 
-	__dl_perror(__func__);
 	errno = ENOSYS;
 	return NULL;
 }

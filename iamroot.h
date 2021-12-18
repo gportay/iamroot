@@ -138,7 +138,7 @@ extern void __perror(const char *, const char *);
 extern void __perror2(const char *, const char *, const char *);
 extern void __fperror(int, const char *);
 
-#define __dl_perror(s) dprintf(DEBUG_FILENO, "%s: %s\n", s, dlerror())
+#define __dl_perror(s) __verbose2("%s: %s\n", s, dlerror())
 
 #ifdef __cplusplus
 }

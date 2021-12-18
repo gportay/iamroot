@@ -71,24 +71,23 @@ int __getdebug_fd();
 int __verbosef(int, const char *, const char *, ...) __attribute__((format(printf,3,4)));
 
 #if !defined(NVERBOSE)
-#define __verbose3(fmt, ...) __verbosef(3, __func__, fmt, __VA_ARGS__)
-#define __verbose2(fmt, ...) __verbosef(2, __func__, fmt, __VA_ARGS__)
-#define __verbose(fmt, ...) __verbosef(1, __func__, fmt, __VA_ARGS__)
+#define __debug(fmt, ...) __verbosef(3, __func__, fmt, __VA_ARGS__)
+#define __info(fmt, ...) __verbosef(2, __func__, fmt, __VA_ARGS__)
 #define __notice(fmt, ...) __verbosef(1, __func__, fmt, __VA_ARGS__)
 #define __warning(fmt, ...) __verbosef(0, __func__, fmt, __VA_ARGS__)
 #else
-#define __verbose3(fmt, ...)
-#define __verbose2(fmt, ...)
-#define __verbose(fmt, ...)
+#define __debug(fmt, ...)
+#define __info(fmt, ...)
+#define __notice(fmt, ...)
 #define __warning(fmt, ...)
 #endif
 
-#define __verbose_exec(fmt, ...) __verbose2(fmt, __VA_ARGS__)
-#define __verbose_func(fmt, ...) __verbose3(fmt, __VA_ARGS__)
+#define __verbose_exec(fmt, ...) __info(fmt, __VA_ARGS__)
+#define __verbose_func(fmt, ...) __debug(fmt, __VA_ARGS__)
 
 #define __fwarn_and_set_user_modeat(fd, path, mode, flags, user_mode) \
 	({ if ((mode & user_mode) != user_mode) { \
-	     __verbose2("%s: %d/%s: Insuffisant user mode 0%03o!\n", __func__, fd, path, mode); \
+	     __info("%s: %d/%s: Insuffisant user mode 0%03o!\n", __func__, fd, path, mode); \
 	     mode |= user_mode; \
 	   } })
 
@@ -101,7 +100,7 @@ int __verbosef(int, const char *, const char *, ...) __attribute__((format(print
 
 #define __fwarn_and_set_user_mode(fd, mode, user_mode) \
 	({ if ((mode & user_mode) != user_mode) { \
-	     __verbose2("%s: %d: Insuffisant user mode 0%03o!\n", __func__, fd, mode); \
+	     __info("%s: %d: Insuffisant user mode 0%03o!\n", __func__, fd, mode); \
 	     mode |= user_mode; \
 	   } })
 
@@ -114,7 +113,7 @@ int __verbosef(int, const char *, const char *, ...) __attribute__((format(print
 
 #define __warn_and_set_user_mode(path, mode, user_mode) \
 	({ if ((mode & user_mode) != user_mode) { \
-	     __verbose2("%s: %s: Insuffisant user mode 0%03o!\n", __func__, path, mode); \
+	     __info("%s: %s: Insuffisant user mode 0%03o!\n", __func__, path, mode); \
 	     mode |= user_mode; \
 	   } })
 
@@ -127,7 +126,7 @@ int __verbosef(int, const char *, const char *, ...) __attribute__((format(print
 
 #define __warn_and_set_umask(mask, user_mask) \
 	({ if (mask & user_mask) { \
-	     __verbose2("%s: Too restrictive umask 0%03o!\n", __func__, mask); \
+	     __info("%s: Too restrictive umask 0%03o!\n", __func__, mask); \
 	     mask &= ~(user_mask); \
 	   } })
 
@@ -138,7 +137,7 @@ extern void __perror(const char *, const char *);
 extern void __perror2(const char *, const char *, const char *);
 extern void __fperror(int, const char *);
 
-#define __dl_perror(s) __verbose2("%s: %s\n", s, dlerror())
+#define __dl_perror(s) __info("%s: %s\n", s, dlerror())
 
 #ifdef __cplusplus
 }

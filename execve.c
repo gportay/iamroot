@@ -77,7 +77,7 @@ void execve_init()
 		return;
 	}
 
-	__verbose2("IAMROOT_EXEC_IGNORE=%s\n", ignore);
+	__info("IAMROOT_EXEC_IGNORE=%s\n", ignore);
 	re = &regex;
 }
 
@@ -463,7 +463,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 
 	/* Run exec.sh script */
 	if (ignore(path)) {
-		__verbose("%s: Ignored\n", path);
+		__notice("%s: Ignored\n", path);
 		goto exec_sh;
 	}
 
@@ -498,7 +498,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	if (ret == -1) {
 		return -1;
 	} else if (ret) {
-		__verbose("%s: SUID\n", real_path);
+		__notice("%s: SUID\n", real_path);
 		goto exec_sh;
 	}
 
@@ -546,8 +546,8 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	interppath = real_hashbang; /* real hashbang as binary */
 	real_path = real_hashbang; /* real hashbang path as binary */
 
-	__verbose("%s: has hashbang: '%s' -> '%s' '%s'\n", path, hashbang,
-		  real_hashbang, len < (size_t)siz ? &hashbang[len+1] : "");
+	__notice("%s: has hashbang: '%s' -> '%s' '%s'\n", path, hashbang,
+		 real_hashbang, len < (size_t)siz ? &hashbang[len+1] : "");
 
 loader:
 	/*
@@ -565,26 +565,26 @@ loader:
 	if (siz == -1) {
 		/* Not an ELF linked program */
 		if (errno == ENOEXEC) {
-			__verbose("%s: Not an ELF linked program\n", real_path);
+			__notice("%s: Not an ELF linked program\n", real_path);
 			goto exec_sh;
 		}
 
 		perror("getinterp");
 		return -1;
 	} else if (siz == 0) {
-		__verbose("%s: No such .interp section\n", real_path);
+		__notice("%s: No such .interp section\n", real_path);
 		goto exec_sh;
 	}
 
-	__verbose("%s: interpreter: '%s'\n", real_path, loader);
+	__notice("%s: interpreter: '%s'\n", real_path, loader);
 
 	/*
 	 * Run the interpreter from host file-system (i.e. do not use the
 	 * interpreter from the chroot environment).
 	 */
 	if (__getuse_host_interp()) {
-		__verbose("%s: use interpreter from host: '%s'\n", real_path,
-			  loader);
+		__notice("%s: use interpreter from host: '%s'\n", real_path,
+			 loader);
 		goto interp;
 	}
 

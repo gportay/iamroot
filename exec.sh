@@ -49,8 +49,6 @@ ldconfig)
 	unset IAMROOT_ROOT
 
 	# Fixes: $IAMROOT/usr/sbin/ldconfig: need absolute file name for configuration file when using -r
-	IAMROOT_DEBUG= \
-	IAMROOT_EXEC_DEBUG= \
 	sed -e 's,include ld.so.conf.d/\*.conf,include /etc/ld.so.conf.d/*.conf,' \
 	    -i "$iamroot_root/etc/ld.so.conf"
 	unset iamroot_root

@@ -312,6 +312,7 @@ alpine-%-chroot: | alpine-%-rootfs
 arch-chroot: | arch-rootfs
 	bash iamroot-shell -c "chroot arch-rootfs"
 
+fedora-33-chroot:
 fedora-34-chroot:
 fedora-%-chroot: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
 fedora-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64 = /usr/lib64/libc.so.6:/usr/lib64/libdl.so.2
@@ -372,6 +373,7 @@ arch-rootfs/etc/machine-id: | libiamroot-linux-x86-64.so.2
 	mkdir -p arch-rootfs
 	bash iamroot-shell -c "pacstrap arch-rootfs"
 
+fedora-33-rootfs: | fedora-33-rootfs/etc/machine-id
 fedora-34-rootfs: | fedora-34-rootfs/etc/machine-id
 
 fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64 = /usr/lib64/libc.so.6:/usr/lib64/libdl.so.2

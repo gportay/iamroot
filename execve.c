@@ -564,7 +564,8 @@ loader:
 	/*
 	 * Run the dynamic linker directly
 	 */
-	if ((__strncmp(path, "/lib/ld") == 0) ||
+	if ((__strncmp(path, "/usr/bin/ld.so") == 0) ||
+	    (__strncmp(path, "/lib/ld") == 0) ||
 	    (__strncmp(path, "/lib64/ld") == 0))
 		return next_execve(real_path, argv, envp);
 

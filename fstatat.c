@@ -14,19 +14,11 @@
 
 #include "iamroot.h"
 
-#ifndef __GLIBC_PREREQ
-#define __GLIBC_PREREQ(maj,min) 0
-#endif
-
 extern int rootfstatat(int, const char *, struct stat *, int);
 
 __attribute__((visibility("hidden")))
 int next_fstatat(int fd, const char *path, struct stat *statbuf, int flags)
 {
-#if defined __GLIBC__ && !__GLIBC_PREREQ(2,33)
-	int next___fxstatat(int, int, const char *, struct stat *, int);
-	return next___fxstatat(_STAT_VER, fd, path, statbuf, flags);
-#else
 	int (*sym)(int, const char *, struct stat *, int);
 	int ret;
 
@@ -43,7 +35,6 @@ int next_fstatat(int fd, const char *path, struct stat *statbuf, int flags)
 		__pathperror(path, __func__);
 
 	return ret;
-#endif
 }
 
 int fstatat(int fd, const char *path, struct stat *statbuf, int flags)

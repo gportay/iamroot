@@ -13,20 +13,12 @@
 
 #include "iamroot.h"
 
-#ifndef __GLIBC_PREREQ
-#define __GLIBC_PREREQ(maj,min) 0
-#endif
-
 #ifdef __GLIBC__
 extern int rootfstat64(int, struct stat64 *);
 
 __attribute__((visibility("hidden")))
 int next_fstat64(int fd, struct stat64 *statbuf)
 {
-#if defined __GLIBC__ && !__GLIBC_PREREQ(2,33)
-	int next___fxstat64(int, int, struct stat64 *);
-	return next___fxstat64(_STAT_VER, fd, statbuf);
-#else
 	int (*sym)(int, struct stat64 *);
 	int ret;
 
@@ -42,7 +34,6 @@ int next_fstat64(int fd, struct stat64 *statbuf)
 		__fpathperror(fd, __func__);
 
 	return ret;
-#endif
 }
 
 int fstat64(int fd, struct stat64 *statbuf)

@@ -248,7 +248,7 @@ run-qemu: | arch-rootfs/boot/vmlinuz-linux
 
 .PHONY: check
 check:
-	shellcheck iamroot-shell
+	shellcheck iamroot-shell exec.sh
 
 .PHONY: test
 test: shell-test

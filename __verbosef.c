@@ -62,7 +62,7 @@ void verbosef_init()
 		return;
 	}
 
-	__verbose("IAMROOT_DEBUG_IGNORE=%s\n", ignore);
+	__verbose2("IAMROOT_DEBUG_IGNORE=%s\n", ignore);
 	re = &regex;
 }
 

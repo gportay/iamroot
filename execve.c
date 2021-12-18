@@ -77,7 +77,7 @@ void execve_init()
 		return;
 	}
 
-	__verbose("IAMROOT_EXEC_IGNORE=%s\n", ignore);
+	__verbose2("IAMROOT_EXEC_IGNORE=%s\n", ignore);
 	re = &regex;
 }
 

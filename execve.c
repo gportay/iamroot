@@ -134,11 +134,21 @@ static int __ld_linux_version(const char *path, int *major, int *minor)
 static int __ld_linux_has_argv0_option(const char *path)
 {
 	int ret, maj = 0, min = 0;
+	struct stat statbuf;
+
+	ret = lstat(path, &statbuf);
+	if (ret == -1)
+		return -1;
+
+	/* not a symlink since glibc 2.34; --argv0 is supported since 2.33 */
+	if (!S_ISLNK(statbuf.st_mode))
+		return 1;
 
 	ret = __ld_linux_version(path, &maj, &min);
 	if (ret == -1)
 		return -1;
 
+	/* --argv0 is supported since glibc 2.33 */
 	return (maj > 2) || ((maj == 2) && (min >= 33));
 }
 

@@ -465,8 +465,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 					   */
 	char *interpargv0 = *argv;
 	char *interppath = NULL;
-	int i = 0, j, argc, ret;
-	char * const *arg;
+	int i = 0, j, ret;
 	char *ld_preload;
 	ssize_t siz;
 	size_t len;
@@ -736,7 +735,7 @@ loader:
 	}
 
 interp:
-	return interpexecve(real_path, interparg, ++argv, envp);
+	goto execve;
 
 exec_sh:
 	exec = __getexec();
@@ -754,30 +753,30 @@ exec_sh:
 		return -1;
 	}
 
-	argc = 1;
-	arg = interparg;
-	while (*arg++)
-		argc++;
-	arg = &argv[1];
-	while (*arg++)
-		argc++;
-
-	if ((argc > 0) && (argc < ARG_MAX)) {
-		char *nargv[argc+1]; /* NULL */
-		char **narg;
-
-		narg = nargv;
-		arg = interparg;
-		while (*arg)
-			*narg++ = *arg++;
-		arg = &argv[1];
-		while (*arg)
-			*narg++ = *arg++;
-		*narg++ = NULL;
-
-		return execve(real_path, nargv, envp);
+	ret = setenv("ld_preload", getenv("LD_PRELOAD") ?: "", 1);
+	if (ret) {
+		perror("setenv");
+		return -1;
 	}
 
-	errno = EINVAL;
-	return -1;
+	ret = setenv("ld_library_path", getenv("LD_LIBRARY_PATH") ?: "", 1);
+	if (ret) {
+		perror("setenv");
+		return -1;
+	}
+
+	ret = unsetenv("LD_PRELOAD");
+	if (ret) {
+		perror("unsetenv");
+		return -1;
+	}
+
+	ret = unsetenv("LD_LIBRARY_PATH");
+	if (ret) {
+		perror("unsetenv");
+		return -1;
+	}
+
+execve:
+	return interpexecve(real_path, interparg, ++argv, envp);
 }

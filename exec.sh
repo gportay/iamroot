@@ -14,12 +14,6 @@ log() {
 	echo "$@" >&2
 }
 
-iamroot_root="${IAMROOT_ROOT:-}"
-
-unset LD_PRELOAD
-unset LD_LIBRARY_PATH
-unset IAMROOT_ROOT
-
 path="$1"
 argv0="${argv0:-$path}"
 case "${1##*/}" in
@@ -29,27 +23,22 @@ mount|umount|systemctl)
 	;;
 ldd)
 	shift
-	set -- "$iamroot_root/usr/bin/ldd" "$@"
+	set -- "$IAMROOT_ROOT$path" "$@"
 
 	exec "$@"
 	;;
 ldconfig)
-	if [ "${iamroot_root:-/}" != / ]
-	then
-		set -- "$@" -r "$iamroot_root"
+	shift
+	set -- "$IAMROOT_ROOT$path" "$@"
 
-		shift
-		if ! ldconfig="$(command -v ldconfig)"
-		then
-			echo "$1: No such file" >&2
-			exit 1
-		fi
-		set -- "$iamroot_root$ldconfig" "$@"
+	if [ "${IAMROOT_ROOT:-/}" != / ]
+	then
+		set -- "$@" -r "$IAMROOT_ROOT"
 	fi
 
 	# Fixes: $IAMROOT/usr/sbin/ldconfig: need absolute file name for configuration file when using -r
 	sed -e 's,include ld.so.conf.d/\*.conf,include /etc/ld.so.conf.d/*.conf,' \
-	    -i "$iamroot_root/etc/ld.so.conf"
+	    -i "$IAMROOT_ROOT/etc/ld.so.conf"
 
 	exec "$@"
 	;;
@@ -61,14 +50,14 @@ passwd|su)
 bbsuid)
 	for i in /bin/mount /bin/umount /bin/su /usr/bin/crontab /usr/bin/passwd /usr/bin/traceroute /usr/bin/traceroute6 /usr/bin/vlock
 	do
-		ln -sf /bin/bbsuid "$i"
+		ln -sf /bin/bbsuid "$IAMROOT_ROOT$i"
 	done
 	;;
 busybox)
-	if [ "${iamroot_root:-/}" != / ]
+	if [ "${IAMROOT_ROOT:-/}" != / ]
 	then
 		shift
-		set -- "$iamroot_root/bin/busybox" "$@"
+		set -- "$IAMROOT_ROOT$path" "$@"
 	fi
 
 	exec "$@"

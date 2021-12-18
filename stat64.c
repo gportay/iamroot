@@ -29,9 +29,9 @@ int next_stat64(const char *path, struct stat64 *statbuf)
 
 	sym = dlsym(RTLD_NEXT, "stat64");
 	if (!sym) {
+		int next___xstat64(int, const char *, struct stat64 *);
 		__dl_perror(__func__);
-		errno = ENOSYS;
-		return -1;
+		return next___xstat64(0, path, statbuf);
 	}
 
 	ret = sym(path, statbuf);

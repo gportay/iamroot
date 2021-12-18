@@ -33,9 +33,10 @@ int next_fstatat64(int fd, const char *path, struct stat64 *statbuf, int flags)
 
 	sym = dlsym(RTLD_NEXT, "fstatat64");
 	if (!sym) {
+		int next___fxstatat64(int, int, const char *, struct stat64 *,
+				      int);
 		__dl_perror(__func__);
-		errno = ENOSYS;
-		return -1;
+		return next___fxstatat64(0, fd, path, statbuf, flags);
 	}
 
 	ret = sym(fd, path, statbuf, flags);

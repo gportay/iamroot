@@ -32,9 +32,9 @@ int next_stat(const char *path, struct stat *statbuf)
 
 	sym = dlsym(RTLD_NEXT, "stat");
 	if (!sym) {
+		int next___xstat(int, const char *, struct stat *);
 		__dl_perror(__func__);
-		errno = ENOSYS;
-		return -1;
+		return next___xstat(0, path, statbuf);
 	}
 
 	ret = sym(path, statbuf);

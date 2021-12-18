@@ -33,9 +33,9 @@ int next_lstat(const char *path, struct stat *statbuf)
 
 	sym = dlsym(RTLD_NEXT, "lstat");
 	if (!sym) {
+		int next___lxstat(int, const char *, struct stat *);
 		__dl_perror(__func__);
-		errno = ENOSYS;
-		return -1;
+		return next___lxstat(0, path, statbuf);
 	}
 
 	ret = sym(path, statbuf);

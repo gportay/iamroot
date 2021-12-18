@@ -32,9 +32,10 @@ int next_fstatat(int fd, const char *path, struct stat *statbuf, int flags)
 
 	sym = dlsym(RTLD_NEXT, "fstatat");
 	if (!sym) {
+		int next___fxstatat(int, int, const char *, struct stat *,
+				    int);
 		__dl_perror(__func__);
-		errno = ENOSYS;
-		return -1;
+		return next___fxstatat(0, fd, path, statbuf, flags);
 	}
 
 	ret = sym(fd, path, statbuf, flags);

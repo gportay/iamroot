@@ -321,7 +321,7 @@ fedora-%-chroot: | fedora-%-rootfs
 	bash iamroot-shell -c "chroot fedora-$*-rootfs"
 
 .PHONY: rootfs
-rootfs: alpine-3.14-rootfs alpine-edge-rootfs arch-rootfs fedora-34-rootfs
+rootfs: alpine-3.14-rootfs alpine-edge-rootfs arch-rootfs fedora-33-rootfs fedora-34-rootfs
 
 .PHONY: static-rootfs
 static-rootfs: static-rootfs/usr/bin/sh

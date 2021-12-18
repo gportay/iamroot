@@ -81,6 +81,7 @@ busybox)
 	fi
 
 	unset LD_PRELOAD
+	unset LD_LIBRARY_PATH
 	unset IAMROOT_ROOT
 
 	exec "$@"

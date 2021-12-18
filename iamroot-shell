@@ -77,8 +77,6 @@ Environment variables:
       IAMROOT_FATAL             Set abort on error.
                                 Equivalent to --fatal.
 
-      IAMROOT_EXEC_DEBUG        Set debug mode for execve().
-
       IAMROOT_DEBUG             Set debug mode.
                                 Equivalent to --debug.
 

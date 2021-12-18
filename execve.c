@@ -27,14 +27,6 @@
 
 /* See https://www.in-ulm.de/~mascheck/various/shebang/#results */
 #define HASHBANG_MAX NAME_MAX
-#define max(a,b) \
-	({ __typeof__ (a) _a = (a); \
-	  __typeof__ (b) _b = (b); \
-	  _a > _b ? _a : _b; })
-#define min(a,b) \
-	({ __typeof__ (a) _a = (a); \
-	  __typeof__ (b) _b = (b); \
-	  _a < _b ? _a : _b; })
 
 extern int next_open(const char *, int, mode_t);
 extern int next_fstatat(int, const char *, struct stat *, int);
@@ -294,20 +286,15 @@ close:
 	return siz;
 }
 
-static int exec_debug()
-{
-	return strtoul(getenv("IAMROOT_EXEC_DEBUG") ?: "0", NULL, 0);
-}
-
 #if !defined(NVERBOSE)
 static void verbose_exec(const char *path, char * const argv[],
 			 char * const envp[])
 {
 	int debug;
 
-	debug = exec_debug();
-	if (debug <= 0)
-		debug = max(__debug() - 2, 0);
+	debug = __debug();
+	if (debug == 0)
+		return;
 
 	if (debug == 1) {
 		char * const *p;
@@ -318,7 +305,7 @@ static void verbose_exec(const char *path, char * const argv[],
 		while (*p)
 			dprintf(STDERR_FILENO, " %s", *p++);
 		dprintf(STDERR_FILENO, "\n");
-	} else if (debug > 1) {
+	} else {
 		char * const *p;
 
 		dprintf(STDERR_FILENO, "Debug: %s: pid: %i: execve(path: '%s', argv: {",

@@ -284,7 +284,7 @@ int chrootdir(const char *cwd)
 
 	root = getrootdir();
 	if (__strlcmp(cwd, root) != 0) {
-		__verbose("Exiting chroot: '%s'\n", root);
+		__verbose2("Exiting chroot: '%s'\n", root);
 		return unsetenv("IAMROOT_ROOT");
 	}
 
@@ -802,7 +802,7 @@ int chroot(const char *path)
 		return -1;
 	}
 
-	__verbose("Enterring chroot: '%s'\n", real_path);
+	__verbose2("Enterring chroot: '%s'\n", real_path);
 
 	__verbose_func("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
 	__verbose2("IAMROOT_PATH=%s\n", getenv("IAMROOT_ROOT"));

@@ -119,6 +119,7 @@ static int __ld_linux_version(const char *path, int *major, int *minor)
 		__perror(path, "readlink");
 		return -1;
 	}
+	buf[siz] = 0;
 
 	basename = __basename(buf);
 	ret = sscanf(basename, "ld-%i.%i.so", major, minor);

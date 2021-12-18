@@ -240,12 +240,12 @@ setenv:
 }
 
 __attribute__((visibility("hidden")))
-int __fatal()
+int __getfatal()
 {
 	return strtol(getenv("IAMROOT_FATAL") ?: "0", NULL, 0);
 }
 
-static inline char *rootdir()
+static inline char *__getroot()
 {
 	return getenv("IAMROOT_ROOT");
 }
@@ -263,7 +263,7 @@ const char *getrootdir()
 {
 	char *root;
 
-	root = rootdir();
+	root = __getroot();
 	if (!root)
 		return "/";
 

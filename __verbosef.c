@@ -14,13 +14,13 @@
 #include "iamroot.h"
 
 __attribute__((visibility("hidden")))
-int __debug()
+int __getdebug()
 {
 	return strtol(getenv("IAMROOT_DEBUG") ?: "0", NULL, 0);
 }
 
 __attribute__((visibility("hidden")))
-int __debug_fd()
+int __getdebug_fd()
 {
 	return strtol(getenv("IAMROOT_DEBUG_FD") ?: "2", NULL, 0);
 }
@@ -101,7 +101,7 @@ static int __vdverbosef(int fd, int lvl, const char *func, const char *fmt,
 	if (lvl != 0 && ignore(func))
 		return 0;
 
-	debug = __debug();
+	debug = __getdebug();
 	if (debug < lvl || (!inchroot() && debug < 5))
 		return 0;
 

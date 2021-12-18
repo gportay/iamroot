@@ -29,6 +29,6 @@ void __fperror(int fd, const char *s)
 	real_path = buf;
 
 	__notice("%i -> %s: %s: %m\n", fd, real_path, s);
-	if (__fatal())
+	if (__getfatal())
 		raise(SIGABRT);
 }

@@ -13,7 +13,7 @@
 
 #include "iamroot.h"
 
-int __debug_fd()
+int __getdebug_fd()
 {
 	return STDERR_FILENO;
 }

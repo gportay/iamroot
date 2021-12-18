@@ -62,12 +62,12 @@ const char *getrootdir();
 int chrootdir(const char *);
 int inchroot();
 
-int __fatal();
+int __getfatal();
 
-#define DEBUG_FILENO __debug_fd()
+#define DEBUG_FILENO __getdebug_fd()
 
-int __debug();
-int __debug_fd();
+int __getdebug();
+int __getdebug_fd();
 int __verbosef(int, const char *, const char *, ...) __attribute__((format(printf,3,4)));
 
 #if !defined(NVERBOSE)

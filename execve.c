@@ -292,7 +292,7 @@ static void verbose_exec(const char *path, char * const argv[],
 {
 	int debug;
 
-	debug = __debug();
+	debug = __getdebug();
 	if (debug == 0)
 		return;
 
@@ -385,12 +385,12 @@ static int interpexecve(const char *path, char * const interp[],
 	return -1;
 }
 
-static int __use_host_interp()
+static int __getuse_host_interp()
 {
 	return strtol(getenv("IAMROOT_USE_HOST_INTERP") ?: "0", NULL, 0);
 }
 
-static char *__libiamroot_musl_x86_64()
+static char *__getlib_musl_x86_64()
 {
 	char *ret;
 
@@ -401,7 +401,7 @@ static char *__libiamroot_musl_x86_64()
 	return ret;
 }
 
-static char *__libiamroot_linux_x86_64()
+static char *__getlib_linux_x86_64()
 {
 	char *ret;
 
@@ -412,7 +412,7 @@ static char *__libiamroot_linux_x86_64()
 	return ret;
 }
 
-static char *__ld_preload_linux_x86_64()
+static char *__getld_preload_linux_x86_64()
 {
 	char *ret;
 
@@ -423,7 +423,7 @@ static char *__ld_preload_linux_x86_64()
 	return ret;
 }
 
-static char *__exec()
+static char *__getexec()
 {
 	char *ret;
 
@@ -582,7 +582,7 @@ loader:
 	 * Run the interpreter from host file-system (i.e. do not use the
 	 * interpreter from the chroot environment).
 	 */
-	if (__use_host_interp()) {
+	if (__getuse_host_interp()) {
 		__verbose("%s: use interpreter from host: '%s'\n", real_path,
 			  loader);
 		goto interp;
@@ -643,7 +643,7 @@ loader:
 
 		/* Add --preload and interpreter's library (host) */
 		interparg[i++] = "--preload";
-		interparg[i++] = __libiamroot_musl_x86_64();
+		interparg[i++] = __getlib_musl_x86_64();
 
 		/* Add --argv0 and original argv0 */
 		interparg[i++] = "--argv0";
@@ -699,10 +699,10 @@ loader:
 		/* Add --preload and interpreter's libraries */
 		/* libiamroot.so (from host) */
 		interparg[i++] = "--preload";
-		interparg[i++] = __libiamroot_linux_x86_64();
+		interparg[i++] = __getlib_linux_x86_64();
 		/* libc.so and libdl.so (from chroot) */
 		ret = pathsetenv(getrootdir(), "LD_PRELOAD_LINUX_X86_64",
-				 __ld_preload_linux_x86_64(), 1);
+				 __getld_preload_linux_x86_64(), 1);
 		if (ret) {
 			perror("pathsetenv");
 			return -1;
@@ -727,7 +727,7 @@ interp:
 	return interpexecve(real_path, interparg, ++argv, envp);
 
 exec_sh:
-	exec = __exec();
+	exec = __getexec();
 	real_path = __strncpy(buf, exec);
 	i = 0;
 	interparg[i++] = exec;

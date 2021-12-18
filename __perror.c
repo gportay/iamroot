@@ -16,6 +16,6 @@ void __perror(const char *path, const char *s)
 		return;
 
 	__notice("%s: %s: %m\n", path, s);
-	if (__fatal())
+	if (__getfatal())
 		raise(SIGABRT);
 }

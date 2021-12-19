@@ -16,21 +16,18 @@ log() {
 
 path="$1"
 argv0="${argv0:-$path}"
-case "${1##*/}" in
+real_path="$IAMROOT_ROOT$path"
+shift
+
+case "${path##*/}" in
 mount|umount|systemctl)
 	shift
 	log "Warning:" "Command is skipped:" "$argv0" "$@"
 	;;
 ldd)
-	shift
-	set -- "$IAMROOT_ROOT$path" "$@"
-
-	exec "$@"
+	exec "$real_path" "$@"
 	;;
 ldconfig)
-	shift
-	set -- "$IAMROOT_ROOT$path" "$@"
-
 	if [ "${IAMROOT_ROOT:-/}" != / ]
 	then
 		set -- "$@" -r "$IAMROOT_ROOT"
@@ -40,7 +37,7 @@ ldconfig)
 	sed -e 's,include ld.so.conf.d/\*.conf,include /etc/ld.so.conf.d/*.conf,' \
 	    -i "$IAMROOT_ROOT/etc/ld.so.conf"
 
-	exec "$@"
+	exec "$real_path" "$@"
 	;;
 passwd|su)
 	shift
@@ -54,13 +51,7 @@ bbsuid)
 	done
 	;;
 busybox)
-	if [ "${IAMROOT_ROOT:-/}" != / ]
-	then
-		shift
-		set -- "$IAMROOT_ROOT$path" "$@"
-	fi
-
-	exec "$@"
+	exec "$real_path" "$@"
 	;;
 *)
 	echo "Warning:" "Command not handled:" "$@" >&2

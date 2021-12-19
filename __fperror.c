@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 #include <errno.h>
 #include <limits.h>
 #include <signal.h>
@@ -16,13 +17,15 @@ void __fperror(int fd, const char *s)
 	char buf[PATH_MAX];
 	char *real_path;
 	ssize_t siz;
+	int err;
 
 	if ((errno != EPERM) && (errno != EACCES))
 		return;
 
+	err = errno;
 	siz = __procfdreadlink(fd, buf, sizeof(buf));
 	if (siz == -1) {
-		perror("__procfdreadlink");
+		__notice("%i: %s: %s\n", fd, s, strerror(err));
 		return;
 	}
 	buf[siz] = 0; /* ensure NULL terminated */

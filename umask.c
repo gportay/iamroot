@@ -51,8 +51,7 @@ mode_t umask(mode_t mask)
 	mode_t ret, real_mask;
 
 	real_mask = mask & ~(S_IRUSR | S_IWUSR);
-	__verbose_func("%s(mask: 0%03o -> 0%03o)\n", __func__, mask,
-		       real_mask);
+	__debug("%s(mask: 0%03o -> 0%03o)\n", __func__, mask, real_mask);
 
 	ret = __getumask();
 	next_umask(real_mask);

@@ -16,7 +16,7 @@ int umount(const char *target)
 {
 	(void)target;
 
-	__verbose_func("%s(target: '%s', ...)\n", __func__, target);
+	__debug("%s(target: '%s', ...)\n", __func__, target);
 
 	return 0;
 }

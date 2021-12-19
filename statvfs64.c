@@ -45,8 +45,7 @@ int statvfs64(const char *path, struct statvfs64 *statvfsbuf)
 		return -1;
 	}
 
-	__verbose_func("%s(path: '%s' -> '%s', ...)\n", __func__, path,
-		       real_path);
+	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, real_path);
 
 	return next_statvfs64(real_path, statvfsbuf);
 }

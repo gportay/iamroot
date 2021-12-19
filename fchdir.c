@@ -54,7 +54,7 @@ int fchdir(int fd)
 		return ret;
 	}
 
-	__verbose_func("%s(fd: %i -> '%s')\n", __func__, fd, real_path);
+	__debug("%s(fd: %i -> '%s')\n", __func__, fd, real_path);
 
 	return chrootdir(NULL);
 }

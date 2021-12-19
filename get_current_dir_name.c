@@ -59,7 +59,7 @@ char *get_current_dir_name()
 		strncpy(ret, "/", size-1);
 
 exit:
-	__verbose_func("%s()\n", __func__);
+	__debug("%s()\n", __func__);
 
 	return ret;
 }

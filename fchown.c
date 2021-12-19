@@ -52,8 +52,8 @@ int fchown(int fd, uid_t owner, gid_t group)
 	owner = next_geteuid();
 	group = getegid();
 
-	__verbose_func("%s(fd: %i -> '%s', owner: %i, group: %i)\n", __func__,
-		       fd, real_path, owner, group);
+	__debug("%s(fd: %i -> '%s', owner: %i, group: %i)\n", __func__, fd,
+		real_path, owner, group);
 
 	return next_fchown(fd, owner, group);
 }

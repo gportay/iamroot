@@ -42,7 +42,7 @@ gid_t getgid()
 	if (!errno)
 		return ul;
 
-	__verbose_func("%s(): IAMROOT_GID: %lu\n", __func__, ul);
+	__debug("%s(): IAMROOT_GID: %lu\n", __func__, ul);
 
 	return 0;
 }

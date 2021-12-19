@@ -55,9 +55,9 @@ int linkat(int oldfd, const char *oldpath, int newfd, const char *newpath,
 		return -1;
 	}
 
-	__verbose_func("%s(oldfd: %i, oldpath: '%s' -> '%s', newfd: %i, newpath: '%s' -> '%s')\n",
-		       __func__, oldfd, oldpath, real_oldpath, newfd, newpath,
-		       real_newpath);
+	__debug("%s(oldfd: %i, oldpath: '%s' -> '%s', newfd: %i, newpath: '%s' -> '%s')\n",
+		__func__, oldfd, oldpath, real_oldpath, newfd, newpath,
+		real_newpath);
 
 	return next_linkat(oldfd, real_oldpath, newfd, real_newpath, flags);
 }

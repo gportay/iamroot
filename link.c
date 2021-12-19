@@ -53,8 +53,8 @@ int link(const char *oldpath, const char *newpath)
 		return -1;
 	}
 
-	__verbose_func("%s(oldpath: '%s' -> '%s', newpath: '%s' -> '%s')\n",
-		       __func__, oldpath, real_oldpath, newpath, real_newpath);
+	__debug("%s(oldpath: '%s' -> '%s', newpath: '%s' -> '%s')\n", __func__,
+		oldpath, real_oldpath, newpath, real_newpath);
 
 	return next_link(real_oldpath, real_newpath);
 }

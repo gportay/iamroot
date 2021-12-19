@@ -51,8 +51,8 @@ int lchown(const char *path, uid_t owner, gid_t group)
 	owner = next_geteuid();
 	group = getegid();
 
-	__verbose_func("%s(path: '%s' -> '%s', owner: %i, group: %i)\n",
-		       __func__, path, real_path, owner, group);
+	__debug("%s(path: '%s' -> '%s', owner: %i, group: %i)\n", __func__,
+		path, real_path, owner, group);
 
 	return next_lchown(real_path, owner, group);
 }

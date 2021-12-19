@@ -47,7 +47,7 @@ int __open64_2(const char *path, int flags)
 		return -1;
 	}
 
-	__verbose_func("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
+	__debug("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
 
 	return next___open64_2(real_path, flags);
 }

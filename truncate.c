@@ -47,8 +47,7 @@ int truncate(const char *path, off_t length)
 		return -1;
 	}
 
-	__verbose_func("%s(path: '%s' -> '%s', ...)\n", __func__, path,
-		       real_path);
+	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, real_path);
 
 	return next_truncate(real_path, length);
 }

@@ -55,7 +55,7 @@ int mkostemp(char *path, int flags)
 	memcpy(path, real_path+strlen(real_path)-len, len);
 
 exit:
-	__verbose_func("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
+	__debug("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
 
 	return ret;
 }

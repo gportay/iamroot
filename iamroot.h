@@ -83,7 +83,6 @@ int __verbosef(int, const char *, const char *, ...) __attribute__((format(print
 #endif
 
 #define __verbose_exec(fmt, ...) __info(fmt, __VA_ARGS__)
-#define __verbose_func(fmt, ...) __debug(fmt, __VA_ARGS__)
 
 #define __fwarn_and_set_user_modeat(fd, path, mode, flags, user_mode) \
 	({ if ((mode & user_mode) != user_mode) { \

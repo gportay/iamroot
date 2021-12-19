@@ -80,8 +80,7 @@ ssize_t readlink(const char *path, char *buf, size_t bufsize)
 		buf[ret++] = '/';
 
 exit:
-	__verbose_func("%s(path: '%s' -> '%s', ...)\n", __func__, path,
-		       real_path);
+	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, real_path);
 
 	return ret;
 }

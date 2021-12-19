@@ -38,7 +38,7 @@ int next___fxstat64(int ver, int fd, struct stat64 *statbuf)
 
 int __fxstat64(int ver, int fd, struct stat64 *statbuf)
 {
-	__verbose_func("%s(fd: %i, ...)\n", __func__, fd);
+	__debug("%s(fd: %i, ...)\n", __func__, fd);
 
 	return __rootfxstat64(ver, fd, statbuf);
 }

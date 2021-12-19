@@ -43,7 +43,7 @@ char *tempnam(const char *path, const char *pfx)
 		return NULL;
 	}
 
-	__verbose_func("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
+	__debug("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
 
 	return next_tempnam(real_path, pfx);
 }

@@ -46,7 +46,7 @@ int lutimes(const char *path, const struct timeval times[2])
 		return -1;
 	}
 
-	__verbose_func("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
+	__debug("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
 
 	return next_lutimes(real_path, times);
 }

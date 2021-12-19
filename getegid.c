@@ -42,7 +42,7 @@ gid_t getegid(void)
 	if (!errno)
 		return ul;
 
-	__verbose_func("%s(): IAMROOT_EGID: %lu\n", __func__, ul);
+	__debug("%s(): IAMROOT_EGID: %lu\n", __func__, ul);
 
 	return 0;
 }

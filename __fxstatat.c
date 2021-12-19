@@ -49,8 +49,8 @@ int __fxstatat(int ver, int fd, const char *path, struct stat *statbuf,
 		return -1;
 	}
 
-	__verbose_func("%s(fd: %i, path: '%s' -> '%s', ...)\n", __func__, fd,
-		       path, real_path);
+	__debug("%s(fd: %i, path: '%s' -> '%s', ...)\n", __func__, fd, path,
+		real_path);
 
 	return __rootfxstatat(ver, fd, real_path, statbuf, flags);
 }

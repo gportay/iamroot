@@ -54,8 +54,8 @@ int openat64(int fd, const char *path, int flags, ...)
 		va_end(ap);
 	}
 
-	__verbose_func("%s(path: '%s' -> '%s', flags: %x, mode: 0%03o)\n", __func__,
-		  path, real_path, flags, mode);
+	__debug("%s(path: '%s' -> '%s', flags: %x, mode: 0%03o)\n", __func__,
+		path, real_path, flags, mode);
 	if (flags & O_CREAT)
 		__fwarn_if_insuffisant_user_modeat(fd, real_path, mode, 0);
 

@@ -37,7 +37,7 @@ int next___fstat(int fd, struct stat *statbuf)
 
 int __fstat(int fd, struct stat *statbuf)
 {
-	__verbose_func("%s(fd: %i, ...)\n", __func__, fd);
+	__debug("%s(fd: %i, ...)\n", __func__, fd);
 
 	return __rootfstat(fd, statbuf);
 }

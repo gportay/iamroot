@@ -44,8 +44,8 @@ int access(const char *path, int mode)
 		return -1;
 	}
 
-	__verbose_func("%s(path: '%s' -> '%s', mode: 0%03o)\n", __func__, path,
-		       real_path, mode);
+	__debug("%s(path: '%s' -> '%s', mode: 0%03o)\n", __func__, path,
+		real_path, mode);
 
 	return next_access(real_path, mode);
 }

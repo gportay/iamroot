@@ -78,8 +78,8 @@ ssize_t readlinkat(int fd, const char *path, char *buf, size_t bufsize)
 		buf[ret++] = '/';
 
 exit:
-	__verbose_func("%s(fd: %i, path: '%s' -> '%s', ...)\n", __func__, fd,
-		       path, real_path);
+	__debug("%s(fd: %i, path: '%s' -> '%s', ...)\n", __func__, fd, path,
+		real_path);
 
 	return ret;
 }

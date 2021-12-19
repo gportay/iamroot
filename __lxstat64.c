@@ -49,8 +49,7 @@ int __lxstat64(int ver, const char *path, struct stat64 *statbuf)
 		return -1;
 	}
 
-	__verbose_func("%s(path: '%s' -> '%s', ...)\n", __func__, path,
-		       real_path);
+	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, real_path);
 
 	return __rootlxstat64(ver, real_path, statbuf);
 }

@@ -50,8 +50,8 @@ int removexattr(const char *path, const char *name)
 		return -1;
 	}
 
-	__verbose_func("%s(path: '%s' -> '%s', name: '%s', ...)\n", __func__,
-		       path, real_path, name);
+	__debug("%s(path: '%s' -> '%s', name: '%s', ...)\n", __func__, path,
+		real_path, name);
 
 	if (__strncmp(name, "user") != 0) {
 		int ret;

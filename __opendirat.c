@@ -46,8 +46,8 @@ DIR *__opendirat(int fd, const char *path)
 		return NULL;
 	}
 
-	__verbose_func("%s(fd: %d, path: '%s' -> '%s')\n", __func__, fd, path,
-		       real_path);
+	__debug("%s(fd: %d, path: '%s' -> '%s')\n", __func__, fd, path,
+		real_path);
 
 	return next___opendirat(fd, real_path);
 }

@@ -804,7 +804,7 @@ int chroot(const char *path)
 
 	__info("Enterring chroot: '%s'\n", real_path);
 
-	__verbose_func("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
+	__debug("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
 	__info("IAMROOT_PATH=%s\n", getenv("IAMROOT_ROOT"));
 	__info("PATH=%s\n", getenv("PATH"));
 	__info("LD_LIBRARY_PATH=%s\n", getenv("LD_LIBRARY_PATH"));

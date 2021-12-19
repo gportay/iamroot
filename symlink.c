@@ -44,8 +44,8 @@ int symlink(const char *string, const char *path)
 		return -1;
 	}
 
-	__verbose_func("%s(string: '%s': path: '%s' -> '%s')\n", __func__,
-		       string, path, real_path);
+	__debug("%s(string: '%s': path: '%s' -> '%s')\n", __func__, string,
+		path, real_path);
 
 	return next_symlink(string, real_path);
 }

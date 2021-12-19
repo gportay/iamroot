@@ -15,7 +15,7 @@ int unshare(int flags)
 {
 	(void)flags;
 
-	__verbose_func("%s(flags: 0x%x)\n", __func__, flags);
+	__debug("%s(flags: 0x%x)\n", __func__, flags);
 
 	return 0;
 }

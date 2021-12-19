@@ -45,8 +45,8 @@ int symlinkat(const char *string, int fd, const char *path)
 		return -1;
 	}
 
-	__verbose_func("%s(string: '%s', fd: %i, path: '%s' -> '%s')\n",
-		       __func__, string, fd, path, real_path);
+	__debug("%s(string: '%s', fd: %i, path: '%s' -> '%s')\n", __func__,
+		string, fd, path, real_path);
 
 	return next_symlinkat(string, fd, real_path);
 }

@@ -42,7 +42,7 @@ ssize_t fgetxattr(int fd, const char *name, void *value, size_t size)
 {
 	char xbuf[XATTR_NAME_MAX + 1];
 
-	__verbose_func("%s(fd: %i, name: '%s', ...)\n", __func__, fd, name);
+	__debug("%s(fd: %i, name: '%s', ...)\n", __func__, fd, name);
 
 	if (__strncmp(name, "user") != 0) {
 		int ret;

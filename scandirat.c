@@ -47,7 +47,7 @@ int scandirat(int fd, const char *path, struct dirent ***namelist,
 
 	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), 0);
 	if (!real_path) {
-		perror("path_resolution");
+		__perror(path, "path_resolution");
 		return -1;
 	}
 

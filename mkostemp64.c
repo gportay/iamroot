@@ -44,7 +44,7 @@ int mkostemp64(char *path, int flags)
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {
-		perror("path_resolution");
+		__perror(path, "path_resolution");
 		return -1;
 	}
 

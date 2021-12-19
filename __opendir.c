@@ -42,7 +42,7 @@ DIR *__opendir(const char *path)
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {
-		perror("path_resolution");
+		__perror(path, "path_resolution");
 		return NULL;
 	}
 

@@ -42,7 +42,7 @@ DIR *__opendirat(int fd, const char *path)
 
 	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), 0);
 	if (!real_path) {
-		perror("fpath_resolutionat");
+		__perror(path, "fpath_resolutionat");
 		return NULL;
 	}
 

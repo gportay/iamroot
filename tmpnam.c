@@ -55,7 +55,7 @@ char *tmpnam(char *path)
 
 	real_path = path_resolution((char *)path, buf, sizeof(buf), 0);
 	if (!real_path) {
-		perror("path_resolution");
+		__perror(path, "path_resolution");
 		return NULL;
 	}
 

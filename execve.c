@@ -489,7 +489,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	 */
 	real_path = path_resolution(path, buf, sizeof(buf), AT_SYMLINK_FOLLOW);
 	if (!real_path) {
-		perror("path_resolution");
+		__perror(path, "path_resolution");
 		return -1;
 	}
 
@@ -537,7 +537,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 					sizeof(hashbangbuf),
 					AT_SYMLINK_FOLLOW);
 	if (!real_hashbang) {
-		perror("path_resolution");
+		__perror(hashbang, "path_resolution");
 		return -1;
 	}
 
@@ -607,7 +607,7 @@ loader:
 					    sizeof(loaderbuf),
 					    AT_SYMLINK_FOLLOW);
 		if (!real_path) {
-			perror("path_resolution");
+			__perror(loader, "path_resolution");
 			return -1;
 		}
 
@@ -678,7 +678,7 @@ loader:
 					    sizeof(loaderbuf),
 					    AT_SYMLINK_FOLLOW);
 		if (!real_path) {
-			perror("path_resolution");
+			__perror(loader, "path_resolution");
 			return -1;
 		}
 

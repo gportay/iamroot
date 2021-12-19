@@ -44,7 +44,7 @@ int name_to_handle_at(int fd, const char *path, struct file_handle *handle,
 
 	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), flags);
 	if (!real_path) {
-		perror("fpath_resolutionat");
+		__perror(path, "fpath_resolutionat");
 		return -1;
 	}
 

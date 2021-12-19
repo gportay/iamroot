@@ -41,7 +41,7 @@ int mkfifoat(int fd, const char *path, mode_t mode)
 
 	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), 0);
 	if (!real_path) {
-		perror("fpath_resolutionat");
+		__perror(path, "fpath_resolutionat");
 		return -1;
 	}
 

@@ -54,7 +54,7 @@ int lstat64(const char *path, struct stat64 *statbuf)
 	real_path = path_resolution(path, buf, sizeof(buf),
 				    AT_SYMLINK_NOFOLLOW);
 	if (!real_path) {
-		perror("path_resolution");
+		__perror(path, "path_resolution");
 		return -1;
 	}
 

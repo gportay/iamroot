@@ -743,8 +743,16 @@ exec_sh:
 	real_path = __strncpy(buf, exec);
 	i = 0;
 	interparg[i++] = exec;
-	interparg[i++] = *argv; /* original argv0 as first positional argument */
+	interparg[i++] = (char *)path; /* original path as first positional
+					* argument
+					*/
 	interparg[i++] = NULL;
+
+	ret = setenv("argv0", *argv, 1);
+	if (ret) {
+		perror("setenv");
+		return -1;
+	}
 
 	argc = 1;
 	arg = interparg;

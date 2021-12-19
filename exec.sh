@@ -20,9 +20,12 @@ unset LD_PRELOAD
 unset LD_LIBRARY_PATH
 unset IAMROOT_ROOT
 
+path="$1"
+argv0="${argv0:-$path}"
 case "${1##*/}" in
 mount|umount|systemctl)
-	log "Warning:" "Command is skipped:" "$@"
+	shift
+	log "Warning:" "Command is skipped:" "$argv0" "$@"
 	;;
 ldd)
 	shift
@@ -51,7 +54,8 @@ ldconfig)
 	exec "$@"
 	;;
 passwd|su)
-	echo "Error:" "Command not handled:" "$@" >&2
+	shift
+	echo "Error:" "Command not handled:" "$argv0" "$@" >&2
 	exit 1
 	;;
 bbsuid)

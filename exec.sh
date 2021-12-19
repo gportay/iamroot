@@ -24,7 +24,7 @@ mount|umount|systemctl)
 	shift
 	log "Warning:" "Command is skipped:" "$argv0" "$@"
 	;;
-ldd)
+ldd|busybox)
 	exec "$real_path" "$@"
 	;;
 ldconfig)
@@ -49,9 +49,6 @@ bbsuid)
 	do
 		ln -sf /bin/bbsuid "$IAMROOT_ROOT$i"
 	done
-	;;
-busybox)
-	exec "$real_path" "$@"
 	;;
 *)
 	echo "Warning:" "Command not handled:" "$@" >&2

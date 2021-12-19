@@ -240,7 +240,7 @@ symlink_follow:
 
 		s = next_readlink(real_path, tmp, sizeof(tmp) - 1);
 		if (s == -1) {
-			perror("readlink");
+			__perror(real_path, "readlink");
 			return NULL;
 		}
 		tmp[s] = 0; /* ensure NULL terminated */

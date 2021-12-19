@@ -798,7 +798,7 @@ int chroot(const char *path)
 
 	ret = setrootdir(real_path);
 	if (ret == -1) {
-		perror("setrootdir");
+		__perror(real_path, "setrootdir");
 		return -1;
 	}
 

@@ -523,7 +523,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 		if (errno == ENOEXEC)
 			goto loader;
 
-		perror("gethashbang");
+		__perror(real_path, "gethashbang");
 		return -1;
 	} else if (siz == 0) {
 		goto loader;
@@ -580,7 +580,7 @@ loader:
 			goto exec_sh;
 		}
 
-		perror("getinterp");
+		__perror(real_path, "getinterp");
 		return -1;
 	} else if (siz == 0) {
 		__notice("%s: No such .interp section\n", real_path);

@@ -26,7 +26,6 @@ int next_lstat(const char *path, struct stat *statbuf)
 	sym = dlsym(RTLD_NEXT, "lstat");
 	if (!sym) {
 		int next___lxstat(int, const char *, struct stat *);
-		__dlperror(__func__);
 		return next___lxstat(0, path, statbuf);
 	}
 

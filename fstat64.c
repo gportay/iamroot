@@ -25,7 +25,6 @@ int next_fstat64(int fd, struct stat64 *statbuf)
 	sym = dlsym(RTLD_NEXT, "fstat64");
 	if (!sym) {
 		int next___fxstat64(int, int, struct stat64 *);
-		__dlperror(__func__);
 		return next___fxstat64(0, fd, statbuf);
 	}
 

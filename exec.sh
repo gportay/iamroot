@@ -63,8 +63,6 @@ bbsuid)
 busybox)
 	if [ "${iamroot_root:-/}" != / ]
 	then
-		set -- "$@"
-
 		shift
 		set -- "$iamroot_root/bin/busybox" "$@"
 	fi

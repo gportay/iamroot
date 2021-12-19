@@ -89,8 +89,8 @@ static int __execvpe(const char *file, char * const argv[],
 
 int execvpe(const char *file, char * const argv[], char * const envp[])
 {
-	__verbose_exec("%s(file: '%s', argv: { '%s', '%s', ...})\n", __func__,
-		       file, argv[0], argv[1]);
+	__debug("%s(file: '%s', argv: { '%s', '%s', ...})\n", __func__, file,
+		argv[0], argv[1]);
 
 	return __execvpe(file, argv, envp);
 }

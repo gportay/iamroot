@@ -493,8 +493,8 @@ int execve(const char *path, char * const argv[], char * const envp[])
 		return -1;
 	}
 
-	__verbose_exec("%s(path: '%s' -> '%s', argv: { '%s', '%s', ... })\n",
-		       __func__, path, real_path, argv[0], argv[1]);
+	__debug("%s(path: '%s' -> '%s', argv: { '%s', '%s', ... })\n",
+		__func__, path, real_path, argv[0], argv[1]);
 	interppath = real_path; /* real program path as binary */
 	interparg[i++] = (char *)path; /* original program path as argv0 */
 

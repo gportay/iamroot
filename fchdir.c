@@ -42,7 +42,7 @@ int fchdir(int fd)
 
 	siz = __procfdreadlink(fd, buf, sizeof(buf));
 	if (siz == -1) {
-		perror("__procfdreadlink");
+		__fperror(fd, "__procfdreadlink");
 		return -1;
 	}
 	buf[siz] = 0; /* ensure NULL terminated */
@@ -50,7 +50,7 @@ int fchdir(int fd)
 
 	ret = next_fchdir(fd);
 	if (ret) {
-		perror("fchdir");
+		__fperror(fd, __func__);
 		return ret;
 	}
 

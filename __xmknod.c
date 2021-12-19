@@ -60,7 +60,7 @@ int __xmknod(int ver, const char *path, mode_t mode, dev_t *dev)
 		return -1;
 
 	if (close(fd))
-		perror("close");
+		__fperror(fd, "close");
 
 	errno = 0;
 	return 0;

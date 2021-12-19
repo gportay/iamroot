@@ -53,7 +53,7 @@ int fstat64(int fd, struct stat64 *statbuf)
 
 	siz = __procfdreadlink(fd, buf, sizeof(buf));
 	if (siz == -1) {
-		perror("__procfdreadlink");
+		__fperror(fd, "__procfdreadlink");
 		return -1;
 	}
 	buf[siz] = 0;

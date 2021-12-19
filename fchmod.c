@@ -41,7 +41,7 @@ int fchmod(int fd, mode_t mode)
 
 	siz = __procfdreadlink(fd, buf, sizeof(buf));
 	if (siz == -1) {
-		perror("__procfdreadlink");
+		__fperror(fd, "__procfdreadlink");
 		return -1;
 	}
 	buf[siz] = 0;

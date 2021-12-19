@@ -244,7 +244,7 @@ static ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 
 close:
 	if (close(fd))
-		perror("close");
+		__fperror(fd, "close");
 
 	return ret;
 }
@@ -292,7 +292,7 @@ static ssize_t gethashbang(const char *path, char *buf, size_t bufsize)
 
 close:
 	if (close(fd))
-		perror("close");
+		__fperror(fd, "close");
 
 	return siz;
 }

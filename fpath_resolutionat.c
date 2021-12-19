@@ -188,7 +188,7 @@ char *fpath_resolutionat(int fd, const char *path, char *buf, size_t bufsize,
 
 		siz = __procfdreadlink(fd, dir, sizeof(dir));
 		if (siz == -1) {
-			perror("__procfdreadlink");
+			__fperror(fd, "__procfdreadlink");
 			return NULL;
 		}
 		dir[siz] = 0; /* ensure NULL terminated */

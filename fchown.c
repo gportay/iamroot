@@ -43,7 +43,7 @@ int fchown(int fd, uid_t owner, gid_t group)
 
 	siz = __procfdreadlink(fd, buf, sizeof(buf));
 	if (siz == -1) {
-		perror("__procfdreadlink");
+		__fperror(fd, "__procfdreadlink");
 		return -1;
 	}
 	buf[siz] = 0;

@@ -245,7 +245,8 @@ int __getfatal()
 	return strtol(getenv("IAMROOT_FATAL") ?: "0", NULL, 0);
 }
 
-static inline char *__getroot()
+__attribute__((visibility("hidden")))
+char *__getroot()
 {
 	return getenv("IAMROOT_ROOT");
 }

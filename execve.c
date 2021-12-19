@@ -308,9 +308,25 @@ static void verbose_exec(const char *path, char * const argv[],
 		return;
 
 	if (debug == 1) {
+		char *ld_library_path;
+		char *ld_preload;
 		char * const *p;
+		char *root;
 
-		dprintf(STDERR_FILENO, "Debug: running IAMROOT_ROOT=%s", getrootdir());
+		dprintf(STDERR_FILENO, "Debug: running");
+
+		root = __getroot();
+		if (root)
+			dprintf(STDERR_FILENO, " IAMROOT_ROOT=%s", root);
+
+		ld_preload = getenv("LD_PRELOAD");
+		if (ld_preload)
+			dprintf(STDERR_FILENO, " LD_PRELOAD=%s", ld_preload);
+
+		ld_library_path = getenv("LD_LIBRARY_PATH");
+		if (ld_library_path)
+			dprintf(STDERR_FILENO, " LD_LIBRARY_PATH=%s",
+				ld_library_path);
 
 		p = argv;
 		while (*p)

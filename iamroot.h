@@ -58,6 +58,7 @@ char *fpath_resolutionat(int, const char *, char *, size_t, int);
 void __procfdname(char *, unsigned);
 ssize_t __procfdreadlink(int, char *, size_t);
 
+char *__getroot();
 const char *getrootdir();
 int chrootdir(const char *);
 int inchroot();

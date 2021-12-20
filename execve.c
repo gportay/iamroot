@@ -715,7 +715,7 @@ loader:
 		ret = pathsetenv(getrootdir(), "LD_PRELOAD_LINUX_X86_64",
 				 __getld_preload_linux_x86_64(), 1);
 		if (ret) {
-			perror("pathsetenv");
+			__envperror("LD_LIBRARY_PATH", "pathsetenv");
 			return -1;
 		}
 		interparg[i++] = "--preload";
@@ -749,31 +749,31 @@ exec_sh:
 
 	ret = setenv("argv0", *argv, 1);
 	if (ret) {
-		perror("setenv");
+		__envperror("argv0", "setenv");
 		return -1;
 	}
 
 	ret = setenv("ld_preload", getenv("LD_PRELOAD") ?: "", 1);
 	if (ret) {
-		perror("setenv");
+		__envperror("ld_preload", "setenv");
 		return -1;
 	}
 
 	ret = setenv("ld_library_path", getenv("LD_LIBRARY_PATH") ?: "", 1);
 	if (ret) {
-		perror("setenv");
+		__envperror("ld_library_path", "setenv");
 		return -1;
 	}
 
 	ret = unsetenv("LD_PRELOAD");
 	if (ret) {
-		perror("unsetenv");
+		__envperror("LD_PRELOAD", "unsetenv");
 		return -1;
 	}
 
 	ret = unsetenv("LD_LIBRARY_PATH");
 	if (ret) {
-		perror("unsetenv");
+		__envperror("LD_LIBRARY_PATH", "unsetenv");
 		return -1;
 	}
 

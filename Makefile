@@ -29,6 +29,7 @@ all: libiamroot-linux-x86-64.so.2
 libiamroot-linux-x86-64.so.2: libiamroot.so
 	ln -sf $< $@
 
+libiamroot.so: __envperror.o
 libiamroot.so: __fperror.o
 libiamroot.so: __fstat.o
 libiamroot.so: __fstat64.o

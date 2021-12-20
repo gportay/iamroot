@@ -784,7 +784,7 @@ int chroot(const char *path)
 
 	ret = setenv("PATH", getenv("IAMROOT_PATH") ?: "/bin:/usr/bin", 1);
 	if (ret == -1) {
-		perror("setenv");
+		__envperror("PATH", "setenv");
 		return -1;
 	}
 
@@ -792,7 +792,7 @@ int chroot(const char *path)
 			 getenv("IAMROOT_LD_LIBRARY_PATH") ?: "/usr/lib:/lib",
 			 1);
 	if (ret == -1) {
-		perror("pathsetenv");
+		__envperror("LD_LIBRARY_PATH", "pathsetenv");
 		return -1;
 	}
 

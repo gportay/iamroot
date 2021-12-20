@@ -134,6 +134,8 @@ extern void __perror(const char *, const char *);
 extern void __perror2(const char *, const char *, const char *);
 extern void __fperror(int, const char *);
 
+extern void __envperror(const char *, const char *);
+
 #define __dl_perror(s) __info("%s: %s\n", s, dlerror())
 
 #ifdef __cplusplus

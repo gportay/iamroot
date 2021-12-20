@@ -53,3 +53,7 @@ dkms.conf
 
 # RootFS directories
 *-rootfs/
+
+# Tests
+tests/test-*
+tests/rootfs/

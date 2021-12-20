@@ -324,7 +324,11 @@ fedora-%-chroot: | fedora-%-rootfs
 
 .NOTPARALLEL: rootfs
 .PHONY: rootfs
-rootfs: alpine-3.14-rootfs alpine-edge-rootfs arch-rootfs fedora-rootfs
+rootfs: alpine-rootfs arch-rootfs fedora-rootfs
+
+.NOTPARALLEL: alpine-rootfs
+.PHONY: alpine-rootfs
+alpine-rootfs: alpine-rootfs alpine-edge-rootfs
 
 .NOTPARALLEL: fedora-rootfs
 .PHONY: fedora-rootfs

@@ -21,7 +21,7 @@ char *next_getcwd(char *buf, size_t size)
 
 	sym = dlsym(RTLD_NEXT, "getcwd");
 	if (!sym) {
-		__dl_perror(__func__);
+		__dlperror(__func__);
 		errno = ENOSYS;
 		return NULL;
 	}

@@ -22,7 +22,7 @@ int next_mkstemp(char *path)
 
 	sym = dlsym(RTLD_NEXT, "mkstemp");
 	if (!sym) {
-		__dl_perror(__func__);
+		__dlperror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

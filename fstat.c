@@ -32,7 +32,7 @@ int next_fstat(int fd, struct stat *statbuf)
 	sym = dlsym(RTLD_NEXT, "fstat");
 	if (!sym) {
 		int next___fxstat(int, int, struct stat *);
-		__dl_perror(__func__);
+		__dlperror(__func__);
 		return next___fxstat(0, fd, statbuf);
 	}
 

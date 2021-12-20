@@ -38,7 +38,7 @@ mode_t next_umask(mode_t mask)
 
 	sym = dlsym(RTLD_NEXT, "umask");
 	if (!sym) {
-		__dl_perror(__func__);
+		__dlperror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

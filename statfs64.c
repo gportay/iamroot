@@ -22,7 +22,7 @@ int next_statfs64(const char *path, struct statfs64 *statfsbuf)
 
 	sym = dlsym(RTLD_NEXT, "statfs64");
 	if (!sym) {
-		__dl_perror(__func__);
+		__dlperror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

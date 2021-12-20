@@ -21,7 +21,7 @@ int next_seteuid(uid_t uid)
 
 	sym = dlsym(RTLD_NEXT, "seteuid");
 	if (!sym) {
-		__dl_perror(__func__);
+		__dlperror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

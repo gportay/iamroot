@@ -350,7 +350,7 @@ int next_execve(const char *path, char * const argv[], char * const envp[])
 
 	sym = dlsym(RTLD_NEXT, "execve");
 	if (!sym) {
-		__dl_perror(__func__);
+		__dlperror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

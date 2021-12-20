@@ -26,7 +26,7 @@ ssize_t next_fgetxattr(int fd, const char *name, void *value, size_t size)
 
 	sym = dlsym(RTLD_NEXT, "fgetxattr");
 	if (!sym) {
-		__dl_perror(__func__);
+		__dlperror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

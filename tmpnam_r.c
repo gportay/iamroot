@@ -32,7 +32,7 @@ char *next_tmpnam_r(char *path)
 
 	sym = dlsym(RTLD_NEXT, "tmpnam_r");
 	if (!sym) {
-		__dl_perror(__func__);
+		__dlperror(__func__);
 		errno = ENOSYS;
 		return NULL;
 	}

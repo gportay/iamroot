@@ -24,7 +24,7 @@ int next___fstat64(int fd, struct stat64 *statbuf)
 
 	sym = dlsym(RTLD_NEXT, "__fstat64");
 	if (!sym) {
-		__dl_perror(__func__);
+		__dlperror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

@@ -35,7 +35,7 @@ int next_fstatat64(int fd, const char *path, struct stat64 *statbuf, int flags)
 	if (!sym) {
 		int next___fxstatat64(int, int, const char *, struct stat64 *,
 				      int);
-		__dl_perror(__func__);
+		__dlperror(__func__);
 		return next___fxstatat64(0, fd, path, statbuf, flags);
 	}
 

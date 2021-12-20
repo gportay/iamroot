@@ -136,7 +136,7 @@ extern void __fpathperror(int, const char *);
 
 extern void __envperror(const char *, const char *);
 
-#define __dl_perror(s) __info("%s: %s\n", s, dlerror())
+#define __dlperror(s) __info("%s: %s\n", s, dlerror())
 
 #ifdef __cplusplus
 }

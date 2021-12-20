@@ -23,7 +23,7 @@ int next___fxstat(int ver, int fd, struct stat *statbuf)
 
 	sym = dlsym(RTLD_NEXT, "__fxstat");
 	if (!sym) {
-		__dl_perror(__func__);
+		__dlperror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

@@ -22,7 +22,7 @@ int next_renameat(int oldfd, const char *oldpath, int newfd,
 
 	sym = dlsym(RTLD_NEXT, "renameat");
 	if (!sym) {
-		__dl_perror(__func__);
+		__dlperror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

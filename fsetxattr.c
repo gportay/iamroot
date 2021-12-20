@@ -27,7 +27,7 @@ int next_fsetxattr(int fd, const char *name, const void *value, size_t size,
 
 	sym = dlsym(RTLD_NEXT, "fsetxattr");
 	if (!sym) {
-		__dl_perror(__func__);
+		__dlperror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

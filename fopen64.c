@@ -23,7 +23,7 @@ FILE *next_fopen64(const char *path, const char *mode)
 
 	sym = dlsym(RTLD_NEXT, "fopen64");
 	if (!sym) {
-		__dl_perror(__func__);
+		__dlperror(__func__);
 		errno = ENOSYS;
 		return NULL;
 	}

@@ -26,7 +26,7 @@ ssize_t next_listxattr(const char *path, char *list, size_t size)
 
 	sym = dlsym(RTLD_NEXT, "listxattr");
 	if (!sym) {
-		__dl_perror(__func__);
+		__dlperror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

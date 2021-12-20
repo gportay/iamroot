@@ -22,7 +22,7 @@ int next_fchmodat(int fd, const char *path, mode_t mode, int flags)
 
 	sym = dlsym(RTLD_NEXT, "fchmodat");
 	if (!sym) {
-		__dl_perror(__func__);
+		__dlperror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

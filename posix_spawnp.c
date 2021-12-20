@@ -25,7 +25,7 @@ int next_posix_spawnp(pid_t *pid, const char *path,
 
 	sym = dlsym(RTLD_NEXT, "posix_spawnp");
 	if (!sym) {
-		__dl_perror(__func__);
+		__dlperror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

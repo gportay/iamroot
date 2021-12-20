@@ -21,7 +21,7 @@ int next_euidaccess(const char *path, int mode)
 
 	sym = dlsym(RTLD_NEXT, "euidaccess");
 	if (!sym) {
-		__dl_perror(__func__);
+		__dlperror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

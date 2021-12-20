@@ -21,7 +21,7 @@ gid_t next_getegid()
 
 	sym = dlsym(RTLD_NEXT, "getegid");
 	if (!sym) {
-		__dl_perror(__func__);
+		__dlperror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

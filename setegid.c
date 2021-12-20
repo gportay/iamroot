@@ -21,7 +21,7 @@ int next_setegid(gid_t gid)
 
 	sym = dlsym(RTLD_NEXT, "setegid");
 	if (!sym) {
-		__dl_perror(__func__);
+		__dlperror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

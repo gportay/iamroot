@@ -22,7 +22,7 @@ int next_utime(const char *path, const struct utimbuf *times)
 
 	sym = dlsym(RTLD_NEXT, "utime");
 	if (!sym) {
-		__dl_perror(__func__);
+		__dlperror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

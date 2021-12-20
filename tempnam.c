@@ -20,7 +20,7 @@ char *next_tempnam(const char *path, const char *pfx)
 
 	sym = dlsym(RTLD_NEXT, "tempnam");
 	if (!sym) {
-		__dl_perror(__func__);
+		__dlperror(__func__);
 		errno = ENOSYS;
 		return NULL;
 	}

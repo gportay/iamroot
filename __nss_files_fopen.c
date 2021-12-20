@@ -20,7 +20,7 @@ FILE *next___nss_files_fopen(const char * path)
 
 	sym = dlsym(RTLD_NEXT, "__nss_files_fopen");
 	if (!sym) {
-		__dl_perror(__func__);
+		__dlperror(__func__);
 		errno = ENOSYS;
 		return NULL;
 	}

@@ -26,7 +26,7 @@ int next_scandirat(int fd, const char *path, struct dirent ***namelist,
 
 	sym = dlsym(RTLD_NEXT, "scandirat");
 	if (!sym) {
-		__dl_perror(__func__);
+		__dlperror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

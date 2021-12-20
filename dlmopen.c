@@ -22,7 +22,7 @@ void *next_dlmopen(Lmid_t lmid, const char *path, int flags)
 
 	sym = dlsym(RTLD_NEXT, "dlmopen");
 	if (!sym) {
-		__dl_perror(__func__);
+		__dlperror(__func__);
 		errno = ENOSYS;
 		return NULL;
 	}

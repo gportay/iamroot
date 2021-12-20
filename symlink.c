@@ -21,7 +21,7 @@ int next_symlink(const char *string, const char *path)
 
 	sym = dlsym(RTLD_NEXT, "symlink");
 	if (!sym) {
-		__dl_perror(__func__);
+		__dlperror(__func__);
 		errno = ENOSYS;
 		return -1;
 	}

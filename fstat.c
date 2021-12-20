@@ -38,7 +38,7 @@ int next_fstat(int fd, struct stat *statbuf)
 
 	ret = sym(fd, statbuf);
 	if (ret == -1)
-		__fperror(fd, __func__);
+		__fpathperror(fd, __func__);
 
 	return ret;
 #endif

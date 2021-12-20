@@ -188,7 +188,7 @@ char *fpath_resolutionat(int fd, const char *path, char *buf, size_t bufsize,
 
 		siz = __procfdreadlink(fd, dir, sizeof(dir));
 		if (siz == -1) {
-			__fperror(fd, "__procfdreadlink");
+			__fpathperror(fd, "__procfdreadlink");
 			return NULL;
 		}
 		dir[siz] = 0; /* ensure NULL terminated */
@@ -240,7 +240,7 @@ symlink_follow:
 
 		s = next_readlink(real_path, tmp, sizeof(tmp) - 1);
 		if (s == -1) {
-			__perror(real_path, "readlink");
+			__pathperror(real_path, "readlink");
 			return NULL;
 		}
 		tmp[s] = 0; /* ensure NULL terminated */

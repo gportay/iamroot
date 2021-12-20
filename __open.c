@@ -32,7 +32,7 @@ int next___open(const char *path, int flags, mode_t mode)
 
 	ret = sym(path, flags, mode);
 	if (ret == -1)
-		__perror(path, __func__);
+		__pathperror(path, __func__);
 
 	return ret;
 }
@@ -45,7 +45,7 @@ int __open(const char *path, int flags, ...)
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {
-		__perror(path, "path_resolution");
+		__pathperror(path, "path_resolution");
 		return -1;
 	}
 

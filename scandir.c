@@ -32,7 +32,7 @@ int next_scandir(const char *path, struct dirent ***namelist,
 
 	ret = sym(path, namelist, filter, compar);
 	if (ret == -1)
-		__perror(path, __func__);
+		__pathperror(path, __func__);
 
 	return ret;
 }
@@ -46,7 +46,7 @@ int scandir(const char *path, struct dirent ***namelist,
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {
-		__perror(path, "path_resolution");
+		__pathperror(path, "path_resolution");
 		return -1;
 	}
 

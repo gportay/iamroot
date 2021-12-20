@@ -30,7 +30,7 @@ libiamroot-linux-x86-64.so.2: libiamroot.so
 	ln -sf $< $@
 
 libiamroot.so: __envperror.o
-libiamroot.so: __fperror.o
+libiamroot.so: __fpathperror.o
 libiamroot.so: __fstat.o
 libiamroot.so: __fstat64.o
 libiamroot.so: __fxstat.o
@@ -48,8 +48,8 @@ libiamroot.so: __openat64_2.o
 libiamroot.so: __openat_2.o
 libiamroot.so: __opendir.o
 libiamroot.so: __opendirat.o
-libiamroot.so: __perror.o
-libiamroot.so: __perror2.o
+libiamroot.so: __pathperror.o
+libiamroot.so: __pathperror2.o
 libiamroot.so: __statfs.o
 libiamroot.so: __statfs64.o
 libiamroot.so: __verbosef.o

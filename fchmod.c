@@ -28,7 +28,7 @@ int next_fchmod(int fd, mode_t mode)
 
 	ret = sym(fd, mode);
 	if (ret == -1)
-		__fperror(fd, __func__);
+		__fpathperror(fd, __func__);
 
 	return ret;
 }
@@ -41,7 +41,7 @@ int fchmod(int fd, mode_t mode)
 
 	siz = __procfdreadlink(fd, buf, sizeof(buf));
 	if (siz == -1) {
-		__fperror(fd, "__procfdreadlink");
+		__fpathperror(fd, "__procfdreadlink");
 		return -1;
 	}
 	buf[siz] = 0;

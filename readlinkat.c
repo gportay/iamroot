@@ -29,7 +29,7 @@ ssize_t next_readlinkat(int fd, const char *path, char *buf, size_t bufsize)
 
 	ret = sym(fd, path, buf, bufsize);
 	if (ret == -1)
-		__perror(path, __func__);
+		__pathperror(path, __func__);
 
 	return ret;
 }
@@ -57,7 +57,7 @@ ssize_t readlinkat(int fd, const char *path, char *buf, size_t bufsize)
 
 	real_path = fpath_resolutionat(fd, path, tmp, sizeof(tmp), 0);
 	if (!real_path) {
-		__perror(path, "fpath_resolutionat");
+		__pathperror(path, "fpath_resolutionat");
 		return -1;
 	}
 

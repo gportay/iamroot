@@ -29,7 +29,7 @@ int next_renameat2(int oldfd, const char *oldpath, int newfd, const char *newpat
 
 	ret = sym(oldfd, oldpath, newfd, newpath, flags);
 	if (ret == -1)
-		__perror2(oldpath, newpath, __func__);
+		__pathperror2(oldpath, newpath, __func__);
 
 	return ret;
 }
@@ -43,14 +43,14 @@ int renameat2(int oldfd, const char *oldpath, int newfd, const char *newpath,
 	real_oldpath = fpath_resolutionat(oldfd, oldpath, oldbuf,
 					  sizeof(oldbuf), (int)flags);
 	if (!real_oldpath) {
-		__perror(oldpath, "fpath_resolutionat");
+		__pathperror(oldpath, "fpath_resolutionat");
 		return -1;
 	}
 
 	real_newpath = fpath_resolutionat(newfd, newpath, newbuf,
 					  sizeof(newbuf), (int)flags);
 	if (!real_newpath) {
-		__perror(newpath, "fpath_resolutionat");
+		__pathperror(newpath, "fpath_resolutionat");
 		return -1;
 	}
 

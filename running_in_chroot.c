@@ -26,7 +26,7 @@ int next_running_in_chroot(void)
 
 	ret = sym();
 	if (ret < 0)
-		__perror(NULL, __func__);
+		__pathperror(NULL, __func__);
 
 	return ret;
 }

@@ -10,7 +10,7 @@
 
 #include "iamroot.h"
 
-void __perror(const char *path, const char *s)
+void __pathperror(const char *path, const char *s)
 {
 	if ((errno != EPERM) && (errno != EACCES))
 		return;

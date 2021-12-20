@@ -29,7 +29,7 @@ char *next_getwd(char *buf)
 
 	ret = sym(buf);
 	if (!ret)
-		__perror(NULL, __func__);
+		__pathperror(NULL, __func__);
 
 	return ret;
 }

@@ -28,7 +28,7 @@ char *next_getcwd(char *buf, size_t size)
 
 	ret = sym(buf, size);
 	if (!ret)
-		__perror(NULL, __func__);
+		__pathperror(NULL, __func__);
 
 	return ret;
 }

@@ -32,7 +32,7 @@ int next_mknod(const char *path, mode_t mode, dev_t dev)
 
 	ret = sym(path, mode, dev);
 	if (ret == -1)
-		__perror(path, __func__);
+		__pathperror(path, __func__);
 
 	return ret;
 }
@@ -46,7 +46,7 @@ int mknod(const char *path, mode_t mode, dev_t dev)
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {
-		__perror(path, "path_resolution");
+		__pathperror(path, "path_resolution");
 		return -1;
 	}
 
@@ -59,7 +59,7 @@ int mknod(const char *path, mode_t mode, dev_t dev)
 		return -1;
 
 	if (close(fd))
-		__fperror(fd, "close");
+		__fpathperror(fd, "close");
 
 	errno = 0;
 	return 0;

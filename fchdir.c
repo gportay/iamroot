@@ -28,7 +28,7 @@ int next_fchdir(int fd)
 
 	ret = sym(fd);
 	if (ret == -1)
-		__fperror(fd, __func__);
+		__fpathperror(fd, __func__);
 
 	return ret;
 }
@@ -42,7 +42,7 @@ int fchdir(int fd)
 
 	siz = __procfdreadlink(fd, buf, sizeof(buf));
 	if (siz == -1) {
-		__fperror(fd, "__procfdreadlink");
+		__fpathperror(fd, "__procfdreadlink");
 		return -1;
 	}
 	buf[siz] = 0; /* ensure NULL terminated */
@@ -50,7 +50,7 @@ int fchdir(int fd)
 
 	ret = next_fchdir(fd);
 	if (ret) {
-		__fperror(fd, __func__);
+		__fpathperror(fd, __func__);
 		return ret;
 	}
 

@@ -29,7 +29,7 @@ int next_futimesat(int fd, const char *path, const struct timeval times[2])
 
 	ret = sym(fd, path, times);
 	if (ret == -1)
-		__perror(path, __func__);
+		__pathperror(path, __func__);
 
 	return ret;
 }
@@ -42,7 +42,7 @@ int futimesat(int fd, const char *path, const struct timeval times[2])
 	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf),
 				       AT_SYMLINK_NOFOLLOW);
 	if (!real_path) {
-		__perror(path, "fpath_resolutionat");
+		__pathperror(path, "fpath_resolutionat");
 		return -1;
 	}
 

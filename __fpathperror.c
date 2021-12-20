@@ -12,7 +12,7 @@
 
 #include "iamroot.h"
 
-void __fperror(int fd, const char *s)
+void __fpathperror(int fd, const char *s)
 {
 	char buf[PATH_MAX];
 	char *real_path;

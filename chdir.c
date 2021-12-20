@@ -28,7 +28,7 @@ int next_chdir(const char *path)
 
 	ret = sym(path);
 	if (ret == -1)
-		__perror(path, __func__);
+		__pathperror(path, __func__);
 
 	return ret;
 }
@@ -41,13 +41,13 @@ int chdir(const char *path)
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {
-		__perror(path, "path_resolution");
+		__pathperror(path, "path_resolution");
 		return -1;
 	}
 
 	ret = next_chdir(real_path);
 	if (ret) {
-		__perror(real_path, "chdir");
+		__pathperror(real_path, "chdir");
 		return ret;
 	}
 

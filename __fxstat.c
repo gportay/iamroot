@@ -30,7 +30,7 @@ int next___fxstat(int ver, int fd, struct stat *statbuf)
 
 	ret = sym(ver, fd, statbuf);
 	if (ret == -1)
-		__fperror(fd, __func__);
+		__fpathperror(fd, __func__);
 
 	return ret;
 }

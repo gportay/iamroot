@@ -27,7 +27,7 @@ char *next_tempnam(const char *path, const char *pfx)
 
 	ret = sym(path, pfx);
 	if (!ret)
-		__perror(path, __func__);
+		__pathperror(path, __func__);
 
 	return ret;
 }
@@ -39,7 +39,7 @@ char *tempnam(const char *path, const char *pfx)
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {
-		__perror(path, "path_resolution");
+		__pathperror(path, "path_resolution");
 		return NULL;
 	}
 

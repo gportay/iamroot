@@ -30,7 +30,7 @@ int next_fchown(int fd, uid_t owner, gid_t group)
 
 	ret = sym(fd, owner, group);
 	if (ret == -1)
-		__fperror(fd, __func__);
+		__fpathperror(fd, __func__);
 
 	return ret;
 }
@@ -43,7 +43,7 @@ int fchown(int fd, uid_t owner, gid_t group)
 
 	siz = __procfdreadlink(fd, buf, sizeof(buf));
 	if (siz == -1) {
-		__fperror(fd, "__procfdreadlink");
+		__fpathperror(fd, "__procfdreadlink");
 		return -1;
 	}
 	buf[siz] = 0;

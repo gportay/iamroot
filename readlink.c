@@ -30,7 +30,7 @@ ssize_t next_readlink(const char *path, char *buf, size_t bufsize)
 
 	ret = sym(path, buf, bufsize);
 	if (ret == -1)
-		__perror(path, __func__);
+		__pathperror(path, __func__);
 
 	return ret;
 }
@@ -59,7 +59,7 @@ ssize_t readlink(const char *path, char *buf, size_t bufsize)
 	real_path = path_resolution(path, tmp, sizeof(tmp),
 				    AT_SYMLINK_NOFOLLOW);
 	if (!real_path) {
-		__perror(path, "path_resolution");
+		__pathperror(path, "path_resolution");
 		return -1;
 	}
 

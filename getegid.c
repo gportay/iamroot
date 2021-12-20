@@ -28,7 +28,7 @@ gid_t next_getegid()
 
 	ret = sym();
 	if (ret == (gid_t)-1)
-		__perror(NULL, __func__);
+		__pathperror(NULL, __func__);
 
 	return ret;
 }

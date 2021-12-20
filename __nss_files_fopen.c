@@ -27,7 +27,7 @@ FILE *next___nss_files_fopen(const char * path)
 
 	ret = sym(path);
 	if (!ret)
-		__perror(path, __func__);
+		__pathperror(path, __func__);
 
 	return ret;
 }
@@ -39,7 +39,7 @@ FILE *__nss_files_fopen(const char * path)
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {
-		__perror(path, "path_resolution");
+		__pathperror(path, "path_resolution");
 		return NULL;
 	}
 

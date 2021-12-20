@@ -30,7 +30,7 @@ FILE *next_fopen64(const char *path, const char *mode)
 
 	ret = sym(path, mode);
 	if (!ret)
-		__perror(path, __func__);
+		__pathperror(path, __func__);
 
 	return ret;
 }
@@ -42,7 +42,7 @@ FILE *fopen64(const char *path, const char *mode)
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {
-		__perror(path, "path_resolution");
+		__pathperror(path, "path_resolution");
 		return NULL;
 	}
 

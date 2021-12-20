@@ -30,7 +30,7 @@ FILE *next_freopen64(const char *path, const char *mode, FILE *stream)
 
 	ret = sym(path, mode, stream);
 	if (!ret)
-		__perror(path, __func__);
+		__pathperror(path, __func__);
 
 	return ret;
 }
@@ -42,7 +42,7 @@ FILE *freopen64(const char *path, const char *mode, FILE *stream)
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {
-		__perror(path, "path_resolution");
+		__pathperror(path, "path_resolution");
 		return NULL;
 	}
 

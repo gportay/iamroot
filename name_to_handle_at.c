@@ -31,7 +31,7 @@ int next_name_to_handle_at(int fd, const char *path, struct file_handle *handle,
 
 	ret = sym(fd, path, handle, mount_id, flags);
 	if (ret == -1)
-		__perror(path, __func__);
+		__pathperror(path, __func__);
 
 	return ret;
 }
@@ -44,7 +44,7 @@ int name_to_handle_at(int fd, const char *path, struct file_handle *handle,
 
 	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), flags);
 	if (!real_path) {
-		__perror(path, "fpath_resolutionat");
+		__pathperror(path, "fpath_resolutionat");
 		return -1;
 	}
 

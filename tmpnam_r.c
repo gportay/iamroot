@@ -39,7 +39,7 @@ char *next_tmpnam_r(char *path)
 
 	ret = sym(path);
 	if (!ret)
-		__perror(path, __func__);
+		__pathperror(path, __func__);
 
 	return ret;
 }
@@ -55,7 +55,7 @@ char *tmpnam_r(char *path)
 
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {
-		__perror(path, "path_resolution");
+		__pathperror(path, "path_resolution");
 		return NULL;
 	}
 

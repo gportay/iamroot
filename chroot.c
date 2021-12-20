@@ -775,7 +775,7 @@ int chroot(const char *path)
 		real_path = path_resolution(path, buf, sizeof(buf),
 					    AT_SYMLINK_NOFOLLOW);
 		if (!real_path) {
-			__perror(path, "path_resolution");
+			__pathperror(path, "path_resolution");
 			return -1;
 		}
 	}
@@ -798,7 +798,7 @@ int chroot(const char *path)
 
 	ret = setrootdir(real_path);
 	if (ret == -1) {
-		__perror(real_path, "setrootdir");
+		__pathperror(real_path, "setrootdir");
 		return -1;
 	}
 

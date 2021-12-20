@@ -28,7 +28,7 @@ uid_t next_geteuid()
 
 	ret = sym();
 	if (ret == (uid_t)-1)
-		__perror(NULL, __func__);
+		__pathperror(NULL, __func__);
 
 	return ret;
 }

@@ -33,7 +33,7 @@ ssize_t next_fgetxattr(int fd, const char *name, void *value, size_t size)
 
 	ret = sym(fd, name, value, size);
 	if (ret == -1)
-		__fperror(fd, __func__);
+		__fpathperror(fd, __func__);
 
 	return ret;
 }

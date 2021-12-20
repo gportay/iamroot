@@ -29,7 +29,7 @@ int next_openat64_2(int fd, const char *path, int flags)
 
 	ret = sym(fd, path, flags);
 	if (ret == -1)
-		__perror(path, __func__);
+		__pathperror(path, __func__);
 
 	return ret;
 }
@@ -41,7 +41,7 @@ int openat64_2(int fd, const char *path, int flags)
 
 	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), flags);
 	if (!real_path) {
-		__perror(path, "fpath_resolutionat");
+		__pathperror(path, "fpath_resolutionat");
 		return -1;
 	}
 

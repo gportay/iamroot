@@ -116,7 +116,7 @@ static int __ld_linux_version(const char *path, int *major, int *minor)
 
 	siz = readlink(path, buf, sizeof(buf));
 	if (siz == -1) {
-		__perror(path, "readlink");
+		__pathperror(path, "readlink");
 		return -1;
 	}
 	buf[siz] = 0;
@@ -244,7 +244,7 @@ static ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 
 close:
 	if (close(fd))
-		__fperror(fd, "close");
+		__fpathperror(fd, "close");
 
 	return ret;
 }
@@ -292,7 +292,7 @@ static ssize_t gethashbang(const char *path, char *buf, size_t bufsize)
 
 close:
 	if (close(fd))
-		__fperror(fd, "close");
+		__fpathperror(fd, "close");
 
 	return siz;
 }
@@ -357,7 +357,7 @@ int next_execve(const char *path, char * const argv[], char * const envp[])
 
 	ret = sym(path, argv, envp);
 	if (ret == -1)
-		__perror(path, __func__);
+		__pathperror(path, __func__);
 
 	return ret;
 }
@@ -489,7 +489,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	 */
 	real_path = path_resolution(path, buf, sizeof(buf), AT_SYMLINK_FOLLOW);
 	if (!real_path) {
-		__perror(path, "path_resolution");
+		__pathperror(path, "path_resolution");
 		return -1;
 	}
 
@@ -523,7 +523,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 		if (errno == ENOEXEC)
 			goto loader;
 
-		__perror(real_path, "gethashbang");
+		__pathperror(real_path, "gethashbang");
 		return -1;
 	} else if (siz == 0) {
 		goto loader;
@@ -537,7 +537,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 					sizeof(hashbangbuf),
 					AT_SYMLINK_FOLLOW);
 	if (!real_hashbang) {
-		__perror(hashbang, "path_resolution");
+		__pathperror(hashbang, "path_resolution");
 		return -1;
 	}
 
@@ -580,7 +580,7 @@ loader:
 			goto exec_sh;
 		}
 
-		__perror(real_path, "getinterp");
+		__pathperror(real_path, "getinterp");
 		return -1;
 	} else if (siz == 0) {
 		__notice("%s: No such .interp section\n", real_path);
@@ -607,7 +607,7 @@ loader:
 					    sizeof(loaderbuf),
 					    AT_SYMLINK_FOLLOW);
 		if (!real_path) {
-			__perror(loader, "path_resolution");
+			__pathperror(loader, "path_resolution");
 			return -1;
 		}
 
@@ -670,7 +670,7 @@ loader:
 
 		has_argv0 = __ld_linux_has_argv0_option(loader);
 		if (has_argv0 == -1) {
-			__perror(loader, "__ld_linux_has_argv0_option");
+			__pathperror(loader, "__ld_linux_has_argv0_option");
 			return -1;
 		}
 
@@ -678,7 +678,7 @@ loader:
 					    sizeof(loaderbuf),
 					    AT_SYMLINK_FOLLOW);
 		if (!real_path) {
-			__perror(loader, "path_resolution");
+			__pathperror(loader, "path_resolution");
 			return -1;
 		}
 

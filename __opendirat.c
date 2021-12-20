@@ -30,7 +30,7 @@ DIR *next___opendirat(int fd, const char *path)
 
 	ret = sym(fd, path);
 	if (!ret)
-		__perror(path, __func__);
+		__pathperror(path, __func__);
 
 	return ret;
 }
@@ -42,7 +42,7 @@ DIR *__opendirat(int fd, const char *path)
 
 	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), 0);
 	if (!real_path) {
-		__perror(path, "fpath_resolutionat");
+		__pathperror(path, "fpath_resolutionat");
 		return NULL;
 	}
 

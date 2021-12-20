@@ -28,7 +28,7 @@ int next_setuid(uid_t uid)
 
 	ret = sym(uid);
 	if (ret == -1)
-		__perror(NULL, __func__);
+		__pathperror(NULL, __func__);
 
 	return ret;
 }

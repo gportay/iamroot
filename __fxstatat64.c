@@ -33,7 +33,7 @@ int next___fxstatat64(int ver, int fd, const char *path,
 
 	ret = sym(ver, fd, path, statbuf, flags);
 	if (ret == -1)
-		__perror(path, __func__);
+		__pathperror(path, __func__);
 
 	return ret;
 }
@@ -46,7 +46,7 @@ int __fxstatat64(int ver, int fd, const char *path, struct stat64 *statbuf,
 
 	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), flags);
 	if (!real_path) {
-		__perror(path, "fpath_resolutionat");
+		__pathperror(path, "fpath_resolutionat");
 		return -1;
 	}
 

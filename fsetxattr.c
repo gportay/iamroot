@@ -34,7 +34,7 @@ int next_fsetxattr(int fd, const char *name, const void *value, size_t size,
 
 	ret = sym(fd, name, value, size, flags);
 	if (ret == -1)
-		__fperror(fd, __func__);
+		__fpathperror(fd, __func__);
 
 	return ret;
 }

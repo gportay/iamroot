@@ -130,9 +130,9 @@ int __verbosef(int, const char *, const char *, ...) __attribute__((format(print
 #define __warn_if_too_restrictive_umask(mask) \
 	({ __warn_and_set_umask(mask, 0400); })
 
-extern void __perror(const char *, const char *);
-extern void __perror2(const char *, const char *, const char *);
-extern void __fperror(int, const char *);
+extern void __pathperror(const char *, const char *);
+extern void __pathperror2(const char *, const char *, const char *);
+extern void __fpathperror(int, const char *);
 
 extern void __envperror(const char *, const char *);
 

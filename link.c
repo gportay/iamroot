@@ -29,7 +29,7 @@ int next_link(const char *oldpath, const char *newpath)
 
 	ret = sym(oldpath, newpath);
 	if (ret == -1)
-		__perror2(oldpath, newpath, __func__);
+		__pathperror2(oldpath, newpath, __func__);
 
 	return ret;
 }
@@ -42,14 +42,14 @@ int link(const char *oldpath, const char *newpath)
 	real_oldpath = path_resolution(oldpath, oldbuf, sizeof(oldbuf),
 				       AT_SYMLINK_NOFOLLOW);
 	if (!real_oldpath) {
-		__perror(oldpath, "path_resolution");
+		__pathperror(oldpath, "path_resolution");
 		return -1;
 	}
 
 	real_newpath = path_resolution(newpath, newbuf, sizeof(newbuf),
 				       AT_SYMLINK_NOFOLLOW);
 	if (!real_newpath) {
-		__perror(newpath, "path_resolution");
+		__pathperror(newpath, "path_resolution");
 		return -1;
 	}
 

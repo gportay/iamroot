@@ -29,7 +29,7 @@ char *next_get_current_dir_name()
 
 	ret = sym();
 	if (!ret)
-		__perror(NULL, __func__);
+		__pathperror(NULL, __func__);
 
 	return ret;
 }

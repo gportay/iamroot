@@ -80,5 +80,14 @@ endif
 
 all: | libiamroot-linux-x86-64.so.2
 
+%-debug %-debug1:
+	$(MAKE) $* IAMROOT_DEBUG=1
+
+%-debug2:
+	$(MAKE) $* IAMROOT_DEBUG=2
+
+%-debug3:
+	$(MAKE) $* IAMROOT_DEBUG=3
+
 %:
 	$(MAKE) -f Makefile $@

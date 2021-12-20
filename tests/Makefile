@@ -146,7 +146,7 @@ test:
 	IAMROOT_ROOT=$(CURDIR) /statx - /file 0 0
 	symlink file symlink1
 	symlinkat file . symlink2
-	IAMROOT_ROOT=$(CURDIR) /symlinkat file . symlink3
+	IAMROOT_ROOT=$(CURDIR) /symlinkat file . /symlink3
 	utimes file 0x3fffffff 0x3fffffff
 	lutimes symlink0 0x3fffffff 0x3fffffff
 	utimensat . file 0x3fffffff 0x3fffffff

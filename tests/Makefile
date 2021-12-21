@@ -177,7 +177,7 @@ install:
 .PHONY: clean
 clean:
 	rm -f libiamnotroot.so *.o test-*
-	rm -R rootfs/
+	rm -Rf rootfs/
 
 %.so: override LDFLAGS += -shared
 %.so:

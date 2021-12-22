@@ -101,8 +101,8 @@ uninstall-exec-linux-aarch64:
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-aarch64.so.1
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-aarch64.so
 
-all rootfs aarch64-arch-rootfs aarch64-arch-chroot: IAMROOT_LIB_LINUX_AARCH64 = $(CURDIR)/libiamroot-linux-aarch64.so
-all rootfs aarch64-arch-rootfs aarch64-arch-chroot: libiamroot-linux-aarch64.so
+all rootfs aarch64-arch-rootfs aarch64-arch-chroot aarch64-fedora-33-rootfs aarch64-fedora-34-rootfs aarch64-fedora-35-rootfs aarch64-fedora-33-chroot aarch64-fedora-34-chroot aarch64-fedora-35-chroot: IAMROOT_LIB_LINUX_AARCH64 = $(CURDIR)/libiamroot-linux-aarch64.so
+all rootfs aarch64-arch-rootfs aarch64-arch-chroot aarch64-fedora-33-rootfs aarch64-fedora-34-rootfs aarch64-fedora-35-rootfs aarch64-fedora-33-chroot aarch64-fedora-34-chroot aarch64-fedora-35-chroot: libiamroot-linux-aarch64.so
 
 .PHONY: aarch64-arch-chroot
 aarch64-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-arch-rootfs
@@ -117,6 +117,28 @@ aarch64-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-ar
 aarch64-arch-rootfs/etc/machine-id: | libiamroot-linux-aarch64.so libiamroot.so
 	mkdir -p aarch64-arch-rootfs
 	bash iamroot-shell -c "pacstrap -C support/aarch64-pacman.conf aarch64-arch-rootfs"
+
+aarch64-fedora-33-chroot:
+aarch64-fedora-34-chroot:
+aarch64-fedora-35-chroot:
+aarch64-fedora-%-chroot: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
+aarch64-fedora-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64 = /usr/lib64/libc.so.6:/usr/lib64/libdl.so.2
+aarch64-fedora-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64:/usr/lib64/sssd:/usr/lib:/lib:/usr/lib/systemd
+aarch64-fedora-%-chroot: | aarch64-fedora-%-rootfs
+	bash iamroot-shell -c "chroot aarch64-fedora-$*-rootfs"
+
+aarch64-fedora-33-rootfs: | aarch64-fedora-33-rootfs/etc/machine-id
+aarch64-fedora-34-rootfs: | aarch64-fedora-34-rootfs/etc/machine-id
+aarch64-fedora-35-rootfs: | aarch64-fedora-35-rootfs/etc/machine-id
+
+aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64 = /usr/lib64/libc.so.6:/usr/lib64/libdl.so.2
+aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64:/usr/lib64/sssd:/usr/lib:/lib:/usr/lib/systemd
+aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd
+aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|$(CURDIR)/aarch64-fedora-$*-rootfs/var/log/dnf.rpm.log
+aarch64-fedora-%-rootfs/etc/machine-id: | libiamroot-linux-aarch64.so libiamroot.so
+	install -D -m644 fedora.repo aarch64-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
+	bash iamroot-shell -c "dnf --forcearch aarch64 --releasever $* --assumeyes --installroot $(CURDIR)/aarch64-fedora-$*-rootfs group install minimal-environment"
+	rm -f aarch64-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
 endif
 
 ifneq ($(shell command -v aarch64-linux-musl-gcc),)

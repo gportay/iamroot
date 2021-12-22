@@ -143,8 +143,8 @@ uninstall-exec-musl-aarch64:
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-musl-aarch64.so.1
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-musl-aarch64.so
 
-all rootfs aarch64-alpine-minirootfs aarch64-mini-chroot: libiamroot-musl-aarch64.so
-all rootfs aarch64-alpine-minirootfs aarch64-mini-chroot: IAMROOT_LIB_MUSL_AARCH64 = $(CURDIR)/libiamroot-linux-aarch64.so
+all rootfs aarch64-alpine-minirootfs aarch64-mini-chroot aarch64-alpine-3.14-rootfs aarch64-alpine-edge-rootfs aarch64-alpine-3.14-chroot aarch64-alpine-edge-chroot: libiamroot-musl-aarch64.so
+all rootfs aarch64-alpine-minirootfs aarch64-mini-chroot aarch64-alpine-3.14-rootfs aarch64-alpine-edge-rootfs aarch64-alpine-3.14-chroot aarch64-alpine-edge-chroot: IAMROOT_LIB_MUSL_AARCH64 = $(CURDIR)/libiamroot-linux-aarch64.so
 
 aarch64-mini-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-mini-rootfs
 aarch64-mini-chroot: | libiamroot-musl-aarch64.so libiamroot.so aarch64-alpine-minirootfs
@@ -160,6 +160,17 @@ aarch64-alpine-minirootfs/bin/busybox: | alpine-minirootfs-3.13.0-aarch64.tar.gz
 
 alpine-minirootfs-3.13.0-aarch64.tar.gz:
 	wget http://dl-cdn.alpinelinux.org/alpine/v3.13/releases/aarch64/alpine-minirootfs-3.13.0-aarch64.tar.gz
+
+aarch64-alpine-3.14-chroot aarch64-alpine-edge-chroot:
+aarch64-alpine-%-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-alpine-$*-rootfs
+aarch64-alpine-%-chroot: | aarch64-alpine-%-rootfs
+	bash iamroot-shell -c "chroot aarch64-alpine-$*-rootfs"
+
+aarch64-alpine-3.14-rootfs: | aarch64-alpine-3.14-rootfs/bin/busybox
+aarch64-alpine-edge-rootfs: | aarch64-alpine-edge-rootfs/bin/busybox
+
+aarch64-alpine-%-rootfs/bin/busybox: | libiamroot-musl-aarch64.so libiamroot.so
+	bash iamroot-shell -c "APK_OPTS='--arch aarch64' alpine-make-rootfs aarch64-alpine-$*-rootfs --mirror-uri http://nl.alpinelinux.org/alpine --branch $*"
 endif
 
 all: | libiamroot-linux-x86-64.so.2

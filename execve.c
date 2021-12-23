@@ -45,6 +45,11 @@ int pathprependenv(const char *name, const char *value, int overwrite)
 	char *newval, *oldval;
 	char buf[PATH_MAX];
 
+	if (!name || !value) {
+		errno = EINVAL;
+		return -1;
+	}
+
 	newval = __strncpy(buf, value);
 	oldval = getenv(name);
 	if (oldval && *oldval) {

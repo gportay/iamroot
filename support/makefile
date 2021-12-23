@@ -26,6 +26,9 @@ export IAMROOT_LIB_LINUX_ARMHF_3
 IAMROOT_LIB_LINUX_AARCH64_1 = $(CURDIR)/aarch64/libiamroot-linux-aarch64.so.1
 export IAMROOT_LIB_LINUX_AARCH64_1
 
+IAMROOT_LIB_MUSL_I386_1 = $(CURDIR)/x86/libiamroot-musl-i386.so.1
+export IAMROOT_LIB_MUSL_I386_1
+
 IAMROOT_LIB_MUSL_X86_64_1 = $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1
 export IAMROOT_LIB_MUSL_X86_64_1
 
@@ -96,6 +99,12 @@ endif
 ifneq ($(shell command -v aarch64-linux-gnu-gcc 2>/dev/null),)
 aarch64/libiamroot-linux-aarch64.so.1: export CC = aarch64-linux-gnu-gcc
 $(eval $(call libiamroot_so,aarch64,linux-aarch64,1))
+endif
+
+ifneq ($(shell command -v i386-musl-gcc 2>/dev/null),)
+x86/libiamroot-musl-i386.so.1: export CC = i386-musl-gcc
+x86/libiamroot-musl-i386.so.1: export CFLAGS += -fno-stack-protector
+$(eval $(call libiamroot_so,x86,musl-i386,1))
 endif
 
 ifneq ($(shell command -v musl-gcc 2>/dev/null),)
@@ -740,6 +749,25 @@ alpine-minirootfs-3.16.0-x86_64.tar.gz:
 alpine-minirootfs-%-x86_64.tar.gz:
 	wget http://dl-cdn.alpinelinux.org/alpine/v$(basename $*)/releases/x86_64/alpine-minirootfs-$*-x86_64.tar.gz
 
+i686-rootfs: i686-alpine-rootfs
+
+.PHONY: mini-chroot-i686
+x86-mini-chroot: export QEMU_LD_PREFIX = $(CURDIR)/x86-alpine-minirootfs
+x86-mini-chroot: x86/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2 | x86-alpine-minirootfs
+	bash iamroot-shell -c "chroot x86-alpine-minirootfs /bin/sh"
+
+.PHONY: x86-alpine-minirootfs
+x86-alpine-minirootfs: export QEMU_LD_PREFIX = $(CURDIR)/x86-alpine-minirootfs
+x86-alpine-minirootfs: | x86-alpine-minirootfs/bin/busybox
+
+x86-alpine-minirootfs/bin/busybox: | alpine-minirootfs-3.16.0-x86.tar.gz
+	mkdir -p x86-alpine-minirootfs
+	tar xf alpine-minirootfs-3.16.0-x86.tar.gz -C x86-alpine-minirootfs
+
+alpine-minirootfs-3.16.0-x86.tar.gz:
+alpine-minirootfs-%-x86.tar.gz:
+	wget http://dl-cdn.alpinelinux.org/alpine/v$(basename $*)/releases/x86/alpine-minirootfs-$*-x86.tar.gz
+
 ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
 alpine-3.14-chroot:
 alpine-3.15-chroot:
@@ -829,6 +857,31 @@ ifdef COVERAGE
 IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
 IAMROOT_LIB_MUSL_X86_64_1 := $(IAMROOT_LIB_MUSL_X86_64_1):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64/libiamroot-musl-x86_64.so.1: | gcompat/libgcompat.so.0
+endif
+
+ifneq ($(shell command -v i386-musl-gcc 2>/dev/null),)
+i686-alpine-3.14-chroot:
+i686-alpine-3.15-chroot:
+i686-alpine-3.16-chroot:
+i686-alpine-edge-chroot:
+i686-alpine-%-chroot: | i686-alpine-%-rootfs
+	bash iamroot-shell -c "chroot i686-alpine-$*-rootfs /bin/ash"
+
+.NOTPARALLEL: i686-alpine-rootfs
+.PHONY: i686-alpine-rootfs
+i686-alpine-rootfs: i686-alpine-3.14-rootfs
+i686-alpine-rootfs: i686-alpine-3.15-rootfs
+i686-alpine-rootfs: i686-alpine-3.16-rootfs
+i686-alpine-rootfs: i686-alpine-edge-rootfs
+
+i686-alpine-3.14-rootfs: | i686-alpine-3.14-rootfs/bin/busybox
+i686-alpine-3.15-rootfs: | i686-alpine-3.15-rootfs/bin/busybox
+i686-alpine-3.16-rootfs: | i686-alpine-3.16-rootfs/bin/busybox
+i686-alpine-edge-rootfs: | i686-alpine-edge-rootfs/bin/busybox
+
+i686-alpine-%-rootfs/bin/busybox: export APK_OPTS = --arch x86 --no-progress
+i686-alpine-%-rootfs/bin/busybox: | x86/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2
+	bash iamroot-shell -c "alpine-make-rootfs i686-alpine-$*-rootfs --keys-dir /usr/share/apk/keys/x86 --mirror-uri http://nl.alpinelinux.org/alpine --branch $*"
 endif
 endif
 

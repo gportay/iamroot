@@ -1002,6 +1002,12 @@ static char *__getlibiamroot(const char *ldso, int abi)
 		goto exit;
 	}
 
+	/* IAMROOT_LIB_MUSL_I386_1 */
+	if ((strcmp(ldso, "musl-i386") == 0) && abi == 1) {
+		ret = "/usr/lib/iamroot/i686/libiamroot-musl-i386.so.1";
+		goto exit;
+	}
+
 	/* IAMROOT_LIB_MUSL_X86_64_1 */
 	if (__streq(ldso, "musl-x86_64") && abi == 1) {
 		ret = "/usr/lib/iamroot/x86_64/libiamroot-musl-x86_64.so.1";

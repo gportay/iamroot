@@ -101,8 +101,8 @@ uninstall-exec-linux-aarch64:
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-aarch64.so.1
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-aarch64.so
 
-all rootfs aarch64-arch-rootfs aarch64-arch-chroot aarch64-fedora-33-rootfs aarch64-fedora-34-rootfs aarch64-fedora-35-rootfs aarch64-fedora-33-chroot aarch64-fedora-34-chroot aarch64-fedora-35-chroot: IAMROOT_LIB_LINUX_AARCH64 = $(CURDIR)/libiamroot-linux-aarch64.so
-all rootfs aarch64-arch-rootfs aarch64-arch-chroot aarch64-fedora-33-rootfs aarch64-fedora-34-rootfs aarch64-fedora-35-rootfs aarch64-fedora-33-chroot aarch64-fedora-34-chroot aarch64-fedora-35-chroot: libiamroot-linux-aarch64.so
+all test ci rootfs aarch64-arch-rootfs aarch64-arch-chroot aarch64-fedora-33-rootfs aarch64-fedora-34-rootfs aarch64-fedora-35-rootfs aarch64-fedora-33-chroot aarch64-fedora-34-chroot aarch64-fedora-35-chroot: IAMROOT_LIB_LINUX_AARCH64 = $(CURDIR)/libiamroot-linux-aarch64.so
+all test ci rootfs aarch64-arch-rootfs aarch64-arch-chroot aarch64-fedora-33-rootfs aarch64-fedora-34-rootfs aarch64-fedora-35-rootfs aarch64-fedora-33-chroot aarch64-fedora-34-chroot aarch64-fedora-35-chroot: libiamroot-linux-aarch64.so
 
 .PHONY: aarch64-arch-chroot
 aarch64-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-arch-rootfs
@@ -163,8 +163,8 @@ uninstall-exec-musl-aarch64:
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-musl-aarch64.so.1
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-musl-aarch64.so
 
-all rootfs aarch64-alpine-minirootfs aarch64-mini-chroot aarch64-alpine-3.14-rootfs aarch64-alpine-edge-rootfs aarch64-alpine-3.14-chroot aarch64-alpine-edge-chroot: libiamroot-musl-aarch64.so
-all rootfs aarch64-alpine-minirootfs aarch64-mini-chroot aarch64-alpine-3.14-rootfs aarch64-alpine-edge-rootfs aarch64-alpine-3.14-chroot aarch64-alpine-edge-chroot: IAMROOT_LIB_MUSL_AARCH64 = $(CURDIR)/libiamroot-linux-aarch64.so
+all test ci rootfs aarch64-alpine-minirootfs aarch64-mini-chroot aarch64-alpine-3.14-rootfs aarch64-alpine-edge-rootfs aarch64-alpine-3.14-chroot aarch64-alpine-edge-chroot: libiamroot-musl-aarch64.so
+all test ci rootfs aarch64-alpine-minirootfs aarch64-mini-chroot aarch64-alpine-3.14-rootfs aarch64-alpine-edge-rootfs aarch64-alpine-3.14-chroot aarch64-alpine-edge-chroot: IAMROOT_LIB_MUSL_AARCH64 = $(CURDIR)/libiamroot-linux-aarch64.so
 
 aarch64-mini-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-mini-rootfs
 aarch64-mini-chroot: | libiamroot-musl-aarch64.so libiamroot.so aarch64-alpine-minirootfs

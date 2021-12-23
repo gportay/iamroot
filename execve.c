@@ -56,7 +56,7 @@ int pathprependenv(const char *name, const char *value, int overwrite)
 }
 
 int pathsetenv(const char *root, const char *name, const char *value,
-		      int overwrite)
+	       int overwrite)
 {
 	size_t rootlen, vallen, newlen;
 

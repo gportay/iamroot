@@ -74,6 +74,12 @@ Environment variables:
       IAMROOT_LIB_MUSL_X86_64   Set absolute path to library to use with loader
                                 ld-musl-x86_64.so.1
 
+      IAMROOT_LIB_LINUX_AARCH64 Set absolute path to library to use with loader
+                                ld-linux-aarch64.so.1
+
+      IAMROOT_LIB_MUSL_AARCH64  Set absolute path to library to use with loader
+                                ld-musl-aarch64.so.1
+
       IAMROOT_FATAL             Set abort on error.
                                 Equivalent to --fatal.
 

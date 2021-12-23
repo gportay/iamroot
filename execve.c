@@ -65,7 +65,12 @@ int pathsetenv(const char *root, const char *name, const char *value,
 {
 	size_t rootlen, vallen, newlen;
 
-	if (!root || !value)
+	if (!name || !value) {
+		errno = EINVAL;
+		return -1;
+	}
+
+	if (!root)
 		goto setenv;
 
 	newlen = 0;

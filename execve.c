@@ -521,7 +521,7 @@ static char *__getld_preload_linux_x86_64()
 
 	ret = getenv("IAMROOT_LD_PRELOAD_LINUX_X86_64");
 	if (!ret)
-		return "/usr/lib/libc.so.6:/usr/lib/libdl.so.2";
+		return "/usr/lib64/libc.so.6:/usr/lib64/libdl.so.2";
 
 	return ret;
 }
@@ -590,7 +590,7 @@ static char *__getld_preload_linux_aarch64()
 
 	ret = getenv("IAMROOT_LD_PRELOAD_LINUX_AARCH64");
 	if (!ret)
-		return "/usr/lib/libc.so.6:/usr/lib/libdl.so.2";
+		return "/usr/lib64/libc.so.6:/usr/lib64/libdl.so.2";
 
 	return ret;
 }

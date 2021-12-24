@@ -483,6 +483,7 @@ endif
 .PRECIOUS: %.ext4
 alpine-3.14.ext4 alpine-edge.ext4:
 arch.ext4:
+fedora-34.ext4:
 ifneq ($(KVER),)
 MODULESDIRS += %-rootfs/usr/lib/modules/$(KVER)
 endif

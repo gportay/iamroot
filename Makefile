@@ -274,7 +274,7 @@ shell: libiamroot-linux-x86-64.so.2
 
 .PHONY: chroot
 chroot: libiamroot-linux-x86-64.so.2 | static-rootfs
-	bash iamroot-shell -c "chroot static-rootfs/bin/sh"
+	bash iamroot-shell -c "chroot static-rootfs /bin/sh"
 
 .PHONY: mini-chroot
 mini-chroot: libiamroot-linux-x86-64.so.2 | alpine-minirootfs

@@ -546,6 +546,7 @@ chroot-alpine-%: PATH = /usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/
 chroot-alpine-%: SHELL = /bin/sh
 chroot-alpine-3.14 chroot-alpine-edge:
 chroot-arch:
+chroot-fedora-34:
 chroot-%:
 	$(MAKE) mount-$*
 	-sudo chroot mnt $(SHELL)
@@ -553,11 +554,13 @@ chroot-%:
 
 mount-alpine-3.14 mount-alpine-edge:
 mount-arch:
+mount-fedora-34:
 mount-%: | %.ext4 mnt
 	sudo mount -oloop $*.ext4 mnt
 
 umount-alpine-3.14 umount-alpine-edge:
 umount-arch:
+umount-fedora-34:
 umount-%: | mnt
 	sudo umount mnt
 

@@ -270,12 +270,9 @@ alpine-test: libiamroot-linux-x86-64.so.2 | alpine-minirootfs
 .PHONY: arch-test
 arch-test: | arch-rootfs/usr/bin/shebang.sh
 arch-test: | arch-rootfs/usr/bin/shebang-arg.sh
-arch-test: | arch-rootfs/usr/bin/shebang-busybox.sh
-arch-test: libiamroot-linux-x86-64.so.2 | arch-rootfs/usr/bin/busybox
-	bash iamroot-shell -c "chroot arch-rootfs /bin/busybox"
+arch-test: libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "chroot arch-rootfs shebang.sh one two three"
 	bash iamroot-shell -c "chroot arch-rootfs shebang-arg.sh one two three"
-	bash iamroot-shell -c "chroot arch-rootfs shebang-busybox.sh one two three"
 
 .PHONY: shell
 shell: libiamroot-linux-x86-64.so.2
@@ -356,9 +353,6 @@ alpine-%-rootfs/bin/busybox: | libiamroot-linux-x86-64.so.2
 
 .PHONY: arch-rootfs
 arch-rootfs: | arch-rootfs/etc/machine-id
-
-arch-rootfs/usr/bin/busybox: | libiamroot-linux-x86-64.so.2 arch-rootfs/etc/machine-id
-	bash iamroot-shell -c "pacman -r arch-rootfs --noconfirm -S busybox"
 
 arch-rootfs/etc/machine-id: | libiamroot-linux-x86-64.so.2
 	mkdir -p arch-rootfs

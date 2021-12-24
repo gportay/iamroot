@@ -12,14 +12,6 @@ PREFIX ?= /usr/local
 %.o: override CFLAGS += -DARG_MAX=$(shell getconf ARG_MAX)
 %.so: override LDFLAGS += -nolibc
 
-QEMU ?= qemu-system-x86_64
-QEMU += -enable-kvm -m 4G -machine q35 -smp 4 -cpu host
-ifndef NO_SPICE
-QEMU += -vga virtio -display egl-headless,gl=on
-QEMU += -spice port=5924,disable-ticketing -device virtio-serial-pci -device virtserialport,chardev=spicechannel0,name=com.redhat.spice.0 -chardev spicevmc,id=spicechannel0,name=vdagent
-endif
-QEMU += -serial mon:stdio
-
 KVER ?= $(shell uname -r 2>/dev/null)
 VMLINUX_KVER ?= $(shell vmlinux --version 2>/dev/null)
 
@@ -239,14 +231,6 @@ user-%:
 .PHONY: ci
 ci: check test
 
-.PHONY: run-qemu
-run-qemu: override QEMUFLAGS += -append "console=ttyS0 root=host0 rootfstype=9p rootflags=trans=virtio debug"
-run-qemu: override QEMUFLAGS += -kernel arch-rootfs/boot/vmlinuz-linux
-run-qemu: override QEMUFLAGS += -initrd arch-rootfs/boot/initramfs-linux-fallback.img
-run-qemu: override QEMUFLAGS += -virtfs local,path=$(CURDIR)/arch-rootfs,mount_tag=host0,security_model=passthrough,id=host0
-run-qemu: | arch-rootfs/boot/vmlinuz-linux
-	$(QEMU) $(QEMUFLAGS)
-
 .PHONY: check
 check:
 	shellcheck iamroot-shell exec.sh
@@ -375,9 +359,6 @@ arch-rootfs: | arch-rootfs/etc/machine-id
 
 arch-rootfs/usr/bin/busybox: | libiamroot-linux-x86-64.so.2 arch-rootfs/etc/machine-id
 	bash iamroot-shell -c "pacman -r arch-rootfs --noconfirm -S busybox"
-
-arch-rootfs/boot/vmlinuz-linux: | libiamroot-linux-x86-64.so.2 arch-rootfs/etc/machine-id
-	bash iamroot-shell -c "pacman -r arch-rootfs --noconfirm -S linux"
 
 arch-rootfs/etc/machine-id: | libiamroot-linux-x86-64.so.2
 	mkdir -p arch-rootfs

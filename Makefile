@@ -244,12 +244,12 @@ test: | libiamroot-linux-x86-64.so.2 alpine-minirootfs
 
 .PHONY: static-test
 static-test: SHELL = /bin/bash
-static-test: libiamroot-linux-x86-64.so.2 | static-rootfs
+static-test: libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "whoami | tee /dev/stderr | grep -q \"^root\$$\""
 	bash iamroot-shell -c "IAMROOT_EUID=$$EUID whoami | tee /dev/stderr | grep -q \"^$(shell whoami)\$$\""
 
 .PHONY: shell-test
-shell-test: libiamroot-linux-x86-64.so.2 | static-rootfs
+shell-test: libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "whoami" | tee /dev/stderr | grep -q "^root\$$"
 	bash iamroot-shell -c "stat -c '%u:%g' ." | tee /dev/stderr | grep -q "^0:0$$"
 	bash iamroot-shell -c "echo \$$IAMROOTLVL" | tee /dev/stderr | grep -q "^[0-9]\+$$"

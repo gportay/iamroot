@@ -861,9 +861,6 @@ loader:
 
 		/* Add path to binary (in chroot, first positional argument) */
 		interparg[i++] = interppath;
-
-		extern char **__environ;
-		envp = __environ;
 	} else if (strcmp(loader, "/lib64/ld-linux-x86-64.so.2") == 0) {
 		int has_argv0, shift = 5;
 
@@ -948,9 +945,6 @@ loader:
 			else
 				unsetenv("LD_PRELOAD");
 		}
-
-		extern char **__environ;
-		envp = __environ;
 	} else if (strcmp(loader, "/lib/ld-musl-aarch64.so.1") == 0) {
 		real_path = path_resolution(loader, loaderbuf,
 					    sizeof(loaderbuf),
@@ -1017,9 +1011,6 @@ loader:
 
 		/* Add path to binary (in chroot, first positional argument) */
 		interparg[i++] = interppath;
-
-		extern char **__environ;
-		envp = __environ;
 	} else if (strcmp(loader, "/lib/ld-linux-aarch64.so.1") == 0) {
 		int has_argv0, shift = 5;
 
@@ -1104,9 +1095,6 @@ loader:
 			else
 				unsetenv("LD_PRELOAD");
 		}
-
-		extern char **__environ;
-		envp = __environ;
 	}
 
 interp:
@@ -1153,5 +1141,12 @@ exec_sh:
 	}
 
 execve:
+	/*
+	 * envp is updated by the change in the environments (i.e. by calling
+	 * setenv() abd unsetenv()).
+	 */ 
+	if (envp != environ)
+		envp = environ;
+
 	return interpexecve(real_path, interparg, ++argv, envp);
 }

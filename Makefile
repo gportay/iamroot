@@ -526,7 +526,7 @@ arch-postrootfs:
 	bash iamroot-shell --chroot $(CURDIR)/arch-rootfs -c "systemctl enable getty@tty0.service"
 
 fedora-34-postrootfs:
-fedora-%-postrootfs: export LD_LIBRARY_PATH = $(CURDIR)/fedora-$*-rootfs/usr/lib/systemd
+fedora-%-postrootfs: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/systemd
 fedora-%-postrootfs:
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i fedora-$*-rootfs/etc/passwd

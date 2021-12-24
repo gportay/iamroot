@@ -237,20 +237,14 @@ check:
 
 .PHONY: test
 test: shell-test
-test: static-test
 test: | libiamroot-linux-x86-64.so.2 alpine-minirootfs
 	$(MAKE) -C tests
 	$(MAKE) -C tests $@ LD_PRELOAD=$(CURDIR)/libiamroot-linux-x86-64.so.2 IAMROOT_LIB=$(CURDIR)/libiamroot-linux-x86-64.so.2 ALPINE_MINIROOTFS=$(CURDIR)/alpine-minirootfs
 
-.PHONY: static-test
-static-test: SHELL = /bin/bash
-static-test: libiamroot-linux-x86-64.so.2
-	bash iamroot-shell -c "whoami | tee /dev/stderr | grep -q \"^root\$$\""
-	bash iamroot-shell -c "IAMROOT_EUID=$$EUID whoami | tee /dev/stderr | grep -q \"^$(shell whoami)\$$\""
-
 .PHONY: shell-test
 shell-test: libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "whoami" | tee /dev/stderr | grep -q "^root\$$"
+	bash iamroot-shell -c "IAMROOT_EUID=$$EUID whoami" | tee /dev/stderr | grep -q "^$(shell whoami)\$$"
 	bash iamroot-shell -c "stat -c '%u:%g' ." | tee /dev/stderr | grep -q "^0:0$$"
 	bash iamroot-shell -c "echo \$$IAMROOTLVL" | tee /dev/stderr | grep -q "^[0-9]\+$$"
 

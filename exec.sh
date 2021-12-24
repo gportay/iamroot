@@ -51,6 +51,6 @@ bbsuid)
 	done
 	;;
 *)
-	echo "Warning:" "Command not handled:" "$@" >&2
+	echo "Warning:" "Command not handled:" "$argv0" "$@" >&2
 	;;
 esac

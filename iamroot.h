@@ -157,6 +157,14 @@ extern void __envperror(const char *, const char *);
 
 #define __dlperror(s) __info("%s: %s\n", s, dlerror())
 
+/*
+ * glibc considers the kernel headers define a wrong value for ARG_MAX and
+ * undefines it. Let's redefine it using _POSIX_ARG_MAX.
+ */
+#ifndef ARG_MAX
+#define ARG_MAX _POSIX_ARG_MAX
+#endif
+
 #ifdef __cplusplus
 }
 #endif

@@ -25,6 +25,9 @@ output-%/libiamroot.so: $(wildcard *.c) | output-%
 output-%:
 	mkdir $@
 
+.PHONY: aarch64-rootfs
+aarch64-rootfs:
+
 .PHONY: clean
 clean:
 	$(MAKE) -f Makefile $@
@@ -84,8 +87,6 @@ endif
 ifneq ($(shell command -v aarch64-linux-gnu-gcc),)
 all: libiamroot-linux-aarch64.so
 
-rootfs: | libiamroot-linux-aarch64.so
-
 .PRECIOUS: libiamroot-musl-aarch64.so
 libiamroot-linux-aarch64.so: libiamroot-linux-aarch64.so.1
 	ln -sf $< $@
@@ -109,6 +110,8 @@ uninstall-exec-linux-aarch64:
 
 all test ci rootfs aarch64-arch-rootfs aarch64-arch-chroot aarch64-fedora-33-rootfs aarch64-fedora-34-rootfs aarch64-fedora-35-rootfs aarch64-fedora-33-chroot aarch64-fedora-34-chroot aarch64-fedora-35-chroot: IAMROOT_LIB_LINUX_AARCH64 = $(CURDIR)/libiamroot-linux-aarch64.so
 all test ci rootfs aarch64-arch-rootfs aarch64-arch-chroot aarch64-fedora-33-rootfs aarch64-fedora-34-rootfs aarch64-fedora-35-rootfs aarch64-fedora-33-chroot aarch64-fedora-34-chroot aarch64-fedora-35-chroot: libiamroot-linux-aarch64.so
+
+aarch64-rootfs: aarch64-arch-rootfs aarch64-fedora-rootfs
 
 .PHONY: aarch64-arch-chroot
 aarch64-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-arch-rootfs
@@ -135,6 +138,9 @@ aarch64-fedora-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64:/usr
 aarch64-fedora-%-chroot: export IAMROOT_LIB = $(CURDIR)/libiamroot-linux-x86-64.so
 aarch64-fedora-%-chroot: | aarch64-fedora-%-rootfs
 	bash iamroot-shell -c "chroot aarch64-fedora-$*-rootfs"
+
+.PHONY: aarch64-fedora-rootfs
+aarch64-fedora-rootfs: aarch64-fedora-33-rootfs aarch64-fedora-34-rootfs aarch64-fedora-35-rootfs
 
 aarch64-fedora-33-rootfs: | aarch64-fedora-33-rootfs/etc/machine-id
 aarch64-fedora-34-rootfs: | aarch64-fedora-34-rootfs/etc/machine-id
@@ -177,6 +183,8 @@ uninstall-exec-musl-aarch64:
 all test ci rootfs aarch64-alpine-minirootfs aarch64-mini-chroot aarch64-alpine-3.14-rootfs aarch64-alpine-edge-rootfs aarch64-alpine-3.14-chroot aarch64-alpine-edge-chroot: libiamroot-musl-aarch64.so
 all test ci rootfs aarch64-alpine-minirootfs aarch64-mini-chroot aarch64-alpine-3.14-rootfs aarch64-alpine-edge-rootfs aarch64-alpine-3.14-chroot aarch64-alpine-edge-chroot: IAMROOT_LIB_MUSL_AARCH64 = $(CURDIR)/libiamroot-linux-aarch64.so
 
+aarch64-rootfs: aarch64-alpine-rootfs
+
 aarch64-mini-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-mini-rootfs
 aarch64-mini-chroot: export IAMROOT_LIB = $(CURDIR)/libiamroot-linux-x86-64.so
 aarch64-mini-chroot: | libiamroot-musl-aarch64.so libiamroot-linux-x86-64.so aarch64-alpine-minirootfs
@@ -198,6 +206,9 @@ aarch64-alpine-%-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-alpine-$*-roo
 aarch64-alpine-%-chroot: export IAMROOT_LIB = $(CURDIR)/libiamroot-linux-x86-64.so
 aarch64-alpine-%-chroot: | aarch64-alpine-%-rootfs
 	bash iamroot-shell -c "chroot aarch64-alpine-$*-rootfs"
+
+.PHONY: aarch64-alpine-rootfs
+aarch64-alpine-rootfs: aarch64-alpine-3.14-rootfs aarch64-alpine-edge-rootfs
 
 aarch64-alpine-3.14-rootfs: | aarch64-alpine-3.14-rootfs/bin/busybox
 aarch64-alpine-edge-rootfs: | aarch64-alpine-edge-rootfs/bin/busybox

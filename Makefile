@@ -272,8 +272,8 @@ arch-test: libiamroot-linux-x86-64.so.2
 shell: libiamroot-linux-x86-64.so.2
 	bash iamroot-shell
 
-.PHONY: chroot
-chroot: libiamroot-linux-x86-64.so.2 | static-rootfs
+.PHONY: static-chroot
+static-chroot: libiamroot-linux-x86-64.so.2 | static-rootfs
 	bash iamroot-shell -c "chroot static-rootfs /bin/sh"
 
 .PHONY: mini-chroot

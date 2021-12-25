@@ -51,6 +51,7 @@ bbsuid)
 	done
 	;;
 *)
-	echo "Warning:" "Command not handled:" "$argv0" "$@" >&2
+	echo "Warning:" "host-running" "$argv0" "$@" >&2
+	exec "$path" "$@"
 	;;
 esac

@@ -102,7 +102,7 @@ Environment variables:
 EOF
 }
 
-IAMROOT_LIB="${IAMROOT_LIB:-$PWD/libiamroot.so}"
+IAMROOT_LIB="${IAMROOT_LIB:-$PWD/libiamroot-linux-x86-64.so.2}"
 export IAMROOT_LIB
 
 IAMROOT_LIB_LINUX_X86_64="${IAMROOT_LIB_LINUX_X86_64:-$PWD/libiamroot-linux-x86-64.so.2}"

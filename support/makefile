@@ -31,6 +31,12 @@ clean:
 	rm -Rf output-*/
 	rm -f libiamroot*.so*
 
+.PRECIOUS: libiamroot-linux-x86-64.so
+libiamroot-linux-x86-64.so: libiamroot-linux-x86-64.so.2
+	ln -sf $< $@
+
+libiamroot-linux-x86-64.so.2:
+
 ifneq ($(shell command -v clang),)
 all: libiamroot-linux-x86-64-clang.so
 
@@ -106,6 +112,7 @@ all test ci rootfs aarch64-arch-rootfs aarch64-arch-chroot aarch64-fedora-33-roo
 
 .PHONY: aarch64-arch-chroot
 aarch64-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-arch-rootfs
+aarch64-arch-chroot: export IAMROOT_LIB = $(CURDIR)/libiamroot-linux-x86-64.so
 aarch64-arch-chroot: | aarch64-arch-rootfs
 	bash iamroot-shell -c "chroot aarch64-arch-rootfs"
 
@@ -115,7 +122,8 @@ aarch64-arch-rootfs: | aarch64-arch-rootfs/etc/machine-id
 
 aarch64-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-arch-rootfs
 aarch64-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
-aarch64-arch-rootfs/etc/machine-id: | libiamroot-linux-aarch64.so libiamroot.so
+aarch64-arch-rootfs/etc/machine-id: export IAMROOT_LIB = $(CURDIR)/libiamroot-linux-x86-64.so
+aarch64-arch-rootfs/etc/machine-id: | libiamroot-linux-aarch64.so libiamroot-linux-x86-64.so
 	mkdir -p aarch64-arch-rootfs
 	bash iamroot-shell -c "pacstrap -C support/aarch64-pacman.conf aarch64-arch-rootfs"
 
@@ -124,6 +132,7 @@ aarch64-fedora-34-chroot:
 aarch64-fedora-35-chroot:
 aarch64-fedora-%-chroot: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
 aarch64-fedora-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64:/usr/lib64/sssd:/usr/lib:/lib:/usr/lib/systemd
+aarch64-fedora-%-chroot: export IAMROOT_LIB = $(CURDIR)/libiamroot-linux-x86-64.so
 aarch64-fedora-%-chroot: | aarch64-fedora-%-rootfs
 	bash iamroot-shell -c "chroot aarch64-fedora-$*-rootfs"
 
@@ -134,7 +143,8 @@ aarch64-fedora-35-rootfs: | aarch64-fedora-35-rootfs/etc/machine-id
 aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64:/usr/lib64/sssd:/usr/lib:/lib:/usr/lib/systemd
 aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd
 aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|$(CURDIR)/aarch64-fedora-$*-rootfs/var/log/dnf.rpm.log
-aarch64-fedora-%-rootfs/etc/machine-id: | libiamroot-linux-aarch64.so libiamroot.so
+aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_LIB = $(CURDIR)/libiamroot-linux-x86-64.so
+aarch64-fedora-%-rootfs/etc/machine-id: | libiamroot-linux-aarch64.so libiamroot-linux-x86-64.so
 	install -D -m644 fedora.repo aarch64-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
 	bash iamroot-shell -c "dnf --forcearch aarch64 --releasever $* --assumeyes --installroot $(CURDIR)/aarch64-fedora-$*-rootfs group install minimal-environment"
 	rm -f aarch64-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
@@ -168,7 +178,8 @@ all test ci rootfs aarch64-alpine-minirootfs aarch64-mini-chroot aarch64-alpine-
 all test ci rootfs aarch64-alpine-minirootfs aarch64-mini-chroot aarch64-alpine-3.14-rootfs aarch64-alpine-edge-rootfs aarch64-alpine-3.14-chroot aarch64-alpine-edge-chroot: IAMROOT_LIB_MUSL_AARCH64 = $(CURDIR)/libiamroot-linux-aarch64.so
 
 aarch64-mini-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-mini-rootfs
-aarch64-mini-chroot: | libiamroot-musl-aarch64.so libiamroot.so aarch64-alpine-minirootfs
+aarch64-mini-chroot: export IAMROOT_LIB = $(CURDIR)/libiamroot-linux-x86-64.so
+aarch64-mini-chroot: | libiamroot-musl-aarch64.so libiamroot-linux-x86-64.so aarch64-alpine-minirootfs
 	bash iamroot-shell -c "chroot aarch64-alpine-minirootfs /bin/sh"
 
 .PHONY: aarch64-alpine-minirootfs
@@ -184,17 +195,17 @@ alpine-minirootfs-3.13.0-aarch64.tar.gz:
 
 aarch64-alpine-3.14-chroot aarch64-alpine-edge-chroot:
 aarch64-alpine-%-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-alpine-$*-rootfs
+aarch64-alpine-%-chroot: export IAMROOT_LIB = $(CURDIR)/libiamroot-linux-x86-64.so
 aarch64-alpine-%-chroot: | aarch64-alpine-%-rootfs
 	bash iamroot-shell -c "chroot aarch64-alpine-$*-rootfs"
 
 aarch64-alpine-3.14-rootfs: | aarch64-alpine-3.14-rootfs/bin/busybox
 aarch64-alpine-edge-rootfs: | aarch64-alpine-edge-rootfs/bin/busybox
 
-aarch64-alpine-%-rootfs/bin/busybox: | libiamroot-musl-aarch64.so libiamroot.so
+aarch64-alpine-%-rootfs/bin/busybox: export IAMROOT_LIB = $(CURDIR)/libiamroot-linux-x86-64.so
+aarch64-alpine-%-rootfs/bin/busybox: | libiamroot-musl-aarch64.so libiamroot-linux-x86-64.so
 	bash iamroot-shell -c "APK_OPTS='--arch aarch64' alpine-make-rootfs aarch64-alpine-$*-rootfs --mirror-uri http://nl.alpinelinux.org/alpine --branch $*"
 endif
-
-all: | libiamroot-linux-x86-64.so.2
 
 %-debug %-debug1:
 	$(MAKE) $* IAMROOT_DEBUG=1

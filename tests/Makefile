@@ -77,14 +77,12 @@ test: PREFIX = /usr
 test: export LD_LIBRARY_PATH := $(CURDIR):$(LD_LIBRARY_PATH)
 test: export IAMROOT_USE_HOST_INTERP = 1
 test: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|$(IAMROOT_LIB)
-test: ALPINE_MINIROOTFS ?= .
 test: | rootfs
 	rm -Rf rootfs/tmp/* rootfs/dev/*
 	touch rootfs/tmp/file0
 	ln -s file0 rootfs/tmp/symlink0
 	test-access rootfs/tmp/file0 0
 	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-access /tmp/file0 0
-	IAMROOT_USE_HOST_INTERP= test-chroot $(ALPINE_MINIROOTFS) whoami
 	test-chmod rootfs/tmp/file0 01644
 	test-fchmodat . rootfs/tmp/file0 02644
 	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-fchmodat - /tmp/file0 04644

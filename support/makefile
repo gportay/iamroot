@@ -185,6 +185,7 @@ all test ci rootfs aarch64-alpine-minirootfs aarch64-mini-chroot aarch64-alpine-
 
 aarch64-rootfs: aarch64-alpine-rootfs
 
+.PHONY: aarch64-mini-chroot
 aarch64-mini-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-mini-rootfs
 aarch64-mini-chroot: export IAMROOT_LIB = $(CURDIR)/libiamroot-linux-x86-64.so
 aarch64-mini-chroot: | libiamroot-musl-aarch64.so libiamroot-linux-x86-64.so aarch64-alpine-minirootfs

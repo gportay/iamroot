@@ -302,7 +302,7 @@ rootfs: alpine-rootfs arch-rootfs fedora-rootfs
 
 .NOTPARALLEL: alpine-rootfs
 .PHONY: alpine-rootfs
-alpine-rootfs: alpine-rootfs alpine-edge-rootfs
+alpine-rootfs: alpine-3.14-rootfs alpine-edge-rootfs
 
 .NOTPARALLEL: fedora-rootfs
 .PHONY: fedora-rootfs

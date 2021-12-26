@@ -749,7 +749,7 @@ loader:
 	if (__getuse_host_interp()) {
 		__notice("%s: use interpreter from host: '%s'\n", real_path,
 			 loader);
-		goto interp;
+		goto execve;
 	}
 
 	/*
@@ -872,10 +872,9 @@ loader:
 			else
 				unsetenv("LD_PRELOAD");
 		}
-	}
 
-interp:
-	goto execve;
+		goto execve;
+	}
 
 exec_sh:
 	exec = __getexec();

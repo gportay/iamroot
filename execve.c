@@ -625,6 +625,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 		__notice("%s: Ignored\n", path);
 		goto exec_sh;
 	}
+
 	/*
 	 * Follows symlink as the subsequent calls to issuid(), getinterp() and
 	 * gethashbang() use stat() and open() which are functions that follow

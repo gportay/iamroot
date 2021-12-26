@@ -46,5 +46,5 @@ void *dlopen(const char *path, int flags)
 
 	__debug("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
 
-	return next_dlopen(path, flags);
+	return next_dlopen(real_path, flags);
 }

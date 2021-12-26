@@ -1474,7 +1474,8 @@ int __loader(const char *path, char * const argv[], char *interp,
 		return i;
 	}
 
-	return 0;
+	__notice("%s: not handled\n", buf);
+	return setenv("interp", buf, 1);
 }
 
 __attribute__((visibility("hidden")))

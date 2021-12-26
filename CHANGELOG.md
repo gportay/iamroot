@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Create weak aliases for [glibc] `__` and `64` variants
 - Output the parameters even in chroot for the functions `execveat()`,
   `execve()` and `posix_spawn()`
+- Output a warning the if the interpretor is not handled
 
 ## [v4] - 2022-04-25
 

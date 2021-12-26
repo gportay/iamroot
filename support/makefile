@@ -27,6 +27,7 @@ output-%/libiamroot.so: $(wildcard *.c) | output-%
 output-%:
 	mkdir $@
 
+.NOTPARALLEL: rootfs
 .PHONY: rootfs
 rootfs:
 
@@ -105,6 +106,7 @@ fedora-%-chroot: | fedora-%-rootfs
 
 rootfs: fedora-rootfs
 
+.NOTPARALLEL: fedora-rootfs
 .PHONY: fedora-rootfs
 fedora-rootfs: fedora-33-rootfs fedora-34-rootfs fedora-35-rootfs
 
@@ -227,6 +229,7 @@ alpine-minirootfs/bin/busybox: | alpine-minirootfs-3.13.0-x86_64.tar.gz
 alpine-minirootfs-3.13.0-x86_64.tar.gz:
 	wget http://dl-cdn.alpinelinux.org/alpine/v3.13/releases/x86_64/alpine-minirootfs-3.13.0-x86_64.tar.gz
 
+.NOTPARALLEL: alpine-rootfs
 .PHONY: alpine-rootfs
 alpine-rootfs: alpine-3.14-rootfs alpine-edge-rootfs
 

@@ -36,6 +36,7 @@ libiamroot.so: __openat64_2.o
 libiamroot.so: __openat_2.o
 libiamroot.so: __opendir.o
 libiamroot.so: __opendirat.o
+libiamroot.so: __pathdlperror.o
 libiamroot.so: __pathperror.o
 libiamroot.so: __pathperror2.o
 libiamroot.so: __statfs.o

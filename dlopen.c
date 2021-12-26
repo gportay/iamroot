@@ -28,7 +28,7 @@ void *next_dlopen(const char *path, int flags)
 
 	ret = sym(path, flags);
 	if (!ret)
-		__pathperror(path, __func__);
+		__pathdlperror(path, __func__);
 
 	return ret;
 }

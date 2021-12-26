@@ -29,7 +29,7 @@ void *next_dlmopen(Lmid_t lmid, const char *path, int flags)
 
 	ret = sym(lmid, path, flags);
 	if (!ret)
-		__pathperror(path, __func__);
+		__pathdlperror(path, __func__);
 
 	return ret;
 }

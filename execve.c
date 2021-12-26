@@ -464,40 +464,6 @@ int next_execve(const char *path, char * const argv[], char * const envp[])
 	return ret;
 }
 
-static int interpexecve(const char *path, char * const interp[],
-			char * const argv[], char * const envp[])
-{
-	char * const *arg;
-	int argc;
-
-	argc = 1;
-	arg = interp;
-	while (*arg++)
-		argc++;
-	arg = argv;
-	while (*arg++)
-		argc++;
-
-	if ((argc > 0) && (argc < ARG_MAX)) {
-		char *nargv[argc+1]; /* NULL */
-		char **narg;
-
-		narg = nargv;
-		arg = interp;
-		while (*arg)
-			*narg++ = *arg++;
-		arg = argv;
-		while (*arg)
-			*narg++ = *arg++;
-		*narg++ = NULL;
-
-		return next_execve(path, nargv, envp);
-	}
-
-	errno = EINVAL;
-	return -1;
-}
-
 static void __sanitize(char *name)
 {
 	char *c;
@@ -652,7 +618,8 @@ int execve(const char *path, char * const argv[], char * const envp[])
 					   */
 	char *interpargv0 = *argv;
 	char *interppath = NULL;
-	int i = 0, j, ret;
+	int i = 0, j, argc, ret;
+	char * const *arg;
 	ssize_t siz;
 	size_t len;
 	char *exec;
@@ -958,5 +925,30 @@ execve:
 	if (envp != environ)
 		envp = environ;
 
-	return interpexecve(real_path, interparg, ++argv, envp);
+	argc = 1;
+	arg = interparg;
+	while (*arg++)
+		argc++;
+	arg = argv+1;
+	while (*arg++)
+		argc++;
+
+	if ((argc > 0) && (argc < ARG_MAX)) {
+		char *nargv[argc+1]; /* NULL */
+		char **narg;
+
+		narg = nargv;
+		arg = interparg;
+		while (*arg)
+			*narg++ = *arg++;
+		arg = argv+1;
+		while (*arg)
+			*narg++ = *arg++;
+		*narg++ = NULL;
+
+		return next_execve(real_path, nargv, envp);
+	}
+
+	errno = EINVAL;
+	return -1;
 }

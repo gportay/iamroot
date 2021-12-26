@@ -791,18 +791,18 @@ loader:
 		/*
 		 * Shift enough room in interparg to prepend:
 		 *   - the path to the interpreter (i.e. the absolute path in
-		 *     host, including the chroot; argv0)
-		 *   - the optional extra argument as argv1
+		 *     host, including the chroot; argv0).
+		 *   - the optional extra argument as argv1.
 		 *   - the option --ld-preload and its argument (i.e. the path
 		 *     in host environment to the interpreter's libiamroot.so,
 		 *     and the path in chroot environment to the interpreter's
-		 *     libc.so and libdl.so)
+		 *     libc.so and libdl.so).
 		 *   - the option --library-path and its argument (i.e. the
-		 *     path in chroot environment to the libraries)
+		 *     path in chroot environment to the libraries).
 		 *   - the option --argv0 and its argument (i.e. the original
 		 *     path in host to the binary).
 		 *   - the path to the binary (i.e. the full path in chroot,
-		 *     *not* including chroot; first positional argument)
+		 *     *not* including chroot; first positional argument).
 		 * Note: the binary's arguments are the original argv shifted
 		 *       by one (i.e. without argv0; following arguments).
 		 */

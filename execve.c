@@ -565,11 +565,6 @@ static char *__ld_preload(const char *ldso, int abi)
 	return getenv(buf);
 }
 
-static int __getuse_host_interp()
-{
-	return strtol(getenv("IAMROOT_USE_HOST_INTERP") ?: "0", NULL, 0);
-}
-
 static char *__ld_library_path()
 {
 	int ret;
@@ -741,16 +736,6 @@ loader:
 	}
 
 	__notice("%s: interpreter: '%s'\n", real_path, loader);
-
-	/*
-	 * Run the interpreter from host file-system (i.e. do not use the
-	 * interpreter from the chroot environment).
-	 */
-	if (__getuse_host_interp()) {
-		__notice("%s: use interpreter from host: '%s'\n", real_path,
-			 loader);
-		goto execve;
-	}
 
 	/*
 	 * The interpreter has to preload its libiamroot.so library.

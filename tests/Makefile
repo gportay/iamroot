@@ -75,8 +75,9 @@ test-pathsetenv: override LDLIBS += libiamnotroot.so
 test: PATH := $(CURDIR):$(PATH)
 test: PREFIX = /usr
 test: export LD_LIBRARY_PATH := $(CURDIR):$(LD_LIBRARY_PATH)
-test: export IAMROOT_USE_HOST_INTERP = 1
-test: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|$(IAMROOT_LIB)
+test: export IAMROOT_LIB_LINUX_X86_64_2 = $(IAMROOT_LIB)
+test: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 =
+test: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|$(IAMROOT_LIB)|/lib64/ld-linux-x86-64.so.2
 test: | rootfs
 	rm -Rf rootfs/tmp/* rootfs/dev/*
 	touch rootfs/tmp/file0

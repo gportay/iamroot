@@ -448,8 +448,6 @@ int next_execve(const char *path, char * const argv[], char * const envp[])
 	int (*sym)(const char *, char * const argv[], char * const envp[]);
 	int ret;
 
-	verbose_exec(path, argv, envp);
-
 	sym = dlsym(RTLD_NEXT, "execve");
 	if (!sym) {
 		__dlperror(__func__);
@@ -718,8 +716,10 @@ loader:
 	 */
 	if ((__strncmp(path, "/usr/bin/ld.so") == 0) ||
 	    (__strncmp(path, "/lib/ld") == 0) ||
-	    (__strncmp(path, "/lib64/ld") == 0))
+	    (__strncmp(path, "/lib64/ld") == 0)) {
+		verbose_exec(path, argv, envp);
 		return next_execve(real_path, argv, envp);
+	}
 
 	/*
 	 * Get the dynamic linker stored in the .interp section of the ELF
@@ -946,6 +946,7 @@ execve:
 			*narg++ = *arg++;
 		*narg++ = NULL;
 
+		verbose_exec(real_path, nargv, envp);
 		return next_execve(real_path, nargv, envp);
 	}
 

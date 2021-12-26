@@ -120,22 +120,26 @@ fedora-%-rootfs/etc/machine-id: | libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "dnf --releasever $* --assumeyes --installroot $(CURDIR)/fedora-$*-rootfs group install minimal-environment"
 	rm -f fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
 
+qemu-system-x86_64-fedora-33:
+qemu-system-x86_64-fedora-33: override CMDLINE += rw
 qemu-system-x86_64-fedora-34:
 qemu-system-x86_64-fedora-34: override CMDLINE += rw
 qemu-system-x86_64-fedora-35:
 qemu-system-x86_64-fedora-35: override CMDLINE += rw
 
 ifneq ($(VMLINUX_KVER),)
+vmlinux-fedora-33:
 vmlinux-fedora-34:
 vmlinux-fedora-35:
 endif
 
-fedora-34.ext4 fedora-35.ext4:
+fedora-33.ext4 fedora-34.ext4 fedora-35.ext4:
 
+fedora-33-postrootfs:
 fedora-34-postrootfs:
 fedora-35-postrootfs:
 fedora-35-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64 = /usr/lib64/libc.so.6:/usr/lib64/libdl.so.2:/usr/lib64/libpthread.so.0:/usr/lib64/librt.so.1
-fedora-%-postrootfs: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/systemd
+fedora-%-postrootfs: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/systemd:/usr/lib64:/lib64
 fedora-%-postrootfs: | libiamroot-linux-x86-64.so.2
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i fedora-$*-rootfs/etc/passwd
@@ -148,11 +152,11 @@ fedora-%-postrootfs: | libiamroot-linux-x86-64.so.2
 	rm -f fedora-$*-rootfs/etc/systemd/system/multi-user.target.wants/sshd.service
 	bash iamroot-shell --chroot $(CURDIR)/fedora-$*-rootfs -c "systemctl disable sshd.service"
 
-chroot-fedora-34 chroot-fedora-35:
+chroot-fedora-33 chroot-fedora-34 chroot-fedora-35:
 
-mount-fedora-34 mount-fedora-35:
+mount-fedora-33 mount-fedora-34 mount-fedora-35:
 
-umount-fedora-34 umount-fedora-35:
+umount-fedora-33 umount-fedora-34 umount-fedora-35:
 endif
 
 ifneq ($(shell command -v clang),)

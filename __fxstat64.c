@@ -38,7 +38,19 @@ int next___fxstat64(int ver, int fd, struct stat64 *statbuf)
 
 int __fxstat64(int ver, int fd, struct stat64 *statbuf)
 {
-	__debug("%s(fd: %i, ...)\n", __func__, fd);
+	char buf[PATH_MAX];
+	char *real_path;
+	ssize_t siz;
+
+	siz = __procfdreadlink(fd, buf, sizeof(buf));
+	if (siz == -1) {
+		__fpathperror(fd, "__procfdreadlink");
+		return -1;
+	}
+	buf[siz] = 0;
+	real_path = buf;
+
+	__debug("%s(fd: %i <-> %s, ...)\n", __func__, fd, real_path);
 
 	return __rootfxstat64(ver, fd, statbuf);
 }

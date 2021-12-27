@@ -37,7 +37,19 @@ int next___fstat(int fd, struct stat *statbuf)
 
 int __fstat(int fd, struct stat *statbuf)
 {
-	__debug("%s(fd: %i, ...)\n", __func__, fd);
+	char buf[PATH_MAX];
+	char *real_path;
+	ssize_t siz;
+
+	siz = __procfdreadlink(fd, buf, sizeof(buf));
+	if (siz == -1) {
+		__fpathperror(fd, "__procfdreadlink");
+		return -1;
+	}
+	buf[siz] = 0;
+	real_path = buf;
+
+	__debug("%s(fd: %i <-> %s, ...)\n", __func__, fd, real_path);
 
 	return __rootfstat(fd, statbuf);
 }

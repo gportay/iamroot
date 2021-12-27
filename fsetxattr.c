@@ -43,8 +43,20 @@ int fsetxattr(int fd, const char *name, const void *value, size_t size,
 	      int flags)
 {
 	char xbuf[XATTR_NAME_MAX + 1];
+	char buf[PATH_MAX];
+	char *real_path;
+	ssize_t siz;
 
-	__debug("%s(fd: %i, name: '%s', ...)\n", __func__, fd, name);
+	siz = __procfdreadlink(fd, buf, sizeof(buf));
+	if (siz == -1) {
+		__fpathperror(fd, "__procfdreadlink");
+		return -1;
+	}
+	buf[siz] = 0;
+	real_path = buf;
+
+	__debug("%s(fd: %i <-> '%s', name: '%s', ...)\n", __func__, fd,
+		real_path, name);
 
 	if (__strncmp(name, "user") != 0) {
 		int ret;

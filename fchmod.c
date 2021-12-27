@@ -47,7 +47,7 @@ int fchmod(int fd, mode_t mode)
 	buf[siz] = 0;
 	real_path = buf;
 
-	__debug("%s(fd: %i -> '%s', mode: 0%03o)\n", __func__, fd, real_path,
+	__debug("%s(fd: %i <-> '%s', mode: 0%03o)\n", __func__, fd, real_path,
 		mode);
 	__fwarn_if_insuffisant_user_mode(fd, mode);
 

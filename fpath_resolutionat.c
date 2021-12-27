@@ -13,7 +13,7 @@
 #include <dlfcn.h>
 #include <sys/stat.h>
 #include <regex.h>
-#include <assert.h>
+
 #include <fcntl.h>
 
 #include "iamroot.h"

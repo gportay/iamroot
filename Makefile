@@ -144,7 +144,7 @@ libiamroot.so: running_in_chroot.o
 libiamroot.so: scandir.o
 libiamroot.so: scandirat.o
 libiamroot.so: setegid.o
-libiamroot.so: setegid.o
+libiamroot.so: seteuid.o
 libiamroot.so: setgid.o
 libiamroot.so: setuid.o
 libiamroot.so: setxattr.o

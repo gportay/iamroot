@@ -229,13 +229,14 @@ alpine-minirootfs/bin/busybox: | alpine-minirootfs-3.13.0-x86_64.tar.gz
 alpine-minirootfs-3.13.0-x86_64.tar.gz:
 	wget http://dl-cdn.alpinelinux.org/alpine/v3.13/releases/x86_64/alpine-minirootfs-3.13.0-x86_64.tar.gz
 
-.NOTPARALLEL: alpine-rootfs
-.PHONY: alpine-rootfs
-alpine-rootfs: alpine-3.14-rootfs alpine-edge-rootfs
-
+ifneq ($(shell command -v alpine-make-rootfs),)
 alpine-3.14-chroot alpine-edge-chroot:
 alpine-%-chroot: | alpine-%-rootfs
 	bash iamroot-shell -c "chroot alpine-$*-rootfs /bin/ash"
+
+.NOTPARALLEL: alpine-rootfs
+.PHONY: alpine-rootfs
+alpine-rootfs: alpine-3.14-rootfs alpine-edge-rootfs
 
 alpine-3.14-rootfs: | alpine-3.14-rootfs/bin/busybox
 alpine-edge-rootfs: | alpine-edge-rootfs/bin/busybox
@@ -271,6 +272,7 @@ mount-alpine-3.14 mount-alpine-edge:
 
 umount-alpine-3.14 umount-alpine-edge:
 endif
+endif
 
 ifneq ($(shell command -v aarch64-linux-gnu-gcc),)
 all: libiamroot-linux-aarch64.so
@@ -296,12 +298,13 @@ uninstall-exec-linux-aarch64:
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-aarch64.so.1
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-aarch64.so
 
-aarch64-rootfs: aarch64-arch-rootfs aarch64-fedora-rootfs
-
+ifneq ($(shell command -v pacstrap),)
 .PHONY: aarch64-arch-chroot
 aarch64-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-arch-rootfs
 aarch64-arch-chroot: | aarch64-arch-rootfs
 	bash iamroot-shell -c "chroot aarch64-arch-rootfs"
+
+aarch64-rootfs: aarch64-arch-rootfs
 
 .PHONY: aarch64-arch-rootfs
 aarch64-arch-rootfs: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-arch-rootfs
@@ -312,7 +315,9 @@ aarch64-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64 = /u
 aarch64-arch-rootfs/etc/machine-id: | libiamroot-linux-aarch64.so.1 libiamroot-linux-x86-64.so.2
 	mkdir -p aarch64-arch-rootfs
 	bash iamroot-shell -c "pacstrap -C support/aarch64-pacman.conf aarch64-arch-rootfs"
+endif
 
+ifneq ($(shell command -v dnf),)
 aarch64-fedora-33-chroot:
 aarch64-fedora-34-chroot:
 aarch64-fedora-35-chroot:
@@ -320,6 +325,8 @@ aarch64-fedora-%-chroot: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
 aarch64-fedora-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64:/usr/lib64/sssd:/usr/lib:/lib:/usr/lib/systemd
 aarch64-fedora-%-chroot: | aarch64-fedora-%-rootfs
 	bash iamroot-shell -c "chroot aarch64-fedora-$*-rootfs"
+
+aarch64-rootfs: aarch64-fedora-rootfs
 
 .PHONY: aarch64-fedora-rootfs
 aarch64-fedora-rootfs: aarch64-fedora-33-rootfs aarch64-fedora-34-rootfs aarch64-fedora-35-rootfs
@@ -335,6 +342,7 @@ aarch64-fedora-%-rootfs/etc/machine-id: | libiamroot-linux-aarch64.so.1 libiamro
 	install -D -m644 fedora.repo aarch64-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
 	bash iamroot-shell -c "dnf --forcearch aarch64 --releasever $* --assumeyes --installroot $(CURDIR)/aarch64-fedora-$*-rootfs group install minimal-environment"
 	rm -f aarch64-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
+endif
 endif
 
 ifneq ($(shell command -v aarch64-linux-musl-gcc),)
@@ -379,6 +387,7 @@ aarch64-alpine-minirootfs/bin/busybox: | alpine-minirootfs-3.13.0-aarch64.tar.gz
 alpine-minirootfs-3.13.0-aarch64.tar.gz:
 	wget http://dl-cdn.alpinelinux.org/alpine/v3.13/releases/aarch64/alpine-minirootfs-3.13.0-aarch64.tar.gz
 
+ifneq ($(shell command -v alpine-make-rootfs),)
 aarch64-alpine-3.14-chroot aarch64-alpine-edge-chroot:
 aarch64-alpine-%-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-alpine-$*-rootfs
 aarch64-alpine-%-chroot: | aarch64-alpine-%-rootfs
@@ -392,6 +401,7 @@ aarch64-alpine-edge-rootfs: | aarch64-alpine-edge-rootfs/bin/busybox
 
 aarch64-alpine-%-rootfs/bin/busybox: | libiamroot-musl-aarch64.so libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "APK_OPTS='--arch aarch64' alpine-make-rootfs aarch64-alpine-$*-rootfs --mirror-uri http://nl.alpinelinux.org/alpine --branch $*"
+endif
 endif
 
 qemu-system-x86_64-%: override CMDLINE += panic=5

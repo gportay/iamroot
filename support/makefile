@@ -67,6 +67,7 @@ rootfs: arch-rootfs
 .PHONY: arch-rootfs
 arch-rootfs: | arch-rootfs/etc/machine-id
 
+arch-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib:/lib:/usr/lib/systemd
 arch-rootfs/etc/machine-id: | libiamroot-linux-x86-64.so.2
 	mkdir -p arch-rootfs
 	bash iamroot-shell -c "pacstrap arch-rootfs"
@@ -312,6 +313,7 @@ aarch64-arch-rootfs: | aarch64-arch-rootfs/etc/machine-id
 
 aarch64-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-arch-rootfs
 aarch64-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
+aarch64-arch-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib:/lib:/usr/lib/systemd
 aarch64-arch-rootfs/etc/machine-id: | libiamroot-linux-aarch64.so.1 libiamroot-linux-x86-64.so.2
 	mkdir -p aarch64-arch-rootfs
 	bash iamroot-shell -c "pacstrap -C support/aarch64-pacman.conf aarch64-arch-rootfs"

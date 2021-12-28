@@ -462,7 +462,7 @@ int next_execve(const char *path, char * const argv[], char * const envp[])
 	return ret;
 }
 
-static void __sanitize(char *name)
+static void __sanitize(char *name, int upper)
 {
 	char *c;
 
@@ -470,8 +470,10 @@ static void __sanitize(char *name)
 	while (*c) {
 		if (*c == '-')
 			*c = '_';
-		else
+		else if (upper)
 			*c = toupper(*c);
+		else
+			*c = tolower(*c);
 		c++;
 	}
 }
@@ -485,7 +487,7 @@ static char *__getlibiamroot(const char *ldso, int abi)
 	n = _snprintf(buf, sizeof(buf), "IAMROOT_LIB_%s_%i", ldso, abi);
 	if (n == -1)
 		return NULL;
-	__sanitize(buf);
+	__sanitize(buf, 1);
 
 	ret = getenv(buf);
 	if (!ret)
@@ -519,7 +521,7 @@ static char *__getld_preload(const char *ldso, int abi)
 	n = _snprintf(buf, sizeof(buf), "IAMROOT_LD_PRELOAD_%s_%d", ldso, abi);
 	if (n == -1)
 		return NULL;
-	__sanitize(buf);
+	__sanitize(buf, 1);
 
 	ret = getenv(buf);
 	if (!ret)
@@ -545,10 +547,10 @@ static char *__ld_preload(const char *ldso, int abi)
 	char buf[NAME_MAX];
 	int n, ret;
 
-	n = _snprintf(buf, sizeof(buf), "LD_PRELOAD_%s", ldso);
+	n = _snprintf(buf, sizeof(buf), "ld_preload_%s", ldso);
 	if (n == -1)
 		return NULL;
-	__sanitize(buf);
+	__sanitize(buf, 0);
 
 	ret = pathsetenv(getrootdir(), buf, __getld_preload(ldso, abi), 1);
 	if (ret) {
@@ -569,7 +571,7 @@ static char *__ld_library_path()
 {
 	int ret;
 
-	ret = pathsetenv(getrootdir(), "LD_LIBRARY_PATH_INTERP",
+	ret = pathsetenv(getrootdir(), "ld_library_path_interp",
 			 getenv("IAMROOT_LD_LIBRARY_PATH") ?: "/usr/lib:/lib",
 			 1);
 	if (ret) {
@@ -577,7 +579,7 @@ static char *__ld_library_path()
 		return NULL;
 	}
 
-	return getenv("LD_LIBRARY_PATH_INTERP");
+	return getenv("ld_library_path_interp");
 }
 
 static char *__getexec()
@@ -775,11 +777,11 @@ loader:
 
 		ld_preload = __ld_preload(ldso, abi);
 		if (!ld_preload)
-			__warning("%s: is unset!\n", "LD_PRELOAD");
+			__warning("%s: is unset!\n", "ld_preload");
 
 		ld_library_path = __ld_library_path();
 		if (!ld_library_path)
-			__warning("%s: is unset!", "LD_LIBRARY_PATH");
+			__warning("%s: is unset!", "ld_library_path");
 
 		real_path = path_resolution(loader, loaderbuf,
 					    sizeof(loaderbuf),

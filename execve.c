@@ -542,6 +542,27 @@ static char *__getld_preload(const char *ldso, int abi)
 	return ret;
 }
 
+static char *__getld_library_path(const char *ldso, int abi)
+{
+	char buf[NAME_MAX];
+	char *ret;
+	int n;
+
+	n = _snprintf(buf, sizeof(buf), "IAMROOT_LD_LIBRARY_PATH_%s_%d", ldso,
+		      abi);
+	if (n == -1)
+		return NULL;
+	__sanitize(buf, 1);
+
+	ret = getenv(buf);
+	if (!ret)
+		ret = getenv("IAMROOT_LD_LIBRARY_PATH");
+	if (!ret)
+		return "/usr/lib:/lib";
+
+	return ret;
+}
+
 static char *__ld_preload(const char *ldso, int abi)
 {
 	char buf[NAME_MAX];
@@ -567,19 +588,24 @@ static char *__ld_preload(const char *ldso, int abi)
 	return getenv(buf);
 }
 
-static char *__ld_library_path()
+static char *__ld_library_path(const char *ldso, int abi)
 {
-	int ret;
+	char buf[NAME_MAX];
+	int n, ret;
 
-	ret = pathsetenv(getrootdir(), "ld_library_path_interp",
-			 getenv("IAMROOT_LD_LIBRARY_PATH") ?: "/usr/lib:/lib",
+	n = _snprintf(buf, sizeof(buf), "ld_library_path_%s", ldso);
+	if (n == -1)
+		return NULL;
+	__sanitize(buf, 0);
+
+	ret = pathsetenv(getrootdir(), buf, __getld_library_path(ldso, abi),
 			 1);
 	if (ret) {
 		perror("pathprependenv");
 		return NULL;
 	}
 
-	return getenv("ld_library_path_interp");
+	return getenv(buf);
 }
 
 static char *__getexec()
@@ -779,7 +805,7 @@ loader:
 		if (!ld_preload)
 			__warning("%s: is unset!\n", "ld_preload");
 
-		ld_library_path = __ld_library_path();
+		ld_library_path = __ld_library_path(ldso, abi);
 		if (!ld_library_path)
 			__warning("%s: is unset!", "ld_library_path");
 

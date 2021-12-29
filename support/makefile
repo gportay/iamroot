@@ -194,6 +194,36 @@ mount-arch:
 umount-arch:
 endif
 
+ifneq ($(shell command -v debootstrap),)
+debian-stable-chroot:
+debian-testing-chroot:
+debian-unstable-chroot:
+debian-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
+debian-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
+debian-%-chroot: | debian-%-rootfs
+	bash iamroot-shell -c "chroot debian-$*-rootfs"
+
+rootfs: debian-rootfs
+
+.NOTPARALLEL: debian-rootfs
+.PHONY: debian-rootfs
+debian-rootfs: debian-stable-rootfs debian-testing-rootfs debian-unstable-rootfs
+
+debian-stable-rootfs: | debian-stable-rootfs/etc/machine-id
+debian-testing-rootfs: | debian-testing-rootfs/etc/machine-id
+debian-unstable-rootfs: | debian-unstable-rootfs/etc/machine-id
+
+debian-%-rootfs/etc/machine-id: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
+debian-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
+debian-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
+debian-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|pam-auth-update|ldconfig|/var/lib/dpkg/info/bash.postinst|/var/lib/dpkg/info/dash.postinst|/var/lib/dpkg/info/tasksel.postinst|/var/lib/dpkg/info/procps.postinst
+debian-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/
+debian-%-rootfs/etc/machine-id: export DEBIAN_FRONTEND = noninteractive
+debian-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
+	mkdir -p debian-$*-rootfs
+	bash iamroot-shell -c "debootstrap $* debian-$*-rootfs http://deb.debian.org/debian"
+endif
+
 ifneq ($(shell command -v dnf),)
 fedora-33-chroot:
 fedora-34-chroot:

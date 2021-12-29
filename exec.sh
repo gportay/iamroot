@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright 2021 Gaël PORTAY
+# Copyright 2021-2022 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -22,6 +22,10 @@ shift
 case "${path##*/}" in
 mount|umount)
 	log "Warning:" "Command is skipped:" "$argv0" "$@"
+	exit 0
+	;;
+chfn|pam-auth-update|*.postinst)
+	log "FIXME:" "Command is skipped:" "$argv0" "$@"
 	exit 0
 	;;
 ldd|busybox)

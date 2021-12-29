@@ -114,6 +114,7 @@ fedora-33-rootfs: | fedora-33-rootfs/etc/machine-id
 fedora-34-rootfs: | fedora-34-rootfs/etc/machine-id
 fedora-35-rootfs: | fedora-35-rootfs/etc/machine-id
 
+fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
 fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64
 fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|$(CURDIR)/fedora-$*-rootfs/var/log/dnf.rpm.log
 fedora-%-rootfs/etc/machine-id: | libiamroot-linux-x86-64.so.2
@@ -333,6 +334,7 @@ aarch64-fedora-33-rootfs: | aarch64-fedora-33-rootfs/etc/machine-id
 aarch64-fedora-34-rootfs: | aarch64-fedora-34-rootfs/etc/machine-id
 aarch64-fedora-35-rootfs: | aarch64-fedora-35-rootfs/etc/machine-id
 
+aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
 aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64
 aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|$(CURDIR)/aarch64-fedora-$*-rootfs/var/log/dnf.rpm.log
 aarch64-fedora-%-rootfs/etc/machine-id: | libiamroot-linux-aarch64.so.1 libiamroot-linux-x86-64.so.2

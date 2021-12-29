@@ -100,7 +100,7 @@ fedora-33-chroot:
 fedora-34-chroot:
 fedora-35-chroot:
 fedora-%-chroot: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
-fedora-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64:/usr/lib:/lib
+fedora-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64
 fedora-%-chroot: | fedora-%-rootfs
 	bash iamroot-shell -c "chroot fedora-$*-rootfs"
 
@@ -114,7 +114,7 @@ fedora-33-rootfs: | fedora-33-rootfs/etc/machine-id
 fedora-34-rootfs: | fedora-34-rootfs/etc/machine-id
 fedora-35-rootfs: | fedora-35-rootfs/etc/machine-id
 
-fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64:/usr/lib:/lib
+fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64
 fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|$(CURDIR)/fedora-$*-rootfs/var/log/dnf.rpm.log
 fedora-%-rootfs/etc/machine-id: | libiamroot-linux-x86-64.so.2
 	install -D -m644 fedora.repo fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
@@ -320,7 +320,7 @@ aarch64-fedora-33-chroot:
 aarch64-fedora-34-chroot:
 aarch64-fedora-35-chroot:
 aarch64-fedora-%-chroot: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
-aarch64-fedora-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64:/usr/lib:/lib
+aarch64-fedora-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64
 aarch64-fedora-%-chroot: | aarch64-fedora-%-rootfs
 	bash iamroot-shell -c "chroot aarch64-fedora-$*-rootfs"
 
@@ -333,7 +333,7 @@ aarch64-fedora-33-rootfs: | aarch64-fedora-33-rootfs/etc/machine-id
 aarch64-fedora-34-rootfs: | aarch64-fedora-34-rootfs/etc/machine-id
 aarch64-fedora-35-rootfs: | aarch64-fedora-35-rootfs/etc/machine-id
 
-aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64:/usr/lib:/lib
+aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64
 aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|$(CURDIR)/aarch64-fedora-$*-rootfs/var/log/dnf.rpm.log
 aarch64-fedora-%-rootfs/etc/machine-id: | libiamroot-linux-aarch64.so.1 libiamroot-linux-x86-64.so.2
 	install -D -m644 fedora.repo aarch64-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo

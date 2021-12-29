@@ -250,7 +250,8 @@ static int issuid(const char *path)
 	return (statbuf.st_mode & S_ISUID) != 0;
 }
 
-static ssize_t getrpath(const char *path, char *buf, size_t bufsize)
+static ssize_t getdynamicentry(const char *path, int dt_tag, char *buf,
+			       size_t bufsize)
 {
 	size_t strtab_siz = 0;
 	off_t strtab_off = 0;
@@ -316,13 +317,13 @@ static ssize_t getrpath(const char *path, char *buf, size_t bufsize)
 	if (!strtab_off)
 		goto close;
 
-	/* Look for the .rpath entry in the .dynamic segment */
+	/* Look for the string entry in the .dynamic segment */
 	off = hdr.e_phoff;
 	num = hdr.e_phnum;
 	for (i = 0; i < num; i++) {
 		Elf64_Dyn *dyn = (Elf64_Dyn *)buf;
-		off_t rpath_off, val = 0;
-		size_t rpath_siz = 0;
+		off_t str_off, val = 0;
+		size_t str_siz = 0;
 		Elf64_Phdr hdr;
 
 		s = pread(fd, &hdr, sizeof(hdr), off);
@@ -354,26 +355,26 @@ static ssize_t getrpath(const char *path, char *buf, size_t bufsize)
 			goto close;
 		}
 
-		/* look for the .rpath entry */
+		/* look for the string entry */
 		for (j = 0; j < hdr.p_filesz / sizeof(*dyn); j++) {
-			if (dyn[j].d_tag != DT_RPATH)
+			if (dyn[j].d_tag != dt_tag)
 				continue;
 
 			val = dyn[j].d_un.d_val;
 			break;
 		}
 
-		/* No .rpath entry */
-		if (dyn[j].d_tag != DT_RPATH)
+		/* No string entry */
+		if (dyn[j].d_tag != dt_tag)
 			break;
 
 		/* copy the NULL-termintated string from the .strtab table */
-		rpath_off = strtab_off + val;
-		rpath_siz = strtab_siz - val;
-		s = pread(fd, buf, __min(rpath_siz, bufsize), rpath_off);
+		str_off = strtab_off + val;
+		str_siz = strtab_siz - val;
+		s = pread(fd, buf, __min(str_siz, bufsize), str_off);
 		if (s == -1) {
 			goto close;
-		} else if ((size_t)s < __min(rpath_siz, bufsize)) {
+		} else if ((size_t)s < __min(str_siz, bufsize)) {
 			errno = EFAULT;
 			goto close;
 		}
@@ -730,7 +731,8 @@ static char *__ld_preload(const char *ldso, int abi)
 	return getenv(buf);
 }
 
-static char *__ld_library_path(const char *ldso, int abi, const char *rpath)
+static char *__ld_library_path(const char *ldso, int abi, const char *rpath,
+			       const char *runpath)
 {
 	char buf[NAME_MAX];
 	int n, ret;
@@ -761,6 +763,21 @@ static char *__ld_library_path(const char *ldso, int abi, const char *rpath)
 		}
 	}
 
+
+	if (runpath) {
+		ret = pathsetenv(getrootdir(), "iamroot_runpath", runpath, 1);
+		if (ret) {
+			perror("pathprependenv");
+			return NULL;
+		}
+
+		ret = pathprependenv(buf, getenv("iamroot_runpath"), 1);
+		if (ret) {
+			perror("pathprependenv");
+			return NULL;
+		}
+	}
+
 	return getenv(buf);
 }
 
@@ -770,7 +787,7 @@ static char *__rpath(const char *path)
 	ssize_t siz;
 	int ret;
 
-	siz = getrpath(path, buf, sizeof(buf));
+	siz = getdynamicentry(path, DT_RPATH, buf, sizeof(buf));
 	if (siz == -1)
 		return NULL;
 
@@ -781,6 +798,25 @@ static char *__rpath(const char *path)
 	}
 
 	return getenv("rpath");
+}
+
+static char *__runpath(const char *path)
+{
+	char buf[PATH_MAX];
+	ssize_t siz;
+	int ret;
+
+	siz = getdynamicentry(path, DT_RUNPATH, buf, sizeof(buf));
+	if (siz == -1)
+		return NULL;
+
+	ret = setenv("runpath", buf, 1);
+	if (ret) {
+		__envperror("rpath", "setenv");
+		return NULL;
+	}
+
+	return getenv("runpath");
 }
 
 static char *__getexec()
@@ -952,7 +988,7 @@ loader:
 	 */
 	if ((__strncmp(loader, "/lib/ld") == 0) ||
 	    (__strncmp(loader, "/lib64/ld") == 0)) {
-		char *rpath, *ld_preload, *ld_library_path;
+		char *rpath, *runpath, *ld_preload, *ld_library_path;
 		int has_argv0 = 1, shift = 1;
 		const char *basename;
 		char ldso[NAME_MAX];
@@ -980,11 +1016,15 @@ loader:
 		if (rpath)
 			__info("%s: RPATH=%s\n", real_path, rpath);
 
+		runpath = __runpath(real_path);
+		if (runpath)
+			__info("%s: RUNPATH=%s\n", real_path, runpath);
+
 		ld_preload = __ld_preload(ldso, abi);
 		if (!ld_preload)
 			__warning("%s: is unset!\n", "ld_preload");
 
-		ld_library_path = __ld_library_path(ldso, abi, rpath);
+		ld_library_path = __ld_library_path(ldso, abi, rpath, runpath);
 		if (!ld_library_path)
 			__warning("%s: is unset!", "ld_library_path");
 

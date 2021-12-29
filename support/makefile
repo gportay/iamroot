@@ -67,7 +67,6 @@ rootfs: arch-rootfs
 .PHONY: arch-rootfs
 arch-rootfs: | arch-rootfs/etc/machine-id
 
-arch-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib:/lib:/usr/lib/systemd
 arch-rootfs/etc/machine-id: | libiamroot-linux-x86-64.so.2
 	mkdir -p arch-rootfs
 	bash iamroot-shell -c "pacstrap arch-rootfs"
@@ -101,7 +100,7 @@ fedora-33-chroot:
 fedora-34-chroot:
 fedora-35-chroot:
 fedora-%-chroot: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
-fedora-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64:/usr/lib64/sssd:/usr/lib:/lib:/usr/lib/systemd
+fedora-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64:/usr/lib:/lib
 fedora-%-chroot: | fedora-%-rootfs
 	bash iamroot-shell -c "chroot fedora-$*-rootfs"
 
@@ -115,7 +114,7 @@ fedora-33-rootfs: | fedora-33-rootfs/etc/machine-id
 fedora-34-rootfs: | fedora-34-rootfs/etc/machine-id
 fedora-35-rootfs: | fedora-35-rootfs/etc/machine-id
 
-fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64:/usr/lib64/sssd:/usr/lib64/ldb:/usr/lib:/lib:/usr/lib/systemd
+fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64:/usr/lib:/lib
 fedora-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd
 fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|$(CURDIR)/fedora-$*-rootfs/var/log/dnf.rpm.log
 fedora-%-rootfs/etc/machine-id: | libiamroot-linux-x86-64.so.2
@@ -142,7 +141,6 @@ fedora-33-postrootfs:
 fedora-34-postrootfs:
 fedora-35-postrootfs:
 fedora-35-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /usr/lib64/libc.so.6:/usr/lib64/libdl.so.2:/usr/lib64/libpthread.so.0:/usr/lib64/librt.so.1
-fedora-%-postrootfs: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/systemd:/usr/lib64:/lib64
 fedora-%-postrootfs: | libiamroot-linux-x86-64.so.2
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i fedora-$*-rootfs/etc/passwd
@@ -313,7 +311,6 @@ aarch64-arch-rootfs: | aarch64-arch-rootfs/etc/machine-id
 
 aarch64-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-arch-rootfs
 aarch64-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
-aarch64-arch-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib:/lib:/usr/lib/systemd
 aarch64-arch-rootfs/etc/machine-id: | libiamroot-linux-aarch64.so.1 libiamroot-linux-x86-64.so.2
 	mkdir -p aarch64-arch-rootfs
 	bash iamroot-shell -c "pacstrap -C support/aarch64-pacman.conf aarch64-arch-rootfs"
@@ -324,7 +321,7 @@ aarch64-fedora-33-chroot:
 aarch64-fedora-34-chroot:
 aarch64-fedora-35-chroot:
 aarch64-fedora-%-chroot: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
-aarch64-fedora-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64:/usr/lib64/sssd:/usr/lib:/lib:/usr/lib/systemd
+aarch64-fedora-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64:/usr/lib:/lib
 aarch64-fedora-%-chroot: | aarch64-fedora-%-rootfs
 	bash iamroot-shell -c "chroot aarch64-fedora-$*-rootfs"
 
@@ -337,7 +334,7 @@ aarch64-fedora-33-rootfs: | aarch64-fedora-33-rootfs/etc/machine-id
 aarch64-fedora-34-rootfs: | aarch64-fedora-34-rootfs/etc/machine-id
 aarch64-fedora-35-rootfs: | aarch64-fedora-35-rootfs/etc/machine-id
 
-aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64:/usr/lib64/sssd:/usr/lib/ldb:/usr/lib:/lib:/usr/lib/systemd
+aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64:/usr/lib:/lib
 aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd
 aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|$(CURDIR)/aarch64-fedora-$*-rootfs/var/log/dnf.rpm.log
 aarch64-fedora-%-rootfs/etc/machine-id: | libiamroot-linux-aarch64.so.1 libiamroot-linux-x86-64.so.2

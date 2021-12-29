@@ -21,7 +21,6 @@ shift
 
 case "${path##*/}" in
 mount|umount|systemctl)
-	shift
 	log "Warning:" "Command is skipped:" "$argv0" "$@"
 	;;
 ldd|busybox)
@@ -40,7 +39,6 @@ ldconfig)
 	exec "$real_path" "$@"
 	;;
 passwd|su)
-	shift
 	echo "Error:" "Command not handled:" "$argv0" "$@" >&2
 	exit 1
 	;;

@@ -39,12 +39,18 @@ void *dlmopen(Lmid_t lmid, const char *path, int flags)
 	char buf[PATH_MAX];
 	char *real_path;
 
+	if (!path) {
+		real_path = NULL;
+		goto next;
+	}
+
 	real_path = path_resolution(path, buf, sizeof(buf), 0);
 	if (!real_path) {
 		__pathperror(path, "path_resolution");
 		return NULL;
 	}
 
+next:
 	__debug("%s(..., path: '%s' -> '%s')\n", __func__, path, real_path);
 
 	return next_dlmopen(lmid, real_path, flags);

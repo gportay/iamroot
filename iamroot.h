@@ -11,6 +11,16 @@
 extern "C" {
 #endif
 
+#define __min(a,b) \
+	({ __typeof__ (a) _a = (a); \
+	   __typeof__ (b) _b = (b); \
+	   _a < _b ? _a : _b; })
+
+#define __max(a,b) \
+	({ __typeof__ (a) _a = (a); \
+	   __typeof__ (b) _b = (b); \
+	   _a > _b ? _a : _b; })
+
 #define _strncpy(s1, s2, n1) \
 	({ const int l = (n1)-1; \
 	   strncpy((s1), (s2), l-1); \
@@ -55,7 +65,6 @@ static inline const char *__arch()
 	return "unknown";
 #endif
 }
-
 
 int fissymlinkat(int, const char *, int);
 int fissymlink(int);

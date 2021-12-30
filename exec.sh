@@ -20,7 +20,7 @@ real_path="$IAMROOT_ROOT$path"
 shift
 
 case "${path##*/}" in
-mount|umount|systemctl)
+mount|umount)
 	log "Warning:" "Command is skipped:" "$argv0" "$@"
 	;;
 ldd|busybox)

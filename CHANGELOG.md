@@ -20,6 +20,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Output a warning the if the interpretor is not handled
 - Support the environment variables `argv0`, `LD_LIBRARY_PATH` and `LD_PRELOAD`
   and while running a generic ELF dynamic loader
+- Remove the library path prefixes `LD_` and `ld-` of from the environment
+  variable `IAMROOT_LD_LIBRARY_PATH` and the script option `--ld-library-path`
 
 ### Fixed
 
@@ -194,7 +196,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 
 - Replace the use of `LD_PRELOAD` and `LD_LIBRARY_PATH` by the [ld.so(8)]'s
-  options `--preload` and `--ld-library-path`
+  options `--preload` and `--library-path`
 - Prefix the none-user extended attributes namespaces by `user.iamroot` that
   requires root privileges
 - Rework the debug outputs using new introduced levels `warning`, `notice` and

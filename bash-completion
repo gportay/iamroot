@@ -33,7 +33,7 @@ _iamroot-shell()
 	COMMON_PATH=(/bin /sbin /usr/bin /usr/sbin /usr/local/bin
 		/usr/local/sbin)
 
-	COMMON_LD_LIBRARY_PATH=(/lib /usr/lib /usr/local/lib)
+	COMMON_LIBRARY_PATH=(/lib /usr/lib /usr/local/lib)
 
 	case "$prev" in
 	--chroot)
@@ -63,11 +63,11 @@ _iamroot-shell()
 		COMPREPLY=($(compgen -P "$prefix" -W "${wordlist[*]}" -S '\:' -- "$realcur"))
 		return 0
 		;;
-	--ld-library-path)
+	--library-path)
 		local prefix realcur wordlist
 		realcur="${cur##*\:}"
 		prefix="${cur%$realcur}"
-		for WORD in "${COMMON_LD_LIBRARY_PATH[@]}"
+		for WORD in "${COMMON_LIBRARY_PATH[@]}"
 		do
 			if ! [[ $prefix == *"$WORD"* ]]
 			then
@@ -150,7 +150,7 @@ _iamroot-shell()
 
 	if [[ "$shell" != 1 ]]
 	then
-		COMPREPLY+=($(compgen -W "--chroot --path --ld-library-path --exec --library --fatal --debug --debug-fd --debug-ignore --exec-ignore --path-resolution-ignore --version" -- "$cur"))
+		COMPREPLY+=($(compgen -W "--chroot --path --library-path --exec --library --fatal --debug --debug-fd --debug-ignore --exec-ignore --path-resolution-ignore --version" -- "$cur"))
 	fi
 } &&
 complete -F _iamroot-shell iamroot-shell

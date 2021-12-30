@@ -179,7 +179,7 @@ test: | rootfs
 	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-unlinkat - /dev/dev2 0
 	test-unshare whoami
 	test-dlopen libiamnotroot.so
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs IAMROOT_LD_LIBRARY_PATH=$(PREFIX)/lib64:$(PREFIX)/lib test-dlopen libiamnotroot.so
+	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs IAMROOT_LIBRARY_PATH=$(PREFIX)/lib64:$(PREFIX)/lib test-dlopen libiamnotroot.so
 
 rootfs: DESTDIR = $(CURDIR)/rootfs
 rootfs: PREFIX ?= /usr

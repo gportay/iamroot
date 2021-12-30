@@ -327,7 +327,7 @@ debian-oldstable-chroot:
 debian-stable-chroot:
 debian-testing-chroot:
 debian-unstable-chroot:
-debian-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
+debian-%-chroot: export IAMROOT_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
 debian-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
 debian-%-chroot: | debian-%-rootfs
 	bash iamroot-shell -c "chroot debian-$*-rootfs"
@@ -355,7 +355,7 @@ debian-oldstable-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = 
 debian-stable-rootfs/etc/machine-id:
 debian-stable-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-x86_64-linux-x86-64/.*\.gcda
 
-debian-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
+debian-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
 debian-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
 debian-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|pam-auth-update|mountpoint
 debian-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-x86_64-linux-x86-64/.*\.gcda
@@ -394,7 +394,7 @@ debian-stable.ext4:
 debian-testing.ext4:
 debian-unstable.ext4:
 
-debian-oldoldstable-postrootfs: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
+debian-oldoldstable-postrootfs: export IAMROOT_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
 debian-oldoldstable-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
 debian-oldoldstable-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 debian-oldoldstable-postrootfs:
@@ -410,7 +410,7 @@ debian-oldstable-postrootfs:
 debian-stable-postrootfs:
 debian-testing-postrootfs:
 debian-unstable-postrootfs:
-debian-%-postrootfs: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
+debian-%-postrootfs: export IAMROOT_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
 debian-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
 debian-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	sed -e '/^root:x:/s,^root:x:,root::,' \
@@ -446,7 +446,7 @@ ubuntu-bionic-chroot:
 ubuntu-focal-chroot:
 ubuntu-impish-chroot:
 ubuntu-jammy-chroot:
-ubuntu-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
+ubuntu-%-chroot: export IAMROOT_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
 ubuntu-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
 ubuntu-%-chroot: | ubuntu-%-rootfs
 	bash iamroot-shell -c "chroot ubuntu-$*-rootfs"
@@ -469,7 +469,7 @@ ubuntu-impish-rootfs/etc/machine-id:
 ubuntu-jammy-rootfs/etc/machine-id:
 
 ubuntu-bionic-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|/var/lib/dpkg/info/initramfs-tools.postinst
-ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
+ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
 ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
 ubuntu-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update
 ubuntu-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-x86_64-linux-x86-64/.*\.gcda
@@ -508,7 +508,7 @@ ubuntu-focal-postrootfs:
 ubuntu-impish-postrootfs:
 ubuntu-jammy-postrootfs:
 ubuntu-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
-ubuntu-%-postrootfs: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
+ubuntu-%-postrootfs: export IAMROOT_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
 ubuntu-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i ubuntu-$*-rootfs/etc/passwd
@@ -541,7 +541,7 @@ fedora-33-chroot:
 fedora-34-chroot:
 fedora-35-chroot:
 fedora-36-chroot:
-fedora-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64
+fedora-%-chroot: export IAMROOT_LIBRARY_PATH = /usr/lib64:/lib64
 fedora-%-chroot: | fedora-%-rootfs
 	bash iamroot-shell -c "chroot fedora-$*-rootfs"
 
@@ -565,7 +565,7 @@ fedora-34-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib64/ldb/m
 fedora-34-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 fedora-34-rootfs/etc/machine-id:
 
-fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64/ldb:/usr/lib64:/lib64
+fedora-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib64/ldb:/usr/lib64:/lib64
 fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-x86_64-linux-x86-64/.*\.gcda|^$(CURDIR)/fedora-$*-rootfs/var/log/dnf.rpm.log
 fedora-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 fedora-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
@@ -598,7 +598,7 @@ fedora-33-postrootfs:
 fedora-34-postrootfs:
 fedora-35-postrootfs:
 fedora-36-postrootfs:
-fedora-%-postrootfs: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64
+fedora-%-postrootfs: export IAMROOT_LIBRARY_PATH = /usr/lib64:/lib64
 fedora-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i fedora-$*-rootfs/etc/passwd
@@ -631,7 +631,7 @@ ifneq ($(shell command -v zypper),)
 opensuse-leaf-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
 opensuse-leaf-chroot:
 opensuse-tumbleweed-chroot:
-opensuse-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64
+opensuse-%-chroot: export IAMROOT_LIBRARY_PATH = /usr/lib64:/lib64
 opensuse-%-chroot: | opensuse-%-rootfs
 	bash iamroot-shell -c "chroot opensuse-$*-rootfs"
 
@@ -648,7 +648,7 @@ opensuse-leaf-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = 
 opensuse-leaf-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|/usr/bin/chkstat|/usr/sbin/update-ca-certificates
 opensuse-leaf-rootfs/etc/machine-id:
 
-opensuse-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64
+opensuse-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib64:/lib64
 opensuse-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|/usr/bin/chkstat
 opensuse-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-x86_64-linux-x86-64/.*\.gcda
 opensuse-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
@@ -672,7 +672,7 @@ opensuse-tumbleweed.ext4:
 opensuse-leaf-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
 opensuse-leaf-postrootfs:
 opensuse-tumbleweed-postrootfs:
-opensuse-%-postrootfs: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64
+opensuse-%-postrootfs: export IAMROOT_LIBRARY_PATH = /usr/lib64:/lib64
 opensuse-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i opensuse-$*-rootfs/etc/passwd
@@ -882,7 +882,7 @@ aarch64-fedora-33-chroot:
 aarch64-fedora-34-chroot:
 aarch64-fedora-35-chroot:
 aarch64-fedora-36-chroot:
-aarch64-fedora-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64
+aarch64-fedora-%-chroot: export IAMROOT_LIBRARY_PATH = /usr/lib64:/lib64
 aarch64-fedora-%-chroot: | aarch64-fedora-%-rootfs
 	bash iamroot-shell -c "chroot aarch64-fedora-$*-rootfs"
 
@@ -902,7 +902,7 @@ aarch64-fedora-36-rootfs: | aarch64-fedora-36-rootfs/etc/machine-id
 aarch64-fedora-33-rootfs/etc/machine-id: FEDORA_REPO = support/fedora-archive.repo
 aarch64-fedora-33-rootfs/etc/machine-id:
 
-aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64/ldb:/usr/lib64:/lib64
+aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib64/ldb:/usr/lib64:/lib64
 aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|^$(CURDIR)/output-aarch64-linux-aarch64/|^$(CURDIR)/aarch64-fedora-$*-rootfs/var/log/dnf.rpm.log
 aarch64-fedora-%-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 	install -D -m644 support/fedora.repo aarch64-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
@@ -931,7 +931,7 @@ armhfp-fedora-34-rootfs: | armhfp-fedora-34-rootfs/etc/machine-id
 armhfp-fedora-35-rootfs: | armhfp-fedora-35-rootfs/etc/machine-id
 armhfp-fedora-36-rootfs: | armhfp-fedora-36-rootfs/etc/machine-id
 
-armhfp-fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/ldb:/usr/lib:/lib
+armhfp-fedora-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib/ldb:/usr/lib:/lib
 armhfp-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|^$(CURDIR)/output-armhf-linux-armhf/|^$(CURDIR)/armhfp-fedora-$*-rootfs/var/log/dnf.rpm.log
 armhfp-fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2:/usr/lib/libpthread.so.0:/usr/lib/librt.so.1
 armhfp-fedora-%-rootfs/etc/machine-id: | armhf/libiamroot-linux-armhf.so.3 x86_64/libiamroot-linux-x86-64.so.2

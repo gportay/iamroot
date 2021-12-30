@@ -1035,7 +1035,7 @@ static char *__getld_library_path(const char *ldso, int abi)
 	char *ret;
 	int n;
 
-	n = _snprintf(buf, sizeof(buf), "IAMROOT_LD_LIBRARY_PATH_%s_%d", ldso,
+	n = _snprintf(buf, sizeof(buf), "IAMROOT_LIBRARY_PATH_%s_%d", ldso,
 		      abi);
 	if (n == -1)
 		return NULL;
@@ -1043,7 +1043,7 @@ static char *__getld_library_path(const char *ldso, int abi)
 
 	ret = getenv(buf);
 	if (!ret)
-		ret = getenv("IAMROOT_LD_LIBRARY_PATH");
+		ret = getenv("IAMROOT_LIBRARY_PATH");
 	if (!ret)
 		return "/usr/lib:/lib";
 

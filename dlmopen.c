@@ -46,7 +46,7 @@ void *dlmopen(Lmid_t lmid, const char *path, int flags)
 		return next_dlmopen(lmid, path, flags);
 
 	if (!strchr(path, '/'))
-		if (path_access(path, F_OK, getenv("IAMROOT_LD_LIBRARY_PATH"),
+		if (path_access(path, F_OK, getenv("IAMROOT_LIBRARY_PATH"),
 				buf, sizeof(buf)) == -1)
 			goto next;
 

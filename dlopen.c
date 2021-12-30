@@ -45,7 +45,7 @@ void *dlopen(const char *path, int flags)
 		return next_dlopen(path, flags);
 
 	if (!strchr(path, '/'))
-		if (path_access(path, F_OK, getenv("IAMROOT_LD_LIBRARY_PATH"),
+		if (path_access(path, F_OK, getenv("IAMROOT_LIBRARY_PATH"),
 				buf, sizeof(buf)) == -1)
 			goto next;
 

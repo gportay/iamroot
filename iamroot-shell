@@ -29,7 +29,7 @@ iamroot specific options:
       --chroot DIR              Absolute path to the root directory to chroot
                                 in.
       --path PATH               PATH to use in chroot.
-      --ld-library-path PATH    LD_LIBRARY_PATH to use in chroot.
+      --library-path PATH       LD_LIBRARY_PATH to use in chroot.
       --exec FILE               Absolute path to the iamroot exec script to
                                 use.
       --library LIB             Absolute path to the iamroot library to use.
@@ -60,8 +60,8 @@ Environment variables:
       IAMROOT_PATH              Set PATH to use in chroot.
                                 Equivalent to --path PATH.
 
-      IAMROOT_LD_LIBRARY_PATH   Set LD_LIBRARY_PATH to use in chroot.
-                                Equivalent to --ld-library-path PATH.
+      IAMROOT_LIBRARY_PATH      Set LD_LIBRARY_PATH to use in chroot.
+                                Equivalent to --library-path PATH.
 
       IAMROOT_EXEC              Set absolute path to exec script to use.
                                 Equivalent to --exec EXEC.
@@ -160,11 +160,11 @@ do
 		shift
 		IAMROOT_PATH="$1"
 		export IAMROOT_PATH
-	elif [[ "$1" == "--ld-library-path" ]]
+	elif [[ "$1" == "--library-path" ]]
 	then
 		shift
-		IAMROOT_LD_LIBRARY_PATH="$1"
-		export IAMROOT_LD_LIBRARY_PATH
+		IAMROOT_LIBRARY_PATH="$1"
+		export IAMROOT_LIBRARY_PATH
 	elif [[ "$1" == "--" ]]
 	then
 		shift

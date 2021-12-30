@@ -1114,10 +1114,19 @@ loader:
 				n++;
 
 			ld_preload = n;
-			if (ld_preload && *ld_preload)
-				setenv("LD_PRELOAD", ld_preload, 1);
-			else
-				unsetenv("LD_PRELOAD");
+			if (ld_preload && *ld_preload) {
+				ret = setenv("LD_PRELOAD", ld_preload, 1);
+				if (ret) {
+					__envperror("LD_PRELOAD", "setenv");
+					return -1;
+				}
+			} else {
+				ret = unsetenv("LD_PRELOAD");
+				if (ret) {
+					__envperror("LD_PRELOAD", "unsetenv");
+					return -1;
+				}
+			}
 		}
 
 		goto execve;

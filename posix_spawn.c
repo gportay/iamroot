@@ -375,6 +375,10 @@ exec_sh:
 		return -1;
 
 posix_spawn:
+	ret = setenv("IAMROOT_VERSION", __xstr(VERSION), 1);
+	if (ret)
+		return -1;
+
 	argc = 1;
 	arg = interparg;
 	while (*arg++)

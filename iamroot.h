@@ -11,6 +11,9 @@
 extern "C" {
 #endif
 
+#define __xstr(s) __str(s)
+#define __str(s) #s
+
 #define __min(a,b) \
 	({ __typeof__ (a) _a = (a); \
 	   __typeof__ (b) _b = (b); \

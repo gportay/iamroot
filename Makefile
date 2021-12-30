@@ -8,7 +8,7 @@ VERSION = 3
 PREFIX ?= /usr/local
 
 %.o: override CFLAGS += -fPIC -Wall -Wextra -Werror
-%.o: override CFLAGS += -D_GNU_SOURCE
+%.o: override CFLAGS += -D_GNU_SOURCE -DVERSION=$(VERSION)
 %.so: override LDFLAGS += -nolibc
 
 .PHONY: all

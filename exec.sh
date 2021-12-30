@@ -22,6 +22,7 @@ shift
 case "${path##*/}" in
 mount|umount)
 	log "Warning:" "Command is skipped:" "$argv0" "$@"
+	exit 0
 	;;
 ldd|busybox)
 	exec "$real_path" "$@"
@@ -47,6 +48,7 @@ bbsuid)
 	do
 		ln -sf /bin/bbsuid "$IAMROOT_ROOT$i"
 	done
+	exit 0
 	;;
 *)
 	echo "Warning:" "host-running" "$argv0" "$@" >&2

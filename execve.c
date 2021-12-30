@@ -1101,6 +1101,24 @@ static char *__runpath(const char *path)
 	return getenv("runpath");
 }
 
+static char *__inhibit_rpath()
+{
+	char *val;
+	int ret;
+
+	val = getenv("IAMROOT_INHIBIT_RPATH");
+	if (!val)
+		return NULL;
+
+	ret = pathsetenv(getrootdir(), "inhibit_rpath", val, 1);
+	if (ret) {
+		perror("pathsetenv");
+		return NULL;
+	}
+
+	return getenv("inhibit_rpath");
+}
+
 static char *__getexec()
 {
 	char *ret;
@@ -1117,7 +1135,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	char buf[PATH_MAX], hashbangbuf[PATH_MAX], loaderbuf[PATH_MAX];
 	char hashbang[HASHBANG_MAX], loader[HASHBANG_MAX];
 	char *real_path, *real_hashbang = NULL;
-	char *interparg[12+1] = { NULL }; /*  0 ARGV0
+	char *interparg[14+1] = { NULL }; /*  0 ARGV0
 					   *  1 /lib/ld.so
 					   *  2 LD_LINUX_ARGV1
 					   *  3 --preload
@@ -1126,11 +1144,13 @@ int execve(const char *path, char * const argv[], char * const envp[])
 					   *  6 /usr/lib:/lib
 					   *  7 --argv0
 					   *  8 ARGV0
-					   *  9 /bin/sh
-					   * 10 HASHBANG_ARGV1
-					   * 11 -x
-					   * 12 script.sh
-					   * 13 NULL
+					   *  9 --inhibit-rpath
+					   * 10 /usr/lib/lib.so:/lib/lib.so
+					   * 11 /bin/sh
+					   * 12 HASHBANG_ARGV1
+					   * 13 -x
+					   * 14 script.sh
+					   * 15 NULL
 					   */
 	char *interpargv0 = *argv;
 	char *interppath = NULL;
@@ -1271,11 +1291,12 @@ loader:
 	 */
 	if ((__strncmp(loader, "/lib/ld") == 0) ||
 	    (__strncmp(loader, "/lib64/ld") == 0)) {
-		char *rpath, *runpath, *ld_preload, *ld_library_path;
-		int has_argv0 = 1, has_preload = 1, shift = 1;
+		char *rpath, *runpath, *ld_preload, *ld_library_path,
+		     *inhibit_rpath;
+		int has_argv0 = 1, has_preload = 1, has_inhibit_rpath = 0;
+		int shift = 1, abi = 0;
 		const char *basename;
 		char ldso[NAME_MAX];
-		int abi = 0;
 
 		basename = __basename(loader);
 		ret = sscanf(basename, "ld-%[^.].so.%d", ldso, &abi);
@@ -1286,10 +1307,12 @@ loader:
 		}
 
 		/*
-		 * the glibc world supports --argv0 since 2.33 and --preload
-		 * since 2.30
+		 * the glibc world supports --argv0 since 2.33, --preload since
+		 * 2.30, and --inhibit-rpath since 2.0.94
 		 */
 		if (__strncmp(ldso, "linux") == 0) {
+			has_inhibit_rpath = 1;
+
 			has_argv0 = __ld_linux_has_argv0_option(loader);
 			if (has_argv0 == -1) {
 				__pathperror(loader,
@@ -1321,6 +1344,10 @@ loader:
 		if (!ld_library_path)
 			__warning("%s: is unset!", "ld_library_path");
 
+		inhibit_rpath = __inhibit_rpath();
+		if (!inhibit_rpath)
+			__notice("%s: is unset!\n", "inhibit_rpath");
+
 		real_path = path_resolution(AT_FDCWD, loader, loaderbuf,
 					    sizeof(loaderbuf),
 					    AT_SYMLINK_FOLLOW);
@@ -1340,6 +1367,8 @@ loader:
 		 *     libc.so and libdl.so).
 		 *   - the option --library-path and its argument (i.e. the
 		 *     path in chroot environment to the libraries).
+		 *   - the option --inhibit-rpath and its argument (i.e. the
+		 *     path in host environment to the libbraries).
 		 *   - the option --argv0 and its argument (i.e. the original
 		 *     path in host to the binary).
 		 *   - the path to the binary (i.e. the full path in chroot,
@@ -1355,6 +1384,8 @@ loader:
 		if (has_preload && ld_preload)
 			shift += 2;
 		if (ld_library_path)
+			shift += 2;
+		if (has_inhibit_rpath && inhibit_rpath)
 			shift += 2;
 		for (j = 0; j < i; j++)
 			interparg[j+shift] = interparg[j];
@@ -1387,6 +1418,12 @@ loader:
 		if (ld_library_path) {
 			interparg[i++] = "--library-path";
 			interparg[i++] = ld_library_path;
+		}
+
+		/* Add --inhibit-rpath (chroot) */
+		if (has_inhibit_rpath && inhibit_rpath) {
+			interparg[i++] = "--inhibit-rpath";
+			interparg[i++] = inhibit_rpath;
 		}
 
 		/* Add --argv0 and original argv0 */

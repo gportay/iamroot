@@ -15,6 +15,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Create a [Manjaro] rootfs via [pacstrap(8)]
 - Intercept the function `__libc_start_main()` to set `argv[0]` with the
   content of the environment variable `argv0` if set
+- Use the [dynamic loader][ld.so(8)] option `--inhibit-rpath` if
+  [exec][exec(3)]'ing to a [glibc] chroot'ed environment
 
 ### Changed
 

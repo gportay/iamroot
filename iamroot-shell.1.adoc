@@ -269,13 +269,11 @@ Create a new Alpine Linux system installation from scratch via *alpine-make-root
 Change root directory via *chroot(8)*
 
 	[gportay@archlinux ~]$ iamroot-shell
-	[root@archlinux ~]# chroot alpine-rootfs /bin/ash
-	lrwxrwxrwx 1 root root 0 Mar 24 21:14 /proc/self/root -> /home/gportay/rootfs
-	[root@archlinux iamroot-multi-arch]# chroot alpine-rootfs /bin/sh
+	[root@archlinux ~]# chroot alpine-rootfs /bin/sh
 	/ # ls -l /proc/self/cwd
 	lrwxrwxrwx    1 root     root             0 Sep 20 12:35 /proc/self/cwd -> /
 	/ # ls -l /proc/self/root
-	lrwxrwxrwx    1 root     root             0 Sep 20 12:35 /proc/self/root -> /home/gportay/src/iamroot-multi-arch/alpine-rootfs
+	lrwxrwxrwx    1 root     root             0 Sep 20 12:35 /proc/self/root -> /home/gportay/alpine-rootfs
 
 == BUGS
 

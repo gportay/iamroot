@@ -195,8 +195,11 @@ Create a new Arch Linux system installation from scratch via *pacstrap(8)*
 	[gportay@archlinux ~]$ iamroot-shell -c "pacstrap rootfs" && echo done
 	==> Creating install root at rootfs
 	cp: cannot access '/etc/pacman.d/gnupg/crls.d': Permission denied
+	cp: ‘/etc/pacman.d/gnupg/crls.d’: Permission denied
 	cp: cannot access '/etc/pacman.d/gnupg/openpgp-revocs.d': Permission denied
+	cp: ‘/etc/pacman.d/gnupg/openpgp-revocs.d’: Permission denied
 	cp: cannot access '/etc/pacman.d/gnupg/private-keys-v1.d': Permission denied
+	cp: ‘/etc/pacman.d/gnupg/private-keys-v1.d’: Permission denied
 	cp: cannot open '/etc/pacman.d/gnupg/secring.gpg' for reading: Permission denied
 	==> Installing packages to rootfs
 	(...)
@@ -210,14 +213,13 @@ Create a new Arch Linux system installation from scratch via *pacstrap(8)*
 	  Skipped: Running in chroot.
 	( 6/10) Creating temporary files...
 	fchownat() of /run/systemd/netif failed: Operation not permitted
-	Failed to create directory or subvolume "/run/systemd/netif/links": Permission denied
-	Failed to create directory or subvolume "/run/systemd/netif/leases": Permission denied
-	Failed to create directory or subvolume "/run/systemd/netif/lldp": Permission denied
-	fchmod() of /dev/snd/seq failed: Operation not permitted
-	fchmod() of /dev/snd/timer failed: Operation not permitted
+	fchownat() of /run/systemd/netif/links failed: Operation not permitted
+	fchownat() of /run/systemd/netif/leases failed: Operation not permitted
+	fchownat() of /run/systemd/netif/lldp failed: Operation not permitted
+	fchownat() of /dev/snd/seq failed: Operation not permitted
+	fchownat() of /dev/snd/timer failed: Operation not permitted
 	fchownat() of /dev/loop-control failed: Operation not permitted
-	fchmod() of /dev/net/tun failed: Operation not permitted
-	Setting access ACL "u::rwx,g::r-x,g:wheel:r-x,g:adm:r-x,m::r-x,o::r-x" on /run/log/journal failed: Operation not permitted
+	fchmod() of /dev/vhost-net failed: Operation not permitted
 	fchownat() of /run/log/journal failed: Operation not permitted
 	error: command failed to execute correctly
 	( 7/10) Reloading device manager configuration...

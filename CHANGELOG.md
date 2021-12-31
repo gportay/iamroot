@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [unreleased]
 
+## [v3] - 2021-12-31
+
 ### Added
 
 - Chroot to an AArch64 world; tested on [Arch Linux ARM], [Fedora ARM] and

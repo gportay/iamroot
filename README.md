@@ -2,7 +2,7 @@
 
 ## TL;DR;
 
-iamroot emulates the syscall `chroot(2)` for unprivileged processes in pure
+[iamroot(7)] emulates the syscall [chroot(2)] for unprivileged processes in
 userspace.
 
 ## HOW IT WORKS

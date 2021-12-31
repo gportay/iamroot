@@ -8,7 +8,7 @@
 
 == NAME
 
-iamroot - Emulate the syscall chroot(2) for unprivileged users.
+iamroot - Emulate the syscall chroot(2) for unprivileged processes in userspace 
 
 == DESCRIPTION
 

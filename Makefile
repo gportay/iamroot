@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
 
-VERSION = 2
+VERSION = 3
 PREFIX ?= /usr/local
 
 %.o: override CFLAGS += -fPIC -Wall -Wextra -Werror

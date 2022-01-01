@@ -372,7 +372,7 @@ aarch64-rootfs: aarch64-alpine-rootfs
 
 .PHONY: aarch64-mini-chroot
 aarch64-mini-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-mini-rootfs
-aarch64-mini-chroot: | libiamroot-musl-aarch64.so libiamroot-linux-x86-64.so.2 aarch64-alpine-minirootfs
+aarch64-mini-chroot: | libiamroot-musl-aarch64.so.1 libiamroot-linux-x86-64.so.2 aarch64-alpine-minirootfs
 	bash iamroot-shell -c "chroot aarch64-alpine-minirootfs /bin/sh"
 
 .PHONY: aarch64-alpine-minirootfs
@@ -398,7 +398,7 @@ aarch64-alpine-rootfs: aarch64-alpine-3.14-rootfs aarch64-alpine-edge-rootfs
 aarch64-alpine-3.14-rootfs: | aarch64-alpine-3.14-rootfs/bin/busybox
 aarch64-alpine-edge-rootfs: | aarch64-alpine-edge-rootfs/bin/busybox
 
-aarch64-alpine-%-rootfs/bin/busybox: | libiamroot-musl-aarch64.so libiamroot-linux-x86-64.so.2
+aarch64-alpine-%-rootfs/bin/busybox: | libiamroot-musl-aarch64.so.1 libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "APK_OPTS='--arch aarch64' alpine-make-rootfs aarch64-alpine-$*-rootfs --mirror-uri http://nl.alpinelinux.org/alpine --branch $*"
 endif
 endif

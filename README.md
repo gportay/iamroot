@@ -36,7 +36,7 @@ will end with `EACCESS` or `EPERM` as of reading or writing files in `/proc`,
 
 iamroot is a proof-of-concept, therefore expect the unexpectable!
 
-### CHROOT(2)
+## CHROOT(2)
 
 The man page of [chroot(2)] tells:
 

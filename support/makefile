@@ -348,6 +348,7 @@ uninstall-exec-linux-aarch64:
 ifneq ($(shell command -v pacstrap),)
 .PHONY: aarch64-arch-chroot
 aarch64-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-arch-rootfs
+aarch64-arch-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
 aarch64-arch-chroot: | aarch64-arch-rootfs
 	bash iamroot-shell -c "chroot aarch64-arch-rootfs"
 

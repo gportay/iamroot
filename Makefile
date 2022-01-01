@@ -1,5 +1,5 @@
 #
-# Copyright 2020-2021 Gaël PORTAY
+# Copyright 2020-2022 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -258,6 +258,10 @@ clean:
 mrproper: clean
 	rm -f busybox-static
 	rm -Rf busybox/
+
+PREPROCESS.c = $(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -E
+%.i: %.c
+	$(PREPROCESS.c) $(OUTPUT_OPTION) $<
 
 %.so: override LDFLAGS += -shared
 %.so:

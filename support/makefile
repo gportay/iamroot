@@ -1,5 +1,5 @@
 #
-# Copyright 2021 Gaël PORTAY
+# Copyright 2021-2022 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -47,6 +47,31 @@ libiamroot-linux-x86-64.so: libiamroot-linux-x86-64.so.2
 
 libiamroot-linux-x86-64.so.2:
 
+.PRECIOUS: libiamroot-linux-x86.so
+libiamroot-linux-x86.so: libiamroot-linux-x86.so.2
+	ln -sf $< $@
+
+all: libiamroot-linux.so.2
+
+libiamroot-linux.so.2: export CC += -m32
+# FIXES: undefined reference to `__stack_chk_fail_local'
+libiamroot-linux.so.2: export CFLAGS += -fno-stack-protector
+libiamroot-linux.so.2:
+
+install: install-exec-linux
+
+.PHONY: install-exec-linux
+install-exec-linux:
+	install -D -m 755 libiamroot-linux.so.2 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux.so.2
+	ln -sf libiamroot-linux.so.2 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux.so
+
+uninstall: uninstall-linux
+
+.PHONY: uninstall-linux
+uninstall-linux:
+	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux.so.2
+	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux.so
+
 ifneq ($(shell command -v pacstrap),)
 .PHONY: arch-test
 arch-test: | arch-rootfs/usr/bin/shebang.sh
@@ -70,6 +95,26 @@ arch-rootfs: | arch-rootfs/etc/machine-id
 arch-rootfs/etc/machine-id: | libiamroot-linux-x86-64.so.2
 	mkdir -p arch-rootfs
 	bash iamroot-shell -c "pacstrap arch-rootfs"
+
+rootfs: i686-arch-rootfs
+
+.PHONY: i686-arch-chroot
+i686-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/i686-arch-rootfs
+i686-arch-chroot: export IAMROOT_LD_PRELOAD_LINUX_2 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
+i686-arch-chroot: | i686-arch-rootfs
+	bash iamroot-shell -c "chroot i686-arch-rootfs"
+
+i686-rootfs: i686-arch-rootfs
+
+.PHONY: i686-arch-rootfs
+i686-arch-rootfs: export QEMU_LD_PREFIX = $(CURDIR)/i686-arch-rootfs
+i686-arch-rootfs: | i686-arch-rootfs/etc/machine-id
+
+i686-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/i686-arch-rootfs
+i686-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_2 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
+i686-arch-rootfs/etc/machine-id: | libiamroot-linux.so.2 libiamroot-linux-x86-64.so.2
+	mkdir -p i686-arch-rootfs
+	bash iamroot-shell -c "pacstrap -C support/i686-pacman.conf i686-arch-rootfs"
 
 qemu-system-x86_64-arch:
 

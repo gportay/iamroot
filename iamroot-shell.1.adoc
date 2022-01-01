@@ -112,6 +112,9 @@ shells, please refers to their manuals.
 	Set absolute path to exec script to use.
 	Equivalent to --exec EXEC.
 
+**IAMROOT_LIB_LINUX_2**::
+	Set absolute path to library to use with loader ld-linux.so.2
+
 **IAMROOT_LIB_LINUX_X86_64_2**::
 	Set absolute path to library to use with loader ld-linux-x86-64.so.2
 
@@ -290,7 +293,7 @@ Written by Gaël PORTAY *gael.portay@gmail.com*
 
 == COPYRIGHT
 
-Copyright (c) 2021 Gaël PORTAY
+Copyright (c) 2021-2022 Gaël PORTAY
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU Lesser General Public License as published by the Free

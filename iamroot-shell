@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2020-2021 Gaël PORTAY
+# Copyright 2020-2022 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -68,6 +68,10 @@ Environment variables:
       IAMROOT_LIB               Set absolute path to library to use.
                                 Equivalent to --library LIB.
 
+      IAMROOT_LIB_LINUX_2
+                                Set absolute path to library to use with loader
+                                ld-linux.so.2
+
       IAMROOT_LIB_LINUX_X86_64_2
                                 Set absolute path to library to use with loader
                                 ld-linux-x86-64.so.2
@@ -107,6 +111,9 @@ EOF
 
 IAMROOT_LIB="${IAMROOT_LIB:-$PWD/libiamroot-linux-x86-64.so.2}"
 export IAMROOT_LIB
+
+IAMROOT_LIB_LINUX_2="${IAMROOT_LIB_LINUX:-$PWD/libiamroot-linux.so.2}"
+export IAMROOT_LIB_LINUX_2
 
 IAMROOT_LIB_LINUX_X86_64_2="${IAMROOT_LIB_LINUX_X86_64:-$PWD/libiamroot-linux-x86-64.so.2}"
 export IAMROOT_LIB_LINUX_X86_64_2

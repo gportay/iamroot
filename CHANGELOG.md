@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - Support for 32-bit ELF executables
+- Chroot to an i686 world; tested on [Arch Linux 32]
 
 ### Security
 
@@ -159,6 +160,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 Initial release.
 
 [Alpine Linux]: https://alpinelinux.org/
+[Arch Linux 32]: https://archlinux32.org/
 [Arch Linux ARM]: https://archlinuxarm.org/
 [Fedora ARM]: https://arm.fedoraproject.org/
 [Fedora]: https://getfedora.org/

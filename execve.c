@@ -888,6 +888,8 @@ static char *__getlibiamroot(const char *ldso, int abi)
 #if defined(__GLIBC__)
 #if defined(__x86_64__)
 		return "/usr/lib/iamroot/libiamroot-linux-x86-64.so.2";
+#elif defined(__i386__)
+		return "/usr/lib/iamroot/libiamroot-linux.so.2";
 #elif defined(__aarch64__)
 		return "/usr/lib/iamroot/libiamroot-linux-aarch64.so.1";
 #else
@@ -923,7 +925,7 @@ static char *__getld_preload(const char *ldso, int abi)
 #if defined(__LP64__)
 		return "/usr/lib64/libc.so.6:/usr/lib64/libdl.so.2";
 #else
-		return NULL;
+		return "/usr/lib/libc.so.6:/usr/lib/libdl.so.2";
 #endif
 #else /* assuming musl */
 #if defined(__LP64__)

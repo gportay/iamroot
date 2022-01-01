@@ -892,6 +892,8 @@ static char *__getlibiamroot(const char *ldso, int abi)
 		return "/usr/lib/iamroot/libiamroot-linux.so.2";
 #elif defined(__aarch64__)
 		return "/usr/lib/iamroot/libiamroot-linux-aarch64.so.1";
+#elif defined(__arm__)
+		return "/usr/lib/iamroot/libiamroot-linux-armhf.so.3";
 #else
 		return NULL;
 #endif

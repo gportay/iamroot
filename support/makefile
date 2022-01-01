@@ -15,8 +15,8 @@ MAKEFLAGS += --no-print-directory
 .PHONY: all
 all:
 
-.PRECIOUS: libiamroot-%.so.1 libiamroot-%.so.2
-libiamroot-%.so.1 libiamroot-%.so.2: output-%/libiamroot.so
+.PRECIOUS: libiamroot-%.so.1 libiamroot-%.so.2 libiamroot-%.so.3
+libiamroot-%.so.1 libiamroot-%.so.2 libiamroot-%.so.3: output-%/libiamroot.so
 	cp output-$*/libiamroot.so $@
 
 .PRECIOUS: output-%/libiamroot.so
@@ -36,6 +36,9 @@ i686-rootfs:
 
 .PHONY: aarch64-rootfs
 aarch64-rootfs:
+
+.PHONY: arm-rootfs
+arm-rootfs:
 
 .PHONY: clean
 clean:
@@ -345,6 +348,31 @@ uninstall-exec-linux-aarch64:
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-aarch64.so.1
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-aarch64.so
 
+ifneq ($(shell command -v armv7l-unknown-linux-gnueabihf-gcc),)
+all: libiamroot-linux-armhf.so
+
+.PRECIOUS: libiamroot-linux-armhf.so
+libiamroot-linux-armhf.so: libiamroot-linux-armhf.so.3
+	ln -sf $< $@
+
+libiamroot-linux-armhf.so.3:
+libiamroot-linux-armhf.so.3: export CC = armv7l-unknown-linux-gnueabihf-gcc
+
+install: install-exec-linux-armhf
+
+.PHONY: install-exec-linux-armhf
+install-exec-linux-armhf:
+	install -D -m 755 libiamroot-linux-armhf.so.3 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-armhf.so.3
+	ln -sf libiamroot-linux-armhf.so.1 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-armhf.so
+
+uninstall: uninstall-exec-linux-armhf
+
+.PHONY: uninstall-exec-linux-armhf
+uninstall-exec-linux-armhf:
+	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-armhf.so.3
+	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-armhf.so
+endif
+
 ifneq ($(shell command -v pacstrap),)
 .PHONY: aarch64-arch-chroot
 aarch64-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-arch-rootfs
@@ -363,6 +391,28 @@ aarch64-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = 
 aarch64-arch-rootfs/etc/machine-id: | libiamroot-linux-aarch64.so.1 libiamroot-linux-x86-64.so.2
 	mkdir -p aarch64-arch-rootfs
 	bash iamroot-shell -c "pacstrap -C support/aarch64-pacman.conf aarch64-arch-rootfs"
+
+ifneq ($(shell command -v armv7l-unknown-linux-gnueabihf-gcc),)
+.PHONY: armv7h-arch-chroot
+armv7h-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/armv7h-arch-rootfs
+armv7h-arch-chroot: export IAMROOT_LIB_LINUX_ARMHF_3 = $(CURDIR)/libiamroot-linux-armhf.so.3
+armv7h-arch-chroot: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
+armv7h-arch-chroot: | armv7h-arch-rootfs
+	bash iamroot-shell -c "chroot armv7h-arch-rootfs"
+
+arm-rootfs: armv7h-arch-rootfs
+
+.PHONY: armv7h-arch-rootfs
+armv7h-arch-rootfs: export QEMU_LD_PREFIX = $(CURDIR)/armv7h-arch-rootfs
+armv7h-arch-rootfs: | armv7h-arch-rootfs/etc/machine-id
+
+armv7h-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/armv7h-arch-rootfs
+armv7h-arch-rootfs/etc/machine-id: export IAMROOT_LIB_LINUX_ARMHF_3 = $(CURDIR)/libiamroot-linux-armhf.so.3
+armv7h-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
+armv7h-arch-rootfs/etc/machine-id: | libiamroot-linux-armhf.so.3 libiamroot-linux-x86-64.so.2
+	mkdir -p armv7h-arch-rootfs
+	bash iamroot-shell -c "pacstrap -C support/armv7h-pacman.conf armv7h-arch-rootfs"
+endif
 endif
 
 ifneq ($(shell command -v dnf),)

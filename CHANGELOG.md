@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Support for 32-bit ELF executables
 - Chroot to an i686 world; tested on [Arch Linux 32]
+- Chroot to an arm world; tested on [Arch Linux ARM]
 
 ### Security
 

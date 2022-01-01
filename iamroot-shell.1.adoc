@@ -121,6 +121,9 @@ shells, please refers to their manuals.
 **IAMROOT_LIB_MUSL_X86_64_1**::
 	Set absolute path to library to use with loader ld-musl-x86_64.so.1
 
+**IAMROOT_LIB_LINUX_ARMHF_3**::
+	Set absolute path to library to use with loader ld-linux-armhf.so.3
+
 **IAMROOT_LIB_LINUX_AARCH64_1**::
 	Set absolute path to library to use with loader ld-linux-aarch64.so.1
 

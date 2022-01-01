@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -26,7 +26,11 @@ int next_lstat(const char *path, struct stat *statbuf)
 	sym = dlsym(RTLD_NEXT, "lstat");
 	if (!sym) {
 		int next___lxstat(int, const char *, struct stat *);
+#if defined(__arm__)
+		return next___lxstat(3, path, statbuf);
+#else
 		return next___lxstat(0, path, statbuf);
+#endif
 	}
 
 	ret = sym(path, statbuf);

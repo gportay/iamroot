@@ -31,6 +31,9 @@ output-%:
 .PHONY: rootfs
 rootfs:
 
+.PHONY: i686-rootfs
+i686-rootfs:
+
 .PHONY: aarch64-rootfs
 aarch64-rootfs:
 
@@ -96,7 +99,7 @@ arch-rootfs/etc/machine-id: | libiamroot-linux-x86-64.so.2
 	mkdir -p arch-rootfs
 	bash iamroot-shell -c "pacstrap arch-rootfs"
 
-rootfs: i686-arch-rootfs
+i686-rootfs: i686-arch-rootfs
 
 .PHONY: i686-arch-chroot
 i686-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/i686-arch-rootfs

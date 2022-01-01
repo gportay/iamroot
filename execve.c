@@ -250,123 +250,105 @@ static int issuid(const char *path)
 	return (statbuf.st_mode & S_ISUID) != 0;
 }
 
-static ssize_t getdynamicentry(const char *path, int dt_tag, char *buf,
-			       size_t bufsize)
+static ssize_t getdynamicentry32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
+				 char *buf, size_t bufsize)
 {
 	size_t strtab_siz = 0;
 	off_t strtab_off = 0;
-	ssize_t s, ret = -1;
-	int fd, i, num;
-	unsigned int j;
-	Elf64_Ehdr hdr;
+	ssize_t ret = -1;
+	int i, num;
 	off_t off;
 
-	fd = next_open(path, O_RDONLY, 0);
-	if (fd == -1)
-		return -1;
-
-	s = read(fd, &hdr, sizeof(hdr));
-	if (s == -1) {
-		__pathperror(path, "read");
-		goto close;
-	} else if ((size_t)s < sizeof(hdr)) {
-		errno = EIO;
-		ret = -1;
-		goto close;
-	}
-
 	/* Not an ELF */
-	if (memcmp(hdr.e_ident, ELFMAG, 4) != 0) {
+	if (memcmp(ehdr->e_ident, ELFMAG, 4) != 0) {
 		errno = ENOEXEC;
-		goto close;
-	}
-
-	/* TODO: Support class ELF32 */
-	if (hdr.e_ident[EI_CLASS] != ELFCLASS64) {
-		errno = ENOEXEC;
-		goto close;
+		goto exit;
 	}
 
 	/* Not a linked program or shared object */
-	if ((hdr.e_type != ET_EXEC) && (hdr.e_type != ET_DYN)) {
+	if ((ehdr->e_type != ET_EXEC) && (ehdr->e_type != ET_DYN)) {
 		errno = ENOEXEC;
-		goto close;
+		goto exit;
 	}
 
 	/* Look for the .shstrtab section */
-	off = hdr.e_shoff;
-	num = hdr.e_shnum;
+	off = ehdr->e_shoff;
+	num = ehdr->e_shnum;
 	for (i = 0; i < num; i++) {
-		Elf64_Shdr hdr;
+		Elf32_Shdr shdr;
 
-		s = pread(fd, &hdr, sizeof(hdr), off);
-		if (s == -1) {
-			__pathperror(path, "pread");
-			goto close;
-		} else if ((size_t)s < sizeof(hdr)) {
+		ret = pread(fd, &shdr, sizeof(shdr), off);
+		if (ret == -1) {
+			__fpathperror(fd, "pread");
+			goto exit;
+		} else if ((size_t)ret < sizeof(shdr)) {
 			errno = EIO;
 			ret = -1;
-			goto close;
+			goto exit;
 		}
 
-		off += sizeof(hdr);
+		off += sizeof(shdr);
 
 		/* Not the .shstrtab section */
-		if (hdr.sh_type != SHT_STRTAB)
+		if (shdr.sh_type != SHT_STRTAB)
 			continue;
 
-		strtab_siz = hdr.sh_size;
-		strtab_off = hdr.sh_offset;
+		strtab_siz = shdr.sh_size;
+		strtab_off = shdr.sh_offset;
 		break;
 	}
 
 	/* No .shstrtab section */
-	if (!strtab_off)
-		goto close;
+	if (!strtab_off) {
+		ret = -1;
+		goto exit;
+	}
 
 	/* Look for the string entry in the .dynamic segment */
-	off = hdr.e_phoff;
-	num = hdr.e_phnum;
+	off = ehdr->e_phoff;
+	num = ehdr->e_phnum;
 	for (i = 0; i < num; i++) {
-		Elf64_Dyn *dyn = (Elf64_Dyn *)buf;
+		Elf32_Dyn *dyn = (Elf32_Dyn *)buf;
 		off_t str_off, val = 0;
 		size_t str_siz = 0;
-		Elf64_Phdr hdr;
+		unsigned int j;
+		Elf32_Phdr phdr;
 
-		s = pread(fd, &hdr, sizeof(hdr), off);
-		if (s == -1) {
-			__pathperror(path, "pread");
-			goto close;
-		} else if ((size_t)s < sizeof(hdr)) {
+		ret = pread(fd, &phdr, sizeof(phdr), off);
+		if (ret == -1) {
+			__fpathperror(fd, "pread");
+			goto exit;
+		} else if ((size_t)ret < sizeof(phdr)) {
 			errno = EIO;
 			ret = -1;
-			goto close;
+			goto exit;
 		}
 
-		off += sizeof(hdr);
+		off += sizeof(phdr);
 
 		/* Not the .dynamic segment */
-		if (hdr.p_type != PT_DYNAMIC)
+		if (phdr.p_type != PT_DYNAMIC)
 			continue;
 
-		if (bufsize < hdr.p_filesz) {
-			errno = ENAMETOOLONG;
-			goto close;
+		if (bufsize < phdr.p_filesz) {
+			errno = EIO;
+			ret = -1;
+			goto exit;
 		}
 
 		/* copy the .dynamic segment */
-		s = pread(fd, buf, hdr.p_filesz, hdr.p_offset);
-		if (s == -1) {
-			__pathperror(path, "pread");
-			goto close;
-		} else if ((size_t)s < hdr.p_filesz) {
+		ret = pread(fd, buf, phdr.p_filesz, phdr.p_offset);
+		if (ret == -1) {
+			__fpathperror(fd, "pread");
+			goto exit;
+		} else if ((size_t)ret < phdr.p_filesz) {
 			errno = EIO;
 			ret = -1;
-			goto close;
+			goto exit;
 		}
 
 		/* look for the string entry */
-		for (j = 0; j < hdr.p_filesz / sizeof(*dyn); j++) {
+		for (j = 0; j < phdr.p_filesz / sizeof(*dyn); j++) {
 			if (dyn[j].d_tag != dt_tag)
 				continue;
 
@@ -375,29 +357,198 @@ static ssize_t getdynamicentry(const char *path, int dt_tag, char *buf,
 		}
 
 		/* No string entry */
-		if (j == hdr.p_filesz / sizeof(*dyn))
-			break;
+		if (j == phdr.p_filesz / sizeof(*dyn))
+			continue;
 
 		/* copy the NULL-terminated string from the .strtab table */
 		str_off = strtab_off + val;
 		str_siz = strtab_siz - val;
-		s = pread(fd, buf, __min(str_siz, bufsize), str_off);
-		if (s == -1) {
-			__pathperror(path, "pread");
-			goto close;
-		} else if ((size_t)s < __min(str_siz, bufsize)) {
+		ret = pread(fd, buf, __min(str_siz, bufsize), str_off);
+		if (ret == -1) {
+			__fpathperror(fd, "pread");
+			goto exit;
+		} else if ((size_t)ret < __min(str_siz, bufsize)) {
 			errno = EIO;
 			ret = -1;
-			goto close;
+			goto exit;
 		}
 
-		errno = 0;
 		ret = strlen(buf);
-		goto close;
+		errno = 0;
+		goto exit;
 	}
 
 	errno = ENOENT;
 	ret = -1;
+
+exit:
+	return ret;
+}
+
+static ssize_t getdynamicentry64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
+				 char *buf, size_t bufsize)
+{
+	size_t strtab_siz = 0;
+	off_t strtab_off = 0;
+	ssize_t ret = -1;
+	int i, num;
+	off_t off;
+
+	/* Not an ELF */
+	if (memcmp(ehdr->e_ident, ELFMAG, 4) != 0) {
+		errno = ENOEXEC;
+		goto exit;
+	}
+
+	/* Not a linked program or shared object */
+	if ((ehdr->e_type != ET_EXEC) && (ehdr->e_type != ET_DYN)) {
+		errno = ENOEXEC;
+		goto exit;
+	}
+
+	/* Look for the .shstrtab section */
+	off = ehdr->e_shoff;
+	num = ehdr->e_shnum;
+	for (i = 0; i < num; i++) {
+		Elf64_Shdr shdr;
+
+		ret = pread(fd, &shdr, sizeof(shdr), off);
+		if (ret == -1) {
+			__fpathperror(fd, "pread");
+			goto exit;
+		} else if ((size_t)ret < sizeof(shdr)) {
+			errno = EIO;
+			ret = -1;
+			goto exit;
+		}
+
+		off += sizeof(shdr);
+
+		/* Not the .shstrtab section */
+		if (shdr.sh_type != SHT_STRTAB)
+			continue;
+
+		strtab_siz = shdr.sh_size;
+		strtab_off = shdr.sh_offset;
+		break;
+	}
+
+	/* No .shstrtab section */
+	if (!strtab_off) {
+		ret = -1;
+		goto exit;
+	}
+
+	/* Look for the string entry in the .dynamic segment */
+	off = ehdr->e_phoff;
+	num = ehdr->e_phnum;
+	for (i = 0; i < num; i++) {
+		Elf64_Dyn *dyn = (Elf64_Dyn *)buf;
+		off_t str_off, val = 0;
+		size_t str_siz = 0;
+		unsigned int j;
+		Elf64_Phdr phdr;
+
+		ret = pread(fd, &phdr, sizeof(phdr), off);
+		if (ret == -1) {
+			__fpathperror(fd, "pread");
+			goto exit;
+		} else if ((size_t)ret < sizeof(phdr)) {
+			errno = EIO;
+			ret = -1;
+			goto exit;
+		}
+
+		off += sizeof(phdr);
+
+		/* Not the .dynamic segment */
+		if (phdr.p_type != PT_DYNAMIC)
+			continue;
+
+		if (bufsize < phdr.p_filesz) {
+			errno = EIO;
+			ret = -1;
+			goto exit;
+		}
+
+		/* copy the .dynamic segment */
+		ret = pread(fd, buf, phdr.p_filesz, phdr.p_offset);
+		if (ret == -1) {
+			__fpathperror(fd, "pread");
+			goto exit;
+		} else if ((size_t)ret < phdr.p_filesz) {
+			errno = EIO;
+			ret = -1;
+			goto exit;
+		}
+
+		/* look for the string entry */
+		for (j = 0; j < phdr.p_filesz / sizeof(*dyn); j++) {
+			if (dyn[j].d_tag != dt_tag)
+				continue;
+
+			val = dyn[j].d_un.d_val;
+			break;
+		}
+
+		/* No string entry */
+		if (j == phdr.p_filesz / sizeof(*dyn))
+			continue;
+
+		/* copy the NULL-terminated string from the .strtab table */
+		str_off = strtab_off + val;
+		str_siz = strtab_siz - val;
+		ret = pread(fd, buf, __min(str_siz, bufsize), str_off);
+		if (ret == -1) {
+			__fpathperror(fd, "pread");
+			goto exit;
+		} else if ((size_t)ret < __min(str_siz, bufsize)) {
+			errno = EIO;
+			ret = -1;
+			goto exit;
+		}
+
+		ret = strlen(buf);
+		errno = 0;
+		goto exit;
+	}
+
+	errno = ENOENT;
+	ret = -1;
+
+exit:
+	return ret;
+}
+
+static ssize_t getdynamicentry(const char *path, int dt_tag, char *buf,
+			       size_t bufsize)
+{
+	ssize_t ret = -1;
+	Elf64_Ehdr ehdr;
+	int fd;
+
+	fd = next_open(path, O_RDONLY, 0);
+	if (fd == -1)
+		return -1;
+
+	ret = read(fd, &ehdr, sizeof(ehdr));
+	if (ret == -1) {
+		__pathperror(path, "read");
+		goto close;
+	} else if ((size_t)ret < sizeof(ehdr)) {
+		errno = EIO;
+		ret = -1;
+		goto close;
+	}
+
+	errno = ENOEXEC;
+	ret = -1;
+	if (ehdr.e_ident[EI_CLASS] == ELFCLASS32)
+		ret = getdynamicentry32(fd, (Elf32_Ehdr *)&ehdr, dt_tag, buf,
+					bufsize);
+	else if (ehdr.e_ident[EI_CLASS] == ELFCLASS64)
+		ret = getdynamicentry64(fd, (Elf64_Ehdr *)&ehdr, dt_tag, buf,
+					bufsize);
 
 close:
 	if (close(fd))
@@ -406,90 +557,168 @@ close:
 	return ret;
 }
 
+static ssize_t getinterp32(int fd, Elf32_Ehdr *ehdr, char *buf, size_t bufsize)
+{
+	ssize_t ret = -1;
+	int i, num;
+	off_t off;
+
+	/* Not an ELF */
+	if (memcmp(ehdr->e_ident, ELFMAG, 4) != 0) {
+		errno = ENOEXEC;
+		goto exit;
+	}
+
+	/* Not a linked program or shared object */
+	if ((ehdr->e_type != ET_EXEC) && (ehdr->e_type != ET_DYN)) {
+		errno = ENOEXEC;
+		goto exit;
+	}
+
+	/* Look for the .interp section */
+	off = ehdr->e_phoff;
+	num = ehdr->e_phnum;
+	for (i = 0; i < num; i++) {
+		Elf32_Phdr phdr;
+
+		ret = pread(fd, &phdr, sizeof(phdr), off);
+		if (ret == -1) {
+			__fpathperror(fd, "pread");
+			goto exit;
+		} else if ((size_t)ret < sizeof(phdr)) {
+			errno = EIO;
+			ret = -1;
+			goto exit;
+		}
+
+		off += sizeof(phdr);
+
+		/* Not the .interp section */
+		if (phdr.p_type != PT_INTERP)
+			continue;
+
+		if (bufsize < phdr.p_filesz) {
+			errno = EIO;
+			ret = -1;
+			goto exit;
+		}
+
+		/* copy the NULL-terminated string from the .interp section */
+		ret = pread(fd, buf, phdr.p_filesz, phdr.p_offset);
+		if (ret == -1) {
+			__fpathperror(fd, "pread");
+			goto exit;
+		} else if ((size_t)ret < phdr.p_filesz) {
+			errno = EIO;
+			ret = -1;
+			goto exit;
+		}
+
+		errno = 0;
+		goto exit;
+	}
+
+	errno = ENOEXEC;
+	ret = -1;
+
+exit:
+	return ret;
+}
+
+static ssize_t getinterp64(int fd, Elf64_Ehdr *ehdr, char *buf, size_t bufsize)
+{
+	ssize_t ret = -1;
+	int i, num;
+	off_t off;
+
+	/* Not an ELF */
+	if (memcmp(ehdr->e_ident, ELFMAG, 4) != 0) {
+		errno = ENOEXEC;
+		goto exit;
+	}
+
+	/* Not a linked program or shared object */
+	if ((ehdr->e_type != ET_EXEC) && (ehdr->e_type != ET_DYN)) {
+		errno = ENOEXEC;
+		goto exit;
+	}
+
+	/* Look for the .interp section */
+	off = ehdr->e_phoff;
+	num = ehdr->e_phnum;
+	for (i = 0; i < num; i++) {
+		Elf64_Phdr phdr;
+
+		ret = pread(fd, &phdr, sizeof(phdr), off);
+		if (ret == -1) {
+			__fpathperror(fd, "pread");
+			goto exit;
+		} else if ((size_t)ret < sizeof(phdr)) {
+			errno = EIO;
+			ret = -1;
+			goto exit;
+		}
+
+		off += sizeof(phdr);
+
+		/* Not the .interp section */
+		if (phdr.p_type != PT_INTERP)
+			continue;
+
+		if (bufsize < phdr.p_filesz) {
+			errno = EIO;
+			ret = -1;
+			goto exit;
+		}
+
+		/* copy the NULL-terminated string from the .interp section */
+		ret = pread(fd, buf, phdr.p_filesz, phdr.p_offset);
+		if (ret == -1) {
+			__fpathperror(fd, "pread");
+			goto exit;
+		} else if ((size_t)ret < phdr.p_filesz) {
+			errno = EIO;
+			ret = -1;
+			goto exit;
+		}
+
+		errno = 0;
+		goto exit;
+	}
+
+	errno = ENOEXEC;
+	ret = -1;
+
+exit:
+	return ret;
+}
+
 static ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 {
-	ssize_t s, ret = -1;
-	int fd, i, num;
-	Elf64_Ehdr hdr;
-	off_t off;
+	ssize_t ret = -1;
+	Elf64_Ehdr ehdr;
+	int fd;
 
 	fd = next_open(path, O_RDONLY, 0);
 	if (fd == -1)
 		return -1;
 
-	s = read(fd, &hdr, sizeof(hdr));
-	if (s == -1) {
+	ret = read(fd, &ehdr, sizeof(ehdr));
+	if (ret == -1) {
 		__pathperror(path, "read");
 		goto close;
-	} else if ((size_t)s < sizeof(hdr)) {
+	} else if ((size_t)ret < sizeof(ehdr)) {
 		errno = EIO;
 		ret = -1;
 		goto close;
 	}
 
-	/* Not an ELF */
-	if (memcmp(hdr.e_ident, ELFMAG, 4) != 0) {
-		errno = ENOEXEC;
-		goto close;
-	}
-
-	/* TODO: Support class ELF32 */
-	if (hdr.e_ident[EI_CLASS] != ELFCLASS64) {
-		errno = ENOEXEC;
-		goto close;
-	}
-
-	/* Not a linked program or shared object */
-	if ((hdr.e_type != ET_EXEC) && (hdr.e_type != ET_DYN)) {
-		errno = ENOEXEC;
-		goto close;
-	}
-
-	/* Look for the .interp section */
-	off = hdr.e_phoff;
-	num = hdr.e_phnum;
-	for (i = 0; i < num; i++) {
-		Elf64_Phdr hdr;
-
-		s = pread(fd, &hdr, sizeof(hdr), off);
-		if (s == -1) {
-			__pathperror(path, "pread");
-			goto close;
-		} else if ((size_t)s < sizeof(hdr)) {
-			errno = EIO;
-			ret = -1;
-			goto close;
-		}
-
-		off += sizeof(hdr);
-
-		/* Not the .interp section */
-		if (hdr.p_type != PT_INTERP)
-			continue;
-
-		if (bufsize < hdr.p_filesz) {
-			errno = ENAMETOOLONG;
-			goto close;
-		}
-
-		/* copy the NULL-terminated string from the .interp section */
-		s = pread(fd, buf, hdr.p_filesz, hdr.p_offset);
-		if (s == -1) {
-			__pathperror(path, "pread");
-			goto close;
-		} else if ((size_t)s < hdr.p_filesz) {
-			errno = EIO;
-			ret = -1;
-			goto close;
-		}
-
-		errno = 0;
-		ret = s;
-		goto close;
-	}
-
 	errno = ENOEXEC;
 	ret = -1;
+	if (ehdr.e_ident[EI_CLASS] == ELFCLASS32)
+		ret = getinterp32(fd, (Elf32_Ehdr *)&ehdr, buf, bufsize);
+	else if (ehdr.e_ident[EI_CLASS] == ELFCLASS64)
+		ret = getinterp64(fd, (Elf64_Ehdr *)&ehdr, buf, bufsize);
 
 close:
 	if (close(fd))

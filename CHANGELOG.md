@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [unreleased]
 
+### Added
+
+- Support for 32-bit ELF executables
+
 ### Security
 
 - Fix off-by-one array reading while getting `RPATH` and `RUNPATH` from ELF

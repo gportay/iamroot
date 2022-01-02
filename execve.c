@@ -463,6 +463,7 @@ static ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 
 		off += sizeof(hdr);
 
+		/* Not the .interp section */
 		if (hdr.p_type != PT_INTERP)
 			continue;
 
@@ -471,6 +472,7 @@ static ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 			goto close;
 		}
 
+		/* copy the NULL-terminated string from the .interp section */
 		s = pread(fd, buf, hdr.p_filesz, hdr.p_offset);
 		if (s == -1) {
 			__pathperror(path, "pread");

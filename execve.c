@@ -269,7 +269,7 @@ static ssize_t getdynamicentry(const char *path, int dt_tag, char *buf,
 
 	s = read(fd, &hdr, sizeof(hdr));
 	if (s == -1) {
-		perror("read");
+		__pathperror(path, "read");
 		goto close;
 	} else if ((size_t)s < sizeof(hdr)) {
 		goto close;
@@ -295,7 +295,7 @@ static ssize_t getdynamicentry(const char *path, int dt_tag, char *buf,
 
 		s = pread(fd, &hdr, sizeof(hdr), off);
 		if (s == -1) {
-			perror("pread");
+			__pathperror(path, "pread");
 			goto close;
 		} else if ((size_t)s < sizeof(hdr)) {
 			errno = EIO;
@@ -328,7 +328,7 @@ static ssize_t getdynamicentry(const char *path, int dt_tag, char *buf,
 
 		s = pread(fd, &hdr, sizeof(hdr), off);
 		if (s == -1) {
-			perror("pread");
+			__pathperror(path, "pread");
 			goto close;
 		} else if ((size_t)s < sizeof(hdr)) {
 			errno = EIO;
@@ -349,6 +349,7 @@ static ssize_t getdynamicentry(const char *path, int dt_tag, char *buf,
 		/* copy the .dynamic segment */
 		s = pread(fd, buf, hdr.p_filesz, hdr.p_offset);
 		if (s == -1) {
+			__pathperror(path, "pread");
 			goto close;
 		} else if ((size_t)s < hdr.p_filesz) {
 			errno = EIO;
@@ -373,6 +374,7 @@ static ssize_t getdynamicentry(const char *path, int dt_tag, char *buf,
 		str_siz = strtab_siz - val;
 		s = pread(fd, buf, __min(str_siz, bufsize), str_off);
 		if (s == -1) {
+			__pathperror(path, "pread");
 			goto close;
 		} else if ((size_t)s < __min(str_siz, bufsize)) {
 			errno = EFAULT;
@@ -388,7 +390,7 @@ static ssize_t getdynamicentry(const char *path, int dt_tag, char *buf,
 
 close:
 	if (close(fd))
-		perror("close");
+		__pathperror(path, "close");
 
 	return ret;
 }
@@ -406,6 +408,7 @@ static ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 
 	s = read(fd, &hdr, sizeof(hdr));
 	if (s == -1) {
+		__pathperror(path, "read");
 		goto close;
 	} else if ((size_t)s < sizeof(hdr)) {
 		errno = ENOEXEC;
@@ -440,6 +443,7 @@ static ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 
 		s = pread(fd, &hdr, sizeof(hdr), off);
 		if (s == -1) {
+			__pathperror(path, "pread");
 			goto close;
 		} else if ((size_t)s < sizeof(hdr)) {
 			errno = ENOEXEC;
@@ -458,6 +462,7 @@ static ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 
 		s = pread(fd, buf, hdr.p_filesz, hdr.p_offset);
 		if (s == -1) {
+			__pathperror(path, "pread");
 			goto close;
 		} else if ((size_t)s < hdr.p_filesz) {
 			errno = ENOEXEC;
@@ -473,7 +478,7 @@ static ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 
 close:
 	if (close(fd))
-		__fpathperror(fd, "close");
+		__pathperror(path, "close");
 
 	return ret;
 }

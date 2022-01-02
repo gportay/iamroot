@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [unreleased]
 
+### Security
+
+- Fix off-by-one array reading while getting `RPATH` and `RUNPATH` from ELF
+  executable
+
 ## [v3] - 2021-12-31
 
 ### Added

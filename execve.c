@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2021 Gaël PORTAY
+ * Copyright 2020-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -365,7 +365,7 @@ static ssize_t getdynamicentry(const char *path, int dt_tag, char *buf,
 		}
 
 		/* No string entry */
-		if (dyn[j].d_tag != dt_tag)
+		if (j == hdr.p_filesz / sizeof(*dyn))
 			break;
 
 		/* copy the NULL-termintated string from the .strtab table */

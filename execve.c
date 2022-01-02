@@ -439,8 +439,6 @@ static ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 		goto close;
 	}
 
-	ret = 0;
-
 	/* Not a linked program or shared object */
 	if ((hdr.e_type != ET_EXEC) && (hdr.e_type != ET_DYN)) {
 		errno = ENOEXEC;

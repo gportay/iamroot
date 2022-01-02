@@ -271,6 +271,7 @@ static ssize_t getdynamicentry(const char *path, int dt_tag, char *buf,
 		goto close;
 	} else if ((size_t)s < sizeof(hdr)) {
 		errno = EIO;
+		ret = -1;
 		goto close;
 	}
 
@@ -304,6 +305,7 @@ static ssize_t getdynamicentry(const char *path, int dt_tag, char *buf,
 			goto close;
 		} else if ((size_t)s < sizeof(hdr)) {
 			errno = EIO;
+			ret = -1;
 			goto close;
 		}
 
@@ -337,6 +339,7 @@ static ssize_t getdynamicentry(const char *path, int dt_tag, char *buf,
 			goto close;
 		} else if ((size_t)s < sizeof(hdr)) {
 			errno = EIO;
+			ret = -1;
 			goto close;
 		}
 
@@ -358,6 +361,7 @@ static ssize_t getdynamicentry(const char *path, int dt_tag, char *buf,
 			goto close;
 		} else if ((size_t)s < hdr.p_filesz) {
 			errno = EIO;
+			ret = -1;
 			goto close;
 		}
 
@@ -383,6 +387,7 @@ static ssize_t getdynamicentry(const char *path, int dt_tag, char *buf,
 			goto close;
 		} else if ((size_t)s < __min(str_siz, bufsize)) {
 			errno = EIO;
+			ret = -1;
 			goto close;
 		}
 
@@ -418,6 +423,7 @@ static ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 		goto close;
 	} else if ((size_t)s < sizeof(hdr)) {
 		errno = EIO;
+		ret = -1;
 		goto close;
 	}
 
@@ -453,6 +459,7 @@ static ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 			goto close;
 		} else if ((size_t)s < sizeof(hdr)) {
 			errno = EIO;
+			ret = -1;
 			goto close;
 		}
 
@@ -472,6 +479,7 @@ static ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 			goto close;
 		} else if ((size_t)s < hdr.p_filesz) {
 			errno = EIO;
+			ret = -1;
 			goto close;
 		}
 

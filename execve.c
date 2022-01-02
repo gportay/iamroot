@@ -261,8 +261,6 @@ static ssize_t getdynamicentry(const char *path, int dt_tag, char *buf,
 	Elf64_Ehdr hdr;
 	off_t off;
 
-	errno = ENOENT;
-
 	fd = next_open(path, O_RDONLY, 0);
 	if (fd == -1)
 		return -1;
@@ -272,20 +270,27 @@ static ssize_t getdynamicentry(const char *path, int dt_tag, char *buf,
 		__pathperror(path, "read");
 		goto close;
 	} else if ((size_t)s < sizeof(hdr)) {
+		errno = EIO;
 		goto close;
 	}
 
 	/* Not an ELF */
-	if (memcmp(hdr.e_ident, ELFMAG, 4) != 0)
+	if (memcmp(hdr.e_ident, ELFMAG, 4) != 0) {
+		errno = ENOEXEC;
 		goto close;
+	}
 
 	/* TODO: Support class ELF32 */
-	if (hdr.e_ident[EI_CLASS] != ELFCLASS64)
+	if (hdr.e_ident[EI_CLASS] != ELFCLASS64) {
+		errno = ENOEXEC;
 		goto close;
+	}
 
 	/* Not a linked program or shared object */
-	if ((hdr.e_type != ET_EXEC) && (hdr.e_type != ET_DYN))
+	if ((hdr.e_type != ET_EXEC) && (hdr.e_type != ET_DYN)) {
+		errno = ENOEXEC;
 		goto close;
+	}
 
 	/* Look for the .shstrtab section */
 	off = hdr.e_shoff;
@@ -342,7 +347,7 @@ static ssize_t getdynamicentry(const char *path, int dt_tag, char *buf,
 			continue;
 
 		if (bufsize < hdr.p_filesz) {
-			errno = EIO;
+			errno = ENAMETOOLONG;
 			goto close;
 		}
 
@@ -377,10 +382,11 @@ static ssize_t getdynamicentry(const char *path, int dt_tag, char *buf,
 			__pathperror(path, "pread");
 			goto close;
 		} else if ((size_t)s < __min(str_siz, bufsize)) {
-			errno = EFAULT;
+			errno = EIO;
 			goto close;
 		}
 
+		errno = 0;
 		ret = strlen(buf);
 		goto close;
 	}
@@ -411,7 +417,7 @@ static ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 		__pathperror(path, "read");
 		goto close;
 	} else if ((size_t)s < sizeof(hdr)) {
-		errno = ENOEXEC;
+		errno = EIO;
 		goto close;
 	}
 
@@ -446,7 +452,7 @@ static ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 			__pathperror(path, "pread");
 			goto close;
 		} else if ((size_t)s < sizeof(hdr)) {
-			errno = ENOEXEC;
+			errno = EIO;
 			goto close;
 		}
 
@@ -465,10 +471,11 @@ static ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 			__pathperror(path, "pread");
 			goto close;
 		} else if ((size_t)s < hdr.p_filesz) {
-			errno = ENOEXEC;
+			errno = EIO;
 			goto close;
 		}
 
+		errno = 0;
 		ret = s;
 		goto close;
 	}

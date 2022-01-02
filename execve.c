@@ -378,7 +378,7 @@ static ssize_t getdynamicentry(const char *path, int dt_tag, char *buf,
 		if (j == hdr.p_filesz / sizeof(*dyn))
 			break;
 
-		/* copy the NULL-termintated string from the .strtab table */
+		/* copy the NULL-terminated string from the .strtab table */
 		str_off = strtab_off + val;
 		str_siz = strtab_siz - val;
 		s = pread(fd, buf, __min(str_siz, bufsize), str_off);

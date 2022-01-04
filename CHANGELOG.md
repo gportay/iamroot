@@ -12,6 +12,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Chroot to an i686 world; tested on [Arch Linux 32]
 - Chroot to an arm world; tested on [Arch Linux ARM]
 
+### Changed
+
+- The libraries are installed by architecture in sub-directories: x86_64, i686,
+  arm, armhf and aarch64
+
 ### Security
 
 - Fix off-by-one array reading while getting `RPATH` and `RUNPATH` from ELF

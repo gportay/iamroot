@@ -12,10 +12,10 @@ PREFIX ?= /usr/local
 %.so: override LDFLAGS += -nolibc
 
 .PHONY: all
-all: libiamroot-linux-x86-64.so.2
+all: x86_64/libiamroot-linux-x86-64.so.2
 
-libiamroot-linux-x86-64.so.2: libiamroot.so
-	ln -sf $< $@
+x86_64/libiamroot-linux-x86-64.so.2: libiamroot.so
+	install -D -m755 $< $@
 
 libiamroot.so: __envperror.o
 libiamroot.so: __fpathperror.o
@@ -185,8 +185,8 @@ install: install-exec install-doc install-bash-completion
 install-exec:
 	install -D -m 755 iamroot-shell $(DESTDIR)$(PREFIX)/bin/iamroot-shell
 	sed -e "s,\$$PWD,$(PREFIX)/lib/iamroot," -i $(DESTDIR)$(PREFIX)/bin/iamroot-shell
-	install -D -m 755 libiamroot.so $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-x86-64.so.2
-	ln -sf libiamroot-linux-x86-64.so.2 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
+	install -D -m 755 x86_64/libiamroot-linux-x86-64.so.2 $(DESTDIR)$(PREFIX)/lib/iamroot/x86_64/libiamroot-linux-x86-64.so.2
+	ln -sf x86_64/libiamroot-linux-x86-64.so.2 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
 	install -D -m 755 exec.sh $(DESTDIR)$(PREFIX)/lib/iamroot/exec.sh
 
 .PHONY: install-doc
@@ -206,7 +206,7 @@ install-bash-completion:
 .PHONY: uninstall
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/iamroot-shell
-	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-x86-64.so.2
+	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/x86_64/libiamroot-linux-x86-64.so.2
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/exec.sh
 	rm -f $(DESTDIR)$(PREFIX)/share/man/man1/iamroot-shell.1.gz
@@ -234,24 +234,24 @@ check:
 
 .PHONY: test
 test: shell-test
-test: | libiamroot-linux-x86-64.so.2 alpine-minirootfs
+test: | x86_64/libiamroot-linux-x86-64.so.2 alpine-minirootfs
 	$(MAKE) -C tests
-	$(MAKE) -C tests $@ LD_PRELOAD=$(CURDIR)/libiamroot-linux-x86-64.so.2 IAMROOT_LIB=$(CURDIR)/libiamroot-linux-x86-64.so.2
+	$(MAKE) -C tests $@ LD_PRELOAD=$(CURDIR)/x86_64/libiamroot-linux-x86-64.so.2 IAMROOT_LIB=$(CURDIR)/x86_64/libiamroot-linux-x86-64.so.2
 
 .PHONY: shell-test
-shell-test: libiamroot-linux-x86-64.so.2
+shell-test: x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "whoami" | tee /dev/stderr | grep -q "^root\$$"
 	bash iamroot-shell -c "IAMROOT_EUID=$$EUID whoami" | tee /dev/stderr | grep -q "^$(shell whoami)\$$"
 	bash iamroot-shell -c "stat -c '%u:%g' ." | tee /dev/stderr | grep -q "^0:0$$"
 	bash iamroot-shell -c "echo \$$IAMROOTLVL" | tee /dev/stderr | grep -q "^[0-9]\+$$"
 
 .PHONY: shell
-shell: libiamroot-linux-x86-64.so.2
+shell: x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell
 
 .PHONY: clean
 clean:
-	rm -f libiamroot-linux-x86-64.so.2 libiamroot.so *.o
+	rm -Rf x86_64/ libiamroot.so *.o
 	$(MAKE) -C tests $@
 
 .PHONY: mrproper

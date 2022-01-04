@@ -28,7 +28,11 @@ prepare() {
 
 build() {
 	cd "$srcdir/$pkgname"
-	make CFLAGS= libiamroot-linux-aarch64.so libiamroot-musl-x86_64.so libiamroot-linux-x86-64.so libiamroot.so doc
+	make CFLAGS= aarch64/libiamroot-linux-aarch64.so.1
+	make CLFAGS= x86_64/libiamroot-musl-x86_64.so.1
+	make CFLAGS= x86_64/libiamroot-linux-x86-64.so.2
+	make libiamroot.so
+	make doc
 }
 
 check() {
@@ -39,8 +43,9 @@ check() {
 package() {
 	cd "$srcdir/$pkgname"
 	make PREFIX=/usr DESTDIR="$pkgdir" install-exec
-	make PREFIX=/usr DESTDIR="$pkgdir" install-exec-musl-x86_64
-	make PREFIX=/usr DESTDIR="$pkgdir" install-exec-linux-aarch64
+	make PREFIX=/usr DESTDIR="$pkgdir" install-exec-x86_64-linux-x86-64.2
+	make PREFIX=/usr DESTDIR="$pkgdir" install-exec-x86_64-musl-x86_64.1
+	make PREFIX=/usr DESTDIR="$pkgdir" install-exec-aarch64-linux-aarch64.1
 	make PREFIX=/usr DESTDIR="$pkgdir" install-doc
 	make PREFIX=/usr DESTDIR="$pkgdir" install-bash-completion
 	install -D -m 644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"

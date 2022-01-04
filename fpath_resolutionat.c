@@ -68,19 +68,19 @@ void path_resolution_init()
 
 	library_musl_x86_64 = getenv("IAMROOT_LIB_MUSL_X86_64");
 	if (!library_musl_x86_64)
-		library_musl_x86_64 = "^/usr/lib/iamroot/libiamroot-musl-x86_64.so.1$";
+		library_musl_x86_64 = "^/usr/lib/iamroot/x86_64/libiamroot-musl-x86_64.so.1$";
 
 	library_linux_x86_64 = getenv("IAMROOT_LIB_LINUX_X86_64");
 	if (!library_linux_x86_64)
-		library_linux_x86_64 = "^/usr/lib/iamroot/libiamroot-linux-x86-64.so.2$";
+		library_linux_x86_64 = "^/usr/lib/iamroot/x86_64/libiamroot-linux-x86-64.so.2$";
 
 	library_musl_aarch64 = getenv("IAMROOT_LIB_MUSL_AARCH64");
 	if (!library_musl_aarch64)
-		library_musl_aarch64 = "^/usr/lib/iamroot/libiamroot-musl-aarch64.so.1$";
+		library_musl_aarch64 = "^/usr/lib/iamroot/aarch64/libiamroot-musl-aarch64.so.1$";
 
 	library_linux_aarch64 = getenv("IAMROOT_LIB_LINUX_AARCH64");
 	if (!library_linux_aarch64)
-		library_linux_aarch64 = "^/usr/lib/iamroot/libiamroot-linux-aarch64.so.1$";
+		library_linux_aarch64 = "^/usr/lib/iamroot/aarch64/libiamroot-linux-aarch64.so.1$";
 
 	exec = getenv("IAMROOT_EXEC");
 	if (!exec)

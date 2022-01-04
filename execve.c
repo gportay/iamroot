@@ -887,21 +887,21 @@ static char *__getlibiamroot(const char *ldso, int abi)
 	if (!ret)
 #if defined(__GLIBC__)
 #if defined(__x86_64__)
-		return "/usr/lib/iamroot/libiamroot-linux-x86-64.so.2";
+		return "/usr/lib/iamroot/x86_64/libiamroot-linux-x86-64.so.2";
 #elif defined(__i386__)
-		return "/usr/lib/iamroot/libiamroot-linux.so.2";
+		return "/usr/lib/iamroot/i686/libiamroot-linux.so.2";
 #elif defined(__aarch64__)
-		return "/usr/lib/iamroot/libiamroot-linux-aarch64.so.1";
+		return "/usr/lib/iamroot/aarch64/libiamroot-linux-aarch64.so.1";
 #elif defined(__arm__)
-		return "/usr/lib/iamroot/libiamroot-linux-armhf.so.3";
+		return "/usr/lib/iamroot/armhf/libiamroot-linux-armhf.so.3";
 #else
 		return NULL;
 #endif
 #else /* assuming musl */
 #if defined(__x86_64__)
-		return "/usr/lib/iamroot/libiamroot-musl-x86_64.so.1";
+		return "/usr/lib/iamroot/x86_64/libiamroot-musl-x86_64.so.1";
 #elif defined(__aarch64__)
-		return "/usr/lib/iamroot/libiamroot-musl-aarch64.so.1";
+		return "/usr/lib/iamroot/aarch64/libiamroot-musl-aarch64.so.1";
 #else
 		return NULL;
 #endif

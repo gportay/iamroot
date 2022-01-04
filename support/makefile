@@ -15,9 +15,86 @@ MAKEFLAGS += --no-print-directory
 .PHONY: all
 all:
 
-.PRECIOUS: libiamroot-%.so.1 libiamroot-%.so.2 libiamroot-%.so.3
-libiamroot-%.so.1 libiamroot-%.so.2 libiamroot-%.so.3: output-%/libiamroot.so
-	cp output-$*/libiamroot.so $@
+define libiamroot_so =
+
+all ci: $(1)/libiamroot-$(2).so.$(3)
+
+.PRECIOUS: $(1)/libiamroot-$(2).so.$(3)
+$(1)/libiamroot-$(2).so.$(3): output-$(1)-$(2)/libiamroot.so
+
+output-$(1)-$(2)/libiamroot.so:
+
+install: install-exec-$(1)-$(2).$(3)
+
+.PHONY: install-exec-$(1)-$(2).$(3)
+install-exec-$(1)-$(2).$(3):
+	install -D -m 755 $(1)/libiamroot-$(2).so.$(3) $(DESTDIR)$(PREFIX)/lib/iamroot/$(1)/libiamroot-$(2).so.$(3)
+	ln -sf libiamroot-$(2).so.$(3) $(DESTDIR)$(PREFIX)/lib/iamroot/$(1)/libiamroot-$(2).so
+
+uninstall: uninstall-$(1)-$(2).$(3)
+
+.PHONY: uninstall-$(1)-$(2).$(3)
+uninstall-$(1)-$(2).$(3):
+	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/$(1)/libiamroot-$(2).so.$(3)
+	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/$(1)/libiamroot-$(2).so
+
+clean: clean-$(1)-$(2).$(3)
+
+.PHONY: clean-$(1)-$(2).$(3)
+clean-$(1)-$(2).$(3):
+	rm -Rf output-$(1)-$(2)/
+	rm -Rf $(1)/
+endef
+
+$(eval $(call libiamroot_so,x86_64,linux-x86-64,2))
+
+output-i686-linux/libiamroot.so: export CC += -m32
+output-i686-linux/libiamroot.so: export CFLAGS += -fno-stack-protector
+$(eval $(call libiamroot_so,i686,linux,2))
+
+ifneq ($(shell command -v arm-unknown-linux-gnueabi-gcc),)
+output-arm-linux/libiamroot.so: export CC = arm-unknown-linux-gnueabi-gcc
+$(eval $(call libiamroot_so,arm,linux,3))
+endif
+
+ifneq ($(shell command -v armv7l-unknown-linux-gnueabihf-gcc),)
+output-armhf-linux-armhf/libiamroot.so: export CC = armv7l-unknown-linux-gnueabihf-gcc
+$(eval $(call libiamroot_so,armhf,linux-armhf,3))
+endif
+
+ifneq ($(shell command -v aarch64-linux-gnu-gcc),)
+aarch64/libiamroot-linux-aarch64.so.1: export CC = aarch64-linux-gnu-gcc
+$(eval $(call libiamroot_so,aarch64,linux-aarch64,1))
+endif
+
+ifneq ($(shell command -v musl-gcc),)
+x86_64/libiamroot-musl-x86_64.so.1: export CC = musl-gcc
+$(eval $(call libiamroot_so,x86_64,musl-x86_64,1))
+endif
+
+ifneq ($(shell command -v aarch64-linux-musl-gcc),)
+aarch64/libiamroot-musl-aarch64.so.1: export CC = aarch64-linux-musl-gcc
+$(eval $(call libiamroot_so,aarch64,musl-aarch64,1))
+endif
+
+ifneq ($(shell command -v clang),)
+all: clang/libiamroot-linux-x86-64.so.2
+
+.PRECIOUS: clang/libiamroot-linux-x86_64.so.2
+clang/libiamroot-linux-x86-64.so.2: output-clang-linux-x86-64/libiamroot.so
+
+output-clang-linux-x86-64/libiamroot.so:
+
+clang/libiamroot-linux-x86-64.so.2:
+clang/libiamroot-linux-x86-64.so.2: export CC = clang
+
+clean: clean-clang-linux-x86-64.2
+
+.PHONY: clean-clang-linux-x86-64.2
+clean-clang-linux-x86-64.2:
+	rm -Rf output-clang-x86-64/
+	rm -Rf clang/
+endif
 
 .PRECIOUS: output-%/libiamroot.so
 output-%/libiamroot.so: $(wildcard *.c) | output-%
@@ -26,6 +103,9 @@ output-%/libiamroot.so: $(wildcard *.c) | output-%
 .PRECIOUS: output-%
 output-%:
 	mkdir $@
+
+%.so.1 %.so.2 %.so.3:
+	install -D -m755 $< $@
 
 .NOTPARALLEL: rootfs
 .PHONY: rootfs
@@ -43,46 +123,14 @@ arm-rootfs:
 .PHONY: clean
 clean:
 	$(MAKE) -f Makefile $@
-	rm -Rf output-*/
-	rm -f libiamroot*.so* *.ext4 *.cpio
+	rm -f *.ext4 *.cpio
 	rm -Rf *-rootfs/
-
-.PRECIOUS: libiamroot-linux-x86-64.so
-libiamroot-linux-x86-64.so: libiamroot-linux-x86-64.so.2
-	ln -sf $< $@
-
-libiamroot-linux-x86-64.so.2:
-
-.PRECIOUS: libiamroot-linux-x86.so
-libiamroot-linux-x86.so: libiamroot-linux-x86.so.2
-	ln -sf $< $@
-
-all: libiamroot-linux.so.2
-
-libiamroot-linux.so.2: export CC += -m32
-# FIXES: undefined reference to `__stack_chk_fail_local'
-libiamroot-linux.so.2: export CFLAGS += -fno-stack-protector
-libiamroot-linux.so.2:
-
-install: install-exec-linux
-
-.PHONY: install-exec-linux
-install-exec-linux:
-	install -D -m 755 libiamroot-linux.so.2 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux.so.2
-	ln -sf libiamroot-linux.so.2 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux.so
-
-uninstall: uninstall-linux
-
-.PHONY: uninstall-linux
-uninstall-linux:
-	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux.so.2
-	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux.so
 
 ifneq ($(shell command -v pacstrap),)
 .PHONY: arch-test
 arch-test: | arch-rootfs/usr/bin/shebang.sh
 arch-test: | arch-rootfs/usr/bin/shebang-arg.sh
-arch-test: libiamroot-linux-x86-64.so.2
+arch-test: x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "chroot arch-rootfs shebang.sh one two three"
 	bash iamroot-shell -c "chroot arch-rootfs shebang-arg.sh one two three"
 
@@ -98,7 +146,7 @@ rootfs: arch-rootfs
 .PHONY: arch-rootfs
 arch-rootfs: | arch-rootfs/etc/machine-id
 
-arch-rootfs/etc/machine-id: | libiamroot-linux-x86-64.so.2
+arch-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	mkdir -p arch-rootfs
 	bash iamroot-shell -c "pacstrap -C support/x86_64-pacman.conf arch-rootfs"
 
@@ -118,7 +166,7 @@ i686-arch-rootfs: | i686-arch-rootfs/etc/machine-id
 
 i686-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/i686-arch-rootfs
 i686-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_2 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
-i686-arch-rootfs/etc/machine-id: | libiamroot-linux.so.2 libiamroot-linux-x86-64.so.2
+i686-arch-rootfs/etc/machine-id: | i686/libiamroot-linux.so.2 x86_64/libiamroot-linux-x86-64.so.2
 	mkdir -p i686-arch-rootfs
 	bash iamroot-shell -c "pacstrap -C support/i686-pacman.conf i686-arch-rootfs"
 
@@ -130,7 +178,7 @@ endif
 
 arch.ext4:
 
-arch-postrootfs: | libiamroot-linux-x86-64.so.2
+arch-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i arch-rootfs/etc/passwd
 	sed -e '/^root::/s,^root::,root:x:,' \
@@ -168,7 +216,7 @@ fedora-35-rootfs: | fedora-35-rootfs/etc/machine-id
 fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
 fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64:/usr/lib64/ldb/modules/ldb:/usr/lib64/ldb
 fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|$(CURDIR)/fedora-$*-rootfs/var/log/dnf.rpm.log
-fedora-%-rootfs/etc/machine-id: | libiamroot-linux-x86-64.so.2
+fedora-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	install -D -m644 support/fedora.repo fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
 	bash iamroot-shell -c "dnf --releasever $* --assumeyes --installroot $(CURDIR)/fedora-$*-rootfs group install minimal-environment"
 	rm -f fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
@@ -192,7 +240,7 @@ fedora-33-postrootfs:
 fedora-34-postrootfs:
 fedora-35-postrootfs:
 fedora-35-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /usr/lib64/libc.so.6:/usr/lib64/libdl.so.2:/usr/lib64/libpthread.so.0:/usr/lib64/librt.so.1
-fedora-%-postrootfs: | libiamroot-linux-x86-64.so.2
+fedora-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i fedora-$*-rootfs/etc/passwd
 	sed -e '/^root::/s,^root::,root:x:,' \
@@ -211,46 +259,12 @@ mount-fedora-33 mount-fedora-34 mount-fedora-35:
 umount-fedora-33 umount-fedora-34 umount-fedora-35:
 endif
 
-ifneq ($(shell command -v clang),)
-all: libiamroot-linux-x86-64-clang.so
-
-.PRECIOUS: libiamroot-linux-x86-64-clang.so
-libiamroot-linux-x86-64-clang.so: libiamroot-linux-x86-64-clang.so.2
-	ln -sf $< $@
-
-libiamroot-linux-x86-64-clang.so.2:
-libiamroot-linux-x86-64-clang.so.2: export CC = clang
-endif
-
 ifneq ($(shell command -v musl-gcc),)
-all ci: libiamroot-musl-x86_64.so
-
-.PRECIOUS: libiamroot-musl-x86_64.so
-libiamroot-musl-x86_64.so: libiamroot-musl-x86_64.so.1
-	ln -sf $< $@
-
-libiamroot-musl-x86_64.so.1:
-libiamroot-musl-x86_64.so.1: export CC = musl-gcc
-
-install: install-exec-musl-x86_64
-
-.PHONY: install-exec-musl-x86_64
-install-exec-musl-x86_64:
-	install -D -m 755 libiamroot-musl-x86_64.so.1 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-musl-x86_64.so.1
-	ln -sf libiamroot-musl-x86_64.so.1 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-musl-x86_64.so
-
-uninstall: uninstall-musl-x86_64
-
-.PHONY: uninstall-musl-x86_64
-uninstall-musl-x86_64:
-	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-musl-x86_64.so.1
-	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-musl-x86_64.so
-
 .PHONY: alpine-test
 alpine-test: | alpine-minirootfs/usr/bin/shebang.sh
 alpine-test: | alpine-minirootfs/usr/bin/shebang-arg.sh
 alpine-test: | alpine-minirootfs/usr/bin/shebang-busybox.sh
-alpine-test: libiamroot-musl-x86_64.so.1 libiamroot-linux-x86-64.so.2 | alpine-minirootfs
+alpine-test: x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2 | alpine-minirootfs
 	bash iamroot-shell -c "chroot alpine-minirootfs pwd" | tee /dev/stderr | grep -q "^/\$$"
 	bash iamroot-shell -c "chroot alpine-minirootfs cat /etc/os-release" | tee /dev/stderr | grep 'NAME="Alpine Linux"'
 	bash iamroot-shell --path /bin:/usr/bin:/sbin:/usr/sbin -c "chroot alpine-minirootfs chroot . cat /etc/os-release" | tee /dev/stderr | grep 'NAME="Alpine Linux"'
@@ -258,12 +272,12 @@ alpine-test: libiamroot-musl-x86_64.so.1 libiamroot-linux-x86-64.so.2 | alpine-m
 	bash iamroot-shell --path /bin:/usr/bin:/sbin:/usr/sbin -c "chroot alpine-minirootfs shebang.sh one two three"
 	bash iamroot-shell --path /bin:/usr/bin:/sbin:/usr/sbin -c "chroot alpine-minirootfs shebang-arg.sh one two three"
 	bash iamroot-shell --path /bin:/usr/bin:/sbin:/usr/sbin -c "chroot alpine-minirootfs shebang-busybox.sh one two three"
-	bash iamroot-shell -c "chroot alpine-minirootfs /lib/ld-musl-x86_64.so.1 --preload "$$PWD/libiamroot-musl-x86_64.so.1" bin/busybox"
+	bash iamroot-shell -c "chroot alpine-minirootfs /lib/ld-musl-x86_64.so.1 --preload "$$PWD/x86_64/libiamroot-musl-x86_64.so.1" bin/busybox"
 
 rootfs: alpine-rootfs
 
 .PHONY: mini-chroot
-mini-chroot: libiamroot-musl-x86_64.so.1 libiamroot-linux-x86-64.so.2 | alpine-minirootfs
+mini-chroot: x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2 | alpine-minirootfs
 	bash iamroot-shell -c "chroot alpine-minirootfs /bin/sh"
 
 alpine-minirootfs/usr/bin/%: support/% | alpine-minirootfs
@@ -291,7 +305,7 @@ alpine-rootfs: alpine-3.14-rootfs alpine-edge-rootfs
 alpine-3.14-rootfs: | alpine-3.14-rootfs/bin/busybox
 alpine-edge-rootfs: | alpine-edge-rootfs/bin/busybox
 
-alpine-%-rootfs/bin/busybox: | libiamroot-musl-x86_64.so.1 libiamroot-linux-x86-64.so.2
+alpine-%-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "alpine-make-rootfs alpine-$*-rootfs --keys-dir /usr/share/apk/keys/x86_64 --mirror-uri http://nl.alpinelinux.org/alpine --branch $*"
 
 qemu-system-x86_64-alpine-3.14 qemu-system-x86_64-alpine-edge:
@@ -324,80 +338,6 @@ umount-alpine-3.14 umount-alpine-edge:
 endif
 endif
 
-ifneq ($(shell command -v aarch64-linux-gnu-gcc),)
-all: libiamroot-linux-aarch64.so
-
-.PRECIOUS: libiamroot-musl-aarch64.so
-libiamroot-linux-aarch64.so: libiamroot-linux-aarch64.so.1
-	ln -sf $< $@
-
-libiamroot-linux-aarch64.so.1:
-libiamroot-linux-aarch64.so.1: export CC = aarch64-linux-gnu-gcc
-
-install: install-exec-linux-aarch64
-
-.PHONY: install-exec-linux-aarch64
-install-exec-linux-aarch64:
-	install -D -m 755 libiamroot-linux-aarch64.so.1 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-aarch64.so.1
-	ln -sf libiamroot-linux-aarch64.so.1 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-aarch64.so
-
-uninstall: uninstall-exec-linux-aarch64
-
-.PHONY: uninstall-exec-linux-aarch64
-uninstall-exec-linux-aarch64:
-	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-aarch64.so.1
-	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-aarch64.so
-
-ifneq ($(shell command -v arm-unknown-linux-gnueabi-gcc),)
-all: libiamroot-linux.so
-
-.PRECIOUS: libiamroot-linux.so
-libiamroot-linux.so: libiamroot-linux.so.3
-	ln -sf $< $@
-
-libiamroot-linux.so.3:
-libiamroot-linux.so.3: export CC = arm-unknown-linux-gnueabi-gcc
-
-install: install-exec-linux-arm
-
-.PHONY: install-exec-linux-arm
-install-exec-linux-arm:
-	install -D -m 755 libiamroot-linux.so.3 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux.so.3
-	ln -sf libiamroot-linux.so.3 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux.so
-
-uninstall: uninstall-exec-linux-arm
-
-.PHONY: uninstall-exec-linux-arm
-uninstall-exec-linux-arm:
-	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-arm.so.3
-	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-arm.so
-endif
-
-ifneq ($(shell command -v armv7l-unknown-linux-gnueabihf-gcc),)
-all: libiamroot-linux-armhf.so
-
-.PRECIOUS: libiamroot-linux-armhf.so
-libiamroot-linux-armhf.so: libiamroot-linux-armhf.so.3
-	ln -sf $< $@
-
-libiamroot-linux-armhf.so.3:
-libiamroot-linux-armhf.so.3: export CC = armv7l-unknown-linux-gnueabihf-gcc
-
-install: install-exec-linux-armhf
-
-.PHONY: install-exec-linux-armhf
-install-exec-linux-armhf:
-	install -D -m 755 libiamroot-linux-armhf.so.3 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-armhf.so.3
-	ln -sf libiamroot-linux-armhf.so.1 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-armhf.so
-
-uninstall: uninstall-exec-linux-armhf
-
-.PHONY: uninstall-exec-linux-armhf
-uninstall-exec-linux-armhf:
-	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-armhf.so.3
-	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-armhf.so
-endif
-
 ifneq ($(shell command -v pacstrap),)
 .PHONY: aarch64-arch-chroot
 aarch64-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-arch-rootfs
@@ -413,14 +353,14 @@ aarch64-arch-rootfs: | aarch64-arch-rootfs/etc/machine-id
 
 aarch64-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-arch-rootfs
 aarch64-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
-aarch64-arch-rootfs/etc/machine-id: | libiamroot-linux-aarch64.so.1 libiamroot-linux-x86-64.so.2
+aarch64-arch-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 	mkdir -p aarch64-arch-rootfs
 	bash iamroot-shell -c "pacstrap -C support/aarch64-pacman.conf aarch64-arch-rootfs"
 
 ifneq ($(shell command -v arm-unknown-linux-gnueabi-gcc),)
 .PHONY: arm-arch-chroot
 arm-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/arm-arch-rootfs
-arm-arch-chroot: export IAMROOT_LIB_LINUX_3 = $(CURDIR)/libiamroot-linux.so.3
+arm-arch-chroot: export IAMROOT_LIB_LINUX_3 = $(CURDIR)/arm/libiamroot-linux.so.3
 arm-arch-chroot: export IAMROOT_LD_PRELOAD_LINUX_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
 arm-arch-chroot: | arm-arch-rootfs
 	bash iamroot-shell -c "chroot arm-arch-rootfs"
@@ -432,9 +372,9 @@ arm-arch-rootfs: export QEMU_LD_PREFIX = $(CURDIR)/arm-arch-rootfs
 arm-arch-rootfs: | arm-arch-rootfs/etc/machine-id
 
 arm-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/arm-arch-rootfs
-arm-arch-rootfs/etc/machine-id: export IAMROOT_LIB_LINUX_3 = $(CURDIR)/libiamroot-linux.so.3
+arm-arch-rootfs/etc/machine-id: export IAMROOT_LIB_LINUX_3 = $(CURDIR)/arm/libiamroot-linux.so.3
 arm-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
-arm-arch-rootfs/etc/machine-id: | libiamroot-linux.so.3 libiamroot-linux-x86-64.so.2
+arm-arch-rootfs/etc/machine-id: | arm/libiamroot-linux.so.3 x86_64/libiamroot-linux-x86-64.so.2
 	mkdir -p arm-arch-rootfs
 	bash iamroot-shell -c "pacstrap -C support/arm-pacman.conf arm-arch-rootfs"
 endif
@@ -442,7 +382,7 @@ endif
 ifneq ($(shell command -v armv6l-unknown-linux-gnueabihf-gcc),)
 .PHONY: armv6h-arch-chroot
 armv6h-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/armv6h-arch-rootfs
-armv6h-arch-chroot: export IAMROOT_LIB_LINUX_ARMHF_3 = $(CURDIR)/libiamroot-linux-armhf.so.3
+armv6h-arch-chroot: export IAMROOT_LIB_LINUX_ARMHF_3 = $(CURDIR)/armhf/libiamroot-linux-armhf.so.3
 armv6h-arch-chroot: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
 armv6h-arch-chroot: | armv6h-arch-rootfs
 	bash iamroot-shell -c "chroot armv6h-arch-rootfs"
@@ -454,9 +394,9 @@ armv6h-arch-rootfs: export QEMU_LD_PREFIX = $(CURDIR)/armv6h-arch-rootfs
 armv6h-arch-rootfs: | armv6h-arch-rootfs/etc/machine-id
 
 armv6h-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/armv6h-arch-rootfs
-armv6h-arch-rootfs/etc/machine-id: export IAMROOT_LIB_LINUX_ARMHF_3 = $(CURDIR)/libiamroot-linux-armhf.so.3
+armv6h-arch-rootfs/etc/machine-id: export IAMROOT_LIB_LINUX_ARMHF_3 = $(CURDIR)/armhf/libiamroot-linux-armhf.so.3
 armv6h-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
-armv6h-arch-rootfs/etc/machine-id: | libiamroot-linux-armhf.so.3 libiamroot-linux-x86-64.so.2
+armv6h-arch-rootfs/etc/machine-id: | armhf/libiamroot-linux-armhf.so.3 x86_64/libiamroot-linux-x86-64.so.2
 	mkdir -p armv6h-arch-rootfs
 	bash iamroot-shell -c "pacstrap -C support/armv6h-pacman.conf armv6h-arch-rootfs"
 endif
@@ -464,7 +404,7 @@ endif
 ifneq ($(shell command -v armv7l-unknown-linux-gnueabihf-gcc),)
 .PHONY: armv7h-arch-chroot
 armv7h-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/armv7h-arch-rootfs
-armv7h-arch-chroot: export IAMROOT_LIB_LINUX_ARMHF_3 = $(CURDIR)/libiamroot-linux-armhf.so.3
+armv7h-arch-chroot: export IAMROOT_LIB_LINUX_ARMHF_3 = $(CURDIR)/armhf/libiamroot-linux-armhf.so.3
 armv7h-arch-chroot: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
 armv7h-arch-chroot: | armv7h-arch-rootfs
 	bash iamroot-shell -c "chroot armv7h-arch-rootfs"
@@ -476,9 +416,9 @@ armv7h-arch-rootfs: export QEMU_LD_PREFIX = $(CURDIR)/armv7h-arch-rootfs
 armv7h-arch-rootfs: | armv7h-arch-rootfs/etc/machine-id
 
 armv7h-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/armv7h-arch-rootfs
-armv7h-arch-rootfs/etc/machine-id: export IAMROOT_LIB_LINUX_ARMHF_3 = $(CURDIR)/libiamroot-linux-armhf.so.3
+armv7h-arch-rootfs/etc/machine-id: export IAMROOT_LIB_LINUX_ARMHF_3 = $(CURDIR)/armhf/libiamroot-linux-armhf.so.3
 armv7h-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
-armv7h-arch-rootfs/etc/machine-id: | libiamroot-linux-armhf.so.3 libiamroot-linux-x86-64.so.2
+armv7h-arch-rootfs/etc/machine-id: | armhf/libiamroot-linux-armhf.so.3 x86_64/libiamroot-linux-x86-64.so.2
 	mkdir -p armv7h-arch-rootfs
 	bash iamroot-shell -c "pacstrap -C support/armv7h-pacman.conf armv7h-arch-rootfs"
 endif
@@ -505,42 +445,18 @@ aarch64-fedora-35-rootfs: | aarch64-fedora-35-rootfs/etc/machine-id
 aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
 aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64:/usr/lib64/ldb/modules/ldb:/usr/lib64/ldb
 aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|$(CURDIR)/aarch64-fedora-$*-rootfs/var/log/dnf.rpm.log
-aarch64-fedora-%-rootfs/etc/machine-id: | libiamroot-linux-aarch64.so.1 libiamroot-linux-x86-64.so.2
+aarch64-fedora-%-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 	install -D -m644 support/fedora.repo aarch64-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
 	bash iamroot-shell -c "dnf --forcearch aarch64 --releasever $* --assumeyes --installroot $(CURDIR)/aarch64-fedora-$*-rootfs group install minimal-environment"
 	rm -f aarch64-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
 endif
-endif
 
 ifneq ($(shell command -v aarch64-linux-musl-gcc),)
-all: libiamroot-musl-aarch64.so
-
-.PRECIOUS: libiamroot-musl-aarch64.so
-libiamroot-musl-aarch64.so: libiamroot-musl-aarch64.so.1
-	ln -sf $< $@
-
-libiamroot-musl-aarch64.so.1:
-libiamroot-musl-aarch64.so.1: export CC = aarch64-linux-musl-gcc
-
-install: install-exec-musl-aarch64
-
-.PHONY: install-exec-musl-aarch64
-install-exec-musl-aarch64:
-	install -D -m 755 libiamroot-musl-aarch64.so.1 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-musl-aarch64.so.1
-	ln -sf libiamroot-musl-aarch64.so.1 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-musl-aarch64.so
-
-uninstall: uninstall-exec-musl-aarch64
-
-.PHONY: uninstall-exec-musl-aarch64
-uninstall-exec-musl-aarch64:
-	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-musl-aarch64.so.1
-	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-musl-aarch64.so
-
 aarch64-rootfs: aarch64-alpine-rootfs
 
 .PHONY: aarch64-mini-chroot
 aarch64-mini-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-mini-rootfs
-aarch64-mini-chroot: | libiamroot-musl-aarch64.so.1 libiamroot-linux-x86-64.so.2 aarch64-alpine-minirootfs
+aarch64-mini-chroot: | aarch64/libiamroot-musl-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2 aarch64-alpine-minirootfs
 	bash iamroot-shell -c "chroot aarch64-alpine-minirootfs /bin/sh"
 
 .PHONY: aarch64-alpine-minirootfs
@@ -566,7 +482,7 @@ aarch64-alpine-rootfs: aarch64-alpine-3.14-rootfs aarch64-alpine-edge-rootfs
 aarch64-alpine-3.14-rootfs: | aarch64-alpine-3.14-rootfs/bin/busybox
 aarch64-alpine-edge-rootfs: | aarch64-alpine-edge-rootfs/bin/busybox
 
-aarch64-alpine-%-rootfs/bin/busybox: | libiamroot-musl-aarch64.so.1 libiamroot-linux-x86-64.so.2
+aarch64-alpine-%-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "APK_OPTS='--arch aarch64' alpine-make-rootfs aarch64-alpine-$*-rootfs --keys-dir /usr/share/apk/keys/aarch64 --mirror-uri http://nl.alpinelinux.org/alpine --branch $*"
 endif
 endif
@@ -656,7 +572,7 @@ endif
 ifneq ($(VMLINUX_KVER),)
 MODULESDIRS += %-rootfs/usr/lib/modules/$(VMLINUX_KVER)
 endif
-%.ext4: | libiamroot-linux-x86-64.so.2 %-rootfs $(MODULESDIRS)
+%.ext4: | x86_64/libiamroot-linux-x86-64.so.2 %-rootfs $(MODULESDIRS)
 	$(MAKE) $*-postrootfs
 	rm -f $@.tmp
 	fallocate --length 2G $@.tmp
@@ -664,7 +580,7 @@ endif
 	mv $@.tmp $@
 
 .PRECIOUS: %-rootfs/usr/lib/modules/$(KVER) %-rootfs/usr/lib/modules/$(VMLINUX_KVER)
-%-rootfs/usr/lib/modules/$(KVER) %-rootfs/usr/lib/modules/$(VMLINUX_KVER): | libiamroot-linux-x86-64.so.2 %-rootfs
+%-rootfs/usr/lib/modules/$(KVER) %-rootfs/usr/lib/modules/$(VMLINUX_KVER): | x86_64/libiamroot-linux-x86-64.so.2 %-rootfs
 	rm -Rf $@.tmp $@
 	mkdir -p $(@D)
 	bash iamroot-shell -c "rsync -a /usr/lib/modules/$(@F)/. $@.tmp/."
@@ -674,7 +590,7 @@ endif
 %-postrootfs:
 
 .PHONY: static-chroot
-static-chroot: libiamroot-linux-x86-64.so.2 | static-rootfs
+static-chroot: x86_64/libiamroot-linux-x86-64.so.2 | static-rootfs
 	bash iamroot-shell -c "chroot static-rootfs /bin/sh"
 
 .PHONY: static-rootfs

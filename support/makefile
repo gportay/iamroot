@@ -392,6 +392,28 @@ aarch64-arch-rootfs/etc/machine-id: | libiamroot-linux-aarch64.so.1 libiamroot-l
 	mkdir -p aarch64-arch-rootfs
 	bash iamroot-shell -c "pacstrap -C support/aarch64-pacman.conf aarch64-arch-rootfs"
 
+ifneq ($(shell command -v armv6l-unknown-linux-gnueabihf-gcc),)
+.PHONY: armv6h-arch-chroot
+armv6h-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/armv6h-arch-rootfs
+armv6h-arch-chroot: export IAMROOT_LIB_LINUX_ARMHF_3 = $(CURDIR)/libiamroot-linux-armhf.so.3
+armv6h-arch-chroot: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
+armv6h-arch-chroot: | armv6h-arch-rootfs
+	bash iamroot-shell -c "chroot armv6h-arch-rootfs"
+
+arm-rootfs: armv6h-arch-rootfs
+
+.PHONY: armv6h-arch-rootfs
+armv6h-arch-rootfs: export QEMU_LD_PREFIX = $(CURDIR)/armv6h-arch-rootfs
+armv6h-arch-rootfs: | armv6h-arch-rootfs/etc/machine-id
+
+armv6h-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/armv6h-arch-rootfs
+armv6h-arch-rootfs/etc/machine-id: export IAMROOT_LIB_LINUX_ARMHF_3 = $(CURDIR)/libiamroot-linux-armhf.so.3
+armv6h-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
+armv6h-arch-rootfs/etc/machine-id: | libiamroot-linux-armhf.so.3 libiamroot-linux-x86-64.so.2
+	mkdir -p armv6h-arch-rootfs
+	bash iamroot-shell -c "pacstrap -C support/armv6h-pacman.conf armv6h-arch-rootfs"
+endif
+
 ifneq ($(shell command -v armv7l-unknown-linux-gnueabihf-gcc),)
 .PHONY: armv7h-arch-chroot
 armv7h-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/armv7h-arch-rootfs

@@ -348,6 +348,31 @@ uninstall-exec-linux-aarch64:
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-aarch64.so.1
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-aarch64.so
 
+ifneq ($(shell command -v arm-unknown-linux-gnueabi-gcc),)
+all: libiamroot-linux.so
+
+.PRECIOUS: libiamroot-linux.so
+libiamroot-linux.so: libiamroot-linux.so.3
+	ln -sf $< $@
+
+libiamroot-linux.so.3:
+libiamroot-linux.so.3: export CC = arm-unknown-linux-gnueabi-gcc
+
+install: install-exec-linux-arm
+
+.PHONY: install-exec-linux-arm
+install-exec-linux-arm:
+	install -D -m 755 libiamroot-linux.so.3 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux.so.3
+	ln -sf libiamroot-linux.so.3 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux.so
+
+uninstall: uninstall-exec-linux-arm
+
+.PHONY: uninstall-exec-linux-arm
+uninstall-exec-linux-arm:
+	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-arm.so.3
+	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot-linux-arm.so
+endif
+
 ifneq ($(shell command -v armv7l-unknown-linux-gnueabihf-gcc),)
 all: libiamroot-linux-armhf.so
 
@@ -391,6 +416,28 @@ aarch64-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = 
 aarch64-arch-rootfs/etc/machine-id: | libiamroot-linux-aarch64.so.1 libiamroot-linux-x86-64.so.2
 	mkdir -p aarch64-arch-rootfs
 	bash iamroot-shell -c "pacstrap -C support/aarch64-pacman.conf aarch64-arch-rootfs"
+
+ifneq ($(shell command -v arm-unknown-linux-gnueabi-gcc),)
+.PHONY: arm-arch-chroot
+arm-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/arm-arch-rootfs
+arm-arch-chroot: export IAMROOT_LIB_LINUX_3 = $(CURDIR)/libiamroot-linux.so.3
+arm-arch-chroot: export IAMROOT_LD_PRELOAD_LINUX_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
+arm-arch-chroot: | arm-arch-rootfs
+	bash iamroot-shell -c "chroot arm-arch-rootfs"
+
+arm-rootfs: arm-arch-rootfs
+
+.PHONY: arm-arch-rootfs
+arm-arch-rootfs: export QEMU_LD_PREFIX = $(CURDIR)/arm-arch-rootfs
+arm-arch-rootfs: | arm-arch-rootfs/etc/machine-id
+
+arm-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/arm-arch-rootfs
+arm-arch-rootfs/etc/machine-id: export IAMROOT_LIB_LINUX_3 = $(CURDIR)/libiamroot-linux.so.3
+arm-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
+arm-arch-rootfs/etc/machine-id: | libiamroot-linux.so.3 libiamroot-linux-x86-64.so.2
+	mkdir -p arm-arch-rootfs
+	bash iamroot-shell -c "pacstrap -C support/arm-pacman.conf arm-arch-rootfs"
+endif
 
 ifneq ($(shell command -v armv6l-unknown-linux-gnueabihf-gcc),)
 .PHONY: armv6h-arch-chroot

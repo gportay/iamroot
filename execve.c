@@ -729,7 +729,7 @@ close:
 
 static ssize_t gethashbang(const char *path, char *buf, size_t bufsize)
 {
-	ssize_t siz;
+	ssize_t ret;
 	char *d, *s;
 	int fd;
 
@@ -737,15 +737,15 @@ static ssize_t gethashbang(const char *path, char *buf, size_t bufsize)
 	if (fd == -1)
 		return -1;
 
-	siz = read(fd, buf, bufsize-1);
-	if (siz == -1)
+	ret = read(fd, buf, bufsize-1);
+	if (ret == -1)
 		goto close;
-	buf[siz] = 0; /* ensure NULL terminated */
+	buf[ret] = 0; /* ensure NULL terminated */
 
 	/* Not an hashbang interpreter directive */
-	if ((siz < 2) || (buf[0] != '#') || (buf[1] != '!')) {
+	if ((ret < 2) || (buf[0] != '#') || (buf[1] != '!')) {
 		errno = ENOEXEC;
-		siz = -1;
+		ret = -1;
 		goto close;
 	}
 
@@ -766,13 +766,13 @@ static ssize_t gethashbang(const char *path, char *buf, size_t bufsize)
 		*d++ = 0;
 	}
 
-	siz = d-buf-1;
+	ret = d-buf-1;
 
 close:
 	if (close(fd))
 		__fpathperror(fd, "close");
 
-	return siz;
+	return ret;
 }
 
 #if !defined(NVERBOSE)

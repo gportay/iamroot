@@ -738,8 +738,10 @@ static ssize_t gethashbang(const char *path, char *buf, size_t bufsize)
 		return -1;
 
 	ret = read(fd, buf, bufsize-1);
-	if (ret == -1)
+	if (ret == -1) {
+		__pathperror(path, "read");
 		goto close;
+	}
 	buf[ret] = 0; /* ensure NULL terminated */
 
 	/* Not an hashbang interpreter directive */
@@ -770,7 +772,7 @@ static ssize_t gethashbang(const char *path, char *buf, size_t bufsize)
 
 close:
 	if (close(fd))
-		__fpathperror(fd, "close");
+		__pathperror(path, "close");
 
 	return ret;
 }

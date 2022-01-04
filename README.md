@@ -20,8 +20,8 @@ the alternate root.
 
 For the curious, the magic operates in files [chroot.c](chroot.c) for entering
 in chroot, in [chdir.c](chdir.c) and [fchdir.c](fchdir.c) for exiting "chroot
-jail", in [fpath_resolutionat.c](fpath_resolutionat.c) for resolving pathnames,
-and in [execve.c](execve.c) for exec'ing executable form chroot.
+jail", in [path_resolution.c](path_resolution.c) for resolving pathnames, and
+in [execve.c](execve.c) for exec'ing executable form chroot.
 
 iamroot aims to provide an alternative to [fakechroot(1)], which does great but
 does not run well for creating rootfs with [pacstrap(8)] (Arch Linux),
@@ -82,7 +82,7 @@ Written by Gaël PORTAY *gael.portay@gmail.com*
 
 # COPYRIGHT
 
-Copyright (c) 2021 Gaël PORTAY
+Copyright (c) 2021-2022 Gaël PORTAY
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU Lesser General Public License as published by the Free

@@ -75,7 +75,6 @@ libiamroot.so: fexecve.o
 libiamroot.so: fgetxattr.o
 libiamroot.so: fopen.o
 libiamroot.so: fopen64.o
-libiamroot.so: fpath_resolutionat.o
 libiamroot.so: freopen.o
 libiamroot.so: freopen64.o
 libiamroot.so: fsetxattr.o

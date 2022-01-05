@@ -360,7 +360,6 @@ aarch64-arch-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_
 ifneq ($(shell command -v arm-unknown-linux-gnueabi-gcc),)
 .PHONY: arm-arch-chroot
 arm-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/arm-arch-rootfs
-arm-arch-chroot: export IAMROOT_LIB_LINUX_3 = $(CURDIR)/arm/libiamroot-linux.so.3
 arm-arch-chroot: export IAMROOT_LD_PRELOAD_LINUX_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
 arm-arch-chroot: | arm-arch-rootfs
 	bash iamroot-shell -c "chroot arm-arch-rootfs"
@@ -372,7 +371,6 @@ arm-arch-rootfs: export QEMU_LD_PREFIX = $(CURDIR)/arm-arch-rootfs
 arm-arch-rootfs: | arm-arch-rootfs/etc/machine-id
 
 arm-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/arm-arch-rootfs
-arm-arch-rootfs/etc/machine-id: export IAMROOT_LIB_LINUX_3 = $(CURDIR)/arm/libiamroot-linux.so.3
 arm-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
 arm-arch-rootfs/etc/machine-id: | arm/libiamroot-linux.so.3 x86_64/libiamroot-linux-x86-64.so.2
 	mkdir -p arm-arch-rootfs
@@ -382,7 +380,6 @@ endif
 ifneq ($(shell command -v armv6l-unknown-linux-gnueabihf-gcc),)
 .PHONY: armv6h-arch-chroot
 armv6h-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/armv6h-arch-rootfs
-armv6h-arch-chroot: export IAMROOT_LIB_LINUX_ARMHF_3 = $(CURDIR)/armhf/libiamroot-linux-armhf.so.3
 armv6h-arch-chroot: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
 armv6h-arch-chroot: | armv6h-arch-rootfs
 	bash iamroot-shell -c "chroot armv6h-arch-rootfs"
@@ -394,7 +391,6 @@ armv6h-arch-rootfs: export QEMU_LD_PREFIX = $(CURDIR)/armv6h-arch-rootfs
 armv6h-arch-rootfs: | armv6h-arch-rootfs/etc/machine-id
 
 armv6h-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/armv6h-arch-rootfs
-armv6h-arch-rootfs/etc/machine-id: export IAMROOT_LIB_LINUX_ARMHF_3 = $(CURDIR)/armhf/libiamroot-linux-armhf.so.3
 armv6h-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
 armv6h-arch-rootfs/etc/machine-id: | armhf/libiamroot-linux-armhf.so.3 x86_64/libiamroot-linux-x86-64.so.2
 	mkdir -p armv6h-arch-rootfs
@@ -404,7 +400,6 @@ endif
 ifneq ($(shell command -v armv7l-unknown-linux-gnueabihf-gcc),)
 .PHONY: armv7h-arch-chroot
 armv7h-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/armv7h-arch-rootfs
-armv7h-arch-chroot: export IAMROOT_LIB_LINUX_ARMHF_3 = $(CURDIR)/armhf/libiamroot-linux-armhf.so.3
 armv7h-arch-chroot: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
 armv7h-arch-chroot: | armv7h-arch-rootfs
 	bash iamroot-shell -c "chroot armv7h-arch-rootfs"
@@ -416,7 +411,6 @@ armv7h-arch-rootfs: export QEMU_LD_PREFIX = $(CURDIR)/armv7h-arch-rootfs
 armv7h-arch-rootfs: | armv7h-arch-rootfs/etc/machine-id
 
 armv7h-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/armv7h-arch-rootfs
-armv7h-arch-rootfs/etc/machine-id: export IAMROOT_LIB_LINUX_ARMHF_3 = $(CURDIR)/armhf/libiamroot-linux-armhf.so.3
 armv7h-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
 armv7h-arch-rootfs/etc/machine-id: | armhf/libiamroot-linux-armhf.so.3 x86_64/libiamroot-linux-x86-64.so.2
 	mkdir -p armv7h-arch-rootfs

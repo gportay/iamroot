@@ -17,6 +17,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - The libraries are installed by architecture in sub-directories: x86_64, i686,
   arm, armhf and aarch64
 
+### Fixed
+
+- Fix the setting for the variables `IAMROOT_LIB_<ldso>_<abi>` that override
+  the path to the iamroot library to preload by [dynamic loader][ld.so(8)]; the
+  variables have to be set without using the `_<abi>` suffix number: i.e. using
+  `IAMROOT_LIB_<ldso>`
+
 ### Security
 
 - Fix off-by-one array reading while getting `RPATH` and `RUNPATH` from ELF

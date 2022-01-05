@@ -72,7 +72,7 @@ void path_resolution_init()
 
 	library_linux_x86_64 = getenv("IAMROOT_LIB_LINUX_X86_64");
 	if (!library_linux_x86_64)
-		library_linux_x86_64 = "^/usr/lib/iamroot/ld-linux-x86-64.so.2$";
+		library_linux_x86_64 = "^/usr/lib/iamroot/libiamroot-linux-x86-64.so.2$";
 
 	library_musl_aarch64 = getenv("IAMROOT_LIB_MUSL_AARCH64");
 	if (!library_musl_aarch64)

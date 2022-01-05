@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -40,17 +40,17 @@ int renameat2(int oldfd, const char *oldpath, int newfd, const char *newpath,
 	char oldbuf[PATH_MAX], newbuf[PATH_MAX];
 	char *real_oldpath, *real_newpath;
 
-	real_oldpath = fpath_resolutionat(oldfd, oldpath, oldbuf,
-					  sizeof(oldbuf), (int)flags);
+	real_oldpath = path_resolution(oldfd, oldpath, oldbuf, sizeof(oldbuf),
+				       (int)flags);
 	if (!real_oldpath) {
-		__pathperror(oldpath, "fpath_resolutionat");
+		__pathperror(oldpath, "path_resolution");
 		return -1;
 	}
 
-	real_newpath = fpath_resolutionat(newfd, newpath, newbuf,
-					  sizeof(newbuf), (int)flags);
+	real_newpath = path_resolution(newfd, newpath, newbuf, sizeof(newbuf),
+				       (int)flags);
 	if (!real_newpath) {
-		__pathperror(newpath, "fpath_resolutionat");
+		__pathperror(newpath, "path_resolution");
 		return -1;
 	}
 

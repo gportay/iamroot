@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <limits.h>
+#include <fcntl.h>
 
 #include "iamroot.h"
 
@@ -23,7 +24,7 @@ int main(int argc, char * const argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	if (path_resolution(argv[1], buf, sizeof(buf), 0) == NULL) {
+	if (path_resolution(AT_FDCWD, argv[1], buf, sizeof(buf), 0) == NULL) {
 		perror("path_resolution");
 		return EXIT_FAILURE;
 	}

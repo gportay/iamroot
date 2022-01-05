@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -44,7 +44,7 @@ int mknod(const char *path, mode_t mode, dev_t dev)
 	int fd;
 	(void)dev;
 
-	real_path = path_resolution(path, buf, sizeof(buf), 0);
+	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (!real_path) {
 		__pathperror(path, "path_resolution");
 		return -1;

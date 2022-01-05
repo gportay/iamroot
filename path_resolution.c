@@ -155,8 +155,8 @@ char *sanitize(char *path, size_t bufsize)
 	return path;
 }
 
-char *fpath_resolutionat(int fd, const char *path, char *buf, size_t bufsize,
-			 int flags)
+char *path_resolution(int fd, const char *path, char *buf, size_t bufsize,
+		      int flags)
 {
 	const char *root;
 	char *real_path;
@@ -256,7 +256,8 @@ symlink_follow:
 		tmp[s] = 0; /* ensure NULL terminated */
 
 		if (*tmp == '/')
-			return path_resolution(tmp, buf, bufsize, flags);
+			return path_resolution(AT_FDCWD, tmp, buf, bufsize,
+					       flags);
 	}
 
 exit:
@@ -264,9 +265,4 @@ exit:
 
 ignore:
 	return _strncpy(buf, path, bufsize);
-}
-
-char *path_resolution(const char *path, char *buf, size_t bufsize, int flags)
-{
-	return fpath_resolutionat(AT_FDCWD, path, buf, bufsize, flags);
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -38,15 +38,15 @@ int rename(const char *oldpath, const char *newpath)
 	char oldbuf[PATH_MAX], newbuf[PATH_MAX];
 	char *real_oldpath, *real_newpath;
 
-	real_oldpath = path_resolution(oldpath, oldbuf, sizeof(oldbuf),
-				       AT_SYMLINK_NOFOLLOW);
+	real_oldpath = path_resolution(AT_FDCWD, oldpath, oldbuf,
+				       sizeof(oldbuf), AT_SYMLINK_NOFOLLOW);
 	if (!real_oldpath) {
 		__pathperror(oldpath, "path_resolution");
 		return -1;
 	}
 
-	real_newpath = path_resolution(newpath, newbuf, sizeof(newbuf),
-				       AT_SYMLINK_NOFOLLOW);
+	real_newpath = path_resolution(AT_FDCWD, newpath, newbuf,
+				       sizeof(newbuf), AT_SYMLINK_NOFOLLOW);
 	if (!real_newpath) {
 		__pathperror(newpath, "path_resolution");
 		return -1;

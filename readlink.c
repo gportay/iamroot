@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -56,7 +56,7 @@ ssize_t readlink(const char *path, char *buf, size_t bufsize)
 		return ret;
 	}
 
-	real_path = path_resolution(path, tmp, sizeof(tmp),
+	real_path = path_resolution(AT_FDCWD, path, tmp, sizeof(tmp),
 				    AT_SYMLINK_NOFOLLOW);
 	if (!real_path) {
 		__pathperror(path, "path_resolution");

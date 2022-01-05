@@ -1130,7 +1130,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	 * makes sure all the functions that use real_path in parameter resolve
 	 * the exact same path.
 	 */
-	real_path = path_resolution(path, buf, sizeof(buf), AT_SYMLINK_FOLLOW);
+	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), AT_SYMLINK_FOLLOW);
 	if (!real_path) {
 		__pathperror(path, "path_resolution");
 		return -1;
@@ -1176,7 +1176,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	 * Preserve original path in argv0 and set the interpreter and its
 	 * optional argument (if any).
 	 */
-	real_hashbang = path_resolution(hashbang, hashbangbuf,
+	real_hashbang = path_resolution(AT_FDCWD, hashbang, hashbangbuf,
 					sizeof(hashbangbuf),
 					AT_SYMLINK_FOLLOW);
 	if (!real_hashbang) {
@@ -1283,7 +1283,7 @@ loader:
 		if (!ld_library_path)
 			__warning("%s: is unset!", "ld_library_path");
 
-		real_path = path_resolution(loader, loaderbuf,
+		real_path = path_resolution(AT_FDCWD, loader, loaderbuf,
 					    sizeof(loaderbuf),
 					    AT_SYMLINK_FOLLOW);
 		if (!real_path) {

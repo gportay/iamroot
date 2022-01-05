@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <limits.h>
+#include <fcntl.h>
 #include <dlfcn.h>
 
 #include <sys/statfs.h>
@@ -39,7 +40,7 @@ int statfs64(const char *path, struct statfs64 *statfsbuf)
 	char buf[PATH_MAX];
 	char *real_path;
 
-	real_path = path_resolution(path, buf, sizeof(buf), 0);
+	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (!real_path) {
 		__pathperror(path, "path_resolution");
 		return -1;

@@ -44,7 +44,7 @@ int stat(const char *path, struct stat *statbuf)
 	char buf[PATH_MAX];
 	char *real_path;
 
-	real_path = path_resolution(path, buf, sizeof(buf), 0);
+	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (!real_path) {
 		__pathperror(path, "path_resolution");
 		return -1;

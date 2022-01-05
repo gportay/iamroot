@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -30,8 +30,8 @@ int pathsetenv(const char *root, const char *name, const char *value,
 	return -1;
 }
 
-char *fpath_resolutionat(int fd, const char *path, char *buf, size_t bufsize,
-			 int flags)
+char *path_resolution(int fd, const char *path, char *buf, size_t bufsize,
+		      int flags)
 {
 	(void)fd;
 	(void)path;
@@ -41,9 +41,4 @@ char *fpath_resolutionat(int fd, const char *path, char *buf, size_t bufsize,
 
 	errno = ENOSYS;
 	return NULL;
-}
-
-char *path_resolution(const char *path, char *buf, size_t bufsize, int flags)
-{
-	return fpath_resolutionat(AT_FDCWD, path, buf, bufsize, flags);
 }

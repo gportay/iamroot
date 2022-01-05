@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -42,10 +42,10 @@ int utimensat(int fd, const char *path, const struct timespec times[2],
 	char buf[PATH_MAX];
 	char *real_path;
 
-	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf),
-				       AT_SYMLINK_NOFOLLOW);
+	real_path = path_resolution(fd, path, buf, sizeof(buf),
+				    AT_SYMLINK_NOFOLLOW);
 	if (!real_path) {
-		__pathperror(path, "fpath_resolutionat");
+		__pathperror(path, "path_resolution");
 		return -1;
 	}
 

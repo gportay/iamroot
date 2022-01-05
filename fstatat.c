@@ -45,9 +45,9 @@ int fstatat(int fd, const char *path, struct stat *statbuf, int flags)
 	char buf[PATH_MAX];
 	char *real_path;
 
-	real_path = fpath_resolutionat(fd, path, buf, sizeof(buf), flags);
+	real_path = path_resolution(fd, path, buf, sizeof(buf), flags);
 	if (!real_path) {
-		__pathperror(path, "fpath_resolutionat");
+		__pathperror(path, "path_resolution");
 		return -1;
 	}
 

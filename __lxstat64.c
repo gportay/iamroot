@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -42,7 +42,7 @@ int __lxstat64(int ver, const char *path, struct stat64 *statbuf)
 	char buf[PATH_MAX];
 	char *real_path;
 
-	real_path = path_resolution(path, buf, sizeof(buf),
+	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
 				    AT_SYMLINK_NOFOLLOW);
 	if (!real_path) {
 		__pathperror(path, "path_resolution");

@@ -29,7 +29,7 @@ output-%:
 
 .NOTPARALLEL: rootfs
 .PHONY: rootfs
-rootfs:
+rootfs: i686-rootfs
 
 .PHONY: i686-rootfs
 i686-rootfs:

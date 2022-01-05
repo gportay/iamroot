@@ -97,7 +97,7 @@ arch-rootfs: | arch-rootfs/etc/machine-id
 
 arch-rootfs/etc/machine-id: | libiamroot-linux-x86-64.so.2
 	mkdir -p arch-rootfs
-	bash iamroot-shell -c "pacstrap arch-rootfs"
+	bash iamroot-shell -c "pacstrap -C support/x86_64-pacman.conf arch-rootfs"
 
 i686-rootfs: i686-arch-rootfs
 

@@ -249,10 +249,8 @@ symlink_follow:
 		ssize_t s;
 
 		s = next_readlink(real_path, tmp, sizeof(tmp) - 1);
-		if (s == -1) {
-			__pathperror(real_path, "readlink");
+		if (s == -1)
 			return NULL;
-		}
 		tmp[s] = 0; /* ensure NULL terminated */
 
 		if (*tmp == '/')

@@ -24,7 +24,7 @@ jail", in [path_resolution.c](path_resolution.c) for resolving pathnames, and
 in [execve.c](execve.c) for exec'ing executable form chroot.
 
 iamroot aims to provide an alternative to [fakechroot(1)], which does great but
-does not run well for creating rootfs with [pacstrap(8)] (Arch Linux),
+does not run well for creating rootfs with [pacstrap(8)] (Arch Linux, Manjaro),
 [alpine-make-rootfs] (Alpine Linux), [dnf(8)] (Fedora) or [debootstrap(8)]
 (Debian). Its existing world would likely break if it is hacked to address the
 rootfs-creation related issues (i.e. fixing entering-exiting chroot and

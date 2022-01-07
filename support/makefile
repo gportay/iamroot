@@ -111,6 +111,9 @@ output-%:
 .PHONY: rootfs
 rootfs: i686-rootfs
 
+.PHONY: extra-rootfs
+extra-rootfs:
+
 .PHONY: i686-rootfs
 i686-rootfs:
 
@@ -213,6 +216,31 @@ mount-arch:
 
 umount-arch:
 endif
+
+.PHONY: manjaro-chroot
+manjaro-chroot: | manjaro-rootfs
+	bash iamroot-shell -c "chroot manjaro-rootfs"
+
+extra-rootfs: manjaro-rootfs
+
+.PHONY: manjaro-rootfs
+manjaro-rootfs: | manjaro-rootfs/etc/machine-id
+
+manjaro-rootfs/etc/machine-id: | manjaro-rootfs/etc/pacman.d/gnupg x86_64/libiamroot-linux-x86-64.so.2
+	bash iamroot-shell -c "pacstrap -GMC support/x86_64-manjaro-stable-pacman.conf manjaro-rootfs --gpgdir $(CURDIR)/manjaro-rootfs/etc/pacman.d/gnupg base"
+
+manjaro-rootfs/etc/pacman.d/gnupg: manjaro.gpg
+manjaro-rootfs/etc/pacman.d/gnupg: manjaro-trusted
+manjaro-rootfs/etc/pacman.d/gnupg: | x86_64/libiamroot-linux-x86-64.so.2
+	bash iamroot-shell -c "pacman-key --conf support/x86_64-manjaro-stable-pacman.conf --gpgdir $@.tmp --init"
+	bash iamroot-shell -c "pacman-key --conf support/x86_64-manjaro-stable-pacman.conf --gpgdir $@.tmp --populate archlinux"
+	bash iamroot-shell -c "gpg --homedir $@.tmp --no-permission-warning --import manjaro.gpg"
+	bash iamroot-shell -c "gpg --homedir $@.tmp --no-permission-warning --import-ownertrust manjaro-trusted"
+	while IFS=: read key_id _; do \
+		bash iamroot-shell -c "printf 'y\ny\n' | LANG=C gpg --homedir $@.tmp --no-permission-warning --command-fd 0 --quiet --batch --lsign-key $$key_id"; \
+	done <manjaro-trusted
+	bash iamroot-shell -c "gpg --homedir $@.tmp --no-permission-warning --batch --check-trustdb"
+	mv $@.tmp $@
 
 ifneq ($(shell command -v debootstrap),)
 debian-stable-chroot:

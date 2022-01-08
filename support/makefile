@@ -567,6 +567,33 @@ aarch64-fedora-%-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 
 	install -D -m644 support/fedora.repo aarch64-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
 	bash iamroot-shell -c "dnf --forcearch aarch64 --releasever $* --assumeyes --installroot $(CURDIR)/aarch64-fedora-$*-rootfs group install minimal-environment"
 	rm -f aarch64-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
+
+ifneq ($(shell command -v armv7l-unknown-linux-gnueabihf-gcc),)
+armhfp-fedora-33-chroot:
+armhfp-fedora-34-chroot:
+armhfp-fedora-35-chroot:
+armhfp-fedora-%-chroot: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
+armhfp-fedora-%-chroot: | armhfp-fedora-%-rootfs
+	bash iamroot-shell -c "chroot armhfp-fedora-$*-rootfs"
+
+arm-rootfs: armhfp-fedora-rootfs
+
+.PHONY: armhfp-fedora-rootfs
+armhfp-fedora-rootfs: armhfp-fedora-33-rootfs armhfp-fedora-34-rootfs armhfp-fedora-35-rootfs
+
+armhfp-fedora-33-rootfs: | armhfp-fedora-33-rootfs/etc/machine-id
+armhfp-fedora-34-rootfs: | armhfp-fedora-34-rootfs/etc/machine-id
+armhfp-fedora-35-rootfs: | armhfp-fedora-35-rootfs/etc/machine-id
+
+armhfp-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
+armhfp-fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib:/lib:/usr/lib/ldb/modules/ldb:/usr/lib/ldb
+armhfp-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|$(CURDIR)/armhfp-fedora-$*-rootfs/var/log/dnf.rpm.log
+armhfp-fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2:/usr/lib/libpthread.so.0:/usr/lib/librt.so.1
+armhfp-fedora-%-rootfs/etc/machine-id: | armhf/libiamroot-linux-armhf.so.3 x86_64/libiamroot-linux-x86-64.so.2
+	install -D -m644 support/fedora.repo armhfp-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
+	bash iamroot-shell -c "dnf --forcearch armv7hl --releasever $* --assumeyes --installroot $(CURDIR)/armhfp-fedora-$*-rootfs group install minimal-environment"
+	rm -f armhfp-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
+endif
 endif
 
 ifneq ($(shell command -v aarch64-linux-musl-gcc),)

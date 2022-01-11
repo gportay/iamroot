@@ -120,6 +120,9 @@ aarch64-rootfs:
 .PHONY: arm-rootfs
 arm-rootfs:
 
+.PHONY: test
+test:
+
 .PHONY: clean
 clean:
 	$(MAKE) -f Makefile $@
@@ -127,6 +130,8 @@ clean:
 	rm -Rf *-rootfs/
 
 ifneq ($(shell command -v pacstrap),)
+test: arch-test
+
 .PHONY: arch-test
 arch-test: | arch-rootfs/usr/bin/shebang.sh
 arch-test: | arch-rootfs/usr/bin/shebang-arg.sh

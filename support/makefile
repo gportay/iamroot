@@ -130,7 +130,7 @@ ifneq ($(shell command -v pacstrap),)
 .PHONY: arch-test
 arch-test: | arch-rootfs/usr/bin/shebang.sh
 arch-test: | arch-rootfs/usr/bin/shebang-arg.sh
-arch-test: x86_64/libiamroot-linux-x86-64.so.2
+arch-test: x86_64/libiamroot-linux-x86-64.so.2 | arch-rootfs
 	bash iamroot-shell -c "chroot arch-rootfs shebang.sh one two three"
 	bash iamroot-shell -c "chroot arch-rootfs shebang-arg.sh one two three"
 

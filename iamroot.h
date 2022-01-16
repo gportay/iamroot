@@ -170,6 +170,18 @@ extern void __envperror(const char *, const char *);
 extern void __pathdlperror(const char *, const char *);
 #define __dlperror(s) __info("%s: %s\n", s, dlerror())
 
+int close(int);
+static inline void __close(int fd)
+{
+	extern int errno;
+	int save_errno;
+	
+	save_errno = errno;
+	if (close(fd))
+		__fpathperror(fd, "close");
+	errno = save_errno;
+}
+
 /*
  * glibc considers the kernel headers define a wrong value for ARG_MAX and
  * undefines it. Let's redefine it using _POSIX_ARG_MAX.

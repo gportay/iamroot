@@ -59,9 +59,7 @@ int __xmknod(int ver, const char *path, mode_t mode, dev_t *dev)
 	if (fd == -1)
 		return -1;
 
-	if (close(fd))
-		__fpathperror(fd, "close");
+	__close(fd);
 
-	errno = 0;
 	return 0;
 }

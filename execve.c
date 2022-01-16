@@ -551,8 +551,7 @@ static ssize_t getdynamicentry(const char *path, int dt_tag, char *buf,
 					bufsize);
 
 close:
-	if (close(fd))
-		__pathperror(path, "close");
+	__close(fd);
 
 	return ret;
 }
@@ -721,8 +720,7 @@ static ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 		ret = getinterp64(fd, (Elf64_Ehdr *)&ehdr, buf, bufsize);
 
 close:
-	if (close(fd))
-		__pathperror(path, "close");
+	__close(fd);
 
 	return ret;
 }
@@ -771,8 +769,7 @@ static ssize_t gethashbang(const char *path, char *buf, size_t bufsize)
 	ret = d-buf-1;
 
 close:
-	if (close(fd))
-		__pathperror(path, "close");
+	__close(fd);
 
 	return ret;
 }

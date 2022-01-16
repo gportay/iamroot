@@ -8,7 +8,6 @@
 #include <stdio.h>
 #include <errno.h>
 #include <limits.h>
-#include <dlfcn.h>
 #include <fcntl.h>
 
 #include <sys/stat.h>
@@ -16,26 +15,6 @@
 #include "iamroot.h"
 
 extern int next_creat(const char *, mode_t);
-
-__attribute__((visibility("hidden")))
-int next___xmknod(int ver, const char *path, mode_t mode, dev_t *dev)
-{
-	int (*sym)(int, const char *, mode_t, dev_t *);
-	int ret;
-
-	sym = dlsym(RTLD_NEXT, "__xmknod");
-	if (!sym) {
-		__dlperror(__func__);
-		errno = ENOSYS;
-		return -1;
-	}
-
-	ret = sym(ver, path, mode, dev);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
-}
 
 int __xmknod(int ver, const char *path, mode_t mode, dev_t *dev)
 {

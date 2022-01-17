@@ -9,6 +9,8 @@ override CFLAGS += -D_GNU_SOURCE -Wno-error=deprecated-declarations
 
 .PHONY: all
 all: libiamnotroot.so
+all: test-__xmknod
+all: test-__xmknodat
 all: test-access
 all: test-chmod
 all: test-chown
@@ -120,6 +122,12 @@ test: | rootfs
 	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mknodat - /dev/dev3 0666 0 3
 	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mknodat . /dev/dev4 0666 0 4
 	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mknod /dev/dev5 0644 0 5
+	test-__xmknod 1 rootfs/dev/dev6 0644 0 6
+	test-__xmknodat 1 - rootfs/dev/dev7 0666 0 7
+	test-__xmknodat 1 . rootfs/dev/dev8 0666 0 8
+	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-__xmknod 1 /dev/dev9 0644 0 9
+	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-__xmknodat 1 - /dev/dev10 0666 0 10
+	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-__xmknodat 1 . /dev/dev11 0666 0 11
 	test-mount -t procfs none rootfs/proc
 	test-path_resolution / | tee /dev/stderr | grep -q "^/\$$"
 	test-path_resolution /proc/ | tee /dev/stderr | grep -q "^/proc/\$$"

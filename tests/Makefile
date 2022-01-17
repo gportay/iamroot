@@ -119,9 +119,9 @@ test: | rootfs
 	test-mknod rootfs/dev/dev0 0644 0 0
 	test-mknodat - rootfs/dev/dev1 0666 0 1
 	test-mknodat . rootfs/dev/dev2 0666 0 2
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mknodat - /dev/dev3 0666 0 3
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mknodat . /dev/dev4 0666 0 4
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mknod /dev/dev5 0644 0 5
+	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mknod /dev/dev3 0644 0 3
+	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mknodat - /dev/dev4 0666 0 4
+	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mknodat . /dev/dev5 0666 0 5
 	test-__xmknod 1 rootfs/dev/dev6 0644 0 6
 	test-__xmknodat 1 - rootfs/dev/dev7 0666 0 7
 	test-__xmknodat 1 . rootfs/dev/dev8 0666 0 8

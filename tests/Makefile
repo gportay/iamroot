@@ -119,6 +119,7 @@ test: | rootfs
 	test-mknodat . rootfs/dev/dev2 0666 0 2
 	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mknodat - /dev/dev3 0666 0 3
 	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mknodat . /dev/dev4 0666 0 4
+	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mknod /dev/dev5 0644 0 5
 	test-mount -t procfs none rootfs/proc
 	test-path_resolution / | tee /dev/stderr | grep -q "^/\$$"
 	test-path_resolution /proc/ | tee /dev/stderr | grep -q "^/proc/\$$"

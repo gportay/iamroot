@@ -120,7 +120,7 @@ int __verbosef(int, const char *, const char *, ...) __attribute__((format(print
 	   } })
 
 #define __fwarn_if_insuffisant_user_modeat(fd, path, mode, flags) \
-	({ if (fisdirectoryat(fd, path, flags)) { \
+	({ if (fisdirectoryat(fd, path, flags) > 0) { \
 	     __fwarn_and_set_user_modeat(fd, path, mode, flags, 0700); \
 	   } else { \
 	     __fwarn_and_set_user_modeat(fd, path, mode, flags, 0600); \
@@ -133,7 +133,7 @@ int __verbosef(int, const char *, const char *, ...) __attribute__((format(print
 	   } })
 
 #define __fwarn_if_insuffisant_user_mode(fd, mode) \
-	({ if (fisdirectory(fd)) { \
+	({ if (fisdirectory(fd) > 0) { \
 	     __fwarn_and_set_user_mode(fd, mode, 0700); \
 	   } else { \
 	     __fwarn_and_set_user_mode(fd, mode, 0600); \
@@ -146,7 +146,7 @@ int __verbosef(int, const char *, const char *, ...) __attribute__((format(print
 	   } })
 
 #define __warn_if_insuffisant_user_mode(path, mode) \
-	({ if (isdirectory(path)) { \
+	({ if (isdirectory(path) > 0) { \
 	     __warn_and_set_user_mode(path, mode, 0700); \
 	   } else { \
 	     __warn_and_set_user_mode(path, mode, 0600); \

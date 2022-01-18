@@ -23,6 +23,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   the path to the iamroot library to preload by [dynamic loader][ld.so(8)]; the
   variables have to be set without using the `_<abi>` suffix number: i.e. using
   `IAMROOT_LIB_<ldso>`
+- Fix the setting for spurious execution bit in file mode
 
 ### Security
 

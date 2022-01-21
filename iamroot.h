@@ -226,6 +226,18 @@ void verbose_exec(const char *, char * const[], char * const[]);
 	     errno = 0; \
 	   } })
 
+#define __warn_or_fatal(fmt, ...) \
+	({ __warning(fmt, __VA_ARGS__); \
+	   if (__getfatal()) \
+	     __abort(); })
+
+#define __note_or_fatal(fmt, ...) \
+	({ __notice(fmt, __VA_ARGS__); \
+	   if (__getfatal()) \
+	     __abort(); })
+
+extern void __abort();
+
 extern void __pathperror(const char *, const char *);
 extern void __pathperror2(const char *, const char *, const char *);
 extern void __fpathperror(int, const char *);

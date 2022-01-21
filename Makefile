@@ -23,6 +23,7 @@ all: x86_64/libiamroot-linux-x86-64.so.2
 x86_64/libiamroot-linux-x86-64.so.2: libiamroot.so
 	install -D -m755 $< $@
 
+libiamroot.so: __abort.o
 libiamroot.so: __envperror.o
 libiamroot.so: __fpathperror.o
 libiamroot.so: __fxstat.o

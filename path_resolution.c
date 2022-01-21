@@ -250,7 +250,8 @@ static ssize_t _path_resolution(int fd, const char *path, char *buf,
 		if (strcmp(root, "/") == 0)
 			root = "";
 		else if (__strlcmp(path, root) == 0)
-			__warning("%s: contains root '%s'\n", path, root);
+			__warn_or_fatal("%s: contains root directory '%s'\n",
+					path, root);
 
 		n = _snprintf(buf, bufsize, "%s%s", root, path);
 		if (n < 0) {

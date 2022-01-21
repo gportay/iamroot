@@ -6,7 +6,6 @@
 
 #include <stdio.h>
 #include <errno.h>
-#include <signal.h>
 
 #include "iamroot.h"
 
@@ -16,7 +15,5 @@ void __pathperror(const char *path, const char *s)
 	if ((errno != EPERM) && (errno != EACCES))
 		return;
 
-	__notice("%s: %s: %m\n", path, s);
-	if (__getfatal())
-		raise(SIGABRT);
+	__note_or_fatal("%s: %s: %m\n", path, s);
 }

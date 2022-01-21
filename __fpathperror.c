@@ -8,7 +8,6 @@
 #include <string.h>
 #include <errno.h>
 #include <limits.h>
-#include <signal.h>
 
 #include "iamroot.h"
 
@@ -31,7 +30,5 @@ void __fpathperror(int fd, const char *s)
 	}
 	buf[siz] = 0; /* ensure NULL terminated */
 
-	__notice("%i <-> %s: %s: %m\n", fd, buf, s);
-	if (__getfatal())
-		raise(SIGABRT);
+	__note_or_fatal("%i <-> %s: %s: %m\n", fd, buf, s);
 }

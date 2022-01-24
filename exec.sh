@@ -11,7 +11,28 @@ log() {
 		return
 	fi
 
-	echo "$@" >&2
+	level="$1"
+	shift
+
+	if [ ! -t 2 ] || [ "${NO_COLOR:-0}" -ne 0 ]
+	then
+		echo "$level:" "$@" >&2
+		return
+	fi
+
+	echo -e "\e[31;1m$level:\e[0m" "$@" >&2
+}
+
+error() {
+	log "Error" "$@"
+}
+
+warn() {
+	log "Warning" "$@"
+}
+
+fixme() {
+	log "FIXME" "$@"
 }
 
 path="$1"
@@ -21,11 +42,11 @@ shift
 
 case "${path##*/}" in
 mount|umount)
-	log "Warning:" "Command is skipped:" "$argv0" "$@"
+	warn "Command is skipped:" "$argv0" "$@"
 	exit 0
 	;;
 chfn|chkstat|pam-auth-update|update-ca-certificates|*.postinst)
-	log "FIXME:" "Command is skipped:" "$argv0" "$@"
+	fixme "Command is skipped:" "$argv0" "$@"
 	exit 0
 	;;
 ldd|busybox)
@@ -44,7 +65,7 @@ ldconfig|ldconfig.real)
 	exec "$real_path" "$@"
 	;;
 gpasswd|passwd|su)
-	echo "Error:" "Command not handled:" "$argv0" "$@" >&2
+	error "Command not handled:" "$argv0" "$@"
 	exit 1
 	;;
 bbsuid)
@@ -55,7 +76,7 @@ bbsuid)
 	exit 0
 	;;
 *)
-	echo "Warning:" "host-running" "$argv0" "$@" >&2
+	warn "host-running" "$argv0" "$@"
 	exec "$path" "$@"
 	;;
 esac

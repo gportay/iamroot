@@ -130,6 +130,8 @@ const char *getrootdir();
 int chrootdir(const char *);
 int inchroot();
 
+int __getcolor();
+
 int __getfatal();
 
 #define DEBUG_FILENO __getdebug_fd()

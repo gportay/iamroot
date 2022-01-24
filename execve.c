@@ -827,7 +827,7 @@ close:
 __attribute__((visibility("hidden")))
 void verbose_exec(const char *path, char * const argv[], char * const envp[])
 {
-	int fd, debug;
+	int color, fd, debug;
 
 	debug = __getdebug();
 	if (debug == 0)
@@ -837,6 +837,15 @@ void verbose_exec(const char *path, char * const argv[], char * const envp[])
 	if (fd < 0)
 		return;
 
+	color = __getcolor();
+	if (color)
+		dprintf(fd, "\033[32;1m");
+
+	dprintf(fd, "Debug: ");
+
+	if (color)
+		dprintf(fd, "\033[0m");
+
 	if (debug < 4) {
 		char *ld_library_path;
 		char *ld_preload;
@@ -844,7 +853,7 @@ void verbose_exec(const char *path, char * const argv[], char * const envp[])
 		char *argv0;
 		char *root;
 
-		dprintf(fd, "Debug: running");
+		dprintf(fd, "running");
 
 		root = __getroot();
 		if (root)
@@ -869,7 +878,7 @@ void verbose_exec(const char *path, char * const argv[], char * const envp[])
 	} else {
 		char * const *p;
 
-		dprintf(fd, "Debug: %s: %s: pid: %i: execve(path: '%s', argv: {",
+		dprintf(fd, "%s: %s: pid: %i: execve(path: '%s', argv: {",
 			__libc(), __arch(), getpid(), path);
 		p = argv;
 		while (*p)

@@ -44,7 +44,7 @@ extern "C" {
 	   (s1)[l] = 0; \
 	   (s1); })
 
-int _snprintf(char *buf, size_t bufsize, const char *fmt, ...) __attribute__((format(printf,3,4)));
+int _snprintf(char *, size_t, const char *, ...) __attribute__((format(printf,3,4)));
 
 static inline const char *__libc()
 {

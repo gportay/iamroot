@@ -72,7 +72,7 @@ Environment variables:
       IAMROOT_FATAL             Set abort on error.
                                 Equivalent to --fatal.
 
-      IAMROOT_DEBUG             Set debug mode.
+      IAMROOT_DEBUG             Turn on debug mode.
                                 Equivalent to --debug.
 
       IAMROOT_DEBUG_FD          Set debug fd.

@@ -284,6 +284,64 @@ debian-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	mkdir -p debian-$*-rootfs
 	bash iamroot-shell -c "debootstrap $* debian-$*-rootfs $(DEBOOTSTRAP_MIRROR)"
 
+qemu-system-x86_64-debian-oldoldstable:
+qemu-system-x86_64-debian-oldoldstable: override CMDLINE += rw
+qemu-system-x86_64-debian-oldstable:
+qemu-system-x86_64-debian-oldstable: override CMDLINE += rw
+qemu-system-x86_64-debian-stable:
+qemu-system-x86_64-debian-stable: override CMDLINE += rw
+qemu-system-x86_64-debian-testing:
+qemu-system-x86_64-debian-testing: override CMDLINE += rw
+qemu-system-x86_64-debian-unstable:
+qemu-system-x86_64-debian-unstable: override CMDLINE += rw
+
+ifneq ($(VMLINUX_KVER),)
+vmlinux-debian-oldoldstable:
+vmlinux-debian-oldstable:
+vmlinux-debian-stable:
+vmlinux-debian-testing:
+vmlinux-debian-unstable:
+endif
+
+debian-oldoldstable.ext4 debian-oldstable.ext4 debian-stable.ext4 debian-stable.ext4 debian-testing.ext4 debian-unstable.ext4:
+
+debian-oldoldstable-postrootfs: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
+debian-oldoldstable-postrootfs: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
+debian-oldoldstable-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
+debian-oldoldstable-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
+debian-oldoldstable-postrootfs:
+	sed -e '/^root:x:/s,^root:x:,root::,' \
+	    -i debian-oldoldstable-rootfs/etc/passwd
+	sed -e '/^root::/s,^root::,root:x:,' \
+	    -i debian-oldoldstable-rootfs/etc/shadow
+	rm -f debian-oldoldstable-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
+	bash iamroot-shell -c "chroot debian-oldoldstable-rootfs systemctl enable getty@tty0.service"
+	bash iamroot-shell -c "chroot debian-oldoldstable-rootfs pam-auth-update"
+
+debian-oldstable-postrootfs:
+debian-stable-postrootfs:
+debian-testing-postrootfs:
+debian-unstable-postrootfs:
+debian-%-postrootfs: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
+debian-%-postrootfs: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
+debian-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
+debian-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
+	sed -e '/^root:x:/s,^root:x:,root::,' \
+	    -i debian-$*-rootfs/etc/passwd
+	sed -e '/^root::/s,^root::,root:x:,' \
+	    -i debian-$*-rootfs/etc/shadow
+	rm -f debian-$*-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
+	bash iamroot-shell -c "chroot debian-$*-rootfs systemctl enable getty@tty0.service"
+	rm -f debian-$*-rootfs/etc/systemd/system/multi-user.target.wants/sshd.service
+	bash iamroot-shell -c "chroot debian-$*-rootfs systemctl disable sshd.service"
+	bash iamroot-shell -c "chroot debian-$*-rootfs pam-auth-update"
+
+chroot-debian-oldoldstable chroot-debian-oldstable chroot-debian-stable chroot-debian-stable chroot-debian-testing chroot-debian-unstable:
+
+mount-debian-oldoldstable mount-debian-oldstable mount-debian-stable mount-debian-testing mount-debian-unstable:
+
+umount-debian-oldoldstable umount-debian-oldstable umount-debian-stable umount-debian-testing umount-debian-unstable:
+
 ubuntu-focal-chroot:
 ubuntu-impish-chroot:
 ubuntu-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib

@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Support for 32-bit ELF executables
 - Chroot to an i686 world; tested on [Arch Linux 32]
 - Chroot to an arm world; tested on [Arch Linux ARM]
+- Create a [Debian] rootfs via [debootstrap(8)]
 
 ### Changed
 
@@ -176,12 +177,14 @@ Initial release.
 [Alpine Linux]: https://alpinelinux.org/
 [Arch Linux 32]: https://archlinux32.org/
 [Arch Linux ARM]: https://archlinuxarm.org/
+[Debian]: https://www.debian.org/
 [Fedora ARM]: https://arm.fedoraproject.org/
 [Fedora]: https://getfedora.org/
 [__nss_files_fopen()]: https://sourceware.org/git/?p=glibc.git;a=blob;f=nss/nss_files_fopen.c;h=594e4216578766e4534c44dc6c75283d5d1a20fe;hb=299210c1fa67e2dfb564475986fce11cd33db9ad
 [alpine-make-rootfs]: https://github.com/alpinelinux/alpine-make-rootfs/blob/master/README.adoc
 [busybox(1)]: https://linux.die.net/man/1/busybox
 [capabilities(7)]: https://linux.die.net/man/7/capabilities
+[debootstrap(8)]: https://linux.die.net/man/8/debootstrap
 [dnf(8)]: https://dnf.readthedocs.io/en/latest/command_ref.html
 [exec(3)]: https://linux.die.net/man/3/exec
 [glibc]: https://www.gnu.org/software/libc/

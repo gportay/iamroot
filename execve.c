@@ -1132,7 +1132,8 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	 * makes sure all the functions that use real_path in parameter resolve
 	 * the exact same path.
 	 */
-	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), AT_SYMLINK_FOLLOW);
+	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
+				    AT_SYMLINK_FOLLOW);
 	if (!real_path) {
 		__pathperror(path, "path_resolution");
 		return -1;

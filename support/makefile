@@ -243,6 +243,7 @@ manjaro-rootfs/etc/pacman.d/gnupg: | x86_64/libiamroot-linux-x86-64.so.2
 	mv $@.tmp $@
 
 ifneq ($(shell command -v debootstrap),)
+debian-oldstable-chroot:
 debian-stable-chroot:
 debian-testing-chroot:
 debian-unstable-chroot:
@@ -257,6 +258,7 @@ rootfs: debian-rootfs
 .PHONY: debian-rootfs
 debian-rootfs: debian-testing-rootfs debian-unstable-rootfs
 
+debian-oldstable-rootfs: | debian-oldstable-rootfs/etc/machine-id
 debian-stable-rootfs: | debian-stable-rootfs/etc/machine-id
 debian-testing-rootfs: | debian-testing-rootfs/etc/machine-id
 debian-unstable-rootfs: | debian-unstable-rootfs/etc/machine-id

@@ -197,17 +197,17 @@ static int __ld_linux_version(const char *path, int *major, int *minor)
 {
 	const char *basename;
 	char buf[PATH_MAX];
-	ssize_t siz;
+	char *real_path;
 	int ret;
 
-	siz = readlink(path, buf, sizeof(buf));
-	if (siz == -1) {
-		__pathperror(path, "readlink");
+	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
+				    AT_SYMLINK_FOLLOW);
+	if (!real_path) {
+		__pathperror(path, "path_resolution");
 		return -1;
 	}
-	buf[siz] = 0;
 
-	basename = __basename(buf);
+	basename = __basename(real_path);
 	ret = sscanf(basename, "ld-%i.%i.so", major, minor);
 	if (ret < 2) {
 		errno = ENOTSUP;
@@ -220,19 +220,14 @@ static int __ld_linux_version(const char *path, int *major, int *minor)
 static int __ld_linux_has_argv0_option(const char *path)
 {
 	int ret, maj = 0, min = 0;
-	struct stat statbuf;
-
-	ret = lstat(path, &statbuf);
-	if (ret == -1)
-		return -1;
-
-	/* not a symlink since glibc 2.34; --argv0 is supported since 2.33 */
-	if (!S_ISLNK(statbuf.st_mode))
-		return 1;
 
 	ret = __ld_linux_version(path, &maj, &min);
-	if (ret == -1)
+	if ((ret == -1) && (errno != ENOTSUP))
 		return -1;
+
+	errno = 0;
+	if (ret == -1)
+		return 1;
 
 	/* --argv0 is supported since glibc 2.33 */
 	return (maj > 2) || ((maj == 2) && (min >= 33));
@@ -241,15 +236,6 @@ static int __ld_linux_has_argv0_option(const char *path)
 static int __ld_linux_has_preload_option(const char *path)
 {
 	int ret, maj = 0, min = 0;
-	struct stat statbuf;
-
-	ret = lstat(path, &statbuf);
-	if (ret == -1)
-		return -1;
-
-	/* not a symlink since glibc 2.34; --argv0 is supported since 2.30 */
-	if (!S_ISLNK(statbuf.st_mode))
-		return 1;
 
 	ret = __ld_linux_version(path, &maj, &min);
 	if ((ret == -1) && (errno != ENOTSUP))

@@ -279,9 +279,38 @@ debian-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/
 debian-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|pam-auth-update
 debian-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/
 debian-%-rootfs/etc/machine-id: export DEBIAN_FRONTEND = noninteractive
+debian-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://deb.debian.org/debian
 debian-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	mkdir -p debian-$*-rootfs
-	bash iamroot-shell -c "debootstrap $* debian-$*-rootfs http://deb.debian.org/debian"
+	bash iamroot-shell -c "debootstrap $* debian-$*-rootfs $(DEBOOTSTRAP_MIRROR)"
+
+ubuntu-focal-chroot:
+ubuntu-impish-chroot:
+ubuntu-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
+ubuntu-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
+ubuntu-%-chroot: | ubuntu-%-rootfs
+	bash iamroot-shell -c "chroot ubuntu-$*-rootfs"
+
+.NOTPARALLEL: ubuntu-rootfs
+.PHONY: ubuntu-rootfs
+ubuntu-rootfs: ubuntu-focal-rootfs ubuntu-impish-rootfs
+
+ubuntu-focal-rootfs: | ubuntu-focal-rootfs/etc/machine-id
+ubuntu-impish-rootfs: | ubuntu-impish-rootfs/etc/machine-id
+
+ubuntu-focal-rootfs/etc/machine-id:
+ubuntu-impish-rootfs/etc/machine-id:
+
+ubuntu-%-rootfs/etc/machine-id: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
+ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
+ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
+ubuntu-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|pam-auth-update
+ubuntu-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/
+ubuntu-%-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
+ubuntu-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
+ubuntu-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
+	mkdir -p ubuntu-$*-rootfs
+	bash iamroot-shell -c "debootstrap $* ubuntu-$*-rootfs $(DEBOOTSTRAP_MIRROR)"
 endif
 
 ifneq ($(shell command -v dnf),)
@@ -841,6 +870,8 @@ support: support/debian-oldstable-rootfs.txt
 support: support/debian-stable-rootfs.txt
 support: support/debian-testing-rootfs.txt
 support: support/debian-unstable-rootfs.txt
+support: support/ubuntu-focal-rootfs.txt
+support: support/ubuntu-impish-rootfs.txt
 support: support/fedora-33-rootfs.txt
 support: support/fedora-34-rootfs.txt
 support: support/fedora-35-rootfs.txt
@@ -883,6 +914,16 @@ support/debian-unstable-rootfs.txt: debian-unstable-rootfs.log
 	support/debootstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
 	mv $@.tmp $@
 
+.PRECIOUS: support/ubuntu-focal-rootfs.txt
+support/ubuntu-focal-rootfs.txt: ubuntu-focal-rootfs.log
+	support/debootstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	mv $@.tmp $@
+
+.PRECIOUS: support/ubuntu-impish-rootfs.txt
+support/ubuntu-impish-rootfs.txt: ubuntu-impish-rootfs.log
+	support/debootstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	mv $@.tmp $@
+
 .PRECIOUS: support/fedora-33-rootfs.txt
 support/fedora-33-rootfs.txt: fedora-33-rootfs.log
 	support/dnf.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
@@ -921,6 +962,8 @@ log: debian-oldstable-rootfs.log
 log: debian-stable-rootfs.log
 log: debian-testing-rootfs.log
 log: debian-unstable-rootfs.log
+log: ubuntu-focal-rootfs.log
+log: ubuntu-impish-rootfs.log
 log: fedora-33-rootfs.log
 log: fedora-34-rootfs.log
 log: fedora-35-rootfs.log

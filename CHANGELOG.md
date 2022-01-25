@@ -11,7 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Support for 32-bit ELF executables
 - Chroot to an i686 world; tested on [Arch Linux 32]
 - Chroot to an arm world; tested on [Arch Linux ARM] and [Fedora ARM]
-- Create a [Debian] rootfs via [debootstrap(8)]
+- Create a [Debian] and [Ubuntu] rootfs via [debootstrap(8)]
 - Create a [Manjaro] rootfs via [pacstrap(8)]
 - Intercept the function `__libc_start_main()` to set `argv[0]` with the
   content of the environment variable `argv0` if set
@@ -217,6 +217,7 @@ Initial release.
 [Fedora ARM]: https://arm.fedoraproject.org/
 [Fedora]: https://getfedora.org/
 [Manjaro]: https://manjaro.org/
+[Ubuntu]: https://ubuntu.com/
 [__nss_files_fopen()]: https://sourceware.org/git/?p=glibc.git;a=blob;f=nss/nss_files_fopen.c;h=594e4216578766e4534c44dc6c75283d5d1a20fe;hb=299210c1fa67e2dfb564475986fce11cd33db9ad
 [alpine-make-rootfs]: https://github.com/alpinelinux/alpine-make-rootfs/blob/master/README.adoc
 [busybox(1)]: https://linux.die.net/man/1/busybox

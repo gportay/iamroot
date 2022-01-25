@@ -31,7 +31,7 @@ chfn|pam-auth-update|*.postinst)
 ldd|busybox)
 	exec "$real_path" "$@"
 	;;
-ldconfig)
+ldconfig|ldconfig.real)
 	if [ "${IAMROOT_ROOT:-/}" != / ]
 	then
 		set -- "$@" -r "$IAMROOT_ROOT"

@@ -26,9 +26,9 @@ in [execve.c](execve.c) for exec'ing executable form chroot.
 iamroot aims to provide an alternative to [fakechroot(1)], which does great but
 does not run well for creating rootfs with [pacstrap(8)] (Arch Linux, Manjaro),
 [alpine-make-rootfs] (Alpine Linux), [dnf(8)] (Fedora) or [debootstrap(8)]
-(Debian). Its existing world would likely break if it is hacked to address the
-rootfs-creation related issues (i.e. fixing entering-exiting chroot and
-absolute symlink resolution in short).
+(Debian, Ubuntu). Its existing world would likely break if it is hacked to
+address the rootfs-creation related issues (i.e. fixing entering-exiting chroot
+and absolute symlink resolution in short).
 
 Of course, iamroot cannot substitute to the superuser permissions, and commands
 will end with `EACCESS` or `EPERM` as of reading or writing files in `/proc`,

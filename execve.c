@@ -31,7 +31,7 @@
 extern int next_open(const char *, int, mode_t);
 extern int next_fstatat(int, const char *, struct stat *, int);
 
-static const char *__basename(const char *path)
+char *__basename(char *path)
 {
 	char *s = strrchr(path, '/');
 	if (!s)

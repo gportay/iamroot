@@ -298,9 +298,22 @@ static char *_path_resolution(int fd, const char *path, char *buf,
 			return NULL;
 		tmp[s] = 0; /* ensure NULL terminated */
 
-		if (*tmp == '/')
-			return _path_resolution(AT_FDCWD, tmp, buf, bufsize,
-						flags, symlinks);
+		if (*tmp != '/') {
+			char *basename, *real_tmp, tmpbuf[PATH_MAX];
+
+			real_tmp = __strncpy(tmpbuf, path);
+			sanitize(real_tmp, sizeof(tmpbuf));
+
+			basename = __basename(real_tmp);
+			strcpy(basename, tmp);
+			sanitize(real_tmp, sizeof(tmpbuf));
+
+			return _path_resolution(AT_FDCWD, real_tmp, buf,
+						bufsize, flags, symlinks);
+		}
+
+		return _path_resolution(AT_FDCWD, tmp, buf, bufsize, flags,
+					symlinks);
 	}
 
 exit:

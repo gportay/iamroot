@@ -82,6 +82,7 @@ int isfile(const char *);
 int pathprependenv(const char *, const char *, int);
 int pathsetenv(const char *, const char *, const char *, int);
 
+char *__basename(char *);
 char *sanitize(char *, size_t);
 int path_ignored(int, const char *, int);
 char *path_resolution(int, const char *, char *, size_t, int);

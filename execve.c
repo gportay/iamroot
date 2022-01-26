@@ -238,6 +238,31 @@ static int __ld_linux_has_argv0_option(const char *path)
 	return (maj > 2) || ((maj == 2) && (min >= 33));
 }
 
+static int __ld_linux_has_preload_option(const char *path)
+{
+	int ret, maj = 0, min = 0;
+	struct stat statbuf;
+
+	ret = lstat(path, &statbuf);
+	if (ret == -1)
+		return -1;
+
+	/* not a symlink since glibc 2.34; --argv0 is supported since 2.30 */
+	if (!S_ISLNK(statbuf.st_mode))
+		return 1;
+
+	ret = __ld_linux_version(path, &maj, &min);
+	if ((ret == -1) && (errno != ENOTSUP))
+		return -1;
+
+	errno = 0;
+	if (ret == -1)
+		return 1;
+
+	/* --preload is supported since glibc 2.30 */
+	return (maj > 2) || ((maj == 2) && (min >= 30));
+}
+
 static int issuid(const char *path)
 {
 	struct stat statbuf;
@@ -1247,7 +1272,7 @@ loader:
 	if ((__strncmp(loader, "/lib/ld") == 0) ||
 	    (__strncmp(loader, "/lib64/ld") == 0)) {
 		char *rpath, *runpath, *ld_preload, *ld_library_path;
-		int has_argv0 = 1, shift = 1;
+		int has_argv0 = 1, has_preload = 1, shift = 1;
 		const char *basename;
 		char ldso[NAME_MAX];
 		int abi = 0;
@@ -1260,12 +1285,22 @@ loader:
 			return -1;
 		}
 
-		/* the glibc world supports --argv0 since 2.33 */
+		/*
+		 * the glibc world supports --argv0 since 2.33 and --preload
+		 * since 2.30
+		 */
 		if (__strncmp(ldso, "linux") == 0) {
 			has_argv0 = __ld_linux_has_argv0_option(loader);
 			if (has_argv0 == -1) {
 				__pathperror(loader,
 					     "__ld_linux_has_argv0_option");
+				return -1;
+			}
+
+			has_preload = __ld_linux_has_preload_option(loader);
+			if (has_preload == -1) {
+				__pathperror(loader,
+					     "__ld_linux_has_preload_option");
 				return -1;
 			}
 		}
@@ -1317,7 +1352,7 @@ loader:
 			shift++;
 		if (has_argv0)
 			shift += 2;
-		if (ld_preload)
+		if (has_preload && ld_preload)
 			shift += 2;
 		if (ld_library_path)
 			shift += 2;
@@ -1337,9 +1372,15 @@ loader:
 		 *  - libiamroot.so (from host)
 		 *  - libc.so and libdl.so (from chroot)
 		 */
-		if (ld_preload) {
+		if (has_preload && ld_preload) {
 			interparg[i++] = "--preload";
 			interparg[i++] = ld_preload;
+		} else {
+			ret = setenv("LD_PRELOAD", ld_preload, 1);
+			if (ret) {
+				__envperror("LD_PRELOAD", "setenv");
+				return -1;
+			}
 		}
 
 		/* Add --library-path (chroot) */
@@ -1375,7 +1416,7 @@ loader:
 		 * library is at the first place.
 		 */
 		ld_preload = getenv("LD_PRELOAD");
-		if (ld_preload) {
+		if (has_preload && ld_preload) {
 			char *n, *s = ld_preload;
 
 			n = strchr(s, ':');

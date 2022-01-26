@@ -216,7 +216,7 @@ debian-unstable-rootfs: | debian-unstable-rootfs/etc/machine-id
 debian-%-rootfs/etc/machine-id: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
 debian-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
 debian-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-debian-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|pam-auth-update|ldconfig|/var/lib/dpkg/info/bash.postinst|/var/lib/dpkg/info/dash.postinst|/var/lib/dpkg/info/tasksel.postinst|/var/lib/dpkg/info/procps.postinst
+debian-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|pam-auth-update|/var/lib/dpkg/info/bash.postinst|/var/lib/dpkg/info/dash.postinst|/var/lib/dpkg/info/tasksel.postinst|/var/lib/dpkg/info/procps.postinst
 debian-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/
 debian-%-rootfs/etc/machine-id: export DEBIAN_FRONTEND = noninteractive
 debian-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2

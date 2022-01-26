@@ -207,7 +207,7 @@ rootfs: debian-rootfs
 
 .NOTPARALLEL: debian-rootfs
 .PHONY: debian-rootfs
-debian-rootfs: debian-stable-rootfs debian-testing-rootfs debian-unstable-rootfs
+debian-rootfs: debian-testing-rootfs debian-unstable-rootfs
 
 debian-stable-rootfs: | debian-stable-rootfs/etc/machine-id
 debian-testing-rootfs: | debian-testing-rootfs/etc/machine-id

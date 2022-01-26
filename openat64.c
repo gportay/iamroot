@@ -41,7 +41,7 @@ int openat64(int fd, const char *path, int flags, ...)
 	char *real_path;
 	mode_t mode = 0;
 
-	real_path = path_resolution(fd, path, buf, sizeof(buf), flags);
+	real_path = path_resolution(fd, path, buf, sizeof(buf), 0);
 	if (!real_path) {
 		__pathperror(path, "path_resolution");
 		return -1;

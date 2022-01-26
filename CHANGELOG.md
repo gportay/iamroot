@@ -25,6 +25,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   variables have to be set without using the `_<abi>` suffix number: i.e. using
   `IAMROOT_LIB_<ldso>`
 - Fix the setting for spurious execution bit in file mode
+- Fix the forwarding of none-AT flags argument to `path_resolution()` for the
+  functions `__openat64_2()`, `__openat_2()`, `openat()` and `openat64()`
 
 ### Security
 

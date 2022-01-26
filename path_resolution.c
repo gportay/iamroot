@@ -11,6 +11,7 @@
 #include <errno.h>
 #include <limits.h>
 #include <dlfcn.h>
+#include <sys/param.h>
 #include <sys/stat.h>
 #include <regex.h>
 
@@ -198,8 +199,8 @@ int path_ignored(int fd, const char *path, int flags)
 	return ignore(path) || (flags & AT_EMPTY_PATH) != 0;
 }
 
-char *path_resolution(int fd, const char *path, char *buf, size_t bufsize,
-		      int flags)
+static char *_path_resolution(int fd, const char *path, char *buf,
+			      size_t bufsize, int flags, int symlinks)
 {
 	const char *root;
 	char *real_path;
@@ -278,6 +279,12 @@ char *path_resolution(int fd, const char *path, char *buf, size_t bufsize,
 	if (!follow_symlink(flags))
 		goto exit;
 
+	symlinks++;
+	if (symlinks >= MAXSYMLINKS) {
+		errno = ELOOP;
+		return NULL;
+	}
+
 	ret = issymlink(real_path);
 	if (ret == -1)
 		goto exit;
@@ -292,8 +299,8 @@ char *path_resolution(int fd, const char *path, char *buf, size_t bufsize,
 		tmp[s] = 0; /* ensure NULL terminated */
 
 		if (*tmp == '/')
-			return path_resolution(AT_FDCWD, tmp, buf, bufsize,
-					       flags);
+			return _path_resolution(AT_FDCWD, tmp, buf, bufsize,
+						flags, symlinks);
 	}
 
 exit:
@@ -301,6 +308,12 @@ exit:
 
 ignore:
 	return _strncpy(buf, path, bufsize);
+}
+
+char *path_resolution(int fd, const char *path, char *buf, size_t bufsize,
+		      int flags)
+{
+	return _path_resolution(fd, path, buf, bufsize, flags, 0);
 }
 
 char *__getpath(int fd, const char *path, int flags)

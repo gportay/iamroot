@@ -32,6 +32,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `open64()`, `openat()` and `openat64()`
 - Output the symbol name on path resolution error
 - The internal function `sanitize()` do not sanitize the empty paths
+- The internal function `path_resolution()` returns `ELOOP` if too many
+  symbolic links were followed
 
 ### Fixed
 

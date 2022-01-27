@@ -25,6 +25,7 @@ libiamroot.so: __fxstat.o
 libiamroot.so: __fxstat64.o
 libiamroot.so: __fxstatat.o
 libiamroot.so: __fxstatat64.o
+libiamroot.so: __libc_start_main.o
 libiamroot.so: __lxstat.o
 libiamroot.so: __lxstat64.o
 libiamroot.so: __nss_files_fopen.o

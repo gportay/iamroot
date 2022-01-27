@@ -12,6 +12,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Chroot to an i686 world; tested on [Arch Linux 32]
 - Chroot to an arm world; tested on [Arch Linux ARM]
 - Create a [Debian] rootfs via [debootstrap(8)]
+- Intercept the function `__libc_start_main()` to set `argv[0]` with the
+  content of the environment variable `argv0` if set
 
 ### Changed
 
@@ -27,6 +29,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the setting for spurious execution bit in file mode
 - Fix the forwarding of none-AT flags argument to `path_resolution()` for the
   functions `__openat64_2()`, `__openat_2()`, `openat()` and `openat64()`
+- Fix the `argv[0]` value for the [glibc] [dynamic loader][ld.so(8)] that does
+  not support the option `--argv0` before 2.33; the value in `argv[0]` is now
+  stripped from the path to the chroot
 
 ### Security
 

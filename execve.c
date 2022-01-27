@@ -788,6 +788,7 @@ static void verbose_exec(const char *path, char * const argv[],
 		char *ld_library_path;
 		char *ld_preload;
 		char * const *p;
+		char *argv0;
 		char *root;
 
 		dprintf(STDERR_FILENO, "Debug: running");
@@ -804,6 +805,10 @@ static void verbose_exec(const char *path, char * const argv[],
 		if (ld_library_path)
 			dprintf(STDERR_FILENO, " LD_LIBRARY_PATH=%s",
 				ld_library_path);
+
+		argv0 = getenv("argv0");
+		if (argv0)
+			dprintf(STDERR_FILENO, " argv0=%s", argv0);
 
 		p = argv;
 		while (*p)
@@ -1346,6 +1351,17 @@ loader:
 		if (has_argv0) {
 			interparg[i++] = "--argv0";
 			interparg[i++] = interpargv0;
+		} else {
+			/*
+			 * The dynamic loader does not support for the option
+			 * --argv0; the value will be set by via the function
+			 * __libc_start_main().
+			 */
+			ret = setenv("argv0", *argv, 1);
+			if (ret) {
+				__envperror("argv0", "setenv");
+				return -1;
+			}
 		}
 
 		/* Add path to binary (in chroot, first positional argument) */

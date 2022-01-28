@@ -83,6 +83,7 @@ int pathprependenv(const char *, const char *, int);
 int pathsetenv(const char *, const char *, const char *, int);
 
 char *sanitize(char *, size_t);
+int path_ignored(int, const char *, int);
 char *path_resolution(int, const char *, char *, size_t, int);
 
 void __procfdname(char *, unsigned);
@@ -160,6 +161,15 @@ int __verbosef(int, const char *, const char *, ...) __attribute__((format(print
 
 #define __warn_if_too_restrictive_umask(mask) \
 	({ __warn_and_set_umask(mask, 0400); })
+
+#define __ignored_error(rc) ((rc == -1) && (errno == EPERM))
+
+#define __ignore_error_and_warn(rc, fd, path, flags) \
+	({ if (__ignored_error(rc) && (path_ignored(fd, path, flags) > 0)) { \
+	     __warning("%s: %d/%s: Ignoring error '%m'!\n", __func__, fd, path); \
+	     rc = 0; \
+	     errno = 0; \
+	   } })
 
 extern void __pathperror(const char *, const char *);
 extern void __pathperror2(const char *, const char *, const char *);

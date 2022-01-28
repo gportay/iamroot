@@ -40,6 +40,7 @@ int fchownat(int fd, const char *path, uid_t owner, gid_t group, int flags)
 {
 	char buf[PATH_MAX];
 	char *real_path;
+	int ret;
 
 	real_path = path_resolution(fd, path, buf, sizeof(buf), flags);
 	if (!real_path) {
@@ -53,5 +54,8 @@ int fchownat(int fd, const char *path, uid_t owner, gid_t group, int flags)
 	__debug("%s(fd: %i, path: '%s' -> '%s', owner: %i, group: %i)\n",
 		__func__, fd, path, real_path, owner, group);
 
-	return next_fchownat(fd, real_path, owner, group, flags);
+	ret = next_fchownat(fd, real_path, owner, group, flags);
+	__ignore_error_and_warn(ret, fd, path, flags);
+
+	return ret;
 }

@@ -40,6 +40,7 @@ int chown(const char *path, uid_t owner, gid_t group)
 {
 	char buf[PATH_MAX];
 	char *real_path;
+	int ret;
 
 	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (!real_path) {
@@ -53,5 +54,8 @@ int chown(const char *path, uid_t owner, gid_t group)
 	__debug("%s(path: '%s' -> '%s', owner: %i, group: %i)\n", __func__,
 		path, real_path, owner, group);
 
-	return next_chown(real_path, owner, group);
+	ret = next_chown(real_path, owner, group);
+	__ignore_error_and_warn(ret, AT_FDCWD, path, 0);
+
+	return ret;
 }

@@ -38,6 +38,7 @@ int lchmod(const char *path, mode_t mode)
 {
 	char buf[PATH_MAX];
 	char *real_path;
+	int ret;
 
 	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
 				    AT_SYMLINK_NOFOLLOW);
@@ -50,5 +51,8 @@ int lchmod(const char *path, mode_t mode)
 		real_path, mode);
 	__warn_if_insuffisant_user_mode(real_path, mode);
 
-	return next_lchmod(real_path, mode);
+	ret = next_lchmod(real_path, mode);
+	__ignore_error_and_warn(ret, AT_FDCWD, path, 0);
+
+	return ret;
 }

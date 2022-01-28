@@ -38,6 +38,7 @@ int fchmodat(int fd, const char *path, mode_t mode, int flags)
 {
 	char buf[PATH_MAX];
 	char *real_path;
+	int ret;
 
 	real_path = path_resolution(fd, path, buf, sizeof(buf), flags);
 	if (!real_path) {
@@ -49,5 +50,8 @@ int fchmodat(int fd, const char *path, mode_t mode, int flags)
 		path, real_path, mode);
 	__fwarn_if_insuffisant_user_modeat(fd, real_path, mode, flags);
 
-	return next_fchmodat(fd, real_path, mode, flags);
+	ret = next_fchmodat(fd, real_path, mode, flags);
+	__ignore_error_and_warn(ret, fd, path, flags);
+
+	return ret;
 }

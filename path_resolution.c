@@ -155,6 +155,14 @@ char *sanitize(char *path, size_t bufsize)
 	return path;
 }
 
+int path_ignored(int fd, const char *path, int flags)
+{
+	if (fd != AT_FDCWD)
+		return 0;
+
+	return ignore(path) || (flags & AT_EMPTY_PATH) != 0;
+}
+
 char *path_resolution(int fd, const char *path, char *buf, size_t bufsize,
 		      int flags)
 {

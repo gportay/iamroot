@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <limits.h>
+#include <fcntl.h>
 #include <dlfcn.h>
 
 #include <sys/stat.h>
@@ -38,6 +39,7 @@ int fchmod(int fd, mode_t mode)
 	char buf[PATH_MAX];
 	char *real_path;
 	ssize_t siz;
+	int ret;
 
 	siz = __procfdreadlink(fd, buf, sizeof(buf));
 	if (siz == -1) {
@@ -51,5 +53,8 @@ int fchmod(int fd, mode_t mode)
 		mode);
 	__fwarn_if_insuffisant_user_mode(fd, mode);
 
-	return next_fchmod(fd, mode);
+	ret = next_fchmod(fd, mode);
+	__ignore_error_and_warn(ret, AT_FDCWD, real_path, 0);
+
+	return ret;
 }

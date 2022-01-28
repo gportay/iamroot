@@ -272,3 +272,11 @@ exit:
 ignore:
 	return _strncpy(buf, path, bufsize);
 }
+
+char *__getpath(int fd, const char *path, int flags)
+{
+	static char buf[PATH_MAX];
+
+	*buf = 0;
+	return path_resolution(fd, path, buf, sizeof(buf), flags);
+}

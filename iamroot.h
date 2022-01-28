@@ -85,6 +85,7 @@ int pathsetenv(const char *, const char *, const char *, int);
 char *sanitize(char *, size_t);
 int path_ignored(int, const char *, int);
 char *path_resolution(int, const char *, char *, size_t, int);
+char *__getpath(int, const char *, int);
 
 void __procfdname(char *, unsigned);
 ssize_t __procfdreadlink(int, char *, size_t);
@@ -166,7 +167,7 @@ int __verbosef(int, const char *, const char *, ...) __attribute__((format(print
 
 #define __ignore_error_and_warn(rc, fd, path, flags) \
 	({ if (__ignored_error(rc) && (path_ignored(fd, path, flags) > 0)) { \
-	     __warning("%s: %d/%s: Ignoring error '%m'!\n", __func__, fd, path); \
+	     __warning("%s: %s: Ignoring error '%m'!\n", __func__, __getpath(fd, path, flags)); \
 	     rc = 0; \
 	     errno = 0; \
 	   } })

@@ -162,10 +162,30 @@ char *sanitize(char *path, size_t bufsize)
 	return path;
 }
 
+char *fpath(int fd, char *buf, size_t bufsiz)
+{
+	ssize_t siz;
+
+	siz = __procfdreadlink(fd, buf, bufsiz);
+	if (siz == -1)
+		return NULL;
+	buf[siz] = 0; /* ensure NULL terminated */
+
+	return buf;
+}
+
 int path_ignored(int fd, const char *path, int flags)
 {
-	if (fd != AT_FDCWD)
-		return 0;
+	if (fd != AT_FDCWD) {
+		char buf[PATH_MAX];
+		char *real_path;
+
+		real_path = fpath(fd, buf, sizeof(buf));
+		if (!real_path)
+			return -1;
+
+		return ignore(real_path);
+	}
 
 	return ignore(path) || (flags & AT_EMPTY_PATH) != 0;
 }
@@ -207,23 +227,23 @@ char *path_resolution(int fd, const char *path, char *buf, size_t bufsize,
 			return NULL;
 		}
 	} else if (fd != AT_FDCWD) {
-		char dir[PATH_MAX];
-		ssize_t siz;
+		char dirbuf[PATH_MAX];
+		char *real_dir;
 		int size;
 
-		siz = __procfdreadlink(fd, dir, sizeof(dir));
-		if (siz == -1) {
-			__fpathperror(fd, "__procfdreadlink");
+		real_dir = fpath(fd, dirbuf, sizeof(dirbuf));
+		if (!real_dir) {
+			__fpathperror(fd, "fpath");
 			return NULL;
 		}
-		dir[siz] = 0; /* ensure NULL terminated */
 
-		if (*dir != '/') {
-			__warning("%s: ignore '/proc/self/fd/%d'\n", dir, fd);
+		if (*real_dir != '/') {
+			__warning("%s: ignore '/proc/self/fd/%d'\n", real_dir,
+				  fd);
 			goto ignore;
 		}
 
-		size = snprintf(buf, bufsize, "%s/%s", dir, path);
+		size = snprintf(buf, bufsize, "%s/%s", real_dir, path);
 		if (size < 0) {
 			errno = EINVAL;
 			return NULL;

@@ -809,7 +809,7 @@ static void verbose_exec(const char *path, char * const argv[],
 	if (debug == 0)
 		return;
 
-	if (debug == 1) {
+	if (debug < 4) {
 		char *ld_library_path;
 		char *ld_preload;
 		char * const *p;

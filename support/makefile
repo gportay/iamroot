@@ -130,6 +130,7 @@ test:
 clean:
 	$(MAKE) -f Makefile $@
 	rm -f *.ext4 *.cpio
+	rm -f *-rootfs.log
 	rm -Rf *-rootfs/
 
 ifneq ($(shell command -v pacstrap),)
@@ -827,6 +828,20 @@ umount-%: | mnt
 
 mnt:
 	mkdir -p $@
+
+.PHONY: log
+log: arch-rootfs.log
+log: i686-arch-rootfs.log
+log: debian-oldstable-rootfs.log
+log: debian-stable-rootfs.log
+log: debian-testing-rootfs.log
+log: debian-unstable-rootfs.log
+log: fedora-33-rootfs.log
+log: fedora-34-rootfs.log
+log: fedora-35-rootfs.log
+log: alpine-3.14-rootfs.log
+log: alpine-3.15-rootfs.log
+log: alpine-edge-rootfs.log
 
 .PHONY: %.log
 %.log: SHELL = /bin/bash -o pipefail

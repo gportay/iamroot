@@ -828,6 +828,12 @@ umount-%: | mnt
 mnt:
 	mkdir -p $@
 
+.PHONY: %.log
+%.log: SHELL = /bin/bash -o pipefail
+%.log:
+	$(MAKE) --silent $* 2>&1 | tee $@.tmp
+	mv $@.tmp $@
+
 %-debug %-debug1:
 	$(MAKE) $* IAMROOT_DEBUG=1
 

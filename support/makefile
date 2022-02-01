@@ -151,9 +151,13 @@ rootfs: arch-rootfs
 .PHONY: arch-rootfs
 arch-rootfs: | arch-rootfs/etc/machine-id
 
-arch-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
-	mkdir -p arch-rootfs
-	bash iamroot-shell -c "pacstrap -C support/x86_64-pacman.conf arch-rootfs"
+arch-rootfs/etc/machine-id: | arch-rootfs/etc/pacman.d/gnupg x86_64/libiamroot-linux-x86-64.so.2
+	bash iamroot-shell -c "pacstrap -GC support/x86_64-pacman.conf arch-rootfs"
+
+arch-rootfs/etc/pacman.d/gnupg: | x86_64/libiamroot-linux-x86-64.so.2
+	bash iamroot-shell -c "pacman-key --conf support/x86_64-pacman.conf --gpgdir $@.tmp --init"
+	bash iamroot-shell -c "pacman-key --conf support/x86_64-pacman.conf --gpgdir $@.tmp --populate archlinux"
+	mv $@.tmp $@
 
 i686-rootfs: i686-arch-rootfs
 
@@ -171,9 +175,20 @@ i686-arch-rootfs: | i686-arch-rootfs/etc/machine-id
 
 i686-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/i686-arch-rootfs
 i686-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_2 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
-i686-arch-rootfs/etc/machine-id: | i686/libiamroot-linux.so.2 x86_64/libiamroot-linux-x86-64.so.2
-	mkdir -p i686-arch-rootfs
-	bash iamroot-shell -c "pacstrap -C support/i686-pacman.conf i686-arch-rootfs"
+i686-arch-rootfs/etc/machine-id: | i686-arch-rootfs/etc/pacman.d/gnupg i686/libiamroot-linux.so.2 x86_64/libiamroot-linux-x86-64.so.2
+	bash iamroot-shell -c "pacstrap -GC support/i686-pacman.conf i686-arch-rootfs"
+
+i686-arch-rootfs/etc/pacman.d/gnupg: archlinux32.gpg
+i686-arch-rootfs/etc/pacman.d/gnupg: archlinux32-trusted
+i686-arch-rootfs/etc/pacman.d/gnupg: | x86_64/libiamroot-linux-x86-64.so.2
+	bash iamroot-shell -c "pacman-key --conf support/i686-pacman.conf --gpgdir $@.tmp --init"
+	bash iamroot-shell -c "gpg --homedir $@.tmp --no-permission-warning --import archlinux32.gpg"
+	bash iamroot-shell -c "gpg --homedir $@.tmp --no-permission-warning --import-ownertrust archlinux32-trusted"
+	while IFS=: read key_id _; do \
+		bash iamroot-shell -c "printf 'y\ny\n' | LANG=C gpg --homedir $@.tmp --no-permission-warning --command-fd 0 --quiet --batch --lsign-key $$key_id"; \
+	done <archlinux32-trusted
+	bash iamroot-shell -c "gpg --homedir $@.tmp --no-permission-warning --batch --check-trustdb"
+	mv $@.tmp $@
 
 qemu-system-x86_64-arch:
 
@@ -388,9 +403,20 @@ aarch64-arch-rootfs: | aarch64-arch-rootfs/etc/machine-id
 
 aarch64-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-arch-rootfs
 aarch64-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
-aarch64-arch-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
-	mkdir -p aarch64-arch-rootfs
-	bash iamroot-shell -c "pacstrap -C support/aarch64-pacman.conf aarch64-arch-rootfs"
+aarch64-arch-rootfs/etc/machine-id: | aarch64-arch-rootfs/etc/pacman.d/gnupg aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
+	bash iamroot-shell -c "pacstrap -GC support/aarch64-pacman.conf aarch64-arch-rootfs"
+
+aarch64-arch-rootfs/etc/pacman.d/gnupg: archlinuxarm.gpg
+aarch64-arch-rootfs/etc/pacman.d/gnupg: archlinuxarm-trusted
+aarch64-arch-rootfs/etc/pacman.d/gnupg: | x86_64/libiamroot-linux-x86-64.so.2
+	bash iamroot-shell -c "pacman-key --conf support/aarch64-pacman.conf --gpgdir $@.tmp --init"
+	bash iamroot-shell -c "gpg --homedir $@.tmp --no-permission-warning --import archlinuxarm.gpg"
+	bash iamroot-shell -c "gpg --homedir $@.tmp --no-permission-warning --import-ownertrust archlinuxarm-trusted"
+	while IFS=: read key_id _; do \
+		bash iamroot-shell -c "printf 'y\ny\n' | LANG=C gpg --homedir $@.tmp --no-permission-warning --command-fd 0 --quiet --batch --lsign-key $$key_id"; \
+	done <archlinuxarm-trusted
+	bash iamroot-shell -c "gpg --homedir $@.tmp --no-permission-warning --batch --check-trustdb"
+	mv $@.tmp $@
 
 ifneq ($(shell command -v arm-unknown-linux-gnueabi-gcc),)
 .PHONY: arm-arch-chroot
@@ -407,9 +433,20 @@ arm-arch-rootfs: | arm-arch-rootfs/etc/machine-id
 
 arm-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/arm-arch-rootfs
 arm-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
-arm-arch-rootfs/etc/machine-id: | arm/libiamroot-linux.so.3 x86_64/libiamroot-linux-x86-64.so.2
-	mkdir -p arm-arch-rootfs
-	bash iamroot-shell -c "pacstrap -C support/arm-pacman.conf arm-arch-rootfs"
+arm-arch-rootfs/etc/machine-id: | arm-arch-rootfs/etc/pacman.d/gnupg arm/libiamroot-linux.so.3 x86_64/libiamroot-linux-x86-64.so.2
+	bash iamroot-shell -c "pacstrap -GC support/arm-pacman.conf arm-arch-rootfs"
+
+arm-arch-rootfs/etc/pacman.d/gnupg: archlinuxarm.gpg
+arm-arch-rootfs/etc/pacman.d/gnupg: archlinuxarm-trusted
+arm-arch-rootfs/etc/pacman.d/gnupg: | x86_64/libiamroot-linux-x86-64.so.2
+	bash iamroot-shell -c "pacman-key --conf support/arm-pacman.conf --gpgdir $@.tmp --init"
+	bash iamroot-shell -c "gpg --homedir $@.tmp --no-permission-warning --import archlinuxarm.gpg"
+	bash iamroot-shell -c "gpg --homedir $@.tmp --no-permission-warning --import-ownertrust archlinuxarm-trusted"
+	while IFS=: read key_id _; do \
+		bash iamroot-shell -c "printf 'y\ny\n' | LANG=C gpg --homedir $@.tmp --no-permission-warning --command-fd 0 --quiet --batch --lsign-key $$key_id"; \
+	done <archlinuxarm-trusted
+	bash iamroot-shell -c "gpg --homedir $@.tmp --no-permission-warning --batch --check-trustdb"
+	mv $@.tmp $@
 endif
 
 ifneq ($(shell command -v armv6l-unknown-linux-gnueabihf-gcc),)
@@ -427,9 +464,20 @@ armv6h-arch-rootfs: | armv6h-arch-rootfs/etc/machine-id
 
 armv6h-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/armv6h-arch-rootfs
 armv6h-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
-armv6h-arch-rootfs/etc/machine-id: | armhf/libiamroot-linux-armhf.so.3 x86_64/libiamroot-linux-x86-64.so.2
-	mkdir -p armv6h-arch-rootfs
-	bash iamroot-shell -c "pacstrap -C support/armv6h-pacman.conf armv6h-arch-rootfs"
+armv6h-arch-rootfs/etc/machine-id: | armv6h-arch-rootfs/etc/pacman.d/gnupg armhf/libiamroot-linux-armhf.so.3 x86_64/libiamroot-linux-x86-64.so.2
+	bash iamroot-shell -c "pacstrap -GC support/armv6h-pacman.conf armv6h-arch-rootfs"
+
+armv6h-arch-rootfs/etc/pacman.d/gnupg: archlinuxarm.gpg
+armv6h-arch-rootfs/etc/pacman.d/gnupg: archlinuxarm-trusted
+armv6h-arch-rootfs/etc/pacman.d/gnupg: | x86_64/libiamroot-linux-x86-64.so.2
+	bash iamroot-shell -c "pacman-key --conf support/armv6h-pacman.conf --gpgdir $@.tmp --init"
+	bash iamroot-shell -c "gpg --homedir $@.tmp --no-permission-warning --import archlinuxarm.gpg"
+	bash iamroot-shell -c "gpg --homedir $@.tmp --no-permission-warning --import-ownertrust archlinuxarm-trusted"
+	while IFS=: read key_id _; do \
+		bash iamroot-shell -c "printf 'y\ny\n' | LANG=C gpg --homedir $@.tmp --no-permission-warning --command-fd 0 --quiet --batch --lsign-key $$key_id"; \
+	done <archlinuxarm-trusted
+	bash iamroot-shell -c "gpg --homedir $@.tmp --no-permission-warning --batch --check-trustdb"
+	mv $@.tmp $@
 endif
 
 ifneq ($(shell command -v armv7l-unknown-linux-gnueabihf-gcc),)
@@ -447,9 +495,20 @@ armv7h-arch-rootfs: | armv7h-arch-rootfs/etc/machine-id
 
 armv7h-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/armv7h-arch-rootfs
 armv7h-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
-armv7h-arch-rootfs/etc/machine-id: | armhf/libiamroot-linux-armhf.so.3 x86_64/libiamroot-linux-x86-64.so.2
-	mkdir -p armv7h-arch-rootfs
-	bash iamroot-shell -c "pacstrap -C support/armv7h-pacman.conf armv7h-arch-rootfs"
+armv7h-arch-rootfs/etc/machine-id: | armv7h-arch-rootfs/etc/pacman.d/gnupg armhf/libiamroot-linux-armhf.so.3 x86_64/libiamroot-linux-x86-64.so.2
+	bash iamroot-shell -c "pacstrap -GC support/armv7h-pacman.conf armv7h-arch-rootfs"
+
+armv7h-arch-rootfs/etc/pacman.d/gnupg: archlinuxarm.gpg
+armv7h-arch-rootfs/etc/pacman.d/gnupg: archlinuxarm-trusted
+armv7h-arch-rootfs/etc/pacman.d/gnupg: | x86_64/libiamroot-linux-x86-64.so.2
+	bash iamroot-shell -c "pacman-key --conf support/armv7h-pacman.conf --gpgdir $@.tmp --init"
+	bash iamroot-shell -c "gpg --homedir $@.tmp --no-permission-warning --import archlinuxarm.gpg"
+	bash iamroot-shell -c "gpg --homedir $@.tmp --no-permission-warning --import-ownertrust archlinuxarm-trusted"
+	while IFS=: read key_id _; do \
+		bash iamroot-shell -c "printf 'y\ny\n' | LANG=C gpg --homedir $@.tmp --no-permission-warning --command-fd 0 --quiet --batch --lsign-key $$key_id"; \
+	done <archlinuxarm-trusted
+	bash iamroot-shell -c "gpg --homedir $@.tmp --no-permission-warning --batch --check-trustdb"
+	mv $@.tmp $@
 endif
 endif
 
@@ -515,6 +574,15 @@ aarch64-alpine-%-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1 x86_
 	bash iamroot-shell -c "APK_OPTS='--arch aarch64' alpine-make-rootfs aarch64-alpine-$*-rootfs --keys-dir /usr/share/apk/keys/aarch64 --mirror-uri http://nl.alpinelinux.org/alpine --branch $*"
 endif
 endif
+
+archlinux32%:
+	wget https://git.archlinux32.org/archlinux32-keyring/plain/$@
+
+archlinuxarm%:
+	wget https://raw.githubusercontent.com/archlinuxarm/archlinuxarm-keyring/master/$@
+
+manjaro%:
+	wget https://gitlab.manjaro.org/packages/core/manjaro-keyring/-/raw/master/$@
 
 qemu-system-x86_64-%: override CMDLINE += panic=5
 qemu-system-x86_64-%: override CMDLINE += console=ttyS0

@@ -197,16 +197,41 @@ Change root directory via *chroot(1)*
 
 Create a new Arch Linux system installation from scratch via *pacstrap(8)*
 
-	[gportay@archlinux ~]$ mkdir rootfs
+	[gportay@archlinux ~]$ iamroot-shell -c "pacman-key --gpgdir rootfs/etc/pacman.d/gnupg --init"
+	gpg: /home/gportay/rootfs/etc/pacman.d/gnupg/trustdb.gpg: trustdb created
+	gpg: no ultimately trusted keys found
+	gpg: starting migration from earlier GnuPG versions
+	gpg: porting secret keys from '/home/gportay/rootfs/etc/pacman.d/gnupg/secring.gpg' to gpg-agent
+	gpg: migration succeeded
+	==> Generating pacman master key. This may take some time.
+	gpg: Generating pacman keyring master key...
+	gpg: key 55B1411FB5D6DEE8 marked as ultimately trusted
+	gpg: directory '/home/gportay/rootfs/etc/pacman.d/gnupg/openpgp-revocs.d' created
+	gpg: revocation certificate stored as '/home/gportay/rootfs/etc/pacman.d/gnupg/openpgp-revocs.d/069893F3399C1E876C0479D255B1411FB5D6DEE8.rev'
+	gpg: Done
+	==> Updating trust database...
+	gpg: marginals needed: 3  completes needed: 1  trust model: pgp
+	gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
+	[gportay@archlinux ~]$ iamroot-shell -c "pacman-key --gpgdir rootfs/etc/pacman.d/gnupg --populate archlinux" 
+	==> Appending keys from archlinux.gpg...
+	==> Locally signing trusted keys in keyring...
+	  -> Locally signed 5 keys.
+	==> Importing owner trust values...
+	gpg: setting ownertrust to 4
+	gpg: setting ownertrust to 4
+	gpg: inserting ownertrust of 4
+	gpg: setting ownertrust to 4
+	gpg: setting ownertrust to 4
+	==> Disabling revoked keys in keyring...
+	  -> Disabled 49 keys.
+	==> Updating trust database...
+	gpg: marginals needed: 3  completes needed: 1  trust model: pgp
+	gpg: depth: 0  valid:   1  signed:   5  trust: 0-, 0q, 0n, 0m, 0f, 1u
+	gpg: depth: 1  valid:   5  signed:  94  trust: 0-, 0q, 0n, 5m, 0f, 0u
+	gpg: depth: 2  valid:  87  signed:  33  trust: 87-, 0q, 0n, 0m, 0f, 0u
+	gpg: next trustdb check due at 2022-05-06
 	[gportay@archlinux ~]$ iamroot-shell -c "pacstrap rootfs" && echo done
 	==> Creating install root at rootfs
-	cp: cannot access '/etc/pacman.d/gnupg/crls.d': Permission denied
-	cp: ‘/etc/pacman.d/gnupg/crls.d’: Permission denied
-	cp: cannot access '/etc/pacman.d/gnupg/openpgp-revocs.d': Permission denied
-	cp: ‘/etc/pacman.d/gnupg/openpgp-revocs.d’: Permission denied
-	cp: cannot access '/etc/pacman.d/gnupg/private-keys-v1.d': Permission denied
-	cp: ‘/etc/pacman.d/gnupg/private-keys-v1.d’: Permission denied
-	cp: cannot open '/etc/pacman.d/gnupg/secring.gpg' for reading: Permission denied
 	==> Installing packages to rootfs
 	(...)
 	:: Running post-transaction hooks...

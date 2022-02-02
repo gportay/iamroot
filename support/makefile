@@ -419,6 +419,7 @@ endif
 endif
 
 ifneq ($(shell command -v pacstrap),)
+ifneq ($(shell command -v aarch64-linux-gnu-gcc),)
 .PHONY: aarch64-arch-chroot
 aarch64-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-arch-rootfs
 aarch64-arch-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
@@ -447,6 +448,7 @@ aarch64-arch-rootfs/etc/pacman.d/gnupg: | x86_64/libiamroot-linux-x86-64.so.2
 	done <archlinuxarm-trusted
 	bash iamroot-shell -c "gpg --homedir $@.tmp --no-permission-warning --batch --check-trustdb"
 	mv $@.tmp $@
+endif
 
 ifneq ($(shell command -v arm-unknown-linux-gnueabi-gcc),)
 .PHONY: arm-arch-chroot
@@ -543,6 +545,7 @@ endif
 endif
 
 ifneq ($(shell command -v dnf),)
+ifneq ($(shell command -v aarch64-linux-gnu-gcc),)
 aarch64-fedora-33-chroot:
 aarch64-fedora-34-chroot:
 aarch64-fedora-35-chroot:
@@ -567,6 +570,7 @@ aarch64-fedora-%-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 
 	install -D -m644 support/fedora.repo aarch64-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
 	bash iamroot-shell -c "dnf --forcearch aarch64 --releasever $* --assumeyes --installroot $(CURDIR)/aarch64-fedora-$*-rootfs group install minimal-environment"
 	rm -f aarch64-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
+endif
 
 ifneq ($(shell command -v armv7l-unknown-linux-gnueabihf-gcc),)
 armhfp-fedora-33-chroot:

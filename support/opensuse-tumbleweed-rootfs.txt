@@ -1,0 +1,1026 @@
+Adding repository 'openSUSE-Tumbleweed-Oss' [done]
+Warning: GPG checking is disabled in configuration of repository 'openSUSE-Tumbleweed-Oss'. Integrity and origin of packages cannot be verified.
+Repository 'openSUSE-Tumbleweed-Oss' successfully added
+
+URI         : http://download.opensuse.org/tumbleweed/repo/oss/
+Enabled     : Yes
+GPG Check   : No
+Autorefresh : Yes
+Priority    : 99 (default priority)
+
+Repository priorities are without effect. All enabled repositories share the same priority.
+Retrieving repository 'openSUSE-Tumbleweed-Oss' metadata [done]
+Building repository 'openSUSE-Tumbleweed-Oss' cache [done]
+Loading repository data...
+Building repository 'openSUSE-Tumbleweed-Oss' cache [done]
+Reading installed packages...
+Resolving package dependencies...
+
+The following XXX recommended packages were automatically selected:
+  augeas-lenses ca-certificates-mozilla crypto-policies-scripts dirmngr glibc-extra ibmtss-base libldap-data logrotate lsof ncurses-utils publicsuffix python38 python38-curses python38-dbm terminfo-screen zypper-log
+
+The following XXX NEW packages are going to be installed:
+  augeas-lenses bash bash-sh boost-license1_78_0 branding-openSUSE busybox busybox-coreutils busybox-gawk busybox-grep busybox-xz ca-certificates ca-certificates-mozilla compat-usrmerge-tools crypto-policies crypto-policies-scripts dirmngr filesystem fillup glibc glibc-extra gpg2 ibmtss-base krb5 libacl1 libassuan0 libaugeas0 libboost_thread1_78_0 libbrotlicommon1 libbrotlidec1 libbz2-1 libcap2 libcom_err2 libcrypt1 libcurl4 libexpat1 libffi8 libgcc_s1 libgcrypt20 libgdbm6 libgdbm_compat4 libglib-2_0-0 libgmp10 libgnutls30 libgpg-error0 libgpgme11 libhogweed6 libibmtss1 libidn2-0 libkeyutils1 libksba8 libldap-2_5-0 libldap-data liblua5_4-5 liblz4-1 liblzma5 libmpdec3 libncurses6 libnettle8 libnghttp2-14 libnpth0 libnsl3 libopenssl1_1 libp11-kit0 libpcre1 libpcre2-8-0 libpopt0 libprocps8 libprotobuf-lite30 libproxy1 libpsl5 libpython3_8-1_0 libreadline8 libsasl2-3 libselinux1 libsepol2 libsigc-2_0-0 libsolv-tools libsqlite3-0 libssh4 libssh-config libstdc++6 libsystemd0 libtasn1-6 libtirpc3 libtirpc-netconfig libudev1 libunistring2 libusb-1_0-0 libuuid1 libverto1 libxml2-2 libyaml-cpp0_7 libzck1 libz-ng-compat1 libzstd1 libzypp logrotate lsof ncurses-utils openSUSE-build-key openSUSE-release openSUSE-release-appliance-custom p11-kit p11-kit-tools patterns-base-minimal_base pinentry procps publicsuffix python38 python38-base python38-curses python38-dbm rpm rpm-config-SUSE shared-python-startup system-user-root system-user-tss sysuser-shadow terminfo-base terminfo-screen zypper zypper-log zypper-needs-restarting
+
+XXX new packages to install.
+Overall download size: XXX.X MiB. Already cached: 0 B. After the operation, additional XXX.X MiB will be used.
+Continue? [y/n/v/...? shows all options] (y): y
+
+Checking for file conflicts: [done]
+Warning: XXX packages had to be excluded from file conflicts check because they are not yet downloaded.
+
+    Note: Checking for file conflicts requires not installed packages to be downloaded in advance in
+    order to access their file lists. See option '--download-in-advance / --dry-run --download-only'
+    in the zypper manual page for details.
+
+Retrieving package boost-license1_78_0 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: boost-license1_78_0 [done]
+(XXX/XXX) Installing: boost-license1_78_0 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/boost-license1_78_0: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package branding-openSUSE (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: branding-openSUSE [done]
+(XXX/XXX) Installing: branding-openSUSE [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/branding-openSUSE: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package compat-usrmerge-tools (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: compat-usrmerge-tools.rpm [done]
+(XXX/XXX) Installing: compat-usrmerge-tools [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/compat-usrmerge-tools.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libldap-data (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libldap-data [done]
+(XXX/XXX) Installing: libldap-data [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/libldap-data: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libssh-config (XXX/XXX), XXX.X KiB ( XXX.X   B unpacked)
+Retrieving: libssh-config.rpm [done]
+(XXX/XXX) Installing: libssh-config [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libssh-config.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libtirpc-netconfig (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libtirpc-netconfig.rpm [done]
+(XXX/XXX) Installing: libtirpc-netconfig [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libtirpc-netconfig.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package openSUSE-build-key (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: openSUSE-build-key.rpm [done]
+(XXX/XXX) Installing: openSUSE-build-key [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/openSUSE-build-key.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package openSUSE-release-appliance-custom (XXX/XXX), XXX.X KiB ( XXX.X   B unpacked)
+Retrieving: openSUSE-release-appliance-custom.rpm [done]
+(XXX/XXX) Installing: openSUSE-release-appliance-custom [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/openSUSE-release-appliance-custom.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package publicsuffix (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: publicsuffix [done]
+(XXX/XXX) Installing: publicsuffix [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/publicsuffix: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package shared-python-startup (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: shared-python-startup [done]
+(XXX/XXX) Installing: shared-python-startup [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/shared-python-startup: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package system-user-root (XXX/XXX), XXX.X KiB ( XXX.X   B unpacked)
+Retrieving: system-user-root [done]
+(XXX/XXX) Installing: system-user-root [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/system-user-root: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package filesystem (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: filesystem.rpm [done]
+(XXX/XXX) Installing: filesystem [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/filesystem.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package glibc (XXX/XXX), XXX.X MiB ( XXX.X MiB unpacked)
+Retrieving: glibc.rpm [done]
+(XXX/XXX) Installing: glibc [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/glibc.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libpcre2-8-0 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libpcre2-8-0.rpm [done]
+(XXX/XXX) Installing: libpcre2-8-0 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpcre2-8-0.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libselinux1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libselinux1.rpm [done]
+(XXX/XXX) Installing: libselinux1 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libselinux1.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package glibc-extra (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: glibc-extra.rpm [done]
+(XXX/XXX) Installing: glibc-extra [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/glibc-extra.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package lsof (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: lsof.rpm [done]
+(XXX/XXX) Installing: lsof [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/lsof.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libzstd1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libzstd1.rpm [done]
+(XXX/XXX) Installing: libzstd1 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libzstd1.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libz-ng-compat1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libz-ng-compat1.rpm [done]
+(XXX/XXX) Installing: libz-ng-compat1 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libz-ng-compat1.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libverto1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libverto1.rpm [done]
+(XXX/XXX) Installing: libverto1 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libverto1.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libuuid1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libuuid1.rpm [done]
+(XXX/XXX) Installing: libuuid1 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libuuid1.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libunistring2 (XXX/XXX), XXX.X KiB ( XXX.X MiB unpacked)
+Retrieving: libunistring2.rpm [done]
+(XXX/XXX) Installing: libunistring2 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libunistring2.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libudev1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libudev1.rpm [done]
+(XXX/XXX) Installing: libudev1 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libudev1.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libtasn1-6 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libtasn1-6.rpm [done]
+(XXX/XXX) Installing: libtasn1-6 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libtasn1-6.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libsqlite3-0 (XXX/XXX), XXX.X KiB ( XXX.X MiB unpacked)
+Retrieving: libsqlite3-0.rpm [done]
+(XXX/XXX) Installing: libsqlite3-0 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsqlite3-0.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libsepol2 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libsepol2.rpm [done]
+(XXX/XXX) Installing: libsepol2 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsepol2.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libsasl2-3 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libsasl2-3.rpm [done]
+(XXX/XXX) Installing: libsasl2-3 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsasl2-3.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libpopt0 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libpopt0.rpm [done]
+(XXX/XXX) Installing: libpopt0 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpopt0.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libpcre1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libpcre1.rpm [done]
+(XXX/XXX) Installing: libpcre1 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpcre1.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libnpth0 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libnpth0.rpm [done]
+(XXX/XXX) Installing: libnpth0 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libnpth0.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libnghttp2-14 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libnghttp2-14.rpm [done]
+(XXX/XXX) Installing: libnghttp2-14 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libnghttp2-14.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libnettle8 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libnettle8.rpm [done]
+(XXX/XXX) Installing: libnettle8 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libnettle8.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libmpdec3 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libmpdec3.rpm [done]
+(XXX/XXX) Installing: libmpdec3 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libmpdec3.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package liblzma5 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: liblzma5.rpm [done]
+(XXX/XXX) Installing: liblzma5 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/liblzma5.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package liblz4-1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: liblz4-1.rpm [done]
+(XXX/XXX) Installing: liblz4-1 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/liblz4-1.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package liblua5_4-5 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: liblua5_4-5.rpm [done]
+(XXX/XXX) Installing: liblua5_4-5 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/liblua5_4-5.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libkeyutils1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libkeyutils1.rpm [done]
+(XXX/XXX) Installing: libkeyutils1 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libkeyutils1.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libgpg-error0 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libgpg-error0.rpm [done]
+(XXX/XXX) Installing: libgpg-error0 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgpg-error0.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libgmp10 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libgmp10.rpm [done]
+(XXX/XXX) Installing: libgmp10 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgmp10.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libgdbm6 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libgdbm6.rpm [done]
+(XXX/XXX) Installing: libgdbm6 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgdbm6.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libgcc_s1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libgcc_s1.rpm [done]
+(XXX/XXX) Installing: libgcc_s1 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgcc_s1.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libffi8 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libffi8.rpm [done]
+(XXX/XXX) Installing: libffi8 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libffi8.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libexpat1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libexpat1.rpm [done]
+(XXX/XXX) Installing: libexpat1 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libexpat1.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libcrypt1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libcrypt1.rpm [done]
+(XXX/XXX) Installing: libcrypt1 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libcrypt1.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libcom_err2 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libcom_err2.rpm [done]
+(XXX/XXX) Installing: libcom_err2 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libcom_err2.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libcap2 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libcap2.rpm [done]
+(XXX/XXX) Installing: libcap2 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libcap2.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libbz2-1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libbz2-1.rpm [done]
+(XXX/XXX) Installing: libbz2-1 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libbz2-1.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libbrotlicommon1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libbrotlicommon1.rpm [done]
+(XXX/XXX) Installing: libbrotlicommon1 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libbrotlicommon1.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libacl1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libacl1.rpm [done]
+(XXX/XXX) Installing: libacl1 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libacl1.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package fillup (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: fillup.rpm [done]
+(XXX/XXX) Installing: fillup [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/fillup.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libidn2-0 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libidn2-0.rpm [done]
+(XXX/XXX) Installing: libidn2-0 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libidn2-0.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libusb-1_0-0 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libusb-1_0-0.rpm [done]
+(XXX/XXX) Installing: libusb-1_0-0 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libusb-1_0-0.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libglib-2_0-0 (XXX/XXX), XXX.X KiB ( XXX.X MiB unpacked)
+Retrieving: libglib-2_0-0.rpm [done]
+(XXX/XXX) Installing: libglib-2_0-0 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libglib-2_0-0.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libxml2-2 (XXX/XXX), XXX.X KiB ( XXX.X MiB unpacked)
+Retrieving: libxml2-2.rpm [done]
+(XXX/XXX) Installing: libxml2-2 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libxml2-2.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libksba8 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libksba8.rpm [done]
+(XXX/XXX) Installing: libksba8 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libksba8.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libgcrypt20 (XXX/XXX), XXX.X KiB ( XXX.X MiB unpacked)
+Retrieving: libgcrypt20.rpm [done]
+(XXX/XXX) Installing: libgcrypt20 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgcrypt20.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libassuan0 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libassuan0.rpm [done]
+(XXX/XXX) Installing: libassuan0 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libassuan0.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libhogweed6 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libhogweed6.rpm [done]
+(XXX/XXX) Installing: libhogweed6 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libhogweed6.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libgdbm_compat4 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libgdbm_compat4.rpm [done]
+(XXX/XXX) Installing: libgdbm_compat4 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgdbm_compat4.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libstdc++6 (XXX/XXX), XXX.X KiB ( XXX.X MiB unpacked)
+Retrieving: libstdc++6.rpm [done]
+(XXX/XXX) Installing: libstdc++6 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libstdc++6.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libp11-kit0 (XXX/XXX), XXX.X KiB ( XXX.X MiB unpacked)
+Retrieving: libp11-kit0.rpm [done]
+(XXX/XXX) Installing: libp11-kit0 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libp11-kit0.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package busybox (XXX/XXX), XXX.X KiB ( XXX.X MiB unpacked)
+Retrieving: busybox.rpm [done]
+(XXX/XXX) Installing: busybox [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/busybox.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libbrotlidec1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libbrotlidec1.rpm [done]
+(XXX/XXX) Installing: libbrotlidec1 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libbrotlidec1.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libpsl5 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libpsl5.rpm [done]
+(XXX/XXX) Installing: libpsl5 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpsl5.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libaugeas0 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libaugeas0.rpm [done]
+(XXX/XXX) Installing: libaugeas0 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libaugeas0.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package augeas-lenses (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: augeas-lenses.rpm [done]
+(XXX/XXX) Installing: augeas-lenses [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/augeas-lenses.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libsystemd0 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libsystemd0.rpm [done]
+(XXX/XXX) Installing: libsystemd0 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsystemd0.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libyaml-cpp0_7 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libyaml-cpp0_7.rpm [done]
+(XXX/XXX) Installing: libyaml-cpp0_7 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libyaml-cpp0_7.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libsigc-2_0-0 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libsigc-2_0-0.rpm [done]
+(XXX/XXX) Installing: libsigc-2_0-0 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsigc-2_0-0.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libproxy1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libproxy1.rpm [done]
+(XXX/XXX) Installing: libproxy1 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libproxy1.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libprotobuf-lite30 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libprotobuf-lite30.rpm [done]
+(XXX/XXX) Installing: libprotobuf-lite30 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libprotobuf-lite30.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libncurses6 (XXX/XXX), XXX.X KiB ( XXX.X MiB unpacked)
+Retrieving: libncurses6.rpm [done]
+(XXX/XXX) Installing: libncurses6 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libncurses6.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package terminfo-base (XXX/XXX), XXX.X KiB ( XXX.X MiB unpacked)
+Retrieving: terminfo-base.rpm [done]
+(XXX/XXX) Installing: terminfo-base [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/terminfo-base.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package terminfo-screen (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: terminfo-screen.rpm [done]
+(XXX/XXX) Installing: terminfo-screen [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/terminfo-screen.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libboost_thread1_78_0 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libboost_thread1_78_0.rpm [done]
+(XXX/XXX) Installing: libboost_thread1_78_0 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libboost_thread1_78_0.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package p11-kit-tools (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: p11-kit-tools.rpm [done]
+(XXX/XXX) Installing: p11-kit-tools [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/p11-kit-tools.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package p11-kit (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: p11-kit.rpm [done]
+(XXX/XXX) Installing: p11-kit [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/p11-kit.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package busybox-xz (XXX/XXX), XXX.X KiB ( XXX.X   B unpacked)
+Retrieving: busybox-xz [done]
+(XXX/XXX) Installing: busybox-xz [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/busybox-xz: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package busybox-grep (XXX/XXX), XXX.X KiB ( XXX.X   B unpacked)
+Retrieving: busybox-grep [done]
+(XXX/XXX) Installing: busybox-grep [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/busybox-grep: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package busybox-gawk (XXX/XXX), XXX.X KiB ( XXX.X   B unpacked)
+Retrieving: busybox-gawk [done]
+(XXX/XXX) Installing: busybox-gawk [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/busybox-gawk: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package busybox-coreutils (XXX/XXX), XXX.X KiB ( XXX.X   B unpacked)
+Retrieving: busybox-coreutils [done]
+(XXX/XXX) Installing: busybox-coreutils [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/busybox-coreutils: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libprocps8 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libprocps8.rpm [done]
+(XXX/XXX) Installing: libprocps8 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libprocps8.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package ncurses-utils (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: ncurses-utils.rpm [done]
+(XXX/XXX) Installing: ncurses-utils [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/ncurses-utils.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package procps (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: procps.rpm [done]
+(XXX/XXX) Installing: procps [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/procps.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libreadline8 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libreadline8.rpm [done]
+(XXX/XXX) Installing: libreadline8 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libreadline8.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package bash (XXX/XXX), XXX.X KiB ( XXX.X MiB unpacked)
+Retrieving: bash.rpm [done]
+(XXX/XXX) Installing: bash [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/bash.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package bash-sh (XXX/XXX), XXX.X KiB ( XXX.X   B unpacked)
+Retrieving: bash-sh.rpm [done]
+(XXX/XXX) Installing: bash-sh [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/bash-sh.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package zypper-log (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: zypper-log [done]
+(XXX/XXX) Installing: zypper-log [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/zypper-log: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package sysuser-shadow (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: sysuser-shadow [done]
+(XXX/XXX) Installing: sysuser-shadow [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/sysuser-shadow: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package rpm-config-SUSE (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: rpm-config-SUSE [done]
+(XXX/XXX) Installing: rpm-config-SUSE [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/rpm-config-SUSE: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package rpm (XXX/XXX), XXX.X KiB ( XXX.X MiB unpacked)
+Retrieving: rpm.rpm [done]
+(XXX/XXX) Installing: rpm [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/rpm.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+Updating /etc/sysconfig/services ...
+Warning: opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root 'opensuse-tumbleweed-rootfs'
+
+
+Retrieving package pinentry (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: pinentry.rpm [done]
+(XXX/XXX) Installing: pinentry [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/pinentry.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package openSUSE-release (XXX/XXX), XXX.X MiB ( XXX.X KiB unpacked)
+Retrieving: openSUSE-release.rpm [done]
+(XXX/XXX) Installing: openSUSE-release [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/openSUSE-release.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package logrotate (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: logrotate.rpm [done]
+(XXX/XXX) Installing: logrotate [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/logrotate.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package crypto-policies (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: crypto-policies [done]
+(XXX/XXX) Installing: crypto-policies [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/crypto-policies: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package ca-certificates (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: ca-certificates [done]
+(XXX/XXX) Installing: ca-certificates [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/ca-certificates: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package ca-certificates-mozilla (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: ca-certificates-mozilla [done]
+(XXX/XXX) Installing: ca-certificates-mozilla [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/ca-certificates-mozilla: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package system-user-tss (XXX/XXX), XXX.X KiB ( XXX.X   B unpacked)
+Retrieving: system-user-tss [done]
+(XXX/XXX) Installing: system-user-tss [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/system-user-tss: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+/usr/bin/busybox adduser -S -H -g TSS daemon -G tss -h /var/lib/tpm -u 98 tss -s /usr/sbin/nologin
+
+
+Retrieving package libsolv-tools (XXX/XXX),  XXX.X KiB ( XXX.X MiB unpacked)
+Retrieving: libsolv-tools.rpm [done]
+(XXX/XXX) Installing: libsolv-tools [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsolv-tools.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package patterns-base-minimal_base (XXX/XXX), XXX.X KiB ( XXX.X   B unpacked)
+Retrieving: patterns-base-minimal_base.rpm [done]
+(XXX/XXX) Installing: patterns-base-minimal_base [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/patterns-base-minimal_base.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libopenssl1_1 (XXX/XXX), XXX.X MiB ( XXX.X MiB unpacked)
+Retrieving: libopenssl1_1.rpm [done]
+(XXX/XXX) Installing: libopenssl1_1 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libopenssl1_1.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package ibmtss-base (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: ibmtss-base [done]
+(XXX/XXX) Installing: ibmtss-base [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/ibmtss-base: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+/var/tmp/rpm-tmp.XXXXXX: line X: /usr/bin/udevadm: No such file or directory
+
+
+Retrieving package libzck1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libzck1.rpm [done]
+(XXX/XXX) Installing: libzck1 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libzck1.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libldap-2_5-0 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libldap-2_5-0.rpm [done]
+(XXX/XXX) Installing: libldap-2_5-0 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libldap-2_5-0.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package krb5 (XXX/XXX), XXX.X KiB ( XXX.X MiB unpacked)
+Retrieving: krb5.rpm [done]
+(XXX/XXX) Installing: krb5 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/krb5.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libibmtss1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libibmtss1.rpm [done]
+(XXX/XXX) Installing: libibmtss1 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libibmtss1.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libtirpc3 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libtirpc3.rpm [done]
+(XXX/XXX) Installing: libtirpc3 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libtirpc3.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libssh4 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libssh4.rpm [done]
+(XXX/XXX) Installing: libssh4 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libssh4.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libnsl3 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libnsl3.rpm [done]
+(XXX/XXX) Installing: libnsl3 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libnsl3.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libcurl4 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libcurl4.rpm [done]
+(XXX/XXX) Installing: libcurl4 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libcurl4.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package python38-base (XXX/XXX), XXX.X MiB ( XXX.X MiB unpacked)
+Retrieving: python38-base.rpm [done]
+(XXX/XXX) Installing: python38-base [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python38-base.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libpython3_8-1_0 (XXX/XXX), XXX.X MiB ( XXX.X MiB unpacked)
+Retrieving: libpython3_8-1_0.rpm [done]
+(XXX/XXX) Installing: libpython3_8-1_0 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpython3_8-1_0.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package python38 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: python38.rpm [done]
+(XXX/XXX) Installing: python38 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python38.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package python38-dbm (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: python38-dbm.rpm [done]
+(XXX/XXX) Installing: python38-dbm [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python38-dbm.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package python38-curses (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: python38-curses.rpm [done]
+(XXX/XXX) Installing: python38-curses [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python38-curses.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package crypto-policies-scripts (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: crypto-policies-scripts [done]
+(XXX/XXX) Installing: crypto-policies-scripts [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/crypto-policies-scripts: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libgnutls30 (XXX/XXX),  XXX.X KiB ( XXX.X MiB unpacked)
+Retrieving: libgnutls30.rpm [done]
+(XXX/XXX) Installing: libgnutls30 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgnutls30.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package dirmngr (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: dirmngr.rpm [done]
+(XXX/XXX) Installing: dirmngr [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/dirmngr.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package gpg2 (XXX/XXX), XXX.X MiB ( XXX.X MiB unpacked)
+Retrieving: gpg2.rpm [done]
+(XXX/XXX) Installing: gpg2 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/gpg2.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libgpgme11 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libgpgme11.rpm [done]
+(XXX/XXX) Installing: libgpgme11 [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgpgme11.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package libzypp (XXX/XXX), XXX.X MiB ( XXX.X MiB unpacked)
+Retrieving: libzypp.rpm [done]
+(XXX/XXX) Installing: libzypp [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libzypp.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package zypper (XXX/XXX), XXX.X MiB ( XXX.X MiB unpacked)
+Retrieving: zypper.rpm [done]
+(XXX/XXX) Installing: zypper [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/zypper.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package zypper-needs-restarting (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: zypper-needs-restarting [done]
+(XXX/XXX) Installing: zypper-needs-restarting [done]
+Additional rpm output:
+warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/zypper-needs-restarting: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Executing %posttrans script 'rpm-4.17.0-5.1.x86_64.rpm' [done]
+Output of rpm-4.17.0-5.1.x86_64.rpm %posttrans script:
+    rmdir: 'var/lib/rpm': Directory not empty

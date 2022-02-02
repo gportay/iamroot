@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   content of the environment variable `argv0` if set
 - Use the [dynamic loader][ld.so(8)] option `--inhibit-rpath` if
   [exec][exec(3)]'ing to a [glibc] chroot'ed environment
+- Create an [openSUSE] ([Tumbleweed]) rootfs via [zypper(8)]
 
 ### Changed
 
@@ -228,6 +229,7 @@ Initial release.
 [Fedora ARM]: https://arm.fedoraproject.org/
 [Fedora]: https://getfedora.org/
 [Manjaro]: https://manjaro.org/
+[Tumbleweed]: https://www.opensuse.org/#Tumbleweed
 [Ubuntu]: https://ubuntu.com/
 [__nss_files_fopen()]: https://sourceware.org/git/?p=glibc.git;a=blob;f=nss/nss_files_fopen.c;h=594e4216578766e4534c44dc6c75283d5d1a20fe;hb=299210c1fa67e2dfb564475986fce11cd33db9ad
 [alpine-make-rootfs]: https://github.com/alpinelinux/alpine-make-rootfs/blob/master/README.adoc
@@ -239,6 +241,7 @@ Initial release.
 [glibc]: https://www.gnu.org/software/libc/
 [ld.so(8)]: https://linux.die.net/man/8/ld.so
 [musl]: https://www.musl-libc.org/
+[openSUSE]: https://www.opensuse.org/
 [pacstrap(8)]: https://man.archlinux.org/man/pacstrap.8
 [passwd(1)]: https://linux.die.net/man/1/passwd
 [su(1)]: https://linux.die.net/man/1/su
@@ -247,3 +250,4 @@ Initial release.
 [v1]: https://github.com/gportay/iamroot/releases/tag/v1
 [v2]: https://github.com/gportay/iamroot/compare/v1...v2
 [v3]: https://github.com/gportay/iamroot/compare/v2...v3
+[zypper(8)]: https://en.opensuse.org/SDB:Zypper_manual_(plain)

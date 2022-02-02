@@ -520,6 +520,28 @@ mount-fedora-33 mount-fedora-34 mount-fedora-35:
 umount-fedora-33 umount-fedora-34 umount-fedora-35:
 endif
 
+ifneq ($(shell command -v zypper),)
+opensuse-tumbleweed-chroot:
+opensuse-%-chroot: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
+opensuse-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64
+opensuse-%-chroot: | opensuse-%-rootfs
+	bash iamroot-shell -c "chroot opensuse-$*-rootfs"
+
+extra-rootfs: opensuse-rootfs
+
+.NOTPARALLEL: opensuse-rootfs
+.PHONY: opensuse-rootfs
+opensuse-rootfs: | opensuse-tumbleweed-rootfs
+
+opensuse-tumbleweed-rootfs:
+
+opensuse-%-rootfs: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
+opensuse-%-rootfs: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64
+opensuse-%-rootfs: | x86_64/libiamroot-linux-x86-64.so.2
+	bash iamroot-shell -c "zypper --root $(CURDIR)/opensuse-$*-rootfs addrepo --no-gpgcheck support/$*-repo-oss.repo"
+	bash iamroot-shell -c "zypper --root $(CURDIR)/opensuse-$*-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper"
+endif
+
 ifneq ($(shell command -v musl-gcc),)
 .PHONY: alpine-test
 alpine-test: | alpine-minirootfs/usr/bin/shebang.sh
@@ -1010,7 +1032,7 @@ support: fedora-support
 support: alpine-support
 
 .PHONY: extra-support
-extra-support: manjaro-support
+extra-support: manjaro-support opensuse-support
 
 .PHONY: fixme-support
 fixme-support: support/ubuntu-bionic-rootfs.txt
@@ -1038,6 +1060,9 @@ ubuntu-support: support/ubuntu-jammy-rootfs.txt
 fedora-support: support/fedora-33-rootfs.txt
 fedora-support: support/fedora-34-rootfs.txt
 fedora-support: support/fedora-35-rootfs.txt
+
+.PHONY: opensuse-support
+opensuse-support: support/opensuse-tumbleweed-rootfs.txt
 
 .PHONY: alpine-support
 alpine-support: support/alpine-3.14-rootfs.txt
@@ -1119,6 +1144,11 @@ support/fedora-35-rootfs.txt: fedora-35-rootfs.log
 	support/dnf.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
 	mv $@.tmp $@
 
+.PRECIOUS: support/opensuse-tumbleweed-rootfs.txt
+support/opensuse-tumbleweed-rootfs.txt: opensuse-tumbleweed-rootfs.log
+	support/zypper.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	mv $@.tmp $@
+
 .PRECIOUS: support/alpine-3.14-rootfs.txt
 support/alpine-3.14-rootfs.txt: alpine-3.14-rootfs.log
 	support/alpine-make-rootfs.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
@@ -1142,7 +1172,7 @@ log: fedora-log
 log: alpine-log
 
 .PHONY: extra-log
-extra-log: manjaro-log
+extra-log: manjaro-log opensuse-log
 
 .PHONY: fixme-log
 fixme-log: ubuntu-bionic-rootfs.log
@@ -1171,6 +1201,9 @@ fedora-log: fedora-33-rootfs.log
 fedora-log: fedora-34-rootfs.log
 fedora-log: fedora-35-rootfs.log
 
+.PHONY: opensuse-log
+opensuse-log: opensuse-tumbleweed-rootfs.log
+
 .PHONY: alpine-log
 alpine-log: alpine-3.14-rootfs.log
 alpine-log: alpine-3.15-rootfs.log
@@ -1192,6 +1225,7 @@ ubuntu-jammy-rootfs.log:
 fedora-33-rootfs.log:
 fedora-34-rootfs.log:
 fedora-35-rootfs.log:
+opensuse-tumbleweed-rootfs-log:
 alpine-3.14-rootfs.log:
 alpine-3.15-rootfs.log:
 alpine-edge-rootfs.log:

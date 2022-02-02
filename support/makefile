@@ -256,12 +256,17 @@ rootfs: debian-rootfs
 
 .NOTPARALLEL: debian-rootfs
 .PHONY: debian-rootfs
-debian-rootfs: debian-testing-rootfs debian-unstable-rootfs
+debian-rootfs: debian-stable-rootfs debian-testing-rootfs debian-unstable-rootfs
 
 debian-oldstable-rootfs: | debian-oldstable-rootfs/etc/machine-id
 debian-stable-rootfs: | debian-stable-rootfs/etc/machine-id
 debian-testing-rootfs: | debian-testing-rootfs/etc/machine-id
 debian-unstable-rootfs: | debian-unstable-rootfs/etc/machine-id
+
+debian-oldstable-rootfs/etc/machine-id:
+debian-oldstable-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/
+debian-stable-rootfs/etc/machine-id:
+debian-stable-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/
 
 debian-%-rootfs/etc/machine-id: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
 debian-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib

@@ -38,6 +38,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   stripped from the path to the chroot
 - Fix the use for the [dynamic loader][ld.so(8)] option `--preload` which is
   supported since [glibc] 2.30
+- Fix the adding of extra arguments due to off-by-one shifting to prepend the
+  [dynamic loader][ld.so(8)] and its arguments if the command as less arguments
+  that the shift
 
 ### Security
 

@@ -1225,7 +1225,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 		interparg[i++] = &hashbang[len+1];
 	interparg[i++] = (char *)path; /* original program path as first
 					* positional argument */
-	interparg[i++] = NULL;
+	interparg[i] = NULL;
 
 	interpargv0 = hashbang; /* hashbang as argv0 */
 	interppath = real_hashbang; /* real hashbang as binary */

@@ -256,7 +256,7 @@ rootfs: debian-rootfs
 
 .NOTPARALLEL: debian-rootfs
 .PHONY: debian-rootfs
-debian-rootfs: debian-stable-rootfs debian-testing-rootfs debian-unstable-rootfs
+debian-rootfs: debian-oldstable-rootfs debian-stable-rootfs debian-testing-rootfs debian-unstable-rootfs
 
 debian-oldstable-rootfs: | debian-oldstable-rootfs/etc/machine-id
 debian-stable-rootfs: | debian-stable-rootfs/etc/machine-id

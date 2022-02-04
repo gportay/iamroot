@@ -47,7 +47,8 @@ FILE *fopen64(const char *path, const char *mode)
 		return NULL;
 	}
 
-	__debug("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
+	__debug("%s(path: '%s' -> '%s', mode: '%s')\n", __func__, path,
+		real_path, mode);
 
 	return next_fopen64(real_path, mode);
 }

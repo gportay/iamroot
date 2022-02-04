@@ -46,7 +46,8 @@ FILE *freopen(const char *path, const char *mode, FILE *stream)
 		return NULL;
 	}
 
-	__debug("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
+	__debug("%s(path: '%s' -> '%s', mode: '%s', ...)\n", __func__, path,
+		real_path, mode);
 
 	return next_freopen(real_path, mode, stream);
 }

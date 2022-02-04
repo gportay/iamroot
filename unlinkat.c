@@ -39,7 +39,8 @@ int unlinkat(int fd, const char *path, int flags)
 	char buf[PATH_MAX];
 	char *real_path;
 
-	real_path = path_resolution(fd, path, buf, sizeof(buf), flags);
+	real_path = path_resolution(fd, path, buf, sizeof(buf),
+				    flags | AT_SYMLINK_NOFOLLOW);
 	if (!real_path) {
 		__pathperror(path, "path_resolution");
 		return -1;

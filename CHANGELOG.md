@@ -43,6 +43,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the adding of extra arguments due to off-by-one shifting to prepend the
   [dynamic loader][ld.so(8)] and its arguments if the command as less arguments
   that the shift
+- Fix the following symlink behaviour for the at functions `readlinkat()`,
+  `renameat2()` and `unlinkat()` by forwarding AT flag `AT_SYMLINK_NOFOLLOW`
+  to `path_resolution()`
 
 ### Security
 

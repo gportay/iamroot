@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - The libraries are installed by architecture in sub-directories: x86_64, i686,
   arm, armhf and aarch64
+- Output the flags in octal (open flags) and in hexadecimal (AT flags)
 - Output the detailled `execve` command on level 4 and above
 - Ignore the `EPERM` error on functions `chmod()`, `chown()`, `fchmod()`,
   `fchmodat()`, `fchown()`, `fchownat()`, `lchmod()`, `lchown()`

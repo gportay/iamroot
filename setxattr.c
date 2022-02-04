@@ -53,8 +53,8 @@ int setxattr(const char *path, const char *name, const void *value,
 		return -1;
 	}
 
-	__debug("%s(path: '%s' -> '%s', name: '%s', ...)\n", __func__, path,
-		real_path, name);
+	__debug("%s(path: '%s' -> '%s', name: '%s', ..., flags: 0%x)\n",
+		__func__, path, real_path, name, flags);
 
 	if (__strncmp(name, "user") != 0) {
 		int ret;

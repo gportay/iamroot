@@ -54,7 +54,7 @@ int renameat2(int oldfd, const char *oldpath, int newfd, const char *newpath,
 		return -1;
 	}
 
-	__debug("%s(oldfd: %i, oldpath: '%s' -> '%s', newfd: %i, newpath: '%s' -> '%s')\n",
+	__debug("%s(oldfd: %i, oldpath: '%s' -> '%s', newfd: %i, newpath: '%s' -> '%s', flags: )\n",
 		__func__, oldfd, oldpath, real_oldpath, newfd, newpath,
 		real_newpath);
 

@@ -46,8 +46,8 @@ int fchmodat(int fd, const char *path, mode_t mode, int flags)
 		return -1;
 	}
 
-	__debug("%s(fd: %i, path: '%s' -> '%s', mode: 0%03o)\n", __func__, fd,
-		path, real_path, mode);
+	__debug("%s(fd: %i, path: '%s' -> '%s', mode: 0%03o, flags: 0x%x)\n",
+		__func__, fd, path, real_path, mode, flags);
 	__fwarn_if_insuffisant_user_modeat(fd, real_path, mode, flags);
 
 	ret = next_fchmodat(fd, real_path, mode, flags);

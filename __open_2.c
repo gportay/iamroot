@@ -47,7 +47,8 @@ int __open_2(const char *path, int flags)
 		return -1;
 	}
 
-	__debug("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
+	__debug("%s(path: '%s' -> '%s', flags: 0%o)\n", __func__, path,
+		real_path, flags);
 
 	return next___open_2(real_path, flags);
 }

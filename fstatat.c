@@ -51,8 +51,8 @@ int fstatat(int fd, const char *path, struct stat *statbuf, int flags)
 		return -1;
 	}
 
-	__debug("%s(fd: %i, path: '%s' -> '%s', ...)\n", __func__, fd, path,
-		real_path);
+	__debug("%s(fd: %i, path: '%s' -> '%s', ..., flags: 0x%x)\n", __func__,
+		fd, path, real_path, flags);
 
 	return rootfstatat(fd, real_path, statbuf, flags);
 }

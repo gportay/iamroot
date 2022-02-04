@@ -57,7 +57,8 @@ int mkostemp64(char *path, int flags)
 	memcpy(path, real_path+strlen(real_path)-len, len);
 
 exit:
-	__debug("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
+	__debug("%s(path: '%s' -> '%s', flags: 0%o)\n", __func__, path,
+		real_path, flags);
 
 	return ret;
 }

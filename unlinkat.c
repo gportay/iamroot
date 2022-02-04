@@ -45,8 +45,8 @@ int unlinkat(int fd, const char *path, int flags)
 		return -1;
 	}
 
-	__debug("%s(fd: %d, path: '%s' -> '%s')\n", __func__, fd, path,
-		real_path);
+	__debug("%s(fd: %d, path: '%s' -> '%s', flags: 0x%x)\n", __func__, fd,
+		path, real_path, flags);
 
 	return next_unlinkat(fd, real_path, flags);
 }

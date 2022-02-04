@@ -52,8 +52,8 @@ int statx(int fd, const char *path, int flags, unsigned int mask,
 		return -1;
 	}
 
-	__debug("%s(fd: %i, path: '%s' -> '%s', ...)\n", __func__, fd, path,
-		real_path);
+	__debug("%s(fd: %i, path: '%s' -> '%s', flags: 0x%x...)\n", __func__,
+		fd, path, real_path, flags);
 
 	return rootstatx(fd, real_path, flags, mask, statxbuf);
 }

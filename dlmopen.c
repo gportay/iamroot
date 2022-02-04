@@ -52,7 +52,8 @@ void *dlmopen(Lmid_t lmid, const char *path, int flags)
 	}
 
 next:
-	__debug("%s(..., path: '%s' -> '%s')\n", __func__, path, real_path);
+	__debug("%s(..., path: '%s' -> '%s', flags: 0x%x)\n", __func__, path,
+		real_path, flags);
 
 	return next_dlmopen(lmid, real_path, flags);
 }

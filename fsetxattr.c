@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -55,8 +55,8 @@ int fsetxattr(int fd, const char *name, const void *value, size_t size,
 	buf[siz] = 0;
 	real_path = buf;
 
-	__debug("%s(fd: %i <-> '%s', name: '%s', ...)\n", __func__, fd,
-		real_path, name);
+	__debug("%s(fd: %i <-> '%s', name: '%s', ..., flags: 0x%x)\n",
+		__func__, fd, real_path, name, flags);
 
 	if (__strncmp(name, "user") != 0) {
 		int ret;

@@ -21,7 +21,7 @@
 
 __attribute__((visibility("hidden")))
 int next_lsetxattr(const char *path, const char *name, const void *value,
-		  size_t size, int flags)
+		   size_t size, int flags)
 {
 	int (*sym)(const char *, const char *, const void *, size_t, int);
 	int ret;
@@ -41,7 +41,7 @@ int next_lsetxattr(const char *path, const char *name, const void *value,
 }
 
 int lsetxattr(const char *path, const char *name, const void *value,
-	     size_t size, int flags)
+	      size_t size, int flags)
 {
 	char xbuf[XATTR_NAME_MAX + 1];
 	char buf[PATH_MAX];

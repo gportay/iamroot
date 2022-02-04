@@ -21,7 +21,7 @@
 
 __attribute__((visibility("hidden")))
 ssize_t next_lgetxattr(const char *path, const char *name, void *value,
-		      size_t size)
+		       size_t size)
 {
 	ssize_t (*sym)(const char *, const char *, void *, size_t);
 	ssize_t ret;

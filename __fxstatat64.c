@@ -39,7 +39,7 @@ int next___fxstatat64(int ver, int fd, const char *path,
 }
 
 int __fxstatat64(int ver, int fd, const char *path, struct stat64 *statbuf,
-	       int flags)
+		 int flags)
 {
 	char buf[PATH_MAX];
 	char *real_path;

@@ -244,6 +244,7 @@ shell-test: x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "IAMROOT_EUID=$$EUID whoami" | tee /dev/stderr | grep -q "^$(shell whoami)\$$"
 	bash iamroot-shell -c "stat -c '%u:%g' ." | tee /dev/stderr | grep -q "^0:0$$"
 	bash iamroot-shell -c "echo \$$IAMROOTLVL" | tee /dev/stderr | grep -q "^[0-9]\+$$"
+	! bash iamroot-shell -c "test -x ''"
 
 .PHONY: shell
 shell: x86_64/libiamroot-linux-x86-64.so.2

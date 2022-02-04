@@ -147,7 +147,7 @@ test: | rootfs
 	test-rmdir rootfs/tmp/dir0
 	test-rmdir rootfs/tmp/dir1
 	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-rmdir /tmp/dir2
-	test-sanitize ""                  | tee /dev/stderr | grep -vc '^\.$$' | grep -q '^0$$'
+	test-sanitize ""                  | tee /dev/stderr | grep -vc '^$$'   | grep -q '^0$$'
 	test-sanitize . ./ ././ ./. ././. | tee /dev/stderr | grep -vc '^\.$$' | grep -q '^0$$'
 	test-sanitize / // ///  //. //./. | tee /dev/stderr | grep -vc '^/$$'  | grep -q '^0$$'
 	test-scandir .

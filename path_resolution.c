@@ -136,6 +136,9 @@ char *sanitize(char *path, size_t bufsize)
 {
 	ssize_t len;
 
+	if (!*path)
+		return path;
+
 	len = strnlen(path, bufsize);
 	while ((len > 3) && (__strncmp(path, "./") == 0) && path[2] != '/') {
 		char *s;

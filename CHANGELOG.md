@@ -59,6 +59,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   flag `AT_SYMLINK_NOFOLLOW` to `path_resolution()`
 - Fix the adding of an empty hashbang argument
 - Fix the ignoring of empty paths in the function `path_resolution()`
+- Fix the handling for NULL dir argument in the function `tempnam()`
 
 ### Security
 

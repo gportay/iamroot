@@ -1221,7 +1221,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 		interparg[i++] = xargv1; /* extra argument as argv1 */
 	/* Add optional argument */
 	len = strlen(hashbang);
-	if (len < (size_t)siz)
+	if (len < (size_t)siz && hashbang[len+1])
 		interparg[i++] = &hashbang[len+1];
 	interparg[i++] = (char *)path; /* original program path as first
 					* positional argument */

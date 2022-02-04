@@ -56,7 +56,7 @@ int __open(const char *path, int flags, ...)
 		va_end(ap);
 	}
 
-	__debug("%s(path: '%s' -> '%s', flags: %x, mode: 0%03o)\n", __func__,
+	__debug("%s(path: '%s' -> '%s', flags: 0%o, mode: 0%03o)\n", __func__,
 		path, real_path, flags, mode);
 	if (flags & O_CREAT)
 		__warn_if_insuffisant_user_mode(path, mode);

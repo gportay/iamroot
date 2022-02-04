@@ -41,14 +41,14 @@ int renameat2(int oldfd, const char *oldpath, int newfd, const char *newpath,
 	char *real_oldpath, *real_newpath;
 
 	real_oldpath = path_resolution(oldfd, oldpath, oldbuf, sizeof(oldbuf),
-				       (int)flags);
+				       0);
 	if (!real_oldpath) {
 		__pathperror(oldpath, "path_resolution");
 		return -1;
 	}
 
 	real_newpath = path_resolution(newfd, newpath, newbuf, sizeof(newbuf),
-				       (int)flags);
+				       0);
 	if (!real_newpath) {
 		__pathperror(newpath, "path_resolution");
 		return -1;

@@ -33,7 +33,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `IAMROOT_LIB_<ldso>`
 - Fix the setting for spurious execution bit in file mode
 - Fix the forwarding of none-AT flags argument to `path_resolution()` for the
-  functions `__openat64_2()`, `__openat_2()`, `openat()` and `openat64()`
+  functions `__openat64_2()`, `__openat_2()`, `openat()`, `openat64()` and
+  `renameat2()`
 - Fix the `argv[0]` value for the [glibc] [dynamic loader][ld.so(8)] that does
   not support the option `--argv0` before 2.33; the value in `argv[0]` is now
   stripped from the path to the chroot

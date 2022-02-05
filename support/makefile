@@ -829,6 +829,15 @@ umount-%: | mnt
 mnt:
 	mkdir -p $@
 
+.PHONY: support
+support: support/arch-rootfs.log
+support: support/i686-arch-rootfs.log
+
+.PRECIOUS: support/%arch-rootfs.log
+support/%arch-rootfs.log: %arch-rootfs.log
+	support/pacstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	mv $@.tmp $@
+
 .PHONY: log
 log: arch-rootfs.log
 log: i686-arch-rootfs.log
@@ -844,6 +853,7 @@ log: alpine-3.15-rootfs.log
 log: alpine-edge-rootfs.log
 
 .PHONY: %.log
+.PRECIOUS: %.log
 %.log: SHELL = /bin/bash -o pipefail
 %.log:
 	$(MAKE) --silent $* 2>&1 | tee $@.tmp

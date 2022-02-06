@@ -832,10 +832,18 @@ mnt:
 .PHONY: support
 support: support/arch-rootfs.log
 support: support/i686-arch-rootfs.log
+support: support/fedora-33-rootfs.log
+support: support/fedora-34-rootfs.log
+support: support/fedora-35-rootfs.log
 
 .PRECIOUS: support/%arch-rootfs.log
 support/%arch-rootfs.log: %arch-rootfs.log
 	support/pacstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	mv $@.tmp $@
+
+.PRECIOUS: support/fedora-%-rootfs.log
+support/fedora-%-rootfs.log: fedora-%-rootfs.log
+	support/dnf.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
 	mv $@.tmp $@
 
 .PHONY: log

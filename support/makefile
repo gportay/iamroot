@@ -835,6 +835,9 @@ support: support/i686-arch-rootfs.log
 support: support/fedora-33-rootfs.log
 support: support/fedora-34-rootfs.log
 support: support/fedora-35-rootfs.log
+support: support/alpine-3.14-rootfs.log
+support: support/alpine-3.15-rootfs.log
+support: support/alpine-edge-rootfs.log
 
 .PRECIOUS: support/%arch-rootfs.log
 support/%arch-rootfs.log: %arch-rootfs.log
@@ -844,6 +847,11 @@ support/%arch-rootfs.log: %arch-rootfs.log
 .PRECIOUS: support/fedora-%-rootfs.log
 support/fedora-%-rootfs.log: fedora-%-rootfs.log
 	support/dnf.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	mv $@.tmp $@
+
+.PRECIOUS: support/alpine-%-rootfs.log
+support/alpine-%-rootfs.log: alpine-%-rootfs.log
+	support/alpine-make-rootfs.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
 	mv $@.tmp $@
 
 .PHONY: log

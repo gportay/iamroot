@@ -832,6 +832,10 @@ mnt:
 .PHONY: support
 support: support/arch-rootfs.log
 support: support/i686-arch-rootfs.log
+support: support/debian-oldstable-rootfs.log
+support: support/debian-stable-rootfs.log
+support: support/debian-testing-rootfs.log
+support: support/debian-unstable-rootfs.log
 support: support/fedora-33-rootfs.log
 support: support/fedora-34-rootfs.log
 support: support/fedora-35-rootfs.log
@@ -842,6 +846,11 @@ support: support/alpine-edge-rootfs.log
 .PRECIOUS: support/%arch-rootfs.log
 support/%arch-rootfs.log: %arch-rootfs.log
 	support/pacstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	mv $@.tmp $@
+
+.PRECIOUS: support/debian-%-rootfs.log
+support/debian-%-rootfs.log: debian-%-rootfs.log
+	support/debootstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
 	mv $@.tmp $@
 
 .PRECIOUS: support/fedora-%-rootfs.log

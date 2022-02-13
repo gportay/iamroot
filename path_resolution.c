@@ -18,6 +18,10 @@
 
 #include "iamroot.h"
 
+/* AT flag FOLLOW takes precedence over NOFOLLOW */
+#define follow_symlink(f) ((f & AT_SYMLINK_FOLLOW) || (f & AT_SYMLINK_NOFOLLOW) == 0)
+
+extern char *next_realpath(const char *, char *);
 extern ssize_t next_readlink(const char *, char *, size_t);
 extern int next_lstat(const char *, struct stat *);
 
@@ -240,14 +244,9 @@ char *path_resolution(int fd, const char *path, char *buf, size_t bufsize,
 	if (ignore(real_path+len))
 		return memcpy(buf, real_path+len, strlen(real_path+len)+1);
 
-	/* AT flag FOLLOW takes precedence over NOFOLLOW */
-	if ((flags & AT_SYMLINK_FOLLOW) != 0)
-		goto symlink_follow;
-
-	if ((flags & AT_SYMLINK_NOFOLLOW) != 0)
+	if (!follow_symlink(flags))
 		goto exit;
 
-symlink_follow:
 	ret = issymlink(real_path);
 	if (ret == -1)
 		goto exit;
@@ -278,5 +277,12 @@ char *__getpath(int fd, const char *path, int flags)
 	static char buf[PATH_MAX];
 
 	*buf = 0;
+	if (path_ignored(fd, path, flags) > 0) {
+		if (follow_symlink(flags))
+			return next_realpath(path, buf);
+
+		return _strncpy(buf, path, sizeof(buf));
+	}
+
 	return path_resolution(fd, path, buf, sizeof(buf), flags);
 }

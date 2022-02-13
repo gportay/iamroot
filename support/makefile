@@ -381,27 +381,36 @@ alpine-minirootfs-3.13.0-x86_64.tar.gz:
 	wget http://dl-cdn.alpinelinux.org/alpine/v3.13/releases/x86_64/alpine-minirootfs-3.13.0-x86_64.tar.gz
 
 ifneq ($(shell command -v alpine-make-rootfs),)
-alpine-3.14-chroot alpine-edge-chroot:
+alpine-3.14-chroot:
+alpine-3.15-chroot:
+alpine-edge-chroot:
 alpine-%-chroot: | alpine-%-rootfs
 	bash iamroot-shell -c "chroot alpine-$*-rootfs /bin/ash"
 
 .NOTPARALLEL: alpine-rootfs
 .PHONY: alpine-rootfs
-alpine-rootfs: alpine-3.14-rootfs alpine-edge-rootfs
+alpine-rootfs: alpine-3.14-rootfs alpine-3.15-rootfs alpine-edge-rootfs
 
 alpine-3.14-rootfs: | alpine-3.14-rootfs/bin/busybox
+alpine-3.15-rootfs: | alpine-3.15-rootfs/bin/busybox
 alpine-edge-rootfs: | alpine-edge-rootfs/bin/busybox
 
 alpine-%-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "alpine-make-rootfs alpine-$*-rootfs --keys-dir /usr/share/apk/keys/x86_64 --mirror-uri http://nl.alpinelinux.org/alpine --branch $*"
 
-qemu-system-x86_64-alpine-3.14 qemu-system-x86_64-alpine-edge:
+qemu-system-x86_64-alpine-3.14:
+qemu-system-x86_64-alpine-3.15:
+qemu-system-x86_64-alpine-edge:
 
 ifneq ($(VMLINUX_KVER),)
-vmlinux-alpine-3.14 vmlinux-alpine-edge:
+vmlinux-alpine-3.14:
+vmlinux-alpine-3.15:
+vmlinux-alpine-edge:
 endif
 
-alpine-3.14.ext4 alpine-edge.ext4:
+alpine-3.14.ext4:
+alpine-3.15.ext4:
+alpine-edge.ext4:
 
 alpine-%-postrootfs:
 	sed -e '/^root:x:/s,^root:x:,root::,' \
@@ -417,11 +426,17 @@ alpine-%-postrootfs:
 
 chroot-alpine-%: PATH = /usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin
 chroot-alpine-%: SHELL = /bin/sh
-chroot-alpine-3.14 chroot-alpine-edge:
+chroot-alpine-3.14:
+chroot-alpine-3.15:
+chroot-alpine-edge:
 
-mount-alpine-3.14 mount-alpine-edge:
+mount-alpine-3.14:
+mount-alpine-3.15:
+mount-alpine-edge:
 
-umount-alpine-3.14 umount-alpine-edge:
+umount-alpine-3.14:
+umount-alpine-3.15:
+umount-alpine-edge:
 endif
 endif
 
@@ -627,15 +642,18 @@ alpine-minirootfs-3.13.0-aarch64.tar.gz:
 	wget http://dl-cdn.alpinelinux.org/alpine/v3.13/releases/aarch64/alpine-minirootfs-3.13.0-aarch64.tar.gz
 
 ifneq ($(shell command -v alpine-make-rootfs),)
-aarch64-alpine-3.14-chroot aarch64-alpine-edge-chroot:
+aarch64-alpine-3.14-chroot:
+aarch64-alpine-3.15-chroot:
+aarch64-alpine-edge-chroot:
 aarch64-alpine-%-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-alpine-$*-rootfs
 aarch64-alpine-%-chroot: | aarch64-alpine-%-rootfs
 	bash iamroot-shell -c "chroot aarch64-alpine-$*-rootfs"
 
 .PHONY: aarch64-alpine-rootfs
-aarch64-alpine-rootfs: aarch64-alpine-3.14-rootfs aarch64-alpine-edge-rootfs
+aarch64-alpine-rootfs: aarch64-alpine-3.14-rootfs aarch64-alpine-3.15 aarch64-alpine-edge-rootfs
 
 aarch64-alpine-3.14-rootfs: | aarch64-alpine-3.14-rootfs/bin/busybox
+aarch64-alpine-3.15-rootfs: | aarch64-alpine-3.15-rootfs/bin/busybox
 aarch64-alpine-edge-rootfs: | aarch64-alpine-edge-rootfs/bin/busybox
 
 aarch64-alpine-%-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2

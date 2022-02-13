@@ -124,6 +124,9 @@ static int ignore(const char *path)
 	if (!re)
 		return 0;
 
+	if (!*path)
+		return 0;
+
 	ret = regexec(re, path, 0, NULL, 0);
 	if (ret == -1) {
 		__regex_perror("regexec", re, ret);
@@ -183,7 +186,7 @@ static char *__fpath(int fd)
 	return fpath(fd, buf, sizeof(buf));
 }
 
-int path_ignored(int fd, const char *path, int flags)
+int path_ignored(int fd, const char *path)
 {
 	if (fd != AT_FDCWD) {
 		char buf[PATH_MAX];
@@ -196,7 +199,7 @@ int path_ignored(int fd, const char *path, int flags)
 		return ignore(real_path);
 	}
 
-	return ignore(path) || (flags & AT_EMPTY_PATH) != 0;
+	return ignore(path);
 }
 
 static char *_path_resolution(int fd, const char *path, char *buf,
@@ -212,7 +215,7 @@ static char *_path_resolution(int fd, const char *path, char *buf,
 		return NULL;
 	}
 
-	if (ignore(path) || (flags & AT_EMPTY_PATH) != 0)
+	if (ignore(path))
 		goto ignore;
 
 	if (*path == '/') {
@@ -334,7 +337,7 @@ char *__getpath(int fd, const char *path, int flags)
 	static char buf[PATH_MAX];
 
 	*buf = 0;
-	if (path_ignored(fd, path, flags) > 0) {
+	if (path_ignored(fd, path) > 0) {
 		if (!*path)
 			path = __fpath(fd);
 

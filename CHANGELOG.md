@@ -30,6 +30,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `path_resolution()` for the open functions `__open()`, `__open64()`,
   `__open64_2()`, `__open_2()`, `__openat64_2()`, `__openat_2()`, `open()`,
   `open64()`, `openat()` and `openat64()`
+- Output the symbol name on path resolution error
 
 ### Fixed
 

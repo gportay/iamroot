@@ -58,7 +58,7 @@ ssize_t readlinkat(int fd, const char *path, char *buf, size_t bufsize)
 	real_path = path_resolution(fd, path, tmp, sizeof(tmp),
 				    AT_SYMLINK_NOFOLLOW);
 	if (!real_path) {
-		__pathperror(path, "path_resolution");
+		__pathperror(path, __func__);
 		return -1;
 	}
 

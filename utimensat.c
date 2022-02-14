@@ -45,7 +45,7 @@ int utimensat(int fd, const char *path, const struct timespec times[2],
 	real_path = path_resolution(fd, path, buf, sizeof(buf),
 				    AT_SYMLINK_NOFOLLOW);
 	if (!real_path) {
-		__pathperror(path, "path_resolution");
+		__pathperror(path, __func__);
 		return -1;
 	}
 

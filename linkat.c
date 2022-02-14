@@ -44,14 +44,14 @@ int linkat(int oldfd, const char *oldpath, int newfd, const char *newpath,
 	real_oldpath = path_resolution(oldfd, oldpath, oldbuf, sizeof(oldbuf),
 				       flags);
 	if (!real_oldpath) {
-		__pathperror(oldpath, "path_resolution");
+		__pathperror(oldpath, __func__);
 		return -1;
 	}
 
 	real_newpath = path_resolution(newfd, newpath, newbuf, sizeof(newbuf),
 				       flags);
 	if (!real_newpath) {
-		__pathperror(newpath, "path_resolution");
+		__pathperror(newpath, __func__);
 		return -1;
 	}
 

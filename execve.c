@@ -1180,7 +1180,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
 				    AT_SYMLINK_FOLLOW);
 	if (!real_path) {
-		__pathperror(path, "path_resolution");
+		__pathperror(path, __func__);
 		return -1;
 	}
 
@@ -1228,7 +1228,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 					sizeof(hashbangbuf),
 					AT_SYMLINK_FOLLOW);
 	if (!real_hashbang) {
-		__pathperror(hashbang, "path_resolution");
+		__pathperror(hashbang, __func__);
 		return -1;
 	}
 
@@ -1352,7 +1352,7 @@ loader:
 					    sizeof(loaderbuf),
 					    AT_SYMLINK_FOLLOW);
 		if (!real_path) {
-			__pathperror(loader, "path_resolution");
+			__pathperror(loader, __func__);
 			return -1;
 		}
 

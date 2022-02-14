@@ -47,7 +47,7 @@ int removexattr(const char *path, const char *name)
 
 	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (!real_path) {
-		__pathperror(path, "path_resolution");
+		__pathperror(path, __func__);
 		return -1;
 	}
 

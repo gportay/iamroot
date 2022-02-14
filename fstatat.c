@@ -47,7 +47,7 @@ int fstatat(int fd, const char *path, struct stat *statbuf, int flags)
 
 	real_path = path_resolution(fd, path, buf, sizeof(buf), flags);
 	if (!real_path) {
-		__pathperror(path, "path_resolution");
+		__pathperror(path, __func__);
 		return -1;
 	}
 

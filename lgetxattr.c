@@ -49,7 +49,7 @@ ssize_t lgetxattr(const char *path, const char *name, void *value, size_t size)
 	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
 				    AT_SYMLINK_NOFOLLOW);
 	if (!real_path) {
-		__pathperror(path, "path_resolution");
+		__pathperror(path, __func__);
 		return -1;
 	}
 

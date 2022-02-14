@@ -41,7 +41,7 @@ int statfs(const char *path, struct statfs *statfsbuf)
 
 	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (!real_path) {
-		__pathperror(path, "path_resolution");
+		__pathperror(path, __func__);
 		return -1;
 	}
 

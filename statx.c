@@ -48,7 +48,7 @@ int statx(int fd, const char *path, int flags, unsigned int mask,
 
 	real_path = path_resolution(fd, path, buf, sizeof(buf), flags);
 	if (!real_path) {
-		__pathperror(path, "path_resolution");
+		__pathperror(path, __func__);
 		return -1;
 	}
 

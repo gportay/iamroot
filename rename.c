@@ -41,14 +41,14 @@ int rename(const char *oldpath, const char *newpath)
 	real_oldpath = path_resolution(AT_FDCWD, oldpath, oldbuf,
 				       sizeof(oldbuf), AT_SYMLINK_NOFOLLOW);
 	if (!real_oldpath) {
-		__pathperror(oldpath, "path_resolution");
+		__pathperror(oldpath, __func__);
 		return -1;
 	}
 
 	real_newpath = path_resolution(AT_FDCWD, newpath, newbuf,
 				       sizeof(newbuf), AT_SYMLINK_NOFOLLOW);
 	if (!real_newpath) {
-		__pathperror(newpath, "path_resolution");
+		__pathperror(newpath, __func__);
 		return -1;
 	}
 

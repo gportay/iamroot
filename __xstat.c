@@ -43,7 +43,7 @@ int __xstat(int ver, const char *path, struct stat *statbuf)
 
 	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (!real_path) {
-		__pathperror(path, "path_resolution");
+		__pathperror(path, __func__);
 		return -1;
 	}
 

@@ -46,7 +46,7 @@ int __fxstatat64(int ver, int fd, const char *path, struct stat64 *statbuf,
 
 	real_path = path_resolution(fd, path, buf, sizeof(buf), flags);
 	if (!real_path) {
-		__pathperror(path, "path_resolution");
+		__pathperror(path, __func__);
 		return -1;
 	}
 

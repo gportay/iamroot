@@ -51,8 +51,14 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+# Output directories
+output*/
+
 # RootFS directories
-*-rootfs/
+*rootfs/
+
+# Busybox sources
+busybox*/
 
 # Tests
 tests/test-*

@@ -765,15 +765,20 @@ static ssize_t gethashbang(const char *path, char *buf, size_t bufsize)
 	s = buf+2;
 	d = buf;
 
+	/* skip leading blanks */
 	while (isblank(*s))
 		s++;
+	/* copy interpreter */
 	while (*s && *s != '\n' && !isblank(*s))
 		*d++ = *s++;
 	*d++ = 0;
 
+	/* has an optional argument */
 	if (isblank(*s)) {
+		/* skip leading blanks */
 		while (isblank(*s))
 			s++;
+		/* copy interpreter */
 		while (*s && *s != '\n' && !isblank(*s))
 			*d++ = *s++;
 		*d++ = 0;
@@ -1572,6 +1577,9 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	interparg[i++] = (char *)path; /* original program path as first
 					* positional argument */
 	interparg[i] = NULL; /* ensure NULL terminated */
+
+	__notice("%s: has hashbang: '%s' -> '%s' '%s'\n", path, hashbang,
+		 real_path, len < (size_t)siz ? &hashbang[len+1] : "(null)");
 
 loader:
 	/*

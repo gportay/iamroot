@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -40,7 +40,7 @@ int main(int argc, char * const argv[])
 		}
 	}
 
-	fd2 = openat(fd, argv[2], mode, flags);
+	fd2 = openat(fd, argv[2], flags, mode);
 	if (fd2 == -1) {
 		perror("openat");
 		goto exit;

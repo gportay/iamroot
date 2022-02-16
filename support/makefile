@@ -305,7 +305,9 @@ debian-%-rootfs/etc/machine-id: export DEBIAN_FRONTEND = noninteractive
 debian-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://deb.debian.org/debian
 debian-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	mkdir -p debian-$*-rootfs
-	bash iamroot-shell -c "debootstrap $* debian-$*-rootfs $(DEBOOTSTRAP_MIRROR)"
+	bash iamroot-shell -c "debootstrap --keep-debootstrap-dir $* debian-$*-rootfs $(DEBOOTSTRAP_MIRROR)"
+	cat debian-$*-rootfs/debootstrap/debootstrap.log
+	rm -Rf debian-$*-rootfs/debootstrap/
 
 qemu-system-x86_64-debian-oldoldstable:
 qemu-system-x86_64-debian-oldoldstable: override CMDLINE += rw
@@ -391,7 +393,9 @@ ubuntu-%-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
 ubuntu-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
 ubuntu-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	mkdir -p ubuntu-$*-rootfs
-	bash iamroot-shell -c "debootstrap $* ubuntu-$*-rootfs $(DEBOOTSTRAP_MIRROR)"
+	bash iamroot-shell -c "debootstrap --keep-debootstrap-dir $* ubuntu-$*-rootfs $(DEBOOTSTRAP_MIRROR)"
+	cat ubuntu-$*-rootfs/debootstrap/debootstrap.log
+	rm -Rf ubuntu-$*-rootfs/debootstrap/
 
 qemu-system-x86_64-ubuntu-focal:
 qemu-system-x86_64-ubuntu-focal: override CMDLINE += rw
@@ -1135,6 +1139,21 @@ alpine-log: alpine-edge-rootfs.log
 
 .PHONY: %.log
 .PRECIOUS: %.log
+arch-rootfs.log:
+i686-arch-rootfs.log:
+debian-oldoldstable-rootfs.log:
+debian-oldstable-rootfs.log:
+debian-stable-rootfs.log:
+debian-testing-rootfs.log:
+debian-unstable-rootfs.log:
+ubuntu-focal-rootfs.log:
+ubuntu-impish-rootfs.log:
+fedora-33-rootfs.log:
+fedora-34-rootfs.log:
+fedora-35-rootfs.log:
+alpine-3.14-rootfs.log:
+alpine-3.15-rootfs.log:
+alpine-edge-rootfs.log:
 %.log: SHELL = /bin/bash -o pipefail
 %.log:
 	$(MAKE) --silent $* 2>&1 | tee $@.tmp

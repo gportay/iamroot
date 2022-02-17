@@ -38,8 +38,8 @@ int next___open_2(const char *path, int flags)
 
 int __open_2(const char *path, int flags)
 {
-	const char *real_path;
 	char buf[PATH_MAX];
+	char *real_path;
 
 	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (!real_path) {

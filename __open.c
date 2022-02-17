@@ -39,8 +39,8 @@ int next___open(const char *path, int flags, mode_t mode)
 
 int __open(const char *path, int flags, ...)
 {
-	const char *real_path;
 	char buf[PATH_MAX];
+	char *real_path;
 	mode_t mode = 0;
 
 	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);

@@ -837,5 +837,11 @@ mnt:
 %-debug3:
 	$(MAKE) $* IAMROOT_DEBUG=3
 
+%-debug4:
+	$(MAKE) $* IAMROOT_DEBUG=4
+
+%-debug5:
+	$(MAKE) $* IAMROOT_DEBUG=5
+
 %:
 	$(MAKE) -f Makefile $@

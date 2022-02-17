@@ -295,6 +295,7 @@ rootfs: fedora-rootfs
 fedora-rootfs: fedora-33-rootfs fedora-34-rootfs fedora-35-rootfs
 
 fedora-33-rootfs fedora-34-rootfs: export IAMROOT_INHIBIT_RPATH = /usr/lib64/ldb/modules/ldb/tdb.so:/usr/lib64/ldb/modules/ldb/mdb.so:/usr/lib64/ldb/modules/ldb/ldb.so
+fedora-34-rootfs: export SYSTEMD_OFFLINE = 1
 fedora-33-rootfs: | fedora-33-rootfs/etc/machine-id
 fedora-34-rootfs: | fedora-34-rootfs/etc/machine-id
 fedora-35-rootfs: | fedora-35-rootfs/etc/machine-id

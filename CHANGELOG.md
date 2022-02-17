@@ -24,6 +24,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Output the detailled `execve` command on level 4 and above
 - Ignore the `EPERM` error on functions `chmod()`, `chown()`, `fchmod()`,
   `fchmodat()`, `fchown()`, `fchownat()`, `lchmod()`, `lchown()`
+- Forward the flag `O_NOFOLLOW` as flag `AT_SYMLINK_NOFOLLOW` to the function
+  `path_resolution()` for the open functions `__open()`, `__open64()`,
+  `__open64_2()`, `__open_2()`, `__openat64_2()`, `__openat_2()`, `open()`,
+  `open64()`, `openat()` and `openat64()`
 
 ### Fixed
 

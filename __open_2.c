@@ -40,8 +40,12 @@ int __open_2(const char *path, int flags)
 {
 	char buf[PATH_MAX];
 	char *real_path;
+	int atflags = 0;
 
-	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
+	if (flags & O_NOFOLLOW)
+		atflags = AT_SYMLINK_NOFOLLOW;
+
+	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), atflags);
 	if (!real_path) {
 		__pathperror(path, "path_resolution");
 		return -1;

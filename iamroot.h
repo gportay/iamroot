@@ -167,7 +167,7 @@ int __verbosef(int, const char *, const char *, ...) __attribute__((format(print
 
 #define __ignore_error_and_warn(rc, fd, path, flags) \
 	({ if (__ignored_error(rc) && (path_ignored(fd, path, flags) > 0)) { \
-	     __warning("%s: %s: Ignoring error '%m'!\n", __func__, __getpath(fd, path, flags | AT_SYMLINK_FOLLOW)); \
+	     __warning("%s: %s: Ignoring error '%m'!\n", __func__, __getpath(fd, path, flags)); \
 	     rc = 0; \
 	     errno = 0; \
 	   } })

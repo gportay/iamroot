@@ -174,6 +174,14 @@ char *fpath(int fd, char *buf, size_t bufsiz)
 	return buf;
 }
 
+static char *__fpath(int fd)
+{
+	static char buf[PATH_MAX];
+
+	*buf = 0;
+	return fpath(fd, buf, sizeof(buf));
+}
+
 int path_ignored(int fd, const char *path, int flags)
 {
 	if (fd != AT_FDCWD) {
@@ -301,6 +309,9 @@ char *__getpath(int fd, const char *path, int flags)
 
 	*buf = 0;
 	if (path_ignored(fd, path, flags) > 0) {
+		if (!*path)
+			path = __fpath(fd);
+
 		if (follow_symlink(flags))
 			return next_realpath(path, buf);
 

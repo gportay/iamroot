@@ -27,7 +27,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Output the flags in octal (open flags) and in hexadecimal (AT flags)
 - Output the detailled `execve` command on level 4 and above
 - Ignore the `EPERM` error on functions `chmod()`, `chown()`, `fchmod()`,
-  `fchmodat()`, `fchown()`, `fchownat()`, `lchmod()`, `lchown()`
+  `fchmodat()`, `fchown()`, `fchownat()`, `lchmod()` and `lchown()`
 - Forward the flag `O_NOFOLLOW` as flag `AT_SYMLINK_NOFOLLOW` to the function
   `path_resolution()` for the open functions `__open()`, `__open64()`,
   `__open64_2()`, `__open_2()`, `__openat64_2()`, `__openat_2()`, `open()`,
@@ -174,8 +174,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - The script `exec.sh` is now a `/bin/sh` script
 - Ths script `exec.sh` runs un-handled commands using the executables from the
   host environment
-- The internal function sanitize honors the at-flag `AT_EMPTY_PATH`
-- The internal function sanitize ignores `/proc/self/fd/<fd>`
+- The internal function `fpath_resolutionat()` honors the at-flag
+  `AT_EMPTY_PATH`
+- The internal function `fpath_resolutionat()` ignores `/proc/self/fd/<fd>`
 - Set the at-flag `AT_SYMLINK_NOFOLLOW` at path resolution for the change
   timestamp functions `futimesat()`, `utime()`, `utimensat()` and `utimes()`
 - Uses `IAMROOT_[GU]ID` to specify the "real" user/group id and

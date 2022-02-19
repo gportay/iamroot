@@ -244,6 +244,7 @@ manjaro-rootfs/etc/pacman.d/gnupg: | x86_64/libiamroot-linux-x86-64.so.2
 	mv $@.tmp $@
 
 ifneq ($(shell command -v debootstrap),)
+debian-oldoldstable-chroot:
 debian-oldstable-chroot:
 debian-stable-chroot:
 debian-testing-chroot:
@@ -257,13 +258,16 @@ rootfs: debian-rootfs
 
 .NOTPARALLEL: debian-rootfs
 .PHONY: debian-rootfs
-debian-rootfs: debian-oldstable-rootfs debian-stable-rootfs debian-testing-rootfs debian-unstable-rootfs
+debian-rootfs: debian-oldoldstable-rootfs debian-oldstable-rootfs debian-stable-rootfs debian-testing-rootfs debian-unstable-rootfs
 
+debian-oldoldstable-rootfs: | debian-oldoldstable-rootfs/etc/machine-id
 debian-oldstable-rootfs: | debian-oldstable-rootfs/etc/machine-id
 debian-stable-rootfs: | debian-stable-rootfs/etc/machine-id
 debian-testing-rootfs: | debian-testing-rootfs/etc/machine-id
 debian-unstable-rootfs: | debian-unstable-rootfs/etc/machine-id
 
+debian-oldoldstable-rootfs/etc/machine-id:
+debian-oldoldstable-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/
 debian-oldstable-rootfs/etc/machine-id:
 debian-oldstable-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/
 debian-stable-rootfs/etc/machine-id:
@@ -832,6 +836,7 @@ mnt:
 .PHONY: support
 support: support/arch-rootfs.txt
 support: support/i686-arch-rootfs.txt
+support: support/debian-oldoldstable-rootfs.txt
 support: support/debian-oldstable-rootfs.txt
 support: support/debian-stable-rootfs.txt
 support: support/debian-testing-rootfs.txt
@@ -851,6 +856,11 @@ support/arch-rootfs.txt: arch-rootfs.log
 .PRECIOUS: support/i686-arch-rootfs.txt
 support/i686-arch-rootfs.txt: i686-arch-rootfs.log
 	support/pacstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	mv $@.tmp $@
+
+.PRECIOUS: support/debian-oldoldstable-rootfs.txt
+support/debian-oldoldstable-rootfs.txt: debian-oldoldstable-rootfs.log
+	support/debootstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
 	mv $@.tmp $@
 
 .PRECIOUS: support/debian-oldstable-rootfs.txt
@@ -906,6 +916,7 @@ support/alpine-edge-rootfs.txt: alpine-edge-rootfs.log
 .PHONY: log
 log: arch-rootfs.log
 log: i686-arch-rootfs.log
+log: debian-oldoldstable-rootfs.log
 log: debian-oldstable-rootfs.log
 log: debian-stable-rootfs.log
 log: debian-testing-rootfs.log

@@ -590,8 +590,6 @@ warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply
   Running scriptlet: systemd XXX/XXX
   Installing       : systemd XXX/XXX
   Running scriptlet: systemd XXX/XXX
-'/etc/resolv.conf' -> '../run/systemd/resolve/stub-resolv.conf'
-
   Running scriptlet: systemd-udev XXX/XXX
   Installing       : systemd-udev XXX/XXX
   Running scriptlet: systemd-udev XXX/XXX
@@ -756,37 +754,6 @@ Running in chroot, ignoring command 'set-property'
 
   Running scriptlet: firewalld XXX/XXX
   Running scriptlet: rootfiles XXX/XXX
-Creating group sgx with gid 992.
-
-Failed to open directory 'ts': Permission denied
-Warning: fchownat: /run/systemd/netif: Ignoring error 'Operation not permitted'!
-Warning: chmod: /run/systemd/netif: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /run/systemd/netif/links: Ignoring error 'Operation not permitted'!
-Warning: chmod: /run/systemd/netif/links: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /run/systemd/netif/leases: Ignoring error 'Operation not permitted'!
-Warning: chmod: /run/systemd/netif/leases: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /run/systemd/netif/lldp: Ignoring error 'Operation not permitted'!
-Warning: chmod: /run/systemd/netif/lldp: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /run/tpm2-tss/eventlog: Ignoring error 'Operation not permitted'!
-Warning: chmod: /run/tpm2-tss/eventlog: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /dev/snd/seq: Ignoring error 'Operation not permitted'!
-Warning: chmod: /dev/snd/seq: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /dev/snd/timer: Ignoring error 'Operation not permitted'!
-Warning: chmod: /dev/snd/timer: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /dev/loop-control: Ignoring error 'Operation not permitted'!
-Warning: chmod: /dev/loop-control: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /dev/kvm: Ignoring error 'Operation not permitted'!
-Warning: chmod: /dev/kvm: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /dev/vhost-net: Ignoring error 'Operation not permitted'!
-Warning: chmod: /dev/vhost-net: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /dev/vhost-vsock: Ignoring error 'Operation not permitted'!
-Warning: chmod: /dev/vhost-vsock: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /run/log/journal: Ignoring error 'Operation not permitted'!
-Warning: chmod: /run/log/journal: Ignoring error 'Operation not permitted'!
-
-Running in chroot, ignoring command 'daemon-reload'
-Running in chroot, ignoring command 'reload-or-restart'
-
 Running in chroot, ignoring request.
 
   Verifying        : NetworkManager XXX/XXX

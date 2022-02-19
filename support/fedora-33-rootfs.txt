@@ -745,37 +745,6 @@ Running in chroot, ignoring command 'try-restart'
 
   Running scriptlet: firewalld XXX/XXX
   Running scriptlet: rootfiles XXX/XXX
-Not setting net/ipv4/conf/all/rp_filter (explicit setting exists).
-Not setting net/ipv4/conf/default/rp_filter (explicit setting exists).
-Not setting net/ipv4/conf/all/accept_source_route (explicit setting exists).
-Not setting net/ipv4/conf/default/accept_source_route (explicit setting exists).
-Not setting net/ipv4/conf/all/promote_secondaries (explicit setting exists).
-Not setting net/ipv4/conf/default/promote_secondaries (explicit setting exists).
-
-Running in chroot, ignoring command 'daemon-reload'
-
-Failed to open directory 'ts': Permission denied
-Warning: fchownat: /run/systemd/netif: Ignoring error 'Operation not permitted'!
-Warning: chmod: /run/systemd/netif: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /run/systemd/netif/links: Ignoring error 'Operation not permitted'!
-Warning: chmod: /run/systemd/netif/links: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /run/systemd/netif/leases: Ignoring error 'Operation not permitted'!
-Warning: chmod: /run/systemd/netif/leases: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /run/systemd/netif/lldp: Ignoring error 'Operation not permitted'!
-Warning: chmod: /run/systemd/netif/lldp: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /run/tpm2-tss/eventlog: Ignoring error 'Operation not permitted'!
-Warning: chmod: /run/tpm2-tss/eventlog: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /dev/snd/seq: Ignoring error 'Operation not permitted'!
-Warning: chmod: /dev/snd/seq: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /dev/snd/timer: Ignoring error 'Operation not permitted'!
-Warning: chmod: /dev/snd/timer: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /dev/loop-control: Ignoring error 'Operation not permitted'!
-Warning: chmod: /dev/loop-control: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /dev/kvm: Ignoring error 'Operation not permitted'!
-Warning: chmod: /dev/kvm: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /run/log/journal: Ignoring error 'Operation not permitted'!
-Warning: chmod: /run/log/journal: Ignoring error 'Operation not permitted'!
-
 Running in chroot, ignoring request.
 
   Verifying        : NetworkManager XXX/XXX

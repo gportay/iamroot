@@ -400,11 +400,6 @@ Optional dependencies for base
 (XXX/XXX) Applying kernel sysctl settings...
   Skipped: Running in chroot.
 (XXX/XXX) Creating temporary files...
-Warning: fchownat: /run/systemd/netif: Ignoring error 'Operation not permitted'!
-Warning: chmod: /run/systemd/netif: Ignoring error 'Operation not permitted'!
-Failed to create directory or subvolume "/run/systemd/netif/links": Permission denied
-Failed to create directory or subvolume "/run/systemd/netif/leases": Permission denied
-Failed to create directory or subvolume "/run/systemd/netif/lldp": Permission denied
 Warning: chmod: /dev/snd: Ignoring error 'Operation not permitted'!
 Warning: fchownat: /dev/snd: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/snd: Ignoring error 'Operation not permitted'!
@@ -417,7 +412,6 @@ Warning: chmod: /dev/net: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/vhost-net: Ignoring error 'Operation not permitted'!
 Warning: fchownat: /run/log: Ignoring error 'Operation not permitted'!
 Warning: chmod: /run/log: Ignoring error 'Operation not permitted'!
-error: command failed to execute correctly
 (XXX/XXX) Reloading device manager configuration...
   Skipped: Running in chroot.
 (XXX/XXX) Arming ConditionNeedsUpdate...

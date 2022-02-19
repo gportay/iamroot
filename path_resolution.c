@@ -127,6 +127,13 @@ static int ignore(const char *path)
 	if (!*path)
 		return 0;
 
+	/*
+	 * TODO Create a new environment variable to white list paths to be
+	 * ignored?
+	 */
+	if (__strncmp(path, "/run/systemd") == 0)
+		return 0;
+
 	ret = regexec(re, path, 0, NULL, 0);
 	if (ret == -1) {
 		__regex_perror("regexec", re, ret);

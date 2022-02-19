@@ -277,14 +277,6 @@ Optional dependencies for base
 (XXX/XXX) Applying kernel sysctl settings...
   Skipped: Running in chroot.
 (XXX/XXX) Creating temporary files...
-Warning: fchownat: /run/systemd/netif: Ignoring error 'Operation not permitted'!
-Warning: chmod: /run/systemd/netif: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /run/systemd/netif/links: Ignoring error 'Operation not permitted'!
-Warning: chmod: /run/systemd/netif/links: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /run/systemd/netif/leases: Ignoring error 'Operation not permitted'!
-Warning: chmod: /run/systemd/netif/leases: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /run/systemd/netif/lldp: Ignoring error 'Operation not permitted'!
-Warning: chmod: /run/systemd/netif/lldp: Ignoring error 'Operation not permitted'!
 Warning: fchownat: /dev/snd/seq: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/snd/seq: Ignoring error 'Operation not permitted'!
 Warning: fchownat: /dev/snd/timer: Ignoring error 'Operation not permitted'!

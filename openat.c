@@ -57,8 +57,8 @@ int openat(int fd, const char *path, int flags, ...)
 		va_end(ap);
 	}
 
-	__debug("%s(path: '%s' -> '%s', flags: 0%o, mode: 0%03o)\n", __func__,
-		path, real_path, flags, mode);
+	__debug("%s(fd: %i, path: '%s' -> '%s', flags: 0%o, mode: 0%03o)\n",
+		__func__, fd, path, real_path, flags, mode);
 	if (flags & O_CREAT)
 		__fwarn_if_insuffisant_user_modeat(fd, real_path, mode, 0);
 

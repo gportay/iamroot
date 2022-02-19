@@ -47,6 +47,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `execvpe()`,
 - Output the function `execvpe()`
 - Output a warning the if secure-execution mode set
+- Output the fd for the functions `openat()` and `openat64()`
 
 ### Fixed
 

@@ -173,7 +173,6 @@ libiamroot.so: utimensat.o
 libiamroot.so: utimes.o
 libiamroot.so: whereami.o
 libiamroot.so: whoami.o
-libiamroot.so: override LDLIBS += -ldl -lpthread
 
 .PHONY: doc
 doc: iamroot-shell.1.gz iamroot.7.gz
@@ -235,7 +234,7 @@ check:
 .PHONY: test
 test: | x86_64/libiamroot-linux-x86-64.so.2
 	$(MAKE) -C tests
-	$(MAKE) -C tests $@ LD_PRELOAD=$(CURDIR)/x86_64/libiamroot-linux-x86-64.so.2 IAMROOT_LIB=$(CURDIR)/x86_64/libiamroot-linux-x86-64.so.2
+	$(MAKE) -C tests $@ LD_PRELOAD=$(CURDIR)/x86_64/libiamroot-linux-x86-64.so.2:libdl.so.2 IAMROOT_LIB=$(CURDIR)/x86_64/libiamroot-linux-x86-64.so.2:libdl.so.2
 
 .PHONY: shell
 shell: x86_64/libiamroot-linux-x86-64.so.2

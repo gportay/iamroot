@@ -64,6 +64,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Removed
 
 - Remove unexistant function `opendir64()`
+- Remove linkage against `libdl.so` and `libpthread.so`
 
 ### Fixed
 

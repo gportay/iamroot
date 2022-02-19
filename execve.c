@@ -1436,6 +1436,12 @@ loader:
 		if (has_preload && ld_preload) {
 			interparg[i++] = "--preload";
 			interparg[i++] = ld_preload;
+
+			ret = unsetenv("LD_PRELOAD");
+			if (ret) {
+				__envperror("LD_PRELOAD", "unsetenv");
+				return -1;
+			}
 		} else {
 			ret = setenv("LD_PRELOAD", ld_preload, 1);
 			if (ret)
@@ -1477,32 +1483,6 @@ loader:
 		interparg[i] = program;
 		i += j;
 		interparg[i] = NULL; /* ensure NULL terminated */
-
-		/*
-		 * Strip libiamroot.so from LD_PRELOAD
-		 *
-		 * TODO: Remove *real* libiamroot.so. It is assumed for now the
-		 * library is at the first place.
-		 */
-		ld_preload = getenv("LD_PRELOAD");
-		if (has_preload && ld_preload) {
-			char *n, *s = ld_preload;
-
-			n = strchr(s, ':');
-			if (n)
-				n++;
-
-			ld_preload = n;
-			if (ld_preload && *ld_preload) {
-				ret = setenv("LD_PRELOAD", ld_preload, 1);
-				if (ret)
-					return -1;
-			} else {
-				ret = unsetenv("LD_PRELOAD");
-				if (ret)
-					return -1;
-			}
-		}
 
 		goto execve;
 	} else {

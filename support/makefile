@@ -8,7 +8,7 @@ PREFIX ?= /usr/local
 KVER ?= $(shell uname -r 2>/dev/null)
 VMLINUX_KVER ?= $(shell vmlinux --version 2>/dev/null)
 
-IAMROOT_LIB = $(CURDIR)/x86_64/libiamroot-linux-x86-64.so.2
+IAMROOT_LIB = $(CURDIR)/x86_64/libiamroot-linux-x86-64.so.2:libdl.so.2
 export IAMROOT_LIB
 
 IAMROOT_LIB_LINUX_2 = $(CURDIR)/i686/libiamroot-linux.so.2

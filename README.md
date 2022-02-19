@@ -12,10 +12,10 @@ userspace.
 
 ## HOW IT WORKS
 
-It consists of an ELF library which is preloaded using the environment variable
-`LD_PRELOAD` and which intercepts the calls to libc functions with a `filename`
-or `pathname` in parameter ([open(2)], [fopen(3)], [stat(2)], [readlink(2)],
-[chown(2)], [chdir(2)], [chroot(2)]...).
+It consists of an ELF shim library which is preloaded using the environment
+variable `LD_PRELOAD` and which intercepts the calls to libc functions with a
+`filename` or `pathname` in parameter ([open(2)], [fopen(3)], [stat(2)],
+[readlink(2)], [chown(2)], [chdir(2)], [chroot(2)]...).
 
 The syscall [chroot(2)] changes a small ingredient in the pathname resolution
 process; it is visible via each process's symlink `/proc/self/root`. The

@@ -70,7 +70,6 @@ all: test-utimensat
 all: test-utimes
 
 libiamnotroot.so: iamnotroot.o
-libiamnotroot.so: override LDLIBS += -ldl
 
 test-dlopen: override LDLIBS += -ldl
 

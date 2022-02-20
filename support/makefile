@@ -984,9 +984,15 @@ support: ubuntu-support
 support: fedora-support
 support: alpine-support
 
+.PHONY: extra-support
+extra-support: manjaro-support
+
 .PHONY: arch-support
 arch-support: support/arch-rootfs.txt
 arch-support: support/i686-arch-rootfs.txt
+
+.PHONY: manjaro-support
+manjaro-support: support/manjaro-rootfs.txt
 
 .PHONY: debian-support
 debian-support: support/debian-oldoldstable-rootfs.txt
@@ -1016,6 +1022,11 @@ support/arch-rootfs.txt: arch-rootfs.log
 
 .PRECIOUS: support/i686-arch-rootfs.txt
 support/i686-arch-rootfs.txt: i686-arch-rootfs.log
+	support/pacstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	mv $@.tmp $@
+
+.PRECIOUS: support/manjaro-rootfs.txt
+support/manjaro-rootfs.txt: manjaro-rootfs.log
 	support/pacstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
 	mv $@.tmp $@
 
@@ -1091,9 +1102,15 @@ log: ubuntu-log
 log: fedora-log
 log: alpine-log
 
+.PHONY: extra-log
+extra-log: manjaro-log
+
 .PHONY: arch-log
 arch-log: arch-rootfs.log
 arch-log: i686-arch-rootfs.log
+
+.PHONY: manjaro-log
+manjaro-log: manjaro-rootfs.log
 
 .PHONY: debian-log
 debian-log: debian-oldoldstable-rootfs.log

@@ -41,3 +41,30 @@
 	# (XXX/XXX) Creating system user accounts...
 	/^([[:digit:] ]\+\/[[:digit:] ]\+)/s,^([[:digit:] ]\+\/[[:digit:] ]\+),(XXX/XXX),
 }
+
+# :: [1;37mINFO [1;m Downloading mirrors from Manjaro
+s,\x1b\[[[:digit:];]*m,,g
+
+# (12/12) Configuring pacman-mirrors ...                                         
+# ::^[[1;37mINFO^[[1;m Downloading mirrors from Manjaro                          
+# ::^[[1;37mINFO^[[1;m => Mirror pool: https://repo.manjaro.org/mirrors.json     
+# ::^[[1;37mINFO^[[1;m => Mirror status: https://repo.manjaro.org/status.json    
+# ::^[[1;37mINFO^[[1;m Using default mirror file                                 
+# ::^[[1;37mINFO^[[1;m Querying mirrors - This may take some time                
+#   ..... United_Kingdom : http://manjaro.mirrors.uk2.net/^M  ^[[1;32m0.149^[[1;m
+#   ..... Canada         : https://mirror.0xem.ma/manjaro/^M  ^[[1;32m2.270^[[1;m
+#   ..... Germany        : http://ftp.tu-chemnitz.de/pub/linux/manjaro/^M  ^[[1;32m0.300^[[1;m
+#   ..... Netherlands    : https://ftp.nluug.nl/pub/os/Linux/distr/manjaro/^M  ^[[1;32m0.354^[[1;m
+#   ..... Germany        : https://ftp.halifax.rwth-aachen.de/manjaro/^M  ^[[1;32m0.269^[[1;m
+# ::^[[1;37mINFO^[[1;m Writing mirror list                                       
+# ::United_Kingdom  : http://manjaro.mirrors.uk2.net/stable^[[1;m                
+# ::Germany         : https://ftp.halifax.rwth-aachen.de/manjaro/stable^[[1;m    
+# ::Germany         : http://ftp.tu-chemnitz.de/pub/linux/manjaro/stable^[[1;m   
+# ::Netherlands     : https://ftp.nluug.nl/pub/os/Linux/distr/manjaro/stable^[[1;m
+# ::Canada          : https://mirror.0xem.ma/manjaro/stable^[[1;m                
+# ::^[[1;37mINFO^[[1;m Mirror list generated and saved to: /etc/pacman.d/mirrorlist
+# hint: use `pacman-mirrors` to generate and update your pacman mirrorlist.      
+/^([[:digit:] X]\+\/[[:digit:] X]\+) Configuring pacman-mirrors \.\.\./,/^hint: / {
+	//p
+	d
+}

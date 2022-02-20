@@ -1,0 +1,929 @@
+gpg: manjaro-rootfs/etc/pacman.d/gnupg.tmp/trustdb.gpg: trustdb created
+gpg: no ultimately trusted keys found
+gpg: starting migration from earlier GnuPG versions
+gpg: porting secret keys from 'manjaro-rootfs/etc/pacman.d/gnupg.tmp/secring.gpg' to gpg-agent
+gpg: migration succeeded
+==> Generating pacman master key. This may take some time.
+gpg: Generating pacman keyring master key...
+gpg: key XXXXXXXXXXXXXXXX marked as ultimately trusted
+gpg: directory 'manjaro-rootfs/etc/pacman.d/gnupg.tmp/openpgp-revocs.d' created
+gpg: revocation certificate stored as 'manjaro-rootfs/etc/pacman.d/gnupg.tmp/openpgp-revocs.dXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.rev'
+gpg: Done
+==> Updating trust database...
+gpg: marginals needed: 3  completes needed: 1  trust model: pgp
+gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
+==> Appending keys from archlinux.gpg...
+==> Locally signing trusted keys in keyring...
+  -> Locally signed 5 keys.
+==> Importing owner trust values...
+gpg: setting ownertrust to 4
+gpg: setting ownertrust to 4
+gpg: inserting ownertrust of 4
+gpg: setting ownertrust to 4
+gpg: setting ownertrust to 4
+==> Disabling revoked keys in keyring...
+  -> Disabled 49 keys.
+==> Updating trust database...
+gpg: marginals needed: 3  completes needed: 1  trust model: pgp
+gpg: depth: 0  valid:   1  signed:   5  trust: 0-, 0q, 0n, 0m, 0f, 1u
+gpg: depth: 1  valid:   5  signed:  94  trust: 0-, 0q, 0n, 5m, 0f, 0u
+gpg: depth: 2  valid:  87  signed:  33  trust: 87-, 0q, 0n, 0m, 0f, 0u
+gpg: next trustdb check due at 2022-05-06
+gpg: key XXXXXXXXXXXXXXXX: 2 signatures not checked due to missing keys
+gpg: key XXXXXXXXXXXXXXXX: public key "Anupam Basak <anupam@manjaro.org>" imported
+gpg: key XXXXXXXXXXXXXXXX: 12 signatures not checked due to missing keys
+gpg: key XXXXXXXXXXXXXXXX: public key "Guillaume Benoit (Guinux) <guillaume@manjaro.org>" imported
+gpg: key XXXXXXXXXXXXXXXX: 15 signatures not checked due to missing keys
+gpg: key XXXXXXXXXXXXXXXX: public key "Philip MÃ¼ller (Called Little) <philm@manjaro.org>" imported
+gpg: key XXXXXXXXXXXXXXXX: 11 signatures not checked due to missing keys
+gpg: key XXXXXXXXXXXXXXXX: public key "Roland Singer (Manjaro Linux) <roland@manjaro.org>" imported
+gpg: key XXXXXXXXXXXXXXXX: 13 signatures not checked due to missing keys
+gpg: key XXXXXXXXXXXXXXXX: public key "Rob McCathie <korrode@gmail.com>" imported
+gpg: key XXXXXXXXXXXXXXXX: 11 signatures not checked due to missing keys
+gpg: key XXXXXXXXXXXXXXXX: public key "Alexandru Ianu <alexandru@manjaro.org>" imported
+gpg: key XXXXXXXXXXXXXXXX: 10 signatures not checked due to missing keys
+gpg: key XXXXXXXXXXXXXXXX: public key "Ramon BuldÃ³ <ramon@manjaro.org>" imported
+gpg: key XXXXXXXXXXXXXXXX: 6 signatures not checked due to missing keys
+gpg: key XXXXXXXXXXXXXXXX: public key "artoo <flower_of_life@gmx.net>" imported
+gpg: key XXXXXXXXXXXXXXXX: 6 signatures not checked due to missing keys
+gpg: key XXXXXXXXXXXXXXXX: public key "artoo (manjaro.org) <flower_of_life@gmx.net>" imported
+gpg: key XXXXXXXXXXXXXXXX: 24 signatures not checked due to missing keys
+gpg: key XXXXXXXXXXXXXXXX: public key "Bernhard Landauer <oberon@manjaro.org>" imported
+gpg: key XXXXXXXXXXXXXXXX: 5 signatures not checked due to missing keys
+gpg: key XXXXXXXXXXXXXXXX: public key "Stefano Capitani <stefano@manjaro.org>" imported
+gpg: key XXXXXXXXXXXXXXXX: 4 signatures not checked due to missing keys
+gpg: key XXXXXXXXXXXXXXXX: public key "kendell clark <kendell@manjaro.org>" imported
+gpg: key XXXXXXXXXXXXXXXX: 3 signatures not checked due to missing keys
+gpg: key XXXXXXXXXXXXXXXX: public key "artoo-manjaro <artoo@manjaro.org>" imported
+gpg: key XXXXXXXXXXXXXXXX: 2 signatures not checked due to missing keys
+gpg: key XXXXXXXXXXXXXXXX: public key "Jonathon Fernyhough <jonathon@manjaro.org>" imported
+gpg: key XXXXXXXXXXXXXXXX: 2 signatures not checked due to missing keys
+gpg: key XXXXXXXXXXXXXXXX: public key "Frede Hundewadt <fh@manjaro.org>" imported
+gpg: key XXXXXXXXXXXXXXXX: 1 signature not checked due to a missing key
+gpg: key XXXXXXXXXXXXXXXX: public key "Matti Hyttinen <matti@manjaro.org>" imported
+gpg: key XXXXXXXXXXXXXXXX: public key "Thanos Apostolou (manjaro maintainer) <thanos@manjaro.org>" imported
+gpg: key XXXXXXXXXXXXXXXX: 22 signatures not checked due to missing keys
+gpg: key XXXXXXXXXXXXXXXX: public key "Helmut Stult (schinfo) <helmut.stult@schinfo.de>" imported
+gpg: key XXXXXXXXXXXXXXXX: 11 signatures not checked due to missing keys
+gpg: key XXXXXXXXXXXXXXXX: public key "Dan Johansen (Manjaro) <strit@manjaro.org>" imported
+gpg: key XXXXXXXXXXXXXXXX: public key "Mark Wagie <mark@manjaro.org>" imported
+gpg: key XXXXXXXXXXXXXXXX: public key "Manjaro Build Server <build@manjaro.org>" imported
+gpg: key XXXXXXXXXXXXXXXX: 2 signatures not checked due to missing keys
+gpg: key XXXXXXXXXXXXXXXX: public key "Manjaro-ARM Build Server <build-arm@manjaro-arm.org>" imported
+gpg: key XXXXXXXXXXXXXXXX: public key "Jonas Strassel <info@jonas-strassel.de>" imported
+gpg: key XXXXXXXXXXXXXXXX: public key "Simon BÃ¼eler <simon.bueeler@manjaro.org>" imported
+gpg: Total number processed: 24
+gpg:               imported: 24
+gpg: marginals needed: 3  completes needed: 1  trust model: pgp
+gpg: depth: 0  valid:   1  signed:   5  trust: 0-, 0q, 0n, 0m, 0f, 1u
+gpg: depth: 1  valid:   5  signed:  94  trust: 0-, 0q, 0n, 5m, 0f, 0u
+gpg: depth: 2  valid:  87  signed:  33  trust: 87-, 0q, 0n, 0m, 0f, 0u
+gpg: next trustdb check due at 2022-05-06
+gpg: inserting ownertrust of 4
+gpg: inserting ownertrust of 4
+gpg: inserting ownertrust of 4
+gpg: inserting ownertrust of 4
+gpg: inserting ownertrust of 4
+gpg: inserting ownertrust of 4
+gpg: inserting ownertrust of 4
+gpg: inserting ownertrust of 4
+gpg: inserting ownertrust of 4
+gpg: inserting ownertrust of 4
+gpg: inserting ownertrust of 4
+gpg: inserting ownertrust of 4
+gpg: inserting ownertrust of 4
+gpg: inserting ownertrust of 4
+gpg: inserting ownertrust of 4
+gpg: inserting ownertrust of 4
+gpg: inserting ownertrust of 4
+gpg: inserting ownertrust of 4
+gpg: inserting ownertrust of 4
+gpg: inserting ownertrust of 4
+gpg: inserting ownertrust of 4
+gpg: inserting ownertrust of 4
+
+pub  rsa2048/5BD96CC4247B52CC
+     created: 2012-05-04  expires: 2022-05-02  usage: SC  
+     trust: marginal      validity: unknown
+sub  rsa2048/14FA9A3D72CD35DE
+     created: 2012-05-04  expires: 2022-05-02  usage: E   
+[ unknown] (1). Guillaume Benoit (Guinux) <guillaume@manjaro.org>
+
+
+pub  rsa2048/5BD96CC4247B52CC
+     created: 2012-05-04  expires: 2022-05-02  usage: SC  
+     trust: marginal      validity: unknown
+ Primary key fingerprint: B466 3188 A692 DB1E 45A9  8EE9 5BD9 6CC4 247B 52CC
+
+     Guillaume Benoit (Guinux) <guillaume@manjaro.org>
+
+This key is due to expire on 2022-05-02.
+Are you sure that you want to sign this key with your
+key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
+
+The signature will be marked as non-exportable.
+
+
+
+pub  rsa2048/CAA6A59611C7F07E
+     created: 2012-05-05  expires: never       usage: SC  
+     trust: marginal      validity: unknown
+sub  rsa2048/320011450576724A
+     created: 2012-05-05  expires: never       usage: E   
+[ unknown] (1). Philip Müller (Called Little) <philm@manjaro.org>
+
+
+pub  rsa2048/CAA6A59611C7F07E
+     created: 2012-05-05  expires: never       usage: SC  
+     trust: marginal      validity: unknown
+ Primary key fingerprint: E4CD FE50 A2DA 85D5 8C8A  8C70 CAA6 A596 11C7 F07E
+
+     Philip Müller (Called Little) <philm@manjaro.org>
+
+Are you sure that you want to sign this key with your
+key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
+
+The signature will be marked as non-exportable.
+
+
+
+pub  rsa4096/363DFFFD59152F77
+     created: 2012-05-09  expires: never       usage: SC  
+     trust: marginal      validity: marginal
+sub  rsa4096/212EF83767F91B40
+     created: 2012-05-09  expires: never       usage: E   
+[marginal] (1). Roland Singer (Manjaro Linux) <roland@manjaro.org>
+
+
+pub  rsa4096/363DFFFD59152F77
+     created: 2012-05-09  expires: never       usage: SC  
+     trust: marginal      validity: marginal
+ Primary key fingerprint: 1E79 0893 5AAB 9A00 D6B4  7503 363D FFFD 5915 2F77
+
+     Roland Singer (Manjaro Linux) <roland@manjaro.org>
+
+Are you sure that you want to sign this key with your
+key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
+
+The signature will be marked as non-exportable.
+
+
+
+pub  rsa2048/8934292D604F8BA2
+     created: 2014-09-02  expires: never       usage: SC  
+     trust: marginal      validity: marginal
+sub  rsa2048/7DADC7500CFE5AFD
+     created: 2014-09-02  expires: never       usage: E   
+[marginal] (1). Alexandru Ianu <alexandru@manjaro.org>
+
+
+pub  rsa2048/8934292D604F8BA2
+     created: 2014-09-02  expires: never       usage: SC  
+     trust: marginal      validity: marginal
+ Primary key fingerprint: 74C2 F2CC 05A0 AB7D 8598  3993 8934 292D 604F 8BA2
+
+     Alexandru Ianu <alexandru@manjaro.org>
+
+Are you sure that you want to sign this key with your
+key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
+
+The signature will be marked as non-exportable.
+
+
+
+pub  rsa4096/2C089F09AC97B894
+     created: 2014-09-28  expires: never       usage: SC  
+     trust: marginal      validity: marginal
+sub  rsa4096/33B09366293AD067
+     created: 2014-09-28  expires: never       usage: E   
+[marginal] (1). Ramon Buldó <ramon@manjaro.org>
+
+
+pub  rsa4096/2C089F09AC97B894
+     created: 2014-09-28  expires: never       usage: SC  
+     trust: marginal      validity: marginal
+ Primary key fingerprint: 77DC 01C9 971A C3C3 9A06  26F7 2C08 9F09 AC97 B894
+
+     Ramon Buldó <ramon@manjaro.org>
+
+Are you sure that you want to sign this key with your
+key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
+
+The signature will be marked as non-exportable.
+
+
+
+pub  rsa2048/137C934B5DCB998E
+     created: 2014-05-09  expires: never       usage: SCE 
+     trust: marginal      validity: full
+[  full  ] (1). artoo <flower_of_life@gmx.net>
+
+
+pub  rsa2048/137C934B5DCB998E
+     created: 2014-05-09  expires: never       usage: SCE 
+     trust: marginal      validity: full
+ Primary key fingerprint: 5A97 ED6B 7241 8199 F0C2  2B23 137C 934B 5DCB 998E
+
+     artoo <flower_of_life@gmx.net>
+
+Are you sure that you want to sign this key with your
+key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
+
+The signature will be marked as non-exportable.
+
+
+
+pub  rsa2048/62443D89B35859F8
+     created: 2014-12-04  expires: never       usage: SCEA
+     trust: marginal      validity: full
+[  full  ] (1). artoo (manjaro.org) <flower_of_life@gmx.net>
+
+
+pub  rsa2048/62443D89B35859F8
+     created: 2014-12-04  expires: never       usage: SCEA
+     trust: marginal      validity: full
+ Primary key fingerprint: 7C89 F4D4 39B2 BFAC F425  107B 6244 3D89 B358 59F8
+
+     artoo (manjaro.org) <flower_of_life@gmx.net>
+
+Are you sure that you want to sign this key with your
+key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
+
+The signature will be marked as non-exportable.
+
+
+
+pub  rsa2048/DAD3B211663CA268
+     created: 2015-07-12  expires: never       usage: SC  
+     trust: marginal      validity: full
+sub  rsa2048/28F1A11707EA1EF5
+     created: 2015-07-12  expires: never       usage: E   
+sub  dsa2048/9C5D6E47A6778B22
+     created: 2015-10-01  expires: never       usage: S   
+[  full  ] (1). Bernhard Landauer <oberon@manjaro.org>
+
+
+pub  rsa2048/DAD3B211663CA268
+     created: 2015-07-12  expires: never       usage: SC  
+     trust: marginal      validity: full
+ Primary key fingerprint: 39F0 EC1A E50B 37E5 F319  6F09 DAD3 B211 663C A268
+
+     Bernhard Landauer <oberon@manjaro.org>
+
+Are you sure that you want to sign this key with your
+key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
+
+The signature will be marked as non-exportable.
+
+
+
+pub  rsa2048/8DB9F8C18DF53602
+     created: 2016-02-28  expires: never       usage: SC  
+     trust: marginal      validity: full
+sub  rsa2048/07DBFD7ED51B5C80
+     created: 2016-02-28  expires: never       usage: E   
+[  full  ] (1). Stefano Capitani <stefano@manjaro.org>
+
+
+pub  rsa2048/8DB9F8C18DF53602
+     created: 2016-02-28  expires: never       usage: SC  
+     trust: marginal      validity: full
+ Primary key fingerprint: 22C9 03DE 964E 6FE3 2165  6E31 8DB9 F8C1 8DF5 3602
+
+     Stefano Capitani <stefano@manjaro.org>
+
+Are you sure that you want to sign this key with your
+key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
+
+The signature will be marked as non-exportable.
+
+
+
+pub  rsa2048/7EC47C82A42D53A2
+     created: 2016-04-16  expires: never       usage: SC  
+     trust: marginal      validity: full
+sub  rsa2048/EC0A1D343712671A
+     created: 2016-04-16  expires: never       usage: E   
+[  full  ] (1). kendell clark <kendell@manjaro.org>
+
+
+pub  rsa2048/7EC47C82A42D53A2
+     created: 2016-04-16  expires: never       usage: SC  
+     trust: marginal      validity: full
+ Primary key fingerprint: 16DC 688D F3EE CC72 3239  5423 7EC4 7C82 A42D 53A2
+
+     kendell clark <kendell@manjaro.org>
+
+Are you sure that you want to sign this key with your
+key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
+
+The signature will be marked as non-exportable.
+
+
+
+pub  rsa2048/E3B3F44AC45EE0AA
+     created: 2016-05-22  expires: never       usage: SC  
+     trust: marginal      validity: full
+sub  rsa2048/8DAD89617425382F
+     created: 2016-05-22  expires: never       usage: E   
+[  full  ] (1). artoo-manjaro <artoo@manjaro.org>
+
+
+pub  rsa2048/E3B3F44AC45EE0AA
+     created: 2016-05-22  expires: never       usage: SC  
+     trust: marginal      validity: full
+ Primary key fingerprint: 2C68 8B52 E3FC 0144 B748  4BAB E3B3 F44A C45E E0AA
+
+     artoo-manjaro <artoo@manjaro.org>
+
+Are you sure that you want to sign this key with your
+key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
+
+The signature will be marked as non-exportable.
+
+
+
+pub  rsa4096/9C08A255442FAFF0
+     created: 2014-03-31  expires: never       usage: SCA 
+     trust: marginal      validity: full
+sub  rsa4096/3BE3B1CCBE11B378
+     created: 2014-03-31  expires: never       usage: E   
+[  full  ] (1). Jonathon Fernyhough <jonathon@manjaro.org>
+
+
+pub  rsa4096/9C08A255442FAFF0
+     created: 2014-03-31  expires: never       usage: SCA 
+     trust: marginal      validity: full
+ Primary key fingerprint: 76C6 E477 042B FE98 5CC2  20BD 9C08 A255 442F AFF0
+
+     Jonathon Fernyhough <jonathon@manjaro.org>
+
+Are you sure that you want to sign this key with your
+key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
+
+The signature will be marked as non-exportable.
+
+
+
+pub  rsa4096/17C752B61B2F2E90
+     created: 2017-05-30  expires: never       usage: SC  
+     trust: marginal      validity: full
+sub  rsa2048/8396F1D05506E82D
+     created: 2017-05-30  expires: 2025-05-28  usage: E   
+sub  rsa2048/7605992471F3F073
+     created: 2017-05-30  expires: 2025-05-28  usage: SA  
+[  full  ] (1). Frede Hundewadt <fh@manjaro.org>
+
+
+pub  rsa4096/17C752B61B2F2E90
+     created: 2017-05-30  expires: never       usage: SC  
+     trust: marginal      validity: full
+ Primary key fingerprint: 04BB 537F 5BC2 D399 BFA7  2F8F 17C7 52B6 1B2F 2E90
+
+     Frede Hundewadt <fh@manjaro.org>
+
+Are you sure that you want to sign this key with your
+key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
+
+The signature will be marked as non-exportable.
+
+
+
+pub  rsa2048/8238651DDF5E0594
+     created: 2017-06-01  expires: never       usage: SC  
+     trust: marginal      validity: full
+sub  rsa2048/0413FEB0B6E44E6E
+     created: 2017-06-01  expires: never       usage: E   
+[  full  ] (1). Matti Hyttinen <matti@manjaro.org>
+
+
+pub  rsa2048/8238651DDF5E0594
+     created: 2017-06-01  expires: never       usage: SC  
+     trust: marginal      validity: full
+ Primary key fingerprint: 2D14 560C DCE6 A75B B186  DB75 8238 651D DF5E 0594
+
+     Matti Hyttinen <matti@manjaro.org>
+
+Are you sure that you want to sign this key with your
+key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
+
+The signature will be marked as non-exportable.
+
+
+
+pub  rsa2048/1817DC63CD3B5DF5
+     created: 2017-09-14  expires: never       usage: SC  
+     trust: marginal      validity: full
+sub  rsa2048/157205A192E78A2C
+     created: 2017-09-14  expires: never       usage: E   
+[  full  ] (1). Thanos Apostolou (manjaro maintainer) <thanos@manjaro.org>
+
+
+pub  rsa2048/1817DC63CD3B5DF5
+     created: 2017-09-14  expires: never       usage: SC  
+     trust: marginal      validity: full
+ Primary key fingerprint: 75C1 B95A 4D95 14A5 7EB2  DAE7 1817 DC63 CD3B 5DF5
+
+     Thanos Apostolou (manjaro maintainer) <thanos@manjaro.org>
+
+Are you sure that you want to sign this key with your
+key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
+
+The signature will be marked as non-exportable.
+
+
+
+pub  rsa4096/CEE477135C5872B0
+     created: 2018-02-15  expires: never       usage: SC  
+     trust: marginal      validity: marginal
+sub  rsa2048/428F7ECC7117F726
+     created: 2018-02-15  expires: never       usage: S   
+sub  rsa2048/946CAF1ECCC1DA9A
+     created: 2018-02-15  expires: never       usage: E   
+sub  rsa2048/FFFBBFC87D850C1D
+     created: 2018-02-15  expired: 2020-02-15  usage: A   
+sub  rsa4096/81F6B70262D9CA13
+     created: 2018-02-15  expires: never       usage: E   
+[marginal] (1). Helmut Stult (schinfo) <helmut.stult@schinfo.de>
+[marginal] (2)  Helmut Stult (schinfo) <helmut@manjaro.org>
+[marginal] (3)  Helmut Stult (schinfo) <helmut@schinfo-home.de>
+
+
+pub  rsa4096/CEE477135C5872B0
+     created: 2018-02-15  expires: never       usage: SC  
+     trust: marginal      validity: marginal
+ Primary key fingerprint: F66A D0FF 0E57 C561 615A  0901 CEE4 7713 5C58 72B0
+
+     Helmut Stult (schinfo) <helmut.stult@schinfo.de>
+     Helmut Stult (schinfo) <helmut@manjaro.org>
+     Helmut Stult (schinfo) <helmut@schinfo-home.de>
+
+Are you sure that you want to sign this key with your
+key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
+
+The signature will be marked as non-exportable.
+
+
+
+pub  rsa2048/084A7FC0035B1D49
+     created: 2016-04-23  expires: never       usage: SC  
+     trust: marginal      validity: unknown
+sub  rsa2048/902EA69914598195
+     created: 2016-04-23  expires: never       usage: E   
+[ unknown] (1). Dan Johansen (Manjaro) <strit@manjaro.org>
+[ unknown] (2)  Dan Johansen <strit@strits.dk>
+[ revoked] (3)  Dan Johansen <danjohansen@strits.dk>
+
+User ID "Dan Johansen <danjohansen@strits.dk>" is revoked.  Unable to sign.
+
+pub  rsa2048/084A7FC0035B1D49
+     created: 2016-04-23  expires: never       usage: SC  
+     trust: marginal      validity: unknown
+ Primary key fingerprint: 7A44 3CEE 69B6 B377 7740  E258 084A 7FC0 035B 1D49
+
+     Dan Johansen (Manjaro) <strit@manjaro.org>
+     Dan Johansen <strit@strits.dk>
+
+Are you sure that you want to sign this key with your
+key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
+
+The signature will be marked as non-exportable.
+
+
+
+pub  rsa2048/150C200743ED46D8
+     created: 2020-04-20  expires: 2022-04-20  usage: SC  
+     trust: marginal      validity: full
+sub  rsa2048/461912CC5A3EBE40
+     created: 2020-04-20  expires: 2022-04-20  usage: E   
+[  full  ] (1). Mark Wagie <mark@manjaro.org>
+
+
+pub  rsa2048/150C200743ED46D8
+     created: 2020-04-20  expires: 2022-04-20  usage: SC  
+     trust: marginal      validity: full
+ Primary key fingerprint: 688E 8F82 879D 0E25 CE54  1426 150C 2007 43ED 46D8
+
+     Mark Wagie <mark@manjaro.org>
+
+This key is due to expire on 2022-04-20.
+Are you sure that you want to sign this key with your
+key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
+
+The signature will be marked as non-exportable.
+
+
+
+pub  rsa3072/279E7CF5D8D56EC8
+     created: 2020-10-28  expires: 2022-10-28  usage: SC  
+     trust: marginal      validity: full
+sub  rsa3072/890DF5D5A286BBC1
+     created: 2020-10-28  expires: 2022-10-28  usage: E   
+[  full  ] (1). Manjaro Build Server <build@manjaro.org>
+
+
+pub  rsa3072/279E7CF5D8D56EC8
+     created: 2020-10-28  expires: 2022-10-28  usage: SC  
+     trust: marginal      validity: full
+ Primary key fingerprint: 3B79 4DE6 D432 0FCE 594F  4171 279E 7CF5 D8D5 6EC8
+
+     Manjaro Build Server <build@manjaro.org>
+
+This key is due to expire on 2022-10-28.
+Are you sure that you want to sign this key with your
+key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
+
+The signature will be marked as non-exportable.
+
+
+
+pub  rsa3072/FD847358FF20E35C
+     created: 2020-09-22  expires: 2022-09-22  usage: SC  
+     trust: marginal      validity: marginal
+sub  rsa3072/EF0DA87A1560799C
+     created: 2020-09-22  expires: 2022-09-22  usage: E   
+[marginal] (1). Anupam Basak <anupam@manjaro.org>
+
+
+pub  rsa3072/FD847358FF20E35C
+     created: 2020-09-22  expires: 2022-09-22  usage: SC  
+     trust: marginal      validity: marginal
+ Primary key fingerprint: 0037 505D 6C3F 595C 37F5  626A FD84 7358 FF20 E35C
+
+     Anupam Basak <anupam@manjaro.org>
+
+This key is due to expire on 2022-09-22.
+Are you sure that you want to sign this key with your
+key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
+
+The signature will be marked as non-exportable.
+
+
+
+pub  rsa3072/ABB2075D5F310CF8
+     created: 2021-07-07  expires: 2023-07-07  usage: SC  
+     trust: marginal      validity: unknown
+sub  rsa3072/D3EEE9AB3553C9FF
+     created: 2021-07-07  expires: 2023-07-07  usage: E   
+[ unknown] (1). Jonas Strassel <info@jonas-strassel.de>
+[ unknown] (2)  Jonas Strassel <jonas.strassel@manjaro.org>
+[ unknown] (3)  Jonas Strassel <jo.strassel@gmail.com>
+[ unknown] (4)  Jonas Strassel <jonas.strassel@ioki.com>
+
+
+pub  rsa3072/ABB2075D5F310CF8
+     created: 2021-07-07  expires: 2023-07-07  usage: SC  
+     trust: marginal      validity: unknown
+ Primary key fingerprint: A44C 644D 7927 67CE D794  1AFE ABB2 075D 5F31 0CF8
+
+     Jonas Strassel <info@jonas-strassel.de>
+     Jonas Strassel <jonas.strassel@manjaro.org>
+     Jonas Strassel <jo.strassel@gmail.com>
+     Jonas Strassel <jonas.strassel@ioki.com>
+
+This key is due to expire on 2023-07-07.
+Are you sure that you want to sign this key with your
+key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
+
+The signature will be marked as non-exportable.
+
+
+
+pub  rsa4096/C0D1CCE50CC38123
+     created: 2021-01-19  expires: never       usage: SC  
+     trust: marginal      validity: unknown
+sub  rsa4096/30A8900CDE5369FF
+     created: 2021-01-19  expires: never       usage: E   
+[ unknown] (1). Simon Büeler <simon.bueeler@manjaro.org>
+
+
+pub  rsa4096/C0D1CCE50CC38123
+     created: 2021-01-19  expires: never       usage: SC  
+     trust: marginal      validity: unknown
+ Primary key fingerprint: 2FCB 09A0 E026 F49B 1060  840B C0D1 CCE5 0CC3 8123
+
+     Simon Büeler <simon.bueeler@manjaro.org>
+
+Are you sure that you want to sign this key with your
+key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
+
+The signature will be marked as non-exportable.
+
+
+gpg: marginals needed: 3  completes needed: 1  trust model: pgp
+gpg: depth: 0  valid:   1  signed:  27  trust: 0-, 0q, 0n, 0m, 0f, 1u
+gpg: depth: 1  valid:  27  signed:  95  trust: 0-, 0q, 0n, 27m, 0f, 0u
+gpg: depth: 2  valid:  87  signed:  33  trust: 87-, 0q, 0n, 0m, 0f, 0u
+gpg: next trustdb check due at 2022-04-20
+==> Creating install root at manjaro-rootfs
+==> Installing packages to manjaro-rootfs
+:: Synchronizing package databases...
+resolving dependencies...
+looking for conflicting packages...
+warning: dependency cycle detected:
+warning: bashrc-manjaro will be installed before its bash dependency
+
+Packages (XXX) acl  archlinux-keyring  argon2  attr  audit  bash  bashrc-manjaro  brotli  bzip2  ca-certificates  ca-certificates-mozilla  ca-certificates-utils  coreutils  cryptsetup  curl  db  dbus  device-mapper  e2fsprogs  expat  fakeroot  file  filesystem  findutils  gawk  gcc-libs  gdbm  gettext  glib2  glibc  gmp  gnupg  gnutls  gpgme  grep  gzip  hwdata  iana-etc  icu  iproute2  iptables  iputils  json-c  kbd  keyutils  kmod  krb5  less  libarchive  libassuan  libcap  libcap-ng  libcroco  libelf  libffi  libgcrypt  libgpg-error  libidn2  libksba  libldap  libmnl  libnetfilter_conntrack  libnfnetlink  libnftnl  libnghttp2  libnl  libnsl  libp11-kit  libpcap  libpsl  libsasl  libseccomp  libsecret  libssh2  libsysprof-capture  libtasn1  libtirpc  libunistring  libxcrypt  libxml2  licenses  linux-api-headers  lz4  manjaro-keyring  mpfr  ncurses  nettle  npth  openssl  p11-kit  pacman  pacman-mirrors  pam  pambase  pciutils  pcre  pcre2  perl  pinentry  popt  procps-ng  psmisc  python  python-certifi  python-chardet  python-idna  python-npyscreen  python-requests  python-urllib3  readline  sed  shadow  sqlite  systemd  systemd-libs  systemd-sysvcompat  tar  tzdata  util-linux  util-linux-libs  xz  zlib  zstd  base
+
+Total Download Size:   XXX XiB
+Total Installed Size:  XXX XiB
+
+:: Proceed with installation? [Y/n] 
+:: Retrieving packages...
+checking keyring...
+checking package integrity...
+loading package files...
+checking for file conflicts...
+checking available disk space...
+:: Processing package changes...
+installing iana-etc...
+installing filesystem...
+warning: directory permissions differ on manjaro-rootfs/proc/
+filesystem: 755  package: 555
+warning: directory permissions differ on manjaro-rootfs/sys/
+filesystem: 755  package: 555
+installing linux-api-headers...
+installing tzdata...
+installing glibc...
+Optional dependencies for glibc
+    gd: for memusagestat
+installing gcc-libs...
+installing ncurses...
+Optional dependencies for ncurses
+    bash: for ncursesw6-config [pending]
+installing readline...
+installing bashrc-manjaro...
+installing bash...
+Optional dependencies for bash
+    bash-completion: for tab completion
+installing attr...
+installing acl...
+installing gmp...
+installing util-linux-libs...
+installing e2fsprogs...
+installing openssl...
+Optional dependencies for openssl
+    ca-certificates [pending]
+    perl [pending]
+installing libsasl...
+installing libldap...
+installing keyutils...
+installing krb5...
+installing libtirpc...
+installing pambase...
+installing libcap-ng...
+installing audit...
+installing libxcrypt...
+installing pam...
+installing libcap...
+installing coreutils...
+installing zlib...
+installing xz...
+installing bzip2...
+installing libseccomp...
+installing file...
+installing findutils...
+installing mpfr...
+installing gawk...
+installing pcre...
+installing grep...
+installing libgpg-error...
+installing libgcrypt...
+installing libtasn1...
+installing libffi...
+installing libp11-kit...
+installing lz4...
+installing zstd...
+installing systemd-libs...
+installing procps-ng...
+installing sed...
+installing tar...
+installing libsysprof-capture...
+installing glib2...
+Optional dependencies for glib2
+    python: gdbus-codegen, glib-genmarshal, glib-mkenums, gtester-report [pending]
+    libelf: gresource inspection tool [pending]
+installing libunistring...
+installing icu...
+installing libxml2...
+installing libcroco...
+installing gettext...
+Optional dependencies for gettext
+    git: for autopoint infrastructure updates
+installing hwdata...
+installing kmod...
+installing pciutils...
+installing psmisc...
+installing shadow...
+installing util-linux...
+Optional dependencies for util-linux
+    python: python bindings to libmount [pending]
+    words: default dictionary for look
+installing pcre2...
+installing less...
+installing gzip...
+installing licenses...
+installing fakeroot...
+exec.sh: line 44: manjaro-rootfsusr/bin/ldconfig: No such file or directory
+error: command failed to execute correctly
+installing expat...
+installing libarchive...
+installing p11-kit...
+installing ca-certificates-utils...
+installing ca-certificates-mozilla...
+installing ca-certificates...
+installing brotli...
+installing libidn2...
+installing libnghttp2...
+installing libpsl...
+installing libssh2...
+installing curl...
+installing gdbm...
+installing db...
+installing perl...
+installing npth...
+installing libksba...
+installing libassuan...
+installing libsecret...
+Optional dependencies for libsecret
+    org.freedesktop.secrets: secret storage backend
+installing pinentry...
+Optional dependencies for pinentry
+    gtk2: gtk2 backend
+    qt5-base: qt backend
+    gcr: gnome3 backend
+installing nettle...
+installing gnutls...
+Optional dependencies for gnutls
+    guile: for use with Guile bindings
+installing sqlite...
+installing gnupg...
+Optional dependencies for gnupg
+    libldap: gpg2keys_ldap [installed]
+    libusb-compat: scdaemon
+    pcsclite: scdaemon
+installing gpgme...
+installing archlinux-keyring...
+installing manjaro-keyring...
+installing libnsl...
+installing python...
+Optional dependencies for python
+    python-setuptools
+    python-pip
+    sqlite [installed]
+    mpdecimal: for decimal
+    xz: for lzma [installed]
+    tk: for tkinter
+installing python-npyscreen...
+installing python-urllib3...
+Optional dependencies for python-urllib3
+    python-pysocks: SOCKS support
+    python-brotli: Brotli support
+    python-pyopenssl: security support
+    python-idna: security support [pending]
+installing python-chardet...
+installing python-idna...
+installing python-requests...
+Optional dependencies for python-requests
+    python-pysocks: SOCKS proxy support
+installing python-certifi...
+installing pacman-mirrors...
+Optional dependencies for pacman-mirrors
+    gtk3: for interactive mode (GUI)
+    python-gobject: for interactive mode (GUI)
+installing pacman...
+==> To import the data required by pacman for package verification run:
+==> `pacman-key --init; pacman-key --populate archlinux manjaro`
+==> See: https://www.archlinux.org/news/having-pacman-verify-packages
+Optional dependencies for pacman
+    haveged: for pacman-init.service
+    perl-locale-gettext: translation support in makepkg-template
+    diffutils: for pacdiff
+    findutils: for pacdiff --find [installed]
+    mlocate: for pacdiff --locate
+    sudo: privilege elevation for several scripts
+    vim: default merge program for pacdiff
+installing device-mapper...
+installing popt...
+installing json-c...
+installing argon2...
+installing cryptsetup...
+installing dbus...
+installing libmnl...
+installing libnftnl...
+installing libnl...
+installing libpcap...
+installing libnfnetlink...
+installing libnetfilter_conntrack...
+installing iptables...
+installing kbd...
+installing libelf...
+installing systemd...
+Initializing machine ID from random generator.
+Creating group 'nobody' with GID 65534.
+Creating group 'adm' with GID 999.
+Creating group 'wheel' with GID 998.
+Creating group 'utmp' with GID 997.
+Creating group 'audio' with GID 996.
+Creating group 'disk' with GID 995.
+Creating group 'input' with GID 994.
+Creating group 'kmem' with GID 993.
+Creating group 'kvm' with GID 992.
+Creating group 'lp' with GID 991.
+Creating group 'optical' with GID 990.
+Creating group 'render' with GID 989.
+Creating group 'sgx' with GID 988.
+Creating group 'storage' with GID 987.
+Creating group 'tty' with GID 5.
+Creating group 'uucp' with GID 986.
+Creating group 'video' with GID 985.
+Creating group 'users' with GID 984.
+Creating group 'sys' with GID 3.
+Creating group 'mem' with GID 8.
+Creating group 'ftp' with GID 11.
+Creating group 'mail' with GID 12.
+Creating group 'log' with GID 19.
+Creating group 'smmsp' with GID 25.
+Creating group 'proc' with GID 26.
+Creating group 'games' with GID 50.
+Creating group 'lock' with GID 54.
+Creating group 'network' with GID 90.
+Creating group 'floppy' with GID 94.
+Creating group 'scanner' with GID 96.
+Creating group 'power' with GID 98.
+Creating group 'systemd-journal' with GID 983.
+Creating group 'rfkill' with GID 982.
+Creating user 'nobody' (Nobody) with UID 65534 and GID 65534.
+Creating group 'dbus' with GID 81.
+Creating user 'dbus' (System Message Bus) with UID 81 and GID 81.
+Creating group 'bin' with GID 1.
+Creating user 'bin' (n/a) with UID 1 and GID 1.
+Creating group 'daemon' with GID 2.
+Creating user 'daemon' (n/a) with UID 2 and GID 2.
+Creating user 'mail' (n/a) with UID 8 and GID 12.
+Creating user 'ftp' (n/a) with UID 14 and GID 11.
+Creating group 'http' with GID 33.
+Creating user 'http' (n/a) with UID 33 and GID 33.
+Creating group 'systemd-coredump' with GID 981.
+Creating user 'systemd-coredump' (systemd Core Dumper) with UID 981 and GID 981.
+Creating group 'systemd-network' with GID 980.
+Creating user 'systemd-network' (systemd Network Management) with UID 980 and GID 980.
+Creating group 'systemd-oom' with GID 979.
+Creating user 'systemd-oom' (systemd Userspace OOM Killer) with UID 979 and GID 979.
+Creating group 'systemd-journal-remote' with GID 978.
+Creating user 'systemd-journal-remote' (systemd Journal Remote) with UID 978 and GID 978.
+Creating group 'systemd-resolve' with GID 977.
+Creating user 'systemd-resolve' (systemd Resolver) with UID 977 and GID 977.
+Creating group 'systemd-timesync' with GID 976.
+Creating user 'systemd-timesync' (systemd Time Synchronization) with UID 976 and GID 976.
+Creating group 'uuidd' with GID 68.
+Creating user 'uuidd' (n/a) with UID 68 and GID 68.
+Created symlink /etc/systemd/system/getty.target.wants/getty@tty1.service â†’ /usr/lib/systemd/system/getty@.service.
+Created symlink /etc/systemd/system/multi-user.target.wants/remote-fs.target â†’ /usr/lib/systemd/system/remote-fs.target.
+:: Append 'init=/usr/lib/systemd/systemd' to your kernel command line in your
+   bootloader to replace sysvinit with systemd, or install systemd-sysvcompat
+Optional dependencies for systemd
+    libmicrohttpd: remote journald capabilities
+    quota-tools: kernel-level quota management
+    systemd-sysvcompat: symlink package to provide sysvinit binaries [pending]
+    polkit: allow administration as unprivileged user
+    curl: machinectl pull-tar and pull-raw [installed]
+    libfido2: unlocking LUKS2 volumes with FIDO2 token
+    tpm2-tss: unlocking LUKS2 volumes with TPM2
+installing systemd-sysvcompat...
+installing iputils...
+installing iproute2...
+Optional dependencies for iproute2
+    db: userspace arp daemon [installed]
+    libcap: tipc [installed]
+    linux-atm: ATM support
+installing base...
+Optional dependencies for base
+    linux: bare metal support
+:: Running post-transaction hooks...
+(XXX/XXX) Creating system user accounts...
+(XXX/XXX) Updating journal message catalog...
+(XXX/XXX) Reloading system manager configuration...
+  Skipped: Running in chroot.
+(XXX/XXX) Updating udev hardware database...
+(XXX/XXX) Applying kernel sysctl settings...
+  Skipped: Running in chroot.
+(XXX/XXX) Creating temporary files...
+Warning: fchownat: /dev/snd/seq: Ignoring error 'Operation not permitted'!
+Warning: chmod: /dev/snd/seq: Ignoring error 'Operation not permitted'!
+Warning: fchownat: /dev/snd/timer: Ignoring error 'Operation not permitted'!
+Warning: chmod: /dev/snd/timer: Ignoring error 'Operation not permitted'!
+Warning: fchownat: /dev/loop-control: Ignoring error 'Operation not permitted'!
+Warning: chmod: /dev/loop-control: Ignoring error 'Operation not permitted'!
+Warning: chmod: /dev/vhost-net: Ignoring error 'Operation not permitted'!
+Warning: fchownat: /run/log/journal: Ignoring error 'Operation not permitted'!
+Warning: chmod: /run/log/journal: Ignoring error 'Operation not permitted'!
+(XXX/XXX) Reloading device manager configuration...
+  Skipped: Running in chroot.
+(XXX/XXX) Arming ConditionNeedsUpdate...
+(XXX/XXX) Rebuilding certificate stores...
+(XXX/XXX) Reloading system bus configuration...
+  Skipped: Running in chroot.
+(XXX/XXX) Warn about old perl modules
+(XXX/XXX) Configuring pacman-mirrors ...
+hint: use `pacman-mirrors` to generate and update your pacman mirrorlist.

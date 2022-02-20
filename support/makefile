@@ -830,36 +830,76 @@ mnt:
 	mkdir -p $@
 
 .PHONY: support
-support: support/arch-rootfs.log
-support: support/i686-arch-rootfs.log
-support: support/debian-oldstable-rootfs.log
-support: support/debian-stable-rootfs.log
-support: support/debian-testing-rootfs.log
-support: support/debian-unstable-rootfs.log
-support: support/fedora-33-rootfs.log
-support: support/fedora-34-rootfs.log
-support: support/fedora-35-rootfs.log
-support: support/alpine-3.14-rootfs.log
-support: support/alpine-3.15-rootfs.log
-support: support/alpine-edge-rootfs.log
+support: support/arch-rootfs.txt
+support: support/i686-arch-rootfs.txt
+support: support/debian-oldstable-rootfs.txt
+support: support/debian-stable-rootfs.txt
+support: support/debian-testing-rootfs.txt
+support: support/debian-unstable-rootfs.txt
+support: support/fedora-33-rootfs.txt
+support: support/fedora-34-rootfs.txt
+support: support/fedora-35-rootfs.txt
+support: support/alpine-3.14-rootfs.txt
+support: support/alpine-3.15-rootfs.txt
+support: support/alpine-edge-rootfs.txt
 
-.PRECIOUS: support/%arch-rootfs.log
-support/%arch-rootfs.log: %arch-rootfs.log
+.PRECIOUS: support/%arch-rootfs.txt
+support/arch-rootfs.txt: arch-rootfs.log
 	support/pacstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
 	mv $@.tmp $@
 
-.PRECIOUS: support/debian-%-rootfs.log
-support/debian-%-rootfs.log: debian-%-rootfs.log
+.PRECIOUS: support/i686-arch-rootfs.txt
+support/i686-arch-rootfs.txt: i686-arch-rootfs.log
+	support/pacstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	mv $@.tmp $@
+
+.PRECIOUS: support/debian-oldstable-rootfs.txt
+support/debian-oldstable-rootfs.txt: debian-oldstable-rootfs.log
 	support/debootstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
 	mv $@.tmp $@
 
-.PRECIOUS: support/fedora-%-rootfs.log
-support/fedora-%-rootfs.log: fedora-%-rootfs.log
+.PRECIOUS: support/debian-stable-rootfs.txt
+support/debian-stable-rootfs.txt: debian-stable-rootfs.log
+	support/debootstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	mv $@.tmp $@
+
+.PRECIOUS: support/debian-testing-rootfs.txt
+support/debian-testing-rootfs.txt: debian-testing-rootfs.log
+	support/debootstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	mv $@.tmp $@
+
+.PRECIOUS: support/debian-unstable-rootfs.txt
+support/debian-unstable-rootfs.txt: debian-unstable-rootfs.log
+	support/debootstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	mv $@.tmp $@
+
+.PRECIOUS: support/fedora-33-rootfs.txt
+support/fedora-33-rootfs.txt: fedora-33-rootfs.log
 	support/dnf.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
 	mv $@.tmp $@
 
-.PRECIOUS: support/alpine-%-rootfs.log
-support/alpine-%-rootfs.log: alpine-%-rootfs.log
+.PRECIOUS: support/fedora-34-rootfs.txt
+support/fedora-34-rootfs.txt: fedora-34-rootfs.log
+	support/dnf.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	mv $@.tmp $@
+
+.PRECIOUS: support/fedora-35-rootfs.txt
+support/fedora-35-rootfs.txt: fedora-35-rootfs.log
+	support/dnf.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	mv $@.tmp $@
+
+.PRECIOUS: support/alpine-3.14-rootfs.txt
+support/alpine-3.14-rootfs.txt: alpine-3.14-rootfs.log
+	support/alpine-make-rootfs.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	mv $@.tmp $@
+
+.PRECIOUS: support/alpine-3.15-rootfs.txt
+support/alpine-3.15-rootfs.txt: alpine-3.15-rootfs.log
+	support/alpine-make-rootfs.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	mv $@.tmp $@
+
+.PRECIOUS: support/alpine-edge-rootfs.txt
+support/alpine-edge-rootfs.txt: alpine-edge-rootfs.log
 	support/alpine-make-rootfs.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
 	mv $@.tmp $@
 

@@ -107,6 +107,10 @@ output-%:
 %.so.1 %.so.2 %.so.3:
 	install -D -m755 $< $@
 
+.NOTPARALLEL: fixme-rootfs
+.PHONY: fixme-rootfs
+fixme-rootfs:
+
 .NOTPARALLEL: rootfs
 .PHONY: rootfs
 rootfs: i686-rootfs
@@ -367,6 +371,7 @@ mount-debian-oldoldstable mount-debian-oldstable mount-debian-stable mount-debia
 
 umount-debian-oldoldstable umount-debian-oldstable umount-debian-stable umount-debian-testing umount-debian-unstable:
 
+ubuntu-bionic-chroot:
 ubuntu-focal-chroot:
 ubuntu-impish-chroot:
 ubuntu-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
@@ -378,12 +383,17 @@ ubuntu-%-chroot: | ubuntu-%-rootfs
 .PHONY: ubuntu-rootfs
 ubuntu-rootfs: ubuntu-focal-rootfs ubuntu-impish-rootfs
 
+fixme-rootfs: ubuntu-bionic-rootfs
+
+ubuntu-bionic-rootfs: | ubuntu-bionic-rootfs/etc/machine-id
 ubuntu-focal-rootfs: | ubuntu-focal-rootfs/etc/machine-id
 ubuntu-impish-rootfs: | ubuntu-impish-rootfs/etc/machine-id
 
+ubuntu-bionic-rootfs/etc/machine-id:
 ubuntu-focal-rootfs/etc/machine-id:
 ubuntu-impish-rootfs/etc/machine-id:
 
+ubuntu-bionic-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|pam-auth-update|/var/lib/dpkg/info/initramfs-tools.postinst
 ubuntu-%-rootfs/etc/machine-id: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
 ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
 ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
@@ -397,18 +407,22 @@ ubuntu-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	cat ubuntu-$*-rootfs/debootstrap/debootstrap.log
 	rm -Rf ubuntu-$*-rootfs/debootstrap/
 
+qemu-system-x86_64-ubuntu-bionic:
+qemu-system-x86_64-ubuntu-bionic: override CMDLINE += rw
 qemu-system-x86_64-ubuntu-focal:
 qemu-system-x86_64-ubuntu-focal: override CMDLINE += rw
 qemu-system-x86_64-ubuntu-impish:
 qemu-system-x86_64-ubuntu-impish: override CMDLINE += rw
 
 ifneq ($(VMLINUX_KVER),)
+vmlinux-ubuntu-bionic:
 vmlinux-ubuntu-focal:
 vmlinux-ubuntu-impish:
 endif
 
-ubuntu-focal.ext4 ubuntu-impish.ext4:
+ubuntu-bionic.ext4 ubuntu-focal.ext4 ubuntu-impish.ext4:
 
+ubuntu-bionic-postrootfs:
 ubuntu-focal-postrootfs:
 ubuntu-impish-postrootfs:
 ubuntu-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
@@ -425,11 +439,11 @@ ubuntu-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "chroot ubuntu-$*-rootfs systemctl disable sshd.service"
 	bash iamroot-shell -c "chroot ubuntu-$*-rootfs pam-auth-update"
 
-chroot-ubuntu-focal chroot-ubuntu-impish:
+chroot-ubuntu-bionic chroot-ubuntu-focal chroot-ubuntu-impish:
 
-mount-ubuntu-focal mount-ubuntu-impish:
+mount-ubuntu-bionic mount-ubuntu-focal mount-ubuntu-impish:
 
-umount-ubuntu-focal umount-ubuntu-impish:
+umount-ubuntu-bionic umount-ubuntu-focal umount-ubuntu-impish:
 endif
 
 ifneq ($(shell command -v dnf),)
@@ -991,6 +1005,9 @@ support: alpine-support
 .PHONY: extra-support
 extra-support: manjaro-support
 
+.PHONY: fixme-support
+fixme-support: support/ubuntu-bionic-rootfs.txt
+
 .PHONY: arch-support
 arch-support: support/arch-rootfs.txt
 arch-support: support/i686-arch-rootfs.txt
@@ -1059,6 +1076,11 @@ support/debian-unstable-rootfs.txt: debian-unstable-rootfs.log
 	support/debootstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
 	mv $@.tmp $@
 
+.PRECIOUS: support/ubuntu-bionic-rootfs.txt
+support/ubuntu-bionic-rootfs.txt: ubuntu-bionic-rootfs.log
+	support/debootstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	mv $@.tmp $@
+
 .PRECIOUS: support/ubuntu-focal-rootfs.txt
 support/ubuntu-focal-rootfs.txt: ubuntu-focal-rootfs.log
 	support/debootstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
@@ -1109,6 +1131,9 @@ log: alpine-log
 .PHONY: extra-log
 extra-log: manjaro-log
 
+.PHONY: fixme-log
+fixme-log: ubuntu-bionic-rootfs.log
+
 .PHONY: arch-log
 arch-log: arch-rootfs.log
 arch-log: i686-arch-rootfs.log
@@ -1146,6 +1171,7 @@ debian-oldstable-rootfs.log:
 debian-stable-rootfs.log:
 debian-testing-rootfs.log:
 debian-unstable-rootfs.log:
+ubuntu-bionic-rootfs.log:
 ubuntu-focal-rootfs.log:
 ubuntu-impish-rootfs.log:
 fedora-33-rootfs.log:

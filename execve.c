@@ -1508,7 +1508,7 @@ exec_sh:
 execve:
 	/*
 	 * envp is updated by the change in the environments (i.e. by calling
-	 * setenv() abd unsetenv()).
+	 * setenv() and unsetenv()).
 	 */ 
 	if (envp != environ)
 		envp = environ;

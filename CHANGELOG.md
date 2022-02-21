@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use the [dynamic loader][ld.so(8)] option `--inhibit-rpath` if
   [exec][exec(3)]'ing to a [glibc] chroot'ed environment
 - Create an [openSUSE] ([Tumbleweed] and [Leaf]) rootfs via [zypper(8)]
+- Intercept the function `execveat()`
 
 ### Changed
 

@@ -241,6 +241,29 @@ manjaro-rootfs/etc/pacman.d/gnupg: | x86_64/libiamroot-linux-x86-64.so.2
 	done <manjaro-trusted
 	bash iamroot-shell -c "gpg --homedir $@.tmp --no-permission-warning --batch --check-trustdb"
 	mv $@.tmp $@
+
+qemu-system-x86_64-manjaro:
+
+ifneq ($(VMLINUX_KVER),)
+vmlinux-manjaro:
+endif
+
+manjaro.ext4:
+
+manjaro-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
+	sed -e '/^root:x:/s,^root:x:,root::,' \
+	    -i manjaro-rootfs/etc/passwd
+	sed -e '/^root::/s,^root::,root:x:,' \
+	    -i manjaro-rootfs/etc/shadow
+	mkdir -p manjaro-rootfs/var/lib/systemd/linger
+	rm -f manjaro-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
+	bash iamroot-shell -c "chroot manjaro-rootfs systemctl enable getty@tty0.service"
+
+chroot-manjaro:
+
+mount-manjaro:
+
+umount-manjaro:
 endif
 
 ifneq ($(shell command -v debootstrap),)

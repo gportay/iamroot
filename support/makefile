@@ -369,6 +369,40 @@ ubuntu-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubun
 ubuntu-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	mkdir -p ubuntu-$*-rootfs
 	bash iamroot-shell -c "debootstrap $* ubuntu-$*-rootfs $(DEBOOTSTRAP_MIRROR)"
+
+qemu-system-x86_64-ubuntu-focal:
+qemu-system-x86_64-ubuntu-focal: override CMDLINE += rw
+qemu-system-x86_64-ubuntu-impish:
+qemu-system-x86_64-ubuntu-impish: override CMDLINE += rw
+
+ifneq ($(VMLINUX_KVER),)
+vmlinux-ubuntu-focal:
+vmlinux-ubuntu-impish:
+endif
+
+ubuntu-focal.ext4 ubuntu-impish.ext4:
+
+ubuntu-focal-postrootfs:
+ubuntu-impish-postrootfs:
+ubuntu-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
+ubuntu-%-postrootfs: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
+ubuntu-%-postrootfs: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
+ubuntu-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
+	sed -e '/^root:x:/s,^root:x:,root::,' \
+	    -i ubuntu-$*-rootfs/etc/passwd
+	sed -e '/^root::/s,^root::,root:x:,' \
+	    -i ubuntu-$*-rootfs/etc/shadow
+	rm -f ubuntu-$*-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
+	bash iamroot-shell -c "chroot ubuntu-$*-rootfs systemctl enable getty@tty0.service"
+	rm -f ubuntu-$*-rootfs/etc/systemd/system/multi-user.target.wants/sshd.service
+	bash iamroot-shell -c "chroot ubuntu-$*-rootfs systemctl disable sshd.service"
+	bash iamroot-shell -c "chroot ubuntu-$*-rootfs pam-auth-update"
+
+chroot-ubuntu-focal chroot-ubuntu-impish:
+
+mount-ubuntu-focal mount-ubuntu-impish:
+
+mount-ubuntu-focal umount-ubuntu-impish:
 endif
 
 ifneq ($(shell command -v dnf),)

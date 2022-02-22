@@ -1420,5 +1420,8 @@ alpine-edge-rootfs.log:
 %-debug5:
 	$(MAKE) $* IAMROOT_DEBUG=5
 
+%-debug6:
+	$(MAKE) $* IAMROOT_DEBUG=6
+
 %:
 	$(MAKE) -f Makefile $@

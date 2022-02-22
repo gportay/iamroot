@@ -880,8 +880,12 @@ void verbose_exec(const char *path, char * const argv[], char * const envp[])
 	} else {
 		char * const *p;
 
-		dprintf(fd, "%s: %s: pid: %i: execve(path: '%s', argv: {",
-			__libc(), __arch(), getpid(), path);
+		if (debug > 5)
+			dprintf(fd, "%s: %s: pid: %u: ", __libc(), __arch(),
+				getpid());
+
+		dprintf(fd, "execve(path: '%s', argv: {", path);
+
 		p = argv;
 		while (*p)
 			dprintf(fd, " '%s',", *p++);

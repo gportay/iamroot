@@ -46,7 +46,7 @@ int __getcolor()
 	return __getno_color() == 0;
 }
 
-static regex_t *re;
+static regex_t *re_ignore;
 
 static void __regex_perror(const char *s, regex_t *regex, int err)
 {
@@ -64,50 +64,50 @@ __attribute__((optimize("O0")))
 __attribute__((constructor,visibility("hidden")))
 void verbosef_init()
 {
-	static regex_t regex;
+	static regex_t regex_ignore;
 #ifndef JIMREGEXP_H
-	__attribute__((unused)) static char jimpad[40];
+	__attribute__((unused)) static char jimpad_ignore[40];
 #endif
 	const char *ignore;
 	int ret;
 
-	if (re)
+	if (re_ignore)
 		return;
 
 	ignore = getenv("IAMROOT_DEBUG_IGNORE");
 	if (!ignore)
 		ignore = "^$";
 
-	ret = regcomp(&regex, ignore, REG_NOSUB|REG_EXTENDED);
+	ret = regcomp(&regex_ignore, ignore, REG_NOSUB|REG_EXTENDED);
 	if (ret) {
-		__regex_perror("regcomp", &regex, ret);
+		__regex_perror("regcomp", &regex_ignore, ret);
 		return;
 	}
 
 	__info("IAMROOT_DEBUG_IGNORE=%s\n", ignore);
-	re = &regex;
+	re_ignore = &regex_ignore;
 }
 
 __attribute__((destructor,visibility("hidden")))
 void verbosef_fini()
 {
-	if (!re)
+	if (!re_ignore)
 		return;
 
-	regfree(re);
-	re = NULL;
+	regfree(re_ignore);
+	re_ignore = NULL;
 }
 
-static int ignore(const char *func)
+static int __ignore(const char *func)
 {
 	int ret = 0;
 
-	if (!re)
+	if (!re_ignore)
 		return 0;
 
-	ret = regexec(re, func, 0, NULL, 0);
+	ret = regexec(re_ignore, func, 0, NULL, 0);
 	if (ret == -1) {
-		__regex_perror("regexec", re, ret);
+		__regex_perror("regexec", re_ignore, ret);
 		return 0;
 	}
 
@@ -121,7 +121,7 @@ static int __vdverbosef(int fd, int lvl, const char *func, const char *fmt,
 	int color;
 	int ret;
 
-	if (lvl != 0 && ignore(func))
+	if (lvl != 0 && __ignore(func))
 		return 0;
 
 	debug = __getdebug();

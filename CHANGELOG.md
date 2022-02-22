@@ -11,6 +11,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Intercept the functions `__stat64()`, `__lstat64()`, `__fstatat64()` and
   `__futimensat64()` ([glibc] only)
 - Intercept the command [mountpoint(1)] in `exec.sh`
+- Add the `iamroot-shell`'s option `--debug-allow` and its environment variable
+  `IAMROOT_DEBUG_ALLOW` to allow output the debug traces for the given
+  functions
 
 ### Changed
 

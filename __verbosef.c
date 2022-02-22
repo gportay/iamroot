@@ -53,6 +53,7 @@ int __getcolor()
 	return __getno_color() == 0;
 }
 
+static regex_t *re_allow;
 static regex_t *re_ignore;
 
 static void __regex_perror(const char *s, regex_t *regex, int err)
@@ -70,13 +71,27 @@ static void __regex_perror(const char *s, regex_t *regex, int err)
 __attribute__((constructor,visibility("hidden")))
 void verbosef_init()
 {
-	static __regex_t regex_ignore;
-	const char *ignore;
+	static __regex_t regex_allow, regex_ignore;
+	const char *allow, *ignore;
 	int ret;
 
-	if (re_ignore)
-		return;
+	if (re_allow)
+		goto ignore;
 
+	allow = getenv("IAMROOT_DEBUG_ALLOW");
+	if (!allow)
+		allow = "^(chroot|chdir|fchdir)$";
+
+	ret = regcomp(&regex_allow.re, allow, REG_NOSUB|REG_EXTENDED);
+	if (ret) {
+		__regex_perror("regcomp", &regex_allow.re, ret);
+		return;
+	}
+
+	__info("IAMROOT_DEBUG_ALLOW=%s\n", allow);
+	re_allow = &regex_allow.re;
+
+ignore:
 	ignore = getenv("IAMROOT_DEBUG_IGNORE");
 	if (!ignore)
 		ignore = "^$";
@@ -95,17 +110,36 @@ __attribute__((destructor,visibility("hidden")))
 void verbosef_fini()
 {
 	if (!re_ignore)
-		return;
+		goto allow;
 
 	regfree(re_ignore);
 	re_ignore = NULL;
+
+allow:
+	if (!re_allow)
+		return;
+
+	regfree(re_allow);
+	re_allow = NULL;
 }
 
 static int __ignore(const char *func)
 {
 	int ret = 0;
 
+	if (!re_allow)
+		return 0;
+
 	if (!re_ignore)
+		return 0;
+
+	ret = regexec(re_allow, func, 0, NULL, 0);
+	if (ret == -1) {
+		__regex_perror("regexec", re_allow, ret);
+		return 0;
+	}
+
+	if (!ret)
 		return 0;
 
 	ret = regexec(re_ignore, func, 0, NULL, 0);

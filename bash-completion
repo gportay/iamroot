@@ -6,10 +6,10 @@
 
 _iamroot-shell()
 {
-	local cur prev words cword DEBUG_IGNORE
+	local cur prev words cword DEBUG_FUNCS
 	_init_completion || return
 
-	DEBUG_IGNORE=(__fstat __fxstat __fxstat64 __fxstatat __fxstatat64
+	DEBUG_FUNCS=(__fstat __fxstat __fxstat64 __fxstatat __fxstatat64
 		__libc_start_main __lxstat __lxstat64 __nss_files_fopen __open
 		__open64 __open64_2 __open_2 __openat64_2 __openat_2 __opendir
 		__opendirat __statfs __xmknod __xmknodat __xstat __xstat64
@@ -84,11 +84,11 @@ _iamroot-shell()
 		COMPREPLY=($(compgen -W "${fds[*]}" -- "$cur"))
 		return 0
 		;;
-	--debug-ignore)
+	--debug-allow|--debug-ignore)
 		local prefix realcur wordlist
 		realcur="${cur##*\|}"
 		prefix="${cur%$realcur}"
-		for WORD in "${DEBUG_IGNORE[@]}"
+		for WORD in "${DEBUG_FUNCS[@]}"
 		do
 			if ! [[ $prefix == *"$WORD"* ]]
 			then
@@ -150,7 +150,7 @@ _iamroot-shell()
 
 	if [[ "$shell" != 1 ]]
 	then
-		COMPREPLY+=($(compgen -W "--chroot --path --library-path --exec --library --fatal --debug --debug-fd --debug-ignore --exec-ignore --path-resolution-ignore --version" -- "$cur"))
+		COMPREPLY+=($(compgen -W "--chroot --path --library-path --exec --library --fatal --debug --debug-fd --debug-allow --debug-ignore --exec-ignore --path-resolution-ignore --version" -- "$cur"))
 	fi
 } &&
 complete -F _iamroot-shell iamroot-shell

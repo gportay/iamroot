@@ -37,6 +37,9 @@ iamroot specific options:
       --fatal                   Abort on error.
       --debug                   Turn on debug mode.
       --debug-fd FD             Set debug fd.
+      --debug-allow REGEX       Regular expression of functions to allow in
+                                debug mode.
+                                Does not imply --debug.
       --debug-ignore REGEX      Regular expression of functions to ignore in
                                 debug mode.
                                 Does not imply --debug.
@@ -77,6 +80,9 @@ Environment variables:
 
       IAMROOT_DEBUG_FD          Set debug fd.
                                 Equivalent to --debug-fd.
+
+      IAMROOT_DEBUG_ALLOW       Set functions to allow in debug mode.
+                                Equivalent to --debug-allow.
 
       IAMROOT_DEBUG_IGNORE      Set functions to ignore in debug mode.
                                 Equivalent to --debug-ignore.
@@ -123,6 +129,11 @@ do
 		shift
 		IAMROOT_DEBUG_IGNORE="$1"
 		export IAMROOT_DEBUG_IGNORE
+	elif [[ "$1" == "--debug-allow" ]]
+	then
+		shift
+		IAMROOT_DEBUG_ALLOW="$1"
+		export IAMROOT_DEBUG_ALLOW
 	elif [[ "$1" == "--debug-fd" ]]
 	then
 		shift

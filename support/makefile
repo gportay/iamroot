@@ -209,7 +209,7 @@ arch-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	    -i arch-rootfs/etc/shadow
 	mkdir -p arch-rootfs/var/lib/systemd/linger
 	rm -f arch-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
-	bash iamroot-shell --chroot $(CURDIR)/arch-rootfs -c "systemctl enable getty@tty0.service"
+	bash iamroot-shell -c "chroot arch-rootfs systemctl enable getty@tty0.service"
 
 chroot-arch:
 
@@ -484,9 +484,9 @@ fedora-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	touch fedora-$*-rootfs/etc/systemd/zram-generator.conf
 	mkdir -p fedora-$*-rootfs/var/lib/systemd/linger
 	rm -f fedora-$*-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
-	bash iamroot-shell --chroot $(CURDIR)/fedora-$*-rootfs -c "systemctl enable getty@tty0.service"
+	bash iamroot-shell -c "chroot fedora-$*-rootfs systemctl enable getty@tty0.service"
 	rm -f fedora-$*-rootfs/etc/systemd/system/multi-user.target.wants/sshd.service
-	bash iamroot-shell --chroot $(CURDIR)/fedora-$*-rootfs -c "systemctl disable sshd.service"
+	bash iamroot-shell -c "chroot fedora-$*-rootfs systemctl disable sshd.service"
 
 chroot-fedora-33 chroot-fedora-34 chroot-fedora-35:
 

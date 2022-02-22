@@ -475,7 +475,7 @@ fedora-33.ext4 fedora-34.ext4 fedora-35.ext4:
 fedora-33-postrootfs:
 fedora-34-postrootfs:
 fedora-35-postrootfs:
-fedora-35-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /usr/lib64/libc.so.6:/usr/lib64/libdl.so.2:/usr/lib64/libpthread.so.0:/usr/lib64/librt.so.1
+fedora-%-postrootfs: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64
 fedora-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i fedora-$*-rootfs/etc/passwd

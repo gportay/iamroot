@@ -787,13 +787,13 @@ aarch64-alpine-%-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1 x86_
 endif
 endif
 
-archlinux32%:
+archlinux32.gpg archlinux32-trusted:
 	wget https://git.archlinux32.org/archlinux32-keyring/plain/$@
 
-archlinuxarm%:
+archlinuxarm.gpg archlinuxarm-trusted:
 	wget https://raw.githubusercontent.com/archlinuxarm/archlinuxarm-keyring/master/$@
 
-manjaro%:
+manjaro.gpg manjaro-trusted:
 	wget https://gitlab.manjaro.org/packages/core/manjaro-keyring/-/raw/master/$@
 
 qemu-system-x86_64-%: override CMDLINE += panic=5

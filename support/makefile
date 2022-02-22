@@ -216,7 +216,6 @@ chroot-arch:
 mount-arch:
 
 umount-arch:
-endif
 
 .PHONY: manjaro-chroot
 manjaro-chroot: | manjaro-rootfs
@@ -242,6 +241,7 @@ manjaro-rootfs/etc/pacman.d/gnupg: | x86_64/libiamroot-linux-x86-64.so.2
 	done <manjaro-trusted
 	bash iamroot-shell -c "gpg --homedir $@.tmp --no-permission-warning --batch --check-trustdb"
 	mv $@.tmp $@
+endif
 
 ifneq ($(shell command -v debootstrap),)
 debian-oldoldstable-chroot:

@@ -1,5 +1,5 @@
 #
-# Copyright 2021 Gaël PORTAY
+# Copyright 2021-2022 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -15,6 +15,7 @@ all: test-access
 all: test-chmod
 all: test-chown
 all: test-chroot
+all: test-dlopen
 all: test-execl
 all: test-execle
 all: test-execlp
@@ -68,6 +69,8 @@ all: test-utimes
 
 libiamnotroot.so: iamnotroot.o
 libiamnotroot.so: override LDLIBS += -ldl
+
+test-dlopen: override LDLIBS += -ldl
 
 test-path_resolution: libiamnotroot.so
 test-path_resolution: override LDLIBS += libiamnotroot.so
@@ -173,6 +176,8 @@ test: | rootfs
 	test-unlinkat . rootfs/dev/dev1 0
 	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-unlinkat - /dev/dev2 0
 	test-unshare whoami
+	test-dlopen libiamnotroot.so
+	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs IAMROOT_LD_LIBRARY_PATH=$(PREFIX)/lib64:$(PREFIX)/lib test-dlopen libiamnotroot.so
 
 rootfs: DESTDIR = $(CURDIR)/rootfs
 rootfs: PREFIX ?= /usr

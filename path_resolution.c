@@ -335,3 +335,57 @@ char *__getpath(int fd, const char *path, int flags)
 
 	return path_resolution(fd, path, buf, sizeof(buf), flags);
 }
+
+/*
+ * Stolen from musl (src/process/execvp.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+__attribute__((visibility("hidden")))
+char *path_access(const char *file, int mode, const char *path, char *buf,
+		  size_t bufsiz)
+{
+	const char *p, *z;
+	size_t l, k;
+	int seen_eacces = 0;
+
+	errno = ENOENT;
+	if (!*file) return NULL;
+
+	if (!path) return NULL;
+	k = strnlen(file, NAME_MAX+1);
+	if (k > NAME_MAX) {
+		errno = ENAMETOOLONG;
+		return NULL;
+	}
+	l = strnlen(path, PATH_MAX-1)+1;
+
+	for(p=path; ; p=z) {
+		char b[l+k+1];
+		z = __strchrnul(p, ':');
+		if ((size_t)(z-p) >= l) {
+			if (!*z++) break;
+			continue;
+		}
+		memcpy(b, p, z-p);
+		b[z-p] = '/';
+		memcpy(b+(z-p)+(z>p), file, k+1);
+
+		if (access(b, mode) != -1)
+			return path_resolution(AT_FDCWD, b, buf, bufsiz, 0);
+		switch (errno) {
+		case EACCES:
+			seen_eacces = 1;
+		case ENOENT:
+		case ENOTDIR:
+			break;
+		default:
+			return NULL;
+		}
+		if (!*z++) break;
+	}
+	if (seen_eacces) errno = EACCES;
+	return NULL;
+}

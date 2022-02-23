@@ -17,7 +17,6 @@
 #include "iamroot.h"
 
 #define SYMLOOP_MAX 40
-#define __strchrnul strchrnul
 #define readlink next_readlink
 #define getcwd next_getcwd
 

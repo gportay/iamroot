@@ -5,6 +5,8 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <errno.h>
 #include <limits.h>
 #include <fcntl.h>
@@ -40,9 +42,15 @@ void *dlmopen(Lmid_t lmid, const char *path, int flags)
 	char buf[PATH_MAX];
 	char *real_path;
 
-	if (!path) {
-		real_path = NULL;
-		goto next;
+	if (!path || !inchroot())
+		return next_dlmopen(lmid, path, flags);
+
+	if (!strchr(path, '/')) {
+		real_path = path_access(path, F_OK,
+					getenv("IAMROOT_LD_LIBRARY_PATH"), buf,
+					sizeof(buf));
+		if (real_path)
+			goto next;
 	}
 
 	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);

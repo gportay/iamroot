@@ -542,6 +542,36 @@ opensuse-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(pro
 opensuse-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "zypper --root $(CURDIR)/opensuse-$*-rootfs addrepo --no-gpgcheck support/$*-repo-oss.repo"
 	bash iamroot-shell -c "zypper --root $(CURDIR)/opensuse-$*-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd"
+
+qemu-system-x86_64-opensuse-tumbleweed:
+qemu-system-x86_64-opensuse-tumbleweed: override CMDLINE += rw
+
+ifneq ($(VMLINUX_KVER),)
+vmlinux-opensuse-tumbleweed:
+endif
+
+opensuse-tumbleweed.ext4:
+
+opensuse-tumbleweed-postrootfs:
+opensuse-%-postrootfs: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
+opensuse-%-postrootfs: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64
+opensuse-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
+	sed -e '/^root:x:/s,^root:x:,root::,' \
+	    -i opensuse-$*-rootfs/etc/passwd
+	sed -e '/^root:\*:/s,^root:\*:,root:x:,' \
+	    -i opensuse-$*-rootfs/etc/shadow
+	bash iamroot-shell -c "chroot opensuse-$*-rootfs pam-config -a --nullok"
+	mkdir -p arch-rootfs/var/lib/systemd/linger
+	rm -f opensuse-$*-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
+	bash iamroot-shell -c "chroot opensuse-$*-rootfs systemctl enable getty@tty0.service"
+	rm -f opensuse-$*-rootfs/etc/systemd/system/getty.target.wants/getty@ttyS0.service
+	bash iamroot-shell -c "chroot opensuse-$*-rootfs systemctl enable getty@ttyS0.service"
+
+chroot-opensuse-tumbleweed:
+
+mount-opensuse-tumbleweed:
+
+umount-opensuse-tumbleweed:
 endif
 
 ifneq ($(shell command -v musl-gcc),)

@@ -871,7 +871,7 @@ char *__getexe()
 __attribute__((visibility("hidden")))
 int next_execve(const char *path, char * const argv[], char * const envp[])
 {
-	int (*sym)(const char *, char * const argv[], char * const envp[]);
+	int (*sym)(const char *, char * const[], char * const[]);
 	int ret;
 
 	sym = dlsym(RTLD_NEXT, "execve");

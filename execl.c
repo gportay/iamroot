@@ -14,6 +14,8 @@
 
 #include "iamroot.h"
 
+extern char **__environ;
+
 int execl(const char *path, const char *arg, ...)
 {
 	va_list ap;
@@ -38,7 +40,7 @@ int execl(const char *path, const char *arg, ...)
 		__debug("%s(path: '%s', arg: '%s', ...)\n", __func__, path,
 			arg);
 
-		return execve(path, argv, environ);
+		return execve(path, argv, __environ);
 	}
 
 	errno = EINVAL;

@@ -28,6 +28,7 @@
 /* See https://www.in-ulm.de/~mascheck/various/shebang/#results */
 #define HASHBANG_MAX NAME_MAX
 
+extern char **__environ;
 extern int next_open(const char *, int, mode_t);
 extern int next_fstatat(int, const char *, struct stat *, int);
 
@@ -1536,8 +1537,8 @@ execve:
 	 * envp is updated by the change in the environments (i.e. by calling
 	 * setenv() and unsetenv()).
 	 */ 
-	if (envp != environ)
-		envp = environ;
+	if (envp != __environ)
+		envp = __environ;
 
 	argc = 1;
 	arg = interparg;

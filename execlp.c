@@ -14,6 +14,8 @@
 
 #include "iamroot.h"
 
+extern char **__environ;
+
 int execlp(const char *file, const char *arg, ...)
 {
 	va_list ap;
@@ -38,7 +40,7 @@ int execlp(const char *file, const char *arg, ...)
 		__debug("%s(file: '%s', arg: '%s', ...)\n", __func__, file,
 			arg);
 
-		return execvpe(file, argv, environ);
+		return execvpe(file, argv, __environ);
 	}
 
 	errno = EINVAL;

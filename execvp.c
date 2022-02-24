@@ -10,10 +10,12 @@
 
 #include "iamroot.h"
 
+extern char **__environ;
+
 int execvp(const char *file, char * const argv[])
 {
 	__debug("%s(file: '%s', argv: { '%s', '%s', ... })\n", __func__, file,
 		argv[0], argv[1]);
 
-	return execvpe(file, argv, environ);
+	return execvpe(file, argv, __environ);
 }

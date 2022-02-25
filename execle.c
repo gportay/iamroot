@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -36,8 +36,8 @@ int execle(const char *path, const char *arg, ...)
 		envp = va_arg(ap, char **);
 		va_end(ap);
 
-		__debug("%s(path: '%s', arg: '%s', ...)\n", __func__, path,
-			arg);
+		__debug("%s(path: '%s', arg: '%s', ..., envp: %p)\n", __func__,
+			path, arg, envp);
 
 		return execve(path, argv, envp);
 	}

@@ -42,6 +42,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   and `setuid()` check for `_snprintf()` returned value
 - The internal function `path_resolution()` does not ignore the libraries
   anymore
+- Output the environment pointer for the functions `execle()`, `execve()` and
+  `execvpe()`,
 
 ### Fixed
 

@@ -1189,8 +1189,8 @@ int execve(const char *path, char * const argv[], char * const envp[])
 		return -1;
 	}
 
-	__debug("%s(path: '%s' -> '%s', argv: { '%s', '%s', ... })\n",
-		__func__, path, real_path, argv[0], argv[1]);
+	__debug("%s(path: '%s' -> '%s', argv: { '%s', '%s', ... } envp: %p )\n",
+		__func__, path, real_path, argv[0], argv[1], envp);
 	interppath = real_path; /* real program path as binary */
 	interparg[i++] = (char *)path; /* original program path as argv0 */
 

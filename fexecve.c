@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -9,6 +9,8 @@
 #include <fcntl.h>
 
 #include <unistd.h>
+
+#include "iamroot.h"
 
 #define __syscall syscall
 
@@ -57,7 +59,7 @@ void __procfdname(char *buf, unsigned fd)
  *
  * SPDX-License-Identifier: MIT
  */
-int fexecve(int fd, char * const argv[], char * const envp[])
+static int __fexecve(int fd, char * const argv[], char * const envp[])
 {
 	int r = __syscall(SYS_execveat, fd, "", argv, envp, AT_EMPTY_PATH);
 	if (r != -ENOSYS) return __syscall_ret(r);
@@ -66,4 +68,12 @@ int fexecve(int fd, char * const argv[], char * const envp[])
 	execve(buf, argv, envp);
 	if (errno == ENOENT) errno = EBADF;
 	return -1;
+}
+
+int fexecve(int fd, char * const argv[], char * const envp[])
+{
+	__debug("%s(fd: %i, argv: { '%s', '%s', ... } envp: %p )\n",
+		__func__, fd, argv[0], argv[1], envp);
+
+	return __fexecve(fd, argv, envp);
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -89,7 +89,7 @@ static int __execvpe(const char *file, char * const argv[],
 
 int execvpe(const char *file, char * const argv[], char * const envp[])
 {
-	__debug("%s(file: '%s', argv: { '%s', '%s', ...})\n", __func__, file,
+	__debug("%s(file: '%s', argv: { '%s', '%s', ... })\n", __func__, file,
 		argv[0], argv[1]);
 
 	return __execvpe(file, argv, envp);

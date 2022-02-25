@@ -187,6 +187,7 @@ rootfs: arch-rootfs
 arch-rootfs: | arch-rootfs/etc/machine-id
 
 arch-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
+arch-rootfs/etc/machine-id: export EUID = 0
 arch-rootfs/etc/machine-id: | arch-rootfs/etc/pacman.d/gnupg x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "pacstrap -GMC support/x86_64-pacman.conf arch-rootfs"
 
@@ -212,6 +213,7 @@ i686-arch-rootfs: | i686-arch-rootfs/etc/machine-id
 i686-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/i686-arch-rootfs
 i686-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_2 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
 i686-arch-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
+i686-arch-rootfs/etc/machine-id: export EUID = 0
 i686-arch-rootfs/etc/machine-id: | i686-arch-rootfs/etc/pacman.d/gnupg i686/libiamroot-linux.so.2 x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "pacstrap -GMC support/i686-pacman.conf i686-arch-rootfs"
 
@@ -260,6 +262,7 @@ extra-rootfs: manjaro-rootfs
 manjaro-rootfs: | manjaro-rootfs/etc/machine-id
 
 manjaro-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
+manjaro-rootfs/etc/machine-id: export EUID = 0
 manjaro-rootfs/etc/machine-id: | manjaro-rootfs/etc/pacman.d/gnupg x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "pacstrap -GMC support/x86_64-manjaro-stable-pacman.conf manjaro-rootfs --gpgdir $(CURDIR)/manjaro-rootfs/etc/pacman.d/gnupg base"
 
@@ -720,6 +723,7 @@ aarch64-arch-rootfs: | aarch64-arch-rootfs/etc/machine-id
 
 aarch64-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-arch-rootfs
 aarch64-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
+aarch64-arch-rootfs/etc/machine-id: export EUID = 0
 aarch64-arch-rootfs/etc/machine-id: | aarch64-arch-rootfs/etc/pacman.d/gnupg aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "pacstrap -GMC support/aarch64-pacman.conf aarch64-arch-rootfs"
 
@@ -751,6 +755,7 @@ arm-arch-rootfs: | arm-arch-rootfs/etc/machine-id
 
 arm-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/arm-arch-rootfs
 arm-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
+arm-arch-rootfs/etc/machine-id: export EUID = 0
 arm-arch-rootfs/etc/machine-id: | arm-arch-rootfs/etc/pacman.d/gnupg arm/libiamroot-linux.so.3 x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "pacstrap -GMC support/arm-pacman.conf arm-arch-rootfs"
 
@@ -782,6 +787,7 @@ armv6h-arch-rootfs: | armv6h-arch-rootfs/etc/machine-id
 
 armv6h-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/armv6h-arch-rootfs
 armv6h-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
+armv6h-arch-rootfs/etc/machine-id: export EUID = 0
 armv6h-arch-rootfs/etc/machine-id: | armv6h-arch-rootfs/etc/pacman.d/gnupg armhf/libiamroot-linux-armhf.so.3 x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "pacstrap -GMC support/armv6h-pacman.conf armv6h-arch-rootfs"
 
@@ -813,6 +819,7 @@ armv7h-arch-rootfs: | armv7h-arch-rootfs/etc/machine-id
 
 armv7h-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/armv7h-arch-rootfs
 armv7h-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
+armv7h-arch-rootfs/etc/machine-id: export EUID = 0
 armv7h-arch-rootfs/etc/machine-id: | armv7h-arch-rootfs/etc/pacman.d/gnupg armhf/libiamroot-linux-armhf.so.3 x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "pacstrap -GMC support/armv7h-pacman.conf armv7h-arch-rootfs"
 

@@ -429,7 +429,7 @@ chroot-ubuntu-focal chroot-ubuntu-impish:
 
 mount-ubuntu-focal mount-ubuntu-impish:
 
-mount-ubuntu-focal umount-ubuntu-impish:
+umount-ubuntu-focal umount-ubuntu-impish:
 endif
 
 ifneq ($(shell command -v dnf),)

@@ -978,21 +978,36 @@ mnt:
 	mkdir -p $@
 
 .PHONY: support
-support: support/arch-rootfs.txt
-support: support/i686-arch-rootfs.txt
-support: support/debian-oldoldstable-rootfs.txt
-support: support/debian-oldstable-rootfs.txt
-support: support/debian-stable-rootfs.txt
-support: support/debian-testing-rootfs.txt
-support: support/debian-unstable-rootfs.txt
-support: support/ubuntu-focal-rootfs.txt
-support: support/ubuntu-impish-rootfs.txt
-support: support/fedora-33-rootfs.txt
-support: support/fedora-34-rootfs.txt
-support: support/fedora-35-rootfs.txt
-support: support/alpine-3.14-rootfs.txt
-support: support/alpine-3.15-rootfs.txt
-support: support/alpine-edge-rootfs.txt
+support: arch-support
+support: debian-support
+support: ubuntu-support
+support: fedora-support
+support: alpine-support
+
+.PHONY: arch-support
+arch-support: support/arch-rootfs.txt
+arch-support: support/i686-arch-rootfs.txt
+
+.PHONY: debian-support
+debian-support: support/debian-oldoldstable-rootfs.txt
+debian-support: support/debian-oldstable-rootfs.txt
+debian-support: support/debian-stable-rootfs.txt
+debian-support: support/debian-testing-rootfs.txt
+debian-support: support/debian-unstable-rootfs.txt
+
+.PHONY: ubuntu-support
+ubuntu-support: support/ubuntu-focal-rootfs.txt
+ubuntu-support: support/ubuntu-impish-rootfs.txt
+
+.PHONY: fedora-support
+fedora-support: support/fedora-33-rootfs.txt
+fedora-support: support/fedora-34-rootfs.txt
+fedora-support: support/fedora-35-rootfs.txt
+
+.PHONY: alpine-support
+alpine-support: support/alpine-3.14-rootfs.txt
+alpine-support: support/alpine-3.15-rootfs.txt
+alpine-support: support/alpine-edge-rootfs.txt
 
 .PRECIOUS: support/%arch-rootfs.txt
 support/arch-rootfs.txt: arch-rootfs.log

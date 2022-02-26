@@ -91,9 +91,13 @@ void path_resolution_init()
 	if (!exec)
 		exec = "^/usr/lib/iamroot/exec.sh$";
 
-	snprintf(buf, sizeof(buf)-1, "%s|%s|%s|%s|%s|%s|%s", ignore, library,
-		 library_musl_x86_64, library_linux_x86_64,
-		 library_musl_aarch64, library_linux_aarch64, exec);
+	ret = _snprintf(buf, sizeof(buf), "%s|%s|%s|%s|%s|%s|%s", ignore,
+			library, library_musl_x86_64, library_linux_x86_64,
+			library_musl_aarch64, library_linux_aarch64, exec);
+	if (ret == -1) {
+		perror("_snprintf");
+		return;
+	}
 
 	ret = regcomp(&regex, buf, REG_NOSUB|REG_EXTENDED);
 	if (ret) {

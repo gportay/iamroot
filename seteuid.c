@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -36,8 +36,11 @@ int next_seteuid(uid_t uid)
 int seteuid(uid_t uid)
 {
 	char buf[BUFSIZ];
+	int ret;
 
-	_snprintf(buf, sizeof(buf), "%u", uid);
+	ret = _snprintf(buf, sizeof(buf), "%u", uid);
+	if (ret == -1)
+		return -1;
 
 	return setenv("IAMROOT_EUID", buf, 1);
 }

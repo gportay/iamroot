@@ -38,6 +38,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - The internal function `path_resolution()` does not ignore `/run/systemd`
 - The internal function `path_resolution()` resolves `/proc/self/exe` symlink
   with the content of `IAMROOT_EXE`
+- The functions `path_resolution_init()`, `setegid()`, `seteuid()`, `setgid()`
+  and `setuid()` check for `_snprintf()` returned value
 
 ### Fixed
 

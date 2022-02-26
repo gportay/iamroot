@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -36,8 +36,11 @@ int next_setegid(gid_t gid)
 int setegid(gid_t gid)
 {
 	char buf[BUFSIZ];
+	int ret;
 
-	_snprintf(buf, sizeof(buf), "%u", gid);
+	ret = _snprintf(buf, sizeof(buf), "%u", gid);
+	if (ret == -1)
+		return -1;
 
 	return setenv("IAMROOT_EGID", buf, 1);
 }

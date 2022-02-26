@@ -14,8 +14,6 @@
 
 #include "iamroot.h"
 
-#define __strchrnul strchrnul
-
 static int __execve(const char *path, char * const argv[], char * const envp[])
 {
 	const char *root;

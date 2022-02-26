@@ -26,6 +26,7 @@ extern "C" {
 	   strncpy((s1), (s2), l-1); \
 	   (s1)[l] = 0; \
 	   (s1); })
+#define __strchrnul strchrnul
 #define __strlcmp(s1, s2) strncmp(s1, s2, strlen(s2))
 #define __strncmp(s1, s2) strncmp(s1, s2, sizeof(s2)-1)
 #define __strlcpy(s1, s2) \

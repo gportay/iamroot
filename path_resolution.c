@@ -50,9 +50,7 @@ static void __regex_perror(const char *s, regex_t *regex, int err)
 __attribute__((constructor))
 void path_resolution_init()
 {
-	const char *library_musl_x86_64, *library_linux_x86_64,
-		   *library_musl_aarch64, *library_linux_aarch64;
-	const char *ignore, *library, *exec;
+	const char *ignore, *exec;
 	static regex_t regex;
 #ifndef JIMREGEXP_H
 	__attribute__((unused)) static char jimpad[40];
@@ -67,33 +65,11 @@ void path_resolution_init()
 	if (!ignore)
 		ignore = "^/(proc|sys|dev|run)/";
 
-	library = getenv("IAMROOT_LIB");
-	if (!library)
-		library = "^/usr/lib/iamroot/libiamroot.so$";
-
-	library_musl_x86_64 = getenv("IAMROOT_LIB_MUSL_X86_64");
-	if (!library_musl_x86_64)
-		library_musl_x86_64 = "^/usr/lib/iamroot/x86_64/libiamroot-musl-x86_64.so.1$";
-
-	library_linux_x86_64 = getenv("IAMROOT_LIB_LINUX_X86_64");
-	if (!library_linux_x86_64)
-		library_linux_x86_64 = "^/usr/lib/iamroot/x86_64/libiamroot-linux-x86-64.so.2$";
-
-	library_musl_aarch64 = getenv("IAMROOT_LIB_MUSL_AARCH64");
-	if (!library_musl_aarch64)
-		library_musl_aarch64 = "^/usr/lib/iamroot/aarch64/libiamroot-musl-aarch64.so.1$";
-
-	library_linux_aarch64 = getenv("IAMROOT_LIB_LINUX_AARCH64");
-	if (!library_linux_aarch64)
-		library_linux_aarch64 = "^/usr/lib/iamroot/aarch64/libiamroot-linux-aarch64.so.1$";
-
 	exec = getenv("IAMROOT_EXEC");
 	if (!exec)
 		exec = "^/usr/lib/iamroot/exec.sh$";
 
-	ret = _snprintf(buf, sizeof(buf), "%s|%s|%s|%s|%s|%s|%s", ignore,
-			library, library_musl_x86_64, library_linux_x86_64,
-			library_musl_aarch64, library_linux_aarch64, exec);
+	ret = _snprintf(buf, sizeof(buf), "%s|%s", ignore, exec);
 	if (ret == -1) {
 		perror("_snprintf");
 		return;
@@ -105,8 +81,7 @@ void path_resolution_init()
 		return;
 	}
 
-	__info("IAMROOT_PATH_RESOLUTION_IGNORE|IAMROOT_LIB|IAMROOT_LIB_MUSL_X86_64|IAMROOT_LIB_LINUX_X86_64|IAMROOT_LIB_MUSL_AARCH64|IAMROOT_LIB_LINUX_AARCH64|IAMROOT_EXEC=%s\n",
-	       buf);
+	__info("IAMROOT_PATH_RESOLUTION_IGNORE|IAMROOT_EXEC=%s\n", buf);
 
 	re = &regex;
 }

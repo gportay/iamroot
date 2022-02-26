@@ -159,6 +159,7 @@ rootfs: arch-rootfs
 .PHONY: arch-rootfs
 arch-rootfs: | arch-rootfs/etc/machine-id
 
+arch-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 arch-rootfs/etc/machine-id: | arch-rootfs/etc/pacman.d/gnupg x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "pacstrap -GMC support/x86_64-pacman.conf arch-rootfs"
 
@@ -183,6 +184,7 @@ i686-arch-rootfs: | i686-arch-rootfs/etc/machine-id
 
 i686-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/i686-arch-rootfs
 i686-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_2 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
+i686-arch-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 i686-arch-rootfs/etc/machine-id: | i686-arch-rootfs/etc/pacman.d/gnupg i686/libiamroot-linux.so.2 x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "pacstrap -GMC support/i686-pacman.conf i686-arch-rootfs"
 
@@ -230,6 +232,7 @@ extra-rootfs: manjaro-rootfs
 .PHONY: manjaro-rootfs
 manjaro-rootfs: | manjaro-rootfs/etc/machine-id
 
+manjaro-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 manjaro-rootfs/etc/machine-id: | manjaro-rootfs/etc/pacman.d/gnupg x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "pacstrap -GMC support/x86_64-manjaro-stable-pacman.conf manjaro-rootfs --gpgdir $(CURDIR)/manjaro-rootfs/etc/pacman.d/gnupg base"
 
@@ -307,6 +310,7 @@ debian-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|pam-auth-update
 debian-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/
 debian-%-rootfs/etc/machine-id: export DEBIAN_FRONTEND = noninteractive
 debian-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://deb.debian.org/debian
+debian-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 debian-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	mkdir -p debian-$*-rootfs
 	bash iamroot-shell -c "debootstrap --keep-debootstrap-dir $* debian-$*-rootfs $(DEBOOTSTRAP_MIRROR)"
@@ -404,6 +408,7 @@ ubuntu-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|pam-auth-update
 ubuntu-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/
 ubuntu-%-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
 ubuntu-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
+ubuntu-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 ubuntu-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	mkdir -p ubuntu-$*-rootfs
 	bash iamroot-shell -c "debootstrap --keep-debootstrap-dir $* ubuntu-$*-rootfs $(DEBOOTSTRAP_MIRROR)"
@@ -477,6 +482,7 @@ fedora-35-rootfs: | fedora-35-rootfs/etc/machine-id
 fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
 fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64/ldb:/usr/lib64:/lib64
 fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|$(CURDIR)/fedora-$*-rootfs/var/log/dnf.rpm.log
+fedora-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 fedora-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	install -D -m644 support/fedora.repo fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
 	bash iamroot-shell -c "dnf --releasever $* --assumeyes --installroot $(CURDIR)/fedora-$*-rootfs group install minimal-environment"
@@ -546,6 +552,7 @@ opensuse-%-rootfs/etc/machine-id: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:
 opensuse-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64
 opensuse-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|/usr/bin/chkstat
 opensuse-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/
+opensuse-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 opensuse-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "zypper --root $(CURDIR)/opensuse-$*-rootfs addrepo --no-gpgcheck support/$*-repo-oss.repo"
 	bash iamroot-shell -c "zypper --root $(CURDIR)/opensuse-$*-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd"

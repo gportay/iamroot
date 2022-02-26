@@ -1857,9 +1857,7 @@ Setting up libsqlite3-0:amd64 ...
 Setting up cron ...
 Adding group `crontab' (GID 105) ...
 Done.
-System has not been booted with systemd as init system (PID 1). Can't operate.
-Failed to connect to bus: Host is down
-invoke-rc.d: could not determine current runlevel
+Running in chroot, ignoring request.
 invoke-rc.d: policy-rc.d denied execution of start.
 Created symlink /etc/systemd/system/multi-user.target.wants/cron.service -> /lib/systemd/system/cron.service.
 Setting up libmagic1:amd64 ...
@@ -1935,9 +1933,7 @@ Error: Command not handled: /bin/gpasswd -a syslog adm
 adduser: `/bin/gpasswd -a syslog adm' returned error code 1. Exiting.
 
 Creating config file /etc/rsyslog.d/50-default.conf with new version
-System has not been booted with systemd as init system (PID 1). Can't operate.
-Failed to connect to bus: Host is down
-invoke-rc.d: could not determine current runlevel
+Running in chroot, ignoring request.
 invoke-rc.d: policy-rc.d denied execution of start.
 Created symlink /etc/systemd/system/multi-user.target.wants/dmesg.service -> /lib/systemd/system/dmesg.service.
 Created symlink /etc/systemd/system/syslog.service -> /lib/systemd/system/rsyslog.service.

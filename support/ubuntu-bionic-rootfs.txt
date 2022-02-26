@@ -1874,8 +1874,7 @@ Adding group `crontab' (GID 105) ...
 Done.
 Created symlink /etc/systemd/system/multi-user.target.wants/cron.service -> /lib/systemd/system/cron.service.
 update-rc.d: warning: start and stop actions are no longer supported; falling back to defaults
-System has not been booted with systemd as init system (PID 1). Can't operate.
-invoke-rc.d: could not determine current runlevel
+Running in chroot, ignoring request.
 invoke-rc.d: policy-rc.d denied execution of start.
 Setting up libmnl0:amd64 ...
 Setting up xdg-user-dirs ...
@@ -1892,8 +1891,7 @@ Error: Command not handled: /usr/bin/gpasswd -a syslog adm
 adduser: `/usr/bin/gpasswd -a syslog adm' returned error code 1. Exiting.
 Created symlink /etc/systemd/system/syslog.service -> /lib/systemd/system/rsyslog.service.
 Created symlink /etc/systemd/system/multi-user.target.wants/rsyslog.service -> /lib/systemd/system/rsyslog.service.
-System has not been booted with systemd as init system (PID 1). Can't operate.
-invoke-rc.d: could not determine current runlevel
+Running in chroot, ignoring request.
 invoke-rc.d: policy-rc.d denied execution of start.
 Setting up ubuntu-keyring ...
 Setting up libdbus-1-3:amd64 ...

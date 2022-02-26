@@ -1070,21 +1070,36 @@ support/alpine-edge-rootfs.txt: alpine-edge-rootfs.log
 	mv $@.tmp $@
 
 .PHONY: log
-log: arch-rootfs.log
-log: i686-arch-rootfs.log
-log: debian-oldoldstable-rootfs.log
-log: debian-oldstable-rootfs.log
-log: debian-stable-rootfs.log
-log: debian-testing-rootfs.log
-log: debian-unstable-rootfs.log
-log: ubuntu-focal-rootfs.log
-log: ubuntu-impish-rootfs.log
-log: fedora-33-rootfs.log
-log: fedora-34-rootfs.log
-log: fedora-35-rootfs.log
-log: alpine-3.14-rootfs.log
-log: alpine-3.15-rootfs.log
-log: alpine-edge-rootfs.log
+log: arch-log
+log: debian-log
+log: ubuntu-log
+log: fedora-log
+log: alpine-log
+
+.PHONY: arch-log
+arch-log: arch-rootfs.log
+arch-log: i686-arch-rootfs.log
+
+.PHONY: debian-log
+debian-log: debian-oldoldstable-rootfs.log
+debian-log: debian-oldstable-rootfs.log
+debian-log: debian-stable-rootfs.log
+debian-log: debian-testing-rootfs.log
+debian-log: debian-unstable-rootfs.log
+
+.PHONY: ubuntu-log
+ubuntu-log: ubuntu-focal-rootfs.log
+ubuntu-log: ubuntu-impish-rootfs.log
+
+.PHONY: fedora-log
+fedora-log: fedora-33-rootfs.log
+fedora-log: fedora-34-rootfs.log
+fedora-log: fedora-35-rootfs.log
+
+.PHONY: alpine-log
+alpine-log: alpine-3.14-rootfs.log
+alpine-log: alpine-3.15-rootfs.log
+alpine-log: alpine-edge-rootfs.log
 
 .PHONY: %.log
 .PRECIOUS: %.log

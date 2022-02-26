@@ -78,7 +78,8 @@ int posix_spawnp(pid_t *pid, const char *file,
 		 const posix_spawnattr_t *attrp,
 		 char * const argv[], char * const envp[])
 {
-	__debug("%s(file: '%s')\n", __func__, file);
+	__debug("%s(file: '%s', ..., argv: { '%s', '%s', ... }, envp: %p)\n",
+		__func__, file, argv[0], argv[1], envp);
 
 	return __posix_spawnp(pid, file, file_actions, attrp, argv, envp);
 }

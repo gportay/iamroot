@@ -52,7 +52,8 @@ int posix_spawn(pid_t *pid, const char *path,
 		return -1;
 	}
 
-	__debug("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
+	__debug("%s(path: '%s' -> '%s', ..., argv: { '%s', '%s', ... }, envp: %p)\n",
+		__func__, path, real_path, argv[0], argv[1], envp);
 
 	return next_posix_spawn(pid, real_path, file_actions, attrp, argv,
 				envp);

@@ -843,7 +843,7 @@ static void verbose_exec(const char *path, char * const argv[],
 		if (debug < 5) {
 			dprintf(STDERR_FILENO, "...)\n");
 		} else {
-			dprintf(STDERR_FILENO, "envp:");
+			dprintf(STDERR_FILENO, "envp: {");
 			p = envp;
 			while (*p)
 				dprintf(STDERR_FILENO, " %s", *p++);

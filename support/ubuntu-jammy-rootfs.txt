@@ -2012,9 +2012,8 @@ update-alternatives: using /etc/newt/palette.ubuntu to provide /etc/newt/palette
 Setting up libreadline8:amd64 ...
 Setting up rsyslog ...
 Adding user `syslog' to group `adm' ...
-Warning: host-running /bin/gpasswd -a syslog adm
-gpasswd: user 'syslog' does not exist
-adduser: `/bin/gpasswd -a syslog adm' returned error code 3. Exiting.
+Error: Command not handled: /bin/gpasswd -a syslog adm
+adduser: `/bin/gpasswd -a syslog adm' returned error code 1. Exiting.
 
 Creating config file /etc/rsyslog.d/50-default.conf with new version
 Created symlink /etc/systemd/system/multi-user.target.wants/dmesg.service -> /lib/systemd/system/dmesg.service.

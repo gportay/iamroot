@@ -43,7 +43,7 @@ ldconfig|ldconfig.real)
 
 	exec "$real_path" "$@"
 	;;
-passwd|su)
+gpasswd|passwd|su)
 	echo "Error:" "Command not handled:" "$argv0" "$@" >&2
 	exit 1
 	;;

@@ -814,15 +814,10 @@ static void verbose_exec(const char *path, char * const argv[],
 		char *ld_library_path;
 		char *ld_preload;
 		char * const *p;
-		const char *exe;
 		char *argv0;
 		char *root;
 
 		dprintf(STDERR_FILENO, "Debug: running");
-
-		exe = __getexe();
-		if (exe)
-			dprintf(STDERR_FILENO, " IAMROOT_EXE=%s", exe);
 
 		root = __getroot();
 		if (root)

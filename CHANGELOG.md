@@ -45,6 +45,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Output the environment pointer for the functions `execle()`, `execve()` and
   `execvpe()`,
 - Output the function `execvpe()`
+- Output a warning the if secure-execution mode set
 
 ### Fixed
 

@@ -17,6 +17,7 @@
 #include <byteswap.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/auxv.h>
 #include <fcntl.h>
 #include <elf.h>
 #include <regex.h>
@@ -31,6 +32,16 @@
 extern char **__environ;
 extern int next_open(const char *, int, mode_t);
 extern int next_fstatat(int, const char *, struct stat *, int);
+
+static int __secure()
+{
+	return getauxval(AT_SECURE) != 0;
+}
+
+static const char *__execfn()
+{
+	return (const char *)getauxval(AT_EXECFN);
+}
 
 char *__basename(char *path)
 {
@@ -150,6 +161,9 @@ void execve_init()
 #endif
 	const char *ignore;
 	int ret;
+
+	if (__secure())
+		__warning("%s: secure-execution mode\n", __execfn());
 
 	if (re)
 		return;

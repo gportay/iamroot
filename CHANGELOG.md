@@ -37,7 +37,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - The internal function `path_resolution()` follows relative symlinks
 - The internal function `path_resolution()` does not ignore `/run/systemd`
 - The internal function `path_resolution()` resolves `/proc/self/exe` symlink
-  with the content of `IAMROOT_EXE`
+  with the content of the auxiliary vector `AT_EXECFN`
 - The functions `path_resolution_init()`, `setegid()`, `seteuid()`, `setgid()`
   and `setuid()` check for `_snprintf()` returned value
 - The internal function `path_resolution()` does not ignore the libraries

@@ -14,6 +14,11 @@
 
 #include "iamroot.h"
 
+extern int __posix_spawn(pid_t *, const char *,
+			 const posix_spawn_file_actions_t *,
+			 const posix_spawnattr_t *, char * const [],
+			 char * const []);
+
 __attribute__((visibility("hidden")))
 int next_posix_spawn(pid_t *pid, const char *path,
 		     const posix_spawn_file_actions_t *file_actions,
@@ -43,18 +48,5 @@ int posix_spawn(pid_t *pid, const char *path,
 		const posix_spawnattr_t *attrp,
 		char * const argv[], char * const envp[])
 {
-	char buf[PATH_MAX];
-	char *real_path;
-
-	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
-	if (!real_path) {
-		__pathperror(path, __func__);
-		return -1;
-	}
-
-	__debug("%s(path: '%s' -> '%s', ..., argv: { '%s', '%s', ... }, envp: %p)\n",
-		__func__, path, real_path, argv[0], argv[1], envp);
-
-	return next_posix_spawn(pid, real_path, file_actions, attrp, argv,
-				envp);
+	return __posix_spawn(pid, path, file_actions, attrp, argv, envp);
 }

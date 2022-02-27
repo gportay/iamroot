@@ -71,7 +71,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the adding of an empty hashbang argument
 - Fix the ignoring of empty paths in the function `path_resolution()`
 - Fix the handling for NULL dir argument in the function `tempnam()`
-- Fix the behaviour for the function `posix_spawnp()`
+- Fix the behaviour for the functions `posix_spawn()` and `posix_spawnp()`
 
 ### Security
 

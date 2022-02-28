@@ -1203,7 +1203,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 		__func__, path, real_path, argv[0], argv[1], envp);
 	i = 0;
 	interppath = real_path; /* real program path as binary */
-	interparg[i++] = (char *)path; /* original program path as argv0 */
+	interparg[i++] = *argv; /* original argv0 as argv0 */
 
 	/*
 	 * In secure-execution mode, preload pathnames containing slashes are

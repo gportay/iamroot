@@ -1172,7 +1172,6 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	char *xargv1;
 	ssize_t siz;
 	size_t len;
-	char *exec;
 
 	/* Run exec.sh script */
 	if (ignore(path)) {
@@ -1491,10 +1490,9 @@ loader:
 	}
 
 exec_sh:
-	exec = __getexec();
-	real_path = __strncpy(buf, exec);
+	real_path = __strncpy(buf, __getexec());
 	i = 0;
-	interparg[i++] = exec;
+	interparg[i++] = real_path;
 	interparg[i++] = (char *)path; /* original path as first positional
 					* argument
 					*/

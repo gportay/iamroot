@@ -1166,7 +1166,6 @@ int execve(const char *path, char * const argv[], char * const envp[])
 					   * 14 script.sh
 					   * 15 NULL
 					   */
-	char *interppath = NULL;
 	int i, j, argc, ret;
 	char * const *arg;
 	char *real_path;
@@ -1201,7 +1200,6 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	__debug("%s(path: '%s' -> '%s', argv: { '%s', '%s', ... } envp: %p )\n",
 		__func__, path, real_path, argv[0], argv[1], envp);
 	i = 0;
-	interppath = real_path; /* real program path as binary */
 	interparg[i++] = *argv; /* original argv0 as argv0 */
 
 	/*
@@ -1261,8 +1259,6 @@ int execve(const char *path, char * const argv[], char * const envp[])
 					* positional argument */
 	interparg[i] = NULL; /* ensure NULL terminated */
 
-	interppath = real_path; /* real hashbang as binary */
-
 	__notice("%s: has hashbang: '%s' -> '%s' '%s'\n", path, hashbang,
 		 real_path, len < (size_t)siz ? &hashbang[len+1] : "");
 
@@ -1304,7 +1300,7 @@ loader:
 	if ((__strncmp(loader, "/lib/ld") == 0) ||
 	    (__strncmp(loader, "/lib64/ld") == 0)) {
 		char *argv0, *rpath, *runpath, *ld_preload, *ld_library_path,
-		     *inhibit_rpath;
+		     *inhibit_rpath, *program = real_path;
 		int has_argv0 = 1, has_preload = 1, has_inhibit_rpath = 0;
 		int shift = 1, abi = 0;
 		const char *basename;
@@ -1457,7 +1453,7 @@ loader:
 		}
 
 		/* Add path to binary (in chroot, first positional argument) */
-		interparg[i] = interppath;
+		interparg[i] = program;
 		i += j;
 		interparg[i] = NULL; /* ensure NULL terminated */
 

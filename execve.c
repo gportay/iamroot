@@ -1451,7 +1451,7 @@ loader:
 			 * --argv0; the value will be set by via the function
 			 * __libc_start_main().
 			 */
-			ret = setenv("argv0", *argv, 1);
+			ret = setenv("argv0", interpargv0, 1);
 			if (ret) {
 				__envperror("argv0", "setenv");
 				return -1;

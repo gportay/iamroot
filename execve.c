@@ -1149,7 +1149,6 @@ int execve(const char *path, char * const argv[], char * const envp[])
 {
 	char buf[PATH_MAX], hashbangbuf[PATH_MAX], loaderbuf[PATH_MAX];
 	char hashbang[HASHBANG_MAX], loader[HASHBANG_MAX];
-	char *real_path, *real_hashbang = NULL;
 	char *interparg[14+1] = { NULL }; /*  0 ARGV0
 					   *  1 /lib/ld.so
 					   *  2 LD_LINUX_ARGV1
@@ -1170,6 +1169,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	char *interppath = NULL;
 	int i, j, argc, ret;
 	char * const *arg;
+	char *real_path;
 	char *xargv1;
 	ssize_t siz;
 	size_t len;
@@ -1239,10 +1239,9 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	 * Preserve original path in argv0 and set the interpreter and its
 	 * optional argument (if any).
 	 */
-	real_hashbang = path_resolution(AT_FDCWD, hashbang, hashbangbuf,
-					sizeof(hashbangbuf),
-					AT_SYMLINK_FOLLOW);
-	if (!real_hashbang) {
+	real_path = path_resolution(AT_FDCWD, hashbang, hashbangbuf,
+				    sizeof(hashbangbuf), AT_SYMLINK_FOLLOW);
+	if (!real_path) {
 		__pathperror(hashbang, __func__);
 		return -1;
 	}
@@ -1262,11 +1261,10 @@ int execve(const char *path, char * const argv[], char * const envp[])
 					* positional argument */
 	interparg[i] = NULL; /* ensure NULL terminated */
 
-	interppath = real_hashbang; /* real hashbang as binary */
-	real_path = real_hashbang; /* real hashbang path as binary */
+	interppath = real_path; /* real hashbang as binary */
 
 	__notice("%s: has hashbang: '%s' -> '%s' '%s'\n", path, hashbang,
-		 real_hashbang, len < (size_t)siz ? &hashbang[len+1] : "");
+		 real_path, len < (size_t)siz ? &hashbang[len+1] : "");
 
 loader:
 	/*

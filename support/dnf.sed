@@ -6,7 +6,7 @@
 #
 
 1,/^Dependencies resolved\./ {
-	# Fedora 35 - x86_64                               XX MB/s |  XX MB     XX:XX    
+	# Fedora 35 - x86_64                               XX MB/s |  XX MB     XX:XX
 	/^.\+\s-\s\S\+/s,^\(.\+\s-\s\S\+\)\s\+\S\+\s.B/s\s|\s\+\S\{1\,3\}\s.B\s\+\S\{2\,2\}:\S\{2\,2\}\s\+$,\1 XXX xB/s | XXX xB XX:XX,
 	# Last metadata expiration check: H:mm:ss ago on Day XX Mon YYYY HH:mm:ss xM TZ.
 	/^Last metadata expiration check: /s,:\s.*,: HH:mm:ss on Day XX Mon YYYY HH:mm:ss xM TZ.,
@@ -29,20 +29,20 @@
 }
 
 /^Downloading Packages:/,/^Running transaction check/{
-	# (XXX/XXX): acl-2.3.1-2.fc35.x86_64.rpm          X.X MB/s |  XX kB     XX:XX     
+	# (XXX/XXX): acl-2.3.1-2.fc35.x86_64.rpm          X.X MB/s |  XX kB     XX:XX
 	/^(\S\+\/\S\+): /d
 
 	# --------------------------------------------------------------------------------
 	/^-\+/s,-\+,----------------------------------,
 
-	# Total                                           XXX MB/s | XXX MB     XX:XX     
+	# Total                                           XXX MB/s | XXX MB     XX:XX
 	/^Total/s,\s\+\S\+\s.B/s\s|\s\+\S\{1\,3\}\s.B\s\+\S\{2\,2\}:\S\{2\,2\}\s\+$, XXX xB/s | XXX xB XX:XX,
 }
 
 /^Running transaction/,/^Installed:/ {
-	#   Running scriptlet: filesystem-3.14-7.fc35.x86_64                      XXX/XXX 
-	#   Installing       : filesystem-3.14-7.fc35.x86_64                      XXX/XXX 
-	#   Verifying        : filesystem-3.14-7.fc35.x86_64                      XXX/XXX 
+	#   Running scriptlet: filesystem-3.14-7.fc35.x86_64                      XXX/XXX
+	#   Installing       : filesystem-3.14-7.fc35.x86_64                      XXX/XXX
+	#   Verifying        : filesystem-3.14-7.fc35.x86_64                      XXX/XXX
 	/^\s\+\(\S\+\s*\)\{1,2\}: / {
 		s,\([[:lower:][:upper:][:digit:]._+-]\+\)-\([[:digit:]]\+:[[:alnum:]._~^-]\+\|[[:alnum:]._~^-]\+\)-\([[:alnum:].%{?}-]\+\)\.\([[:lower:][:digit:]]\+\.[[:alnum:]_]\+\|[[:alnum:]_]\+\),\1,
 		s,\s\+[[:digit:]]\+\/[[:digit:]]\+\s\+$, XXX/XXX,
@@ -56,7 +56,7 @@
 }
 
 /^Installed:/,$ {
-	#   filesystem-3.14-7.fc35.x86_64                                                 
+	#   filesystem-3.14-7.fc35.x86_64
 	/^\s\s/ {
 		s,\([[:lower:][:upper:][:digit:]._+-]\+\)-\([[:digit:]]\+:[[:alnum:]._~^-]\+\|[[:alnum:]._~^-]\+\)-\([[:alnum:].%{?}-]\+\)\.\([[:lower:][:digit:]]\+\.[[:alnum:]_]\+\|[[:alnum:]_]\+\),\1,
 		s,\s\+$,,

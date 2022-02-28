@@ -24,7 +24,7 @@
 	}
 
 	# Unpacking base-files (12.2) ...
-	# Unpacking base-files (12.2) over (12.2) ...                                    
+	# Unpacking base-files (12.2) over (12.2) ...
 	# Setting up base-files (12.2) ...
 	# Processing triggers for libc-bin (2.33-7) ...
 	/^\(Unpacking\|Setting up\|Processing triggers for\)/{
@@ -38,8 +38,8 @@
 	}
 
 	# dpkg: regarding .../archives/dpkg_1.21.1_amd64.deb containing dpkg, pre-dependency problem:
-	#  dpkg pre-depends on libc6 (>= 2.15)                                           
-	#   libc6 is not installed.                                                      
+	#  dpkg pre-depends on libc6 (>= 2.15)
+	#   libc6 is not installed.
 	/^dpkg: /,/^$/{
 		s,\([[:lower:][:digit:]+.-]\+\)_\([[:digit:]]\+:[[:alnum:].+~%-]\+\|[[:alnum:].+~%-]\+\)_\([[:lower:][:digit:]-]\+\)\.deb,\1,
 		s,\([[:lower:][:digit:]+.-]\+\)\s(>=\s\([[:digit:]]\+:[[:alnum:].+~%-]\+\|[[:alnum:].+~%-]\+\)),\1,

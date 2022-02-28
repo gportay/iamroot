@@ -1276,7 +1276,7 @@ loader:
 	if ((__strncmp(path, "/usr/bin/ld.so") == 0) ||
 	    (__strncmp(path, "/lib/ld") == 0) ||
 	    (__strncmp(path, "/lib64/ld") == 0)) {
-		verbose_exec(path, argv, envp);
+		verbose_exec(real_path, argv, envp);
 		return next_execve(real_path, argv, envp);
 	}
 

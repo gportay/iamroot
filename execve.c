@@ -1460,6 +1460,8 @@ loader:
 
 		/* Add path to binary (in chroot, first positional argument) */
 		interparg[i] = interppath;
+		i += j;
+		interparg[i] = NULL;
 
 		/*
 		 * Strip libiamroot.so from LD_PRELOAD

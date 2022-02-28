@@ -1169,7 +1169,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 					   */
 	char *interpargv0 = *argv;
 	char *interppath = NULL;
-	int i = 0, j, argc, ret;
+	int i, j, argc, ret;
 	char * const *arg;
 	char *xargv1;
 	ssize_t siz;
@@ -1201,6 +1201,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 
 	__debug("%s(path: '%s' -> '%s', argv: { '%s', '%s', ... } envp: %p )\n",
 		__func__, path, real_path, argv[0], argv[1], envp);
+	i = 0;
 	interppath = real_path; /* real program path as binary */
 	interparg[i++] = (char *)path; /* original program path as argv0 */
 

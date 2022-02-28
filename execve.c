@@ -1167,7 +1167,6 @@ int execve(const char *path, char * const argv[], char * const envp[])
 					   * 14 script.sh
 					   * 15 NULL
 					   */
-	char *interpargv0 = *argv;
 	char *interppath = NULL;
 	int i, j, argc, ret;
 	char * const *arg;
@@ -1263,7 +1262,6 @@ int execve(const char *path, char * const argv[], char * const envp[])
 					* positional argument */
 	interparg[i] = NULL; /* ensure NULL terminated */
 
-	interpargv0 = hashbang; /* hashbang as argv0 */
 	interppath = real_hashbang; /* real hashbang as binary */
 	real_path = real_hashbang; /* real hashbang path as binary */
 
@@ -1307,7 +1305,7 @@ loader:
 	 */
 	if ((__strncmp(loader, "/lib/ld") == 0) ||
 	    (__strncmp(loader, "/lib64/ld") == 0)) {
-		char *rpath, *runpath, *ld_preload, *ld_library_path,
+		char *argv0, *rpath, *runpath, *ld_preload, *ld_library_path,
 		     *inhibit_rpath;
 		int has_argv0 = 1, has_preload = 1, has_inhibit_rpath = 0;
 		int shift = 1, abi = 0;
@@ -1392,6 +1390,7 @@ loader:
 		 * Note: the binary's arguments are the original argv shifted
 		 *       by one (i.e. without argv0; following arguments).
 		 */
+		argv0 = interparg[0];
 		xargv1 = getenv("IAMROOT_EXEC_LD_ARGV1");
 		if (xargv1)
 			shift++;
@@ -1445,14 +1444,14 @@ loader:
 		/* Add --argv0 and original argv0 */
 		if (has_argv0) {
 			interparg[i++] = "--argv0";
-			interparg[i++] = interpargv0;
+			interparg[i++] = argv0;
 		} else {
 			/*
 			 * The dynamic loader does not support for the option
 			 * --argv0; the value will be set by via the function
 			 * __libc_start_main().
 			 */
-			ret = setenv("argv0", interpargv0, 1);
+			ret = setenv("argv0", argv0, 1);
 			if (ret) {
 				__envperror("argv0", "setenv");
 				return -1;

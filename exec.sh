@@ -24,7 +24,7 @@ mount|umount)
 	log "Warning:" "Command is skipped:" "$argv0" "$@"
 	exit 0
 	;;
-chfn|pam-auth-update|*.postinst)
+chfn|chkstat|pam-auth-update|*.postinst)
 	log "FIXME:" "Command is skipped:" "$argv0" "$@"
 	exit 0
 	;;

@@ -533,13 +533,15 @@ extra-rootfs: opensuse-rootfs
 .PHONY: opensuse-rootfs
 opensuse-rootfs: | opensuse-tumbleweed-rootfs
 
-opensuse-tumbleweed-rootfs:
+opensuse-tumbleweed-rootfs: | opensuse-tumbleweed-rootfs/etc/machine-id
 
-opensuse-%-rootfs: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
-opensuse-%-rootfs: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64
-opensuse-%-rootfs: | x86_64/libiamroot-linux-x86-64.so.2
+opensuse-%-rootfs/etc/machine-id: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
+opensuse-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64
+opensuse-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|/usr/bin/chkstat
+opensuse-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/
+opensuse-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "zypper --root $(CURDIR)/opensuse-$*-rootfs addrepo --no-gpgcheck support/$*-repo-oss.repo"
-	bash iamroot-shell -c "zypper --root $(CURDIR)/opensuse-$*-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper"
+	bash iamroot-shell -c "zypper --root $(CURDIR)/opensuse-$*-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd"
 endif
 
 ifneq ($(shell command -v musl-gcc),)

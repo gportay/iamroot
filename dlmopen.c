@@ -57,5 +57,4 @@ next:
 
 	return next_dlmopen(lmid, real_path, flags);
 }
-
 #endif

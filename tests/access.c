@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -12,7 +12,6 @@
 
 int main(int argc, char * const argv[])
 {
-	int fd = -1, ret = EXIT_FAILURE;
 	int mode = F_OK;
 
 	if (argc < 2) {
@@ -26,18 +25,10 @@ int main(int argc, char * const argv[])
 	if (argc == 3)
 		mode = strtoul(argv[4], NULL, 0);
 
-	fd = access(argv[1], mode);
-	if (fd == -1) {
+	if (access(argv[1], mode) == -1) {
 		perror("access");
-		goto exit;
+		return EXIT_FAILURE;
 	}
 
-	ret = EXIT_SUCCESS;
-
-exit:
-	if (fd == -1)
-		if (close(fd))
-			perror("close");
-
-	return ret;
+	return EXIT_SUCCESS;
 }

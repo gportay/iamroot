@@ -1459,7 +1459,7 @@ loader:
 		}
 
 		/* Add path to binary (in chroot, first positional argument) */
-		interparg[i++] = interppath;
+		interparg[i] = interppath;
 
 		/*
 		 * Strip libiamroot.so from LD_PRELOAD
@@ -1502,7 +1502,7 @@ exec_sh:
 	interparg[i++] = (char *)path; /* original path as first positional
 					* argument
 					*/
-	interparg[i++] = NULL;
+	interparg[i] = NULL;
 
 	ret = setenv("argv0", *argv, 1);
 	if (ret) {

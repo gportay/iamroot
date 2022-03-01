@@ -72,4 +72,4 @@ busybox mount -o "$rootoptions" -t "$rootfstype" "$root" /new_root
 busybox mount --move /proc /new_root/proc
 busybox mount --move /sys  /new_root/sys
 busybox mount --move /dev  /new_root/dev
-exec busybox switch_root /new_root /sbin/init "$@"
+exec busybox switch_root /new_root "${init:-/sbin/init}" "$@"

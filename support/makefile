@@ -521,6 +521,8 @@ umount-fedora-33 umount-fedora-34 umount-fedora-35:
 endif
 
 ifneq ($(shell command -v zypper),)
+opensuse-leaf-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
+opensuse-leaf-chroot:
 opensuse-tumbleweed-chroot:
 opensuse-%-chroot: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
 opensuse-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64
@@ -533,7 +535,12 @@ extra-rootfs: opensuse-rootfs
 .PHONY: opensuse-rootfs
 opensuse-rootfs: | opensuse-tumbleweed-rootfs
 
+opensuse-leaf-rootfs: | opensuse-leaf-rootfs/etc/machine-id
 opensuse-tumbleweed-rootfs: | opensuse-tumbleweed-rootfs/etc/machine-id
+
+opensuse-leaf-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
+opensuse-leaf-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|/usr/bin/chkstat|/usr/sbin/update-ca-certificates
+opensuse-leaf-rootfs/etc/machine-id:
 
 opensuse-%-rootfs/etc/machine-id: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
 opensuse-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64
@@ -543,15 +550,20 @@ opensuse-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "zypper --root $(CURDIR)/opensuse-$*-rootfs addrepo --no-gpgcheck support/$*-repo-oss.repo"
 	bash iamroot-shell -c "zypper --root $(CURDIR)/opensuse-$*-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd"
 
+qemu-system-x86_64-opensuse-leaf:
+qemu-system-x86_64-opensuse-leaf: override CMDLINE += rw init=/usr/lib/systemd/systemd
 qemu-system-x86_64-opensuse-tumbleweed:
 qemu-system-x86_64-opensuse-tumbleweed: override CMDLINE += rw
 
 ifneq ($(VMLINUX_KVER),)
+vmlinux-opensuse-leaf:
 vmlinux-opensuse-tumbleweed:
 endif
 
-opensuse-tumbleweed.ext4:
+opensuse-leaf.ext4 opensuse-tumbleweed.ext4:
 
+opensuse-leaf-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
+opensuse-leaf-postrootfs:
 opensuse-tumbleweed-postrootfs:
 opensuse-%-postrootfs: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
 opensuse-%-postrootfs: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64
@@ -567,11 +579,11 @@ opensuse-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	rm -f opensuse-$*-rootfs/etc/systemd/system/getty.target.wants/getty@ttyS0.service
 	bash iamroot-shell -c "chroot opensuse-$*-rootfs systemctl enable getty@ttyS0.service"
 
-chroot-opensuse-tumbleweed:
+chroot-opensuse-leaf chroot-opensuse-tumbleweed:
 
-mount-opensuse-tumbleweed:
+mount-opensuse-leaf mount-opensuse-tumbleweed:
 
-umount-opensuse-tumbleweed:
+umount-opensuse-leaf umount-opensuse-tumbleweed:
 endif
 
 ifneq ($(shell command -v musl-gcc),)
@@ -1094,6 +1106,7 @@ fedora-support: support/fedora-34-rootfs.txt
 fedora-support: support/fedora-35-rootfs.txt
 
 .PHONY: opensuse-support
+opensuse-support: support/opensuse-leaf-rootfs.txt
 opensuse-support: support/opensuse-tumbleweed-rootfs.txt
 
 .PHONY: alpine-support
@@ -1176,6 +1189,11 @@ support/fedora-35-rootfs.txt: fedora-35-rootfs.log
 	support/dnf.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
 	mv $@.tmp $@
 
+.PRECIOUS: support/opensuse-leaf-rootfs.txt
+support/opensuse-leaf-rootfs.txt: opensuse-leaf-rootfs.log
+	support/zypper.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	mv $@.tmp $@
+
 .PRECIOUS: support/opensuse-tumbleweed-rootfs.txt
 support/opensuse-tumbleweed-rootfs.txt: opensuse-tumbleweed-rootfs.log
 	support/zypper.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
@@ -1234,6 +1252,7 @@ fedora-log: fedora-34-rootfs.log
 fedora-log: fedora-35-rootfs.log
 
 .PHONY: opensuse-log
+opensuse-log: opensuse-leaf-rootfs.log
 opensuse-log: opensuse-tumbleweed-rootfs.log
 
 .PHONY: alpine-log
@@ -1257,6 +1276,7 @@ ubuntu-jammy-rootfs.log:
 fedora-33-rootfs.log:
 fedora-34-rootfs.log:
 fedora-35-rootfs.log:
+opensuse-leaf-rootfs-log:
 opensuse-tumbleweed-rootfs-log:
 alpine-3.14-rootfs.log:
 alpine-3.15-rootfs.log:

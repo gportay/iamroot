@@ -17,7 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   content of the environment variable `argv0` if set
 - Use the [dynamic loader][ld.so(8)] option `--inhibit-rpath` if
   [exec][exec(3)]'ing to a [glibc] chroot'ed environment
-- Create an [openSUSE] ([Tumbleweed]) rootfs via [zypper(8)]
+- Create an [openSUSE] ([Tumbleweed] and [Leaf]) rootfs via [zypper(8)]
 
 ### Changed
 
@@ -228,6 +228,7 @@ Initial release.
 [Debian]: https://www.debian.org/
 [Fedora ARM]: https://arm.fedoraproject.org/
 [Fedora]: https://getfedora.org/
+[Leaf]: https://www.opensuse.org/#Leap
 [Manjaro]: https://manjaro.org/
 [Tumbleweed]: https://www.opensuse.org/#Tumbleweed
 [Ubuntu]: https://ubuntu.com/

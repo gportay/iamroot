@@ -41,6 +41,39 @@ int next_posix_spawn(pid_t *pid, const char *path,
 	return ret;
 }
 
+static int __hashbang(const char *path, char * const argv[], char *interp,
+		      size_t interpsiz, char *interparg[])
+{
+	char *xargv1;
+	ssize_t siz;
+	size_t len;
+	int i = 0;
+
+	(void)argv;
+
+	/* Get the interpeter directive stored after the hashbang */
+	siz = gethashbang(path, interp, interpsiz);
+	if (siz < 1)
+		return siz;
+
+	/* Reset argv0 */
+	interparg[i++] = interp; /* hashbang as argv0 */
+
+	/* Add extra argument */
+	xargv1 = getenv("IAMROOT_EXEC_HASHBANG_ARGV1");
+	if (xargv1)
+		interparg[i++] = xargv1; /* extra argument as argv1 */
+	/* Add optional argument */
+	len = strnlen(interp, interpsiz);
+	if (len < (size_t)siz && interp[len+1])
+		interparg[i++] = &interp[len+1];
+	interparg[i++] = (char *)path; /* FIXME: original program path as first
+					* positional argument */
+	interparg[i] = NULL; /* ensure NULL terminated */
+
+	return i;
+}
+
 static int __loader(const char *path, char * const argv[], char *interp,
 		    size_t interpsiz, char *interparg[])
 {
@@ -315,7 +348,6 @@ int posix_spawn(pid_t *pid, const char *path,
 		const posix_spawnattr_t *attrp,
 		char * const argv[], char * const envp[])
 {
-	char buf[PATH_MAX], hashbangbuf[PATH_MAX], hashbang[HASHBANG_MAX];
 	char *interparg[15+1] = { NULL }; /*  0 ARGV0
 					   *  1 /lib/ld.so
 					   *  2 LD_LINUX_ARGV1
@@ -334,13 +366,14 @@ int posix_spawn(pid_t *pid, const char *path,
 					   * 15 script.sh
 					   * 16 NULL
 					   */
+	char hashbang[HASHBANG_MAX];
+	char hashbangbuf[PATH_MAX];
 	char loaderbuf[PATH_MAX];
-	ssize_t hashbangsiz, siz;
 	char *program = NULL;
+	char buf[PATH_MAX];
 	char * const *arg;
-	int i, ret, argc;
-	char *xargv1;
-	size_t len;
+	int argc, ret;
+	ssize_t siz;
 
 	/* Run exec.sh script */
 	if (exec_ignored(path))
@@ -354,8 +387,8 @@ int posix_spawn(pid_t *pid, const char *path,
 
 	__debug("%s(path: '%s' -> '%s', ..., argv: { '%s', '%s', ... }, envp: %p)\n",
 		__func__, path, buf, argv[0], argv[1], envp);
-	i = 0;
-	interparg[i++] = *argv; /* original argv0 as argv0 */
+
+	interparg[0] = *argv; /* original argv0 as argv0 */
 	program = buf;
 
 	/*
@@ -375,17 +408,16 @@ int posix_spawn(pid_t *pid, const char *path,
 		return next_posix_spawn(pid, path, file_actions, attrp, argv,
 					envp);
 
-	/* Get the interpeter directive stored after the hashbang */
-	hashbangsiz = gethashbang(program, hashbang, sizeof(hashbang));
-	if (hashbangsiz == -1) {
-		/* Not an hashbang interpreter directive */
-		if (errno == ENOEXEC)
-			goto loader;
-
+	ret = __hashbang(program, argv, hashbang, sizeof(hashbang), interparg);
+	if ((ret == -1) && (errno != ENOEXEC))
 		return -1;
-	} else if (hashbangsiz == 0) {
+	if (ret < 1)
 		goto loader;
-	}
+
+	/* FIXME: __hashbang() should do the following; it must have original
+	 * and resolved path. */
+	interparg[ret-1] = (char *)path; /* original program path as first
+					  * positional argument */
 
 	/*
 	 * Preserve original path in argv0 and set the interpreter and its
@@ -396,20 +428,6 @@ int posix_spawn(pid_t *pid, const char *path,
 	if (siz == -1)
 		return -1;
 
-	/* Reset argv0 */
-	interparg[0] = hashbang; /* hashbang as argv0 */
-
-	/* Add extra argument */
-	xargv1 = getenv("IAMROOT_EXEC_HASHBANG_ARGV1");
-	if (xargv1)
-		interparg[i++] = xargv1; /* extra argument as argv1 */
-	/* Add optional argument */
-	len = __strnlen(hashbang);
-	if (len < (size_t)hashbangsiz && hashbang[len+1])
-		interparg[i++] = &hashbang[len+1];
-	interparg[i++] = (char *)path; /* original program path as first
-					* positional argument */
-	interparg[i] = NULL; /* ensure NULL terminated */
 	program = hashbangbuf;
 
 loader:
@@ -423,6 +441,7 @@ loader:
 		return next_posix_spawn(pid, buf, file_actions, attrp, argv,
 					envp);
 	}
+
 	ret = __loader(program, argv, loaderbuf, sizeof(loaderbuf), interparg);
 	if ((ret == -1) && (errno != ENOEXEC))
 		return -1;

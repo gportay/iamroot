@@ -1260,7 +1260,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 		interparg[i++] = &hashbang[len+1];
 	interparg[i++] = (char *)path; /* original program path as first
 					* positional argument */
-	interparg[i] = NULL;
+	interparg[i] = NULL; /* ensure NULL terminated */
 
 	interpargv0 = hashbang; /* hashbang as argv0 */
 	interppath = real_hashbang; /* real hashbang as binary */
@@ -1461,7 +1461,7 @@ loader:
 		/* Add path to binary (in chroot, first positional argument) */
 		interparg[i] = interppath;
 		i += j;
-		interparg[i] = NULL;
+		interparg[i] = NULL; /* ensure NULL terminated */
 
 		/*
 		 * Strip libiamroot.so from LD_PRELOAD
@@ -1504,7 +1504,7 @@ exec_sh:
 	interparg[i++] = (char *)path; /* original path as first positional
 					* argument
 					*/
-	interparg[i] = NULL;
+	interparg[i] = NULL; /* ensure NULL terminated */
 
 	ret = setenv("argv0", *argv, 1);
 	if (ret) {

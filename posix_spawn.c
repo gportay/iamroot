@@ -41,6 +41,41 @@ int next_posix_spawn(pid_t *pid, const char *path,
 	return ret;
 }
 
+static int __exec_sh(const char *path, char * const *argv, char **interparg,
+		     char *buf, size_t bufsize)
+{
+	int ret, i;
+
+	i = 0;
+	interparg[i++] = _strncpy(buf, __getexec(), bufsize);
+	interparg[i++] = (char *)path; /* original path as first positional
+					* argument
+					*/
+	interparg[i] = NULL; /* ensure NULL terminated */
+
+	ret = setenv("argv0", *argv, 1);
+	if (ret)
+		return -1;
+
+	ret = setenv("ld_preload", getenv("LD_PRELOAD") ?: "", 1);
+	if (ret)
+		return -1;
+
+	ret = setenv("ld_library_path", getenv("LD_LIBRARY_PATH") ?: "", 1);
+	if (ret)
+		return -1;
+
+	ret = unsetenv("LD_PRELOAD");
+	if (ret)
+		return -1;
+
+	ret = unsetenv("LD_LIBRARY_PATH");
+	if (ret)
+		return -1;
+
+	return i;
+}
+
 int posix_spawn(pid_t *pid, const char *path,
 		const posix_spawn_file_actions_t *file_actions,
 		const posix_spawnattr_t *attrp,
@@ -381,33 +416,11 @@ loader:
 	}
 
 exec_sh:
-	__strncpy(buf, __getexec());
-	i = 0;
-	interparg[i++] = buf;
-	interparg[i++] = (char *)path; /* original path as first positional
-					* argument
-					*/
-	interparg[i] = NULL; /* ensure NULL terminated */
-
-	ret = setenv("argv0", *argv, 1);
-	if (ret)
+	ret = __exec_sh(path, argv, interparg, buf, sizeof(buf));
+	if (ret == -1)
 		return -1;
 
-	ret = setenv("ld_preload", getenv("LD_PRELOAD") ?: "", 1);
-	if (ret)
-		return -1;
-
-	ret = setenv("ld_library_path", getenv("LD_LIBRARY_PATH") ?: "", 1);
-	if (ret)
-		return -1;
-
-	ret = unsetenv("LD_PRELOAD");
-	if (ret)
-		return -1;
-
-	ret = unsetenv("LD_LIBRARY_PATH");
-	if (ret)
-		return -1;
+	program = interparg[0];
 
 posix_spawn:
 	ret = setenv("IAMROOT_VERSION", __xstr(VERSION), 1);

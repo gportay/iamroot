@@ -216,10 +216,8 @@ static int __ld_linux_version(const char *path, int *major, int *minor)
 
 	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
 				    AT_SYMLINK_FOLLOW);
-	if (!real_path) {
-		__pathperror(path, "path_resolution");
+	if (!real_path)
 		return -1;
-	}
 
 	basename = __basename(real_path);
 	ret = sscanf(basename, "ld-%i.%i.so", major, minor);
@@ -304,7 +302,6 @@ static ssize_t getdynamicentry32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
 
 		ret = pread(fd, &shdr, sizeof(shdr), off);
 		if (ret == -1) {
-			__fpathperror(fd, "pread");
 			goto exit;
 		} else if ((size_t)ret < sizeof(shdr)) {
 			errno = EIO;
@@ -341,7 +338,6 @@ static ssize_t getdynamicentry32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
 
 		ret = pread(fd, &phdr, sizeof(phdr), off);
 		if (ret == -1) {
-			__fpathperror(fd, "pread");
 			goto exit;
 		} else if ((size_t)ret < sizeof(phdr)) {
 			errno = EIO;
@@ -364,7 +360,6 @@ static ssize_t getdynamicentry32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
 		/* copy the .dynamic segment */
 		ret = pread(fd, buf, phdr.p_filesz, phdr.p_offset);
 		if (ret == -1) {
-			__fpathperror(fd, "pread");
 			goto exit;
 		} else if ((size_t)ret < phdr.p_filesz) {
 			errno = EIO;
@@ -390,7 +385,6 @@ static ssize_t getdynamicentry32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
 		str_siz = strtab_siz - val;
 		ret = pread(fd, buf, __min(str_siz, bufsize), str_off);
 		if (ret == -1) {
-			__fpathperror(fd, "pread");
 			goto exit;
 		} else if ((size_t)ret < __min(str_siz, bufsize)) {
 			errno = EIO;
@@ -439,7 +433,6 @@ static ssize_t getdynamicentry64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
 
 		ret = pread(fd, &shdr, sizeof(shdr), off);
 		if (ret == -1) {
-			__fpathperror(fd, "pread");
 			goto exit;
 		} else if ((size_t)ret < sizeof(shdr)) {
 			errno = EIO;
@@ -476,7 +469,6 @@ static ssize_t getdynamicentry64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
 
 		ret = pread(fd, &phdr, sizeof(phdr), off);
 		if (ret == -1) {
-			__fpathperror(fd, "pread");
 			goto exit;
 		} else if ((size_t)ret < sizeof(phdr)) {
 			errno = EIO;
@@ -499,7 +491,6 @@ static ssize_t getdynamicentry64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
 		/* copy the .dynamic segment */
 		ret = pread(fd, buf, phdr.p_filesz, phdr.p_offset);
 		if (ret == -1) {
-			__fpathperror(fd, "pread");
 			goto exit;
 		} else if ((size_t)ret < phdr.p_filesz) {
 			errno = EIO;
@@ -525,7 +516,6 @@ static ssize_t getdynamicentry64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
 		str_siz = strtab_siz - val;
 		ret = pread(fd, buf, __min(str_siz, bufsize), str_off);
 		if (ret == -1) {
-			__fpathperror(fd, "pread");
 			goto exit;
 		} else if ((size_t)ret < __min(str_siz, bufsize)) {
 			errno = EIO;
@@ -558,7 +548,6 @@ static ssize_t getdynamicentry(const char *path, int dt_tag, char *buf,
 
 	ret = read(fd, &ehdr, sizeof(ehdr));
 	if (ret == -1) {
-		__pathperror(path, "read");
 		goto close;
 	} else if ((size_t)ret < sizeof(ehdr)) {
 		errno = EIO;
@@ -607,7 +596,6 @@ static ssize_t getinterp32(int fd, Elf32_Ehdr *ehdr, char *buf, size_t bufsize)
 
 		ret = pread(fd, &phdr, sizeof(phdr), off);
 		if (ret == -1) {
-			__fpathperror(fd, "pread");
 			goto exit;
 		} else if ((size_t)ret < sizeof(phdr)) {
 			errno = EIO;
@@ -630,7 +618,6 @@ static ssize_t getinterp32(int fd, Elf32_Ehdr *ehdr, char *buf, size_t bufsize)
 		/* copy the NULL-terminated string from the .interp section */
 		ret = pread(fd, buf, phdr.p_filesz, phdr.p_offset);
 		if (ret == -1) {
-			__fpathperror(fd, "pread");
 			goto exit;
 		} else if ((size_t)ret < phdr.p_filesz) {
 			errno = EIO;
@@ -675,7 +662,6 @@ static ssize_t getinterp64(int fd, Elf64_Ehdr *ehdr, char *buf, size_t bufsize)
 
 		ret = pread(fd, &phdr, sizeof(phdr), off);
 		if (ret == -1) {
-			__fpathperror(fd, "pread");
 			goto exit;
 		} else if ((size_t)ret < sizeof(phdr)) {
 			errno = EIO;
@@ -698,7 +684,6 @@ static ssize_t getinterp64(int fd, Elf64_Ehdr *ehdr, char *buf, size_t bufsize)
 		/* copy the NULL-terminated string from the .interp section */
 		ret = pread(fd, buf, phdr.p_filesz, phdr.p_offset);
 		if (ret == -1) {
-			__fpathperror(fd, "pread");
 			goto exit;
 		} else if ((size_t)ret < phdr.p_filesz) {
 			errno = EIO;
@@ -729,7 +714,6 @@ static ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 
 	ret = read(fd, &ehdr, sizeof(ehdr));
 	if (ret == -1) {
-		__pathperror(path, "read");
 		goto close;
 	} else if ((size_t)ret < sizeof(ehdr)) {
 		errno = EIO;
@@ -762,7 +746,6 @@ static ssize_t gethashbang(const char *path, char *buf, size_t bufsize)
 
 	ret = read(fd, buf, bufsize-1);
 	if (ret == -1) {
-		__pathperror(path, "read");
 		goto close;
 	}
 	buf[ret] = 0; /* ensure NULL terminated */
@@ -1013,16 +996,12 @@ static char *__ld_preload(const char *ldso, int abi)
 	__sanitize(buf, 0);
 
 	ret = pathsetenv(getrootdir(), buf, __getld_preload(ldso, abi), 1);
-	if (ret) {
-		perror("pathsetenv");
+	if (ret)
 		return NULL;
-	}
 
 	ret = pathprependenv(buf, __getlibiamroot(ldso, abi), 1);
-	if (ret) {
-		perror("pathprependenv");
+	if (ret)
 		return NULL;
-	}
 
 	return getenv(buf);
 }
@@ -1040,38 +1019,28 @@ static char *__ld_library_path(const char *ldso, int abi, const char *rpath,
 
 	ret = pathsetenv(getrootdir(), buf, __getld_library_path(ldso, abi),
 			 1);
-	if (ret) {
-		perror("pathprependenv");
+	if (ret)
 		return NULL;
-	}
 
 	if (rpath) {
 		ret = pathsetenv(getrootdir(), "iamroot_rpath", rpath, 1);
-		if (ret) {
-			perror("pathprependenv");
+		if (ret)
 			return NULL;
-		}
 
 		ret = pathprependenv(buf, getenv("iamroot_rpath"), 1);
-		if (ret) {
-			perror("pathprependenv");
+		if (ret)
 			return NULL;
-		}
 	}
 
 
 	if (runpath) {
 		ret = pathsetenv(getrootdir(), "iamroot_runpath", runpath, 1);
-		if (ret) {
-			perror("pathprependenv");
+		if (ret)
 			return NULL;
-		}
 
 		ret = pathprependenv(buf, getenv("iamroot_runpath"), 1);
-		if (ret) {
-			perror("pathprependenv");
+		if (ret)
 			return NULL;
-		}
 	}
 
 	return getenv(buf);
@@ -1088,10 +1057,8 @@ static char *__rpath(const char *path)
 		return NULL;
 
 	ret = setenv("rpath", buf, 1);
-	if (ret) {
-		__envperror("rpath", "setenv");
+	if (ret)
 		return NULL;
-	}
 
 	return getenv("rpath");
 }
@@ -1107,10 +1074,8 @@ static char *__runpath(const char *path)
 		return NULL;
 
 	ret = setenv("runpath", buf, 1);
-	if (ret) {
-		__envperror("rpath", "setenv");
+	if (ret)
 		return NULL;
-	}
 
 	return getenv("runpath");
 }
@@ -1125,10 +1090,8 @@ static char *__inhibit_rpath()
 		return NULL;
 
 	ret = pathsetenv(getrootdir(), "inhibit_rpath", val, 1);
-	if (ret) {
-		perror("pathsetenv");
+	if (ret)
 		return NULL;
-	}
 
 	return getenv("inhibit_rpath");
 }
@@ -1225,7 +1188,6 @@ int execve(const char *path, char * const argv[], char * const envp[])
 		if (errno == ENOEXEC)
 			goto loader;
 
-		__pathperror(real_path, "gethashbang");
 		return -1;
 	} else if (siz == 0) {
 		goto loader;
@@ -1237,10 +1199,8 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	 */
 	real_path = path_resolution(AT_FDCWD, hashbang, hashbangbuf,
 				    sizeof(hashbangbuf), AT_SYMLINK_FOLLOW);
-	if (!real_path) {
-		__pathperror(hashbang, __func__);
+	if (!real_path)
 		return -1;
-	}
 
 	/* Reset argv0 */
 	interparg[0] = hashbang; /* hashbang as argv0 */
@@ -1283,7 +1243,6 @@ loader:
 			goto exec_sh;
 		}
 
-		__pathperror(real_path, "getinterp");
 		return -1;
 	} else if (siz == 0) {
 		__notice("%s: No such .interp section\n", real_path);
@@ -1307,7 +1266,6 @@ loader:
 		basename = __basename(loader);
 		ret = sscanf(basename, "ld-%[^.].so.%d", ldso, &abi);
 		if (ret < 2) {
-			__pathperror(basename, "sscanf");
 			errno = ENOTSUP;
 			return -1;
 		}
@@ -1320,18 +1278,12 @@ loader:
 			has_inhibit_rpath = 1;
 
 			has_argv0 = __ld_linux_has_argv0_option(loader);
-			if (has_argv0 == -1) {
-				__pathperror(loader,
-					     "__ld_linux_has_argv0_option");
+			if (has_argv0 == -1)
 				return -1;
-			}
 
 			has_preload = __ld_linux_has_preload_option(loader);
-			if (has_preload == -1) {
-				__pathperror(loader,
-					     "__ld_linux_has_preload_option");
+			if (has_preload == -1)
 				return -1;
-			}
 		}
 
 		rpath = __rpath(real_path);
@@ -1357,10 +1309,8 @@ loader:
 		real_path = path_resolution(AT_FDCWD, loader, loaderbuf,
 					    sizeof(loaderbuf),
 					    AT_SYMLINK_FOLLOW);
-		if (!real_path) {
-			__pathperror(loader, __func__);
+		if (!real_path)
 			return -1;
-		}
 
 		/*
 		 * Shift enough room in interparg to prepend:
@@ -1415,10 +1365,8 @@ loader:
 			interparg[i++] = ld_preload;
 		} else {
 			ret = setenv("LD_PRELOAD", ld_preload, 1);
-			if (ret) {
-				__envperror("LD_PRELOAD", "setenv");
+			if (ret)
 				return -1;
-			}
 		}
 
 		/* Add --library-path (chroot) */
@@ -1444,10 +1392,8 @@ loader:
 			 * __libc_start_main().
 			 */
 			ret = setenv("argv0", argv0, 1);
-			if (ret) {
-				__envperror("argv0", "setenv");
+			if (ret)
 				return -1;
-			}
 		}
 
 		/* Add path to binary (in chroot, first positional argument) */
@@ -1472,16 +1418,12 @@ loader:
 			ld_preload = n;
 			if (ld_preload && *ld_preload) {
 				ret = setenv("LD_PRELOAD", ld_preload, 1);
-				if (ret) {
-					__envperror("LD_PRELOAD", "setenv");
+				if (ret)
 					return -1;
-				}
 			} else {
 				ret = unsetenv("LD_PRELOAD");
-				if (ret) {
-					__envperror("LD_PRELOAD", "unsetenv");
+				if (ret)
 					return -1;
-				}
 			}
 		}
 
@@ -1498,34 +1440,24 @@ exec_sh:
 	interparg[i] = NULL; /* ensure NULL terminated */
 
 	ret = setenv("argv0", *argv, 1);
-	if (ret) {
-		__envperror("argv0", "setenv");
+	if (ret)
 		return -1;
-	}
 
 	ret = setenv("ld_preload", getenv("LD_PRELOAD") ?: "", 1);
-	if (ret) {
-		__envperror("ld_preload", "setenv");
+	if (ret)
 		return -1;
-	}
 
 	ret = setenv("ld_library_path", getenv("LD_LIBRARY_PATH") ?: "", 1);
-	if (ret) {
-		__envperror("ld_library_path", "setenv");
+	if (ret)
 		return -1;
-	}
 
 	ret = unsetenv("LD_PRELOAD");
-	if (ret) {
-		__envperror("LD_PRELOAD", "unsetenv");
+	if (ret)
 		return -1;
-	}
 
 	ret = unsetenv("LD_LIBRARY_PATH");
-	if (ret) {
-		__envperror("LD_LIBRARY_PATH", "unsetenv");
+	if (ret)
 		return -1;
-	}
 
 execve:
 	argc = 1;

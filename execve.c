@@ -1528,13 +1528,6 @@ exec_sh:
 	}
 
 execve:
-	/*
-	 * envp is updated by the change in the environments (i.e. by calling
-	 * setenv() and unsetenv()).
-	 */ 
-	if (envp != __environ)
-		envp = __environ;
-
 	argc = 1;
 	arg = interparg;
 	while (*arg++)
@@ -1556,8 +1549,8 @@ execve:
 			*narg++ = *arg++;
 		*narg++ = NULL;
 
-		verbose_exec(real_path, nargv, envp);
-		return next_execve(real_path, nargv, envp);
+		verbose_exec(real_path, nargv, __environ);
+		return next_execve(real_path, nargv, __environ);
 	}
 
 	errno = EINVAL;

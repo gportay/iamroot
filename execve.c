@@ -1136,10 +1136,8 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	size_t len;
 
 	/* Run exec.sh script */
-	if (ignore(path)) {
-		__notice("%s: Ignored\n", path);
+	if (ignore(path))
 		goto exec_sh;
-	}
 
 	/*
 	 * Follows symlink as the subsequent calls to issuid(), getinterp() and
@@ -1170,12 +1168,10 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	 * bit enabled (which is not typical).
 	 */
 	ret = issuid(real_path);
-	if (ret == -1) {
+	if (ret == -1)
 		return -1;
-	} else if (ret) {
-		__notice("%s: SUID\n", real_path);
+	else if (ret)
 		goto exec_sh;
-	}
 
 	/* Do not proceed to any hack if not in chroot */
 	if (!inchroot())
@@ -1217,9 +1213,6 @@ int execve(const char *path, char * const argv[], char * const envp[])
 					* positional argument */
 	interparg[i] = NULL; /* ensure NULL terminated */
 
-	__notice("%s: has hashbang: '%s' -> '%s' '%s'\n", path, hashbang,
-		 real_path, len < (size_t)siz ? &hashbang[len+1] : "");
-
 loader:
 	/*
 	 * Run the dynamic linker directly
@@ -1238,18 +1231,13 @@ loader:
 	siz = getinterp(real_path, loader, sizeof(loader));
 	if (siz == -1) {
 		/* Not an ELF linked program */
-		if (errno == ENOEXEC) {
-			__notice("%s: Not an ELF linked program\n", real_path);
+		if (errno == ENOEXEC)
 			goto exec_sh;
-		}
 
 		return -1;
 	} else if (siz == 0) {
-		__notice("%s: No such .interp section\n", real_path);
 		goto exec_sh;
 	}
-
-	__notice("%s: interpreter: '%s'\n", real_path, loader);
 
 	/*
 	 * The interpreter has to preload its libiamroot.so library.

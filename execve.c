@@ -14,7 +14,6 @@
 #include <errno.h>
 #include <limits.h>
 #include <dlfcn.h>
-#include <byteswap.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/auxv.h>

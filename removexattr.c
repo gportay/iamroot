@@ -4,15 +4,14 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#ifdef __linux__
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
 #include <limits.h>
 #include <fcntl.h>
 #include <dlfcn.h>
-#ifdef __linux__
 #include <linux/limits.h>
-#endif
 
 #include <sys/types.h>
 #include <sys/xattr.h>
@@ -69,3 +68,4 @@ int removexattr(const char *path, const char *name)
 
 	return next_removexattr(real_path, name);
 }
+#endif

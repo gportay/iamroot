@@ -7,7 +7,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
+#ifdef __linux__
 #include <sys/sysmacros.h>
+#endif
 
 #include <unistd.h>
 #include <fcntl.h>

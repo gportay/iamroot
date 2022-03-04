@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -14,6 +14,7 @@
 
 #include "iamroot.h"
 
+#ifdef  __USE_GNU
 int main(int argc, char * const argv[])
 {
 	int n, fd = AT_FDCWD, ret = EXIT_FAILURE;
@@ -54,3 +55,9 @@ exit:
 
 	return ret;
 }
+#else
+int main(void)
+{
+	return EXIT_SUCCESS;
+}
+#endif

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -44,10 +44,17 @@ int main(int argc, char * const argv[])
 		}
 	}
 
+#ifdef __linux__
 	if (renameat2(oldfd, argv[2], newfd, argv[4], flags)) {
 		perror("renameat2");
 		goto exit;
 	}
+#else
+	if (renameat(oldfd, argv[2], newfd, argv[4])) {
+		perror("renameat");
+		goto exit;
+	}
+#endif
 
 	ret = EXIT_SUCCESS;
 

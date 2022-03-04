@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -12,6 +12,7 @@
 
 #include <sys/mount.h>
 
+#ifdef __linux__
 struct options {
 	int argc;
 	char * const *argv;
@@ -78,3 +79,9 @@ int main(int argc, char * const argv[])
 
 	return EXIT_SUCCESS;
 }
+#else
+int main(void)
+{
+	return EXIT_SUCCESS;
+}
+#endif

@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#ifdef __linux__
 #include <stdio.h>
 #include <errno.h>
 #include <limits.h>
@@ -53,3 +54,4 @@ int name_to_handle_at(int fd, const char *path, struct file_handle *handle,
 
 	return next_name_to_handle_at(fd, real_path, handle, mount_id, flags);
 }
+#endif

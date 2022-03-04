@@ -1,17 +1,16 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#ifdef __linux__
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
 #include <limits.h>
 #include <dlfcn.h>
-#ifdef __linux__
 #include <linux/limits.h>
-#endif
 
 #include <sys/types.h>
 #include <sys/xattr.h>
@@ -71,3 +70,4 @@ ssize_t fgetxattr(int fd, const char *name, void *value, size_t size)
 
 	return next_fgetxattr(fd, name, value, size);
 }
+#endif

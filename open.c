@@ -52,12 +52,14 @@ int open(const char *path, int flags, ...)
 		return -1;
 	}
 
+#ifdef __linux__
 	if ((flags & O_CREAT) || (flags & O_TMPFILE) == O_TMPFILE) {
 		va_list ap;
 		va_start(ap, flags);
 		mode = va_arg(ap, mode_t);
 		va_end(ap);
 	}
+#endif
 
 	__debug("%s(path: '%s' -> '%s', flags: 0%o, mode: 0%03o)\n", __func__,
 		path, real_path, flags, mode);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -10,6 +10,7 @@
 
 #include <sched.h>
 
+#ifdef __linux__
 int main(int argc, char * const argv[])
 {
 	if (unshare(0) == -1) {
@@ -24,3 +25,9 @@ int main(int argc, char * const argv[])
 	perror("execvp");
 	return EXIT_FAILURE;
 }
+#else
+int main(void)
+{
+	return EXIT_SUCCESS;
+}
+#endif

@@ -1,9 +1,10 @@
 /*
- * Copyright 2020-2021 Gaël PORTAY
+ * Copyright 2020-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#ifdef __linux__
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
@@ -26,3 +27,4 @@ int mount(const char *source, const char *target, const char *filesystemtype,
 
 	return 0;
 }
+#endif

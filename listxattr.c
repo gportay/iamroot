@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#ifdef __linux__
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
@@ -84,3 +85,4 @@ ssize_t listxattr(const char *path, char *list, size_t size)
 
 	return ret;
 }
+#endif

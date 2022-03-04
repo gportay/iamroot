@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -13,9 +13,11 @@
 
 int main()
 {
-	char *cwd;
+	char *cwd = NULL;
 
+#ifdef  __USE_GNU
 	cwd = get_current_dir_name();
+#endif
 	printf("%s\n", cwd);
 	free(cwd);
 

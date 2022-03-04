@@ -33,6 +33,7 @@ extern int next_posix_spawn(pid_t *, const char *,
 			    const posix_spawnattr_t *, char * const [],
 			    char * const []);
 
+#ifdef __linux__
 static int __secure()
 {
 	return getauxval(AT_SECURE) != 0;
@@ -42,6 +43,7 @@ static const char *__execfn()
 {
 	return (const char *)getauxval(AT_EXECFN);
 }
+#endif
 
 __attribute__((visibility("hidden")))
 char *__basename(char *path)
@@ -164,8 +166,10 @@ void execve_init()
 	const char *ignore;
 	int ret;
 
+#ifdef __linux__
 	if (__secure())
 		__warning("%s: secure-execution mode\n", __execfn());
+#endif
 
 	if (re)
 		return;

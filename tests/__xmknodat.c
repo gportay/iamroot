@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -7,7 +7,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#ifdef __linux__
 #include <sys/sysmacros.h>
+#endif
 
 #include <unistd.h>
 #include <fcntl.h>
@@ -16,7 +18,9 @@
 
 #include "iamroot.h"
 
+#ifdef __linux__
 extern int __xmknodat(int, int, const char *, mode_t, dev_t *);
+#endif
 
 int main(int argc, char * const argv[])
 {
@@ -44,10 +48,17 @@ int main(int argc, char * const argv[])
 		}
 	}
 
+#ifdef __linux__
 	if (__xmknodat(ver, fd, argv[3], mode, &dev)) {
 		perror("__xmknodat");
 		goto exit;
 	}
+#else
+	if (mknodat(fd, argv[3], mode, dev)) {
+		perror("mknodat");
+		goto exit;
+	}
+#endif
 
 	ret = EXIT_SUCCESS;
 

@@ -10,7 +10,9 @@
 #include <fcntl.h>
 #include <dlfcn.h>
 
+#ifdef __linux__
 #include <sys/statfs.h>
+#endif
 
 #include "iamroot.h"
 

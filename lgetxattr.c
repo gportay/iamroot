@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#ifdef __linux__
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
@@ -71,3 +72,4 @@ ssize_t lgetxattr(const char *path, const char *name, void *value, size_t size)
 
 	return next_lgetxattr(real_path, name, value, size);
 }
+#endif

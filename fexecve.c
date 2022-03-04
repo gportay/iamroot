@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#ifdef __linux__
 #include <errno.h>
 #include <sys/syscall.h>
 #include <fcntl.h>
@@ -55,3 +56,4 @@ int fexecve(int fd, char * const argv[], char * const envp[])
 
 	return __fexecve(fd, argv, envp);
 }
+#endif

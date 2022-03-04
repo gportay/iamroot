@@ -1,9 +1,10 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#ifdef __linux__
 /*
  * Stolen from musl (src/include/features.h)
  *
@@ -271,3 +272,4 @@ int ulckpwdf()
 {
 	return 0;
 }
+#endif

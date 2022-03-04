@@ -51,7 +51,13 @@ extern "C" {
 /* See https://www.in-ulm.de/~mascheck/various/shebang/#results */
 #define HASHBANG_MAX NAME_MAX
 
+#ifndef __linux__
+#define __environ environ
+
+extern char **environ;
+#else
 extern char **__environ;
+#endif
 
 int _snprintf(char *, size_t, const char *, ...) __attribute__((format(printf,3,4)));
 

@@ -1,9 +1,10 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#ifdef __linux__
 /*
  * Stolen from musl (src/include/features.h)
  *
@@ -266,3 +267,4 @@ int putpwent(const struct passwd *pw, FILE *f)
 		pw->pw_name, pw->pw_passwd, pw->pw_uid, pw->pw_gid,
 		pw->pw_gecos, pw->pw_dir, pw->pw_shell)<0 ? -1 : 0;
 }
+#endif

@@ -15,5 +15,9 @@ int execv(const char *path, char * const argv[])
 	__debug("%s(path: '%s', argv: { '%s', '%s', ... })\n", __func__, path,
 		argv[0], argv[1]);
 
+#ifdef __linux__
 	return execvpe(path, argv, __environ);
+#else
+	return execvp(path, argv);
+#endif
 }

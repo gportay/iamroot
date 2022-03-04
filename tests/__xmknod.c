@@ -7,14 +7,18 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
+#ifdef __linux__
 #include <sys/sysmacros.h>
+#endif
 
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
+#ifdef __linux__
 extern int __xmknod(int, const char *, mode_t, dev_t *);
+#endif
 
 int main(int argc, char * const argv[])
 {
@@ -34,10 +38,17 @@ int main(int argc, char * const argv[])
 	mode = strtoul(argv[3], NULL, 0);
 	dev = makedev(strtoul(argv[4], NULL, 0), strtoul(argv[5], NULL, 0));
 
+#ifdef __linux__
 	if (__xmknod(ver, argv[2], mode, &dev)) {
 		perror("__xmknod");
 		return EXIT_FAILURE;
 	}
+#else
+	if (mknod(argv[2], mode, dev)) {
+		perror("mknod");
+		return EXIT_FAILURE;
+	}
+#endif
 
 	return EXIT_SUCCESS;
 }

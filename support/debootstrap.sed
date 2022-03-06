@@ -50,4 +50,9 @@
         /^\(Local time\|Universal Time\) is now: /{
 		s,\(:\s\+\).*$,\1Day Mon dd hh:mm:ss TZ YYYY.,
 	}
+
+	# (Reading database ... XXXX files and directories currently installed.)
+	/^(Reading database \.\.\./{
+		s,[[:digit:]]\+,XXX,
+	}
 }

@@ -37,26 +37,26 @@ gpg: directory 'manjaro-rootfs/etc/pacman.d/gnupg.tmp/openpgp-revocs.d' created
 gpg: revocation certificate stored as 'manjaro-rootfs/etc/pacman.d/gnupg.tmp/openpgp-revocs.dXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.rev'
 gpg: Done
 ==> Updating trust database...
-gpg: marginals needed: 3  completes needed: 1  trust model: pgp
-gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
+gpg: marginals needed: X  completes needed: X  trust model: pgp
+gpg: depth: X  valid:   X  signed:   X  trust: X-, Xq, Xn, Xm, Xf, Xu
 ==> Appending keys from archlinux.gpg...
 ==> Locally signing trusted keys in keyring...
-  -> Locally signed 6 keys.
+  -> Locally signed X keys.
 ==> Importing owner trust values...
-gpg: setting ownertrust to 4
-gpg: setting ownertrust to 4
-gpg: setting ownertrust to 4
-gpg: inserting ownertrust of 4
-gpg: setting ownertrust to 4
-gpg: setting ownertrust to 4
+gpg: setting ownertrust to X
+gpg: setting ownertrust to X
+gpg: setting ownertrust to X
+gpg: inserting ownertrust of X
+gpg: setting ownertrust to X
+gpg: setting ownertrust to X
 ==> Disabling revoked keys in keyring...
-  -> Disabled 49 keys.
+  -> Disabled X keys.
 ==> Updating trust database...
-gpg: marginals needed: 3  completes needed: 1  trust model: pgp
-gpg: depth: 0  valid:   1  signed:   6  trust: 0-, 0q, 0n, 0m, 0f, 1u
-gpg: depth: 1  valid:   6  signed:  94  trust: 0-, 0q, 0n, 6m, 0f, 0u
-gpg: depth: 2  valid:  88  signed:  32  trust: 88-, 0q, 0n, 0m, 0f, 0u
-gpg: next trustdb check due at 2022-05-06
+gpg: marginals needed: X  completes needed: X  trust model: pgp
+gpg: depth: X  valid:   X  signed:   X  trust: X-, Xq, Xn, Xm, Xf, Xu
+gpg: depth: X  valid:   X  signed:  X  trust: X-, Xq, Xn, Xm, Xf, Xu
+gpg: depth: X  valid:  X  signed:  X  trust: X-, Xq, Xn, Xm, Xf, Xu
+gpg: next trustdb check due at YYYY-MM-DD
 gpg: key XXXXXXXXXXXXXXXX: 2 signatures not checked due to missing keys
 gpg: key XXXXXXXXXXXXXXXX: public key "Anupam Basak <anupam@manjaro.org>" imported
 gpg: key XXXXXXXXXXXXXXXX: 12 signatures not checked due to missing keys
@@ -102,33 +102,33 @@ gpg: key XXXXXXXXXXXXXXXX: public key "Jonas Strassel <info@jonas-strassel.de>" 
 gpg: key XXXXXXXXXXXXXXXX: public key "Simon Büeler <simon.bueeler@manjaro.org>" imported
 gpg: Total number processed: 24
 gpg:               imported: 24
-gpg: marginals needed: 3  completes needed: 1  trust model: pgp
-gpg: depth: 0  valid:   1  signed:   6  trust: 0-, 0q, 0n, 0m, 0f, 1u
-gpg: depth: 1  valid:   6  signed:  94  trust: 0-, 0q, 0n, 6m, 0f, 0u
-gpg: depth: 2  valid:  88  signed:  32  trust: 88-, 0q, 0n, 0m, 0f, 0u
-gpg: next trustdb check due at 2022-05-06
-gpg: inserting ownertrust of 4
-gpg: inserting ownertrust of 4
-gpg: inserting ownertrust of 4
-gpg: inserting ownertrust of 4
-gpg: inserting ownertrust of 4
-gpg: inserting ownertrust of 4
-gpg: inserting ownertrust of 4
-gpg: inserting ownertrust of 4
-gpg: inserting ownertrust of 4
-gpg: inserting ownertrust of 4
-gpg: inserting ownertrust of 4
-gpg: inserting ownertrust of 4
-gpg: inserting ownertrust of 4
-gpg: inserting ownertrust of 4
-gpg: inserting ownertrust of 4
-gpg: inserting ownertrust of 4
-gpg: inserting ownertrust of 4
-gpg: inserting ownertrust of 4
-gpg: inserting ownertrust of 4
-gpg: inserting ownertrust of 4
-gpg: inserting ownertrust of 4
-gpg: inserting ownertrust of 4
+gpg: marginals needed: X  completes needed: X  trust model: pgp
+gpg: depth: X  valid:   X  signed:   X  trust: X-, Xq, Xn, Xm, Xf, Xu
+gpg: depth: X  valid:   X  signed:  X  trust: X-, Xq, Xn, Xm, Xf, Xu
+gpg: depth: X  valid:  X  signed:  X  trust: X-, Xq, Xn, Xm, Xf, Xu
+gpg: next trustdb check due at YYYY-MM-DD
+gpg: inserting ownertrust of X
+gpg: inserting ownertrust of X
+gpg: inserting ownertrust of X
+gpg: inserting ownertrust of X
+gpg: inserting ownertrust of X
+gpg: inserting ownertrust of X
+gpg: inserting ownertrust of X
+gpg: inserting ownertrust of X
+gpg: inserting ownertrust of X
+gpg: inserting ownertrust of X
+gpg: inserting ownertrust of X
+gpg: inserting ownertrust of X
+gpg: inserting ownertrust of X
+gpg: inserting ownertrust of X
+gpg: inserting ownertrust of X
+gpg: inserting ownertrust of X
+gpg: inserting ownertrust of X
+gpg: inserting ownertrust of X
+gpg: inserting ownertrust of X
+gpg: inserting ownertrust of X
+gpg: inserting ownertrust of X
+gpg: inserting ownertrust of X
 
 pub  rsa2048/5BD96CC4247B52CC
      created: 2012-05-04  expires: 2022-05-02  usage: SC  
@@ -638,11 +638,11 @@ key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
 The signature will be marked as non-exportable.
 
 
-gpg: marginals needed: 3  completes needed: 1  trust model: pgp
-gpg: depth: 0  valid:   1  signed:  28  trust: 0-, 0q, 0n, 0m, 0f, 1u
-gpg: depth: 1  valid:  28  signed:  95  trust: 0-, 0q, 0n, 28m, 0f, 0u
-gpg: depth: 2  valid:  88  signed:  32  trust: 88-, 0q, 0n, 0m, 0f, 0u
-gpg: next trustdb check due at 2022-04-20
+gpg: marginals needed: X  completes needed: X  trust model: pgp
+gpg: depth: X  valid:   X  signed:  X  trust: X-, Xq, Xn, Xm, Xf, Xu
+gpg: depth: X  valid:  X  signed:  X  trust: X-, Xq, Xn, Xm, Xf, Xu
+gpg: depth: X  valid:  X  signed:  X  trust: X-, Xq, Xn, Xm, Xf, Xu
+gpg: next trustdb check due at YYYY-MM-DD
 ==> Creating install root at manjaro-rootfs
 ==> Installing packages to manjaro-rootfs
 :: Synchronizing package databases...

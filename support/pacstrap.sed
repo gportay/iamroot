@@ -5,6 +5,12 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
 
+#   -> Locally signed X keys.
+#   -> Disabled X keys.
+/^  -> .* keys\.$/{
+	s,[[:digit:]]\+,X,
+}
+
 /^\(gpg:\|key\)\s/ {
 	# gpg: revocation certificate stored as '/etc/pacman.d/gnupg.tmp/openpgp-revocs.d/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.rev'
 	/\.rev'$/s,'\(.*\)/[0-9A-F]\{40\,40\}\.rev','\1XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.rev',
@@ -12,6 +18,17 @@
 	# gpg: key XXXXXXXXXXXXXXXX marked as ultimately trusted
 	# key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
 	/key\s/s,[0-9A-F]\{16\,16\},XXXXXXXXXXXXXXXX,
+
+	# gpg: next trustdb check due at YYYY-MM-DD
+	s,[[:digit:]]\{4\,4\}-[[:digit:]]\{2\,2\}-[[:digit:]]\{2\,2\},YYYY-MM-DD,
+
+	# gpg: setting ownertrust to X
+	# gpg: inserting ownertrust of 4
+	# gpg: depth: X  valid:   X  signed:   X  trust: X-, Xq, Xn, Xm, Xf, Xu
+	# gpg: marginals needed: 3  completes needed: 1  trust model: pg
+	/^gpg: \(setting ownertrust\|inserting ownertrust\|depth\|marginals needed\)/ {
+		s,[[:digit:]]\+,X,g
+	}
 }
 
 /^:: Synchronizing package databases\.\.\./,/^:: / {

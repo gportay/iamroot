@@ -10,32 +10,32 @@ gpg: directory 'i686-arch-rootfs/etc/pacman.d/gnupg.tmp/openpgp-revocs.d' create
 gpg: revocation certificate stored as 'i686-arch-rootfs/etc/pacman.d/gnupg.tmp/openpgp-revocs.dXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.rev'
 gpg: Done
 ==> Updating trust database...
-gpg: marginals needed: 3  completes needed: 1  trust model: pgp
-gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
+gpg: marginals needed: X  completes needed: X  trust model: pgp
+gpg: depth: X  valid:   X  signed:   X  trust: X-, Xq, Xn, Xm, Xf, Xu
 ==> Appending keys from archlinux.gpg...
 ==> Appending keys from archlinux32.gpg...
 ==> Locally signing trusted keys in keyring...
-  -> Locally signed 11 keys.
+  -> Locally signed X keys.
 ==> Importing owner trust values...
-gpg: setting ownertrust to 4
-gpg: setting ownertrust to 4
-gpg: setting ownertrust to 4
-gpg: inserting ownertrust of 4
-gpg: setting ownertrust to 4
-gpg: setting ownertrust to 4
-gpg: setting ownertrust to 4
-gpg: setting ownertrust to 4
-gpg: inserting ownertrust of 4
-gpg: setting ownertrust to 4
-gpg: setting ownertrust to 4
+gpg: setting ownertrust to X
+gpg: setting ownertrust to X
+gpg: setting ownertrust to X
+gpg: inserting ownertrust of X
+gpg: setting ownertrust to X
+gpg: setting ownertrust to X
+gpg: setting ownertrust to X
+gpg: setting ownertrust to X
+gpg: inserting ownertrust of X
+gpg: setting ownertrust to X
+gpg: setting ownertrust to X
 ==> Disabling revoked keys in keyring...
-  -> Disabled 52 keys.
+  -> Disabled X keys.
 ==> Updating trust database...
-gpg: marginals needed: 3  completes needed: 1  trust model: pgp
-gpg: depth: 0  valid:   1  signed:  10  trust: 0-, 0q, 0n, 0m, 0f, 1u
-gpg: depth: 1  valid:  10  signed:  95  trust: 0-, 0q, 0n, 10m, 0f, 0u
-gpg: depth: 2  valid:  89  signed:  32  trust: 89-, 0q, 0n, 0m, 0f, 0u
-gpg: next trustdb check due at 2022-05-06
+gpg: marginals needed: X  completes needed: X  trust model: pgp
+gpg: depth: X  valid:   X  signed:  X  trust: X-, Xq, Xn, Xm, Xf, Xu
+gpg: depth: X  valid:  X  signed:  X  trust: X-, Xq, Xn, Xm, Xf, Xu
+gpg: depth: X  valid:  X  signed:  X  trust: X-, Xq, Xn, Xm, Xf, Xu
+gpg: next trustdb check due at YYYY-MM-DD
 ==> Creating install root at i686-arch-rootfs
 ==> Installing packages to i686-arch-rootfs
 :: Synchronizing package databases...

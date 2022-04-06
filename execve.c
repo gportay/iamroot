@@ -827,10 +827,14 @@ close:
 __attribute__((visibility("hidden")))
 void verbose_exec(const char *path, char * const argv[], char * const envp[])
 {
-	int debug;
+	int fd, debug;
 
 	debug = __getdebug();
 	if (debug == 0)
+		return;
+
+	fd = __getdebug_fd();
+	if (fd < 0)
 		return;
 
 	if (debug < 4) {
@@ -840,46 +844,45 @@ void verbose_exec(const char *path, char * const argv[], char * const envp[])
 		char *argv0;
 		char *root;
 
-		dprintf(STDERR_FILENO, "Debug: running");
+		dprintf(fd, "Debug: running");
 
 		root = __getroot();
 		if (root)
-			dprintf(STDERR_FILENO, " IAMROOT_ROOT=%s", root);
+			dprintf(fd, " IAMROOT_ROOT=%s", root);
 
 		ld_preload = getenv("LD_PRELOAD");
 		if (ld_preload)
-			dprintf(STDERR_FILENO, " LD_PRELOAD=%s", ld_preload);
+			dprintf(fd, " LD_PRELOAD=%s", ld_preload);
 
 		ld_library_path = getenv("LD_LIBRARY_PATH");
 		if (ld_library_path)
-			dprintf(STDERR_FILENO, " LD_LIBRARY_PATH=%s",
-				ld_library_path);
+			dprintf(fd, " LD_LIBRARY_PATH=%s", ld_library_path);
 
 		argv0 = getenv("argv0");
 		if (argv0)
-			dprintf(STDERR_FILENO, " argv0=%s", argv0);
+			dprintf(fd, " argv0=%s", argv0);
 
 		p = argv;
 		while (*p)
-			dprintf(STDERR_FILENO, " %s", *p++);
-		dprintf(STDERR_FILENO, "\n");
+			dprintf(fd, " %s", *p++);
+		dprintf(fd, "\n");
 	} else {
 		char * const *p;
 
-		dprintf(STDERR_FILENO, "Debug: %s: %s: pid: %i: execve(path: '%s', argv: {",
+		dprintf(fd, "Debug: %s: %s: pid: %i: execve(path: '%s', argv: {",
 			__libc(), __arch(), getpid(), path);
 		p = argv;
 		while (*p)
-			dprintf(STDERR_FILENO, " '%s',", *p++);
-		dprintf(STDERR_FILENO, " NULL }, ");
+			dprintf(fd, " '%s',", *p++);
+		dprintf(fd, " NULL }, ");
 		if (debug < 5) {
-			dprintf(STDERR_FILENO, "envp: %p)\n", envp);
+			dprintf(fd, "envp: %p)\n", envp);
 		} else {
-			dprintf(STDERR_FILENO, "envp: %p {", envp);
+			dprintf(fd, "envp: %p {", envp);
 			p = envp;
 			while (*p)
-				dprintf(STDERR_FILENO, " %s", *p++);
-			dprintf(STDERR_FILENO, " }\n");
+				dprintf(fd, " %s", *p++);
+			dprintf(fd, " }\n");
 		}
 	}
 }

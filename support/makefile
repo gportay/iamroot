@@ -374,6 +374,7 @@ umount-debian-oldoldstable umount-debian-oldstable umount-debian-stable umount-d
 ubuntu-bionic-chroot:
 ubuntu-focal-chroot:
 ubuntu-impish-chroot:
+ubuntu-jammy-chroot:
 ubuntu-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
 ubuntu-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
 ubuntu-%-chroot: | ubuntu-%-rootfs
@@ -381,17 +382,19 @@ ubuntu-%-chroot: | ubuntu-%-rootfs
 
 .NOTPARALLEL: ubuntu-rootfs
 .PHONY: ubuntu-rootfs
-ubuntu-rootfs: ubuntu-focal-rootfs ubuntu-impish-rootfs
+ubuntu-rootfs: ubuntu-focal-rootfs ubuntu-impish-rootfs ubuntu-jammy-rootfs
 
 fixme-rootfs: ubuntu-bionic-rootfs
 
 ubuntu-bionic-rootfs: | ubuntu-bionic-rootfs/etc/machine-id
 ubuntu-focal-rootfs: | ubuntu-focal-rootfs/etc/machine-id
 ubuntu-impish-rootfs: | ubuntu-impish-rootfs/etc/machine-id
+ubuntu-jammy-rootfs: | ubuntu-jammy-rootfs/etc/machine-id
 
 ubuntu-bionic-rootfs/etc/machine-id:
 ubuntu-focal-rootfs/etc/machine-id:
 ubuntu-impish-rootfs/etc/machine-id:
+ubuntu-jammy-rootfs/etc/machine-id:
 
 ubuntu-bionic-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|pam-auth-update|/var/lib/dpkg/info/initramfs-tools.postinst
 ubuntu-%-rootfs/etc/machine-id: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
@@ -413,18 +416,22 @@ qemu-system-x86_64-ubuntu-focal:
 qemu-system-x86_64-ubuntu-focal: override CMDLINE += rw
 qemu-system-x86_64-ubuntu-impish:
 qemu-system-x86_64-ubuntu-impish: override CMDLINE += rw
+qemu-system-x86_64-ubuntu-jammy:
+qemu-system-x86_64-ubuntu-jammy: override CMDLINE += rw
 
 ifneq ($(VMLINUX_KVER),)
 vmlinux-ubuntu-bionic:
 vmlinux-ubuntu-focal:
 vmlinux-ubuntu-impish:
+vmlinux-ubuntu-jammy:
 endif
 
-ubuntu-bionic.ext4 ubuntu-focal.ext4 ubuntu-impish.ext4:
+ubuntu-bionic.ext4 ubuntu-focal.ext4 ubuntu-impish.ext4 ubuntu-jammy.ext4:
 
 ubuntu-bionic-postrootfs:
 ubuntu-focal-postrootfs:
 ubuntu-impish-postrootfs:
+ubuntu-jammy-postrootfs:
 ubuntu-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
 ubuntu-%-postrootfs: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
 ubuntu-%-postrootfs: export IAMROOT_PATH = /usr/bin:/usr/sbin:/bin:/sbin
@@ -439,11 +446,11 @@ ubuntu-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "chroot ubuntu-$*-rootfs systemctl disable sshd.service"
 	bash iamroot-shell -c "chroot ubuntu-$*-rootfs pam-auth-update"
 
-chroot-ubuntu-bionic chroot-ubuntu-focal chroot-ubuntu-impish:
+chroot-ubuntu-bionic chroot-ubuntu-focal chroot-ubuntu-impish chroot-ubuntu-jammy:
 
-mount-ubuntu-bionic mount-ubuntu-focal mount-ubuntu-impish:
+mount-ubuntu-bionic mount-ubuntu-focal mount-ubuntu-impish mount-ubuntu-jammy:
 
-umount-ubuntu-bionic umount-ubuntu-focal umount-ubuntu-impish:
+umount-ubuntu-bionic umount-ubuntu-focal umount-ubuntu-impish umount-ubuntu-jammy:
 endif
 
 ifneq ($(shell command -v dnf),)
@@ -1025,6 +1032,7 @@ debian-support: support/debian-unstable-rootfs.txt
 .PHONY: ubuntu-support
 ubuntu-support: support/ubuntu-focal-rootfs.txt
 ubuntu-support: support/ubuntu-impish-rootfs.txt
+ubuntu-support: support/ubuntu-jammy-rootfs.txt
 
 .PHONY: fedora-support
 fedora-support: support/fedora-33-rootfs.txt
@@ -1091,6 +1099,11 @@ support/ubuntu-impish-rootfs.txt: ubuntu-impish-rootfs.log
 	support/debootstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
 	mv $@.tmp $@
 
+.PRECIOUS: support/ubuntu-jammy-rootfs.txt
+support/ubuntu-jammy-rootfs.txt: ubuntu-jammy-rootfs.log
+	support/debootstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	mv $@.tmp $@
+
 .PRECIOUS: support/fedora-33-rootfs.txt
 support/fedora-33-rootfs.txt: fedora-33-rootfs.log
 	support/dnf.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
@@ -1151,6 +1164,7 @@ debian-log: debian-unstable-rootfs.log
 .PHONY: ubuntu-log
 ubuntu-log: ubuntu-focal-rootfs.log
 ubuntu-log: ubuntu-impish-rootfs.log
+ubuntu-log: ubuntu-jammy-rootfs.log
 
 .PHONY: fedora-log
 fedora-log: fedora-33-rootfs.log
@@ -1174,6 +1188,7 @@ debian-unstable-rootfs.log:
 ubuntu-bionic-rootfs.log:
 ubuntu-focal-rootfs.log:
 ubuntu-impish-rootfs.log:
+ubuntu-jammy-rootfs.log:
 fedora-33-rootfs.log:
 fedora-34-rootfs.log:
 fedora-35-rootfs.log:

@@ -1145,7 +1145,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 		return -1;
 	}
 
-	__debug("%s(path: '%s' -> '%s', argv: { '%s', '%s', ... } envp: %p )\n",
+	__debug("%s(path: '%s' -> '%s', argv: { '%s', '%s', ... }, envp: %p)\n",
 		__func__, path, real_path, argv[0], argv[1], envp);
 	i = 0;
 	interparg[i++] = *argv; /* original argv0 as argv0 */

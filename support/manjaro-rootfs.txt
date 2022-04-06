@@ -1,3 +1,30 @@
+--2022-04-06 12:13:00--  https://gitlab.manjaro.org/packages/core/manjaro-keyring/-/raw/master/manjaro.gpg
+Loaded CA certificate '/etc/ssl/certs/ca-certificates.crt'
+Resolving gitlab.manjaro.org (gitlab.manjaro.org)... 2a01:4f8:c2c:c956::1, 195.201.101.32
+Connecting to gitlab.manjaro.org (gitlab.manjaro.org)|2a01:4f8:c2c:c956::1|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 183099 (179K) [text/plain]
+Saving to: ‘manjaro.gpg’
+
+     0K .......... .......... .......... .......... .......... 27% 1.01M 0s
+    50K .......... .......... .......... .......... .......... 55% 1.93M 0s
+   100K .......... .......... .......... .......... .......... 83% 24.1M 0s
+   150K .......... .......... ........                        100% 36.0M=0.08s
+
+2022-04-06 12:13:01 (2.28 MB/s) - ‘manjaro.gpg’ saved [183099/183099]
+
+--2022-04-06 12:13:01--  https://gitlab.manjaro.org/packages/core/manjaro-keyring/-/raw/master/manjaro-trusted
+Loaded CA certificate '/etc/ssl/certs/ca-certificates.crt'
+Resolving gitlab.manjaro.org (gitlab.manjaro.org)... 2a01:4f8:c2c:c956::1, 195.201.101.32
+Connecting to gitlab.manjaro.org (gitlab.manjaro.org)|2a01:4f8:c2c:c956::1|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 968 [text/plain]
+Saving to: ‘manjaro-trusted’
+
+     0K                                                       100% 9.90M=0s
+
+2022-04-06 12:13:02 (9.90 MB/s) - ‘manjaro-trusted’ saved [968/968]
+
 gpg: manjaro-rootfs/etc/pacman.d/gnupg.tmp/trustdb.gpg: trustdb created
 gpg: no ultimately trusted keys found
 gpg: starting migration from earlier GnuPG versions
@@ -14,8 +41,9 @@ gpg: marginals needed: 3  completes needed: 1  trust model: pgp
 gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
 ==> Appending keys from archlinux.gpg...
 ==> Locally signing trusted keys in keyring...
-  -> Locally signed 5 keys.
+  -> Locally signed 6 keys.
 ==> Importing owner trust values...
+gpg: setting ownertrust to 4
 gpg: setting ownertrust to 4
 gpg: setting ownertrust to 4
 gpg: inserting ownertrust of 4
@@ -25,9 +53,9 @@ gpg: setting ownertrust to 4
   -> Disabled 49 keys.
 ==> Updating trust database...
 gpg: marginals needed: 3  completes needed: 1  trust model: pgp
-gpg: depth: 0  valid:   1  signed:   5  trust: 0-, 0q, 0n, 0m, 0f, 1u
-gpg: depth: 1  valid:   5  signed:  94  trust: 0-, 0q, 0n, 5m, 0f, 0u
-gpg: depth: 2  valid:  87  signed:  33  trust: 87-, 0q, 0n, 0m, 0f, 0u
+gpg: depth: 0  valid:   1  signed:   6  trust: 0-, 0q, 0n, 0m, 0f, 1u
+gpg: depth: 1  valid:   6  signed:  94  trust: 0-, 0q, 0n, 6m, 0f, 0u
+gpg: depth: 2  valid:  88  signed:  32  trust: 88-, 0q, 0n, 0m, 0f, 0u
 gpg: next trustdb check due at 2022-05-06
 gpg: key XXXXXXXXXXXXXXXX: 2 signatures not checked due to missing keys
 gpg: key XXXXXXXXXXXXXXXX: public key "Anupam Basak <anupam@manjaro.org>" imported
@@ -75,9 +103,9 @@ gpg: key XXXXXXXXXXXXXXXX: public key "Simon Büeler <simon.bueeler@manjaro.org>
 gpg: Total number processed: 24
 gpg:               imported: 24
 gpg: marginals needed: 3  completes needed: 1  trust model: pgp
-gpg: depth: 0  valid:   1  signed:   5  trust: 0-, 0q, 0n, 0m, 0f, 1u
-gpg: depth: 1  valid:   5  signed:  94  trust: 0-, 0q, 0n, 5m, 0f, 0u
-gpg: depth: 2  valid:  87  signed:  33  trust: 87-, 0q, 0n, 0m, 0f, 0u
+gpg: depth: 0  valid:   1  signed:   6  trust: 0-, 0q, 0n, 0m, 0f, 1u
+gpg: depth: 1  valid:   6  signed:  94  trust: 0-, 0q, 0n, 6m, 0f, 0u
+gpg: depth: 2  valid:  88  signed:  32  trust: 88-, 0q, 0n, 0m, 0f, 0u
 gpg: next trustdb check due at 2022-05-06
 gpg: inserting ownertrust of 4
 gpg: inserting ownertrust of 4
@@ -611,9 +639,9 @@ The signature will be marked as non-exportable.
 
 
 gpg: marginals needed: 3  completes needed: 1  trust model: pgp
-gpg: depth: 0  valid:   1  signed:  27  trust: 0-, 0q, 0n, 0m, 0f, 1u
-gpg: depth: 1  valid:  27  signed:  95  trust: 0-, 0q, 0n, 27m, 0f, 0u
-gpg: depth: 2  valid:  87  signed:  33  trust: 87-, 0q, 0n, 0m, 0f, 0u
+gpg: depth: 0  valid:   1  signed:  28  trust: 0-, 0q, 0n, 0m, 0f, 1u
+gpg: depth: 1  valid:  28  signed:  95  trust: 0-, 0q, 0n, 28m, 0f, 0u
+gpg: depth: 2  valid:  88  signed:  32  trust: 88-, 0q, 0n, 0m, 0f, 0u
 gpg: next trustdb check due at 2022-04-20
 ==> Creating install root at manjaro-rootfs
 ==> Installing packages to manjaro-rootfs
@@ -623,7 +651,7 @@ looking for conflicting packages...
 warning: dependency cycle detected:
 warning: bashrc-manjaro will be installed before its bash dependency
 
-Packages (XXX) acl  archlinux-keyring  argon2  attr  audit  bash  bashrc-manjaro  brotli  bzip2  ca-certificates  ca-certificates-mozilla  ca-certificates-utils  coreutils  cryptsetup  curl  db  dbus  device-mapper  e2fsprogs  expat  fakeroot  file  filesystem  findutils  gawk  gcc-libs  gdbm  gettext  glib2  glibc  gmp  gnupg  gnutls  gpgme  grep  gzip  hwdata  iana-etc  icu  iproute2  iptables  iputils  json-c  kbd  keyutils  kmod  krb5  less  libarchive  libassuan  libcap  libcap-ng  libcroco  libelf  libffi  libgcrypt  libgpg-error  libidn2  libksba  libldap  libmnl  libnetfilter_conntrack  libnfnetlink  libnftnl  libnghttp2  libnl  libnsl  libp11-kit  libpcap  libpsl  libsasl  libseccomp  libsecret  libssh2  libsysprof-capture  libtasn1  libtirpc  libunistring  libxcrypt  libxml2  licenses  linux-api-headers  lz4  manjaro-keyring  mpfr  ncurses  nettle  npth  openssl  p11-kit  pacman  pacman-mirrors  pam  pambase  pciutils  pcre  pcre2  perl  pinentry  popt  procps-ng  psmisc  python  python-certifi  python-chardet  python-idna  python-npyscreen  python-requests  python-urllib3  readline  sed  shadow  sqlite  systemd  systemd-libs  systemd-sysvcompat  tar  tzdata  util-linux  util-linux-libs  xz  zlib  zstd  base
+Packages (XXX) acl  archlinux-keyring  argon2  attr  audit  bash  bashrc-manjaro  brotli  bzip2  ca-certificates  ca-certificates-mozilla  ca-certificates-utils  coreutils  cryptsetup  curl  db  dbus  device-mapper  e2fsprogs  expat  fakeroot  file  filesystem  findutils  gawk  gcc-libs  gdbm  gettext  glib2  glibc  gmp  gnupg  gnutls  gpgme  grep  gzip  hwdata  iana-etc  icu  iproute2  iptables  iputils  json-c  kbd  keyutils  kmod  krb5  less  libarchive  libassuan  libcap  libcap-ng  libelf  libffi  libgcrypt  libgpg-error  libidn2  libksba  libldap  libmnl  libnetfilter_conntrack  libnfnetlink  libnftnl  libnghttp2  libnl  libnsl  libp11-kit  libpcap  libpsl  libsasl  libseccomp  libsecret  libssh2  libsysprof-capture  libtasn1  libtirpc  libunistring  libxcrypt  libxml2  licenses  linux-api-headers  lz4  manjaro-keyring  mpfr  ncurses  nettle  npth  openssl  p11-kit  pacman  pacman-mirrors  pam  pambase  pciutils  pcre  pcre2  perl  pinentry  popt  procps-ng  psmisc  python  python-certifi  python-chardet  python-idna  python-npyscreen  python-requests  python-urllib3  readline  sed  shadow  sqlite  systemd  systemd-libs  systemd-sysvcompat  tar  tpm2-tss  tzdata  util-linux  util-linux-libs  xz  zlib  zstd  base
 
 Total Download Size:   XXX XiB
 Total Installed Size:  XXX XiB
@@ -698,15 +726,11 @@ installing systemd-libs...
 installing procps-ng...
 installing sed...
 installing tar...
-installing libsysprof-capture...
-installing glib2...
-Optional dependencies for glib2
-    python: gdbus-codegen, glib-genmarshal, glib-mkenums, gtester-report [pending]
-    libelf: gresource inspection tool [pending]
 installing libunistring...
 installing icu...
 installing libxml2...
-installing libcroco...
+Optional dependencies for libxml2
+    python: Python bindings [pending]
 installing gettext...
 Optional dependencies for gettext
     git: for autopoint infrastructure updates
@@ -744,6 +768,13 @@ installing perl...
 installing npth...
 installing libksba...
 installing libassuan...
+installing libsysprof-capture...
+installing glib2...
+Optional dependencies for glib2
+    python: gdbus-codegen, glib-genmarshal, glib-mkenums, gtester-report [pending]
+    libelf: gresource inspection tool [pending]
+installing json-c...
+installing tpm2-tss...
 installing libsecret...
 Optional dependencies for libsecret
     org.freedesktop.secrets: secret storage backend
@@ -805,7 +836,6 @@ Optional dependencies for pacman
     vim: default merge program for pacdiff
 installing device-mapper...
 installing popt...
-installing json-c...
 installing argon2...
 installing cryptsetup...
 installing dbus...
@@ -876,12 +906,12 @@ Creating group 'systemd-resolve' with GID 977.
 Creating user 'systemd-resolve' (systemd Resolver) with UID 977 and GID 977.
 Creating group 'systemd-timesync' with GID 976.
 Creating user 'systemd-timesync' (systemd Time Synchronization) with UID 976 and GID 976.
+Creating group 'tss' with GID 975.
+Creating user 'tss' (tss user for tpm2) with UID 975 and GID 975.
 Creating group 'uuidd' with GID 68.
 Creating user 'uuidd' (n/a) with UID 68 and GID 68.
 Created symlink /etc/systemd/system/getty.target.wants/getty@tty1.service → /usr/lib/systemd/system/getty@.service.
 Created symlink /etc/systemd/system/multi-user.target.wants/remote-fs.target → /usr/lib/systemd/system/remote-fs.target.
-:: Append 'init=/usr/lib/systemd/systemd' to your kernel command line in your
-   bootloader to replace sysvinit with systemd, or install systemd-sysvcompat
 Optional dependencies for systemd
     libmicrohttpd: remote journald capabilities
     quota-tools: kernel-level quota management
@@ -889,7 +919,7 @@ Optional dependencies for systemd
     polkit: allow administration as unprivileged user
     curl: machinectl pull-tar and pull-raw [installed]
     libfido2: unlocking LUKS2 volumes with FIDO2 token
-    tpm2-tss: unlocking LUKS2 volumes with TPM2
+    tpm2-tss: unlocking LUKS2 volumes with TPM2 [installed]
 installing systemd-sysvcompat...
 installing iputils...
 installing iproute2...
@@ -909,6 +939,8 @@ Optional dependencies for base
 (XXX/XXX) Applying kernel sysctl settings...
   Skipped: Running in chroot.
 (XXX/XXX) Creating temporary files...
+Warning: fchownat: /run/tpm2-tss/eventlog: Ignoring error 'Operation not permitted'!
+Warning: chmod: /run/tpm2-tss/eventlog: Ignoring error 'Operation not permitted'!
 Warning: fchownat: /dev/snd/seq: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/snd/seq: Ignoring error 'Operation not permitted'!
 Warning: fchownat: /dev/snd/timer: Ignoring error 'Operation not permitted'!

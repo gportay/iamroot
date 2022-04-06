@@ -1,5 +1,6 @@
 
 > Installing system
+(X/X) Installing alpine-baselayout-data
 (X/X) Installing musl
 (X/X) Installing busybox
 Executing busybox.post-install

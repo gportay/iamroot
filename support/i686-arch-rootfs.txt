@@ -12,29 +12,139 @@ gpg: Done
 ==> Updating trust database...
 gpg: marginals needed: X  completes needed: X  trust model: pgp
 gpg: depth: X  valid:   X  signed:   X  trust: X-, Xq, Xn, Xm, Xf, Xu
-==> Appending keys from archlinux.gpg...
-==> Appending keys from archlinux32.gpg...
-==> Locally signing trusted keys in keyring...
-  -> Locally signed X keys.
-==> Importing owner trust values...
-gpg: setting ownertrust to X
-gpg: setting ownertrust to X
-gpg: setting ownertrust to X
-gpg: inserting ownertrust of X
-gpg: setting ownertrust to X
-gpg: setting ownertrust to X
-gpg: setting ownertrust to X
-gpg: setting ownertrust to X
-gpg: inserting ownertrust of X
-gpg: setting ownertrust to X
-gpg: setting ownertrust to X
-==> Disabling revoked keys in keyring...
-  -> Disabled X keys.
-==> Updating trust database...
+gpg: key XXXXXXXXXXXXXXXX: public key "BallÃ³ GyÃ¶rgy <ballogyor@gmail.com>" imported
+gpg: key XXXXXXXXXXXXXXXX: public key "Polichronucci (Arch Linux 32 Master Key) <polichronucci@archlinux.gr>" imported
+gpg: key XXXXXXXXXXXXXXXX: public key "Andreas Baumann (Archlinux32 master key) <abaumann@archlinux32.org>" imported
+gpg: key XXXXXXXXXXXXXXXX: public key "Erich Eckner <deep42thought@archlinux32.org>" imported
+gpg: key XXXXXXXXXXXXXXXX: public key "Tyler Dence (Arch Linux 32 Master) <tyzoid@archlinux32.org>" imported
+gpg: key XXXXXXXXXXXXXXXX: 1 signature not checked due to a missing key
+gpg: key XXXXXXXXXXXXXXXX: public key "Roelf Wichertjes (archlinux32 master key) <contact@roelf.org>" imported
+gpg: key XXXXXXXXXXXXXXXX: public key "Andreas Baumann (sign) <mail@andreasbaumann.cc>" imported
+gpg: key XXXXXXXXXXXXXXXX: public key "Erich Eckner (just to sign arch packages) <arch-packages@eckner.net>" imported
+gpg: key XXXXXXXXXXXXXXXX: public key "Erich Eckner (just to sign arch packages) <arch@eckner.net>" imported
+gpg: key XXXXXXXXXXXXXXXX: public key "Roelf Wichertjes <contact@roelf.org>" imported
+gpg: Total number processed: 10
+gpg:               imported: 10
 gpg: marginals needed: X  completes needed: X  trust model: pgp
-gpg: depth: X  valid:   X  signed:  X  trust: X-, Xq, Xn, Xm, Xf, Xu
-gpg: depth: X  valid:  X  signed:  X  trust: X-, Xq, Xn, Xm, Xf, Xu
-gpg: depth: X  valid:  X  signed:  X  trust: X-, Xq, Xn, Xm, Xf, Xu
+gpg: depth: X  valid:   X  signed:   X  trust: X-, Xq, Xn, Xm, Xf, Xu
+gpg: inserting ownertrust of X
+gpg: inserting ownertrust of X
+gpg: inserting ownertrust of X
+gpg: inserting ownertrust of X
+gpg: inserting ownertrust of X
+
+pub  rsa2048/B1117BC1094EA6E9
+     created: 2017-05-27  expires: 2022-12-31  usage: SC  
+     trust: marginal      validity: unknown
+sub  rsa2048/71ED5FBEBB4A7AFE
+     created: 2017-05-27  expires: 2022-12-31  usage: E   
+sub  rsa2048/F36C65FDC6C8781D
+     created: 2017-05-27  expires: 2022-12-31  usage: A   
+[ unknown] (1). Erich Eckner <deep42thought@archlinux32.org>
+
+
+pub  rsa2048/B1117BC1094EA6E9
+     created: 2017-05-27  expires: 2022-12-31  usage: SC  
+     trust: marginal      validity: unknown
+ Primary key fingerprint: 194E 37A4 7A4C 6718 07BA  CB37 B111 7BC1 094E A6E9
+
+     Erich Eckner <deep42thought@archlinux32.org>
+
+This key is due to expire on 2022-12-31.
+Are you sure that you want to sign this key with your
+key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
+
+The signature will be marked as non-exportable.
+
+
+
+pub  rsa2048/B61DBCE10901C163
+     created: 2012-03-01  expires: never       usage: SC  
+     trust: marginal      validity: unknown
+sub  rsa2048/91B854407C826CC3
+     created: 2012-03-01  expires: never       usage: E   
+[ unknown] (1). Balló György <ballogyor@gmail.com>
+
+
+pub  rsa2048/B61DBCE10901C163
+     created: 2012-03-01  expires: never       usage: SC  
+     trust: marginal      validity: unknown
+ Primary key fingerprint: CE0B DE71 A759 A87F 23F0  F7D8 B61D BCE1 0901 C163
+
+     Balló György <ballogyor@gmail.com>
+
+Are you sure that you want to sign this key with your
+key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
+
+The signature will be marked as non-exportable.
+
+
+
+pub  rsa4096/A50C0F20AEC3AF00
+     created: 2017-05-15  expired: 2022-03-31  usage: SC  
+     trust: marginal      validity: expired
+[ expired] (1). Polichronucci (Arch Linux 32 Master Key) <polichronucci@archlinux.gr>
+
+
+pub  rsa4096/A50C0F20AEC3AF00
+     created: 2017-05-15  expired: 2022-03-31  usage: SC  
+     trust: marginal      validity: expired
+ Primary key fingerprint: A0B2 50C0 FC9F C079 EC04  ADB7 A50C 0F20 AEC3 AF00
+
+     Polichronucci (Arch Linux 32 Master Key) <polichronucci@archlinux.gr>
+
+This key has expired!  Unable to sign.
+
+Key not changed so no update needed.
+
+pub  rsa4096/30AB721FE7400FCD
+     created: 2017-11-11  expires: never       usage: SC  
+     trust: marginal      validity: unknown
+sub  rsa4096/C0C61DE725B205D3
+     created: 2017-11-11  expires: never       usage: E   
+[ unknown] (1). Tyler Dence (Arch Linux 32 Master) <tyzoid@archlinux32.org>
+
+
+pub  rsa4096/30AB721FE7400FCD
+     created: 2017-11-11  expires: never       usage: SC  
+     trust: marginal      validity: unknown
+ Primary key fingerprint: D92C DDC1 55BC C8F5 50B5  FCEC 30AB 721F E740 0FCD
+
+     Tyler Dence (Arch Linux 32 Master) <tyzoid@archlinux32.org>
+
+Are you sure that you want to sign this key with your
+key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
+
+The signature will be marked as non-exportable.
+
+
+
+pub  rsa2048/4BA3B2E330891150
+     created: 2020-01-03  expires: 2023-01-26  usage: SC  
+     trust: marginal      validity: unknown
+sub  rsa2048/15BF93B5E5B12A9E
+     created: 2020-01-03  expires: 2023-01-26  usage: E   
+[ unknown] (1). Andreas Baumann (Archlinux32 master key) <abaumann@archlinux32.org>
+
+
+pub  rsa2048/4BA3B2E330891150
+     created: 2020-01-03  expires: 2023-01-26  usage: SC  
+     trust: marginal      validity: unknown
+ Primary key fingerprint: C426 F2CE D2D7 59EC EA1F  A78A 4BA3 B2E3 3089 1150
+
+     Andreas Baumann (Archlinux32 master key) <abaumann@archlinux32.org>
+
+This key is due to expire on 2023-01-26.
+Are you sure that you want to sign this key with your
+key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
+
+The signature will be marked as non-exportable.
+
+
+gpg: marginals needed: X  completes needed: X  trust model: pgp
+gpg: depth: X  valid:   X  signed:   X  trust: X-, Xq, Xn, Xm, Xf, Xu
+gpg: depth: X  valid:   X  signed:   X  trust: X-, Xq, Xn, Xm, Xf, Xu
+gpg: depth: X  valid:   X  signed:   X  trust: X-, Xq, Xn, Xm, Xf, Xu
 gpg: next trustdb check due at YYYY-MM-DD
 ==> Creating install root at i686-arch-rootfs
 ==> Installing packages to i686-arch-rootfs

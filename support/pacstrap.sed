@@ -11,6 +11,15 @@
 	s,[[:digit:]]\+,X,
 }
 
+/^pub  /,/^$/ {
+	# pub  rsa2048/0123456789ABCDEF
+	#      created: YYYYY-MM-DD  expires: YYYY-MM-DD  usage: X
+	#      trust: marginal      validity: unknown
+	# sub  rsa2048/0123456789ABCDEF
+	#      created: YYYY-MM-DD  expires: YYYY-MM-DD  usage: X
+	s,[[:digit:]]\{4\,4\}-[[:digit:]]\{2\,2\}-[[:digit:]]\{2\,2\},YYYY-MM-DD,g
+}
+
 /^\(gpg:\|key\)\s/ {
 	# gpg: revocation certificate stored as '/etc/pacman.d/gnupg.tmp/openpgp-revocs.d/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.rev'
 	/\.rev'$/s,'\(.*\)/[0-9A-F]\{40\,40\}\.rev','\1XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.rev',

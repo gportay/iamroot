@@ -34,17 +34,17 @@ gpg: inserting ownertrust of X
 gpg: inserting ownertrust of X
 
 pub  rsa2048/B1117BC1094EA6E9
-     created: 2017-05-27  expires: 2022-12-31  usage: SC  
+     created: YYYY-MM-DD  expires: YYYY-MM-DD  usage: SC  
      trust: marginal      validity: unknown
 sub  rsa2048/71ED5FBEBB4A7AFE
-     created: 2017-05-27  expires: 2022-12-31  usage: E   
+     created: YYYY-MM-DD  expires: YYYY-MM-DD  usage: E   
 sub  rsa2048/F36C65FDC6C8781D
-     created: 2017-05-27  expires: 2022-12-31  usage: A   
+     created: YYYY-MM-DD  expires: YYYY-MM-DD  usage: A   
 [ unknown] (1). Erich Eckner <deep42thought@archlinux32.org>
 
 
 pub  rsa2048/B1117BC1094EA6E9
-     created: 2017-05-27  expires: 2022-12-31  usage: SC  
+     created: YYYY-MM-DD  expires: YYYY-MM-DD  usage: SC  
      trust: marginal      validity: unknown
  Primary key fingerprint: 194E 37A4 7A4C 6718 07BA  CB37 B111 7BC1 094E A6E9
 
@@ -59,15 +59,15 @@ The signature will be marked as non-exportable.
 
 
 pub  rsa2048/B61DBCE10901C163
-     created: 2012-03-01  expires: never       usage: SC  
+     created: YYYY-MM-DD  expires: never       usage: SC  
      trust: marginal      validity: unknown
 sub  rsa2048/91B854407C826CC3
-     created: 2012-03-01  expires: never       usage: E   
+     created: YYYY-MM-DD  expires: never       usage: E   
 [ unknown] (1). Balló György <ballogyor@gmail.com>
 
 
 pub  rsa2048/B61DBCE10901C163
-     created: 2012-03-01  expires: never       usage: SC  
+     created: YYYY-MM-DD  expires: never       usage: SC  
      trust: marginal      validity: unknown
  Primary key fingerprint: CE0B DE71 A759 A87F 23F0  F7D8 B61D BCE1 0901 C163
 
@@ -81,13 +81,13 @@ The signature will be marked as non-exportable.
 
 
 pub  rsa4096/A50C0F20AEC3AF00
-     created: 2017-05-15  expired: 2022-03-31  usage: SC  
+     created: YYYY-MM-DD  expired: YYYY-MM-DD  usage: SC  
      trust: marginal      validity: expired
 [ expired] (1). Polichronucci (Arch Linux 32 Master Key) <polichronucci@archlinux.gr>
 
 
 pub  rsa4096/A50C0F20AEC3AF00
-     created: 2017-05-15  expired: 2022-03-31  usage: SC  
+     created: YYYY-MM-DD  expired: YYYY-MM-DD  usage: SC  
      trust: marginal      validity: expired
  Primary key fingerprint: A0B2 50C0 FC9F C079 EC04  ADB7 A50C 0F20 AEC3 AF00
 
@@ -98,15 +98,15 @@ This key has expired!  Unable to sign.
 Key not changed so no update needed.
 
 pub  rsa4096/30AB721FE7400FCD
-     created: 2017-11-11  expires: never       usage: SC  
+     created: YYYY-MM-DD  expires: never       usage: SC  
      trust: marginal      validity: unknown
 sub  rsa4096/C0C61DE725B205D3
-     created: 2017-11-11  expires: never       usage: E   
+     created: YYYY-MM-DD  expires: never       usage: E   
 [ unknown] (1). Tyler Dence (Arch Linux 32 Master) <tyzoid@archlinux32.org>
 
 
 pub  rsa4096/30AB721FE7400FCD
-     created: 2017-11-11  expires: never       usage: SC  
+     created: YYYY-MM-DD  expires: never       usage: SC  
      trust: marginal      validity: unknown
  Primary key fingerprint: D92C DDC1 55BC C8F5 50B5  FCEC 30AB 721F E740 0FCD
 
@@ -120,15 +120,15 @@ The signature will be marked as non-exportable.
 
 
 pub  rsa2048/4BA3B2E330891150
-     created: 2020-01-03  expires: 2023-01-26  usage: SC  
+     created: YYYY-MM-DD  expires: YYYY-MM-DD  usage: SC  
      trust: marginal      validity: unknown
 sub  rsa2048/15BF93B5E5B12A9E
-     created: 2020-01-03  expires: 2023-01-26  usage: E   
+     created: YYYY-MM-DD  expires: YYYY-MM-DD  usage: E   
 [ unknown] (1). Andreas Baumann (Archlinux32 master key) <abaumann@archlinux32.org>
 
 
 pub  rsa2048/4BA3B2E330891150
-     created: 2020-01-03  expires: 2023-01-26  usage: SC  
+     created: YYYY-MM-DD  expires: YYYY-MM-DD  usage: SC  
      trust: marginal      validity: unknown
  Primary key fingerprint: C426 F2CE D2D7 59EC EA1F  A78A 4BA3 B2E3 3089 1150
 

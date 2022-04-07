@@ -1576,9 +1576,6 @@ int execve(const char *path, char * const argv[], char * const envp[])
 					* positional argument */
 	interparg[i] = NULL; /* ensure NULL terminated */
 
-	__notice("%s: has hashbang: '%s' -> '%s' '%s'\n", path, hashbang,
-		 real_path, len < (size_t)siz ? &hashbang[len+1] : "(null)");
-
 loader:
 	/*
 	 * Run the dynamic linker directly

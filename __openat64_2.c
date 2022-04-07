@@ -15,12 +15,12 @@
 
 #ifdef __GLIBC__
 __attribute__((visibility("hidden")))
-int next_openat64_2(int fd, const char *path, int flags)
+int next___openat64_2(int fd, const char *path, int flags)
 {
 	int (*sym)(int, const char *, int);
 	int ret;
 
-	sym = dlsym(RTLD_NEXT, "openat64_2");
+	sym = dlsym(RTLD_NEXT, "__openat64_2");
 	if (!sym) {
 		__dlperror(__func__);
 		errno = ENOSYS;
@@ -34,7 +34,7 @@ int next_openat64_2(int fd, const char *path, int flags)
 	return ret;
 }
 
-int openat64_2(int fd, const char *path, int flags)
+int __openat64_2(int fd, const char *path, int flags)
 {
 	char buf[PATH_MAX];
 	char *real_path;
@@ -52,6 +52,6 @@ int openat64_2(int fd, const char *path, int flags)
 	__debug("%s(fd: %d, path: '%s' -> '%s', flags: 0%o)\n", __func__, fd,
 		path, real_path, flags);
 
-	return next_openat64_2(fd, real_path, flags);
+	return next___openat64_2(fd, real_path, flags);
 }
 #endif

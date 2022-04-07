@@ -1160,7 +1160,6 @@ int __posix_spawn(pid_t *pid, const char *path,
 
 	__debug("%s(path: '%s' -> '%s', ..., argv: { '%s', '%s', ... }, envp: %p)\n",
 		__func__, path, real_path, argv[0], argv[1], envp);
-
 	i = 0;
 	interparg[i++] = *argv; /* original argv0 as argv0 */
 
@@ -1227,7 +1226,6 @@ loader:
 		verbose_exec(real_path, argv, envp);
 		return next_posix_spawn(pid, real_path, file_actions, attrp,
 					argv, envp);
-
 	}
 
 	/*

@@ -16,12 +16,12 @@
 #include "iamroot.h"
 
 __attribute__((visibility("hidden")))
-DIR *next_open64dir(const char *path)
+DIR *next_opendir64(const char *path)
 {
 	DIR *(*sym)(const char *);
 	DIR *ret;
 
-	sym = dlsym(RTLD_NEXT, "open64dir");
+	sym = dlsym(RTLD_NEXT, "opendir64");
 	if (!sym) {
 		__dlperror(__func__);
 		errno = ENOSYS;
@@ -35,7 +35,7 @@ DIR *next_open64dir(const char *path)
 	return ret;
 }
 
-DIR *open64dir(const char *path)
+DIR *opendir64(const char *path)
 {
 	char buf[PATH_MAX];
 	char *real_path;
@@ -48,5 +48,5 @@ DIR *open64dir(const char *path)
 
 	__debug("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
 
-	return next_open64dir(real_path);
+	return next_opendir64(real_path);
 }

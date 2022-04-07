@@ -45,6 +45,9 @@ extern "C" {
 	   (s1)[l] = 0; \
 	   (s1); })
 
+/* See https://www.in-ulm.de/~mascheck/various/shebang/#results */
+#define HASHBANG_MAX NAME_MAX
+
 int _snprintf(char *, size_t, const char *, ...) __attribute__((format(printf,3,4)));
 
 static inline const char *__libc()
@@ -83,6 +86,19 @@ int isfile(const char *);
 int pathprependenv(const char *, const char *, int);
 int pathsetenv(const char *, const char *, const char *, int);
 
+int exec_ignored(const char *);
+int __ld_linux_has_argv0_option(const char *);
+int __ld_linux_has_preload_option(const char *);
+int issuid(const char *);
+ssize_t getinterp(const char *, char *, size_t);
+ssize_t gethashbang(const char *, char *, size_t);
+char *__ld_preload(const char *, int);
+char *__ld_library_path(const char *, int, const char *, const char *);
+char *__rpath(const char *);
+char *__runpath(const char *);
+char *__inhibit_rpath();
+char *__getexec();
+
 char *__basename(char *);
 char *sanitize(char *, size_t);
 int path_ignored(int, const char *);
@@ -113,11 +129,13 @@ int __verbosef(int, const char *, const char *, ...) __attribute__((format(print
 #define __info(fmt, ...) __verbosef(2, __func__, fmt, __VA_ARGS__)
 #define __notice(fmt, ...) __verbosef(1, __func__, fmt, __VA_ARGS__)
 #define __warning(fmt, ...) __verbosef(0, __func__, fmt, __VA_ARGS__)
+void verbose_exec(const char *, char * const[], char * const[]);
 #else
 #define __debug(fmt, ...)
 #define __info(fmt, ...)
 #define __notice(fmt, ...)
 #define __warning(fmt, ...)
+#define verbose_exec(fmt, ...)
 #endif
 
 #define __fwarn_and_set_user_modeat(fd, path, mode, flags, user_mode) \

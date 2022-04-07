@@ -26,7 +26,6 @@
 
 #include "iamroot.h"
 
-extern char **__environ;
 extern int next_open(const char *, int, mode_t);
 extern int next_fstatat(int, const char *, struct stat *, int);
 extern int next_posix_spawn(pid_t *, const char *,

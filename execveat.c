@@ -15,8 +15,6 @@
 
 #include "iamroot.h"
 
-extern char **__environ;
-
 __attribute__((visibility("hidden")))
 int next_execveat(int fd, const char *path, char * const argv[],
 		  char * const envp[], int flags)

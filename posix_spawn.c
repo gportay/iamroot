@@ -17,8 +17,6 @@
 
 #include "iamroot.h"
 
-extern char **__environ;
-
 __attribute__((visibility("hidden")))
 int next_posix_spawn(pid_t *pid, const char *path,
 		     const posix_spawn_file_actions_t *file_actions,

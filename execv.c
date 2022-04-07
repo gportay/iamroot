@@ -10,8 +10,6 @@
 
 #include "iamroot.h"
 
-extern char **__environ;
-
 int execv(const char *path, char * const argv[])
 {
 	__debug("%s(path: '%s', argv: { '%s', '%s', ... })\n", __func__, path,

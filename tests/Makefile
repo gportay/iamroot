@@ -20,6 +20,7 @@ all: test-execl
 all: test-execle
 all: test-execlp
 all: test-execv
+all: test-execve
 all: test-execvp
 all: test-execvpe
 all: test-faccessat

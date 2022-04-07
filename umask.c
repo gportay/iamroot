@@ -19,6 +19,7 @@ mode_t __getumask()
 	return strtol(getenv("IAMROOT_UMASK") ?: "022", NULL, 8);
 }
 
+__attribute__((visibility("hidden")))
 int __setumask(mode_t mask)
 {
 	char buf[4];

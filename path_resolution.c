@@ -26,6 +26,7 @@ extern char *next_realpath(const char *, char *);
 extern ssize_t next_readlink(const char *, char *, size_t);
 extern int next_lstat(const char *, struct stat *);
 
+__attribute__((visibility("hidden")))
 ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
 {
 	char tmp[sizeof("/proc/self/fd/") + 4];
@@ -47,7 +48,7 @@ static void __regex_perror(const char *s, regex_t *regex, int err)
 	dprintf(STDERR_FILENO, "%s: %s\n", s, buf);
 }
 
-__attribute__((constructor))
+__attribute__((constructor,visibility("hidden")))
 void path_resolution_init()
 {
 	const char *ignore, *exec;
@@ -86,7 +87,7 @@ void path_resolution_init()
 	re = &regex;
 }
 
-__attribute__((destructor))
+__attribute__((destructor,visibility("hidden")))
 void path_resolution_fini()
 {
 	if (!re)
@@ -122,6 +123,7 @@ static int ignore(const char *path)
 	return !ret;
 }
 
+__attribute__((visibility("hidden")))
 char *sanitize(char *path, size_t bufsize)
 {
 	ssize_t len;
@@ -152,6 +154,7 @@ char *sanitize(char *path, size_t bufsize)
 	return path;
 }
 
+__attribute__((visibility("hidden")))
 char *fpath(int fd, char *buf, size_t bufsiz)
 {
 	ssize_t siz;
@@ -172,6 +175,7 @@ static char *__fpath(int fd)
 	return fpath(fd, buf, sizeof(buf));
 }
 
+__attribute__((visibility("hidden")))
 int path_ignored(int fd, const char *path)
 {
 	if (fd != AT_FDCWD) {
@@ -318,6 +322,7 @@ char *path_resolution(int fd, const char *path, char *buf, size_t bufsize,
 	return _path_resolution(fd, path, buf, bufsize, flags, 0);
 }
 
+__attribute__((visibility("hidden")))
 char *__getpath(int fd, const char *path, int flags)
 {
 	static char buf[PATH_MAX];

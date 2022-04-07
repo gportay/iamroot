@@ -39,7 +39,7 @@ static void __regex_perror(const char *s, regex_t *regex, int err)
 	dprintf(DEBUG_FILENO, "%s: %s\n", s, buf);
 }
 
-__attribute__((constructor))
+__attribute__((constructor,visibility("hidden")))
 void verbosef_init()
 {
 	static regex_t regex;
@@ -66,7 +66,7 @@ void verbosef_init()
 	re = &regex;
 }
 
-__attribute__((destructor))
+__attribute__((destructor,visibility("hidden")))
 void verbosef_fini()
 {
 	if (!re)

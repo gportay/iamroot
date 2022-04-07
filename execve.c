@@ -44,6 +44,7 @@ static const char *__execfn()
 	return (const char *)getauxval(AT_EXECFN);
 }
 
+__attribute__((visibility("hidden")))
 char *__basename(char *path)
 {
 	char *s = strrchr(path, '/');
@@ -53,6 +54,7 @@ char *__basename(char *path)
 	return s+1;
 }
 
+__attribute__((visibility("hidden")))
 int pathprependenv(const char *name, const char *value, int overwrite)
 {
 	char *newval, *oldval;
@@ -153,7 +155,7 @@ static void __regex_perror(const char *s, regex_t *regex, int err)
 	dprintf(STDERR_FILENO, "%s: %s\n", s, buf);
 }
 
-__attribute__((constructor))
+__attribute__((constructor,visibility("hidden")))
 void execve_init()
 {
 	static regex_t regex;
@@ -183,7 +185,7 @@ void execve_init()
 	re = &regex;
 }
 
-__attribute__((destructor))
+__attribute__((destructor,visibility("hidden")))
 void execve_fini()
 {
 	if (!re)
@@ -801,6 +803,7 @@ close:
 }
 
 #if !defined(NVERBOSE)
+__attribute__((visibility("hidden")))
 void verbose_exec(const char *path, char * const argv[], char * const envp[])
 {
 	int debug;

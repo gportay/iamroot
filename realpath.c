@@ -44,6 +44,7 @@ static size_t slash_len(const char *s)
  *
  * SPDX-License-Identifier: MIT
  */
+__attribute__((visibility("hidden")))
 char *next_realpath(const char *filename, char *resolved)
 {
 	char stack[PATH_MAX+1];

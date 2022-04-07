@@ -49,6 +49,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Output a warning the if secure-execution mode set
 - Output the fd for the functions `openat()` and `openat64()`
 
+### Removed
+
+- Remove unexistant function `opendir64()`
+
 ### Fixed
 
 - Fix the setting for the variables `IAMROOT_LIB_<ldso>_<abi>` that override

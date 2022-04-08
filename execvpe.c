@@ -87,7 +87,7 @@ static int __execvpe(const char *file, char * const argv[],
 
 int execvpe(const char *file, char * const argv[], char * const envp[])
 {
-	__debug("%s(file: '%s', argv: { '%s', '%s', ... }, envp: %p )\n",
+	__debug("%s(file: '%s', argv: { '%s', '%s', ... }, envp: %p)\n",
 		__func__, file, argv[0], argv[1], envp);
 
 	return __execvpe(file, argv, envp);

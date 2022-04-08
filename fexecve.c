@@ -72,7 +72,7 @@ static int __fexecve(int fd, char * const argv[], char * const envp[])
 
 int fexecve(int fd, char * const argv[], char * const envp[])
 {
-	__debug("%s(fd: %i, argv: { '%s', '%s', ... } envp: %p )\n",
+	__debug("%s(fd: %i, argv: { '%s', '%s', ... }, envp: %p)\n",
 		__func__, fd, argv[0], argv[1], envp);
 
 	return __fexecve(fd, argv, envp);

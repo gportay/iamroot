@@ -128,7 +128,7 @@ aarch64-rootfs:
 arm-rootfs:
 
 .PHONY: test
-test:
+test: | alpine-minirootfs
 
 .PHONY: clean
 clean:

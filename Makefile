@@ -234,7 +234,7 @@ check:
 
 .PHONY: test
 test: shell-test
-test: | x86_64/libiamroot-linux-x86-64.so.2 alpine-minirootfs
+test: | x86_64/libiamroot-linux-x86-64.so.2
 	$(MAKE) -C tests
 	$(MAKE) -C tests $@ LD_PRELOAD=$(CURDIR)/x86_64/libiamroot-linux-x86-64.so.2 IAMROOT_LIB=$(CURDIR)/x86_64/libiamroot-linux-x86-64.so.2
 

@@ -14,6 +14,11 @@
 #include <sys/statfs.h>
 #endif
 
+#ifdef __FreeBSD__
+#include <sys/param.h>
+#include <sys/mount.h>
+#endif
+
 #include "iamroot.h"
 
 #ifdef __GLIBC__

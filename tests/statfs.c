@@ -11,6 +11,11 @@
 #include <sys/statfs.h>
 #endif
 
+#ifdef __FreeBSD__
+#include <sys/param.h>
+#include <sys/mount.h>
+#endif
+
 int main(int argc, char * const argv[])
 {
 	struct statfs buf;

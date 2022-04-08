@@ -52,6 +52,20 @@ static const char *__execfn()
 }
 #endif
 
+#ifdef __FreeBSD__
+static const char *__execfn()
+{
+	static char buf[PATH_MAX];
+	int ret;
+
+	ret = elf_aux_info(AT_EXECPATH, buf, sizeof(buf));
+	if (ret == -1)
+		return NULL;
+
+	return buf;
+}
+#endif
+
 __attribute__((visibility("hidden")))
 char *__basename(char *path)
 {

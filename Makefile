@@ -6,6 +6,16 @@
 
 VERSION = 5
 PREFIX ?= /usr/local
+OS ?= $(shell uname -o)
+IAMROOT_LIB ?= libiamroot.so
+
+ifeq ($(OS),GNU/Linux)
+IAMROOT_LIB = x86_64/libiamroot-linux-x86-64.so.2
+endif
+
+ifeq ($(OS),FreeBSD)
+IAMROOT_LIB = x86_64/libiamroot-elf.so.1
+endif
 
 %.o: override CPPFLAGS += -D_GNU_SOURCE -DVERSION=$(VERSION)
 %.o: override CFLAGS += -fPIC -Wall -Wextra
@@ -18,9 +28,14 @@ ifdef COVERAGE
 endif
 
 .PHONY: all
-all: x86_64/libiamroot-linux-x86-64.so.2
+all: $(IAMROOT_LIB)
 
 x86_64/libiamroot-linux-x86-64.so.2: libiamroot.so
+	install -D -m755 $< $@
+
+x86_64/libiamroot-elf.so.1: export CC = gcc
+x86_64/libiamroot-elf.so.1: libiamroot.so
+	mkdir -p $(@D)
 	install -D -m755 $< $@
 
 libiamroot.so: __abort.o
@@ -226,12 +241,12 @@ check:
 	shellcheck -e SC1090 -e SC3037 iamroot-shell exec.sh
 
 .PHONY: test
-test: | x86_64/libiamroot-linux-x86-64.so.2
+test: | $(IAMROOT_LIB)
 	$(MAKE) -C tests
-	$(MAKE) -C tests $@ IAMROOT_LIB=$(CURDIR)/x86_64/libiamroot-linux-x86-64.so.2
+	$(MAKE) -C tests $@ IAMROOT_LIB=$(CURDIR)/$(IAMROOT_LIB)
 
 .PHONY: shell
-shell: x86_64/libiamroot-linux-x86-64.so.2
+shell: $(IAMROOT_LIB)
 	bash iamroot-shell
 
 .PHONY: clean

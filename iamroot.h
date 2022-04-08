@@ -86,8 +86,10 @@ int _snprintf(char *, size_t, const char *, ...) __attribute__((format(printf,3,
 
 static inline const char *__libc()
 {
-#ifdef __GLIBC__
+#if defined(__GLIBC__)
 	return "glibc";
+#elif defined(__FreeBSD__)
+	return "FreeBSD libc";
 #else
 	return "libc";
 #endif

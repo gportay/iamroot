@@ -18,6 +18,10 @@ int execveat(int fd, const char *path, char * const argv[], char * const envp[],
 #endif
 #endif
 
+#ifdef __FreeBSD__
+extern char **environ;
+#endif
+
 int main(void)
 {
 	char * const argv[] = { "-sh", "-c", "echo \"$@\"", "sh", "one", "two",

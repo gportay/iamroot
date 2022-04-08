@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Copyright 2020-2022 Gaël PORTAY
 #
@@ -115,7 +115,7 @@ Environment variables:
 EOF
 }
 
-IAMROOT_LIB="${IAMROOT_LIB:-/usr/lib/iamroot/x86_64/libiamroot-linux-x86-64.so.2:libdl.so.2}"
+IAMROOT_LIB="${IAMROOT_LIB:-/usr/lib/iamroot/libiamroot.so:libdl.so}"
 export IAMROOT_LIB
 
 IAMROOT_EXEC="${IAMROOT_EXEC:-/usr/lib/iamroot/exec.sh}"

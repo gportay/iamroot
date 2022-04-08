@@ -14,7 +14,7 @@ versions with no backward compatibility.
 userspace.
 
 The project targets the *Linux* userlands [glibc] and [musl]; the works to
-support *BSD* userlands such as [FreeBSD] or [OpenBSD] is on-going.
+support *BSD* userlands such as [FreeBSD] (13.1) or [OpenBSD] is on-going.
 
 The project compiles and runs on [Arch Linux] and [Debian].
 

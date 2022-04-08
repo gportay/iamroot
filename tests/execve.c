@@ -6,6 +6,10 @@
 
 #include <unistd.h>
 
+#ifdef __FreeBSD__
+extern char **environ;
+#endif
+
 int main(void)
 {
 	char * const argv[] = { "-sh", "-c", "echo \"$@\"", "sh", "one", "two",

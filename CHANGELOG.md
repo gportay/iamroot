@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [unreleased]
+
+### Added
+
+- Compile for [FreeBSD] 13.1
+
 ## [v5] - 2022-06-24
 
 ### Added
@@ -334,6 +340,7 @@ Initial release.
 [Debian]: https://www.debian.org/
 [Fedora ARM]: https://arm.fedoraproject.org/
 [Fedora]: https://getfedora.org/
+[FreeBSD]: https://www.freebsd.org/
 [Leaf]: https://www.opensuse.org/#Leap
 [Manjaro]: https://manjaro.org/
 [NO_COLOR]: https://no-color.org/

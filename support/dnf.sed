@@ -26,6 +26,13 @@
 	# Total download size: XXX M
 	# Installed size: XXX M
 	/[[:digit:]]\+\s\(Packages\|M\)$/s,[[:digit:]]\+\s\(Packages\|M\),XXX \1,
+
+	# Installing Environment Groups:
+	#  Minimal Install
+	# Installing Groups:
+	#  Core
+	# (trailing spaces)
+	s,\s\+$,,
 }
 
 /^Downloading Packages:/,/^Running transaction check/{

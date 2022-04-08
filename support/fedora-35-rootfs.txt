@@ -311,9 +311,9 @@ Installing weak dependencies:
  systemd-networkd
  trousers
 Installing Environment Groups:
- Minimal Install                                                                      
+ Minimal Install
 Installing Groups:
- Core                                                                                 
+ Core
 
 Transaction Summary
 ===============================

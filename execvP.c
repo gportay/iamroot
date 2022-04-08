@@ -1,9 +1,10 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#ifdef __FreeBSD__
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -15,19 +16,16 @@
 
 #include "iamroot.h"
 
-#ifndef __FreeBSD__
-extern int __execve(const char *, char * const [], char * const []);
-
 /*
- * Stolen and hacked from musl (src/process/execvp.c)
+ * Stolen from musl (src/process/execvp.c)
  *
  * SPDX-FileCopyrightText: The musl Contributors
  *
  * SPDX-License-Identifier: MIT
  */
-static int __execvp(const char *file, char * const argv[])
+static int __execvP(const char *file, const char *path, char * const argv[])
 {
-	const char *p, *z, *path = getenv("PATH");
+	const char *p, *z;
 	size_t l, k;
 	int seen_eacces = 0;
 
@@ -35,7 +33,7 @@ static int __execvp(const char *file, char * const argv[])
 	if (!*file) return -1;
 
 	if (strchr(file, '/'))
-		return __execve(file, argv, __environ);
+		return __execve(file, argv, environ);
 
 	if (!path) path = _PATH_DEFPATH;
 	k = strnlen(file, NAME_MAX+1);
@@ -55,7 +53,7 @@ static int __execvp(const char *file, char * const argv[])
 		memcpy(b, p, z-p);
 		b[z-p] = '/';
 		memcpy(b+(z-p)+(z>p), file, k+1);
-		__execve(b, argv, __environ);
+		__execve(b, argv, environ);
 		switch (errno) {
 		case EACCES:
 			seen_eacces = 1;
@@ -70,16 +68,12 @@ static int __execvp(const char *file, char * const argv[])
 	if (seen_eacces) errno = EACCES;
 	return -1;
 }
-#endif
 
-int execvp(const char *file, char * const argv[])
+int execvP(const char *file, const char *path, char * const argv[])
 {
-	__debug("%s(file: '%s', argv: { '%s', '%s', ... })\n", __func__, file,
-		argv[0], argv[1]);
+	__debug("%s(file: '%s', path: '%s' argv: { '%s', '%s', ... })\n",
+		__func__, file, path, argv[0], argv[1]);
 
-#ifdef __FreeBSD__
-	return execvP(file, getenv("PATH"), argv);
-#else
-	return __execvp(file, argv);
-#endif
+	return __execvP(file, path, argv);
 }
+#endif

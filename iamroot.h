@@ -122,6 +122,7 @@ int isfile(const char *);
 int pathprependenv(const char *, const char *, int);
 int pathsetenv(const char *, const char *, const char *, int);
 
+int __execve(const char *, char * const [], char * const []);
 int exec_ignored(const char *);
 int __ld_linux_has_inhibit_cache_option(const char *);
 int __ld_linux_has_argv0_option(const char *);

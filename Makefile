@@ -80,6 +80,7 @@ libiamroot.so: execl.o
 libiamroot.so: execle.o
 libiamroot.so: execlp.o
 libiamroot.so: execv.o
+libiamroot.so: execvP.o
 libiamroot.so: execve.o
 libiamroot.so: execveat.o
 libiamroot.so: execvp.o

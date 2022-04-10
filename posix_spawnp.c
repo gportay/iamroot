@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
+#include <paths.h>
 #include <limits.h>
 
 #include <spawn.h>
@@ -15,7 +16,7 @@
 #include "iamroot.h"
 
 /*
- * Stolen and adapt from musl (src/process/execvp.c)
+ * Stolen and hacked from musl (src/process/execvp.c)
  *
  * SPDX-FileCopyrightText: The musl Contributors
  *
@@ -36,7 +37,7 @@ static int __posix_spawnp(pid_t *pid, const char *file,
 	if (strchr(file, '/'))
 		return posix_spawn(pid, file, file_actions, attrp, argv, envp);
 
-	if (!path) path = "/usr/local/bin:/bin:/usr/bin";
+	if (!path) path = _PATH_DEFPATH;
 	k = strnlen(file, NAME_MAX+1);
 	if (k > NAME_MAX) {
 		errno = ENAMETOOLONG;

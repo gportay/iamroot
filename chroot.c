@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
+#include <paths.h>
 #include <limits.h>
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -723,7 +724,7 @@ int chroot(const char *path)
 
 	real_path = sanitize(buf, sizeof(buf));
 
-	ret = setenv("PATH", getenv("IAMROOT_PATH") ?: "/bin:/usr/bin", 1);
+	ret = setenv("PATH", getenv("IAMROOT_PATH") ?: _PATH_DEFPATH, 1);
 	if (ret == -1) {
 		__envperror("PATH", "setenv");
 		return -1;

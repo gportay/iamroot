@@ -14,9 +14,9 @@ _iamroot-shell()
 		__open64 __open64_2 __open_2 __openat64_2 __openat_2 __opendir
 		__opendirat __statfs __xmknod __xmknodat __xstat __xstat64
 		access canonicalize_file_name chdir chmod chown chroot creat
-		dlmopen dlopen eaccess euidaccess execl execle execlp execv
-		execvP execve execveat execvp execvpe faccessat fchdir fchmod
-		fchmodat fchown fchownat fexecve fgetxattr fopen freopen
+		dlmopen dlopen eaccess euidaccess execl execle execlp exect
+		execv execvP execve execveat execvp execvpe faccessat fchdir
+		fchmod fchmodat fchown fchownat fexecve fgetxattr fopen freopen
 		fsetxattr fstat fstat64 fstatat fstatat64 futimesat
 		get_current_dir_name getcwd getegid geteuid getgid getuid getwd
 		getxattr lchmod lchown lgetxattr link linkat listxattr

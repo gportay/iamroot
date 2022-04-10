@@ -79,6 +79,7 @@ libiamroot.so: euidaccess.o
 libiamroot.so: execl.o
 libiamroot.so: execle.o
 libiamroot.so: execlp.o
+libiamroot.so: exect.o
 libiamroot.so: execv.o
 libiamroot.so: execvP.o
 libiamroot.so: execve.o

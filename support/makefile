@@ -1119,7 +1119,6 @@ opensuse-support: support/opensuse-tumbleweed-rootfs.txt
 .PHONY: alpine-support
 alpine-support: support/alpine-3.14-rootfs.txt
 alpine-support: support/alpine-3.15-rootfs.txt
-alpine-support: support/alpine-edge-rootfs.txt
 
 .PRECIOUS: support/%arch-rootfs.txt
 support/arch-rootfs.txt: arch-rootfs.log
@@ -1265,7 +1264,6 @@ opensuse-log: opensuse-tumbleweed-rootfs.log
 .PHONY: alpine-log
 alpine-log: alpine-3.14-rootfs.log
 alpine-log: alpine-3.15-rootfs.log
-alpine-log: alpine-edge-rootfs.log
 
 .PHONY: %.log
 .PRECIOUS: %.log

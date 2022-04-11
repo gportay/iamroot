@@ -15,5 +15,6 @@ OK: X XiB in X packages
 tar: Ignoring unknown extended header keyword 'APK-TOOLS.checksum.SHA1'
 tar: Ignoring unknown extended header keyword 'APK-TOOLS.checksum.SHA1'
 tar: Ignoring unknown extended header keyword 'APK-TOOLS.checksum.SHA1'
+tar: Ignoring unknown extended header keyword 'APK-TOOLS.checksum.SHA1'
 
 > Cleaning-up rootfs

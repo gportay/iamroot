@@ -83,6 +83,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   and `dlmopen()` by loading the dynamic shared object (shared library) from
   the environment variable `IAMROOT_LD_LIBRARY_PATH`
 - Fix the symbol names for `__openat64_2()` and `opendir64()`
+- Fix the buffer overflow with the functions `get_current_dir_name()`,
+  `getcwd()` and `getwd()`.
 
 ### Security
 

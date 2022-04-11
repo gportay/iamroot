@@ -53,7 +53,7 @@ char *get_current_dir_name()
 	size = strlen(ret);
 	len = strlen(root);
 	if (strncmp(root, ret, len) == 0)
-		memcpy(ret, &ret[len], len+1);
+		memcpy(ret, &ret[len], strlen(ret)-len+1); /* NUL */
 
 	if (!*ret)
 		strncpy(ret, "/", size-1);

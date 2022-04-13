@@ -920,7 +920,6 @@ Warning: fchownat: /dev/snd/timer: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/snd/timer: Ignoring error 'Operation not permitted'!
 Warning: fchownat: /dev/loop-control: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/loop-control: Ignoring error 'Operation not permitted'!
-Warning: chmod: /dev/vhost-net: Ignoring error 'Operation not permitted'!
 Warning: fchownat: /run/log/journal: Ignoring error 'Operation not permitted'!
 Warning: chmod: /run/log/journal: Ignoring error 'Operation not permitted'!
 (XXX/XXX) Reloading device manager configuration...

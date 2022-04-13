@@ -1866,7 +1866,7 @@ Warning: opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains r
 Warning: opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root 'opensuse-tumbleweed-rootfs'
 
 
-Executing %posttrans script 'openSUSE-release-20220405-1540.1.x86_64.rpm' [done]
+Executing %posttrans script 'openSUSE-release-20220412-1553.1.x86_64.rpm' [done]
 Output of systemd-presets-common-SUSE-15-22.1.noarch.rpm %posttrans script:
     Warning: opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root 'opensuse-tumbleweed-rootfs'
     Warning: opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root 'opensuse-tumbleweed-rootfs'

@@ -868,15 +868,23 @@ void verbose_exec(const char *path, char * const argv[], char * const envp[])
 __attribute__((visibility("hidden")))
 const char *__getexe()
 {
+	const char *exec;
 	size_t len;
 	char *root;
+
+	exec = __execfn();
+	if (!exec)
+		return NULL;
 
 	len = 0;	
 	root = __getroot();
 	if (root)
 		len = strlen(root);
 
-	return &__execfn()[len];
+	if (strlen(exec) < len)
+		return NULL;
+
+	return &exec[len];
 }
 
 __attribute__((visibility("hidden")))

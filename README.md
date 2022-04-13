@@ -16,7 +16,7 @@ userspace.
 The project targets the *Linux* userlands [glibc] and [musl]; the works to
 support *BSD* userlands such as [FreeBSD] (13.1) or [OpenBSD] is on-going.
 
-The project compiles and runs on [Arch Linux] and [Debian].
+The project compiles and runs on [Arch Linux], [Debian] and [FreeBSD] 13.1.
 
 ## HOW IT WORKS
 

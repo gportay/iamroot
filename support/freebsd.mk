@@ -1,0 +1,40 @@
+#
+# Copyright 2022 Gaël PORTAY
+#
+# SPDX-License-Identifier: LGPL-2.1-or-later
+#
+
+IAMROOT_LIB = $(CURDIR)/x86_64/libiamroot-elf.so.1
+export IAMROOT_LIB
+
+-include local.mk
+
+.PHONY: all
+all: x86_64/libiamroot-elf.so.1
+
+.PRECIOUS: x86_64/libiamroot-elf.so.1
+x86_64/libiamroot-elf.so.1: $(wildcard *.c)
+
+.PHONY: freebsd-%-chroot
+freebsd-13.1-chroot:
+freebsd-%-chroot: x86_64/libiamroot-elf.so.1 | freebsd-%-rootfs
+	bash iamroot-shell -c "chroot freebsd-$*-rootfs"
+
+freebsd-13.1-rootfs:
+freebsd-%-rootfs: | x86_64/libiamroot-elf.so.1 FreeBSD-%-RELEASE-base-amd64.txz
+	rm -Rf $@
+	mkdir -p $@.tmp
+	tar xf FreeBSD-$*-RELEASE-base-amd64.txz -C $@.tmp
+	mv $@.tmp $@
+
+FreeBSD-13.1-RELEASE-base-amd64.txz:
+FreeBSD-%-RELEASE-base-amd64.txz:
+	wget https://download.freebsd.org/releases/amd64/$*-RELEASE/base.txz -O $@
+
+.PHONY: clean
+clean:
+	$(MAKE) -f Makefile $@
+	rm -Rf freebsd-*-rootfs/
+
+%:
+	$(MAKE) -f Makefile $@

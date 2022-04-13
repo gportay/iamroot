@@ -26,6 +26,28 @@ extern char *next_realpath(const char *, char *);
 extern ssize_t next_readlink(const char *, char *, size_t);
 extern int next_lstat(const char *, struct stat *);
 
+/*
+ * Slolen from musl (src/internal/procfdname.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+__attribute__((visibility("hidden")))
+void __procfdname(char *buf, unsigned fd)
+{
+	unsigned i, j;
+	for (i=0; (buf[i] = "/proc/self/fd/"[i]); i++);
+	if (!fd) {
+		buf[i] = '0';
+		buf[i+1] = 0;
+		return;
+	}
+	for (j=fd; j; j/=10, i++);
+	buf[i] = 0;
+	for (; fd; fd/=10) buf[--i] = '0' + fd%10;
+}
+
 __attribute__((visibility("hidden")))
 ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
 {

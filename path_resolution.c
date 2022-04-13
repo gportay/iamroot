@@ -123,7 +123,6 @@ static int ignore(const char *path)
 	return !ret;
 }
 
-__attribute__((visibility("hidden")))
 char *sanitize(char *path, size_t bufsize)
 {
 	ssize_t len;

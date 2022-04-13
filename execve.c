@@ -1140,6 +1140,24 @@ char *__getexec()
 	return ret;
 }
 
+__attribute__((visibility("hidden")))
+int __execve(const char *path, char * const argv[], char * const envp[])
+{
+	const char *root;
+	ssize_t len;
+
+	root = getrootdir();
+	if (strcmp(root, "/") == 0)
+		goto exit;
+
+	len = strlen(root);
+	if (strncmp(path, root, len) == 0)
+		path += len;
+
+exit:
+	return execve(path, argv, envp);
+}
+
 int execve(const char *path, char * const argv[], char * const envp[])
 {
 	char buf[PATH_MAX], hashbangbuf[PATH_MAX], loaderbuf[PATH_MAX];

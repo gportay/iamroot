@@ -15,22 +15,7 @@
 
 #include "iamroot.h"
 
-static int __execve(const char *path, char * const argv[], char * const envp[])
-{
-	const char *root;
-	ssize_t len;
-
-	root = getrootdir();
-	if (strcmp(root, "/") == 0)
-		goto exit;
-
-	len = strlen(root);
-	if (strncmp(path, root, len) == 0)
-		path += len;
-
-exit:
-	return execve(path, argv, envp);
-}
+extern int __execve(const char *, char * const [], char * const []);
 
 /*
  * Stolen and hacked from musl (src/process/execvp.c)

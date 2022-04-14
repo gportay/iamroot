@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
+#include <paths.h>
 #include <limits.h>
 #include <dlfcn.h>
 #include <sys/param.h>
@@ -86,7 +87,7 @@ void path_resolution_init()
 
 	ignore = getenv("IAMROOT_PATH_RESOLUTION_IGNORE");
 	if (!ignore)
-		ignore = "^/(proc|sys|dev|run)/";
+		ignore = "^/proc/|/sys/|"_PATH_DEV"|"_PATH_VARRUN"|/run/";
 
 	exec = getenv("IAMROOT_EXEC");
 	if (!exec)

@@ -57,7 +57,7 @@ char *getcwd(char *buf, size_t size)
 		strncpy(ret, "/", size);
 
 exit:
-	__debug("%s(...)\n", __func__);
+	__debug("%s(buf: %p, size: %lu)\n", __func__, buf, (unsigned long)size);
 
 	return ret;
 }

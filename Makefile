@@ -135,6 +135,7 @@ libiamroot.so: mkstemps.o
 libiamroot.so: mktemp.o
 libiamroot.so: mount.o
 libiamroot.so: name_to_handle_at.o
+libiamroot.so: nmount.o
 libiamroot.so: open.o
 libiamroot.so: openat.o
 libiamroot.so: opendir.o
@@ -178,6 +179,7 @@ libiamroot.so: umount.o
 libiamroot.so: umount2.o
 libiamroot.so: unlink.o
 libiamroot.so: unlinkat.o
+libiamroot.so: unmount.o
 libiamroot.so: unshare.o
 libiamroot.so: utime.o
 libiamroot.so: utimensat.o

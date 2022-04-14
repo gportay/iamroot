@@ -4,15 +4,16 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
-#ifdef __linux__
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
 
 #include <sys/mount.h>
+#include <sys/param.h>
 
 #include "iamroot.h"
 
+#ifdef __linux__
 int mount(const char *source, const char *target, const char *filesystemtype,
 	  unsigned long mountflags, const void *data)
 {
@@ -24,6 +25,20 @@ int mount(const char *source, const char *target, const char *filesystemtype,
 
 	__debug("%s(source: '%s', target: '%s', ...)\n", __func__, source,
 		target);
+
+	return 0;
+}
+#endif
+
+#ifdef __FreeBSD__
+int mount(const char *type, const char *dir, int flags, void *data)
+{
+	(void)flags;
+	(void)type;
+	(void)data;
+	(void)dir;
+
+	__debug("%s(..., dir: '%s', ...)\n", __func__, dir);
 
 	return 0;
 }

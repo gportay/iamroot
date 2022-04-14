@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - Compile for [FreeBSD] 13.1
-- Intercept the [FreeBSD]'s functions `exect` and `execvP()`
+- Intercept the [FreeBSD]'s functions `exect`, `execvP()` and `mount()`
 
 ## [v5] - 2022-06-24
 

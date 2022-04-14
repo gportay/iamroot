@@ -343,6 +343,45 @@ loader:
 		}
 
 		goto posix_spawn;
+	} else {
+		char *program = real_path;
+		int shift = 1;
+
+		real_path = path_resolution(AT_FDCWD, loader, loaderbuf,
+					    sizeof(loaderbuf), 0);
+		if (!real_path)
+			return -1;
+
+		/*
+		 * Shift enough room in interparg to prepend:
+		 *   - the path to the interpreter (i.e. the absolute path in
+		 *     host, including the chroot; argv0).
+		 *   - the optional extra argument as argv1.
+		 *   - the path to the binary (i.e. the full path in chroot,
+		 *     *not* including chroot; first positional argument).
+		 * Note: the binary's arguments are the original argv shifted
+		 *       by one (i.e. without argv0; following arguments).
+		 */
+		xargv1 = getenv("IAMROOT_EXEC_LD_ARGV1");
+		if (xargv1)
+			shift++;
+		for (j = 0; j < i; j++)
+			interparg[j+shift] = interparg[j];
+
+		/* Add path to interpreter (host, argv0) */
+		i = 0;
+		interparg[i++] = real_path;
+
+		/* Add extra argument as argv1 */
+		if (xargv1)
+			interparg[i++] = xargv1;
+
+		/* Add path to binary (in chroot, first positional argument) */
+		interparg[i] = program;
+		i += j;
+		interparg[i] = NULL; /* ensure NULL terminated */
+
+		goto posix_spawn;
 	}
 
 exec_sh:

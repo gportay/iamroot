@@ -20,6 +20,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Create an [openSUSE] ([Tumbleweed] and [Leaf]) rootfs via [zypper(8)]
 - Intercept the function `execveat()`
 - Add the environment variable `IAMROOT_VERSION`
+- Run the [dynamic loader][ld.so(8)] without options if its path does not start
+  by `/lib/ld` or `/lib64/ld`
 
 ### Changed
 

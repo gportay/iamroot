@@ -87,6 +87,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the symbol names for `__openat64_2()` and `opendir64()`
 - Fix the buffer overflow with the functions `get_current_dir_name()`,
   `getcwd()` and `getwd()`.
+- Fix the returning of an empty string if the buffer is allocated by the real
+  symbol `getcwd()` due to an empty buffer given in parameter.
 
 ### Security
 

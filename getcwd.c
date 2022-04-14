@@ -49,12 +49,14 @@ char *getcwd(char *buf, size_t size)
 	if (strcmp(root, "/") == 0)
 		goto exit;
 
+	if (!size)
+		size = strlen(ret)+1; /* NUL */
 	len = strlen(root);
 	if (strncmp(root, ret, len) == 0)
 		memcpy(ret, &ret[len], strlen(ret)-len+1); /* NUL */
 
 	if (!*ret)
-		strncpy(ret, "/", size);
+		strncpy(ret, "/", size-1);
 
 exit:
 	__debug("%s(buf: %p, size: %lu)\n", __func__, buf, (unsigned long)size);

@@ -50,7 +50,7 @@ char *getwd(char *buf)
 	if (strcmp(root, "/") == 0)
 		goto exit;
 
-	size = strlen(buf);
+	size = strlen(ret);
 	len = strlen(root);
 	if (strncmp(root, ret, len) == 0)
 		memcpy(ret, &ret[len], strlen(ret)-len+1); /* NUL */

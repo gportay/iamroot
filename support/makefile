@@ -32,6 +32,9 @@ export IAMROOT_LIB_MUSL_I386_1
 IAMROOT_LIB_MUSL_X86_64_1 = $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1
 export IAMROOT_LIB_MUSL_X86_64_1
 
+IAMROOT_LIB_MUSL_ARMHF_1 = $(CURDIR)/armhf/libiamroot-musl-armhf.so.1
+export IAMROOT_LIB_MUSL_ARMHF_1
+
 IAMROOT_LIB_MUSL_AARCH64_1 = $(CURDIR)/aarch64/libiamroot-musl-aarch64.so.1
 export IAMROOT_LIB_MUSL_AARCH64_1
 
@@ -110,6 +113,11 @@ endif
 ifneq ($(shell command -v musl-gcc 2>/dev/null),)
 x86_64/libiamroot-musl-x86_64.so.1: export CC = musl-gcc
 $(eval $(call libiamroot_so,x86_64,musl-x86_64,1))
+endif
+
+ifneq ($(shell command -v arm-linux-musleabihf-gcc 2>/dev/null),)
+armhf/libiamroot-musl-armhf.so.1: export CC = arm-linux-musleabihf-gcc
+$(eval $(call libiamroot_so,armhf,musl-armhf,1))
 endif
 
 ifneq ($(shell command -v aarch64-linux-musl-gcc 2>/dev/null),)
@@ -767,6 +775,26 @@ x86-alpine-minirootfs/bin/busybox: | alpine-minirootfs-3.16.0-x86.tar.gz
 alpine-minirootfs-3.16.0-x86.tar.gz:
 alpine-minirootfs-%-x86.tar.gz:
 	wget http://dl-cdn.alpinelinux.org/alpine/v$(basename $*)/releases/x86/alpine-minirootfs-$*-x86.tar.gz
+
+ifneq ($(shell command -v arm-linux-musleabihf-gcc 2>/dev/null),)
+arm-rootfs: armhf-alpine-rootfs
+
+.PHONY: mini-chroot
+armhf-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/armhf-alpine-minirootfs
+armhf-mini-chroot: armhf/libiamroot-musl-armhf.so.1 x86_64/libiamroot-linux-x86-64.so.2 | armhf-alpine-minirootfs
+	bash iamroot-shell -c "chroot armhf-alpine-minirootfs /bin/sh"
+
+.PHONY: armhf-alpine-minirootfs
+armhf-alpine-minirootfs: | armhf-alpine-minirootfs/bin/busybox
+
+armhf-alpine-minirootfs/bin/busybox: | alpine-minirootfs-3.16.0-armhf.tar.gz
+	mkdir -p armhf-alpine-minirootfs
+	tar xf alpine-minirootfs-3.16.0-armhf.tar.gz -C armhf-alpine-minirootfs
+
+alpine-minirootfs-3.16.0-armhf.tar.gz:
+alpine-minirootfs-%-armhf.tar.gz:
+	wget http://dl-cdn.alpinelinux.org/alpine/v$(basename $*)/releases/armhf/alpine-minirootfs-$*-armhf.tar.gz
+endif
 
 ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
 alpine-3.14-chroot:

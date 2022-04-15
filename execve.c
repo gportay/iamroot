@@ -1014,6 +1014,12 @@ static char *__getlibiamroot(const char *ldso, int abi)
 		goto exit;
 	}
 
+	/* IAMROOT_LIB_MUSL_ARMHF_1 */
+	if ((strcmp(ldso, "musl-armhf") == 0) && abi == 1) {
+		ret = "/usr/lib/iamroot/armhf/libiamroot-musl-armhf.so.1";
+		goto exit;
+	}
+
 	/* IAMROOT_LIB_MUSL_AARCH64_1 */
 	if (__streq(ldso, "musl-aarch64") && abi == 1) {
 		ret = "/usr/lib/iamroot/aarch64/libiamroot-musl-aarch64.so.1";

@@ -52,12 +52,13 @@ int execveat(int fd, const char *path, char * const argv[],
 					   *  7 --argv0
 					   *  8 ARGV0
 					   *  9 --inhibit-rpath
-					   * 10 /usr/lib/lib.so:/lib/lib.so
-					   * 11 /bin/sh
-					   * 12 HASHBANG_ARGV1
-					   * 13 -x
-					   * 14 script.sh
-					   * 15 NULL
+					   * 10 --inhibit-cache
+					   * 11 /usr/lib/lib.so:/lib/lib.so
+					   * 12 /bin/sh
+					   * 13 HASHBANG_ARGV1
+					   * 14 -x
+					   * 15 script.sh
+					   * 16 NULL
 					   */
 	int i, j, argc, ret;
 	char * const *arg;
@@ -166,7 +167,8 @@ loader:
 	    (__strncmp(loader, "/lib64/ld") == 0)) {
 		char *argv0, *rpath, *runpath, *ld_preload, *ld_library_path,
 		     *inhibit_rpath, *program = real_path;
-		int has_argv0 = 1, has_preload = 1, has_inhibit_rpath = 0;
+		int has_argv0 = 1, has_preload = 1, has_inhibit_rpath = 0,
+		    has_inhibit_cache = 0;
 		int shift = 1, abi = 0;
 		const char *basename;
 		char ldso[NAME_MAX];
@@ -180,10 +182,12 @@ loader:
 
 		/*
 		 * the glibc world supports --argv0 since 2.33, --preload since
-		 * 2.30, and --inhibit-rpath since 2.0.94
+		 * 2.30, --inhibit-cache since 2.16, and --inhibit-rpath since
+		 * 2.0.94
 		 */
 		if (__strncmp(ldso, "linux") == 0) {
 			has_inhibit_rpath = 1;
+			has_inhibit_cache = 1;
 
 			has_argv0 = __ld_linux_has_argv0_option(loader);
 			if (has_argv0 == -1)
@@ -287,6 +291,10 @@ loader:
 			interparg[i++] = "--inhibit-rpath";
 			interparg[i++] = inhibit_rpath;
 		}
+
+		/* Add --inhibit-cache */
+		if (has_inhibit_cache)
+			interparg[i++] = "--inhibit-cache";
 
 		/* Add --argv0 and original argv0 */
 		if (has_argv0) {

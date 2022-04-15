@@ -990,6 +990,12 @@ static char *__getlibiamroot(const char *ldso, int abi)
 		goto exit;
 	}
 	
+	/* IAMROOT_LIB_LINUX_3 */
+	if (__streq(ldso, "linux") && abi == 3) {
+		ret = "/usr/lib/iamroot/arm/libiamroot-linux.so.3";
+		goto exit;
+	}
+
 	/* IAMROOT_LIB_LINUX_ARMHF_3 */
 	if (__streq(ldso, "linux-armhf") && abi == 3) {
 		ret = "/usr/lib/iamroot/armhf/libiamroot-linux-armhf.so.3";
@@ -1055,6 +1061,18 @@ static char *__getld_preload(const char *ldso, int abi)
 
 	/* IAMROOT_LD_PRELOAD_LINUX_X86_64_2 */
 	if (__streq(ldso, "linux-x86-64") && abi == 2)
+		return "/usr/lib64/libc.so.6:/usr/lib64/libdl.so.2";
+
+	/* IAMROOT_LD_PRELOAD_LINUX_3 */
+	if (__streq(ldso, "linux") && abi == 3)
+		return "/usr/lib/libc.so.6:/usr/lib/libdl.so.2";
+
+	/* IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 */
+	if (__streq(ldso, "linux-armhf") && abi == 3)
+		return "/usr/lib/libc.so.6:/usr/lib/libdl.so.2";
+
+	/* IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 */
+	if (__streq(ldso, "linux-aarch64") && abi == 1)
 		return "/usr/lib64/libc.so.6:/usr/lib64/libdl.so.2";
 
 	return "";

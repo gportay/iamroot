@@ -22,6 +22,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Intercept the function `dl_iterate_phdr()`
 - Add the `iamroot-shell`'s options `--profile-file` and `--rc-file` to
   customize startup
+- Handle the environment variables `IAMROOT_LD_PRELOAD_LINUX_3`,
+  `IAMROOT_LD_PRELOAD_LINUX_ARMHF_3`, `IAMROOT_LD_PRELOAD_LINUX_AARCH64_1` and
+  `IAMROOT_LIB_LINUX_3` to override the list of [glibc] armhf libraries to be
+  preloaded
 
 ### Changed
 

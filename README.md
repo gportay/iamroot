@@ -41,42 +41,6 @@ will end with `EACCESS` or `EPERM` as of reading or writing files in `/proc`,
 
 iamroot is a proof-of-concept, therefore expect the unexpectable!
 
-## CHROOT(2)
-
-The man page of [chroot(2)] tells:
-
-> chroot() changes the root directory of the calling process to that specified
-> in path. This directory will be used for pathnames beginning with /. The root
-> directory is inherited by all children of the calling process.
->
-> Only a privileged process (Linux: one with the CAP_SYS_CHROOT capability in
-> its user namespace) may call chroot().
->
-> This call changes an ingredient in the pathname resolution process and does
-> nothing else. In particular, it is not intended to be used for any kind of
-> security purpose, neither to fully sandbox a process nor to restrict
-> filesystem system calls. In the past, chroot() has been used by daemons to
-> restrict themselves prior to passing paths supplied by un‐trusted users to
-> system calls such as open(2). However, if a folder is moved out of the chroot
-> directory, an attacker can exploit that to get out of the chroot directory as
-> well. The easiest way to do that is to chdir(2) to the to-be-moved directory,
-> wait for it to be moved out, then open a path like ../../../etc/passwd.
->
-> A slightly trickier variation also works under some circumstances if chdir(2)
-> is not permitted. If a daemon allows a "chroot directory" to be specified,
-> that usually means that if you want to prevent remote users from accessing
-> files outside the chroot directory, you must ensure that folders are never
-> moved out of it.
->
-> This call does not change the current working directory, so that after the
-> call '.' can be outside the tree rooted at '/'. In particular, the superuser
-> can escape from a "chroot jail" by doing:
->
->	mkdir foo; chroot foo; cd ..
->
-> This call does not close open file descriptors, and such file descriptors may
-> allow access to files outside the chroot tree.
-
 # BUGS
 
 Report bugs at *https://github.com/gportay/iamroot/issues*

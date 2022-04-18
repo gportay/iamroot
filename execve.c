@@ -1377,6 +1377,7 @@ loader:
 		 *     path in chroot environment to the libraries).
 		 *   - the option --inhibit-rpath and its argument (i.e. the
 		 *     path in host environment to the libbraries).
+		 *   - the option --inhibit-cache.
 		 *   - the option --argv0 and its argument (i.e. the original
 		 *     path in host to the binary).
 		 *   - the path to the binary (i.e. the full path in chroot,

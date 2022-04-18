@@ -42,7 +42,7 @@ int execveat(int fd, const char *path, char * const argv[],
 {
 	char buf[PATH_MAX], hashbangbuf[PATH_MAX], loaderbuf[PATH_MAX];
 	char hashbang[HASHBANG_MAX], loader[HASHBANG_MAX];
-	char *interparg[14+1] = { NULL }; /*  0 ARGV0
+	char *interparg[15+1] = { NULL }; /*  0 ARGV0
 					   *  1 /lib/ld.so
 					   *  2 LD_LINUX_ARGV1
 					   *  3 --preload
@@ -187,7 +187,11 @@ loader:
 		 */
 		if (__strncmp(ldso, "linux") == 0) {
 			has_inhibit_rpath = 1;
-			has_inhibit_cache = 1;
+
+			has_inhibit_cache =
+				   __ld_linux_has_inhibit_cache_option(buf);
+			if (has_inhibit_cache == -1)
+				return -1;
 
 			has_argv0 = __ld_linux_has_argv0_option(loader);
 			if (has_argv0 == -1)
@@ -236,6 +240,7 @@ loader:
 		 *     path in chroot environment to the libraries).
 		 *   - the option --inhibit-rpath and its argument (i.e. the
 		 *     path in host environment to the libbraries).
+		 *   - the option --inhibit-cache.
 		 *   - the option --argv0 and its argument (i.e. the original
 		 *     path in host to the binary).
 		 *   - the path to the binary (i.e. the full path in chroot,
@@ -255,6 +260,8 @@ loader:
 			shift += 2;
 		if (has_inhibit_rpath && inhibit_rpath)
 			shift += 2;
+		if (has_inhibit_cache)
+			shift++;
 		for (j = 0; j < i; j++)
 			interparg[j+shift] = interparg[j];
 

@@ -105,7 +105,7 @@ int issuid(const char *);
 ssize_t getinterp(const char *, char *, size_t);
 ssize_t gethashbang(const char *, char *, size_t);
 char *__ld_preload(const char *, int);
-char *__ld_library_path(const char *, int, const char *, const char *);
+char *__ld_library_path(const char *, int);
 char *__rpath(const char *);
 char *__runpath(const char *);
 char *__inhibit_rpath();

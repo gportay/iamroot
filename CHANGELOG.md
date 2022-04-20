@@ -93,6 +93,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `getcwd()` and `getwd()`.
 - Fix the returning of an empty string if the buffer is allocated by the real
   symbol `getcwd()` due to an empty buffer given in parameter.
+- Fix the invalid reading for setting [dynamic loader][ld.so(8)] option with
+  the function `execve()`
 
 ### Security
 

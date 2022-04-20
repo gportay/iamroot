@@ -1026,6 +1026,7 @@ static char *__getld_library_path(const char *ldso, int abi)
 __attribute__((visibility("hidden")))
 char *__ld_preload(const char *ldso, int abi)
 {
+	char val[PATH_MAX];
 	char buf[NAME_MAX];
 	int n, ret;
 
@@ -1034,7 +1035,9 @@ char *__ld_preload(const char *ldso, int abi)
 		return NULL;
 	__sanitize(buf, 0);
 
-	ret = pathsetenv(getrootdir(), buf, __getld_preload(ldso, abi), 1);
+	__strncpy(val, __getld_preload(ldso, abi));
+
+	ret = pathsetenv(getrootdir(), buf, val, 1);
 	if (ret)
 		return NULL;
 
@@ -1046,10 +1049,12 @@ char *__ld_preload(const char *ldso, int abi)
 }
 
 __attribute__((visibility("hidden")))
-char *__ld_library_path(const char *ldso, int abi, const char *rpath,
-			const char *runpath)
+char *__ld_library_path(const char *ldso, int abi)
 {
+	char val[PATH_MAX];
 	char buf[NAME_MAX];
+	char *runpath;
+	char *rpath;
 	int n, ret;
 
 	n = _snprintf(buf, sizeof(buf), "ld_library_path_%s", ldso);
@@ -1057,12 +1062,16 @@ char *__ld_library_path(const char *ldso, int abi, const char *rpath,
 		return NULL;
 	__sanitize(buf, 0);
 
-	ret = pathsetenv(getrootdir(), buf, __getld_library_path(ldso, abi),
-			 1);
+	__strncpy(val, __getld_library_path(ldso, abi));
+
+	ret = pathsetenv(getrootdir(), buf, val, 1);
 	if (ret)
 		return NULL;
 
+	rpath = getenv("rpath");
 	if (rpath) {
+		__strncpy(val, rpath);
+
 		ret = pathsetenv(getrootdir(), "iamroot_rpath", rpath, 1);
 		if (ret)
 			return NULL;
@@ -1072,7 +1081,10 @@ char *__ld_library_path(const char *ldso, int abi, const char *rpath,
 			return NULL;
 	}
 
+	runpath = getenv("runpath");
 	if (runpath) {
+		__strncpy(val, runpath);
+
 		ret = pathsetenv(getrootdir(), "iamroot_runpath", runpath, 1);
 		if (ret)
 			return NULL;
@@ -1344,7 +1356,7 @@ loader:
 		if (!ld_preload)
 			__warning("%s: is unset!\n", "ld_preload");
 
-		ld_library_path = __ld_library_path(ldso, abi, rpath, runpath);
+		ld_library_path = __ld_library_path(ldso, abi);
 		if (!ld_library_path)
 			__warning("%s: is unset!", "ld_library_path");
 

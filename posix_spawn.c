@@ -222,7 +222,7 @@ loader:
 		if (!ld_preload)
 			__warning("%s: is unset!\n", "ld_preload");
 
-		ld_library_path = __ld_library_path(ldso, abi, rpath, runpath);
+		ld_library_path = __ld_library_path(ldso, abi);
 		if (!ld_library_path)
 			__warning("%s: is unset!", "ld_library_path");
 

@@ -239,7 +239,7 @@ static char *_path_resolution(int fd, const char *path, char *buf,
 		else if (__strlcmp(path, root) == 0)
 			__warning("%s: contains root '%s'\n", path, root);
 
-		size = snprintf(buf, bufsize, "%s%s", root, path);
+		size = _snprintf(buf, bufsize, "%s%s", root, path);
 		if (size < 0) {
 			errno = EINVAL;
 			return NULL;
@@ -266,7 +266,7 @@ static char *_path_resolution(int fd, const char *path, char *buf,
 			goto ignore;
 		}
 
-		size = snprintf(buf, bufsize, "%s/%s", real_dir, path);
+		size = _snprintf(buf, bufsize, "%s/%s", real_dir, path);
 		if (size < 0) {
 			errno = EINVAL;
 			return NULL;

@@ -8,6 +8,33 @@ PREFIX ?= /usr/local
 KVER ?= $(shell uname -r 2>/dev/null)
 VMLINUX_KVER ?= $(shell vmlinux --version 2>/dev/null)
 
+IAMROOT_LIB = $(CURDIR)/x86_64/libiamroot-linux-x86-64.so.2
+export IAMROOT_LIB
+
+IAMROOT_LIB_LINUX_2 = $(CURDIR)/i686/libiamroot-linux.so.2
+export IAMROOT_LIB_LINUX_2
+
+IAMROOT_LIB_LINUX_X86_64_2 = $(CURDIR)/x86_64/libiamroot-linux-x86-64.so.2
+export IAMROOT_LIB_LINUX_X86_64_2
+
+IAMROOT_LIB_LINUX_3 = $(CURDIR)/arm/libiamroot-linux.so.3
+export IAMROOT_LIB_LINUX_3
+
+IAMROOT_LIB_LINUX_ARMHF_3 = $(CURDIR)/armhf/libiamroot-linux-armhf.so.3
+export IAMROOT_LIB_LINUX_ARMHF_3
+
+IAMROOT_LIB_LINUX_AARCH64_1 = $(CURDIR)/aarch64/libiamroot-linux-aarch64.so.1
+export IAMROOT_LIB_LINUX_AARCH64_1
+
+IAMROOT_LIB_MUSL_X86_64_1 = $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1
+export IAMROOT_LIB_MUSL_X86_64_1
+
+IAMROOT_LIB_MUSL_AARCH64_1 = $(CURDIR)/aarch64/libiamroot-musl-aarch64.so.1
+export IAMROOT_LIB_MUSL_AARCH64_1
+
+IAMROOT_EXEC = $(CURDIR)/exec.sh
+export IAMROOT_EXEC
+
 -include local.mk
 
 MAKEFLAGS += --no-print-directory

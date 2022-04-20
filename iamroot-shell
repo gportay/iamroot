@@ -68,29 +68,6 @@ Environment variables:
       IAMROOT_LIB               Set absolute path to library to use.
                                 Equivalent to --library LIB.
 
-      IAMROOT_LIB_LINUX_2
-                                Set absolute path to library to use with loader
-                                ld-linux.so.2
-
-      IAMROOT_LIB_LINUX_X86_64_2
-                                Set absolute path to library to use with loader
-                                ld-linux-x86-64.so.2
-
-      IAMROOT_LIB_MUSL_X86_64_1 Set absolute path to library to use with loader
-                                ld-musl-x86_64.so.1
-
-      IAMROOT_LIB_LINUX_ARMHF_3
-                                Set absolute path to library to use with loader
-                                ld-linux-armhf.so.3
-
-      IAMROOT_LIB_LINUX_AARCH64_1
-                                Set absolute path to library to use with loader
-                                ld-linux-aarch64.so.1
-
-      IAMROOT_LIB_MUSL_AARCH64_1
-                                Set absolute path to library to use with loader
-                                ld-musl-aarch64.so.1
-
       IAMROOT_FATAL             Set abort on error.
                                 Equivalent to --fatal.
 
@@ -113,31 +90,10 @@ Environment variables:
 EOF
 }
 
-IAMROOT_LIB="${IAMROOT_LIB:-$PWD/x86_64/libiamroot-linux-x86-64.so.2}"
+IAMROOT_LIB="${IAMROOT_LIB:-/usr/lib/iamroot/x86_64/libiamroot-linux-x86-64.so.2}"
 export IAMROOT_LIB
 
-IAMROOT_LIB_LINUX_2="${IAMROOT_LIB_LINUX_2:-$PWD/i686/libiamroot-linux.so.2}"
-export IAMROOT_LIB_LINUX_2
-
-IAMROOT_LIB_LINUX_X86_64_2="${IAMROOT_LIB_LINUX_X86_64_2:-$PWD/x86_64/libiamroot-linux-x86-64.so.2}"
-export IAMROOT_LIB_LINUX_X86_64_2
-
-IAMROOT_LIB_LINUX_3="${IAMROOT_LIB_LINUX_3:-$PWD/arm/libiamroot-linux.so.3}"
-export IAMROOT_LIB_LINUX_3
-
-IAMROOT_LIB_LINUX_ARMHF_3="${IAMROOT_LIB_LINUX_ARMHF_3:-$PWD/armhf/libiamroot-linux-armhf.so.3}"
-export IAMROOT_LIB_LINUX_ARMHF_3
-
-IAMROOT_LIB_LINUX_AARCH64_1="${IAMROOT_LIB_LINUX_AARCH64_1:-$PWD/aarch64/libiamroot-linux-aarch64.so.1}"
-export IAMROOT_LIB_LINUX_AARCH64_1
-
-IAMROOT_LIB_MUSL_X86_64_1="${IAMROOT_LIB_MUSL_X86_64_1:-$PWD/x86_64/libiamroot-musl-x86_64.so.1}"
-export IAMROOT_LIB_MUSL_X86_64_1
-
-IAMROOT_LIB_MUSL_AARCH64_1="${IAMROOT_LIB_MUSL_AARCH64_1:-$PWD/aarch64/libiamroot-musl-aarch64.so.1}"
-export IAMROOT_LIB_MUSL_AARCH64_1
-
-IAMROOT_EXEC="${IAMROOT_EXEC:-$PWD/exec.sh}"
+IAMROOT_EXEC="${IAMROOT_EXEC:-/usr/lib/iamroot/exec.sh}"
 export IAMROOT_EXEC
 
 argv=()

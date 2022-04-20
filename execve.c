@@ -1072,7 +1072,6 @@ char *__ld_library_path(const char *ldso, int abi, const char *rpath,
 			return NULL;
 	}
 
-
 	if (runpath) {
 		ret = pathsetenv(getrootdir(), "iamroot_runpath", runpath, 1);
 		if (ret)

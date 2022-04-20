@@ -956,28 +956,22 @@ static char *__getlibiamroot(const char *ldso, int abi)
 	__sanitize(buf, 1);
 
 	ret = getenv(buf);
-	if (!ret)
-#if defined(__GLIBC__)
-#if defined(__x86_64__)
-		return "/usr/lib/iamroot/x86_64/libiamroot-linux-x86-64.so.2";
-#elif defined(__i386__)
-		return "/usr/lib/iamroot/i686/libiamroot-linux.so.2";
-#elif defined(__aarch64__)
-		return "/usr/lib/iamroot/aarch64/libiamroot-linux-aarch64.so.1";
-#elif defined(__arm__)
-		return "/usr/lib/iamroot/armhf/libiamroot-linux-armhf.so.3";
-#else
-		return NULL;
-#endif
-#else /* assuming musl */
-#if defined(__x86_64__)
-		return "/usr/lib/iamroot/x86_64/libiamroot-musl-x86_64.so.1";
-#elif defined(__aarch64__)
-		return "/usr/lib/iamroot/aarch64/libiamroot-musl-aarch64.so.1";
-#else
-		return NULL;
-#endif
-#endif
+	if (!ret) {
+		if (__strncmp(buf, "IAMROOT_LIB_LINUX_2") == 0)
+			return "/usr/lib/iamroot/i686/libiamroot-linux.so.2";
+		else if (__strncmp(buf, "IAMROOT_LIB_LINUX_X86_64_2") == 0)
+			return "/usr/lib/iamroot/x86_64/libiamroot-linux-x86-64.so.2";
+		else if (__strncmp(buf, "IAMROOT_LIB_LINUX_ARMHF_3") == 0)
+			return "/usr/lib/iamroot/armhf/libiamroot-linux-armhf.so.3";
+		else if (__strncmp(buf, "IAMROOT_LIB_LINUX_AARCH64_1") == 0)
+			return "/usr/lib/iamroot/aarch64/libiamroot-linux-aarch64.so.1";
+		else if (__strncmp(buf, "IAMROOT_LIB_MUSL_X86_64_1") == 0)
+			return "/usr/lib/iamroot/x86_64/libiamroot-musl-x86_64.so.1";
+		else if (__strncmp(buf, "IAMROOT_LIB_MUSL_AARCH64_1") == 0)
+			return "/usr/lib/iamroot/aarch64/libiamroot-musl-aarch64.so.1";
+		else
+			return "/usr/lib/iamroot/libiamroot.so";
+	}
 
 	return ret;
 }
@@ -994,20 +988,16 @@ static char *__getld_preload(const char *ldso, int abi)
 	__sanitize(buf, 1);
 
 	ret = getenv(buf);
-	if (!ret)
-#if defined(__GLIBC__)
-#if defined(__LP64__)
-		return "/usr/lib64/libc.so.6:/usr/lib64/libdl.so.2";
-#else
-		return "/usr/lib/libc.so.6:/usr/lib/libdl.so.2";
-#endif
-#else /* assuming musl */
-#if defined(__LP64__)
-		return "";
-#else
-		return NULL;
-#endif
-#endif
+	if (!ret) {
+		if (__strncmp(buf, "IAMROOT_LD_PRELOAD_LINUX_2") == 0)
+			return "/usr/lib/libc.so.6:/usr/lib/libdl.so.2";
+		else if (__strncmp(buf, "IAMROOT_LD_PRELOAD_LINUX_X86_64_2") == 0)
+			return "/usr/lib64/libc.so.6:/usr/lib64/libdl.so.2";
+		else if (__strncmp(buf, "IAMROOT_LD_PRELOAD_MUSL_X86_64_1") == 0)
+			return "";
+		else
+			return "/usr/lib:/lib";
+	}
 
 	return ret;
 }

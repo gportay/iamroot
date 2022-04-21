@@ -1006,6 +1006,7 @@ dpkg: regarding .../bash containing bash, pre-dependency problem:
 
 dpkg: warning: ignoring pre-dependency problem!
 Preparing to unpack .../bash ...
+Warning: ubuntu-impish-rootfs/usr/bin/dpkg-query: contains root 'ubuntu-impish-rootfs'
 Unpacking bash ...
 Selecting previously unselected package bsdutils.
 dpkg: regarding .../bsdutils containing bsdutils, pre-dependency problem:

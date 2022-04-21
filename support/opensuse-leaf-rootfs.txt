@@ -17,10 +17,10 @@ Reading installed packages...
 Resolving package dependencies...
 
 The following XXX recommended packages were automatically selected:
-  aaa_base-extras adjtimex augeas-lenses bash-doc bash-lang branding-openSUSE ca-certificates-mozilla cpio-mt crypto-policies-scripts diffutils-lang dirmngr distribution-logos-openSUSE-Leap dump-rmt glibc-extra grep-lang issue-generator libfido2-1 libidn2-lang libpcre2-8-0 libtss2-esys0 libtss2-mu0 libtss2-rc0 login_defs logrotate lsof ncurses-utils netcfg net-tools net-tools-lang publicsuffix python3 python3-curses python3-dbm python3-pip readline-doc terminfo-screen time traceroute which zypper-log
+  aaa_base-extras adjtimex augeas-lenses bash-doc bash-lang branding-openSUSE ca-certificates-mozilla cpio-mt crypto-policies-scripts diffutils-lang dirmngr distribution-logos-openSUSE-Leap dracut dump-rmt glibc-extra grep-lang issue-generator kmod libfido2-1 libidn2-lang libpcre2-8-0 libtss2-esys0 libtss2-mu0 libtss2-rc0 login_defs logrotate lsof ncurses-utils netcfg net-tools net-tools-lang publicsuffix python3 python3-curses python3-dbm python3-pip readline-doc sed-lang terminfo-screen time traceroute udev which xz xz-lang zypper-log
 
 The following XXX NEW packages are going to be installed:
-  aaa_base aaa_base-extras adjtimex augeas-lenses bash bash-doc bash-lang bash-sh boost-license1_66_0 branding-openSUSE busybox busybox-sed busybox-xz ca-certificates ca-certificates-mozilla coreutils coreutils-lang cpio cpio-lang cpio-mt cracklib cracklib-dict-full crypto-policies crypto-policies-scripts dbus-1 diffutils diffutils-lang dirmngr distribution-logos-openSUSE-Leap dump-rmt fdupes file-magic filesystem fillup findutils findutils-lang gawk glib2-lang glibc glibc-extra glibc-lang gpg2 gpg2-lang grep grep-lang hostname info issue-generator kbd kbd-legacy krb5 libacl1 libapparmor1 libargon2-1 libassuan0 libattr1 libaudit1 libaugeas0 libblkid1 libboost_system1_66_0 libboost_thread1_66_0 libbrotlicommon1 libbrotlidec1 libbz2-1 libcap2 libcap-ng0 libcbor0 libcom_err2 libcrack2 libcrypt1 libcryptsetup12 libcurl4 libdbus-1-3 libdevmapper1_03 libdw1 libeconf0 libelf1 libexpat1 libfdisk1 libffi7 libfido2-1 libfido2-udev libgcc_s1 libgcrypt20 libgdbm4 libglib-2_0-0 libgmp10 libgnutls30 libgpg-error0 libgpgme11 libhogweed6 libidn2-0 libidn2-lang libip4tc2 libjson-c3 libkeyutils1 libkmod2 libksba8 libldap-2_4-2 libldap-data liblua5_3-5 liblz4-1 liblzma5 libmagic1 libmount1 libncurses6 libnettle8 libnghttp2-14 libnpth0 libnsl2 libopenssl1_1 libp11-kit0 libpcre1 libpcre2-8-0 libpopt0 libprocps7 libprotobuf-lite20 libproxy1 libpsl5 libpython3_6m1_0 libreadline7 libruby2_5-2_5 libsasl2-3 libseccomp2 libselinux1 libsemanage1 libsepol1 libsigc-2_0-0 libsmartcols1 libsolv-tools libsqlite3-0 libssh4 libssh-config libstdc++6 libsystemd0 libtasn1 libtasn1-6 libtirpc3 libtirpc-netconfig libtss2-esys0 libtss2-mu0 libtss2-rc0 libtss2-sys1 libudev1 libunistring2 libusb-1_0-0 libutempter0 libuuid1 libverto1 libxml2-2 libyaml-0-2 libyaml-cpp0_6 libz1 libzio1 libzstd1 libzypp lifecycle-data-openSUSE login_defs logrotate lsof ncurses-utils netcfg net-tools net-tools-lang openssl-1_1 openSUSE-build-key openSUSE-release openSUSE-release-ftp p11-kit p11-kit-tools pam pam-config patterns-base-minimal_base perl-base permissions pinentry pkg-config procps publicsuffix python3 python3-appdirs python3-base python3-curses python3-dbm python3-ordered-set python3-packaging python3-pip python3-pyparsing python3-setuptools python3-six readline-doc rpm rpm-config-SUSE ruby2.5 ruby2.5-rubygem-gem2rpm ruby2.5-stdlib ruby-common shadow shared-python-startup systemd systemd-default-settings systemd-default-settings-branding-openSUSE systemd-icon-branding-openSUSE systemd-lang systemd-presets-branding-openSUSE systemd-presets-common-SUSE system-group-hardware system-user-root sysuser-shadow terminfo-base terminfo-screen time traceroute update-alternatives util-linux util-linux-lang util-linux-systemd which zypper zypper-lifecycle-plugin zypper-log zypper-needs-restarting
+  aaa_base aaa_base-extras adjtimex augeas-lenses bash bash-doc bash-lang bash-sh boost-license1_66_0 branding-openSUSE ca-certificates ca-certificates-mozilla coreutils coreutils-lang cpio cpio-lang cpio-mt cracklib cracklib-dict-full crypto-policies crypto-policies-scripts dbus-1 diffutils diffutils-lang dirmngr distribution-logos-openSUSE-Leap dracut dump-rmt elfutils elfutils-lang fdupes file file-magic filesystem fillup findutils findutils-lang gawk glib2-lang glibc glibc-extra glibc-lang gpg2 gpg2-lang grep grep-lang gzip hostname info issue-generator kbd kbd-legacy kmod krb5 libacl1 libapparmor1 libargon2-1 libasm1 libassuan0 libattr1 libaudit1 libaugeas0 libblkid1 libboost_system1_66_0 libboost_thread1_66_0 libbrotlicommon1 libbrotlidec1 libbz2-1 libcap2 libcap-ng0 libcbor0 libcom_err2 libcrack2 libcrypt1 libcryptsetup12 libcurl4 libdbus-1-3 libdevmapper1_03 libdw1 libeconf0 libelf1 libexpat1 libfdisk1 libffi7 libfido2-1 libfido2-udev libgcc_s1 libgcrypt20 libgdbm4 libglib-2_0-0 libgmp10 libgnutls30 libgpg-error0 libgpgme11 libhogweed6 libidn2-0 libidn2-lang libip4tc2 libjson-c3 libkeyutils1 libkmod2 libksba8 libldap-2_4-2 libldap-data liblua5_3-5 liblz4-1 liblzma5 libmagic1 libmount1 libncurses6 libnettle8 libnghttp2-14 libnpth0 libnsl2 libopenssl1_1 libp11-kit0 libpcre1 libpcre2-8-0 libpopt0 libprocps7 libprotobuf-lite20 libproxy1 libpsl5 libpython3_6m1_0 libreadline7 libruby2_5-2_5 libsasl2-3 libseccomp2 libselinux1 libsemanage1 libsepol1 libsigc-2_0-0 libsmartcols1 libsolv-tools libsqlite3-0 libssh4 libssh-config libstdc++6 libsystemd0 libtasn1 libtasn1-6 libtirpc3 libtirpc-netconfig libtss2-esys0 libtss2-mu0 libtss2-rc0 libtss2-sys1 libudev1 libunistring2 libusb-1_0-0 libutempter0 libuuid1 libverto1 libxml2-2 libyaml-0-2 libyaml-cpp0_6 libz1 libzio1 libzstd1 libzypp lifecycle-data-openSUSE login_defs logrotate lsof ncurses-utils netcfg net-tools net-tools-lang openssl-1_1 openSUSE-build-key openSUSE-release openSUSE-release-ftp p11-kit p11-kit-tools pam pam-config patterns-base-minimal_base perl-base permissions pigz pinentry pkg-config procps publicsuffix python3 python3-appdirs python3-base python3-curses python3-dbm python3-ordered-set python3-packaging python3-pip python3-pyparsing python3-setuptools python3-six readline-doc rpm rpm-config-SUSE ruby2.5 ruby2.5-rubygem-gem2rpm ruby2.5-stdlib ruby-common sed sed-lang shadow shared-python-startup suse-module-tools systemd systemd-default-settings systemd-default-settings-branding-openSUSE systemd-icon-branding-openSUSE systemd-lang systemd-presets-branding-openSUSE systemd-presets-common-SUSE systemd-rpm-macros systemd-sysvinit system-group-hardware system-group-kvm system-user-root sysuser-shadow terminfo-base terminfo-screen time traceroute udev update-alternatives util-linux util-linux-lang util-linux-systemd which xz xz-lang zstd zypper zypper-lifecycle-plugin zypper-log zypper-needs-restarting
 
 XXX new packages to install.
 Overall download size: XXX.X MiB. Already cached: 0 B. After the operation, additional XXX.X MiB will be used.
@@ -625,6 +625,14 @@ warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/adjtimex.r
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 
 
+Retrieving package pigz (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: pigz.rpm [done]
+(XXX/XXX) Installing: pigz [done]
+Additional rpm output:
+warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/pigz.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
 Retrieving package libmagic1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: libmagic1.rpm [done]
 (XXX/XXX) Installing: libmagic1 [done]
@@ -753,14 +761,6 @@ warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libruby2_5
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 
 
-Retrieving package busybox (XXX/XXX), XXX.X KiB ( XXX.X MiB unpacked)
-Retrieving: busybox.rpm [done]
-(XXX/XXX) Installing: busybox [done]
-Additional rpm output:
-warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/busybox.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
-warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
-
 Retrieving package libzio1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: libzio1.rpm [done]
 (XXX/XXX) Installing: libzio1 [done]
@@ -814,6 +814,14 @@ Retrieving: findutils-lang [done]
 (XXX/XXX) Installing: findutils-lang [done]
 Additional rpm output:
 warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/noarch/findutils-lang: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package file (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: file.rpm [done]
+(XXX/XXX) Installing: file [done]
+Additional rpm output:
+warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/file.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 
 
@@ -921,19 +929,11 @@ warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libboost_s
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 
 
-Retrieving package busybox-xz (XXX/XXX), XXX.X KiB ( XXX.X   B unpacked)
-Retrieving: busybox-xz [done]
-(XXX/XXX) Installing: busybox-xz [done]
+Retrieving package libasm1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libasm1.rpm [done]
+(XXX/XXX) Installing: libasm1 [done]
 Additional rpm output:
-warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/noarch/busybox-xz: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
-warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
-
-Retrieving package busybox-sed (XXX/XXX), XXX.X KiB ( XXX.X   B unpacked)
-Retrieving: busybox-sed [done]
-(XXX/XXX) Installing: busybox-sed [done]
-Additional rpm output:
-warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/noarch/busybox-sed: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
+warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libasm1.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 
 
@@ -1025,6 +1025,30 @@ warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/noarch/bash-doc: 
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 
 
+Retrieving package zstd (XXX/XXX), XXX.X KiB ( XXX.X MiB unpacked)
+Retrieving: zstd.rpm [done]
+(XXX/XXX) Installing: zstd [done]
+Additional rpm output:
+warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/zstd.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package xz (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: xz.rpm [done]
+(XXX/XXX) Installing: xz [done]
+Additional rpm output:
+warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/xz.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package xz-lang (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: xz-lang [done]
+(XXX/XXX) Installing: xz-lang [done]
+Additional rpm output:
+warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/noarch/xz-lang: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
 Retrieving package which (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: which.rpm [done]
 (XXX/XXX) Installing: which [done]
@@ -1054,6 +1078,22 @@ Retrieving: systemd-default-settings [done]
 (XXX/XXX) Installing: systemd-default-settings [done]
 Additional rpm output:
 warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/noarch/systemd-default-settings: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package sed (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: sed.rpm [done]
+(XXX/XXX) Installing: sed [done]
+Additional rpm output:
+warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/sed.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package sed-lang (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: sed-lang [done]
+(XXX/XXX) Installing: sed-lang [done]
+Additional rpm output:
+warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/noarch/sed-lang: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 
 
@@ -1121,6 +1161,14 @@ warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/cracklib.r
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 
 
+Retrieving package gzip (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: gzip.rpm [done]
+(XXX/XXX) Installing: gzip [done]
+Additional rpm output:
+warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/gzip.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
 Retrieving package grep (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: grep.rpm [done]
 (XXX/XXX) Installing: grep [done]
@@ -1144,6 +1192,14 @@ Additional rpm output:
 warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/gawk.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 update-alternatives: using /usr/bin/gawk to provide /bin/awk (awk) in auto mode
+
+
+Retrieving package elfutils (XXX/XXX), XXX.X KiB ( XXX.X MiB unpacked)
+Retrieving: elfutils.rpm [done]
+(XXX/XXX) Installing: elfutils [done]
+Additional rpm output:
+warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/elfutils.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 
 
 Retrieving package diffutils (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
@@ -1199,6 +1255,22 @@ Retrieving: p11-kit.rpm [done]
 (XXX/XXX) Installing: p11-kit [done]
 Additional rpm output:
 warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/p11-kit.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package elfutils-lang (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: elfutils-lang [done]
+(XXX/XXX) Installing: elfutils-lang [done]
+Additional rpm output:
+warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/noarch/elfutils-lang: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package systemd-rpm-macros (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: systemd-rpm-macros [done]
+(XXX/XXX) Installing: systemd-rpm-macros [done]
+Additional rpm output:
+warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/noarch/systemd-rpm-macros: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 
 
@@ -1831,12 +1903,21 @@ warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/noarch/util-linux
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 
 
-Retrieving package systemd-lang (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
-Retrieving: systemd-lang [done]
-(XXX/XXX) Installing: systemd-lang [done]
+Retrieving package systemd-sysvinit (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: systemd-sysvinit.rpm [done]
+(XXX/XXX) Installing: systemd-sysvinit [done]
 Additional rpm output:
-warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/noarch/systemd-lang: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
+warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/systemd-sysvinit.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package system-group-kvm (XXX/XXX), XXX.X KiB ( XXX.X   B unpacked)
+Retrieving: system-group-kvm [done]
+(XXX/XXX) Installing: system-group-kvm [done]
+Additional rpm output:
+warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/noarch/system-group-kvm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+/usr/sbin/groupadd -r -g 36 kvm
 
 
 Retrieving package ruby2.5-rubygem-gem2rpm (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
@@ -1872,32 +1953,40 @@ update-alternatives: using /usr/bin/ri.ruby.ruby2.5 to provide /usr/bin/ri (ri) 
 update-alternatives: using /usr/bin/ri.ruby.ruby2.5 to provide /usr/bin/ri.ruby2.5 (ri.ruby2.5) in auto mode
 
 
-Retrieving package aaa_base-extras (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
-Retrieving: aaa_base-extras.rpm [done]
-(XXX/XXX) Installing: aaa_base-extras [done]
-Additional rpm output:
-warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/aaa_base-extras.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
-warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-Updating /etc/sysconfig/backup ...
-Warning: opensuse-leaf-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root 'opensuse-leaf-rootfs'
-Running in chroot, ignoring command 'daemon-reload'
-Warning: opensuse-leaf-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root 'opensuse-leaf-rootfs'
-Warning: opensuse-leaf-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root 'opensuse-leaf-rootfs'
-Created symlink /etc/systemd/system/timers.target.wants/backup-rpmdb.timer -> /usr/lib/systemd/system/backup-rpmdb.timer.
-Warning: opensuse-leaf-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root 'opensuse-leaf-rootfs'
-Warning: opensuse-leaf-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root 'opensuse-leaf-rootfs'
-Created symlink /etc/systemd/system/timers.target.wants/backup-sysconfig.timer -> /usr/lib/systemd/system/backup-sysconfig.timer.
-Warning: opensuse-leaf-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root 'opensuse-leaf-rootfs'
-Warning: opensuse-leaf-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root 'opensuse-leaf-rootfs'
-Created symlink /etc/systemd/system/timers.target.wants/check-battery.timer -> /usr/lib/systemd/system/check-battery.timer.
-
-
 Retrieving package gpg2 (XXX/XXX), XXX.X MiB ( XXX.X MiB unpacked)
 Retrieving: gpg2.rpm [done]
 (XXX/XXX) Installing: gpg2 [done]
 Additional rpm output:
 warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/gpg2.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package suse-module-tools (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: suse-module-tools.rpm [done]
+(XXX/XXX) Installing: suse-module-tools [done]
+Additional rpm output:
+warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/suse-module-tools.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+Warning: opensuse-leaf-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root 'opensuse-leaf-rootfs'
+Running in chroot, ignoring command 'daemon-reload'
+Warning: opensuse-leaf-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root 'opensuse-leaf-rootfs'
+
+
+Retrieving package kmod (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: kmod.rpm [done]
+(XXX/XXX) Installing: kmod [done]
+Additional rpm output:
+warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/kmod.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package udev (XXX/XXX), XXX.X MiB ( XXX.X MiB unpacked)
+Retrieving: udev.rpm [done]
+(XXX/XXX) Installing: udev [done]
+Additional rpm output:
+warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/udev.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+Warning: opensuse-leaf-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root 'opensuse-leaf-rootfs'
 
 
 Retrieving package openSUSE-build-key (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
@@ -1924,6 +2013,34 @@ warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/noarch/gpg2-lang:
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 
 
+Retrieving package systemd-lang (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: systemd-lang [done]
+(XXX/XXX) Installing: systemd-lang [done]
+Additional rpm output:
+warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/noarch/systemd-lang: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package aaa_base-extras (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: aaa_base-extras.rpm [done]
+(XXX/XXX) Installing: aaa_base-extras [done]
+Additional rpm output:
+warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/aaa_base-extras.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+Updating /etc/sysconfig/backup ...
+Warning: opensuse-leaf-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root 'opensuse-leaf-rootfs'
+Running in chroot, ignoring command 'daemon-reload'
+Warning: opensuse-leaf-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root 'opensuse-leaf-rootfs'
+Warning: opensuse-leaf-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root 'opensuse-leaf-rootfs'
+Created symlink /etc/systemd/system/timers.target.wants/backup-rpmdb.timer -> /usr/lib/systemd/system/backup-rpmdb.timer.
+Warning: opensuse-leaf-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root 'opensuse-leaf-rootfs'
+Warning: opensuse-leaf-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root 'opensuse-leaf-rootfs'
+Created symlink /etc/systemd/system/timers.target.wants/backup-sysconfig.timer -> /usr/lib/systemd/system/backup-sysconfig.timer.
+Warning: opensuse-leaf-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root 'opensuse-leaf-rootfs'
+Warning: opensuse-leaf-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root 'opensuse-leaf-rootfs'
+Created symlink /etc/systemd/system/timers.target.wants/check-battery.timer -> /usr/lib/systemd/system/check-battery.timer.
+
+
 Retrieving package patterns-base-minimal_base (XXX/XXX), XXX.X KiB ( XXX.X   B unpacked)
 Retrieving: patterns-base-minimal_base.rpm [done]
 (XXX/XXX) Installing: patterns-base-minimal_base [done]
@@ -1937,6 +2054,14 @@ Retrieving: libzypp.rpm [done]
 (XXX/XXX) Installing: libzypp [done]
 Additional rpm output:
 warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libzypp.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+
+Retrieving package dracut (XXX/XXX), XXX.X KiB ( XXX.X MiB unpacked)
+Retrieving: dracut.rpm [done]
+(XXX/XXX) Installing: dracut [done]
+Additional rpm output:
+warning: opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/dracut.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 
 
@@ -1969,7 +2094,7 @@ Warning: opensuse-leaf-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root 'op
 Warning: opensuse-leaf-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root 'opensuse-leaf-rootfs'
 
 
-Executing %posttrans script 'login_defs-4.8.1-150400.8.32.noarch.rpm' [done]
+Executing %posttrans script 'login_defs-4.8.1-150400.8.40.noarch.rpm' [done]
 Output of systemd-presets-common-SUSE-15-8.9.1.noarch.rpm %posttrans script:
     Warning: opensuse-leaf-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root 'opensuse-leaf-rootfs'
     Created symlink /etc/systemd/system/multi-user.target.wants/remote-fs.target -> /usr/lib/systemd/system/remote-fs.target.
@@ -1984,15 +2109,19 @@ Output of systemd-presets-common-SUSE-15-8.9.1.noarch.rpm %posttrans script:
     Created symlink /etc/systemd/user/timers.target.wants/systemd-tmpfiles-clean.timer -> /usr/lib/systemd/user/systemd-tmpfiles-clean.timer.
 
 
-Output of rpm-4.14.3-150400.41.85.x86_64.rpm %posttrans script:
+Output of rpm-4.14.3-150300.46.1.x86_64.rpm %posttrans script:
     /bin/sh: failed to remove 'var/lib/rpm': Directory not empty
 
-Warning: rpm-4.14.3-150400.41.85.x86_64.rpm %posttrans script failed (returned 1)
+Warning: rpm-4.14.3-150300.46.1.x86_64.rpm %posttrans script failed (returned 1)
 
 Output of systemd-presets-branding-openSUSE-12.2-lp154.1.2.noarch.rpm %posttrans script:
     Warning: opensuse-leaf-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root 'opensuse-leaf-rootfs'
 
-Output of openSUSE-release-15.4-lp154.129.1.x86_64.rpm %posttrans script:
+Output of openSUSE-release-15.4-lp154.136.3.x86_64.rpm %posttrans script:
     Warning: opensuse-leaf-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root 'opensuse-leaf-rootfs'
+
+
+Output of kbd-2.4.0-150400.3.1.x86_64.rpm %posttrans script:
+    Please run "/usr/bin/dracut -f --regenerate-all" as soon as your system is complete.
 
 

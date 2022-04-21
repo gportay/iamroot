@@ -493,21 +493,20 @@ The signature will be marked as non-exportable.
 
 
 pub  rsa2048/150C200743ED46D8
-     created: YYYY-MM-DD  expires: YYYY-MM-DD  usage: SC  
+     created: YYYY-MM-DD  expires: never       usage: SC  
      trust: marginal      validity: full
 sub  rsa2048/461912CC5A3EBE40
-     created: YYYY-MM-DD  expires: YYYY-MM-DD  usage: E   
+     created: YYYY-MM-DD  expires: never       usage: E   
 [  full  ] (1). Mark Wagie <mark@manjaro.org>
 
 
 pub  rsa2048/150C200743ED46D8
-     created: YYYY-MM-DD  expires: YYYY-MM-DD  usage: SC  
+     created: YYYY-MM-DD  expires: never       usage: SC  
      trust: marginal      validity: full
  Primary key fingerprint: 688E 8F82 879D 0E25 CE54  1426 150C 2007 43ED 46D8
 
      Mark Wagie <mark@manjaro.org>
 
-This key is due to expire on 2022-04-20.
 Are you sure that you want to sign this key with your
 key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
 
@@ -648,6 +647,7 @@ installing tzdata...
 installing glibc...
 Optional dependencies for glibc
     gd: for memusagestat
+    perl: for mtrace [pending]
 installing gcc-libs...
 installing ncurses...
 Optional dependencies for ncurses
@@ -920,6 +920,7 @@ Warning: fchownat: /dev/snd/timer: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/snd/timer: Ignoring error 'Operation not permitted'!
 Warning: fchownat: /dev/loop-control: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/loop-control: Ignoring error 'Operation not permitted'!
+Warning: chmod: /dev/vhost-net: Ignoring error 'Operation not permitted'!
 Warning: fchownat: /run/log/journal: Ignoring error 'Operation not permitted'!
 Warning: chmod: /run/log/journal: Ignoring error 'Operation not permitted'!
 (XXX/XXX) Reloading device manager configuration...

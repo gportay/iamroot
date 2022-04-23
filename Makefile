@@ -243,7 +243,7 @@ shell: x86_64/libiamroot-linux-x86-64.so.2
 
 .PHONY: clean
 clean:
-	rm -Rf x86_64/ libiamroot.so *.o
+	rm -Rf x86_64/ libiamroot.so *.o *.i
 	$(MAKE) -C tests $@
 
 .PHONY: mrproper

@@ -156,6 +156,7 @@ static void __regex_perror(const char *s, regex_t *regex, int err)
 	dprintf(STDERR_FILENO, "%s: %s\n", s, buf);
 }
 
+__attribute__((optimize("O0")))
 __attribute__((constructor,visibility("hidden")))
 void execve_init()
 {

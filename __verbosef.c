@@ -39,6 +39,7 @@ static void __regex_perror(const char *s, regex_t *regex, int err)
 	dprintf(DEBUG_FILENO, "%s: %s\n", s, buf);
 }
 
+__attribute__((optimize("O0")))
 __attribute__((constructor,visibility("hidden")))
 void verbosef_init()
 {

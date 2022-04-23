@@ -89,7 +89,7 @@ ssize_t readlink(const char *path, char *buf, size_t bufsize)
 	if (__strlcmp(buf, getrootdir()) != 0)
 		goto exit;
 
-	memmove(buf, buf+len, strlen(buf)-len+1);
+	memmove(buf, buf+len, strnlen(buf, bufsize)-len+1);
 	ret -= len;
 
 	if (ret == 0)

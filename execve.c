@@ -425,7 +425,7 @@ static ssize_t getdynamicentry32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
 			goto exit;
 		}
 
-		ret = strlen(buf);
+		ret = strnlen(buf, bufsize);
 		errno = 0;
 		goto exit;
 	}
@@ -556,7 +556,7 @@ static ssize_t getdynamicentry64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
 			goto exit;
 		}
 
-		ret = strlen(buf);
+		ret = strnlen(buf, bufsize);
 		errno = 0;
 		goto exit;
 	}

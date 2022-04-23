@@ -1358,7 +1358,7 @@ loader:
 
 		ld_library_path = __ld_library_path(ldso, abi);
 		if (!ld_library_path)
-			__warning("%s: is unset!", "ld_library_path");
+			__warning("%s: is unset!\n", "ld_library_path");
 
 		inhibit_rpath = __inhibit_rpath();
 		if (!inhibit_rpath)

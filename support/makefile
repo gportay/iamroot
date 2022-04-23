@@ -415,9 +415,7 @@ ubuntu-%-chroot: | ubuntu-%-rootfs
 
 .NOTPARALLEL: ubuntu-rootfs
 .PHONY: ubuntu-rootfs
-ubuntu-rootfs: ubuntu-focal-rootfs ubuntu-impish-rootfs ubuntu-jammy-rootfs
-
-fixme-rootfs: ubuntu-bionic-rootfs
+ubuntu-rootfs: ubuntu-bionic-rootfs ubuntu-focal-rootfs ubuntu-impish-rootfs ubuntu-jammy-rootfs
 
 ubuntu-bionic-rootfs: | ubuntu-bionic-rootfs/etc/machine-id
 ubuntu-focal-rootfs: | ubuntu-focal-rootfs/etc/machine-id
@@ -1056,7 +1054,7 @@ support: alpine-support
 extra-support: manjaro-support opensuse-support
 
 .PHONY: fixme-support
-fixme-support: support/ubuntu-bionic-rootfs.txt
+fixme-support:
 
 .PHONY: arch-support
 arch-support: support/arch-rootfs.txt
@@ -1073,6 +1071,7 @@ debian-support: support/debian-testing-rootfs.txt
 debian-support: support/debian-unstable-rootfs.txt
 
 .PHONY: ubuntu-support
+ubuntu-support: support/ubuntu-bionic-rootfs.txt
 ubuntu-support: support/ubuntu-focal-rootfs.txt
 ubuntu-support: support/ubuntu-impish-rootfs.txt
 ubuntu-support: support/ubuntu-jammy-rootfs.txt
@@ -1202,7 +1201,7 @@ log: alpine-log
 extra-log: manjaro-log opensuse-log
 
 .PHONY: fixme-log
-fixme-log: ubuntu-bionic-rootfs.log
+fixme-log:
 
 .PHONY: arch-log
 arch-log: arch-rootfs.log
@@ -1219,6 +1218,7 @@ debian-log: debian-testing-rootfs.log
 debian-log: debian-unstable-rootfs.log
 
 .PHONY: ubuntu-log
+ubuntu-log: ubuntu-bionic-rootfs.log
 ubuntu-log: ubuntu-focal-rootfs.log
 ubuntu-log: ubuntu-impish-rootfs.log
 ubuntu-log: ubuntu-jammy-rootfs.log

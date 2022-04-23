@@ -1,13 +1,13 @@
-gpg: arch-rootfs/etc/pacman.d/gnupg.tmp/trustdb.gpg: trustdb created
+gpg: /arch-rootfs/etc/pacman.d/gnupg.tmp/trustdb.gpg: trustdb created
 gpg: no ultimately trusted keys found
 gpg: starting migration from earlier GnuPG versions
-gpg: porting secret keys from 'arch-rootfs/etc/pacman.d/gnupg.tmp/secring.gpg' to gpg-agent
+gpg: porting secret keys from '/arch-rootfs/etc/pacman.d/gnupg.tmp/secring.gpg' to gpg-agent
 gpg: migration succeeded
 ==> Generating pacman master key. This may take some time.
 gpg: Generating pacman keyring master key...
 gpg: key XXXXXXXXXXXXXXXX marked as ultimately trusted
-gpg: directory 'arch-rootfs/etc/pacman.d/gnupg.tmp/openpgp-revocs.d' created
-gpg: revocation certificate stored as 'arch-rootfs/etc/pacman.d/gnupg.tmp/openpgp-revocs.dXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.rev'
+gpg: directory '/arch-rootfs/etc/pacman.d/gnupg.tmp/openpgp-revocs.d' created
+gpg: revocation certificate stored as '/arch-rootfs/etc/pacman.d/gnupg.tmp/openpgp-revocs.dXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.rev'
 gpg: Done
 ==> Updating trust database...
 gpg: marginals needed: X  completes needed: X  trust model: pgp
@@ -51,9 +51,9 @@ checking available disk space...
 :: Processing package changes...
 installing iana-etc...
 installing filesystem...
-warning: directory permissions differ on arch-rootfs/proc/
+warning: directory permissions differ on /arch-rootfs/proc/
 filesystem: 755  package: 555
-warning: directory permissions differ on arch-rootfs/sys/
+warning: directory permissions differ on /arch-rootfs/sys/
 filesystem: 755  package: 555
 installing linux-api-headers...
 installing tzdata...

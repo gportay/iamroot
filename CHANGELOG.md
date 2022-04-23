@@ -24,6 +24,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   by `/lib/ld` or `/lib64/ld`
 - Use the [dynamic loader][ld.so(8)] option `--inhibit-cache` if
   [exec][exec(3)]'ing to a [glibc] chroot'ed environment
+- Support for optimizations up to `-O5` and source fortification up to
+  `_FORTIFY_SOURCE=2`
 
 ### Changed
 

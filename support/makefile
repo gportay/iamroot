@@ -1093,102 +1093,102 @@ alpine-support: support/alpine-edge-rootfs.txt
 
 .PRECIOUS: support/%arch-rootfs.txt
 support/arch-rootfs.txt: arch-rootfs.log
-	support/pacstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	support/pacstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
 .PRECIOUS: support/i686-arch-rootfs.txt
 support/i686-arch-rootfs.txt: i686-arch-rootfs.log
-	support/pacstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	support/pacstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
 .PRECIOUS: support/manjaro-rootfs.txt
 support/manjaro-rootfs.txt: manjaro-rootfs.log
-	support/pacstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	support/pacstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
 .PRECIOUS: support/debian-oldoldstable-rootfs.txt
 support/debian-oldoldstable-rootfs.txt: debian-oldoldstable-rootfs.log
-	support/debootstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
 .PRECIOUS: support/debian-oldstable-rootfs.txt
 support/debian-oldstable-rootfs.txt: debian-oldstable-rootfs.log
-	support/debootstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
 .PRECIOUS: support/debian-stable-rootfs.txt
 support/debian-stable-rootfs.txt: debian-stable-rootfs.log
-	support/debootstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
 .PRECIOUS: support/debian-testing-rootfs.txt
 support/debian-testing-rootfs.txt: debian-testing-rootfs.log
-	support/debootstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
 .PRECIOUS: support/debian-unstable-rootfs.txt
 support/debian-unstable-rootfs.txt: debian-unstable-rootfs.log
-	support/debootstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
 .PRECIOUS: support/ubuntu-bionic-rootfs.txt
 support/ubuntu-bionic-rootfs.txt: ubuntu-bionic-rootfs.log
-	support/debootstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
 .PRECIOUS: support/ubuntu-focal-rootfs.txt
 support/ubuntu-focal-rootfs.txt: ubuntu-focal-rootfs.log
-	support/debootstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
 .PRECIOUS: support/ubuntu-impish-rootfs.txt
 support/ubuntu-impish-rootfs.txt: ubuntu-impish-rootfs.log
-	support/debootstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
 .PRECIOUS: support/ubuntu-jammy-rootfs.txt
 support/ubuntu-jammy-rootfs.txt: ubuntu-jammy-rootfs.log
-	support/debootstrap.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
 .PRECIOUS: support/fedora-33-rootfs.txt
 support/fedora-33-rootfs.txt: fedora-33-rootfs.log
-	support/dnf.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	support/dnf.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
 .PRECIOUS: support/fedora-34-rootfs.txt
 support/fedora-34-rootfs.txt: fedora-34-rootfs.log
-	support/dnf.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	support/dnf.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
 .PRECIOUS: support/fedora-35-rootfs.txt
 support/fedora-35-rootfs.txt: fedora-35-rootfs.log
-	support/dnf.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	support/dnf.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
 .PRECIOUS: support/opensuse-leaf-rootfs.txt
 support/opensuse-leaf-rootfs.txt: opensuse-leaf-rootfs.log
-	support/zypper.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	support/zypper.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
 .PRECIOUS: support/opensuse-tumbleweed-rootfs.txt
 support/opensuse-tumbleweed-rootfs.txt: opensuse-tumbleweed-rootfs.log
-	support/zypper.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	support/zypper.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
 .PRECIOUS: support/alpine-3.14-rootfs.txt
 support/alpine-3.14-rootfs.txt: alpine-3.14-rootfs.log
-	support/alpine-make-rootfs.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	support/alpine-make-rootfs.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
 .PRECIOUS: support/alpine-3.15-rootfs.txt
 support/alpine-3.15-rootfs.txt: alpine-3.15-rootfs.log
-	support/alpine-make-rootfs.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	support/alpine-make-rootfs.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
 .PRECIOUS: support/alpine-edge-rootfs.txt
 support/alpine-edge-rootfs.txt: alpine-edge-rootfs.log
-	support/alpine-make-rootfs.sed -e 's,$(CURDIR)/,,g' $< >$@.tmp
+	support/alpine-make-rootfs.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
 .PHONY: log

@@ -147,6 +147,13 @@ gpg: depth: X  valid:   X  signed:   X  trust: X-, Xq, Xn, Xm, Xf, Xu
 gpg: depth: X  valid:   X  signed:   X  trust: X-, Xq, Xn, Xm, Xf, Xu
 gpg: next trustdb check due at YYYY-MM-DD
 ==> Creating install root at i686-arch-rootfs
+Warning: Command is skipped: /usr/bin/mount proc i686-arch-rootfs/proc -t proc -o nosuid,noexec,nodev
+Warning: Command is skipped: /usr/bin/mount sys i686-arch-rootfs/sys -t sysfs -o nosuid,noexec,nodev,ro
+Warning: Command is skipped: /usr/bin/mount udev i686-arch-rootfs/dev -t devtmpfs -o mode=0755,nosuid
+Warning: Command is skipped: /usr/bin/mount devpts i686-arch-rootfs/dev/pts -t devpts -o mode=0620,gid=5,nosuid,noexec
+Warning: Command is skipped: /usr/bin/mount shm i686-arch-rootfs/dev/shm -t tmpfs -o mode=1777,nosuid,nodev
+Warning: Command is skipped: /usr/bin/mount /run i686-arch-rootfs/run --bind
+Warning: Command is skipped: /usr/bin/mount tmp i686-arch-rootfs/tmp -t tmpfs -o mode=1777,strictatime,nodev,nosuid
 ==> Installing packages to i686-arch-rootfs
 :: Synchronizing package databases...
 resolving dependencies...
@@ -422,3 +429,4 @@ Warning: chmod: /run/log: Ignoring error 'Operation not permitted'!
 (XXX/XXX) Rebuilding certificate stores...
 (XXX/XXX) Reloading system bus configuration...
   Skipped: Running in chroot.
+Warning: Command is skipped: /usr/bin/umount i686-arch-rootfs/tmp i686-arch-rootfs/run i686-arch-rootfs/dev/shm i686-arch-rootfs/dev/pts i686-arch-rootfs/dev i686-arch-rootfs/sys i686-arch-rootfs/proc

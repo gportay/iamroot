@@ -6,11 +6,6 @@
 #
 
 log() {
-	if [ "${IAMROOT_DEBUG:-0}" -lt 1 ]
-	then
-		return
-	fi
-
 	level="$1"
 	shift
 

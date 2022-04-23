@@ -1281,6 +1281,7 @@ Additional rpm output:
 warning: /opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/permissions.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 Updating /etc/sysconfig/security ...
+FIXME: Command is skipped: /bin/sh --system
 
 
 Retrieving package netcfg (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
@@ -1364,6 +1365,7 @@ Retrieving: ca-certificates [done]
 Additional rpm output:
 warning: /opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/noarch/ca-certificates: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+FIXME: Command is skipped: /bin/sh -f
 
 
 Retrieving package ca-certificates-mozilla (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
@@ -1372,6 +1374,7 @@ Retrieving: ca-certificates-mozilla [done]
 Additional rpm output:
 warning: /opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/noarch/ca-certificates-mozilla: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+FIXME: Command is skipped: /bin/sh
 
 
 Retrieving package systemd-presets-branding-openSUSE (XXX/XXX), XXX.X KiB ( XXX.X   B unpacked)
@@ -1542,6 +1545,8 @@ Retrieving: pam.rpm [done]
 Additional rpm output:
 warning: /opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/pam.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+FIXME: Command is skipped: /bin/sh -n --set --system /sbin/unix_chkpwd
+FIXME: Command is skipped: /bin/sh -n --set --system /sbin/unix2_chkpwd
 
 
 Retrieving package hostname (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
@@ -1590,6 +1595,15 @@ Retrieving: shadow.rpm [done]
 Additional rpm output:
 warning: /opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/shadow.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+FIXME: Command is skipped: /bin/sh -n --set --system /usr/bin/chage
+FIXME: Command is skipped: /bin/sh -n --set --system /usr/bin/chfn
+FIXME: Command is skipped: /bin/sh -n --set --system /usr/bin/chsh
+FIXME: Command is skipped: /bin/sh -n --set --system /usr/bin/expiry
+FIXME: Command is skipped: /bin/sh -n --set --system /usr/bin/gpasswd
+FIXME: Command is skipped: /bin/sh -n --set --system /usr/bin/newgrp
+FIXME: Command is skipped: /bin/sh -n --set --system /usr/bin/passwd
+FIXME: Command is skipped: /bin/sh -n --set --system /usr/bin/newgidmap
+FIXME: Command is skipped: /bin/sh -n --set --system /usr/bin/newuidmap
 
 
 Retrieving package pam-config (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
@@ -1709,6 +1723,7 @@ Retrieving: dbus-1.rpm [done]
 Additional rpm output:
 warning: /opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/dbus-1.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+FIXME: Command is skipped: /bin/sh -n --set --system /usr/lib/dbus-1/dbus-daemon-launch-helper
 update-alternatives: using /usr/bin/dbus-launch.nox11 to provide /usr/bin/dbus-launch (dbus-launch) in auto mode
 
 
@@ -1856,6 +1871,7 @@ Retrieving: libutempter0.rpm [done]
 Additional rpm output:
 warning: /opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libutempter0.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+FIXME: Command is skipped: /bin/sh -n --set --system /usr/lib/utempter/utempter
 
 
 Retrieving package libgnutls30 (XXX/XXX), XXX.X KiB ( XXX.X MiB unpacked)
@@ -1872,6 +1888,8 @@ Retrieving: util-linux.rpm [done]
 Additional rpm output:
 warning: /opensuse-leaf-rootfs/var/cache/zypp/packages/repo-oss/x86_64/util-linux.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+FIXME: Command is skipped: /bin/sh -n --set --system /usr/bin/wall /usr/bin/write /usr/bin/mount /usr/bin/umount
+FIXME: Command is skipped: /bin/sh -n --set --system /usr/bin/su
 
 
 Retrieving package dirmngr (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
@@ -2113,6 +2131,9 @@ Output of rpm-4.14.3-150300.46.1.x86_64.rpm %posttrans script:
     /bin/sh: failed to remove 'var/lib/rpm': Directory not empty
 
 Warning: rpm-4.14.3-150300.46.1.x86_64.rpm %posttrans script failed (returned 1)
+Output of ca-certificates-mozilla-2.44-21.1.noarch.rpm %posttrans script:
+    FIXME: Command is skipped: /bin/sh
+
 
 Output of systemd-presets-branding-openSUSE-12.2-lp154.1.2.noarch.rpm %posttrans script:
     Warning: /opensuse-leaf-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root '/opensuse-leaf-rootfs'

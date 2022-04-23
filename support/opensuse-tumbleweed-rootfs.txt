@@ -1170,6 +1170,7 @@ Additional rpm output:
 warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/permissions-config.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 Updating /etc/sysconfig/security ...
+FIXME: Command is skipped: /usr/bin/chkstat --system
 
 
 Retrieving package iproute2 (XXX/XXX), XXX.X MiB ( XXX.X MiB unpacked)
@@ -1242,6 +1243,8 @@ Retrieving: pam.rpm [done]
 Additional rpm output:
 warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/pam.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+FIXME: Command is skipped: /usr/bin/chkstat -n --set --system /usr/sbin/unix_chkpwd
+FIXME: Command is skipped: /usr/bin/chkstat -n --set --system /usr/sbin/unix2_chkpwd
 
 
 Retrieving package iputils (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
@@ -1250,6 +1253,7 @@ Retrieving: iputils.rpm [done]
 Additional rpm output:
 warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/iputils.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+FIXME: Command is skipped: /usr/bin/chkstat -n --set --system /usr/bin/clockdiff
 
 
 Retrieving package libzck1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
@@ -1575,6 +1579,7 @@ Retrieving: libutempter0.rpm [done]
 Additional rpm output:
 warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libutempter0.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+FIXME: Command is skipped: /usr/bin/chkstat -n --set --system /usr/libexec/utempter/utempter
 
 
 Retrieving package python38-base (XXX/XXX), XXX.X MiB ( XXX.X MiB unpacked)
@@ -1599,6 +1604,8 @@ Retrieving: util-linux.rpm [done]
 Additional rpm output:
 warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/util-linux.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+FIXME: Command is skipped: /usr/bin/chkstat -n --set --system /usr/bin/wall /usr/bin/write /usr/bin/mount /usr/bin/umount
+FIXME: Command is skipped: /usr/bin/chkstat -n --set --system /usr/bin/su
 
 
 Retrieving package python38-pyparsing (XXX/XXX), XXX.X KiB ( XXX.X MiB unpacked)
@@ -1682,6 +1689,7 @@ Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains 
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root '/opensuse-tumbleweed-rootfs'
 Creating group 'messagebus' with GID 483.
 Creating user 'messagebus' (User for D-Bus) with UID 483 and GID 483.
+FIXME: Command is skipped: /usr/bin/chkstat -n --set --system /usr/libexec/dbus-1/dbus-daemon-launch-helper
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root '/opensuse-tumbleweed-rootfs'

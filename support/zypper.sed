@@ -27,6 +27,15 @@
 	s,\[\.\+done.*\],[done],
 }
 
+# Executing %posttrans script 'openSUSE-release-20220420-1565.1.x86_64.rpm' [....
+# (...)
+# .
+# (...)
+# ....done]
+/ \[\.*$/s, \[\.*$, [done],g
+/^\.\+$/s,\.\+,,g
+/^\.*done]$/s,\.*done],,g
+
 # Retrieving package filesystem-84.87-3.2.x86_64 (X/XXX),  X.X KiB (  XXX   B unpacked)
 /^Retrieving package/{
 	s,\([[:lower:][:upper:][:digit:]._+-]\+\)-\([[:digit:]]\+:[[:alnum:]._~^+-]\+\|[[:alnum:]._~^+-]\+\)-\([[:alnum:].%{?}-]\+\)\.\([[:lower:][:digit:]]\+\.[[:alnum:]_]\+\|[[:alnum:]_]\+\),\1,

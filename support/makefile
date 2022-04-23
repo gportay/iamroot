@@ -104,6 +104,7 @@ aarch64/libiamroot-musl-aarch64.so.1: export CC = aarch64-linux-musl-gcc
 $(eval $(call libiamroot_so,aarch64,musl-aarch64,1))
 endif
 
+ifdef CLANG
 ifneq ($(shell command -v clang),)
 all: clang/libiamroot-linux-x86-64.so.2
 
@@ -121,6 +122,7 @@ clean: clean-clang-linux-x86-64.2
 clean-clang-linux-x86-64.2:
 	rm -Rf output-clang-x86-64/
 	rm -Rf clang/
+endif
 endif
 
 .PRECIOUS: output-%/libiamroot.so

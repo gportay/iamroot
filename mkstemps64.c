@@ -53,8 +53,8 @@ int mkstemps64(char *path, int suffixlen)
 	if (ret == -1)
 		goto exit;
 
-	len = strlen(path);
-	memcpy(path, real_path+strlen(real_path)-len, len);
+	len = __strlen(path);
+	memcpy(path, real_path+__strlen(real_path)-len, len);
 
 exit:
 	__debug("%s(path: '%s' -> '%s')\n", __func__, path, real_path);

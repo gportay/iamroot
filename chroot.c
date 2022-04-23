@@ -695,15 +695,15 @@ int chroot(const char *path)
 
 		cwd = buf;
 		root = getrootdir();
-		rootlen = strlen(root);
+		rootlen = __strlen(root);
 		if (strcmp(root, "/") != 0) {
 			__strncpy(buf, root);
 			cwd += rootlen;
 		}
 
 		cwd = getcwd(cwd, sizeof(buf)-rootlen);
-		len = strlen(cwd);
-		if (rootlen + len + 1 + strlen(path) + 1 > sizeof(buf)) {
+		len = __strlen(cwd);
+		if (rootlen + len + 1 + __strlen(path) + 1 > sizeof(buf)) {
 			errno = ENAMETOOLONG;
 			return -1;
 		}

@@ -30,11 +30,12 @@ extern "C" {
 	   (s1)[l] = 0; \
 	   (s1); })
 #define __strchrnul strchrnul
+#define __strlen(s) strnlen(s, PATH_MAX)
 #define __strnlen(s) strnlen(s, sizeof(s)-1)
-#define __strlcmp(s1, s2) strncmp(s1, s2, strlen(s2))
+#define __strlcmp(s1, s2) strncmp(s1, s2, __strlen(s2))
 #define __strncmp(s1, s2) strncmp(s1, s2, sizeof(s2)-1)
 #define __strlcpy(s1, s2) \
-	({ const int l = strlen((s2)); \
+	({ const int l = __strlen((s2)); \
 	   strncpy((s1), (s2), l); \
 	   (s1)[l] = 0; \
 	   (s1); })

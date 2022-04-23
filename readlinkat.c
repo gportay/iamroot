@@ -43,7 +43,7 @@ ssize_t readlinkat(int fd, const char *path, char *buf, size_t bufsize)
 	size_t len;
 
 	root = getrootdir();
-	len = strlen(root);
+	len = __strlen(root);
 
 	if (strcmp(path, "/proc/self/root") == 0) {
 		__notice("%s: ignoring path resolution '%s'\n", __func__,
@@ -67,7 +67,7 @@ ssize_t readlinkat(int fd, const char *path, char *buf, size_t bufsize)
 	       
 		exe = __getexe();
 		if (exe) {
-			ret = strlen(exe);
+			ret = __strlen(exe);
 			if ((size_t)ret > bufsize)
 				ret = bufsize;
 			memcpy(buf, exe, ret);

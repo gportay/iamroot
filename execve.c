@@ -90,9 +90,9 @@ int pathsetenv(const char *root, const char *name, const char *value,
 		goto setenv;
 
 	newlen = 0;
-	rootlen = strlen(root);
+	rootlen = __strlen(root);
 
-	vallen = strlen(value);
+	vallen = __strlen(value);
 	if (vallen > 0) {
 		char *token, *saveptr, val[vallen+1];
 
@@ -900,9 +900,9 @@ const char *__getexe()
 	len = 0;	
 	root = __getroot();
 	if (root)
-		len = strlen(root);
+		len = __strlen(root);
 
-	if (strlen(exec) < len)
+	if (__strlen(exec) < len)
 		return NULL;
 
 	return &exec[len];
@@ -1172,7 +1172,7 @@ int __execve(const char *path, char * const argv[], char * const envp[])
 	if (strcmp(root, "/") == 0)
 		goto exit;
 
-	len = strlen(root);
+	len = __strlen(root);
 	if (strncmp(path, root, len) == 0)
 		path += len;
 

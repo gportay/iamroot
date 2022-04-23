@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
+#include <limits.h>
 #include <dlfcn.h>
 
 #include <unistd.h>
@@ -50,10 +51,10 @@ char *getwd(char *buf)
 	if (strcmp(root, "/") == 0)
 		goto exit;
 
-	size = strlen(ret);
-	len = strlen(root);
+	size = __strlen(ret);
+	len = __strlen(root);
 	if (strncmp(root, ret, len) == 0)
-		memcpy(ret, &ret[len], strlen(ret)-len+1); /* NUL */
+		memcpy(ret, &ret[len], __strlen(ret)-len+1); /* NUL */
 
 	if (!*ret)
 		strncpy(ret, "/", size-1);

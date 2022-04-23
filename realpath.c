@@ -211,7 +211,7 @@ char *realpath(const char *path, char *resolved_path)
 		goto exit;
 
 	root = getrootdir();
-	len = strlen(root);
+	len = __strlen(root);
 
 	if (strcmp(root, "/") == 0)
 		goto exit;
@@ -226,7 +226,7 @@ char *realpath(const char *path, char *resolved_path)
 		goto exit;
 	}
 
-	ret = memmove(resolved_path, ret+len, strlen(ret)-len+1);
+	ret = memmove(resolved_path, ret+len, __strlen(ret)-len+1);
 
 exit:
 	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, real_path);

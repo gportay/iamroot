@@ -9,7 +9,7 @@ _iamroot-shell()
 	local cur prev words cword DEBUG_IGNORE
 	_init_completion || return
 
-	DEBUG_IGNORE=( __fstat __fstat64 __fxstat __fxstat64 __fxstatat
+	DEBUG_IGNORE=(__fstat __fstat64 __fxstat __fxstat64 __fxstatat
 		__fxstatat64 __libc_start_main __lxstat __lxstat64
 		__nss_files_fopen __open __open64 __open64_2 __open_2
 		__openat64_2 __openat_2 __opendir __opendirat __statfs

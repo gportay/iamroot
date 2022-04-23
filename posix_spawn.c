@@ -134,7 +134,7 @@ int posix_spawn(pid_t *pid, const char *path,
 	if (xargv1)
 		interparg[i++] = xargv1; /* extra argument as argv1 */
 	/* Add optional argument */
-	len = strlen(hashbang);
+	len = __strnlen(hashbang);
 	if (len < (size_t)siz && hashbang[len+1])
 		interparg[i++] = &hashbang[len+1];
 	interparg[i++] = (char *)path; /* original program path as first

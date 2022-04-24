@@ -43,7 +43,6 @@ int fsetxattr(int fd, const char *name, const void *value, size_t size,
 {
 	char xbuf[XATTR_NAME_MAX + 1];
 	char buf[PATH_MAX];
-	char *real_path;
 	ssize_t siz;
 
 	siz = __procfdreadlink(fd, buf, sizeof(buf));
@@ -52,10 +51,9 @@ int fsetxattr(int fd, const char *name, const void *value, size_t size,
 		return -1;
 	}
 	buf[siz] = 0;
-	real_path = buf;
 
 	__debug("%s(fd: %i <-> '%s', name: '%s', ..., flags: 0x%x)\n",
-		__func__, fd, real_path, name, flags);
+		__func__, fd, buf, name, flags);
 
 	if (__strncmp(name, "user") != 0) {
 		int ret;

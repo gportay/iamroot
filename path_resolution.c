@@ -215,17 +215,16 @@ int path_ignored(int fd, const char *path)
 	return ignore(path);
 }
 
-static char *_path_resolution(int fd, const char *path, char *buf,
-			      size_t bufsize, int flags, int symlinks)
+static ssize_t _path_resolution(int fd, const char *path, char *buf,
+				size_t bufsize, int flags, int symlinks)
 {
 	const char *root;
-	char *real_path;
 	size_t len;
 	int ret;
 
 	if (fd == -1 || !path) {
 		errno = EINVAL;
-		return NULL;
+		return -1;
 	}
 
 	if (ignore(path))
@@ -244,12 +243,12 @@ static char *_path_resolution(int fd, const char *path, char *buf,
 		size = _snprintf(buf, bufsize, "%s%s", root, path);
 		if (size < 0) {
 			errno = EINVAL;
-			return NULL;
+			return -1;
 		}
 
 		if ((size_t)size >= bufsize) {
 			errno = ENAMETOOLONG;
-			return NULL;
+			return -1;
 		}
 	} else if (fd != AT_FDCWD) {
 		char dirbuf[PATH_MAX];
@@ -259,7 +258,7 @@ static char *_path_resolution(int fd, const char *path, char *buf,
 		real_dir = fpath(fd, dirbuf, sizeof(dirbuf));
 		if (!real_dir) {
 			__fpathperror(fd, "fpath");
-			return NULL;
+			return -1;
 		}
 
 		if (*real_dir != '/') {
@@ -271,26 +270,26 @@ static char *_path_resolution(int fd, const char *path, char *buf,
 		size = _snprintf(buf, bufsize, "%s/%s", real_dir, path);
 		if (size < 0) {
 			errno = EINVAL;
-			return NULL;
+			return -1;
 		}
 
 		if ((size_t)size >= bufsize) {
 			errno = ENAMETOOLONG;
-			return NULL;
+			return -1;
 		}
 	} else {
 		_strncpy(buf, path, bufsize);
 	}
 
-	real_path = sanitize(buf, bufsize);
+	sanitize(buf, bufsize);
 
 	root = getrootdir();
 	if (strcmp(root, "/") == 0)
 		root = "";
 	len = __strlen(root);
 
-	if (ignore(real_path+len)) {
-		memcpy(buf, real_path+len, __strlen(real_path+len)+1);
+	if (ignore(buf+len)) {
+		memcpy(buf, buf+len, __strlen(buf+len)+1);
 		goto exit;
 	}
 
@@ -300,10 +299,10 @@ static char *_path_resolution(int fd, const char *path, char *buf,
 	symlinks++;
 	if (symlinks >= MAXSYMLINKS) {
 		errno = ELOOP;
-		return NULL;
+		return -1;
 	}
 
-	ret = issymlink(real_path);
+	ret = issymlink(buf);
 	if (ret == -1)
 		goto exit;
 
@@ -311,23 +310,23 @@ static char *_path_resolution(int fd, const char *path, char *buf,
 		char tmp[NAME_MAX];
 		ssize_t s;
 
-		s = next_readlink(real_path, tmp, sizeof(tmp) - 1);
+		s = next_readlink(buf, tmp, sizeof(tmp) - 1);
 		if (s == -1)
-			return NULL;
+			return -1;
 		tmp[s] = 0; /* ensure NULL terminated */
 
 		if (*tmp != '/') {
-			char *basename, *real_tmp, tmpbuf[PATH_MAX];
+			char *basename, tmpbuf[PATH_MAX];
 
-			real_tmp = __strncpy(tmpbuf, path);
-			sanitize(real_tmp, sizeof(tmpbuf));
+			__strncpy(tmpbuf, path);
+			sanitize(tmpbuf, sizeof(tmpbuf));
 
-			basename = __basename(real_tmp);
+			basename = __basename(tmpbuf);
 			strcpy(basename, tmp);
-			sanitize(real_tmp, sizeof(tmpbuf));
+			sanitize(tmpbuf, sizeof(tmpbuf));
 
-			return _path_resolution(AT_FDCWD, real_tmp, buf,
-						bufsize, flags, symlinks);
+			return _path_resolution(AT_FDCWD, tmpbuf, buf, bufsize,
+						flags, symlinks);
 		}
 
 		return _path_resolution(AT_FDCWD, tmp, buf, bufsize, flags,
@@ -335,14 +334,15 @@ static char *_path_resolution(int fd, const char *path, char *buf,
 	}
 
 exit:
-	return real_path;
+	return strnlen(buf, bufsize);
 
 ignore:
-	return _strncpy(buf, path, bufsize);
+	_strncpy(buf, path, bufsize);
+	return strnlen(buf, bufsize);
 }
 
-char *path_resolution(int fd, const char *path, char *buf, size_t bufsize,
-		      int flags)
+ssize_t path_resolution(int fd, const char *path, char *buf, size_t bufsize,
+			int flags)
 {
 	return _path_resolution(fd, path, buf, bufsize, flags, 0);
 }
@@ -351,6 +351,7 @@ __attribute__((visibility("hidden")))
 char *__getpath(int fd, const char *path, int flags)
 {
 	static char buf[PATH_MAX];
+	ssize_t siz;
 
 	*buf = 0;
 	if (path_ignored(fd, path) > 0) {
@@ -363,32 +364,36 @@ char *__getpath(int fd, const char *path, int flags)
 		return _strncpy(buf, path, sizeof(buf));
 	}
 
-	return path_resolution(fd, path, buf, sizeof(buf), flags);
+	siz = path_resolution(fd, path, buf, sizeof(buf), flags);
+	if (!siz)
+		return NULL;
+
+	return buf;
 }
 
 /*
- * Stolen from musl (src/process/execvp.c)
+ * Stolen and hacked from musl (src/process/execvp.c)
  *
  * SPDX-FileCopyrightText: The musl Contributors
  *
  * SPDX-License-Identifier: MIT
  */
 __attribute__((visibility("hidden")))
-char *path_access(const char *file, int mode, const char *path, char *buf,
-		  size_t bufsiz)
+ssize_t path_access(const char *file, int mode, const char *path, char *buf,
+		    size_t bufsiz)
 {
 	const char *p, *z;
 	size_t l, k;
 	int seen_eacces = 0;
 
 	errno = ENOENT;
-	if (!*file) return NULL;
+	if (!*file) return -1;
 
-	if (!path) return NULL;
+	if (!path) return -1;
 	k = strnlen(file, NAME_MAX+1);
 	if (k > NAME_MAX) {
 		errno = ENAMETOOLONG;
-		return NULL;
+		return -1;
 	}
 	l = strnlen(path, PATH_MAX-1)+1;
 
@@ -412,10 +417,10 @@ char *path_access(const char *file, int mode, const char *path, char *buf,
 		case ENOTDIR:
 			break;
 		default:
-			return NULL;
+			return -1;
 		}
 		if (!*z++) break;
 	}
 	if (seen_eacces) errno = EACCES;
-	return NULL;
+	return -1;
 }

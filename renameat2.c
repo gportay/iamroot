@@ -38,25 +38,21 @@ int renameat2(int oldfd, const char *oldpath, int newfd, const char *newpath,
 	      unsigned int flags)
 {
 	char oldbuf[PATH_MAX], newbuf[PATH_MAX];
-	char *real_oldpath, *real_newpath;
 
-	real_oldpath = path_resolution(oldfd, oldpath, oldbuf, sizeof(oldbuf),
-				       AT_SYMLINK_NOFOLLOW);
-	if (!real_oldpath) {
+	if (path_resolution(oldfd, oldpath, oldbuf, sizeof(oldbuf),
+			    AT_SYMLINK_NOFOLLOW) == -1) {
 		__pathperror(oldpath, __func__);
 		return -1;
 	}
 
-	real_newpath = path_resolution(newfd, newpath, newbuf, sizeof(newbuf),
-				       AT_SYMLINK_NOFOLLOW);
-	if (!real_newpath) {
+	if (path_resolution(newfd, newpath, newbuf, sizeof(newbuf),
+			    AT_SYMLINK_NOFOLLOW) == -1) {
 		__pathperror(newpath, __func__);
 		return -1;
 	}
 
 	__debug("%s(oldfd: %i, oldpath: '%s' -> '%s', newfd: %i, newpath: '%s' -> '%s', flags: )\n",
-		__func__, oldfd, oldpath, real_oldpath, newfd, newpath,
-		real_newpath);
+		__func__, oldfd, oldpath, oldbuf, newfd, newpath, newbuf);
 
-	return next_renameat2(oldfd, real_oldpath, newfd, real_newpath, flags);
+	return next_renameat2(oldfd, oldbuf, newfd, newbuf, flags);
 }

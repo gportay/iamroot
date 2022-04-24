@@ -43,16 +43,14 @@ ssize_t getxattr(const char *path, const char *name, void *value, size_t size)
 {
 	char xbuf[XATTR_NAME_MAX + 1];
 	char buf[PATH_MAX];
-	char *real_path;
 
-	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
-	if (!real_path) {
+	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0) == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
 	__debug("%s(path: '%s' -> '%s', name: '%s', ...)\n", __func__, path,
-		real_path, name);
+		buf, name);
 
 	if (__strncmp(name, "user") != 0) {
 		int ret;
@@ -67,6 +65,6 @@ ssize_t getxattr(const char *path, const char *name, void *value, size_t size)
 		name = xbuf;
 	}
 
-	return next_getxattr(real_path, name, value, size);
+	return next_getxattr(buf, name, value, size);
 }
 #endif

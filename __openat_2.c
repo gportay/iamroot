@@ -37,21 +37,19 @@ int next___openat_2(int fd, const char *path, int flags)
 int __openat_2(int fd, const char *path, int flags)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 	int atflags = 0;
 
 	if (flags & O_NOFOLLOW)
 		atflags = AT_SYMLINK_NOFOLLOW;
 
-	real_path = path_resolution(fd, path, buf, sizeof(buf), atflags);
-	if (!real_path) {
+	if (path_resolution(fd, path, buf, sizeof(buf), atflags) == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
 	__debug("%s(fd: %d, path: '%s' -> '%s', flags: 0%o)\n", __func__, fd,
-		path, real_path, flags);
+		path, buf, flags);
 
-	return next___openat_2(fd, real_path, flags);
+	return next___openat_2(fd, buf, flags);
 }
 #endif

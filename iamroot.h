@@ -116,9 +116,9 @@ char *__getexec();
 char *__basename(char *);
 char *sanitize(char *, size_t);
 int path_ignored(int, const char *);
-char *path_resolution(int, const char *, char *, size_t, int);
+ssize_t path_resolution(int, const char *, char *, size_t, int);
 char *__getpath(int, const char *, int);
-char *path_access(const char *, int, const char *, char *, size_t);
+ssize_t path_access(const char *, int, const char *, char *, size_t);
 
 void __procfdname(char *, unsigned);
 ssize_t __procfdreadlink(int, char *, size_t);

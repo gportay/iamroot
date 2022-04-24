@@ -40,15 +40,13 @@ int next_open64(const char *path, int flags, mode_t mode)
 int open64(const char *path, int flags, ...)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 	int atflags = 0;
 	mode_t mode = 0;
 
 	if (flags & O_NOFOLLOW)
 		atflags = AT_SYMLINK_NOFOLLOW;
 
-	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), atflags);
-	if (!real_path) {
+	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf), atflags) == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
@@ -61,10 +59,10 @@ int open64(const char *path, int flags, ...)
 	}
 
 	__debug("%s(path: '%s' -> '%s', flags: 0%o, mode: 0%03o)\n", __func__,
-		path, real_path, flags, mode);
+		path, buf, flags, mode);
 	if (flags & O_CREAT)
-		__warn_if_insuffisant_user_mode(real_path, mode);
+		__warn_if_insuffisant_user_mode(buf, mode);
 
-	return next_open64(real_path, flags, mode);
+	return next_open64(buf, flags, mode);
 }
 #endif

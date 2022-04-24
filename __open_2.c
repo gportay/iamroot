@@ -39,21 +39,19 @@ int next___open_2(const char *path, int flags)
 int __open_2(const char *path, int flags)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 	int atflags = 0;
 
 	if (flags & O_NOFOLLOW)
 		atflags = AT_SYMLINK_NOFOLLOW;
 
-	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), atflags);
-	if (!real_path) {
+	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf), atflags) == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
-	__debug("%s(path: '%s' -> '%s', flags: 0%o)\n", __func__, path,
-		real_path, flags);
+	__debug("%s(path: '%s' -> '%s', flags: 0%o)\n", __func__, path, buf,
+		flags);
 
-	return next___open_2(real_path, flags);
+	return next___open_2(buf, flags);
 }
 #endif

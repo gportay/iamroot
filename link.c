@@ -37,24 +37,21 @@ int next_link(const char *oldpath, const char *newpath)
 int link(const char *oldpath, const char *newpath)
 {
 	char oldbuf[PATH_MAX], newbuf[PATH_MAX];
-	char *real_oldpath, *real_newpath;
 
-	real_oldpath = path_resolution(AT_FDCWD, oldpath, oldbuf,
-				       sizeof(oldbuf), AT_SYMLINK_NOFOLLOW);
-	if (!real_oldpath) {
+	if (path_resolution(AT_FDCWD, oldpath, oldbuf, sizeof(oldbuf),
+			    AT_SYMLINK_NOFOLLOW) == -1) {
 		__pathperror(oldpath, __func__);
 		return -1;
 	}
 
-	real_newpath = path_resolution(AT_FDCWD, newpath, newbuf,
-				       sizeof(newbuf), AT_SYMLINK_NOFOLLOW);
-	if (!real_newpath) {
+	if (path_resolution(AT_FDCWD, newpath, newbuf, sizeof(newbuf),
+			    AT_SYMLINK_NOFOLLOW) == -1) {
 		__pathperror(newpath, __func__);
 		return -1;
 	}
 
 	__debug("%s(oldpath: '%s' -> '%s', newpath: '%s' -> '%s')\n", __func__,
-		oldpath, real_oldpath, newpath, real_newpath);
+		oldpath, oldbuf, newpath, newbuf);
 
-	return next_link(real_oldpath, real_newpath);
+	return next_link(oldbuf, newbuf);
 }

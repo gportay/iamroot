@@ -37,17 +37,15 @@ int next_unlinkat(int fd, const char *path, int flags)
 int unlinkat(int fd, const char *path, int flags)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 
-	real_path = path_resolution(fd, path, buf, sizeof(buf),
-				    flags | AT_SYMLINK_NOFOLLOW);
-	if (!real_path) {
+	if (path_resolution(fd, path, buf, sizeof(buf),
+			    flags | AT_SYMLINK_NOFOLLOW) == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
 	__debug("%s(fd: %d, path: '%s' -> '%s', flags: 0x%x)\n", __func__, fd,
-		path, real_path, flags);
+		path, buf, flags);
 
-	return next_unlinkat(fd, real_path, flags);
+	return next_unlinkat(fd, buf, flags);
 }

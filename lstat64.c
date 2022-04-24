@@ -43,17 +43,15 @@ int next_lstat64(const char *path, struct stat64 *statbuf)
 int lstat64(const char *path, struct stat64 *statbuf)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 
-	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
-				    AT_SYMLINK_NOFOLLOW);
-	if (!real_path) {
+	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf),
+			    AT_SYMLINK_NOFOLLOW) == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
-	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, real_path);
+	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
 
-	return rootlstat64(real_path, statbuf);
+	return rootlstat64(buf, statbuf);
 }
 #endif

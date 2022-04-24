@@ -24,7 +24,7 @@ int main(int argc, char * const argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	if (path_resolution(AT_FDCWD, argv[1], buf, sizeof(buf), 0) == NULL) {
+	if (path_resolution(AT_FDCWD, argv[1], buf, sizeof(buf), 0) == -1) {
 		perror("path_resolution");
 		return EXIT_FAILURE;
 	}

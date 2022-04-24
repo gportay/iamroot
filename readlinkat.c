@@ -38,7 +38,6 @@ ssize_t readlinkat(int fd, const char *path, char *buf, size_t bufsize)
 {
 	char tmp[PATH_MAX];
 	const char *root;
-	char *real_path;
 	ssize_t ret;
 	size_t len;
 
@@ -55,14 +54,13 @@ ssize_t readlinkat(int fd, const char *path, char *buf, size_t bufsize)
 		return ret;
 	}
 
-	real_path = path_resolution(fd, path, tmp, sizeof(tmp),
-				    AT_SYMLINK_NOFOLLOW);
-	if (!real_path) {
+	if (path_resolution(fd, path, tmp, sizeof(tmp),
+			    AT_SYMLINK_NOFOLLOW) == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
-	if (strcmp(real_path, "/proc/self/exe") == 0) {
+	if (strcmp(tmp, "/proc/self/exe") == 0) {
 		const char *exe;
 	       
 		exe = __getexe();
@@ -78,7 +76,7 @@ ssize_t readlinkat(int fd, const char *path, char *buf, size_t bufsize)
 		}
 	}
 
-	ret = next_readlinkat(fd, real_path, buf, bufsize);
+	ret = next_readlinkat(fd, tmp, buf, bufsize);
 	if (ret == -1)
 		goto exit;
 
@@ -96,7 +94,7 @@ ssize_t readlinkat(int fd, const char *path, char *buf, size_t bufsize)
 
 exit:
 	__debug("%s(fd: %i, path: '%s' -> '%s', ...)\n", __func__, fd, path,
-		real_path);
+		tmp);
 
 	return ret;
 }

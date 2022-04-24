@@ -37,20 +37,18 @@ int next_fchmodat(int fd, const char *path, mode_t mode, int flags)
 int fchmodat(int fd, const char *path, mode_t mode, int flags)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 	int ret;
 
-	real_path = path_resolution(fd, path, buf, sizeof(buf), flags);
-	if (!real_path) {
+	if (path_resolution(fd, path, buf, sizeof(buf), flags) == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
 	__debug("%s(fd: %i, path: '%s' -> '%s', mode: 0%03o, flags: 0x%x)\n",
-		__func__, fd, path, real_path, mode, flags);
-	__fwarn_if_insuffisant_user_modeat(fd, real_path, mode, flags);
+		__func__, fd, path, buf, mode, flags);
+	__fwarn_if_insuffisant_user_modeat(fd, buf, mode, flags);
 
-	ret = next_fchmodat(fd, real_path, mode, flags);
+	ret = next_fchmodat(fd, buf, mode, flags);
 	__ignore_error_and_warn(ret, fd, path, flags);
 
 	return ret;

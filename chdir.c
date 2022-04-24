@@ -37,22 +37,20 @@ int next_chdir(const char *path)
 int chdir(const char *path)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 	int ret;
 
-	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
-	if (!real_path) {
+	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0) == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
-	ret = next_chdir(real_path);
+	ret = next_chdir(buf);
 	if (ret) {
-		__pathperror(real_path, "chdir");
+		__pathperror(buf, "chdir");
 		return ret;
 	}
 
-	__debug("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
+	__debug("%s(path: '%s' -> '%s')\n", __func__, path, buf);
 
 	return chrootdir(NULL);
 }

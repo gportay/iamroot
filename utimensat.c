@@ -40,17 +40,15 @@ int utimensat(int fd, const char *path, const struct timespec times[2],
 	      int flags)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 
-	real_path = path_resolution(fd, path, buf, sizeof(buf),
-				    AT_SYMLINK_NOFOLLOW);
-	if (!real_path) {
+	if (path_resolution(fd, path, buf, sizeof(buf),
+			    AT_SYMLINK_NOFOLLOW) == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
 	__debug("%s(fd: %i, path: '%s' -> '%s', flags: 0x%x)\n", __func__, fd,
-		path, real_path, flags);
+		path, buf, flags);
 
-	return next_utimensat(fd, real_path, times, flags);
+	return next_utimensat(fd, buf, times, flags);
 }

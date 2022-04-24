@@ -38,19 +38,17 @@ char *next_tempnam(const char *path, const char *pfx)
 char *tempnam(const char *path, const char *pfx)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 
 	if (!path)
 		return next_tempnam(path, pfx);
 
-	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
-	if (!real_path) {
+	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0) == -1) {
 		__pathperror(path, __func__);
 		return NULL;
 	}
 
-	__debug("%s(path: '%s' -> '%s', pfx: '%s')\n", __func__, path,
-		real_path, pfx);
+	__debug("%s(path: '%s' -> '%s', pfx: '%s')\n", __func__, path, buf,
+		pfx);
 
-	return next_tempnam(real_path, pfx);
+	return next_tempnam(buf, pfx);
 }

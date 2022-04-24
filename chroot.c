@@ -684,7 +684,6 @@ exit:
 int chroot(const char *path)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 	int ret;
 
 	/* Prepend chroot and current working directory for relative paths */
@@ -714,15 +713,14 @@ int chroot(const char *path)
 		cwd = strncat(cwd, path, sizeof(buf) - len - 1);
 		buf[sizeof(buf)-1] = 0;
 	} else {
-		real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
-					    AT_SYMLINK_NOFOLLOW);
-		if (!real_path) {
+		if (path_resolution(AT_FDCWD, path, buf, sizeof(buf),
+				    AT_SYMLINK_NOFOLLOW) == -1) {
 			__pathperror(path, __func__);
 			return -1;
 		}
 	}
 
-	real_path = sanitize(buf, sizeof(buf));
+	sanitize(buf, sizeof(buf));
 
 	ret = setenv("PATH", getenv("IAMROOT_PATH") ?: _PATH_STDPATH, 1);
 	if (ret == -1) {
@@ -730,14 +728,14 @@ int chroot(const char *path)
 		return -1;
 	}
 
-	ret = setrootdir(real_path);
+	ret = setrootdir(buf);
 	if (ret == -1) {
-		__pathperror(real_path, "setrootdir");
+		__pathperror(buf, "setrootdir");
 		return -1;
 	}
 
-	__info("Enterring chroot: '%s'\n", real_path);
-	__debug("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
+	__info("Enterring chroot: '%s'\n", buf);
+	__debug("%s(path: '%s' -> '%s')\n", __func__, path, buf);
 
 	return 0;
 }

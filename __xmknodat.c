@@ -19,21 +19,19 @@ extern int next_creat(const char *, mode_t);
 int __xmknodat(int ver, int fd, const char *path, mode_t mode, dev_t *dev)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 	(void)ver;
 	(void)dev;
 
-	real_path = path_resolution(fd, path, buf, sizeof(buf), 0);
-	if (!real_path) {
+	if (path_resolution(fd, path, buf, sizeof(buf), 0) == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
 	__debug("%s(fd %i, path: '%s' -> '%s', mode: 0%03o)\n", __func__, fd,
-		path, real_path, mode);
-	__warn_if_insuffisant_user_mode(real_path, mode);
+		path, buf, mode);
+	__warn_if_insuffisant_user_mode(buf, mode);
 
-	fd = next_creat(real_path, mode);
+	fd = next_creat(buf, mode);
 	if (fd == -1)
 		return -1;
 

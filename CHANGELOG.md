@@ -61,6 +61,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Output the parameters for the functions `getcwd()` and `getwd()`
 - Output all the traces in `exec.sh` whatever the debug level
 - Output the exec-like parameters for the function `__posix_spawnp()`
+- The internal function `path_resolution()` returns the length for the resolved
+  path
 
 ### Removed
 

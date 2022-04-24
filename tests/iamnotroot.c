@@ -30,8 +30,8 @@ int pathsetenv(const char *root, const char *name, const char *value,
 	return -1;
 }
 
-char *path_resolution(int fd, const char *path, char *buf, size_t bufsize,
-		      int flags)
+ssize_t path_resolution(int fd, const char *path, char *buf, size_t bufsize,
+			int flags)
 {
 	(void)fd;
 	(void)path;
@@ -40,5 +40,5 @@ char *path_resolution(int fd, const char *path, char *buf, size_t bufsize,
 	(void)flags;
 
 	errno = ENOSYS;
-	return NULL;
+	return -1;
 }

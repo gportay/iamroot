@@ -38,16 +38,14 @@ FILE *next_fopen(const char *path, const char *mode)
 FILE *fopen(const char *path, const char *mode)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 
-	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
-	if (!real_path) {
+	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0) == -1) {
 		__pathperror(path, __func__);
 		return NULL;
 	}
 
-	__debug("%s(path: '%s' -> '%s', mode: '%s')\n", __func__, path,
-		real_path, mode);
+	__debug("%s(path: '%s' -> '%s', mode: '%s')\n", __func__, path, buf,
+		mode);
 
-	return next_fopen(real_path, mode);
+	return next_fopen(buf, mode);
 }

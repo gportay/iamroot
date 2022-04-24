@@ -37,16 +37,14 @@ int next_faccessat(int fd, const char *path, int mode, int flags)
 int faccessat(int fd, const char *path, int mode, int flags)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 
-	real_path = path_resolution(fd, path, buf, sizeof(buf), flags);
-	if (!real_path) {
+	if (path_resolution(fd, path, buf, sizeof(buf), flags) == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
 	__debug("%s(fd: %i, path: '%s' -> '%s', flags: 0x%x)\n", __func__, fd,
-		path, real_path, flags);
+		path, buf, flags);
 
-	return next_faccessat(fd, real_path, mode, flags);
+	return next_faccessat(fd, buf, mode, flags);
 }

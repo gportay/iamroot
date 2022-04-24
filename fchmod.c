@@ -37,7 +37,6 @@ int next_fchmod(int fd, mode_t mode)
 int fchmod(int fd, mode_t mode)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 	ssize_t siz;
 	int ret;
 
@@ -47,14 +46,12 @@ int fchmod(int fd, mode_t mode)
 		return -1;
 	}
 	buf[siz] = 0;
-	real_path = buf;
 
-	__debug("%s(fd: %i <-> '%s', mode: 0%03o)\n", __func__, fd, real_path,
-		mode);
+	__debug("%s(fd: %i <-> '%s', mode: 0%03o)\n", __func__, fd, buf, mode);
 	__fwarn_if_insuffisant_user_mode(fd, mode);
 
 	ret = next_fchmod(fd, mode);
-	__ignore_error_and_warn(ret, AT_FDCWD, real_path, 0);
+	__ignore_error_and_warn(ret, AT_FDCWD, buf, 0);
 
 	return ret;
 }

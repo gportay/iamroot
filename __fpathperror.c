@@ -16,7 +16,6 @@ __attribute__((visibility("hidden")))
 void __fpathperror(int fd, const char *s)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 	ssize_t siz;
 	int err;
 
@@ -30,9 +29,8 @@ void __fpathperror(int fd, const char *s)
 		return;
 	}
 	buf[siz] = 0; /* ensure NULL terminated */
-	real_path = buf;
 
-	__notice("%i <-> %s: %s: %m\n", fd, real_path, s);
+	__notice("%i <-> %s: %s: %m\n", fd, buf, s);
 	if (__getfatal())
 		raise(SIGABRT);
 }

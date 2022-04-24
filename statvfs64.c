@@ -38,16 +38,14 @@ int next_statvfs64(const char *path, struct statvfs64 *statvfsbuf)
 int statvfs64(const char *path, struct statvfs64 *statvfsbuf)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 
-	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
-	if (!real_path) {
+	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0) == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
-	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, real_path);
+	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
 
-	return next_statvfs64(real_path, statvfsbuf);
+	return next_statvfs64(buf, statvfsbuf);
 }
 #endif

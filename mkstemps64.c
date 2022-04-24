@@ -39,25 +39,23 @@ int next_mkstemps64(char *path, int suffixlen)
 int mkstemps64(char *path, int suffixlen)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 	size_t len;
 	int ret;
 
-	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
-	if (!real_path) {
+	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0) == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
-	ret = next_mkstemps64(real_path, suffixlen);
+	ret = next_mkstemps64(buf, suffixlen);
 	if (ret == -1)
 		goto exit;
 
 	len = __strlen(path);
-	memcpy(path, real_path+__strlen(real_path)-len, len);
+	memcpy(path, buf+__strlen(buf)-len, len);
 
 exit:
-	__debug("%s(path: '%s' -> '%s')\n", __func__, path, real_path);
+	__debug("%s(path: '%s' -> '%s')\n", __func__, path, buf);
 
 	return ret;
 }

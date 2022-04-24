@@ -38,17 +38,14 @@ DIR *next___opendirat(int fd, const char *path)
 DIR *__opendirat(int fd, const char *path)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 
-	real_path = path_resolution(fd, path, buf, sizeof(buf), 0);
-	if (!real_path) {
+	if (path_resolution(fd, path, buf, sizeof(buf), 0) == -1) {
 		__pathperror(path, __func__);
 		return NULL;
 	}
 
-	__debug("%s(fd: %d, path: '%s' -> '%s')\n", __func__, fd, path,
-		real_path);
+	__debug("%s(fd: %d, path: '%s' -> '%s')\n", __func__, fd, path, buf);
 
-	return next___opendirat(fd, real_path);
+	return next___opendirat(fd, buf);
 }
 #endif

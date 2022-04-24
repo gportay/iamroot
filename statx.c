@@ -44,17 +44,15 @@ int statx(int fd, const char *path, int flags, unsigned int mask,
 	  struct statx *statxbuf)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 
-	real_path = path_resolution(fd, path, buf, sizeof(buf), flags);
-	if (!real_path) {
+	if (path_resolution(fd, path, buf, sizeof(buf), flags) == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
 	__debug("%s(fd: %i, path: '%s' -> '%s', flags: 0x%x...)\n", __func__,
-		fd, path, real_path, flags);
+		fd, path, buf, flags);
 
-	return rootstatx(fd, real_path, flags, mask, statxbuf);
+	return rootstatx(fd, buf, flags, mask, statxbuf);
 }
 #endif

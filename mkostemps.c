@@ -38,26 +38,24 @@ int next_mkostemps(char *path, int suffixlen, int flags)
 int mkostemps(char *path, int suffixlen, int flags)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 	size_t len;
 	int ret;
 
-	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
-	if (!real_path) {
+	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0) == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
-	ret = next_mkostemps(real_path, suffixlen, flags);
+	ret = next_mkostemps(buf, suffixlen, flags);
 	if (ret == -1)
 		goto exit;
 
 	len = __strlen(path);
-	memcpy(path, real_path+__strlen(real_path)-len, len);
+	memcpy(path, buf+__strlen(buf)-len, len);
 
 exit:
-	__debug("%s(path: '%s' -> '%s', flags: 0%o)\n", __func__, path,
-		real_path, flags);
+	__debug("%s(path: '%s' -> '%s', flags: 0%o)\n", __func__, path, buf,
+		flags);
 
 	return ret;
 }

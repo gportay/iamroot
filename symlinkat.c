@@ -37,17 +37,15 @@ int next_symlinkat(const char *string, int fd, const char *path)
 int symlinkat(const char *string, int fd, const char *path)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 
-	real_path = path_resolution(fd, path, buf, sizeof(buf),
-				       AT_SYMLINK_NOFOLLOW);
-	if (!real_path) {
+	if (path_resolution(fd, path, buf, sizeof(buf),
+			    AT_SYMLINK_NOFOLLOW) == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
 	__debug("%s(string: '%s', fd: %i, path: '%s' -> '%s')\n", __func__,
-		string, fd, path, real_path);
+		string, fd, path, buf);
 
-	return next_symlinkat(string, fd, real_path);
+	return next_symlinkat(string, fd, buf);
 }

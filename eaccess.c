@@ -37,16 +37,14 @@ int next_eaccess(const char *path, int mode)
 int eaccess(const char *path, int mode)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 
-	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
-	if (!real_path) {
+	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0) == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
-	__debug("%s(path: '%s' -> '%s', mode: 0%03o)\n", __func__, path,
-		real_path, mode);
+	__debug("%s(path: '%s' -> '%s', mode: 0%03o)\n", __func__, path, buf,
+		mode);
 
-	return next_eaccess(real_path, mode);
+	return next_eaccess(buf, mode);
 }

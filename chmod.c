@@ -37,20 +37,18 @@ int next_chmod(const char *path, mode_t mode)
 int chmod(const char *path, mode_t mode)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 	int ret;
 
-	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
-	if (!real_path) {
+	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0) == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
-	__debug("%s(path: '%s' -> '%s', mode: 0%03o)\n", __func__, path,
-		real_path, mode);
-	__warn_if_insuffisant_user_mode(real_path, mode);
+	__debug("%s(path: '%s' -> '%s', mode: 0%03o)\n", __func__, path, buf,
+		mode);
+	__warn_if_insuffisant_user_mode(buf, mode);
 
-	ret = next_chmod(real_path, mode);
+	ret = next_chmod(buf, mode);
 	__ignore_error_and_warn(ret, AT_FDCWD, path, 0);
 
 	return ret;

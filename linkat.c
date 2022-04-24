@@ -39,25 +39,22 @@ int linkat(int oldfd, const char *oldpath, int newfd, const char *newpath,
 	   int flags)
 {
 	char oldbuf[PATH_MAX], newbuf[PATH_MAX];
-	char *real_oldpath, *real_newpath;
 
-	real_oldpath = path_resolution(oldfd, oldpath, oldbuf, sizeof(oldbuf),
-				       flags);
-	if (!real_oldpath) {
+	if (path_resolution(oldfd, oldpath, oldbuf, sizeof(oldbuf),
+			    flags) == -1) {
 		__pathperror(oldpath, __func__);
 		return -1;
 	}
 
-	real_newpath = path_resolution(newfd, newpath, newbuf, sizeof(newbuf),
-				       flags);
-	if (!real_newpath) {
+	if (path_resolution(newfd, newpath, newbuf, sizeof(newbuf),
+			    flags) == -1) {
 		__pathperror(newpath, __func__);
 		return -1;
 	}
 
 	__debug("%s(oldfd: %i, oldpath: '%s' -> '%s', newfd: %i, newpath: '%s' -> '%s', flags: 0x%x)\n",
-		__func__, oldfd, oldpath, real_oldpath, newfd, newpath,
-		real_newpath, flags);
+		__func__, oldfd, oldpath, oldbuf, newfd, newpath, newbuf,
+		flags);
 
-	return next_linkat(oldfd, real_oldpath, newfd, real_newpath, flags);
+	return next_linkat(oldfd, oldbuf, newfd, newbuf, flags);
 }

@@ -37,15 +37,13 @@ int next_openat(int fd, const char *path, int flags, mode_t mode)
 int openat(int fd, const char *path, int flags, ...)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 	int atflags = 0;
 	mode_t mode = 0;
 
 	if (flags & O_NOFOLLOW)
 		atflags = AT_SYMLINK_NOFOLLOW;
 
-	real_path = path_resolution(fd, path, buf, sizeof(buf), atflags);
-	if (!real_path) {
+	if (path_resolution(fd, path, buf, sizeof(buf), atflags) == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
@@ -60,9 +58,9 @@ int openat(int fd, const char *path, int flags, ...)
 #endif
 
 	__debug("%s(fd: %i, path: '%s' -> '%s', flags: 0%o, mode: 0%03o)\n",
-		__func__, fd, path, real_path, flags, mode);
+		__func__, fd, path, buf, flags, mode);
 	if (flags & O_CREAT)
-		__fwarn_if_insuffisant_user_modeat(fd, real_path, mode, 0);
+		__fwarn_if_insuffisant_user_modeat(fd, buf, mode, 0);
 
-	return next_openat(fd, real_path, flags, mode);
+	return next_openat(fd, buf, flags, mode);
 }

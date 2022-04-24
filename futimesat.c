@@ -37,17 +37,14 @@ int next_futimesat(int fd, const char *path, const struct timeval times[2])
 int futimesat(int fd, const char *path, const struct timeval times[2])
 {
 	char buf[PATH_MAX];
-	char *real_path;
 
-	real_path = path_resolution(fd, path, buf, sizeof(buf),
-				    AT_SYMLINK_NOFOLLOW);
-	if (!real_path) {
+	if (path_resolution(fd, path, buf, sizeof(buf),
+			    AT_SYMLINK_NOFOLLOW) == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
-	__debug("%s(fd: %d, path: '%s' -> '%s')\n", __func__, fd, path,
-		real_path);
+	__debug("%s(fd: %d, path: '%s' -> '%s')\n", __func__, fd, path, buf);
 
-	return next_futimesat(fd, real_path, times);
+	return next_futimesat(fd, buf, times);
 }

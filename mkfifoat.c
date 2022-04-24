@@ -37,17 +37,15 @@ int next_mkfifoat(int fd, const char *path, mode_t mode)
 int mkfifoat(int fd, const char *path, mode_t mode)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 
-	real_path = path_resolution(fd, path, buf, sizeof(buf), 0);
-	if (!real_path) {
+	if (path_resolution(fd, path, buf, sizeof(buf), 0) == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
 	__debug("%s(fd: %d, path: '%s' -> '%s', mode: 0%03o)\n", __func__, fd,
-		path, real_path, mode);
-	__fwarn_if_insuffisant_user_modeat(fd, real_path, mode, 0);
+		path, buf, mode);
+	__fwarn_if_insuffisant_user_modeat(fd, buf, mode, 0);
 
-	return next_mkfifoat(fd, real_path, mode);
+	return next_mkfifoat(fd, buf, mode);
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -39,7 +39,6 @@ int next___fstat64(int fd, struct stat64 *statbuf)
 int __fstat64(int fd, struct stat64 *statbuf)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 	ssize_t siz;
 
 	siz = __procfdreadlink(fd, buf, sizeof(buf));
@@ -48,9 +47,8 @@ int __fstat64(int fd, struct stat64 *statbuf)
 		return -1;
 	}
 	buf[siz] = 0;
-	real_path = buf;
 
-	__debug("%s(fd: %i <-> '%s', ...)\n", __func__, fd, real_path);
+	__debug("%s(fd: %i <-> '%s', ...)\n", __func__, fd, buf);
 
 	return __rootfstat64(fd, statbuf);
 }

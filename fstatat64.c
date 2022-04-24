@@ -44,17 +44,15 @@ int next_fstatat64(int fd, const char *path, struct stat64 *statbuf, int flags)
 int fstatat64(int fd, const char *path, struct stat64 *statbuf, int flags)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 
-	real_path = path_resolution(fd, path, buf, sizeof(buf), flags);
-	if (!real_path) {
+	if (path_resolution(fd, path, buf, sizeof(buf), flags) == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
 	__debug("%s(fd: %i, path: '%s' -> '%s', ..., flags: 0x%x)\n", __func__,
-		fd, path, real_path, flags);
+		fd, path, buf, flags);
 
-	return rootfstatat64(fd, real_path, statbuf, flags);
+	return rootfstatat64(fd, buf, statbuf, flags);
 }
 #endif

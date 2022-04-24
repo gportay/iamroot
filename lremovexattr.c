@@ -42,17 +42,15 @@ int lremovexattr(const char *path, const char *name)
 {
 	char xbuf[XATTR_NAME_MAX + 1];
 	char buf[PATH_MAX];
-	char *real_path;
 
-	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
-				    AT_SYMLINK_NOFOLLOW);
-	if (!real_path) {
+	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf),
+			    AT_SYMLINK_NOFOLLOW) == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
 	__debug("%s(path: '%s' -> '%s', name: '%s', ...)\n", __func__, path,
-		real_path, name);
+		buf, name);
 
 	if (__strncmp(name, "user") != 0) {
 		int ret;
@@ -67,6 +65,6 @@ int lremovexattr(const char *path, const char *name)
 		name = xbuf;
 	}
 
-	return next_lremovexattr(real_path, name);
+	return next_lremovexattr(buf, name);
 }
 #endif

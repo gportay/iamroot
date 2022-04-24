@@ -39,7 +39,6 @@ int next_fchown(int fd, uid_t owner, gid_t group)
 int fchown(int fd, uid_t owner, gid_t group)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 	ssize_t siz;
 	int ret;
 
@@ -49,16 +48,15 @@ int fchown(int fd, uid_t owner, gid_t group)
 		return -1;
 	}
 	buf[siz] = 0;
-	real_path = buf;
 
 	owner = next_geteuid();
 	group = getegid();
 
 	__debug("%s(fd: %i <-> '%s', owner: %i, group: %i)\n", __func__, fd,
-		real_path, owner, group);
+		buf, owner, group);
 
 	ret = next_fchown(fd, owner, group);
-	__ignore_error_and_warn(ret, AT_FDCWD, real_path, 0);
+	__ignore_error_and_warn(ret, AT_FDCWD, buf, 0);
 
 	return ret;
 }

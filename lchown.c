@@ -39,12 +39,10 @@ int next_lchown(const char *path, uid_t owner, gid_t group)
 int lchown(const char *path, uid_t owner, gid_t group)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 	int ret;
 
-	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
-				    AT_SYMLINK_NOFOLLOW);
-	if (!real_path) {
+	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf),
+			    AT_SYMLINK_NOFOLLOW) == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
@@ -53,9 +51,9 @@ int lchown(const char *path, uid_t owner, gid_t group)
 	group = getegid();
 
 	__debug("%s(path: '%s' -> '%s', owner: %i, group: %i)\n", __func__,
-		path, real_path, owner, group);
+		path, buf, owner, group);
 
-	ret = next_lchown(real_path, owner, group);
+	ret = next_lchown(buf, owner, group);
 	__ignore_error_and_warn(ret, AT_FDCWD, path, 0);
 
 	return ret;

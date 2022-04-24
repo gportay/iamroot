@@ -39,28 +39,23 @@ void *next_dlopen(const char *path, int flags)
 void *dlopen(const char *path, int flags)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 
 	if (!path || !inchroot())
 		return next_dlopen(path, flags);
 
-	if (!strchr(path, '/')) {
-		real_path = path_access(path, F_OK,
-					getenv("IAMROOT_LD_LIBRARY_PATH"), buf,
-					sizeof(buf));
-		if (real_path)
+	if (!strchr(path, '/'))
+		if (path_access(path, F_OK, getenv("IAMROOT_LD_LIBRARY_PATH"),
+				buf, sizeof(buf)) == -1)
 			goto next;
-	}
 
-	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
-	if (!real_path) {
+	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0) == -1) {
 		__pathperror(path, __func__);
 		return NULL;
 	}
 
 next:
 	__debug("%s(path: '%s' -> '%s', flags: 0x%x)\n", __func__, path,
-		real_path, flags);
+		buf, flags);
 
-	return next_dlopen(real_path, flags);
+	return next_dlopen(buf, flags);
 }

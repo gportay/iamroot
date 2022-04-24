@@ -43,16 +43,14 @@ int next_fstatat(int fd, const char *path, struct stat *statbuf, int flags)
 int fstatat(int fd, const char *path, struct stat *statbuf, int flags)
 {
 	char buf[PATH_MAX];
-	char *real_path;
 
-	real_path = path_resolution(fd, path, buf, sizeof(buf), flags);
-	if (!real_path) {
+	if (path_resolution(fd, path, buf, sizeof(buf), flags) == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
 	__debug("%s(fd: %i, path: '%s' -> '%s', ..., flags: 0x%x)\n", __func__,
-		fd, path, real_path, flags);
+		fd, path, buf, flags);
 
-	return rootfstatat(fd, real_path, statbuf, flags);
+	return rootfstatat(fd, buf, statbuf, flags);
 }

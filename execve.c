@@ -225,15 +225,13 @@ static int __ld_linux_version(const char *path, int *major, int *minor)
 {
 	const char *basename;
 	char buf[PATH_MAX];
-	char *real_path;
 	int ret;
 
-	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
-				    AT_SYMLINK_FOLLOW);
-	if (!real_path)
+	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf),
+			    AT_SYMLINK_FOLLOW) == -1)
 		return -1;
 
-	basename = __basename(real_path);
+	basename = __basename(buf);
 	ret = sscanf(basename, "ld-%i.%i.so", major, minor);
 	if (ret < 2) {
 		errno = ENOTSUP;
@@ -1215,9 +1213,9 @@ int execve(const char *path, char * const argv[], char * const envp[])
 					   * 15 script.sh
 					   * 16 NULL
 					   */
+	char *program = NULL;
 	int i, j, argc, ret;
 	char * const *arg;
-	char *real_path;
 	char *xargv1;
 	ssize_t siz;
 	size_t len;
@@ -1226,16 +1224,16 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	if (exec_ignored(path))
 		goto exec_sh;
 
-	real_path = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
-	if (!real_path) {
+	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0) == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
 	__debug("%s(path: '%s' -> '%s', argv: { '%s', '%s', ... }, envp: %p)\n",
-		__func__, path, real_path, argv[0], argv[1], envp);
+		__func__, path, buf, argv[0], argv[1], envp);
 	i = 0;
 	interparg[i++] = *argv; /* original argv0 as argv0 */
+	program = buf;
 
 	/*
 	 * In secure-execution mode, preload pathnames containing slashes are
@@ -1243,7 +1241,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	 * standard search directories and only if they have set-user-ID mode
 	 * bit enabled (which is not typical).
 	 */
-	ret = issuid(real_path);
+	ret = issuid(buf);
 	if (ret == -1)
 		return -1;
 	else if (ret)
@@ -1254,7 +1252,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 		return next_execve(path, argv, envp);
 
 	/* Get the interpeter directive stored after the hashbang */
-	siz = gethashbang(real_path, hashbang, sizeof(hashbang));
+	siz = gethashbang(program, hashbang, sizeof(hashbang));
 	if (siz == -1) {
 		/* Not an hashbang interpreter directive */
 		if (errno == ENOEXEC)
@@ -1269,9 +1267,8 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	 * Preserve original path in argv0 and set the interpreter and its
 	 * optional argument (if any).
 	 */
-	real_path = path_resolution(AT_FDCWD, hashbang, hashbangbuf,
-				    sizeof(hashbangbuf), 0);
-	if (!real_path)
+	if (path_resolution(AT_FDCWD, hashbang, hashbangbuf,
+			    sizeof(hashbangbuf), 0) == -1)
 		return -1;
 
 	/* Reset argv0 */
@@ -1288,6 +1285,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	interparg[i++] = (char *)path; /* original program path as first
 					* positional argument */
 	interparg[i] = NULL; /* ensure NULL terminated */
+	program = hashbangbuf;
 
 loader:
 	/*
@@ -1296,15 +1294,15 @@ loader:
 	if ((__strncmp(path, "/usr/bin/ld.so") == 0) ||
 	    (__strncmp(path, "/lib/ld") == 0) ||
 	    (__strncmp(path, "/lib64/ld") == 0)) {
-		verbose_exec(real_path, argv, envp);
-		return next_execve(real_path, argv, envp);
+		verbose_exec(buf, argv, envp);
+		return next_execve(buf, argv, envp);
 	}
 
 	/*
 	 * Get the dynamic linker stored in the .interp section of the ELF
 	 * linked program.
 	 */
-	siz = getinterp(real_path, loader, sizeof(loader));
+	siz = getinterp(program, loader, sizeof(loader));
 	if (siz == -1) {
 		/* Not an ELF linked program */
 		if (errno == ENOEXEC)
@@ -1321,7 +1319,7 @@ loader:
 	if ((__strncmp(loader, "/lib/ld") == 0) ||
 	    (__strncmp(loader, "/lib64/ld") == 0)) {
 		char *argv0, *rpath, *runpath, *ld_preload, *ld_library_path,
-		     *inhibit_rpath, *program = real_path;
+		     *inhibit_rpath;
 		int has_argv0 = 1, has_preload = 1, has_inhibit_rpath = 0,
 		    has_inhibit_cache = 0;
 		int shift = 1, abi = 0;
@@ -1357,13 +1355,13 @@ loader:
 				return -1;
 		}
 
-		rpath = __rpath(real_path);
+		rpath = __rpath(buf);
 		if (rpath)
-			__info("%s: RPATH=%s\n", real_path, rpath);
+			__info("%s: RPATH=%s\n", buf, rpath);
 
-		runpath = __runpath(real_path);
+		runpath = __runpath(buf);
 		if (runpath)
-			__info("%s: RUNPATH=%s\n", real_path, runpath);
+			__info("%s: RUNPATH=%s\n", buf, runpath);
 
 		ld_preload = __ld_preload(ldso, abi);
 		if (!ld_preload)
@@ -1377,9 +1375,8 @@ loader:
 		if (!inhibit_rpath)
 			__notice("%s: is unset!\n", "inhibit_rpath");
 
-		real_path = path_resolution(AT_FDCWD, loader, loaderbuf,
-					    sizeof(loaderbuf), 0);
-		if (!real_path)
+		if (path_resolution(AT_FDCWD, loader, loaderbuf,
+				    sizeof(loaderbuf), 0) == -1)
 			return -1;
 
 		/*
@@ -1422,7 +1419,7 @@ loader:
 
 		/* Add path to interpreter (host, argv0) */
 		i = 0;
-		interparg[i++] = real_path;
+		interparg[i++] = loaderbuf;
 
 		/* Add extra argument as argv1 */
 		if (xargv1)
@@ -1486,12 +1483,10 @@ loader:
 
 		goto execve;
 	} else {
-		char *program = real_path;
 		int shift = 1;
 
-		real_path = path_resolution(AT_FDCWD, loader, loaderbuf,
-					    sizeof(loaderbuf), 0);
-		if (!real_path)
+		if (path_resolution(AT_FDCWD, loader, loaderbuf,
+				    sizeof(loaderbuf), 0) == -1)
 			return -1;
 
 		/*
@@ -1512,7 +1507,7 @@ loader:
 
 		/* Add path to interpreter (host, argv0) */
 		i = 0;
-		interparg[i++] = real_path;
+		interparg[i++] = buf;
 
 		/* Add extra argument as argv1 */
 		if (xargv1)
@@ -1527,9 +1522,9 @@ loader:
 	}
 
 exec_sh:
-	real_path = __strncpy(buf, __getexec());
+	__strncpy(buf, __getexec());
 	i = 0;
-	interparg[i++] = real_path;
+	interparg[i++] = buf;
 	interparg[i++] = (char *)path; /* original path as first positional
 					* argument
 					*/
@@ -1581,8 +1576,8 @@ execve:
 			*narg++ = *arg++;
 		*narg++ = NULL;
 
-		verbose_exec(real_path, nargv, __environ);
-		return next_execve(real_path, nargv, __environ);
+		verbose_exec(*nargv, nargv, __environ);
+		return next_execve(*nargv, nargv, __environ);
 	}
 
 	errno = EINVAL;

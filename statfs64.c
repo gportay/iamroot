@@ -40,8 +40,10 @@ int next_statfs64(const char *path, struct statfs64 *statfsbuf)
 int statfs64(const char *path, struct statfs64 *statfsbuf)
 {
 	char buf[PATH_MAX];
+	ssize_t siz;
 
-	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0) == -1) {
+	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
+	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}

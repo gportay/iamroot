@@ -38,8 +38,10 @@ DIR *next___opendirat(int fd, const char *path)
 DIR *__opendirat(int fd, const char *path)
 {
 	char buf[PATH_MAX];
+	ssize_t siz;
 
-	if (path_resolution(fd, path, buf, sizeof(buf), 0) == -1) {
+	siz = path_resolution(fd, path, buf, sizeof(buf), 0);
+	if (siz == -1) {
 		__pathperror(path, __func__);
 		return NULL;
 	}

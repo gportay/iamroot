@@ -38,11 +38,13 @@ int __openat_2(int fd, const char *path, int flags)
 {
 	char buf[PATH_MAX];
 	int atflags = 0;
+	ssize_t siz;
 
 	if (flags & O_NOFOLLOW)
 		atflags = AT_SYMLINK_NOFOLLOW;
 
-	if (path_resolution(fd, path, buf, sizeof(buf), atflags) == -1) {
+	siz = path_resolution(fd, path, buf, sizeof(buf), atflags);
+	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}

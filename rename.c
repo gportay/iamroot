@@ -36,15 +36,18 @@ int next_rename(const char *oldpath, const char *newpath)
 int rename(const char *oldpath, const char *newpath)
 {
 	char oldbuf[PATH_MAX], newbuf[PATH_MAX];
+	ssize_t siz;
 
-	if (path_resolution(AT_FDCWD, oldpath, oldbuf, sizeof(oldbuf),
-			    AT_SYMLINK_NOFOLLOW) == -1) {
+	siz = path_resolution(AT_FDCWD, oldpath, oldbuf, sizeof(oldbuf),
+			      AT_SYMLINK_NOFOLLOW);
+	if (siz == -1) {
 		__pathperror(oldpath, __func__);
 		return -1;
 	}
 
-	if (path_resolution(AT_FDCWD, newpath, newbuf, sizeof(newbuf),
-			    AT_SYMLINK_NOFOLLOW) == -1) {
+	siz = path_resolution(AT_FDCWD, newpath, newbuf, sizeof(newbuf),
+			      AT_SYMLINK_NOFOLLOW);
+	if (siz == -1) {
 		__pathperror(newpath, __func__);
 		return -1;
 	}

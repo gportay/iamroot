@@ -40,6 +40,7 @@ void *next_dlmopen(Lmid_t lmid, const char *path, int flags)
 void *dlmopen(Lmid_t lmid, const char *path, int flags)
 {
 	char buf[PATH_MAX];
+	ssize_t siz;
 
 	if (!path || !inchroot())
 		return next_dlmopen(lmid, path, flags);
@@ -49,7 +50,8 @@ void *dlmopen(Lmid_t lmid, const char *path, int flags)
 				buf, sizeof(buf)) == -1)
 			goto next;
 
-	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0) == -1) {
+	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
+	if (siz == -1) {
 		__pathperror(path, __func__);
 		return NULL;
 	}

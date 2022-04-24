@@ -37,9 +37,11 @@ int next_utimes(const char *path, const struct timeval times[2])
 int utimes(const char *path, const struct timeval times[2])
 {
 	char buf[PATH_MAX];
+	ssize_t siz;
 
-	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf),
-			    AT_SYMLINK_NOFOLLOW) == -1) {
+	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
+			      AT_SYMLINK_NOFOLLOW);
+	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}

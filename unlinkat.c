@@ -38,8 +38,11 @@ int unlinkat(int fd, const char *path, int flags)
 {
 	char buf[PATH_MAX];
 
-	if (path_resolution(fd, path, buf, sizeof(buf),
-			    flags | AT_SYMLINK_NOFOLLOW) == -1) {
+	ssize_t siz;
+
+	siz = path_resolution(fd, path, buf, sizeof(buf),
+			      flags | AT_SYMLINK_NOFOLLOW);
+	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}

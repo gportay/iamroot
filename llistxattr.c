@@ -44,13 +44,13 @@ ssize_t llistxattr(const char *path, char *list, size_t size)
 {
 	char xbuf[XATTR_LIST_MAX + 1];
 	char buf[PATH_MAX];
-	ssize_t xsize;
+	ssize_t xsize, siz;
 	ssize_t i, ret;
-
 	(void)size;
 
-	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf),
-			    AT_SYMLINK_NOFOLLOW) == -1) {
+	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
+			      AT_SYMLINK_NOFOLLOW);
+	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}

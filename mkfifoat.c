@@ -37,8 +37,10 @@ int next_mkfifoat(int fd, const char *path, mode_t mode)
 int mkfifoat(int fd, const char *path, mode_t mode)
 {
 	char buf[PATH_MAX];
+	ssize_t siz;
 
-	if (path_resolution(fd, path, buf, sizeof(buf), 0) == -1) {
+	siz = path_resolution(fd, path, buf, sizeof(buf), 0);
+	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}

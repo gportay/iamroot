@@ -43,8 +43,10 @@ int next_fstatat(int fd, const char *path, struct stat *statbuf, int flags)
 int fstatat(int fd, const char *path, struct stat *statbuf, int flags)
 {
 	char buf[PATH_MAX];
+	ssize_t siz;
 
-	if (path_resolution(fd, path, buf, sizeof(buf), flags) == -1) {
+	siz = path_resolution(fd, path, buf, sizeof(buf), flags);
+	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}

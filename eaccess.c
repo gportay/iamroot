@@ -37,8 +37,10 @@ int next_eaccess(const char *path, int mode)
 int eaccess(const char *path, int mode)
 {
 	char buf[PATH_MAX];
+	ssize_t siz;
 
-	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0) == -1) {
+	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
+	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}

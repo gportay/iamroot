@@ -42,11 +42,13 @@ int __open(const char *path, int flags, ...)
 	char buf[PATH_MAX];
 	int atflags = 0;
 	mode_t mode = 0;
+	ssize_t siz;
 
 	if (flags & O_NOFOLLOW)
 		atflags = AT_SYMLINK_NOFOLLOW;
 
-	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf), atflags) == -1) {
+	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), atflags);
+	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}

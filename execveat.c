@@ -60,18 +60,19 @@ int execveat(int fd, const char *path, char * const argv[],
 					   * 15 script.sh
 					   * 16 NULL
 					   */
+	ssize_t hashbangsiz, siz;
 	char *program = NULL;
 	int i, j, argc, ret;
 	char * const *arg;
 	char *xargv1;
-	ssize_t siz;
 	size_t len;
 
 	/* Run exec.sh script */
 	if (exec_ignored(path))
 		goto exec_sh;
 
-	if (path_resolution(fd, path, buf, sizeof(buf), flags) == -1) {
+	siz = path_resolution(fd, path, buf, sizeof(buf), flags);
+	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
@@ -99,14 +100,14 @@ int execveat(int fd, const char *path, char * const argv[],
 		return next_execveat(fd, path, argv, envp, flags);
 
 	/* Get the interpeter directive stored after the hashbang */
-	siz = gethashbang(program, hashbang, sizeof(hashbang));
-	if (siz == -1) {
+	hashbangsiz = gethashbang(program, hashbang, sizeof(hashbang));
+	if (hashbangsiz == -1) {
 		/* Not an hashbang interpreter directive */
 		if (errno == ENOEXEC)
 			goto loader;
 
 		return -1;
-	} else if (siz == 0) {
+	} else if (hashbangsiz == 0) {
 		goto loader;
 	}
 
@@ -114,8 +115,9 @@ int execveat(int fd, const char *path, char * const argv[],
 	 * Preserve original path in argv0 and set the interpreter and its
 	 * optional argument (if any).
 	 */
-	if (path_resolution(AT_FDCWD, hashbang, hashbangbuf,
-			    sizeof(hashbangbuf), 0) == -1)
+	siz = path_resolution(AT_FDCWD, hashbang, hashbangbuf,
+			      sizeof(hashbangbuf), 0);
+	if (siz == -1)
 		return -1;
 
 	/* Reset argv0 */
@@ -127,7 +129,7 @@ int execveat(int fd, const char *path, char * const argv[],
 		interparg[i++] = xargv1; /* extra argument as argv1 */
 	/* Add optional argument */
 	len = __strnlen(hashbang);
-	if (len < (size_t)siz && hashbang[len+1])
+	if (len < (size_t)hashbangsiz && hashbang[len+1])
 		interparg[i++] = &hashbang[len+1];
 	interparg[i++] = (char *)path; /* original program path as first
 					* positional argument */

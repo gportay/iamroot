@@ -37,10 +37,12 @@ int next_lchmod(const char *path, mode_t mode)
 int lchmod(const char *path, mode_t mode)
 {
 	char buf[PATH_MAX];
+	ssize_t siz;
 	int ret;
 
-	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf),
-			    AT_SYMLINK_NOFOLLOW) == -1) {
+	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
+			      AT_SYMLINK_NOFOLLOW);
+	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}

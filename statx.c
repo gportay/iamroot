@@ -44,8 +44,10 @@ int statx(int fd, const char *path, int flags, unsigned int mask,
 	  struct statx *statxbuf)
 {
 	char buf[PATH_MAX];
+	ssize_t siz;
 
-	if (path_resolution(fd, path, buf, sizeof(buf), flags) == -1) {
+	siz = path_resolution(fd, path, buf, sizeof(buf), flags);
+	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}

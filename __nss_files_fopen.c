@@ -36,8 +36,10 @@ FILE *next___nss_files_fopen(const char * path)
 FILE *__nss_files_fopen(const char * path)
 {
 	char buf[PATH_MAX];
+	ssize_t siz;
 
-	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0) == -1) {
+	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
+	if (siz == -1) {
 		__pathperror(path, __func__);
 		return NULL;
 	}

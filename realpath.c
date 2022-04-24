@@ -196,10 +196,12 @@ char *realpath(const char *path, char *resolved_path)
 {
 	char buf[PATH_MAX];
 	const char *root;
+	ssize_t siz;
 	size_t len;
 	char *ret;
 
-	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0) == -1) {
+	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
+	if (siz == -1) {
 		__pathperror(path, __func__);
 		return NULL;
 	}

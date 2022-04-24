@@ -37,9 +37,10 @@ int next_symlinkat(const char *string, int fd, const char *path)
 int symlinkat(const char *string, int fd, const char *path)
 {
 	char buf[PATH_MAX];
+	ssize_t siz;
 
-	if (path_resolution(fd, path, buf, sizeof(buf),
-			    AT_SYMLINK_NOFOLLOW) == -1) {
+	siz = path_resolution(fd, path, buf, sizeof(buf), AT_SYMLINK_NOFOLLOW);
+	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}

@@ -39,6 +39,7 @@ void *next_dlopen(const char *path, int flags)
 void *dlopen(const char *path, int flags)
 {
 	char buf[PATH_MAX];
+	ssize_t siz;
 
 	if (!path || !inchroot())
 		return next_dlopen(path, flags);
@@ -48,7 +49,8 @@ void *dlopen(const char *path, int flags)
 				buf, sizeof(buf)) == -1)
 			goto next;
 
-	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0) == -1) {
+	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
+	if (siz == -1) {
 		__pathperror(path, __func__);
 		return NULL;
 	}

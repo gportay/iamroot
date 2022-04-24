@@ -37,9 +37,11 @@ int next_fchmodat(int fd, const char *path, mode_t mode, int flags)
 int fchmodat(int fd, const char *path, mode_t mode, int flags)
 {
 	char buf[PATH_MAX];
+	ssize_t siz;
 	int ret;
 
-	if (path_resolution(fd, path, buf, sizeof(buf), flags) == -1) {
+	siz = path_resolution(fd, path, buf, sizeof(buf), flags);
+	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}

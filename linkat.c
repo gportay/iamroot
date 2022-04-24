@@ -39,15 +39,16 @@ int linkat(int oldfd, const char *oldpath, int newfd, const char *newpath,
 	   int flags)
 {
 	char oldbuf[PATH_MAX], newbuf[PATH_MAX];
+	ssize_t siz;
 
-	if (path_resolution(oldfd, oldpath, oldbuf, sizeof(oldbuf),
-			    flags) == -1) {
+	siz = path_resolution(oldfd, oldpath, oldbuf, sizeof(oldbuf), flags);
+	if (siz == -1) {
 		__pathperror(oldpath, __func__);
 		return -1;
 	}
 
-	if (path_resolution(newfd, newpath, newbuf, sizeof(newbuf),
-			    flags) == -1) {
+	siz = path_resolution(newfd, newpath, newbuf, sizeof(newbuf), flags);
+	if (siz == -1) {
 		__pathperror(newpath, __func__);
 		return -1;
 	}

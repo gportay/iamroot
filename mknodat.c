@@ -19,9 +19,11 @@ extern int next_creat(const char *, mode_t);
 int mknodat(int fd, const char *path, mode_t mode, dev_t dev)
 {
 	char buf[PATH_MAX];
+	ssize_t siz;
 	(void)dev;
 
-	if (path_resolution(fd, path, buf, sizeof(buf), 0) == -1) {
+	siz = path_resolution(fd, path, buf, sizeof(buf), 0);
+	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}

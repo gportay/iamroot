@@ -38,7 +38,7 @@ ssize_t readlinkat(int fd, const char *path, char *buf, size_t bufsize)
 {
 	char tmp[PATH_MAX];
 	const char *root;
-	ssize_t ret;
+	ssize_t ret, siz;
 	size_t len;
 
 	root = getrootdir();
@@ -54,8 +54,8 @@ ssize_t readlinkat(int fd, const char *path, char *buf, size_t bufsize)
 		return ret;
 	}
 
-	if (path_resolution(fd, path, tmp, sizeof(tmp),
-			    AT_SYMLINK_NOFOLLOW) == -1) {
+	siz = path_resolution(fd, path, tmp, sizeof(tmp), AT_SYMLINK_NOFOLLOW);
+	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}

@@ -38,10 +38,12 @@ int next_mkstemp(char *path)
 int mkstemp(char *path)
 {
 	char buf[PATH_MAX];
+	ssize_t siz;
 	size_t len;
 	int ret;
 
-	if (path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0) == -1) {
+	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
+	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}

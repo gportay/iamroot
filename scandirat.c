@@ -43,8 +43,10 @@ int scandirat(int fd, const char *path, struct dirent ***namelist,
 	      int (*compar)(const struct dirent **, const struct dirent **))
 {
 	char buf[PATH_MAX];
+	ssize_t siz;
 
-	if (path_resolution(fd, path, buf, sizeof(buf), 0) == -1) {
+	siz = path_resolution(fd, path, buf, sizeof(buf), 0);
+	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}

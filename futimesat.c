@@ -37,9 +37,10 @@ int next_futimesat(int fd, const char *path, const struct timeval times[2])
 int futimesat(int fd, const char *path, const struct timeval times[2])
 {
 	char buf[PATH_MAX];
+	ssize_t siz;
 
-	if (path_resolution(fd, path, buf, sizeof(buf),
-			    AT_SYMLINK_NOFOLLOW) == -1) {
+	siz = path_resolution(fd, path, buf, sizeof(buf), AT_SYMLINK_NOFOLLOW);
+	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}

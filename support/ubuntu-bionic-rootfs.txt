@@ -985,7 +985,6 @@ dpkg: regarding .../bash containing bash, pre-dependency problem:
 
 dpkg: warning: ignoring pre-dependency problem!
 Preparing to unpack .../bash ...
-Warning: /ubuntu-bionic-rootfs/usr/bin/dpkg-query: contains root '/ubuntu-bionic-rootfs'
 Unpacking bash ...
 Selecting previously unselected package bsdutils.
 dpkg: regarding .../bsdutils containing bsdutils, pre-dependency problem:
@@ -1015,18 +1014,10 @@ Preparing to unpack .../coreutils ...
 Unpacking coreutils ...
 Selecting previously unselected package dash.
 Preparing to unpack .../dash ...
-Warning: /ubuntu-bionic-rootfs/usr/bin/dpkg-divert: contains root '/ubuntu-bionic-rootfs'
-Warning: /ubuntu-bionic-rootfs/usr/bin/dpkg-divert: contains root '/ubuntu-bionic-rootfs'
 No diversion 'diversion of /bin/sh by dash', none removed.
-Warning: /ubuntu-bionic-rootfs/usr/bin/dpkg-divert: contains root '/ubuntu-bionic-rootfs'
 Adding 'diversion of /bin/sh to /bin/sh.distrib by bash'
-Warning: /ubuntu-bionic-rootfs/bin/cp: contains root '/ubuntu-bionic-rootfs'
-Warning: /ubuntu-bionic-rootfs/usr/bin/dpkg-divert: contains root '/ubuntu-bionic-rootfs'
-Warning: /ubuntu-bionic-rootfs/usr/bin/dpkg-divert: contains root '/ubuntu-bionic-rootfs'
 No diversion 'diversion of /usr/share/man/man1/sh.1.gz by dash', none removed.
-Warning: /ubuntu-bionic-rootfs/usr/bin/dpkg-divert: contains root '/ubuntu-bionic-rootfs'
 Adding 'diversion of /usr/share/man/man1/sh.1.gz to /usr/share/man/man1/sh.distrib.1.gz by bash'
-Warning: /ubuntu-bionic-rootfs/bin/cp: contains root '/ubuntu-bionic-rootfs'
 Unpacking dash ...
 Preparing to unpack .../debconf ...
 Unpacking debconf ...

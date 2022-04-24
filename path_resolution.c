@@ -289,8 +289,10 @@ static char *_path_resolution(int fd, const char *path, char *buf,
 		root = "";
 	len = __strlen(root);
 
-	if (ignore(real_path+len))
-		return memcpy(buf, real_path+len, __strlen(real_path+len)+1);
+	if (ignore(real_path+len)) {
+		memcpy(buf, real_path+len, __strlen(real_path+len)+1);
+		goto exit;
+	}
 
 	if (!follow_symlink(flags))
 		goto exit;

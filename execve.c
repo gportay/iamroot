@@ -1433,9 +1433,20 @@ int __loader(const char *path, char * const argv[], char *interp,
 
 		return i;
 	} else {
-		int i, j, shift = 1;
+		char *rpath, *runpath, *ld_preload, *ld_library_path;
+		int ret, i, j, shift = 1, abi = 0;
+		const char *basename;
+		char ldso[NAME_MAX];
 		char * const *arg;
 		char *xargv1;
+
+		basename = __basename(buf);
+		ret = sscanf(basename, "ld-%" __xstr(NAME_MAX) "[^.].so.%d",
+			     ldso, &abi);
+		if (ret < 2) {
+			errno = ENOTSUP;
+			return -1;
+		}
 
 		siz = path_resolution(AT_FDCWD, buf, interp, interpsiz, 0);
 		if (siz == -1)
@@ -1460,6 +1471,36 @@ int __loader(const char *path, char * const argv[], char *interp,
 		for (j = i+shift; j > shift; j--)
 			interparg[j] = interparg[j-shift];
 		j = i;
+
+		rpath = __rpath(path);
+		if (rpath)
+			__info("%s: RPATH=%s\n", path, rpath);
+
+		runpath = __runpath(path);
+		if (runpath)
+			__info("%s: RUNPATH=%s\n", path, runpath);
+
+		ld_preload = __ld_preload(ldso, abi);
+		if (!ld_preload) {
+			ret = setenv("LD_PRELOAD", ld_preload, 1);
+			if (ret)
+				return -1;
+
+			ret = unsetenv("ld_preload");
+			if (ret)
+				return -1;
+		}
+
+		ld_library_path = __ld_library_path(ldso, abi);
+		if (ld_library_path) {
+			ret = setenv("LD_LIBRARY_PATH", ld_library_path, 1);
+			if (ret)
+				return -1;
+
+			ret = unsetenv("ld_library_path");
+			if (ret)
+				return -1;
+		}
 
 		/* Add path to interpreter (host, argv0) */
 		i = 0;

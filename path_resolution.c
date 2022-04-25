@@ -82,6 +82,7 @@ void path_resolution_init()
 #endif
 	char buf[BUFSIZ];
 	int ret;
+	int n;
 
 	if (re)
 		return;
@@ -94,8 +95,8 @@ void path_resolution_init()
 	if (!exec)
 		exec = "^/usr/lib/iamroot/exec.sh$";
 
-	ret = _snprintf(buf, sizeof(buf), "%s|%s", ignore, exec);
-	if (ret == -1) {
+	n = _snprintf(buf, sizeof(buf), "%s|%s", ignore, exec);
+	if (n == -1) {
 		perror("_snprintf");
 		return;
 	}
@@ -237,7 +238,7 @@ static ssize_t _path_resolution(int fd, const char *path, char *buf,
 
 	if (*path == '/') {
 		const char *root;
-		int size;
+		int n;
 
 		root = getrootdir();
 		if (strcmp(root, "/") == 0)
@@ -245,20 +246,20 @@ static ssize_t _path_resolution(int fd, const char *path, char *buf,
 		else if (__strlcmp(path, root) == 0)
 			__warning("%s: contains root '%s'\n", path, root);
 
-		size = _snprintf(buf, bufsize, "%s%s", root, path);
-		if (size < 0) {
+		n = _snprintf(buf, bufsize, "%s%s", root, path);
+		if (n < 0) {
 			errno = EINVAL;
 			return -1;
 		}
 
-		if ((size_t)size >= bufsize) {
+		if ((size_t)n >= bufsize) {
 			errno = ENAMETOOLONG;
 			return -1;
 		}
 	} else if (fd != AT_FDCWD) {
 		char dirbuf[PATH_MAX];
 		ssize_t siz;
-		int size;
+		int n;
 
 		siz = fpath(fd, dirbuf, sizeof(dirbuf));
 		if (siz == -1) {
@@ -272,13 +273,13 @@ static ssize_t _path_resolution(int fd, const char *path, char *buf,
 			goto ignore;
 		}
 
-		size = _snprintf(buf, bufsize, "%s/%s", dirbuf, path);
-		if (size < 0) {
+		n = _snprintf(buf, bufsize, "%s/%s", dirbuf, path);
+		if (n < 0) {
 			errno = EINVAL;
 			return -1;
 		}
 
-		if ((size_t)size >= bufsize) {
+		if ((size_t)n >= bufsize) {
 			errno = ENAMETOOLONG;
 			return -1;
 		}

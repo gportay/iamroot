@@ -55,4 +55,7 @@
 	/^(Reading database \.\.\./{
 		s,[[:digit:]]\+,XXX,
 	}
+
+	# dpkg: warning: parsing file '/var/lib/dpkg/status' near line X package 'dpkg':
+	s,line \([[:digit:]]\+\) ,line X: ,
 }

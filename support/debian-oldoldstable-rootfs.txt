@@ -706,9 +706,9 @@ I: Configuring systemd...
 I: Base system installed successfully.
 Warning: Command is skipped: mount -t proc proc /proc
 Warning: Command is skipped: mount -t sysfs sysfs /sys
-dpkg: warning: parsing file '/var/lib/dpkg/status' near line 5 package 'dpkg':
+dpkg: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
  missing description
-dpkg: warning: parsing file '/var/lib/dpkg/status' near line 5 package 'dpkg':
+dpkg: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
  missing architecture
 Selecting previously unselected package base-passwd.
 (Reading database ... XXX files and directories currently installed.)
@@ -721,9 +721,9 @@ dpkg: base-passwd: dependency problems, but configuring anyway as you requested:
   Package libdebconfclient0 is not installed.
 
 Setting up base-passwd ...
-dpkg: warning: parsing file '/var/lib/dpkg/status' near line 24 package 'dpkg':
+dpkg: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
  missing description
-dpkg: warning: parsing file '/var/lib/dpkg/status' near line 24 package 'dpkg':
+dpkg: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
  missing architecture
 Selecting previously unselected package base-files.
 dpkg: regarding .../base-files containing base-files, pre-dependency problem:
@@ -741,9 +741,9 @@ dpkg: base-files: dependency problems, but configuring anyway as you requested:
 Setting up base-files ...
 Warning: fchownat: /run/utmp: Ignoring error 'Operation not permitted'!
 Warning: fchmodat: /run/utmp: Ignoring error 'Operation not permitted'!
-dpkg: warning: parsing file '/var/lib/dpkg/status' near line 51 package 'dpkg':
+dpkg: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
  missing description
-dpkg: warning: parsing file '/var/lib/dpkg/status' near line 51 package 'dpkg':
+dpkg: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
  missing architecture
 dpkg: regarding .../dpkg containing dpkg, pre-dependency problem:
  dpkg pre-depends on libbz2-1.0

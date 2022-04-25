@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -49,13 +49,13 @@ mode_t next_umask(mode_t mask)
 
 mode_t umask(mode_t mask)
 {
-	mode_t ret, real_mask;
+	mode_t ret, m;
 
-	real_mask = mask & ~(S_IRUSR | S_IWUSR);
-	__debug("%s(mask: 0%03o -> 0%03o)\n", __func__, mask, real_mask);
+	m = mask & ~(S_IRUSR | S_IWUSR);
+	__debug("%s(mask: 0%03o -> 0%03o)\n", __func__, mask, m);
 
 	ret = __getumask();
-	next_umask(real_mask);
+	next_umask(m);
 	__setumask(mask);
 
 	__warn_if_too_restrictive_umask(mask);

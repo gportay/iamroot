@@ -1513,7 +1513,7 @@ loader:
 
 		/* Add path to interpreter (host, argv0) */
 		i = 0;
-		interparg[i++] = buf;
+		interparg[i++] = loaderbuf;
 
 		/* Add extra argument as argv1 */
 		if (xargv1)

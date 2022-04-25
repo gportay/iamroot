@@ -178,24 +178,29 @@ char *sanitize(char *path, size_t bufsize)
 }
 
 __attribute__((visibility("hidden")))
-char *fpath(int fd, char *buf, size_t bufsiz)
+ssize_t fpath(int fd, char *buf, size_t bufsiz)
 {
 	ssize_t siz;
 
 	siz = __procfdreadlink(fd, buf, bufsiz);
 	if (siz == -1)
-		return NULL;
+		return -1;
 	buf[siz] = 0; /* ensure NULL terminated */
 
-	return buf;
+	return siz;
 }
 
 static char *__fpath(int fd)
 {
 	static char buf[PATH_MAX];
+	ssize_t siz;
 
 	*buf = 0;
-	return fpath(fd, buf, sizeof(buf));
+	siz = fpath(fd, buf, sizeof(buf));
+	if (siz == -1)
+		return NULL;
+
+	return buf;
 }
 
 __attribute__((visibility("hidden")))
@@ -203,13 +208,13 @@ int path_ignored(int fd, const char *path)
 {
 	if (fd != AT_FDCWD) {
 		char buf[PATH_MAX];
-		char *real_path;
+		ssize_t siz;
 
-		real_path = fpath(fd, buf, sizeof(buf));
-		if (!real_path)
+		siz = fpath(fd, buf, sizeof(buf));
+		if (siz == -1)
 			return -1;
 
-		return ignore(real_path);
+		return ignore(buf);
 	}
 
 	return ignore(path);
@@ -252,22 +257,22 @@ static ssize_t _path_resolution(int fd, const char *path, char *buf,
 		}
 	} else if (fd != AT_FDCWD) {
 		char dirbuf[PATH_MAX];
-		char *real_dir;
+		ssize_t siz;
 		int size;
 
-		real_dir = fpath(fd, dirbuf, sizeof(dirbuf));
-		if (!real_dir) {
+		siz = fpath(fd, dirbuf, sizeof(dirbuf));
+		if (siz == -1) {
 			__fpathperror(fd, "fpath");
 			return -1;
 		}
 
-		if (*real_dir != '/') {
-			__warning("%s: ignore '/proc/self/fd/%d'\n", real_dir,
+		if (*dirbuf != '/') {
+			__warning("%s: ignore '/proc/self/fd/%d'\n", dirbuf,
 				  fd);
 			goto ignore;
 		}
 
-		size = _snprintf(buf, bufsize, "%s/%s", real_dir, path);
+		size = _snprintf(buf, bufsize, "%s/%s", dirbuf, path);
 		if (size < 0) {
 			errno = EINVAL;
 			return -1;

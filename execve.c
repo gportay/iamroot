@@ -1300,8 +1300,8 @@ static int __loader(const char *path, char * const argv[], char *interp,
 			__warning("%s: is unset!\n", "ld_library_path");
 
 		inhibit_rpath = __inhibit_rpath();
-		if (!inhibit_rpath)
-			__notice("%s: is unset!\n", "inhibit_rpath");
+		if (inhibit_rpath)
+			__notice("%s: %s\n", "inhibit_rpath", inhibit_rpath);
 
 		siz = path_resolution(AT_FDCWD, buf, interp, interpsiz, 0);
 		if (siz == -1)

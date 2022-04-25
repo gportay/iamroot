@@ -1874,7 +1874,7 @@ Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains 
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root '/opensuse-tumbleweed-rootfs'
 
 
-Executing %posttrans script 'openSUSE-release-20220422-1569.1.x86_64.rpm' [done]
+Executing %posttrans script 'openSUSE-release-YYYYMMDD-X.1.x86_64.rpm' [done]
 Output of systemd-presets-common-SUSE-15-22.1.noarch.rpm %posttrans script:
     Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root '/opensuse-tumbleweed-rootfs'
     Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root '/opensuse-tumbleweed-rootfs'
@@ -1890,7 +1890,7 @@ Output of systemd-presets-common-SUSE-15-22.1.noarch.rpm %posttrans script:
     Created symlink /etc/systemd/user/basic.target.wants/systemd-tmpfiles-setup.service -> /usr/lib/systemd/user/systemd-tmpfiles-setup.service.
     Created symlink /etc/systemd/user/timers.target.wants/systemd-tmpfiles-clean.timer -> /usr/lib/systemd/user/systemd-tmpfiles-clean.timer.
 
-Output of rpm-4.17.0-5.1.x86_64.rpm %posttrans script:
+Output of rpm-4.17.0-6.1.x86_64.rpm %posttrans script:
     rmdir: failed to remove 'var/lib/rpm': Directory not empty
 
 

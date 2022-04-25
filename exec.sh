@@ -30,9 +30,19 @@ fixme() {
 	log "FIXME" "$@"
 }
 
+path_resolution() {
+	if [ "${1##*/}" != "$1" ]
+	then
+		echo "$PWD/$1"
+		return
+	fi
+
+	echo "$IAMROOT_ROOT$1"
+}
+
 path="$1"
+inchroot_path="$(path_resolution "$path")"
 argv0="${argv0:-$path}"
-real_path="$IAMROOT_ROOT$path"
 shift
 
 case "${path##*/}" in
@@ -45,7 +55,7 @@ chfn|chkstat|pam-auth-update|update-ca-certificates|*.postinst)
 	exit 0
 	;;
 ldd|busybox)
-	exec "$real_path" "$@"
+	exec "$inchroot_path" "$@"
 	;;
 ldconfig|ldconfig.real)
 	if [ "${IAMROOT_ROOT:-/}" != / ]
@@ -57,7 +67,7 @@ ldconfig|ldconfig.real)
 		    -i "$IAMROOT_ROOT/etc/ld.so.conf"
 	fi
 
-	exec "$real_path" "$@"
+	exec "$inchroot_path" "$@"
 	;;
 gpasswd|passwd|su)
 	error "Command not handled:" "$argv0" "$@"

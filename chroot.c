@@ -713,8 +713,11 @@ int chroot(const char *path)
 		cwd = strncat(cwd, path, sizeof(buf) - len - 1);
 		buf[sizeof(buf)-1] = 0;
 	} else {
-		if (path_resolution(AT_FDCWD, path, buf, sizeof(buf),
-				    AT_SYMLINK_NOFOLLOW) == -1) {
+		ssize_t siz;
+
+		siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
+				      AT_SYMLINK_NOFOLLOW);
+		if (siz == -1) {
 			__pathperror(path, __func__);
 			return -1;
 		}

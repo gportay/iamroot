@@ -232,8 +232,9 @@ loader:
 		if (!inhibit_rpath)
 			__notice("%s: is unset!\n", "inhibit_rpath");
 
-		if (path_resolution(AT_FDCWD, loader, loaderbuf,
-				    sizeof(loaderbuf), 0) == -1)
+		siz = path_resolution(AT_FDCWD, loader, loaderbuf,
+				      sizeof(loaderbuf), 0);
+		if (siz == -1)
 			return -1;
 
 		/*
@@ -342,8 +343,9 @@ loader:
 	} else {
 		int shift = 1;
 
-		if (path_resolution(AT_FDCWD, loader, loaderbuf,
-				    sizeof(loaderbuf), 0) == -1)
+		siz = path_resolution(AT_FDCWD, loader, loaderbuf,
+				      sizeof(loaderbuf), 0);
+		if (siz == -1)
 			return -1;
 
 		/*

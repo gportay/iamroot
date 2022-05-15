@@ -32,7 +32,6 @@ libiamroot.so: __lxstat.o
 libiamroot.so: __lxstat64.o
 libiamroot.so: __nss_files_fopen.o
 libiamroot.so: __open.o
-libiamroot.so: __open64.o
 libiamroot.so: __open64_2.o
 libiamroot.so: __open_2.o
 libiamroot.so: __openat64_2.o
@@ -58,7 +57,6 @@ libiamroot.so: chmod.o
 libiamroot.so: chown.o
 libiamroot.so: chroot.o
 libiamroot.so: creat.o
-libiamroot.so: creat64.o
 libiamroot.so: dlmopen.o
 libiamroot.so: dlopen.o
 libiamroot.so: eaccess.o
@@ -80,9 +78,7 @@ libiamroot.so: fchownat.o
 libiamroot.so: fexecve.o
 libiamroot.so: fgetxattr.o
 libiamroot.so: fopen.o
-libiamroot.so: fopen64.o
 libiamroot.so: freopen.o
-libiamroot.so: freopen64.o
 libiamroot.so: fsetxattr.o
 libiamroot.so: fstat.o
 libiamroot.so: fstat64.o
@@ -116,20 +112,14 @@ libiamroot.so: mkfifoat.o
 libiamroot.so: mknod.o
 libiamroot.so: mknodat.o
 libiamroot.so: mkostemp.o
-libiamroot.so: mkostemp64.o
 libiamroot.so: mkostemps.o
-libiamroot.so: mkostemps64.o
 libiamroot.so: mkstemp.o
-libiamroot.so: mkstemp64.o
 libiamroot.so: mkstemps.o
-libiamroot.so: mkstemps64.o
 libiamroot.so: mktemp.o
 libiamroot.so: mount.o
 libiamroot.so: name_to_handle_at.o
 libiamroot.so: open.o
-libiamroot.so: open64.o
 libiamroot.so: openat.o
-libiamroot.so: openat64.o
 libiamroot.so: opendir.o
 libiamroot.so: passwd.o
 libiamroot.so: path_resolution.o

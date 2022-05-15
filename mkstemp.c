@@ -60,3 +60,7 @@ exit:
 
 	return ret;
 }
+
+#ifdef __GLIBC__
+weak_alias(mkstemp, mkstemp64);
+#endif

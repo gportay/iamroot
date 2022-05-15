@@ -51,3 +51,7 @@ int creat(const char *path, mode_t mode)
 
 	return next_creat(buf, mode);
 }
+
+#ifdef __GLIBC__
+weak_alias(creat, creat64);
+#endif

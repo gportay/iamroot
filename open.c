@@ -68,3 +68,8 @@ int open(const char *path, int flags, ...)
 
 	return next_open(buf, flags, mode);
 }
+
+#ifdef __GLIBC__
+weak_alias(open, open64);
+weak_alias(open, __open64);
+#endif

@@ -51,3 +51,7 @@ FILE *freopen(const char *path, const char *mode, FILE *stream)
 
 	return next_freopen(buf, mode, stream);
 }
+
+#ifdef __GLIBC__
+weak_alias(freopen, freopen64);
+#endif

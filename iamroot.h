@@ -7,6 +7,18 @@
 #ifndef _IAMROOT_H_
 #define _IAMROOT_H_
 
+/*
+ * Stolen from musl (src/include/features.h)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+#define weak __attribute__((__weak__))
+#define hidden __attribute__((__visibility__("hidden")))
+#define weak_alias(old, new) \
+	extern __typeof(old) new __attribute__((__weak__, __alias__(#old)))
+
 #ifdef __cplusplus
 extern "C" {
 #endif

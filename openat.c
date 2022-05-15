@@ -66,3 +66,7 @@ int openat(int fd, const char *path, int flags, ...)
 
 	return next_openat(fd, buf, flags, mode);
 }
+
+#ifdef __GLIBC__
+weak_alias(openat, openat64);
+#endif

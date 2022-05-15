@@ -5,7 +5,6 @@ gpg: porting secret keys from '/i686-arch-rootfs/etc/pacman.d/gnupg.tmp/secring.
 gpg: migration succeeded
 ==> Generating pacman master key. This may take some time.
 gpg: Generating pacman keyring master key...
-gpg: key XXXXXXXXXXXXXXXX marked as ultimately trusted
 gpg: directory '/i686-arch-rootfs/etc/pacman.d/gnupg.tmp/openpgp-revocs.d' created
 gpg: revocation certificate stored as '/i686-arch-rootfs/etc/pacman.d/gnupg.tmp/openpgp-revocs.dXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.rev'
 gpg: Done
@@ -159,7 +158,7 @@ Warning: Command is skipped: /usr/bin/mount tmp i686-arch-rootfs/tmp -t tmpfs -o
 resolving dependencies...
 looking for conflicting packages...
 
-Packages (XXX) acl  archlinux-keyring  archlinux32-keyring  argon2  attr  audit  bash  brotli  bzip2  ca-certificates  ca-certificates-mozilla  ca-certificates-utils  coreutils  cryptsetup  curl  dbus  device-mapper  e2fsprogs  expat  file  filesystem  findutils  gawk  gcc-libs  gettext  glib2  glibc  gmp  gnupg  gnutls  gpgme  grep  gzip  hwdata  iana-etc  icu  iproute2  iptables  iputils  json-c  kbd  keyutils  kmod  krb5  less  libarchive  libassuan  libcap  libcap-ng  libelf  libffi  libgcrypt  libgpg-error  libidn2  libksba  libldap  libmnl  libnetfilter_conntrack  libnfnetlink  libnftnl  libnghttp2  libnl  libp11-kit  libpcap  libpsl  libsasl  libseccomp  libsecret  libssh2  libsysprof-capture  libtasn1  libtirpc  libunistring  libxcrypt  libxml2  licenses  linux-api-headers  lz4  mpfr  ncurses  nettle  npth  openssl  p11-kit  pacman  pacman-mirrorlist  pam  pambase  pciutils  pcre  pcre2  pinentry  popt  procps-ng  psmisc  readline  sed  shadow  sqlite  systemd  systemd-libs  systemd-sysvcompat  tar  tpm2-tss  tzdata  util-linux  util-linux-libs  xz  zlib  zstd  base
+Packages (XXX) acl  archlinux-keyring  archlinux32-keyring  argon2  attr  audit  bash  brotli  bzip2  ca-certificates  ca-certificates-mozilla  ca-certificates-utils  coreutils  cryptsetup  curl  dbus  device-mapper  e2fsprogs  expat  file  filesystem  findutils  gawk  gcc-libs  gettext  glib2  glibc  gmp  gnupg  gnutls  gpgme  grep  gzip  hwdata  iana-etc  icu  iproute2  iptables  iputils  json-c  kbd  keyutils  kmod  krb5  less  libarchive  libassuan  libbpf  libcap  libcap-ng  libelf  libffi  libgcrypt  libgpg-error  libidn2  libksba  libldap  libmnl  libnetfilter_conntrack  libnfnetlink  libnftnl  libnghttp2  libnl  libp11-kit  libpcap  libpsl  libsasl  libseccomp  libsecret  libssh2  libsysprof-capture  libtasn1  libtirpc  libunistring  libxcrypt  libxml2  licenses  linux-api-headers  lz4  mpfr  ncurses  nettle  npth  openssl  p11-kit  pacman  pacman-mirrorlist  pam  pambase  pciutils  pcre  pcre2  pinentry  popt  procps-ng  psmisc  readline  sed  shadow  sqlite  systemd  systemd-libs  systemd-sysvcompat  tar  tpm2-tss  tzdata  util-linux  util-linux-libs  xz  zlib  zstd  base
 
 Total Download Size:   XXX XiB
 Total Installed Size:  XXX XiB
@@ -392,6 +391,7 @@ Optional dependencies for systemd
     tpm2-tss: unlocking LUKS2 volumes with TPM2 [installed]
 installing systemd-sysvcompat...
 installing iputils...
+installing libbpf...
 installing iproute2...
 Optional dependencies for iproute2
     db: userspace arp daemon
@@ -420,12 +420,13 @@ Warning: chmod: /dev/snd: Ignoring error 'Operation not permitted'!
 Warning: fchownat: /dev/loop-control: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/loop-control: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/net: Ignoring error 'Operation not permitted'!
-Warning: chmod: /dev/vhost-net: Ignoring error 'Operation not permitted'!
 Warning: fchownat: /run/log: Ignoring error 'Operation not permitted'!
 Warning: chmod: /run/log: Ignoring error 'Operation not permitted'!
 (XXX/XXX) Reloading device manager configuration...
   Skipped: Running in chroot.
 (XXX/XXX) Arming ConditionNeedsUpdate...
+touch: setting times of '/usr': Permission denied
+error: command failed to execute correctly
 (XXX/XXX) Rebuilding certificate stores...
 (XXX/XXX) Reloading system bus configuration...
   Skipped: Running in chroot.

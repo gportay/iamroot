@@ -1257,7 +1257,8 @@ int __loader(const char *path, char * const argv[], char *interp,
 		char * const *arg;
 
 		basename = __basename(buf);
-		ret = sscanf(basename, "ld-%[^.].so.%d", ldso, &abi);
+		ret = sscanf(basename, "ld-%" __xstr(NAME_MAX) "[^.].so.%d",
+			     ldso, &abi);
 		if (ret < 2) {
 			errno = ENOTSUP;
 			return -1;

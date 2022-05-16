@@ -320,7 +320,11 @@ rootfs: debian-rootfs
 
 .NOTPARALLEL: debian-rootfs
 .PHONY: debian-rootfs
-debian-rootfs: debian-oldoldstable-rootfs debian-oldstable-rootfs debian-stable-rootfs debian-testing-rootfs debian-unstable-rootfs
+debian-rootfs: debian-oldoldstable-rootfs 
+debian-rootfs: debian-oldstable-rootfs 
+debian-rootfs: debian-stable-rootfs 
+debian-rootfs: debian-testing-rootfs 
+debian-rootfs: debian-unstable-rootfs
 
 debian-oldoldstable-rootfs: | debian-oldoldstable-rootfs/etc/machine-id
 debian-oldstable-rootfs: | debian-oldstable-rootfs/etc/machine-id
@@ -367,7 +371,12 @@ vmlinux-debian-testing:
 vmlinux-debian-unstable:
 endif
 
-debian-oldoldstable.ext4 debian-oldstable.ext4 debian-stable.ext4 debian-stable.ext4 debian-testing.ext4 debian-unstable.ext4:
+debian-oldoldstable.ext4:
+debian-oldstable.ext4:
+debian-stable.ext4:
+debian-stable.ext4:
+debian-testing.ext4:
+debian-unstable.ext4:
 
 debian-oldoldstable-postrootfs: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
 debian-oldoldstable-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
@@ -398,11 +407,24 @@ debian-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "chroot debian-$*-rootfs systemctl disable sshd.service"
 	bash iamroot-shell -c "chroot debian-$*-rootfs pam-auth-update"
 
-chroot-debian-oldoldstable chroot-debian-oldstable chroot-debian-stable chroot-debian-stable chroot-debian-testing chroot-debian-unstable:
+chroot-debian-oldoldstable:
+chroot-debian-oldstable:
+chroot-debian-stable:
+chroot-debian-stable:
+chroot-debian-testing:
+chroot-debian-unstable:
 
-mount-debian-oldoldstable mount-debian-oldstable mount-debian-stable mount-debian-testing mount-debian-unstable:
+mount-debian-oldoldstable:
+mount-debian-oldstable:
+mount-debian-stable:
+mount-debian-testing:
+mount-debian-unstable:
 
-umount-debian-oldoldstable umount-debian-oldstable umount-debian-stable umount-debian-testing umount-debian-unstable:
+umount-debian-oldoldstable:
+umount-debian-oldstable:
+umount-debian-stable:
+umount-debian-testing:
+umount-debian-unstable:
 
 ubuntu-bionic-chroot:
 ubuntu-focal-chroot:
@@ -415,7 +437,10 @@ ubuntu-%-chroot: | ubuntu-%-rootfs
 
 .NOTPARALLEL: ubuntu-rootfs
 .PHONY: ubuntu-rootfs
-ubuntu-rootfs: ubuntu-bionic-rootfs ubuntu-focal-rootfs ubuntu-impish-rootfs ubuntu-jammy-rootfs
+ubuntu-rootfs: ubuntu-bionic-rootfs
+ubuntu-rootfs: ubuntu-focal-rootfs
+ubuntu-rootfs: ubuntu-impish-rootfs
+ubuntu-rootfs: ubuntu-jammy-rootfs
 
 ubuntu-bionic-rootfs: | ubuntu-bionic-rootfs/etc/machine-id
 ubuntu-focal-rootfs: | ubuntu-focal-rootfs/etc/machine-id
@@ -457,7 +482,10 @@ vmlinux-ubuntu-impish:
 vmlinux-ubuntu-jammy:
 endif
 
-ubuntu-bionic.ext4 ubuntu-focal.ext4 ubuntu-impish.ext4 ubuntu-jammy.ext4:
+ubuntu-bionic.ext4:
+ubuntu-focal.ext4:
+ubuntu-impish.ext4:
+ubuntu-jammy.ext4:
 
 ubuntu-bionic-postrootfs:
 ubuntu-focal-postrootfs:
@@ -476,17 +504,27 @@ ubuntu-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "chroot ubuntu-$*-rootfs systemctl disable sshd.service"
 	bash iamroot-shell -c "chroot ubuntu-$*-rootfs pam-auth-update"
 
-chroot-ubuntu-bionic chroot-ubuntu-focal chroot-ubuntu-impish chroot-ubuntu-jammy:
+chroot-ubuntu-bionic:
+chroot-ubuntu-focal:
+chroot-ubuntu-impish:
+chroot-ubuntu-jammy:
 
-mount-ubuntu-bionic mount-ubuntu-focal mount-ubuntu-impish mount-ubuntu-jammy:
+mount-ubuntu-bionic:
+mount-ubuntu-focal:
+mount-ubuntu-impish:
+mount-ubuntu-jammy:
 
-umount-ubuntu-bionic umount-ubuntu-focal umount-ubuntu-impish umount-ubuntu-jammy:
+umount-ubuntu-bionic:
+umount-ubuntu-focal:
+umount-ubuntu-impish:
+umount-ubuntu-jammy:
 endif
 
 ifneq ($(shell command -v dnf),)
 fedora-33-chroot:
 fedora-34-chroot:
 fedora-35-chroot:
+fedora-36-chroot:
 fedora-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64
 fedora-%-chroot: | fedora-%-rootfs
 	bash iamroot-shell -c "chroot fedora-$*-rootfs"
@@ -495,7 +533,9 @@ rootfs: fedora-rootfs
 
 .NOTPARALLEL: fedora-rootfs
 .PHONY: fedora-rootfs
-fedora-rootfs: fedora-33-rootfs fedora-34-rootfs fedora-35-rootfs
+fedora-rootfs: fedora-33-rootfs
+fedora-rootfs: fedora-34-rootfs
+fedora-rootfs: fedora-35-rootts
 
 fedora-33-rootfs fedora-34-rootfs: export IAMROOT_INHIBIT_RPATH = /usr/lib64/ldb/modules/ldb/tdb.so:/usr/lib64/ldb/modules/ldb/mdb.so:/usr/lib64/ldb/modules/ldb/ldb.so
 fedora-34-rootfs: export SYSTEMD_OFFLINE = 1
@@ -524,7 +564,9 @@ vmlinux-fedora-34:
 vmlinux-fedora-35:
 endif
 
-fedora-33.ext4 fedora-34.ext4 fedora-35.ext4:
+fedora-33.ext4:
+fedora-34.ext4:
+fedora-35.ext4:
 
 fedora-33-postrootfs:
 fedora-34-postrootfs:
@@ -542,11 +584,17 @@ fedora-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	rm -f fedora-$*-rootfs/etc/systemd/system/multi-user.target.wants/sshd.service
 	bash iamroot-shell -c "chroot fedora-$*-rootfs systemctl disable sshd.service"
 
-chroot-fedora-33 chroot-fedora-34 chroot-fedora-35:
+chroot-fedora-33:
+chroot-fedora-34:
+chroot-fedora-35:
 
-mount-fedora-33 mount-fedora-34 mount-fedora-35:
+mount-fedora-33:
+mount-fedora-34:
+mount-fedora-35:
 
-umount-fedora-33 umount-fedora-34 umount-fedora-35:
+umount-fedora-33:
+umount-fedora-34:
+umount-fedora-35:
 endif
 
 ifneq ($(shell command -v zypper),)
@@ -588,7 +636,8 @@ vmlinux-opensuse-leaf:
 vmlinux-opensuse-tumbleweed:
 endif
 
-opensuse-leaf.ext4 opensuse-tumbleweed.ext4:
+opensuse-leaf.ext4:
+opensuse-tumbleweed.ext4:
 
 opensuse-leaf-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
 opensuse-leaf-postrootfs:
@@ -606,11 +655,14 @@ opensuse-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	rm -f opensuse-$*-rootfs/etc/systemd/system/getty.target.wants/getty@ttyS0.service
 	bash iamroot-shell -c "chroot opensuse-$*-rootfs systemctl enable getty@ttyS0.service"
 
-chroot-opensuse-leaf chroot-opensuse-tumbleweed:
+chroot-opensuse-leaf:
+chroot-opensuse-tumbleweed:
 
-mount-opensuse-leaf mount-opensuse-tumbleweed:
+mount-opensuse-leaf:
+mount-opensuse-tumbleweed:
 
-umount-opensuse-leaf umount-opensuse-tumbleweed:
+umount-opensuse-leaf:
+umount-opensuse-tumbleweed:
 endif
 
 ifneq ($(shell command -v musl-gcc),)
@@ -656,7 +708,9 @@ alpine-%-chroot: | alpine-%-rootfs
 
 .NOTPARALLEL: alpine-rootfs
 .PHONY: alpine-rootfs
-alpine-rootfs: alpine-3.14-rootfs alpine-3.15-rootfs alpine-edge-rootfs
+alpine-rootfs: alpine-3.14-rootfs
+alpine-rootfs: alpine-3.15-rootfs
+alpine-rootfs: alpine-edge-rootfs
 
 alpine-3.14-rootfs: | alpine-3.14-rootfs/bin/busybox
 alpine-3.15-rootfs: | alpine-3.15-rootfs/bin/busybox
@@ -790,6 +844,7 @@ ifneq ($(shell command -v aarch64-linux-gnu-gcc),)
 aarch64-fedora-33-chroot:
 aarch64-fedora-34-chroot:
 aarch64-fedora-35-chroot:
+aarch64-fedora-36-chroot:
 aarch64-fedora-%-chroot: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64
 aarch64-fedora-%-chroot: | aarch64-fedora-%-rootfs
 	bash iamroot-shell -c "chroot aarch64-fedora-$*-rootfs"
@@ -797,11 +852,15 @@ aarch64-fedora-%-chroot: | aarch64-fedora-%-rootfs
 aarch64-rootfs: aarch64-fedora-rootfs
 
 .PHONY: aarch64-fedora-rootfs
-aarch64-fedora-rootfs: aarch64-fedora-33-rootfs aarch64-fedora-34-rootfs aarch64-fedora-35-rootfs
+aarch64-fedora-rootfs: aarch64-fedora-33-rootfs
+aarch64-fedora-rootfs: aarch64-fedora-34-rootfs
+aarch64-fedora-rootfs: aarch64-fedora-35-rootfs
+aarch64-fedora-rootfs: aarch64-fedora-36-rootfs
 
 aarch64-fedora-33-rootfs: | aarch64-fedora-33-rootfs/etc/machine-id
 aarch64-fedora-34-rootfs: | aarch64-fedora-34-rootfs/etc/machine-id
 aarch64-fedora-35-rootfs: | aarch64-fedora-35-rootfs/etc/machine-id
+aarch64-fedora-36-rootfs: | aarch64-fedora-36-rootfs/etc/machine-id
 
 aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64/ldb:/usr/lib64:/lib64
 aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|$(CURDIR)/aarch64-fedora-$*-rootfs/var/log/dnf.rpm.log
@@ -815,17 +874,22 @@ ifneq ($(shell command -v armv7l-unknown-linux-gnueabihf-gcc),)
 armhfp-fedora-33-chroot:
 armhfp-fedora-34-chroot:
 armhfp-fedora-35-chroot:
+armhfp-fedora-36-chroot:
 armhfp-fedora-%-chroot: | armhfp-fedora-%-rootfs
 	bash iamroot-shell -c "chroot armhfp-fedora-$*-rootfs"
 
 arm-rootfs: armhfp-fedora-rootfs
 
 .PHONY: armhfp-fedora-rootfs
-armhfp-fedora-rootfs: armhfp-fedora-33-rootfs armhfp-fedora-34-rootfs armhfp-fedora-35-rootfs
+armhfp-fedora-rootfs: armhfp-fedora-33-rootfs 
+armhfp-fedora-rootfs: armhfp-fedora-34-rootfs 
+armhfp-fedora-rootfs: armhfp-fedora-35-rootfs 
+armhfp-fedora-rootfs: armhfp-fedora-36-rootfs
 
 armhfp-fedora-33-rootfs: | armhfp-fedora-33-rootfs/etc/machine-id
 armhfp-fedora-34-rootfs: | armhfp-fedora-34-rootfs/etc/machine-id
 armhfp-fedora-35-rootfs: | armhfp-fedora-35-rootfs/etc/machine-id
+armhfp-fedora-36-rootfs: | armhfp-fedora-36-rootfs/etc/machine-id
 
 armhfp-fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/ldb:/usr/lib:/lib
 armhfp-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|$(CURDIR)/armhfp-fedora-$*-rootfs/var/log/dnf.rpm.log
@@ -1080,6 +1144,7 @@ ubuntu-support: support/ubuntu-jammy-rootfs.txt
 fedora-support: support/fedora-33-rootfs.txt
 fedora-support: support/fedora-34-rootfs.txt
 fedora-support: support/fedora-35-rootfs.txt
+fedora-support: support/fedora-36-rootfs.txt
 
 .PHONY: opensuse-support
 opensuse-support: support/opensuse-leaf-rootfs.txt
@@ -1165,6 +1230,11 @@ support/fedora-35-rootfs.txt: fedora-35-rootfs.log
 	support/dnf.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
+.PRECIOUS: support/fedora-36-rootfs.txt
+support/fedora-36-rootfs.txt: fedora-36-rootfs.log
+	support/dnf.sed -e 's,$(CURDIR),,g' $< >$@.tmp
+	mv $@.tmp $@
+
 .PRECIOUS: support/opensuse-leaf-rootfs.txt
 support/opensuse-leaf-rootfs.txt: opensuse-leaf-rootfs.log
 	support/zypper.sed -e 's,$(CURDIR),,g' $< >$@.tmp
@@ -1227,6 +1297,7 @@ ubuntu-log: ubuntu-jammy-rootfs.log
 fedora-log: fedora-33-rootfs.log
 fedora-log: fedora-34-rootfs.log
 fedora-log: fedora-35-rootfs.log
+fedora-log: fedora-36-rootfs.log
 
 .PHONY: opensuse-log
 opensuse-log: opensuse-leaf-rootfs.log
@@ -1253,6 +1324,7 @@ ubuntu-jammy-rootfs.log:
 fedora-33-rootfs.log:
 fedora-34-rootfs.log:
 fedora-35-rootfs.log:
+fedora-36-rootfs.log:
 opensuse-leaf-rootfs-log:
 opensuse-tumbleweed-rootfs-log:
 alpine-3.14-rootfs.log:

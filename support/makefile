@@ -35,6 +35,9 @@ export IAMROOT_LIB_MUSL_AARCH64_1
 IAMROOT_EXEC = $(CURDIR)/exec.sh
 export IAMROOT_EXEC
 
+IAMROOT_EXEC_IGNORE = ldd|mountpoint
+export IAMROOT_EXEC_IGNORE
+
 -include local.mk
 
 MAKEFLAGS += --no-print-directory
@@ -354,7 +357,7 @@ debian-stable-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(
 
 debian-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
 debian-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-debian-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|pam-auth-update
+debian-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|pam-auth-update|mountpoint
 debian-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-x86_64-linux-x86-64/.*\.gcda
 debian-%-rootfs/etc/machine-id: export DEBIAN_FRONTEND = noninteractive
 debian-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://deb.debian.org/debian
@@ -465,10 +468,10 @@ ubuntu-focal-rootfs/etc/machine-id:
 ubuntu-impish-rootfs/etc/machine-id:
 ubuntu-jammy-rootfs/etc/machine-id:
 
-ubuntu-bionic-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|pam-auth-update|/var/lib/dpkg/info/initramfs-tools.postinst
+ubuntu-bionic-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|/var/lib/dpkg/info/initramfs-tools.postinst
 ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
 ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-ubuntu-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|pam-auth-update
+ubuntu-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update
 ubuntu-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-x86_64-linux-x86-64/.*\.gcda
 ubuntu-%-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
 ubuntu-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
@@ -642,11 +645,11 @@ opensuse-leaf-rootfs: | opensuse-leaf-rootfs/etc/machine-id
 opensuse-tumbleweed-rootfs: | opensuse-tumbleweed-rootfs/etc/machine-id
 
 opensuse-leaf-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
-opensuse-leaf-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|/usr/bin/chkstat|/usr/sbin/update-ca-certificates
+opensuse-leaf-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|/usr/bin/chkstat|/usr/sbin/update-ca-certificates
 opensuse-leaf-rootfs/etc/machine-id:
 
 opensuse-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64
-opensuse-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|/usr/bin/chkstat
+opensuse-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|/usr/bin/chkstat
 opensuse-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-x86_64-linux-x86-64/.*\.gcda
 opensuse-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 opensuse-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2

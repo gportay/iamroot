@@ -46,7 +46,7 @@ argv0="${argv0:-$path}"
 shift
 
 case "${path##*/}" in
-mount|umount)
+mount|umount|mountpoint)
 	warn "Command is skipped:" "$argv0" "$@"
 	exit 0
 	;;

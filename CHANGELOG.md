@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Intercept the functions `__stat64()`, `__lstat64()`, `__fstatat64()` and
   `__futimensat64()` ([glibc] only)
+- Intercept the command [mountpoint(1)] in `exec.sh`
 
 ### Changed
 
@@ -297,6 +298,7 @@ Initial release.
 [exec(3)]: https://linux.die.net/man/3/exec
 [glibc]: https://www.gnu.org/software/libc/
 [ld.so(8)]: https://linux.die.net/man/8/ld.so
+[mountpoint(1)]: https://linux.die.net/man/1/mountpoint
 [musl]: https://www.musl-libc.org/
 [openSUSE]: https://www.opensuse.org/
 [pacstrap(8)]: https://man.archlinux.org/man/pacstrap.8

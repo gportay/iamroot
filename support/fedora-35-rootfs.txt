@@ -747,6 +747,11 @@ Created symlink /etc/systemd/system/multi-user.target.wants/sshd.service → /us
   Running scriptlet: ca-certificates XXX/XXX
   Running scriptlet: pam XXX/XXX
   Running scriptlet: grub2-common XXX/XXX
+Warning: Command is skipped: /bin/mountpoint -q /boot/efi
+grub2-mkconfig: You must run this as root
+warning: %posttrans(grub2-common-1:2.06-6.fc35.noarch) scriptlet failed, exit status 1
+
+Error in POSTTRANS scriptlet in rpm package grub2-common
   Running scriptlet: selinux-policy-targeted XXX/XXX
   Running scriptlet: sssd-common XXX/XXX
 Running in chroot, ignoring command 'set-property'

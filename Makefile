@@ -42,6 +42,7 @@ libiamroot.so: __pathperror.o
 libiamroot.so: __pathperror2.o
 libiamroot.so: __statfs.o
 libiamroot.so: __statfs64.o
+libiamroot.so: __utimensat64.o
 libiamroot.so: __verbosef.o
 libiamroot.so: __xmknod.o
 libiamroot.so: __xmknodat.o

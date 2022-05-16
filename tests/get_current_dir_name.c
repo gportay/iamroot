@@ -18,6 +18,8 @@ int main()
 #ifdef  __USE_GNU
 	cwd = get_current_dir_name();
 #endif
+	if (!cwd)
+		return EXIT_FAILURE;
 	printf("%s\n", cwd);
 	free(cwd);
 

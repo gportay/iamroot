@@ -716,7 +716,7 @@ clean: clean-gcompat
 
 .PHONY: clean-gcompat
 clean-gcompat:
-	$(MAKE) -C gcompat clean
+	-$(MAKE) -C gcompat clean
 endif
 
 ifneq ($(shell command -v pacstrap),)

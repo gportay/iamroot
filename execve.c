@@ -1193,8 +1193,9 @@ exit:
 	return execve(path, argv, envp);
 }
 
-static int __hashbang(const char *path, char * const argv[], char *interp,
-		      size_t interpsiz, char *interparg[])
+__attribute__((visibility("hidden")))
+int __hashbang(const char *path, char * const argv[], char *interp,
+	       size_t interpsiz, char *interparg[])
 {
 	char *xargv1;
 	ssize_t siz;
@@ -1226,8 +1227,9 @@ static int __hashbang(const char *path, char * const argv[], char *interp,
 	return i;
 }
 
-static int __loader(const char *path, char * const argv[], char *interp,
-		    size_t interpsiz, char *interparg[])
+__attribute__((visibility("hidden")))
+int __loader(const char *path, char * const argv[], char *interp,
+	     size_t interpsiz, char *interparg[])
 {
 	char buf[HASHBANG_MAX];
 	ssize_t siz;
@@ -1460,8 +1462,9 @@ static int __loader(const char *path, char * const argv[], char *interp,
 	return 0;
 }
 
-static int __exec_sh(const char *path, char * const *argv, char **interparg,
-		     char *buf, size_t bufsize)
+__attribute__((visibility("hidden")))
+int __exec_sh(const char *path, char * const *argv, char **interparg,
+	      char *buf, size_t bufsize)
 {
 	int ret, i;
 

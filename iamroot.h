@@ -124,6 +124,9 @@ char *__rpath(const char *);
 char *__runpath(const char *);
 char *__inhibit_rpath();
 char *__getexec();
+int __loader(const char *, char * const [], char *, size_t, char *[]);
+int __exec_sh(const char *, char * const *, char **, char *, size_t);
+int __hashbang(const char *, char * const [], char *, size_t, char *[]);
 
 char *__basename(char *);
 char *sanitize(char *, size_t);

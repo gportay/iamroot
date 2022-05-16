@@ -536,12 +536,14 @@ rootfs: fedora-rootfs
 fedora-rootfs: fedora-33-rootfs
 fedora-rootfs: fedora-34-rootfs
 fedora-rootfs: fedora-35-rootts
+fedora-rootfs: fedora-36-rootfs
 
 fedora-33-rootfs fedora-34-rootfs: export IAMROOT_INHIBIT_RPATH = /usr/lib64/ldb/modules/ldb/tdb.so:/usr/lib64/ldb/modules/ldb/mdb.so:/usr/lib64/ldb/modules/ldb/ldb.so
 fedora-34-rootfs: export SYSTEMD_OFFLINE = 1
 fedora-33-rootfs: | fedora-33-rootfs/etc/machine-id
 fedora-34-rootfs: | fedora-34-rootfs/etc/machine-id
 fedora-35-rootfs: | fedora-35-rootfs/etc/machine-id
+fedora-36-rootfs: | fedora-36-rootfs/etc/machine-id
 
 fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64/ldb:/usr/lib64:/lib64
 fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|$(CURDIR)/fedora-$*-rootfs/var/log/dnf.rpm.log
@@ -557,20 +559,25 @@ qemu-system-x86_64-fedora-34:
 qemu-system-x86_64-fedora-34: override CMDLINE += rw
 qemu-system-x86_64-fedora-35:
 qemu-system-x86_64-fedora-35: override CMDLINE += rw
+qemu-system-x86_64-fedora-36:
+qemu-system-x86_64-fedora-36: override CMDLINE += rw
 
 ifneq ($(VMLINUX_KVER),)
 vmlinux-fedora-33:
 vmlinux-fedora-34:
 vmlinux-fedora-35:
+vmlinux-fedora-36:
 endif
 
 fedora-33.ext4:
 fedora-34.ext4:
 fedora-35.ext4:
+fedora-36.ext4:
 
 fedora-33-postrootfs:
 fedora-34-postrootfs:
 fedora-35-postrootfs:
+fedora-36-postrootfs:
 fedora-%-postrootfs: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64
 fedora-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	sed -e '/^root:x:/s,^root:x:,root::,' \
@@ -587,14 +594,17 @@ fedora-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 chroot-fedora-33:
 chroot-fedora-34:
 chroot-fedora-35:
+chroot-fedora-36:
 
 mount-fedora-33:
 mount-fedora-34:
 mount-fedora-35:
+mount-fedora-36:
 
 umount-fedora-33:
 umount-fedora-34:
 umount-fedora-35:
+umount-fedora-36:
 endif
 
 ifneq ($(shell command -v zypper),)

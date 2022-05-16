@@ -8,7 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-- Intercept the function `__futimensat64()` ([glibc] only)
+- Intercept the functions `__stat64()`, `__lstat64(), `__fstatat64()` and
+  `__futimensat64()` ([glibc] only)
 
 ## [v4] - 2022-04-25
 

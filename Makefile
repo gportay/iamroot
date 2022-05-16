@@ -21,11 +21,13 @@ libiamroot.so: __envperror.o
 libiamroot.so: __fpathperror.o
 libiamroot.so: __fstat.o
 libiamroot.so: __fstat64.o
+libiamroot.so: __fstatat64.o
 libiamroot.so: __fxstat.o
 libiamroot.so: __fxstat64.o
 libiamroot.so: __fxstatat.o
 libiamroot.so: __fxstatat64.o
 libiamroot.so: __libc_start_main.o
+libiamroot.so: __lstat64.o
 libiamroot.so: __lxstat.o
 libiamroot.so: __lxstat64.o
 libiamroot.so: __nss_files_fopen.o
@@ -40,6 +42,7 @@ libiamroot.so: __opendirat.o
 libiamroot.so: __pathdlperror.o
 libiamroot.so: __pathperror.o
 libiamroot.so: __pathperror2.o
+libiamroot.so: __stat64.o
 libiamroot.so: __statfs.o
 libiamroot.so: __statfs64.o
 libiamroot.so: __utimensat64.o

@@ -42,8 +42,7 @@ int __stat64(const char *path, struct stat64 *statbuf)
 	char buf[PATH_MAX];
 	ssize_t siz;
 
-	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
-			      AT_SYMLINK_NOFOLLOW);
+	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;

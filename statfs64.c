@@ -52,4 +52,6 @@ int statfs64(const char *path, struct statfs64 *statfsbuf)
 
 	return next_statfs64(buf, statfsbuf);
 }
+
+weak_alias(statfs64, __statfs64);
 #endif

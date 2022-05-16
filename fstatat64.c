@@ -57,4 +57,7 @@ int fstatat64(int fd, const char *path, struct stat64 *statbuf, int flags)
 
 	return rootfstatat64(fd, buf, statbuf, flags);
 }
+
+weak_alias(fstatat64, __fstatat64);
+weak_alias(fstatat64, __fstatat_time64);
 #endif

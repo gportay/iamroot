@@ -53,3 +53,7 @@ int utimensat(int fd, const char *path, const struct timespec times[2],
 
 	return next_utimensat(fd, buf, times, flags);
 }
+
+#ifdef __GLIBC__
+weak_alias(utimensat, __utimensat64);
+#endif

@@ -34,10 +34,6 @@ extern int next_stat64(const char *, struct stat64 *);
 extern int next_fstat64(int, struct stat64 *);
 extern int next_lstat64(const char *, struct stat64 *);
 extern int next_fstatat64(int, const char *, struct stat64 *, int);
-extern int next___stat64(const char *, struct stat64 *);
-extern int next___fstat64(int, struct stat64 *);
-extern int next___lstat64(const char *, struct stat64 *);
-extern int next___fstatat64(int, const char *, struct stat64 *, int);
 extern int next___xstat64(int, const char *, struct stat64 *);
 extern int next___fxstat64(int, int, struct stat64 *);
 extern int next___lxstat64(int, const char *, struct stat64 *);
@@ -528,98 +524,6 @@ int rootfstatat64(int fd, const char *path, struct stat64 *buf, int flags)
 	int ret;
 
 	ret = next_fstatat64(fd, path, buf, flags);
-	if (ret == -1)
-		goto exit;
-
-	uid = next_geteuid();
-	if (buf->st_uid == uid)
-		buf->st_uid = geteuid();
-
-	gid = getegid();
-	if (buf->st_gid == gid)
-		buf->st_gid = 0;
-
-exit:
-	return ret;
-}
-
-__attribute__((visibility("hidden")))
-int __rootstat64(const char *path, struct stat64 *buf)
-{
-	uid_t uid;
-	gid_t gid;
-	int ret;
-
-	ret = next___stat64(path, buf);
-	if (ret == -1)
-		goto exit;
-
-	uid = next_geteuid();
-	if (buf->st_uid == uid)
-		buf->st_uid = geteuid();
-
-	gid = getegid();
-	if (buf->st_gid == gid)
-		buf->st_gid = 0;
-
-exit:
-	return ret;
-}
-
-__attribute__((visibility("hidden")))
-int __rootfstat64(int fd, struct stat64 *buf)
-{
-	uid_t uid;
-	gid_t gid;
-	int ret;
-
-	ret = next___fstat64(fd, buf);
-	if (ret == -1)
-		goto exit;
-
-	uid = next_geteuid();
-	if (buf->st_uid == uid)
-		buf->st_uid = geteuid();
-
-	gid = getegid();
-	if (buf->st_gid == gid)
-		buf->st_gid = 0;
-
-exit:
-	return ret;
-}
-
-__attribute__((visibility("hidden")))
-int __rootlstat64(const char *path, struct stat64 *buf)
-{
-	uid_t uid;
-	gid_t gid;
-	int ret;
-
-	ret = next___lstat64(path, buf);
-	if (ret == -1)
-		goto exit;
-
-	uid = next_geteuid();
-	if (buf->st_uid == uid)
-		buf->st_uid = geteuid();
-
-	gid = getegid();
-	if (buf->st_gid == gid)
-		buf->st_gid = 0;
-
-exit:
-	return ret;
-}
-
-__attribute__((visibility("hidden")))
-int __rootfstatat64(int fd, const char *path, struct stat64 *buf, int flags)
-{
-	uid_t uid;
-	gid_t gid;
-	int ret;
-
-	ret = next___fstatat64(fd, path, buf, flags);
 	if (ret == -1)
 		goto exit;
 

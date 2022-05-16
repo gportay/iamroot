@@ -9,28 +9,26 @@ _iamroot-shell()
 	local cur prev words cword DEBUG_IGNORE
 	_init_completion || return
 
-	DEBUG_IGNORE=(__fstat __fstat64 __fstatat64 __fxstat __fxstat64
-		__fxstatat __fxstatat64 __libc_start_main __lstat64 __lxstat
-		__lxstat64 __nss_files_fopen __open __open64 __open64_2
-		__open_2 __openat64_2 __openat_2 __opendir __opendirat __stat64
-		__statfs __statfs64 __utimensat64 __xmknod __xmknodat __xstat
-		__xstat64 access canonicalize_file_name chdir chmod chown
-		chroot creat dlmopen dlopen eaccess euidaccess execl execle
-		execlp execv execve execveat execvp execvpe faccessat fchdir
-		fchmod fchmodat fchown fchownat fexecve fgetxattr fopen freopen
-		fsetxattr fstat fstat64 fstatat fstatat64 futimesat
-		get_current_dir_name getcwd getegid geteuid getgid getuid getwd
-		getxattr lchmod lchown lgetxattr link linkat listxattr
-		llistxattr lremovexattr lsetxattr lstat lstat64 lutimes mkdir
-		mkdirat mkdtemp mkfifo mkfifoat mknod mknodat mkostemp
-		mkostemps mkstemp mkstemps mktemp mount name_to_handle_at open
-		openat opendir path_resolution posix_spawn posix_spawnp
-		readlink readlinkat realpath remove removexattr rename renameat
-		renameat2 rmdir running_in_chroot scandir scandirat setegid
-		seteuid setgid setuid setxattr stat stat64 statfs statfs64
-		statvfs statvfs64 statx symlink symlinkat tempnam tmpnam
-		tmpnam_r truncate umask umount umount2 unlink unlinkat unshare
-		utime utimensat utimes)
+	DEBUG_IGNORE=(__fstat __fxstat __fxstat64 __fxstatat __fxstatat64
+		__libc_start_main __lxstat __lxstat64 __nss_files_fopen __open
+		__open64 __open64_2 __open_2 __openat64_2 __openat_2 __opendir
+		__opendirat __statfs __xmknod __xmknodat __xstat __xstat64
+		access canonicalize_file_name chdir chmod chown chroot creat
+		dlmopen dlopen eaccess euidaccess execl execle execlp execv
+		execve execveat execvp execvpe faccessat fchdir fchmod fchmodat
+		fchown fchownat fexecve fgetxattr fopen freopen fsetxattr fstat
+		fstat64 fstatat fstatat64 futimesat get_current_dir_name getcwd
+		getegid geteuid getgid getuid getwd getxattr lchmod lchown
+		lgetxattr link linkat listxattr llistxattr lremovexattr
+		lsetxattr lstat lstat64 lutimes mkdir mkdirat mkdtemp mkfifo
+		mkfifoat mknod mknodat mkostemp mkostemps mkstemp mkstemps
+		mktemp mount name_to_handle_at open openat opendir
+		path_resolution posix_spawn posix_spawnp readlink readlinkat
+		realpath remove removexattr rename renameat renameat2 rmdir
+		running_in_chroot scandir scandirat setegid seteuid setgid
+		setuid setxattr stat stat64 statfs statfs64 statvfs statvfs64
+		statx symlink symlinkat tempnam tmpnam tmpnam_r truncate umask
+		umount umount2 unlink unlinkat unshare utime utimensat utimes)
 
 	COMMON_PATH=(/bin /sbin /usr/bin /usr/sbin /usr/local/bin
 		/usr/local/sbin)

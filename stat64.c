@@ -55,4 +55,7 @@ int stat64(const char *path, struct stat64 *statbuf)
 
 	return rootstat64(buf, statbuf);
 }
+
+weak_alias(stat64, __stat64);
+weak_alias(stat64, __stat_time64);
 #endif

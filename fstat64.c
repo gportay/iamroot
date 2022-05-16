@@ -55,4 +55,7 @@ int fstat64(int fd, struct stat64 *statbuf)
 
 	return rootfstat64(fd, statbuf);
 }
+
+weak_alias(fstat64, __fstat64);
+weak_alias(fstat64, __fstat_time64);
 #endif

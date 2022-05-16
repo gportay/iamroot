@@ -56,4 +56,7 @@ int lstat64(const char *path, struct stat64 *statbuf)
 
 	return rootlstat64(buf, statbuf);
 }
+
+weak_alias(lstat64, __lstat64);
+weak_alias(lstat64, __lstat_time64);
 #endif

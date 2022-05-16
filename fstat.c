@@ -54,3 +54,7 @@ int fstat(int fd, struct stat *statbuf)
 
 	return rootfstat(fd, statbuf);
 }
+
+#ifdef __GLIBC__
+weak_alias(fstat, __fstat);
+#endif

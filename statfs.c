@@ -51,3 +51,7 @@ int statfs(const char *path, struct statfs *statfsbuf)
 
 	return next_statfs(buf, statfsbuf);
 }
+
+#ifdef __GLIBC__
+weak_alias(statfs, __statfs);
+#endif

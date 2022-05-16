@@ -331,29 +331,6 @@ exit:
 }
 
 __attribute__((visibility("hidden")))
-int __rootfstat(int fd, struct stat *buf)
-{
-	uid_t uid;
-	gid_t gid;
-	int ret;
-
-	ret = next___fstat(fd, buf);
-	if (ret == -1)
-		goto exit;
-
-	uid = next_geteuid();
-	if (buf->st_uid == uid)
-		buf->st_uid = geteuid();
-
-	gid = getegid();
-	if (buf->st_gid == gid)
-		buf->st_gid = 0;
-
-exit:
-	return ret;
-}
-
-__attribute__((visibility("hidden")))
 int __rootxstat(int ver, const char *path, struct stat *buf)
 {
 	uid_t uid;

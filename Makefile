@@ -19,7 +19,6 @@ x86_64/libiamroot-linux-x86-64.so.2: libiamroot.so
 
 libiamroot.so: __envperror.o
 libiamroot.so: __fpathperror.o
-libiamroot.so: __fstat.o
 libiamroot.so: __fxstat.o
 libiamroot.so: __fxstat64.o
 libiamroot.so: __fxstatat.o
@@ -38,7 +37,6 @@ libiamroot.so: __opendirat.o
 libiamroot.so: __pathdlperror.o
 libiamroot.so: __pathperror.o
 libiamroot.so: __pathperror2.o
-libiamroot.so: __statfs.o
 libiamroot.so: __verbosef.o
 libiamroot.so: __xmknod.o
 libiamroot.so: __xmknodat.o
@@ -162,10 +160,12 @@ libiamroot.so: utimes.o
 libiamroot.so: whereami.o
 libiamroot.so: whoami.o
 
+fstat.o: CFLAGS += -Wno-error=missing-attributes
 fstat64.o: CFLAGS += -Wno-error=missing-attributes
 fstatat64.o: CFLAGS += -Wno-error=missing-attributes
 lstat64.o: CFLAGS += -Wno-error=missing-attributes
 stat64.o: CFLAGS += -Wno-error=missing-attributes
+statfs.o: CFLAGS += -Wno-error=missing-attributes
 statfs64.o: CFLAGS += -Wno-error=missing-attributes
 utimensat.o: CFLAGS += -Wno-error=missing-attributes
 

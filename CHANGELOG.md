@@ -13,7 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
-- Create weak aliases for [glibc] 64 variants
+- Create weak aliases for [glibc] `__` and `64` variants
 
 ## [v4] - 2022-04-25
 

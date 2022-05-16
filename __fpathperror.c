@@ -26,6 +26,7 @@ void __fpathperror(int fd, const char *s)
 	siz = __procfdreadlink(fd, buf, sizeof(buf));
 	if (siz == -1) {
 		__notice("%i: %s: %s\n", fd, s, strerror(err));
+		err = errno;
 		return;
 	}
 	buf[siz] = 0; /* ensure NULL terminated */

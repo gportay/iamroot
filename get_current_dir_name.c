@@ -37,8 +37,6 @@ char *next_get_current_dir_name()
 
 char *get_current_dir_name()
 {
-	const char *root;
-	size_t len, size;
 	char *ret;
 
 	ret = next_get_current_dir_name();
@@ -47,19 +45,12 @@ char *get_current_dir_name()
 		return NULL;
 	}
 
-	root = getrootdir();
-	if (__streq(root, "/"))
-		goto exit;
+	ret = striprootdir(ret);
+	if (!ret) {
+		__pathperror(NULL, __func__);
+		return NULL;
+	}
 
-	size = __strlen(ret);
-	len = __strlen(root);
-	if (strncmp(root, ret, len) == 0)
-		memcpy(ret, &ret[len], __strlen(ret)-len+1); /* NUL */
-
-	if (!*ret)
-		strncpy(ret, "/", size-1);
-
-exit:
 	__debug("%s()\n", __func__);
 
 	return ret;

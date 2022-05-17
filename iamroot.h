@@ -153,6 +153,7 @@ const char *__getexe();
 const char *getrootdir();
 int chrootdir(const char *);
 int inchroot();
+char *striprootdir(char *);
 
 int __getcolor();
 

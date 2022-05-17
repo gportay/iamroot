@@ -37,8 +37,6 @@ char *next_getwd(char *buf)
 
 char *getwd(char *buf)
 {
-	const char *root;
-	size_t len, size;
 	char *ret;
 
 	ret = next_getwd(buf);
@@ -47,19 +45,12 @@ char *getwd(char *buf)
 		return NULL;
 	}
 
-	root = getrootdir();
-	if (__streq(root, "/"))
-		goto exit;
+	ret = striprootdir(ret);
+	if (!ret) {
+		__pathperror(buf, __func__);
+		return NULL;
+	}
 
-	size = __strlen(ret);
-	len = __strlen(root);
-	if (strncmp(root, ret, len) == 0)
-		memcpy(ret, &ret[len], __strlen(ret)-len+1); /* NUL */
-
-	if (!*ret)
-		strncpy(ret, "/", size-1);
-
-exit:
 	__debug("%s(buf: %p)\n", __func__, buf);
 
 	return ret;

@@ -226,6 +226,34 @@ int inchroot()
 }
 
 __attribute__((visibility("hidden")))
+char *striprootdir(char *path)
+{
+	const char *root;
+	size_t len, size;
+	char *ret;
+
+	if (!path || !*path) {
+		errno = EINVAL;
+		return NULL;
+	}
+
+	root = getrootdir();
+	if (__streq(root, "/"))
+		return path;
+
+	ret = path;
+	size = __strlen(ret);
+	len = __strlen(root);
+	if (strncmp(root, ret, len) == 0)
+		memcpy(ret, &ret[len], __strlen(ret)-len+1); /* NUL */
+
+	if (!*ret)
+		strncpy(ret, "/", size-1);
+
+	return ret;
+}
+
+__attribute__((visibility("hidden")))
 int rootfstatat(int fd, const char *path, struct stat *buf, int flags)
 {
 	uid_t uid;

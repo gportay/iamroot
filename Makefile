@@ -11,6 +11,12 @@ PREFIX ?= /usr/local
 %.o: override CFLAGS += -fPIC -Wall -Wextra -Werror
 %.so: override LDFLAGS += -nolibc
 
+ifdef COVERAGE
+%.o: override CFLAGS += -fprofile-arcs -ftest-coverage
+%.so: override LDFLAGS += -fprofile-arcs
+%.so: override LDLIBS += -lgcov
+endif
+
 .PHONY: all
 all: x86_64/libiamroot-linux-x86-64.so.2
 

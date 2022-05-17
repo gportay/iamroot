@@ -120,6 +120,12 @@ void path_resolution_fini()
 
 	regfree(re);
 	re = NULL;
+
+	/*
+	 * Workaround: reset the chroot directory for later destructors call
+	 * such as __gcov_exit().
+	 */
+	unsetenv("IAMROOT_ROOT");
 }
 
 static int ignore(const char *path)

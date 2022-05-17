@@ -159,9 +159,18 @@ arm-rootfs:
 .PHONY: test
 test: | alpine-minirootfs
 
+.PHONY: coverage
+coverage: gcov/index.html
+
+.PHONY: gcov.html
+gcov/index.html:
+	mkdir -p $(@D)
+	gcovr --html-details --html-title iamroot -s -r $(CURDIR) -o $@ output-x86_64-linux-x86-64/
+
 .PHONY: clean
 clean:
 	$(MAKE) -f Makefile $@
+	rm -Rf *.gcda *.gcno
 	rm -f *.ext4 *.cpio
 	rm -f *-rootfs.log
 	rm -Rf *-rootfs/
@@ -188,6 +197,7 @@ rootfs: arch-rootfs
 .PHONY: arch-rootfs
 arch-rootfs: | arch-rootfs/etc/machine-id
 
+arch-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-x86_64-linux-x86-64/.*\.gcda
 arch-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 arch-rootfs/etc/machine-id: export EUID = 0
 arch-rootfs/etc/machine-id: | arch-rootfs/etc/pacman.d/gnupg x86_64/libiamroot-linux-x86-64.so.2
@@ -214,6 +224,7 @@ i686-arch-rootfs: | i686-arch-rootfs/etc/machine-id
 
 i686-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/i686-arch-rootfs
 i686-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_2 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
+i686-arch-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/|^$(CURDIR)/output-i686-linux/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-x86_64-linux-x86-64/.*\.gcda
 i686-arch-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 i686-arch-rootfs/etc/machine-id: export EUID = 0
 i686-arch-rootfs/etc/machine-id: | i686-arch-rootfs/etc/pacman.d/gnupg i686/libiamroot-linux.so.2 x86_64/libiamroot-linux-x86-64.so.2
@@ -263,6 +274,7 @@ extra-rootfs: manjaro-rootfs
 .PHONY: manjaro-rootfs
 manjaro-rootfs: | manjaro-rootfs/etc/machine-id
 
+manjaro-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-x86_64-linux-x86-64/.*\.gcda
 manjaro-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 manjaro-rootfs/etc/machine-id: export EUID = 0
 manjaro-rootfs/etc/machine-id: | manjaro-rootfs/etc/pacman.d/gnupg x86_64/libiamroot-linux-x86-64.so.2
@@ -333,16 +345,16 @@ debian-testing-rootfs: | debian-testing-rootfs/etc/machine-id
 debian-unstable-rootfs: | debian-unstable-rootfs/etc/machine-id
 
 debian-oldoldstable-rootfs/etc/machine-id:
-debian-oldoldstable-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/
+debian-oldoldstable-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-x86_64-linux-x86-64/.*\.gcda
 debian-oldstable-rootfs/etc/machine-id:
-debian-oldstable-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/
+debian-oldstable-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-x86_64-linux-x86-64/.*\.gcda
 debian-stable-rootfs/etc/machine-id:
-debian-stable-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/
+debian-stable-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-x86_64-linux-x86-64/.*\.gcda
 
 debian-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
 debian-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
 debian-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|pam-auth-update
-debian-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/
+debian-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-x86_64-linux-x86-64/.*\.gcda
 debian-%-rootfs/etc/machine-id: export DEBIAN_FRONTEND = noninteractive
 debian-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://deb.debian.org/debian
 debian-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
@@ -456,7 +468,7 @@ ubuntu-bionic-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|pam-auth-u
 ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
 ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
 ubuntu-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|pam-auth-update
-ubuntu-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/
+ubuntu-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-x86_64-linux-x86-64/.*\.gcda
 ubuntu-%-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
 ubuntu-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
 ubuntu-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
@@ -550,7 +562,7 @@ fedora-34-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 fedora-34-rootfs/etc/machine-id:
 
 fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64/ldb:/usr/lib64:/lib64
-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|^$(CURDIR)/fedora-$*-rootfs/var/log/dnf.rpm.log
+fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-x86_64-linux-x86-64/.*\.gcda|^$(CURDIR)/fedora-$*-rootfs/var/log/dnf.rpm.log
 fedora-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 fedora-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	install -D -m644 support/fedora.repo fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
@@ -634,7 +646,7 @@ opensuse-leaf-rootfs/etc/machine-id:
 
 opensuse-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64:/lib64
 opensuse-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|/usr/bin/chkstat
-opensuse-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/
+opensuse-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-x86_64-linux-x86-64/.*\.gcda
 opensuse-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 opensuse-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "zypper --root $(CURDIR)/opensuse-$*-rootfs addrepo --no-gpgcheck support/$*-repo-oss.repo"
@@ -785,6 +797,11 @@ clean: clean-gcompat
 .PHONY: clean-gcompat
 clean-gcompat:
 	-$(MAKE) -C gcompat clean
+
+ifdef COVERAGE
+IAMROOT_LIB_MUSL_X86_64_1 += :$(CURDIR)/gcompat/libgcompat.so.0
+x86_64/libiamroot-musl-x86_64.so.1: | gcompat/libgcompat.so.0
+endif
 endif
 
 ifneq ($(shell command -v pacstrap),)
@@ -803,6 +820,7 @@ aarch64-arch-rootfs: | aarch64-arch-rootfs/etc/machine-id
 
 aarch64-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-arch-rootfs
 aarch64-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
+aarch64-arch-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/|^$(CURDIR)/output-aarch64-linux-aarch64/
 aarch64-arch-rootfs/etc/machine-id: export EUID = 0
 aarch64-arch-rootfs/etc/machine-id: | aarch64-arch-rootfs/etc/pacman.d/gnupg aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "pacstrap -GMC support/aarch64-pacman.conf aarch64-arch-rootfs"
@@ -835,6 +853,7 @@ armv7h-arch-rootfs: | armv7h-arch-rootfs/etc/machine-id
 
 armv7h-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/armv7h-arch-rootfs
 armv7h-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
+armv7h-arch-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/|^$(CURDIR)/output-armhf-linux-armhf/
 armv7h-arch-rootfs/etc/machine-id: export EUID = 0
 armv7h-arch-rootfs/etc/machine-id: | armv7h-arch-rootfs/etc/pacman.d/gnupg armhf/libiamroot-linux-armhf.so.3 x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "pacstrap -GMC support/armv7h-pacman.conf armv7h-arch-rootfs"
@@ -880,7 +899,7 @@ aarch64-fedora-33-rootfs/etc/machine-id: FEDORA_REPO = support/fedora-archive.re
 aarch64-fedora-33-rootfs/etc/machine-id:
 
 aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64/ldb:/usr/lib64:/lib64
-aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|^$(CURDIR)/aarch64-fedora-$*-rootfs/var/log/dnf.rpm.log
+aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|^$(CURDIR)/output-aarch64-linux-aarch64/|^$(CURDIR)/aarch64-fedora-$*-rootfs/var/log/dnf.rpm.log
 aarch64-fedora-%-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 	install -D -m644 support/fedora.repo aarch64-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
 	bash iamroot-shell -c "dnf --forcearch aarch64 --releasever $* --assumeyes --installroot $(CURDIR)/aarch64-fedora-$*-rootfs group install minimal-environment"
@@ -909,7 +928,7 @@ armhfp-fedora-35-rootfs: | armhfp-fedora-35-rootfs/etc/machine-id
 armhfp-fedora-36-rootfs: | armhfp-fedora-36-rootfs/etc/machine-id
 
 armhfp-fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib/ldb:/usr/lib:/lib
-armhfp-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|^$(CURDIR)/armhfp-fedora-$*-rootfs/var/log/dnf.rpm.log
+armhfp-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|^$(CURDIR)/output-armhf-linux-armhf/|^$(CURDIR)/armhfp-fedora-$*-rootfs/var/log/dnf.rpm.log
 armhfp-fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2:/usr/lib/libpthread.so.0:/usr/lib/librt.so.1
 armhfp-fedora-%-rootfs/etc/machine-id: | armhf/libiamroot-linux-armhf.so.3 x86_64/libiamroot-linux-x86-64.so.2
 	install -D -m644 support/fedora.repo armhfp-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo

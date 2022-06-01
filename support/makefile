@@ -949,7 +949,9 @@ aarch64-alpine-%-chroot: | aarch64-alpine-%-rootfs
 	bash iamroot-shell -c "chroot aarch64-alpine-$*-rootfs"
 
 .PHONY: aarch64-alpine-rootfs
-aarch64-alpine-rootfs: aarch64-alpine-3.14-rootfs aarch64-alpine-3.15 aarch64-alpine-edge-rootfs
+aarch64-alpine-rootfs: aarch64-alpine-3.14-rootfs
+aarch64-alpine-rootfs: aarch64-alpine-3.15-rootfs
+aarch64-alpine-rootfs: aarch64-alpine-edge-rootfs
 
 aarch64-alpine-3.14-rootfs: | aarch64-alpine-3.14-rootfs/bin/busybox
 aarch64-alpine-3.15-rootfs: | aarch64-alpine-3.15-rootfs/bin/busybox

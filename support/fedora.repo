@@ -1,6 +1,6 @@
 [fedora]
 name=Fedora $releasever - $basearch
-baseurl=http://distrib-coffee.ipsl.jussieu.fr/pub/linux/fedora/linux/releases/$releasever/Everything/$basearch/os
+baseurl=http://archives.fedoraproject.org/pub/archive/fedora/linux/releases/$releasever/Everything/$basearch/os
 #metalink=https://mirrors.fedoraproject.org/metalink?repo=fedora-$releasever&arch=$basearch
 enabled=1
 countme=1

@@ -409,8 +409,6 @@ Optional dependencies for base
 (XXX/XXX) Applying kernel sysctl settings...
   Skipped: Running in chroot.
 (XXX/XXX) Creating temporary files...
-Warning: fchownat: /run/tpm2-tss/eventlog: Ignoring error 'Operation not permitted'!
-Warning: chmod: /run/tpm2-tss/eventlog: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/snd: Ignoring error 'Operation not permitted'!
 Warning: fchownat: /dev/snd: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/snd: Ignoring error 'Operation not permitted'!
@@ -420,8 +418,6 @@ Warning: chmod: /dev/snd: Ignoring error 'Operation not permitted'!
 Warning: fchownat: /dev/loop-control: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/loop-control: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/net: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /run/log: Ignoring error 'Operation not permitted'!
-Warning: chmod: /run/log: Ignoring error 'Operation not permitted'!
 (XXX/XXX) Reloading device manager configuration...
   Skipped: Running in chroot.
 (XXX/XXX) Arming ConditionNeedsUpdate...

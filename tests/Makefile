@@ -4,8 +4,8 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
 
+override CPPFLAGS += -D_GNU_SOURCE -Wno-error=deprecated-declarations
 override CFLAGS += -fPIC -Wall -Wextra -Werror
-override CFLAGS += -D_GNU_SOURCE -Wno-error=deprecated-declarations
 
 .PHONY: all
 all: libiamnotroot.so

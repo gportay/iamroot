@@ -44,7 +44,8 @@ all:
 
 define libiamroot_so =
 
-all ci: $(1)/libiamroot-$(2).so.$(3)
+all: $(1)/libiamroot-$(2).so.$(3)
+ci: $(1)/libiamroot-$(2).so.$(3)
 
 .PRECIOUS: $(1)/libiamroot-$(2).so.$(3)
 $(1)/libiamroot-$(2).so.$(3): output-$(1)-$(2)/libiamroot.so

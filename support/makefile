@@ -721,17 +721,18 @@ alpine-minirootfs/usr/bin/%: support/% | alpine-minirootfs
 .PHONY: alpine-minirootfs
 alpine-minirootfs: | alpine-minirootfs/bin/busybox
 
-alpine-minirootfs/bin/busybox: | alpine-minirootfs-3.13.0-x86_64.tar.gz
+alpine-minirootfs/bin/busybox: | alpine-minirootfs-3.16.0-x86_64.tar.gz
 	mkdir -p alpine-minirootfs
-	tar xf alpine-minirootfs-3.13.0-x86_64.tar.gz -C alpine-minirootfs
+	tar xf alpine-minirootfs-3.16.0-x86_64.tar.gz -C alpine-minirootfs
 
-alpine-minirootfs-3.13.0-x86_64.tar.gz:
+alpine-minirootfs-3.16.0-x86_64.tar.gz:
 alpine-minirootfs-%-x86_64.tar.gz:
 	wget http://dl-cdn.alpinelinux.org/alpine/v$(basename $*)/releases/x86_64/alpine-minirootfs-$*-x86_64.tar.gz
 
 ifneq ($(shell command -v alpine-make-rootfs),)
 alpine-3.14-chroot:
 alpine-3.15-chroot:
+alpine-3.16-chroot:
 alpine-edge-chroot:
 alpine-%-chroot: | alpine-%-rootfs
 	bash iamroot-shell -c "chroot alpine-$*-rootfs /bin/ash"
@@ -740,10 +741,12 @@ alpine-%-chroot: | alpine-%-rootfs
 .PHONY: alpine-rootfs
 alpine-rootfs: alpine-3.14-rootfs
 alpine-rootfs: alpine-3.15-rootfs
+alpine-rootfs: alpine-3.16-rootfs
 alpine-rootfs: alpine-edge-rootfs
 
 alpine-3.14-rootfs: | alpine-3.14-rootfs/bin/busybox
 alpine-3.15-rootfs: | alpine-3.15-rootfs/bin/busybox
+alpine-3.16-rootfs: | alpine-3.16-rootfs/bin/busybox
 alpine-edge-rootfs: | alpine-edge-rootfs/bin/busybox
 
 alpine-%-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
@@ -751,16 +754,19 @@ alpine-%-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamr
 
 qemu-system-x86_64-alpine-3.14:
 qemu-system-x86_64-alpine-3.15:
+qemu-system-x86_64-alpine-3.16:
 qemu-system-x86_64-alpine-edge:
 
 ifneq ($(VMLINUX_KVER),)
 vmlinux-alpine-3.14:
 vmlinux-alpine-3.15:
+vmlinux-alpine-3.16:
 vmlinux-alpine-edge:
 endif
 
 alpine-3.14.ext4:
 alpine-3.15.ext4:
+alpine-3.16.ext4:
 alpine-edge.ext4:
 
 alpine-%-postrootfs:
@@ -779,14 +785,17 @@ chroot-alpine-%: PATH = /usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/
 chroot-alpine-%: SHELL = /bin/sh
 chroot-alpine-3.14:
 chroot-alpine-3.15:
+chroot-alpine-3.16:
 chroot-alpine-edge:
 
 mount-alpine-3.14:
 mount-alpine-3.15:
+mount-alpine-3.16:
 mount-alpine-edge:
 
 umount-alpine-3.14:
 umount-alpine-3.15:
+umount-alpine-3.16:
 umount-alpine-edge:
 endif
 
@@ -953,9 +962,9 @@ aarch64-mini-chroot: | aarch64/libiamroot-musl-aarch64.so.1 x86_64/libiamroot-li
 aarch64-alpine-minirootfs: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-alpine-minirootfs
 aarch64-alpine-minirootfs: | aarch64-alpine-minirootfs/bin/busybox
 
-aarch64-alpine-minirootfs/bin/busybox: | alpine-minirootfs-3.13.0-aarch64.tar.gz
+aarch64-alpine-minirootfs/bin/busybox: | alpine-minirootfs-3.16.0-aarch64.tar.gz
 	mkdir -p aarch64-alpine-minirootfs
-	tar xf alpine-minirootfs-3.13.0-aarch64.tar.gz -C aarch64-alpine-minirootfs
+	tar xf alpine-minirootfs-3.16.0-aarch64.tar.gz -C aarch64-alpine-minirootfs
 
 alpine-minirootfs-3.13.0-aarch64.tar.gz:
 alpine-minirootfs-%-aarch64.tar.gz:
@@ -964,6 +973,7 @@ alpine-minirootfs-%-aarch64.tar.gz:
 ifneq ($(shell command -v alpine-make-rootfs),)
 aarch64-alpine-3.14-chroot:
 aarch64-alpine-3.15-chroot:
+aarch64-alpine-3.16-chroot:
 aarch64-alpine-edge-chroot:
 aarch64-alpine-%-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-alpine-$*-rootfs
 aarch64-alpine-%-chroot: | aarch64-alpine-%-rootfs
@@ -972,10 +982,12 @@ aarch64-alpine-%-chroot: | aarch64-alpine-%-rootfs
 .PHONY: aarch64-alpine-rootfs
 aarch64-alpine-rootfs: aarch64-alpine-3.14-rootfs
 aarch64-alpine-rootfs: aarch64-alpine-3.15-rootfs
+aarch64-alpine-rootfs: aarch64-alpine-3.16-rootfs
 aarch64-alpine-rootfs: aarch64-alpine-edge-rootfs
 
 aarch64-alpine-3.14-rootfs: | aarch64-alpine-3.14-rootfs/bin/busybox
 aarch64-alpine-3.15-rootfs: | aarch64-alpine-3.15-rootfs/bin/busybox
+aarch64-alpine-3.16-rootfs: | aarch64-alpine-3.16-rootfs/bin/busybox
 aarch64-alpine-edge-rootfs: | aarch64-alpine-edge-rootfs/bin/busybox
 
 aarch64-alpine-%-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
@@ -1196,6 +1208,8 @@ opensuse-support: support/opensuse-tumbleweed-rootfs.txt
 .PHONY: alpine-support
 alpine-support: support/alpine-3.14-rootfs.txt
 alpine-support: support/alpine-3.15-rootfs.txt
+# FIXME: Alpine Linux 3.16 index is currently broken.
+# alpine-support: support/alpine-3.16-rootfs.txt
 alpine-support: support/alpine-edge-rootfs.txt
 
 .PRECIOUS: support/%arch-rootfs.txt
@@ -1298,6 +1312,11 @@ support/alpine-3.15-rootfs.txt: alpine-3.15-rootfs.log
 	support/alpine-make-rootfs.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
+.PRECIOUS: support/alpine-3.16-rootfs.txt
+support/alpine-3.16-rootfs.txt: alpine-3.16-rootfs.log
+	support/alpine-make-rootfs.sed -e 's,$(CURDIR),,g' $< >$@.tmp
+	mv $@.tmp $@
+
 .PRECIOUS: support/alpine-edge-rootfs.txt
 support/alpine-edge-rootfs.txt: alpine-edge-rootfs.log
 	support/alpine-make-rootfs.sed -e 's,$(CURDIR),,g' $< >$@.tmp
@@ -1349,6 +1368,7 @@ opensuse-log: opensuse-tumbleweed-rootfs.log
 .PHONY: alpine-log
 alpine-log: alpine-3.14-rootfs.log
 alpine-log: alpine-3.15-rootfs.log
+alpine-log: alpine-3.16-rootfs.log
 alpine-log: alpine-edge-rootfs.log
 
 .PHONY: %.log
@@ -1372,6 +1392,7 @@ opensuse-leaf-rootfs-log:
 opensuse-tumbleweed-rootfs-log:
 alpine-3.14-rootfs.log:
 alpine-3.15-rootfs.log:
+alpine-3.16-rootfs.log:
 alpine-edge-rootfs.log:
 %.log: SHELL = /bin/bash -o pipefail
 %.log:

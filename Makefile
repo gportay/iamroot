@@ -245,7 +245,7 @@ mrproper: clean
 	rm -f busybox-static
 	rm -Rf busybox/
 
-PREPROCESS.c = $(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -E
+PREPROCESS.c = $(CPP) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH)
 %.i: %.c
 	$(PREPROCESS.c) $(OUTPUT_OPTION) $<
 

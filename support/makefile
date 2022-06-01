@@ -535,7 +535,7 @@ rootfs: fedora-rootfs
 .PHONY: fedora-rootfs
 fedora-rootfs: fedora-33-rootfs
 fedora-rootfs: fedora-34-rootfs
-fedora-rootfs: fedora-35-rootts
+fedora-rootfs: fedora-35-rootfs
 fedora-rootfs: fedora-36-rootfs
 
 fedora-33-rootfs: | fedora-33-rootfs/etc/machine-id

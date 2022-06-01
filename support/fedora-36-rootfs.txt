@@ -882,11 +882,8 @@ Created symlink /etc/systemd/system/multi-user.target.wants/sshd.service → /us
   Running scriptlet: rpm XXX/XXX
   Running scriptlet: authselect-libs XXX/XXX
   Running scriptlet: grub2-common XXX/XXX
-Warning: Command is skipped: /bin/mountpoint -q /boot/efi
-grub2-mkconfig: You must run this as root
-warning: %posttrans(grub2-common-1:2.06-29.fc36.noarch) scriptlet failed, exit status 1
+Warning: Command is rewritten to: /bin/mountpoint -q /fedora-36-rootfs/boot/efi
 
-Error in POSTTRANS scriptlet in rpm package grub2-common
   Running scriptlet: systemd-resolved XXX/XXX
 '/etc/resolv.conf' -> '../run/systemd/resolve/stub-resolv.conf'
 

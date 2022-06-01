@@ -1582,7 +1582,7 @@ Created symlink /etc/systemd/system/sysinit.target.wants/systemd-pstore.service 
 Initializing machine ID from random generator.
 FIXME: Command is skipped: /usr/bin/chfn -f systemd Network Management systemd-network
 FIXME: Command is skipped: /usr/bin/chfn -f systemd Resolver systemd-resolve
-Warning: Command is skipped: mountpoint -q /proc
+Warning: Command is rewritten to: mountpoint -q /debian-stable-rootfs/proc
 Processing triggers for libc-bin ...
 (Reading database ... XXX files and directories currently installed.)
 Preparing to unpack .../systemd-sysv ...

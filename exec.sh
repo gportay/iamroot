@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Copyright 2021-2022 Gaël PORTAY
 #
@@ -46,9 +46,25 @@ argv0="${argv0:-$path}"
 shift
 
 case "${path##*/}" in
-mount|umount|mountpoint)
+mount|umount)
 	warn "Command is skipped:" "$argv0" "$@"
 	exit 0
+	;;
+mountpoint)
+	args=()
+	for i in "$@"
+	do
+		if [ "${i:0:1}" = "-" ]
+		then
+			args+=("$i")
+		else
+			args+=("$IAMROOT_ROOT$i")
+		fi
+	done
+	set -- "${args[@]}"
+
+	warn "Command is rewritten to:" "$argv0" "$@"
+	exec "$inchroot_path" "$@"
 	;;
 chfn|chkstat|pam-auth-update|update-ca-certificates|*.postinst)
 	fixme "Command is skipped:" "$argv0" "$@"

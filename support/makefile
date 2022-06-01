@@ -538,15 +538,17 @@ fedora-rootfs: fedora-34-rootfs
 fedora-rootfs: fedora-35-rootts
 fedora-rootfs: fedora-36-rootfs
 
-fedora-33-rootfs fedora-34-rootfs: export IAMROOT_INHIBIT_RPATH = /usr/lib64/ldb/modules/ldb/tdb.so:/usr/lib64/ldb/modules/ldb/mdb.so:/usr/lib64/ldb/modules/ldb/ldb.so
-fedora-34-rootfs: export SYSTEMD_OFFLINE = 1
 fedora-33-rootfs: | fedora-33-rootfs/etc/machine-id
 fedora-34-rootfs: | fedora-34-rootfs/etc/machine-id
 fedora-35-rootfs: | fedora-35-rootfs/etc/machine-id
 fedora-36-rootfs: | fedora-36-rootfs/etc/machine-id
 
+fedora-33-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib64/ldb/modules/ldb/tdb.so:/usr/lib64/ldb/modules/ldb/mdb.so:/usr/lib64/ldb/modules/ldb/ldb.so
 fedora-33-rootfs/etc/machine-id: FEDORA_REPO = support/fedora-archive.repo
 fedora-33-rootfs/etc/machine-id:
+fedora-34-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib64/ldb/modules/ldb/tdb.so:/usr/lib64/ldb/modules/ldb/mdb.so:/usr/lib64/ldb/modules/ldb/ldb.so
+fedora-34-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
+fedora-34-rootfs/etc/machine-id:
 
 fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_LIBRARY_PATH = /usr/lib64/ldb:/usr/lib64:/lib64
 fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|run/.+)/|$(CURDIR)/fedora-$*-rootfs/var/log/dnf.rpm.log

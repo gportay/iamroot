@@ -18,6 +18,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `execve()` and `posix_spawn()`
 - Output a warning the if the interpretor is not handled
 
+### Fixed
+
+- Fix the setting of arguments while running a generic ELF [dynamic loader]
+  (i.e. neither [glibc] nor [musl])
+
 ## [v4] - 2022-04-25
 
 ### Added

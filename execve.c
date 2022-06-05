@@ -1247,6 +1247,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 {
 	char buf[HASHBANG_MAX];
 	ssize_t siz;
+	(void)argv;
 
 	/*
 	 * Get the dynamic linker stored in the .interp section of the ELF
@@ -1453,7 +1454,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 		if (xargv1)
 			shift++;
 		i = 0;
-		for (arg = argv; *arg; arg++)
+		for (arg = interparg; *arg; arg++)
 			i++;
 		for (j = 0; j < i; j++)
 			interparg[j+shift] = interparg[j];

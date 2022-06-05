@@ -17,8 +17,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Output the parameters even in chroot for the functions `execveat()`,
   `execve()` and `posix_spawn()`
 - Output a warning the if the interpretor is not handled
-- Support the `LD_` environment variables `LD_LIBRARY_PATH` and `LD_PRELOAD`
-  while running a generic ELF [dynamic loader] (i.e. neither [glibc] nor
+- Support the environment variables `argv0`, `LD_LIBRARY_PATH` and `LD_PRELOAD`
+  and while running a generic ELF [dynamic loader] (i.e. neither [glibc] nor
   [musl])
 
 ### Fixed

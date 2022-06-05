@@ -1433,7 +1433,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 
 		return i;
 	} else {
-		char *rpath, *runpath, *ld_preload, *ld_library_path;
+		char *argv0, *rpath, *runpath, *ld_preload, *ld_library_path;
 		int ret, i, j, shift = 1, abi = 0;
 		const char *basename;
 		char ldso[NAME_MAX];
@@ -1462,6 +1462,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 		 * Note: the binary's arguments are the original argv shifted
 		 *       by one (i.e. without argv0; following arguments).
 		 */
+		argv0 = interparg[0];
 		xargv1 = getenv("IAMROOT_EXEC_LD_ARGV1");
 		if (xargv1)
 			shift++;
@@ -1471,6 +1472,10 @@ int __loader(const char *path, char * const argv[], char *interp,
 		for (j = i+shift; j > shift; j--)
 			interparg[j] = interparg[j-shift];
 		j = i;
+
+		ret = setenv("argv0", argv0, 1);
+		if (ret)
+			return -1;
 
 		rpath = __rpath(path);
 		if (rpath)

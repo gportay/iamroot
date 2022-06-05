@@ -726,7 +726,8 @@ alpine-minirootfs/bin/busybox: | alpine-minirootfs-3.13.0-x86_64.tar.gz
 	tar xf alpine-minirootfs-3.13.0-x86_64.tar.gz -C alpine-minirootfs
 
 alpine-minirootfs-3.13.0-x86_64.tar.gz:
-	wget http://dl-cdn.alpinelinux.org/alpine/v3.13/releases/x86_64/alpine-minirootfs-3.13.0-x86_64.tar.gz
+alpine-minirootfs-%-x86_64.tar.gz:
+	wget http://dl-cdn.alpinelinux.org/alpine/v$(basename $*)/releases/x86_64/alpine-minirootfs-$*-x86_64.tar.gz
 
 ifneq ($(shell command -v alpine-make-rootfs),)
 alpine-3.14-chroot:
@@ -957,7 +958,8 @@ aarch64-alpine-minirootfs/bin/busybox: | alpine-minirootfs-3.13.0-aarch64.tar.gz
 	tar xf alpine-minirootfs-3.13.0-aarch64.tar.gz -C aarch64-alpine-minirootfs
 
 alpine-minirootfs-3.13.0-aarch64.tar.gz:
-	wget http://dl-cdn.alpinelinux.org/alpine/v3.13/releases/aarch64/alpine-minirootfs-3.13.0-aarch64.tar.gz
+alpine-minirootfs-%-aarch64.tar.gz:
+	wget http://dl-cdn.alpinelinux.org/alpine/v$(basename $*)/releases/aarch64/alpine-minirootfs-$*-aarch64.tar.gz
 
 ifneq ($(shell command -v alpine-make-rootfs),)
 aarch64-alpine-3.14-chroot:

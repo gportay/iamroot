@@ -9,8 +9,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - Compile for [FreeBSD] 13.1
-- Intercept the [FreeBSD]'s functions `exect`, `execvP()`, `mount()`,
-  `nmount()`, `scandir_b()` and `unmount()`
+- Intercept the [FreeBSD]'s functions `__opendir2()`, `exect`, `execvP()`,
+  `mount()`, `nmount()`, `scandir_b()` and `unmount()`
 - Intercept the functions `ftw()` and `nftw()`
 
 ## [v5] - 2022-06-24

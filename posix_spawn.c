@@ -102,9 +102,11 @@ int posix_spawn(pid_t *pid, const char *path,
 		goto exec_sh;
 
 	/* Do not proceed to any hack if not in chroot */
-	if (!inchroot())
+	if (!inchroot()) {
+		verbose_exec(path, argv, envp);
 		return next_posix_spawn(pid, path, file_actions, attrp, argv,
 					envp);
+	}
 
 	ret = __hashbang(program, argv, hashbang, sizeof(hashbang), interparg);
 	if ((ret == -1) && (errno != ENOEXEC))

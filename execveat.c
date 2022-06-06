@@ -96,8 +96,10 @@ int execveat(int fd, const char *path, char * const argv[],
 		goto exec_sh;
 
 	/* Do not proceed to any hack if not in chroot */
-	if (!inchroot())
+	if (!inchroot()) {
+		verbose_exec(path, argv, envp);
 		return next_execveat(fd, path, argv, envp, flags);
+	}
 
 	ret = __hashbang(program, argv, hashbang, sizeof(hashbang), interparg);
 	if ((ret == -1) && (errno != ENOEXEC))

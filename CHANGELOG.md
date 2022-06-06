@@ -19,14 +19,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `execve()` and `posix_spawn()`
 - Output a warning the if the interpretor is not handled
 - Support the environment variables `argv0`, `LD_LIBRARY_PATH` and `LD_PRELOAD`
-  and while running a generic ELF [dynamic loader] (i.e. neither [glibc] nor
-  [musl])
+  and while running a generic ELF dynamic loader
 
 ### Fixed
 
-- Fix the setting of arguments while running a generic ELF [dynamic loader]
-  (i.e. neither [glibc] nor [musl])
-- Fix the shifting of extra arguments while running the [dynamic loader]
+- Fix the setting of arguments while running a generic ELF dynamic loader
+- Fix the shifting of extra arguments while running the dynamic loader
 
 ## [v4] - 2022-04-25
 

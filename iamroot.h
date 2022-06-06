@@ -19,6 +19,15 @@
 #define weak_alias(old, new) \
 	extern __typeof(old) new __attribute__((__weak__, __alias__(#old)))
 
+/*
+ * Stolen from systemd (src/fundamental/string-util-fundamental.h)
+ *
+ * SPDX-FileCopyrightText: The systemd Contributors
+ *
+ * SPDX-License-Identifier: LGPL-2.1-or-later
+ */
+#define __streq(s1,s2) (strcmp((s1),(s2)) == 0)
+
 #ifdef __cplusplus
 extern "C" {
 #endif

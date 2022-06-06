@@ -213,7 +213,7 @@ char *realpath(const char *path, char *resolved_path)
 	root = getrootdir();
 	len = __strlen(root);
 
-	if (strcmp(root, "/") == 0)
+	if (__streq(root, "/"))
 		goto exit;
 
 	if (__strlcmp(ret, getrootdir()) != 0)

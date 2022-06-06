@@ -48,7 +48,7 @@ char *getwd(char *buf)
 	}
 
 	root = getrootdir();
-	if (strcmp(root, "/") == 0)
+	if (__streq(root, "/"))
 		goto exit;
 
 	size = __strlen(ret);

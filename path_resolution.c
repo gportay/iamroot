@@ -247,7 +247,7 @@ static ssize_t _path_resolution(int fd, const char *path, char *buf,
 		int n;
 
 		root = getrootdir();
-		if (strcmp(root, "/") == 0)
+		if (__streq(root, "/"))
 			root = "";
 		else if (__strlcmp(path, root) == 0)
 			__warn_or_fatal("%s: contains root directory '%s'\n",
@@ -297,7 +297,7 @@ static ssize_t _path_resolution(int fd, const char *path, char *buf,
 	sanitize(buf, bufsize);
 
 	root = getrootdir();
-	if (strcmp(root, "/") == 0)
+	if (__streq(root, "/"))
 		root = "";
 	len = __strlen(root);
 

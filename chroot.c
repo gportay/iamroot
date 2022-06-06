@@ -235,7 +235,7 @@ int chrootdir(const char *cwd)
 __attribute__((visibility("hidden")))
 int inchroot()
 {
-	return strcmp(getrootdir(), "/") != 0;
+	return !__streq(getrootdir(), "/");
 }
 
 __attribute__((visibility("hidden")))
@@ -648,7 +648,7 @@ int chroot(const char *path)
 		cwd = buf;
 		root = getrootdir();
 		rootlen = __strlen(root);
-		if (strcmp(root, "/") != 0) {
+		if (!__streq(root, "/")) {
 			__strncpy(buf, root);
 			cwd += rootlen;
 		}

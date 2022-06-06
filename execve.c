@@ -969,24 +969,34 @@ static char *__getlibiamroot(const char *ldso, int abi)
 	__sanitize(buf, 1);
 
 	ret = getenv(buf);
-	if (!ret) {
-		if ((strcmp(ldso, "linux") == 0) && abi == 2)
-			return "/usr/lib/iamroot/i686/libiamroot-linux.so.2";
-		else if ((strcmp(ldso, "linux-x86-64") == 0) && abi == 2)
-			return "/usr/lib/iamroot/x86_64/libiamroot-linux-x86-64.so.2";
-		else if ((strcmp(ldso, "linux-armhf") == 0) && abi == 3)
-			return "/usr/lib/iamroot/armhf/libiamroot-linux-armhf.so.3";
-		else if ((strcmp(ldso, "linux-aarch64") == 0) && abi == 1)
-			return "/usr/lib/iamroot/aarch64/libiamroot-linux-aarch64.so.1";
-		else if ((strcmp(ldso, "musl-x86_64") == 0) && abi == 1)
-			return "/usr/lib/iamroot/x86_64/libiamroot-musl-x86_64.so.1";
-		else if ((strcmp(ldso, "musl-aarch64") == 0) && abi == 1)
-			return "/usr/lib/iamroot/aarch64/libiamroot-musl-aarch64.so.1";
-		else
-			return "/usr/lib/iamroot/libiamroot.so";
-	}
+	if (ret)
+		return ret;
 
-	return ret;
+	/* IAMROOT_LIB_LINUX_2 */
+	if ((strcmp(ldso, "linux") == 0) && abi == 2)
+		return "/usr/lib/iamroot/i686/libiamroot-linux.so.2";
+
+	/* IAMROOT_LIB_LINUX_X86_64_2 */
+	if ((strcmp(ldso, "linux-x86-64") == 0) && abi == 2)
+		return "/usr/lib/iamroot/x86_64/libiamroot-linux-x86-64.so.2";
+	
+	/* IAMROOT_LIB_LINUX_ARMHF_3 */
+	if ((strcmp(ldso, "linux-armhf") == 0) && abi == 3)
+		return "/usr/lib/iamroot/armhf/libiamroot-linux-armhf.so.3";
+
+	/* IAMROOT_LIB_LINUX_AARCH64_1 */
+	if ((strcmp(ldso, "linux-aarch64") == 0) && abi == 1)
+		return "/usr/lib/iamroot/aarch64/libiamroot-linux-aarch64.so.1";
+
+	/* IAMROOT_LIB_MUSL_X86_64_1 */
+	if ((strcmp(ldso, "musl-x86_64") == 0) && abi == 1)
+		return "/usr/lib/iamroot/x86_64/libiamroot-musl-x86_64.so.1";
+
+	/* IAMROOT_LIB_MUSL_AARCH64_1 */
+	if ((strcmp(ldso, "musl-aarch64") == 0) && abi == 1)
+		return "/usr/lib/iamroot/aarch64/libiamroot-musl-aarch64.so.1";
+
+	return "/usr/lib/iamroot/libiamroot.so";
 }
 
 static char *__getld_preload(const char *ldso, int abi)
@@ -1001,18 +1011,22 @@ static char *__getld_preload(const char *ldso, int abi)
 	__sanitize(buf, 1);
 
 	ret = getenv(buf);
-	if (!ret) {
-		if ((strcmp(ldso, "linux") == 0) && abi == 2)
-			return "/usr/lib/libc.so.6:/usr/lib/libdl.so.2";
-		else if ((strcmp(ldso, "linux-x86-64") == 0) && abi == 2)
-			return "/usr/lib64/libc.so.6:/usr/lib64/libdl.so.2";
-		else if ((strcmp(ldso, "musl-x86_64") == 0) && abi == 1)
-			return "";
-		else
-			return "/usr/lib:/lib";
-	}
+	if (ret)
+		return ret;
 
-	return ret;
+	/* IAMROOT_LIB_LINUX_2 */
+	if ((strcmp(ldso, "linux") == 0) && abi == 2)
+		return "/usr/lib/libc.so.6:/usr/lib/libdl.so.2";
+
+	/* IAMROOT_LIB_LINUX_X86_64_2 */
+	if ((strcmp(ldso, "linux-x86-64") == 0) && abi == 2)
+		return "/usr/lib64/libc.so.6:/usr/lib64/libdl.so.2";
+
+	/* IAMROOT_LIB_MUSL_X86_64_1 */
+	if ((strcmp(ldso, "musl-x86_64") == 0) && abi == 1)
+		return "";
+
+	return "/usr/lib:/lib";
 }
 
 static char *__getld_library_path(const char *ldso, int abi)

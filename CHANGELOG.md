@@ -22,6 +22,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Fix the setting of arguments while running a generic ELF [dynamic loader]
   (i.e. neither [glibc] nor [musl])
+- Fix the shifting of extra arguments while running the [dynamic loader]
 
 ## [v4] - 2022-04-25
 

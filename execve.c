@@ -1363,8 +1363,9 @@ int __loader(const char *path, char * const argv[], char *interp,
 		i = 0;
 		for (arg = interparg; *arg; arg++)
 			i++;
-		for (j = 0; j < i; j++)
-			interparg[j+shift] = interparg[j];
+		for (j = i+shift; j > shift; j--)
+			interparg[j] = interparg[j-shift];
+		j = i;
 
 		/* Add path to interpreter (host, argv0) */
 		i = 0;
@@ -1456,8 +1457,9 @@ int __loader(const char *path, char * const argv[], char *interp,
 		i = 0;
 		for (arg = interparg; *arg; arg++)
 			i++;
-		for (j = 0; j < i; j++)
-			interparg[j+shift] = interparg[j];
+		for (j = i+shift; j > shift; j--)
+			interparg[j] = interparg[j-shift];
+		j = i;
 
 		/* Add path to interpreter (host, argv0) */
 		i = 0;

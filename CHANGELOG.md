@@ -19,6 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   paths in the chroot, even if the path is ignored (i.e. the allow regex takes
   precedence the ignore regex)
 - The internal function `path_resolution()` handle the at-flag `AT_EMPTY_PATH`
+- Intercept the function `dl_iterate_phdr()`
 
 ### Changed
 

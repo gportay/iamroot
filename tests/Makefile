@@ -15,6 +15,7 @@ all: test-access
 all: test-chmod
 all: test-chown
 all: test-chroot
+all: test-dl_iterate_phdr
 all: test-dlopen
 all: test-execl
 all: test-execle
@@ -179,6 +180,8 @@ test: | rootfs
 	test-unshare whoami
 	test-dlopen libiamnotroot.so
 	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs IAMROOT_LIBRARY_PATH=$(PREFIX)/lib64:$(PREFIX)/lib test-dlopen libiamnotroot.so
+	! test-dl_iterate_phdr | grep '$(CURDIR)/rootfs'
+	! PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-dl_iterate_phdr | grep '$(CURDIR)/rootfs'
 
 rootfs: DESTDIR = $(CURDIR)/rootfs
 rootfs: PREFIX ?= /usr

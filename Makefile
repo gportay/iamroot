@@ -56,6 +56,7 @@ libiamroot.so: chmod.o
 libiamroot.so: chown.o
 libiamroot.so: chroot.o
 libiamroot.so: creat.o
+libiamroot.so: dl_iterate_phdr.o
 libiamroot.so: dlmopen.o
 libiamroot.so: dlopen.o
 libiamroot.so: eaccess.o

@@ -1049,11 +1049,11 @@ static char *__getld_preload(const char *ldso, int abi)
 	if (ret)
 		return ret;
 
-	/* IAMROOT_LIB_LINUX_2 */
+	/* IAMROOT_LD_PRELOAD_LINUX_2 */
 	if (__streq(ldso, "linux") && abi == 2)
 		return "/usr/lib/libc.so.6:/usr/lib/libdl.so.2";
 
-	/* IAMROOT_LIB_LINUX_X86_64_2 */
+	/* IAMROOT_LD_PRELOAD_LINUX_X86_64_2 */
 	if (__streq(ldso, "linux-x86-64") && abi == 2)
 		return "/usr/lib64/libc.so.6:/usr/lib64/libdl.so.2";
 

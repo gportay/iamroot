@@ -23,6 +23,13 @@
 /* AT flag FOLLOW takes precedence over NOFOLLOW */
 #define follow_symlink(f) ((f & AT_SYMLINK_FOLLOW) || (f & AT_SYMLINK_NOFOLLOW) == 0)
 
+typedef struct {
+	regex_t re;
+#ifndef JIMREGEXP_H
+	char jimpad[40];
+#endif
+} __regex_t;
+
 extern char *next_realpath(const char *, char *);
 extern ssize_t next_readlink(const char *, char *, size_t);
 extern int next_lstat(const char *, struct stat *);
@@ -71,15 +78,11 @@ static void __regex_perror(const char *s, regex_t *regex, int err)
 	dprintf(STDERR_FILENO, "%s: %s\n", s, buf);
 }
 
-__attribute__((optimize("O0")))
 __attribute__((constructor,visibility("hidden")))
 void path_resolution_init()
 {
 	const char *ignore, *exec;
-	static regex_t regex_ignore;
-#ifndef JIMREGEXP_H
-	__attribute__((unused)) static char jimpad_ignore[40];
-#endif
+	static __regex_t regex_ignore;
 	char buf[BUFSIZ];
 	int ret;
 	int n;
@@ -101,15 +104,14 @@ void path_resolution_init()
 		return;
 	}
 
-	ret = regcomp(&regex_ignore, buf, REG_NOSUB|REG_EXTENDED);
+	ret = regcomp(&regex_ignore.re, buf, REG_NOSUB|REG_EXTENDED);
 	if (ret) {
-		__regex_perror("regcomp", &regex_ignore, ret);
+		__regex_perror("regcomp", &regex_ignore.re, ret);
 		return;
 	}
 
 	__info("IAMROOT_PATH_RESOLUTION_IGNORE|IAMROOT_EXEC=%s\n", buf);
-
-	re_ignore = &regex_ignore;
+	re_ignore = &regex_ignore.re;
 }
 
 __attribute__((destructor,visibility("hidden")))

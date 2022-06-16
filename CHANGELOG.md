@@ -32,6 +32,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the setting of arguments while running a generic ELF dynamic loader
 - Fix the shifting of extra arguments while running the dynamic loader
 
+### Security
+
+- Fix an overflowing while using `gpg` by adding extra padding after `regex_t`
+  structures (starting from gpg 2.2.22) once again
+
 ## [v4] - 2022-04-25
 
 ### Added

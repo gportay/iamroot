@@ -725,6 +725,11 @@ Created symlink /etc/systemd/system/dbus-org.freedesktop.nm-dispatcher.service �
 Created symlink /etc/systemd/system/network-online.target.wants/NetworkManager-wait-online.service → /usr/lib/systemd/system/NetworkManager-wait-online.service.
 
   Running scriptlet: openssh-server XXX/XXX
+(YYYY-MM-DD hh:mm:ss:nnnnnn): [sss_cache] [confdb_get_enabled_domain_list] (0x0040): Failed to get [domains] from [sssd], error [2] (No such file or directory)
+(YYYY-MM-DD hh:mm:ss:nnnnnn): [sss_cache] [init_domains] (0x0020): Could not initialize domains
+(YYYY-MM-DD hh:mm:ss:nnnnnn): [sss_cache] [confdb_get_enabled_domain_list] (0x0040): Failed to get [domains] from [sssd], error [2] (No such file or directory)
+(YYYY-MM-DD hh:mm:ss:nnnnnn): [sss_cache] [init_domains] (0x0020): Could not initialize domains
+
   Installing       : openssh-server XXX/XXX
   Running scriptlet: openssh-server XXX/XXX
 Created symlink /etc/systemd/system/multi-user.target.wants/sshd.service → /usr/lib/systemd/system/sshd.service.

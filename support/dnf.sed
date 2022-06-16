@@ -60,6 +60,13 @@
 		s,/rpm-tmp\.[[:alnum:]]\{6\,6\},/rpm-tmp.XXXXXX,
 		s,line \([[:digit:]]\+\): ,line X: ,
 	}
+
+	#   Running scriptlet: openssh-server-8.5p1-2.fc34.x86_64                 XXX/XXX
+	# (2022-06-16 22:01:23:196328): [sss_cache] [confdb_get_enabled_domain_list] (0x0040): Failed to get [domains] from [sssd], error [2] (No such file or directory)
+	# (2022-06-16 22:01:23:196440): [sss_cache] [init_domains] (0x0020): Could not initialize domains
+	# (2022-06-16 22:01:23:225076): [sss_cache] [confdb_get_enabled_domain_list] (0x0040): Failed to get [domains] from [sssd], error [2] (No such file or directory)
+	# (2022-06-16 22:01:23:225167): [sss_cache] [init_domains] (0x0020): Could not initialize domains
+	s,^(\S\{4\,4\}-\S\{2\,2\}-\S\{2\,2\}\s\{1\,2\}\S\{1\,2\}:\S\{2\,2\}:\S\{2\,2\}:\S\{6\,6\}):\s,(YYYY-MM-DD hh:mm:ss:nnnnnn): ,
 }
 
 /^Installed:/,$ {

@@ -202,7 +202,6 @@ rootfs: arch-rootfs
 arch-rootfs: | arch-rootfs/etc/machine-id
 
 arch-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-x86_64-linux-x86-64/.*\.gcda
-arch-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 arch-rootfs/etc/machine-id: export EUID = 0
 arch-rootfs/etc/machine-id: | arch-rootfs/etc/pacman.d/gnupg x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "pacstrap -GMC support/x86_64-pacman.conf arch-rootfs"
@@ -229,7 +228,6 @@ i686-arch-rootfs: | i686-arch-rootfs/etc/machine-id
 i686-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/i686-arch-rootfs
 i686-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_2 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
 i686-arch-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/|^$(CURDIR)/output-i686-linux/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-x86_64-linux-x86-64/.*\.gcda
-i686-arch-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 i686-arch-rootfs/etc/machine-id: export EUID = 0
 i686-arch-rootfs/etc/machine-id: | i686-arch-rootfs/etc/pacman.d/gnupg i686/libiamroot-linux.so.2 x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "pacstrap -GMC support/i686-pacman.conf i686-arch-rootfs"
@@ -279,7 +277,6 @@ extra-rootfs: manjaro-rootfs
 manjaro-rootfs: | manjaro-rootfs/etc/machine-id
 
 manjaro-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-x86_64-linux-x86-64/.*\.gcda
-manjaro-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 manjaro-rootfs/etc/machine-id: export EUID = 0
 manjaro-rootfs/etc/machine-id: | manjaro-rootfs/etc/pacman.d/gnupg x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "pacstrap -GMC support/x86_64-manjaro-stable-pacman.conf manjaro-rootfs --gpgdir $(CURDIR)/manjaro-rootfs/etc/pacman.d/gnupg base"
@@ -360,6 +357,9 @@ debian-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/
 debian-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|pam-auth-update|mountpoint
 debian-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-x86_64-linux-x86-64/.*\.gcda
 debian-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://deb.debian.org/debian
+# System has not been booted with systemd as init system (PID 1). Can't operate.
+# Failed to connect to bus: Host is down
+# invoke-rc.d: could not determine current runlevel
 debian-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 debian-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	mkdir -p debian-$*-rootfs
@@ -474,6 +474,9 @@ ubuntu-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-
 ubuntu-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-x86_64-linux-x86-64/.*\.gcda
 ubuntu-%-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
 ubuntu-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
+# System has not been booted with systemd as init system (PID 1). Can't operate.
+# Failed to connect to bus: Host is down
+# invoke-rc.d: could not determine current runlevel
 ubuntu-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 ubuntu-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	mkdir -p ubuntu-$*-rootfs
@@ -561,7 +564,6 @@ fedora-36-rootfs: | fedora-36-rootfs/etc/machine-id
 fedora-33-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib64/ldb/modules/ldb/tdb.so:/usr/lib64/ldb/modules/ldb/mdb.so:/usr/lib64/ldb/modules/ldb/ldb.so
 fedora-33-rootfs/etc/machine-id:
 fedora-34-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib64/ldb/modules/ldb/tdb.so:/usr/lib64/ldb/modules/ldb/mdb.so:/usr/lib64/ldb/modules/ldb/ldb.so
-fedora-34-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 fedora-34-rootfs/etc/machine-id:
 
 fedora-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib64/ldb:/usr/lib64:/lib64
@@ -650,7 +652,6 @@ opensuse-leaf-rootfs/etc/machine-id:
 opensuse-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib64:/lib64
 opensuse-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|/usr/bin/chkstat
 opensuse-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-x86_64-linux-x86-64/.*\.gcda
-opensuse-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 opensuse-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "zypper --root $(CURDIR)/opensuse-$*-rootfs addrepo --no-gpgcheck support/$*-repo-oss.repo"
 	bash iamroot-shell -c "zypper --root $(CURDIR)/opensuse-$*-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd"

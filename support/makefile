@@ -361,6 +361,8 @@ debian-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://deb.debian.o
 # Failed to connect to bus: Host is down
 # invoke-rc.d: could not determine current runlevel
 debian-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
+# debconf: PERL_DL_NONLAZY is not set, if debconf is running from a preinst script, this is not safe
+debian-%-rootfs/etc/machine-id: export PERL_DL_NONLAZY = 1
 debian-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	mkdir -p debian-$*-rootfs
 	bash iamroot-shell -c "debootstrap --keep-debootstrap-dir $* debian-$*-rootfs $(DEBOOTSTRAP_MIRROR)"
@@ -478,6 +480,8 @@ ubuntu-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubun
 # Failed to connect to bus: Host is down
 # invoke-rc.d: could not determine current runlevel
 ubuntu-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
+# debconf: PERL_DL_NONLAZY is not set, if debconf is running from a preinst script, this is not safe
+ubuntu-%-rootfs/etc/machine-id: export PERL_DL_NONLAZY = 1
 ubuntu-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	mkdir -p ubuntu-$*-rootfs
 	bash iamroot-shell -c "debootstrap --keep-debootstrap-dir $* ubuntu-$*-rootfs $(DEBOOTSTRAP_MIRROR)"

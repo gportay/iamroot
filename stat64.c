@@ -15,30 +15,7 @@
 #include "iamroot.h"
 
 #ifdef __GLIBC__
-extern int rootstat64(const char *, struct stat64 *);
-
-__attribute__((visibility("hidden")))
-int next_stat64(const char *path, struct stat64 *statbuf)
-{
-	int (*sym)(const char *, struct stat64 *);
-	int ret;
-
-	sym = dlsym(RTLD_NEXT, "stat64");
-	if (!sym) {
-		int next___xstat64(int, const char *, struct stat64 *);
-#if defined(__arm__)
-		return next___xstat64(3, path, statbuf);
-#else
-		return next___xstat64(0, path, statbuf);
-#endif
-	}
-
-	ret = sym(path, statbuf);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
-}
+extern int rootfstatat64(int, const char *, struct stat64 *, int);
 
 int stat64(const char *path, struct stat64 *statbuf)
 {
@@ -53,7 +30,7 @@ int stat64(const char *path, struct stat64 *statbuf)
 
 	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
 
-	return rootstat64(buf, statbuf);
+	return rootfstatat64(AT_FDCWD, buf, statbuf, 0);
 }
 
 weak_alias(stat64, __stat64);

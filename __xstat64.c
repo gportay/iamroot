@@ -15,27 +15,7 @@
 #include "iamroot.h"
 
 #ifdef __GLIBC__
-extern int __rootxstat64(int, const char *, struct stat64 *);
-
-__attribute__((visibility("hidden")))
-int next___xstat64(int ver, const char *path, struct stat64 *statbuf)
-{
-	int (*sym)(int, const char *, struct stat64 *);
-	int ret;
-
-	sym = dlsym(RTLD_NEXT, "__xstat64");
-	if (!sym) {
-		__dlperror(__func__);
-		errno = ENOSYS;
-		return -1;
-	}
-
-	ret = sym(ver, path, statbuf);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
-}
+extern int __rootfxstatat64(int, int, const char *, struct stat64 *, int);
 
 int __xstat64(int ver, const char *path, struct stat64 *statbuf)
 {
@@ -50,6 +30,6 @@ int __xstat64(int ver, const char *path, struct stat64 *statbuf)
 
 	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
 
-	return __rootxstat64(ver, buf, statbuf);
+	return __rootfxstatat64(ver, AT_FDCWD, buf, statbuf, 0);
 }
 #endif

@@ -15,30 +15,7 @@
 
 #include "iamroot.h"
 
-extern int rootlstat(const char *, struct stat *);
-
-__attribute__((visibility("hidden")))
-int next_lstat(const char *path, struct stat *statbuf)
-{
-	int (*sym)(const char *, struct stat *);
-	int ret;
-
-	sym = dlsym(RTLD_NEXT, "lstat");
-	if (!sym) {
-		int next___lxstat(int, const char *, struct stat *);
-#if defined(__arm__)
-		return next___lxstat(3, path, statbuf);
-#else
-		return next___lxstat(0, path, statbuf);
-#endif
-	}
-
-	ret = sym(path, statbuf);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
-}
+extern int rootfstatat(int, const char *, struct stat *, int);
 
 int lstat(const char *path, struct stat *statbuf)
 {
@@ -54,5 +31,5 @@ int lstat(const char *path, struct stat *statbuf)
 
 	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
 
-	return rootlstat(buf, statbuf);
+	return rootfstatat(AT_FDCWD, buf, statbuf, AT_SYMLINK_NOFOLLOW);
 }

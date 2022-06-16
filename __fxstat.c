@@ -7,33 +7,14 @@
 #include <stdio.h>
 #include <errno.h>
 #include <limits.h>
+#include <fcntl.h>
 #include <dlfcn.h>
 
 #include <sys/stat.h>
 
 #include "iamroot.h"
 
-extern int __rootfxstat(int, int, struct stat *);
-
-__attribute__((visibility("hidden")))
-int next___fxstat(int ver, int fd, struct stat *statbuf)
-{
-	int (*sym)(int, int, struct stat *);
-	int ret;
-
-	sym = dlsym(RTLD_NEXT, "__fxstat");
-	if (!sym) {
-		__dlperror(__func__);
-		errno = ENOSYS;
-		return -1;
-	}
-
-	ret = sym(ver, fd, statbuf);
-	if (ret == -1)
-		__fpathperror(fd, __func__);
-
-	return ret;
-}
+extern int __rootfxstatat(int, int, const char *, struct stat *, int);
 
 int __fxstat(int ver, int fd, struct stat *statbuf)
 {
@@ -49,5 +30,5 @@ int __fxstat(int ver, int fd, struct stat *statbuf)
 
 	__debug("%s(fd: %i <-> %s, ...)\n", __func__, fd, buf);
 
-	return __rootfxstat(ver, fd, statbuf);
+	return __rootfxstatat(ver, fd, "", statbuf, AT_EMPTY_PATH);
 }

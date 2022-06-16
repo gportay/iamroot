@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <limits.h>
+#include <fcntl.h>
 #include <dlfcn.h>
 
 #include <sys/stat.h>
@@ -14,27 +15,7 @@
 #include "iamroot.h"
 
 #ifdef __GLIBC__
-extern int __rootfxstat64(int, int, struct stat64 *);
-
-__attribute__((visibility("hidden")))
-int next___fxstat64(int ver, int fd, struct stat64 *statbuf)
-{
-	int (*sym)(int, int, struct stat64 *);
-	int ret;
-
-	sym = dlsym(RTLD_NEXT, "__fxstat64");
-	if (!sym) {
-		__dlperror(__func__);
-		errno = ENOSYS;
-		return -1;
-	}
-
-	ret = sym(ver, fd, statbuf);
-	if (ret == -1)
-		__fpathperror(fd, __func__);
-
-	return ret;
-}
+extern int __rootfxstatat64(int, int, const char *, struct stat64 *, int);
 
 int __fxstat64(int ver, int fd, struct stat64 *statbuf)
 {
@@ -50,6 +31,6 @@ int __fxstat64(int ver, int fd, struct stat64 *statbuf)
 
 	__debug("%s(fd: %i <-> %s, ...)\n", __func__, fd, buf);
 
-	return __rootfxstat64(ver, fd, statbuf);
+	return __rootfxstatat64(ver, fd, "", statbuf, AT_EMPTY_PATH);
 }
 #endif

@@ -22,6 +22,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   and while running a generic ELF dynamic loader
 - Remove the library path prefixes `LD_` and `ld-` of from the environment
   variable `IAMROOT_LD_LIBRARY_PATH` and the script option `--ld-library-path`
+- The functions `__fxstat()`, `__fxstat64()`, `__lxstat()`, `__lxstat64()`,
+  `__xstat()`, `__xstat64()`, `fstat()`, `fstat64()`, `lstat()`, `lstat64()`,
+  `stat()` and `stat64()` calls the internal functions `__rootfxstatat()`,
+  `__rootfxstatat64()`, `rootfstatat()` and `rootfstatat64()`
 
 ### Fixed
 

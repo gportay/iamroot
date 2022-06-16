@@ -14,27 +14,7 @@
 
 #include "iamroot.h"
 
-extern int __rootlxstat(int, const char *, struct stat *);
-
-__attribute__((visibility("hidden")))
-int next___lxstat(int ver, const char *path, struct stat *statbuf)
-{
-	int (*sym)(int, const char *, struct stat *);
-	int ret;
-
-	sym = dlsym(RTLD_NEXT, "__lxstat");
-	if (!sym) {
-		__dlperror(__func__);
-		errno = ENOSYS;
-		return -1;
-	}
-
-	ret = sym(ver, path, statbuf);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
-}
+extern int __rootfxstatat(int, int, const char *, struct stat *, int);
 
 int __lxstat(int ver, const char *path, struct stat *statbuf)
 {
@@ -50,5 +30,5 @@ int __lxstat(int ver, const char *path, struct stat *statbuf)
 
 	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
 
-	return __rootlxstat(ver, buf, statbuf);
+	return __rootfxstatat(ver, AT_FDCWD, buf, statbuf, AT_SYMLINK_NOFOLLOW);
 }

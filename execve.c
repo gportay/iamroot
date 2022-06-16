@@ -141,8 +141,7 @@ setenv:
 	return setenv(name, value, overwrite);
 }
 
-
-static regex_t *re;
+static regex_t *re_ignore;
 
 static void __regex_perror(const char *s, regex_t *regex, int err)
 {
@@ -160,9 +159,9 @@ __attribute__((optimize("O0")))
 __attribute__((constructor,visibility("hidden")))
 void execve_init()
 {
-	static regex_t regex;
+	static regex_t regex_ignore;
 #ifndef JIMREGEXP_H
-	__attribute__((unused)) static char jimpad[40];
+	__attribute__((unused)) static char jimpad_ignore[40];
 #endif
 	const char *ignore;
 	int ret;
@@ -172,43 +171,43 @@ void execve_init()
 		__warning("%s: secure-execution mode\n", __execfn());
 #endif
 
-	if (re)
+	if (re_ignore)
 		return;
 
 	ignore = getenv("IAMROOT_EXEC_IGNORE");
 	if (!ignore)
 		ignore = "ldd";
 
-	ret = regcomp(&regex, ignore, REG_NOSUB|REG_EXTENDED);
+	ret = regcomp(&regex_ignore, ignore, REG_NOSUB|REG_EXTENDED);
 	if (ret) {
-		__regex_perror("regcomp", &regex, ret);
+		__regex_perror("regcomp", &regex_ignore, ret);
 		return;
 	}
 
 	__info("IAMROOT_EXEC_IGNORE=%s\n", ignore);
-	re = &regex;
+	re_ignore = &regex_ignore;
 }
 
 __attribute__((destructor,visibility("hidden")))
 void execve_fini()
 {
-	if (!re)
+	if (!re_ignore)
 		return;
 
-	regfree(re);
-	re = NULL;
+	regfree(re_ignore);
+	re_ignore = NULL;
 }
 
 static int ignore(const char *path)
 {
 	int ret = 0;
 
-	if (!re)
+	if (!re_ignore)
 		return 0;
 
-	ret = regexec(re, path, 0, NULL, 0);
+	ret = regexec(re_ignore, path, 0, NULL, 0);
 	if (ret == -1) {
-		__regex_perror("regexec", re, ret);
+		__regex_perror("regexec", re_ignore, ret);
 		return 0;
 	}
 

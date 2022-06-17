@@ -54,6 +54,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `AT_EMPTY_PATH` remains for the `at` functions `__fxstatat()`, `execveat()`,
   `faccessat()`, `fchmodat()`, `fchownat()`, `fstatat()`, `linkat()`,
   `name_to_handle_at()`, `unlinkat()`, `utimensat()`,
+- Fix the execution of un-handled commands from the host environment while
+  running the script `exec.sh`
 
 ### Security
 

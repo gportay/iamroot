@@ -98,6 +98,6 @@ bbsuid)
 	;;
 *)
 	warn "host-running" "$argv0" "$@"
-	exec "$path" "$@"
+	exec "$inchroot_path" "$@"
 	;;
 esac

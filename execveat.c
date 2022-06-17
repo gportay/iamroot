@@ -174,6 +174,7 @@ execveat:
 		*narg++ = NULL;
 
 		verbose_exec(*nargv, nargv, __environ);
+		__remove_at_empty_path_if_needed(*nargv, flags);
 		return next_execveat(fd, *nargv, nargv, __environ, flags);
 	}
 

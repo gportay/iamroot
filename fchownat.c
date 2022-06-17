@@ -54,6 +54,7 @@ int fchownat(int fd, const char *path, uid_t owner, gid_t group, int flags)
 	__debug("%s(fd: %i, path: '%s' -> '%s', owner: %i, group: %i, flags: 0x%x)\n",
 		__func__, fd, path, buf, owner, group, flags);
 
+	__remove_at_empty_path_if_needed(buf, flags);
 	ret = next_fchownat(fd, buf, owner, group, flags);
 	__ignore_error_and_warn(ret, fd, path, flags);
 

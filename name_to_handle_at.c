@@ -52,6 +52,7 @@ int name_to_handle_at(int fd, const char *path, struct file_handle *handle,
 	__debug("%s(path: '%s' -> '%s', ..., flags: 0x%x)\n", __func__, path,
 		buf, flags);
 
+	__remove_at_empty_path_if_needed(buf, flags);
 	return next_name_to_handle_at(fd, buf, handle, mount_id, flags);
 }
 #endif

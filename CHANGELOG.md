@@ -39,6 +39,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Fix the setting of arguments while running a generic ELF dynamic loader
 - Fix the shifting of extra arguments while running the dynamic loader
+- Fix the invalid argument returned if an empty path is resolved but the flag
+  `AT_EMPTY_PATH` remains for the `at` functions `__fxstatat()`, `execveat()`,
+  `faccessat()`, `fchmodat()`, `fchownat()`, `fstatat()`, `linkat()`,
+  `name_to_handle_at()`, `unlinkat()`, `utimensat()`,
 
 ### Security
 

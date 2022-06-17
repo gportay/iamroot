@@ -54,5 +54,6 @@ int fstatat(int fd, const char *path, struct stat *statbuf, int flags)
 	__debug("%s(fd: %i, path: '%s' -> '%s', ..., flags: 0x%x)\n", __func__,
 		fd, path, buf, flags);
 
+	__remove_at_empty_path_if_needed(buf, flags);
 	return rootfstatat(fd, buf, statbuf, flags);
 }

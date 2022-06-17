@@ -50,6 +50,7 @@ int fchmodat(int fd, const char *path, mode_t mode, int flags)
 		__func__, fd, path, buf, mode, flags);
 	__fwarn_if_insuffisant_user_modeat(fd, buf, mode, flags);
 
+	__remove_at_empty_path_if_needed(buf, flags);
 	ret = next_fchmodat(fd, buf, mode, flags);
 	__ignore_error_and_warn(ret, fd, path, flags);
 

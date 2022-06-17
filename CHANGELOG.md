@@ -34,6 +34,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `__rootfxstatat64()`, `rootfstatat()` and `rootfstatat64()`
 - Output the architecture, the libc and the pid on level 6 and above
 - Output the architecture and the libc as platform
+- Output the `EPERM and `EACCES` `errno` errors returned by the original
+  symbols on the info debug level
 
 ### Deprecated
 

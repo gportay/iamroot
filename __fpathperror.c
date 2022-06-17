@@ -18,9 +18,6 @@ void __fpathperror(int fd, const char *s)
 	ssize_t siz;
 	int err;
 
-	if ((errno != EPERM) && (errno != EACCES))
-		return;
-
 	err = errno;
 	siz = __procfdreadlink(fd, buf, sizeof(buf));
 	if (siz == -1) {
@@ -29,6 +26,11 @@ void __fpathperror(int fd, const char *s)
 		return;
 	}
 	buf[siz] = 0; /* ensure NULL terminated */
+
+	if ((errno != EPERM) && (errno != EACCES)) {
+		__info("%i <-> %s: %s: %m\n", fd, buf, s);
+		return;
+	}
 
 	__note_or_fatal("%i <-> %s: %s: %m\n", fd, buf, s);
 }

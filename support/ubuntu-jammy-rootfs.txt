@@ -1,3 +1,4 @@
+I: Target architecture can be executed
 I: jammy uses zstd compression, setting --extractor=ar option
 I: Retrieving InRelease 
 I: Retrieving Packages 
@@ -878,6 +879,7 @@ I: Configuring ubuntu-minimal...
 I: Configuring libc-bin...
 I: Configuring ca-certificates...
 I: Base system installed successfully.
+amd64: ok
 Warning: Command is skipped: mount -t proc proc /proc
 Warning: Command is skipped: mount -t sysfs sysfs /sys
 dpkg: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':

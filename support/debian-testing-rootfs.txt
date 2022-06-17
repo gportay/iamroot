@@ -1,3 +1,4 @@
+I: Target architecture can be executed
 I: Retrieving InRelease 
 I: Retrieving Packages 
 I: Validating Packages 
@@ -721,6 +722,7 @@ I: Configuring tasksel...
 I: Configuring tasksel-data...
 I: Configuring libc-bin...
 I: Base system installed successfully.
+amd64: ok
 Warning: Command is skipped: mount -t proc proc /proc
 Warning: Command is skipped: mount -t sysfs sysfs /sys
 dpkg: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':

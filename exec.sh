@@ -33,11 +33,11 @@ fixme() {
 path_resolution() {
 	if [ "${1##*/}" != "$1" ]
 	then
-		echo "$PWD/$1"
+		echo "$PWD/${1#/*}"
 		return
 	fi
 
-	echo "$IAMROOT_ROOT$1"
+	echo "$IAMROOT_ROOT/${1#/*}"
 }
 
 path="$1"

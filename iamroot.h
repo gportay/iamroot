@@ -180,7 +180,7 @@ void verbose_exec(const char *, char * const[], char * const[]);
 #endif
 
 #define __remove_at_empty_path_if_needed(path, flags) \
-	({ if ((!*path) && (flags & AT_EMPTY_PATH)) { \
+	({ if ((*path) && (flags & AT_EMPTY_PATH)) { \
 	     flags &= ~AT_EMPTY_PATH; \
 	   } })
 

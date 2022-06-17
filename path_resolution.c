@@ -271,6 +271,11 @@ static ssize_t _path_resolution(int fd, const char *path, char *buf,
 	if (ignore(path))
 		goto ignore;
 
+	if (!*path && (flags & AT_EMPTY_PATH)) {
+		_strncpy(buf, path, bufsize);
+		return 0;
+	}
+		
 	if (*path == '/') {
 		const char *root;
 		int n;

@@ -35,6 +35,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Output the architecture, the libc and the pid on level 6 and above
 - Output the architecture and the libc as platform
 
+### Deprecated
+
+- Replace the `iamroot(7)` environment variable `IAMROOT_LD_LIBRARY_PATH` by
+  the environment variable `IAMROOT_LIBRARY_PATH`
+- Replace the `iamroot-shell(1)` option `--ld-library-path` by the option
+  `--library-path`
+
 ### Fixed
 
 - Fix the setting of arguments while running a generic ELF dynamic loader
@@ -78,7 +85,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - The libraries are installed by architecture in sub-directories: x86_64, i686,
   arm, armhf and aarch64
-- Output the flags in octal (open flags) and in hexadecimal (AT flags)
+- Output the flags in octal (open flags) and in hexadecimal (`AT` flags)
 - Output the detailled `execve` command on level 4 and above
 - Ignore the `EPERM` error on functions `chmod()`, `chown()`, `fchmod()`,
   `fchmodat()`, `fchown()`, `fchownat()`, `lchmod()` and `lchown()`
@@ -121,7 +128,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   variables have to be set without using the `_<abi>` suffix number: i.e. using
   `IAMROOT_LIB_<ldso>`
 - Fix the setting for spurious execution bit in file mode
-- Fix the forwarding of none-AT flags argument to `path_resolution()` for the
+- Fix the forwarding of none-`AT` flags argument to `path_resolution()` for the
   functions `__openat64_2()`, `__openat_2()`, `openat()`, `openat64()` and
   `renameat2()`
 - Fix the `argv[0]` value for the [glibc] [dynamic loader][ld.so(8)] that does
@@ -132,8 +139,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the adding of extra arguments due to off-by-one shifting to prepend the
   [dynamic loader][ld.so(8)] and its arguments if the command as less arguments
   that the shift
-- Fix the following symlink behaviour for the at functions `readlinkat()`,
-  `renameat2()`, `symlink()`, `symlinkat()` and `unlinkat()` by forwarding AT
+- Fix the following symlink behaviour for the `at` functions `readlinkat()`,
+  `renameat2()`, `symlink()`, `symlinkat()` and `unlinkat()` by forwarding `AT`
   flag `AT_SYMLINK_NOFOLLOW` to `path_resolution()`
 - Fix the adding of an empty hashbang argument
 - Fix the ignoring of empty paths in the function `path_resolution()`
@@ -235,7 +242,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   position of matches as they are not used
 - Split the target `install` to targets to the mutliple specific targets
   `install-exec`, `install-doc` and `install-bash-completions`
-- Split the non-related build targets in `Makefile` to the new separate file
+- Split the none-related build targets in `Makefile` to the new separate file
   `support/makefile`
 - The script `exec.sh` is now a `/bin/sh` script
 - Ths script `exec.sh` runs un-handled commands using the executables from the
@@ -250,7 +257,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Deprecated
 
-- Replace the variable environment `IAMROOT_GETEUID` by `IAMROOT_EUID`
+- Replace the `iamroot(7)` environment variable `IAMROOT_GETEUID` by the
+  environment variable `IAMROOT_EUID`
 
 ### Fixed
 

@@ -21,16 +21,17 @@ void __fpathperror(int fd, const char *s)
 	err = errno;
 	siz = __procfdreadlink(fd, buf, sizeof(buf));
 	if (siz == -1) {
-		__notice("%i: %s: %s\n", fd, s, strerror(err));
+		__notice("%s: %i: %s: %s\n", getrootdir(), fd, s,
+			 strerror(err));
 		err = errno;
 		return;
 	}
 	buf[siz] = 0; /* ensure NULL terminated */
 
 	if ((errno != EPERM) && (errno != EACCES)) {
-		__info("%i <-> %s: %s: %m\n", fd, buf, s);
+		__info("%s: %i <-> %s: %s: %m\n", getrootdir(), fd, buf, s);
 		return;
 	}
 
-	__note_or_fatal("%i <-> %s: %s: %m\n", fd, buf, s);
+	__note_or_fatal("%s: %i <-> %s: %s: %m\n", getrootdir(), fd, buf, s);
 }

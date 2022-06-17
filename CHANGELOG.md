@@ -36,6 +36,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Output the architecture and the libc as platform
 - Output the `EPERM and `EACCES` `errno` errors returned by the original
   symbols on the info debug level
+- Output the `root` directory for the functions `__fpathperror()`,
+  `__pathperror()` and `__pathperror2()`
 
 ### Deprecated
 

@@ -1,4 +1,3 @@
-W: Cannot check Release signature; keyring file not available /usr/share/keyrings/debian-archive-keyring.gpg
 I: Retrieving InRelease 
 I: Retrieving Release 
 I: Retrieving Packages 

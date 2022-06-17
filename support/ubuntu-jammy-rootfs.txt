@@ -1,4 +1,3 @@
-W: Cannot check Release signature; keyring file not available /usr/share/keyrings/ubuntu-archive-keyring.gpg
 I: jammy uses zstd compression, setting --extractor=ar option
 I: Retrieving InRelease 
 I: Retrieving Packages 

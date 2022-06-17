@@ -12,6 +12,13 @@ versions with no backward compatibility.
 [iamroot(7)] emulates the syscall [chroot(2)] for unprivileged processes in
 userspace.
 
+The project targets the *Linux* userlands [glibc] and [musl]; the works to
+support *BSD* userlands such as [FreeBSD] or [OpenBSD] is on-going.
+
+Also, the project compiles and runs on [Arch Linux]; it will be tested accross
+the [Debian] versions `unstable`, `testing` and `stable`, and `oldstable` and
+`oldoldstable`
+
 ## HOW IT WORKS
 
 It consists of an ELF shim library which is preloaded using the environment
@@ -65,6 +72,10 @@ later version.
 [iamroot(7)], [iamroot-shell(1)], [chroot(2)], [path_resolution(7)],
 [fakechroot(1)]
 
+[Arch Linux]: https://archlinux.org/
+[Debian]: https://www.debian.org/
+[FreeBSD]: https://www.freebsd.org/
+[OpenBSD]: https://www.openbsd.org/
 [alpine-make-rootfs]: https://github.com/alpinelinux/alpine-make-rootfs/blob/master/README.adoc
 [changelog]: CHANGELOG.md#unreleased
 [chdir(2)]: https://linux.die.net/man/2/chdir
@@ -75,8 +86,10 @@ later version.
 [fakechroot(1)]: https://linux.die.net/man/1/fakechroot
 [fchdir(2)]: https://linux.die.net/man/2/fchdir
 [fopen(3)]: https://linux.die.net/man/3/fopen
+[glibc]: https://www.gnu.org/software/libc/
 [iamroot(7)]: iamroot.7.adoc
 [iamroot-shell(1)]: iamroot-shell.1.adoc
+[musl]: https://www.musl-libc.org/
 [open(2)]: https://linux.die.net/man/2/open
 [pacstrap(8)]: https://man.archlinux.org/man/pacstrap.8
 [path_resolution(7)]: https://linux.die.net/man/7/path_resolution

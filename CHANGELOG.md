@@ -16,26 +16,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   functions
 - Add the `iamroot-shell`'s option `--path-resolution-allow` and its
   environment variable `IAMROOT_PATH_RESOLUTION_ALLOW` to resolve the given
-  paths in the chroot, even if the path is resolved as ignored
+  paths in the chroot, even if the path is ignored (i.e. the allow regex takes
+  precedence the ignore regex)
+- The internal function `path_resolution()` handle the at-flag `AT_EMPTY_PATH`
 
 ### Changed
 
 - Create weak aliases for [glibc] `__` and `64` variants
 - Output the parameters even in chroot for the functions `execveat()`,
   `execve()` and `posix_spawn()`
-- Output a warning the if the interpretor is not handled
+- Output a warning if the interpretor is not handled
 - Support the environment variables `argv0`, `LD_LIBRARY_PATH` and `LD_PRELOAD`
-  and while running a generic ELF dynamic loader
-- Remove the library path prefixes `LD_` and `ld-` of from the environment
-  variable `IAMROOT_LD_LIBRARY_PATH` and the script option `--ld-library-path`
+  while running a generic ELF dynamic loader
+- Remove the library path prefix `LD_` from the environment variable
+  `IAMROOT_LD_LIBRARY_PATH` and the prefix `-ld` from the script option
+  `--ld-library-path`
 - The functions `__fxstat()`, `__fxstat64()`, `__lxstat()`, `__lxstat64()`,
   `__xstat()`, `__xstat64()`, `fstat()`, `fstat64()`, `lstat()`, `lstat64()`,
   `stat()` and `stat64()` calls the internal functions `__rootfxstatat()`,
   `__rootfxstatat64()`, `rootfstatat()` and `rootfstatat64()`
 - Output the architecture, the libc and the pid on level 6 and above
 - Output the architecture and the libc as platform
-- Output the `EPERM and `EACCES` `errno` errors returned by the original
-  symbols on the info debug level
+- Output the `EPERM` and `EACCES` `errno` errors returned by the original
+  symbols on level 2
 - Output the `root` directory for the functions `__fpathperror()`,
   `__pathperror()` and `__pathperror2()`
 
@@ -53,7 +56,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the invalid argument returned if an empty path is resolved but the flag
   `AT_EMPTY_PATH` remains for the `at` functions `__fxstatat()`, `execveat()`,
   `faccessat()`, `fchmodat()`, `fchownat()`, `fstatat()`, `linkat()`,
-  `name_to_handle_at()`, `unlinkat()`, `utimensat()`,
+  `name_to_handle_at()`, `unlinkat()` and `utimensat()`
 - Fix the execution of un-handled commands from the host environment while
   running the script `exec.sh`
 
@@ -84,7 +87,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   [exec][exec(3)]'ing to a [glibc] chroot'ed environment
 - Support for optimizations up to `-O5` and source fortification up to
   `_FORTIFY_SOURCE=2`
-- Add the `iamroot-shell`'s option `--no-color`, and the environment variable
+- Add the `iamroot-shell`'s option `--no-color` and the environment variable
   [NO_COLOR] to colorize the debug traces; a zero value do not disable color
 
 ### Changed
@@ -187,12 +190,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   "effective" group or user
 - Intercept the group functions `getgrnam_r()`, `getgrgid_r()`, `fgetgrent()`,
   `getgrent()`, `setgrent()`, `endgrent()`, `getgrgid()`, `getgrnam()`,
-  `putgrent()`, and `getgrouplist()` that are stolen from [musl]
+  `putgrent()` and `getgrouplist()` that are stolen from [musl]
 - Intercept the passwd functions `getpwnam_r()`, `getpwuid_r()`, `fgetpwent()`,
-  `getpwuid()`, `setpwent()`, `endpwent()`, `getpwuid()`, `getpwnam()`, and
+  `getpwuid()`, `setpwent()`, `endpwent()`, `getpwuid()`, `getpwnam()` and
   `putpwent()` that are stolen from [musl]
 - Intercept the shadow functions `getspnam_r()`, `getspnam()`, `fgetspent()`,
-  `getspent()`, `setspent()`, `endspent()`, `putspent()`, `lckpwdf()`, and
+  `getspent()`, `setspent()`, `endspent()`, `putspent()`, `lckpwdf()` and
   `ulckpwdf()` that are stolen from [musl]
 - Link to the `phread` library because of using the [musl] implementation of
   group, passwd and shadow functions
@@ -251,7 +254,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Split the none-related build targets in `Makefile` to the new separate file
   `support/makefile`
 - The script `exec.sh` is now a `/bin/sh` script
-- Ths script `exec.sh` runs un-handled commands using the executables from the
+- The script `exec.sh` runs un-handled commands using the executables from the
   host environment
 - The internal function `fpath_resolutionat()` honors the at-flag
   `AT_EMPTY_PATH`

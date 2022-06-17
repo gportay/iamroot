@@ -1,4 +1,4 @@
-#!/usr/bin/sed -f
+#!/bin/sed -f
 #
 # Copyright 2022 Gaël PORTAY
 #

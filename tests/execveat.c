@@ -7,6 +7,17 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#ifdef __GLIBC__
+#if !__GLIBC_PREREQ(2,34)
+int execveat(int fd, const char *path, char * const argv[], char * const envp[], int flags)
+{
+	(void)fd;
+	(void)flags;
+	return execve(path, argv, envp);
+}
+#endif
+#endif
+
 int main(void)
 {
 	char * const argv[] = { "-sh", "-c", "echo \"$@\"", "sh", "one", "two",

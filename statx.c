@@ -18,6 +18,7 @@
 #include "iamroot.h"
 
 #ifdef __GLIBC__
+#if __GLIBC_PREREQ(2,28)
 extern uid_t next_geteuid();
 
 __attribute__((visibility("hidden")))
@@ -74,4 +75,5 @@ int statx(int fd, const char *path, int flags, unsigned int mask,
 exit:
 	return ret;
 }
+#endif
 #endif

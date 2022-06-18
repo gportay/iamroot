@@ -9,7 +9,7 @@ PREFIX ?= /usr/local
 
 %.o: override CPPFLAGS += -D_GNU_SOURCE -DVERSION=$(VERSION)
 %.o: override CFLAGS += -fPIC -Wall -Wextra -Werror
-%.so: override LDFLAGS += -nolibc
+%.so: override LDFLAGS += -nodefaultlibs
 
 ifdef COVERAGE
 %.o: override CFLAGS += -fprofile-arcs -ftest-coverage

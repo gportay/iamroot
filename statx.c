@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#include <unistd.h>
 #include <stdio.h>
 #include <errno.h>
 #include <limits.h>
@@ -17,7 +18,7 @@
 #include "iamroot.h"
 
 #ifdef __GLIBC__
-extern int rootstatx(int, const char *, int, unsigned int, struct statx *);
+extern uid_t next_geteuid();
 
 __attribute__((visibility("hidden")))
 int next_statx(int fd, const char *path, int flags, unsigned int mask,
@@ -45,6 +46,9 @@ int statx(int fd, const char *path, int flags, unsigned int mask,
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
+	uid_t uid;
+	gid_t gid;
+	int ret;
 
 	siz = path_resolution(fd, path, buf, sizeof(buf), flags);
 	if (siz == -1) {
@@ -55,6 +59,19 @@ int statx(int fd, const char *path, int flags, unsigned int mask,
 	__debug("%s(fd: %i, path: '%s' -> '%s', flags: 0x%x...)\n", __func__,
 		fd, path, buf, flags);
 
-	return rootstatx(fd, buf, flags, mask, statxbuf);
+	ret = next_statx(fd, buf, flags, mask, statxbuf);
+	if (ret == -1)
+		goto exit;
+
+	uid = next_geteuid();
+	if (statxbuf->stx_uid == uid)
+		statxbuf->stx_uid = geteuid();
+
+	gid = getegid();
+	if (statxbuf->stx_gid == gid)
+		statxbuf->stx_gid = 0;
+
+exit:
+	return ret;
 }
 #endif

@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#include <unistd.h>
 #include <stdio.h>
 #include <errno.h>
 #include <limits.h>
@@ -14,7 +15,7 @@
 
 #include "iamroot.h"
 
-extern int rootfstatat(int, const char *, struct stat *, int);
+extern uid_t next_geteuid();
 
 __attribute__((visibility("hidden")))
 int next_fstatat(int fd, const char *path, struct stat *statbuf, int flags)
@@ -44,6 +45,9 @@ int fstatat(int fd, const char *path, struct stat *statbuf, int flags)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
+	uid_t uid;
+	gid_t gid;
+	int ret;
 
 	siz = path_resolution(fd, path, buf, sizeof(buf), flags);
 	if (siz == -1) {
@@ -55,5 +59,18 @@ int fstatat(int fd, const char *path, struct stat *statbuf, int flags)
 		fd, path, buf, flags);
 
 	__remove_at_empty_path_if_needed(buf, flags);
-	return rootfstatat(fd, buf, statbuf, flags);
+	ret = next_fstatat(fd, buf, statbuf, flags);
+	if (ret == -1)
+		goto exit;
+
+	uid = next_geteuid();
+	if (statbuf->st_uid == uid)
+		statbuf->st_uid = geteuid();
+
+	gid = getegid();
+	if (statbuf->st_gid == gid)
+		statbuf->st_gid = 0;
+
+exit:
+	return ret;
 }

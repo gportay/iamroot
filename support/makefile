@@ -171,6 +171,10 @@ gcov/index.html:
 	mkdir -p $(@D)
 	gcovr --html-details --html-title iamroot -s -r $(CURDIR) -o $@ output-x86_64-linux-x86-64/
 
+.PHONY: cobertura.xml
+cobertura.xml:
+	gcovr --cobertura -s -r $(CURDIR) -o $@ output-x86_64-linux-x86-64/
+
 .PHONY: clean
 clean:
 	$(MAKE) -f Makefile $@

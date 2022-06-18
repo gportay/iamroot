@@ -83,33 +83,33 @@ output-i686-linux/libiamroot.so: export CC += -m32
 output-i686-linux/libiamroot.so: export CFLAGS += -fno-stack-protector
 $(eval $(call libiamroot_so,i686,linux,2))
 
-ifneq ($(shell command -v arm-unknown-linux-gnueabi-gcc),)
+ifneq ($(shell command -v arm-unknown-linux-gnueabi-gcc 2>/dev/null),)
 output-arm-linux/libiamroot.so: export CC = arm-unknown-linux-gnueabi-gcc
 $(eval $(call libiamroot_so,arm,linux,3))
 endif
 
-ifneq ($(shell command -v armv7l-unknown-linux-gnueabihf-gcc),)
+ifneq ($(shell command -v armv7l-unknown-linux-gnueabihf-gcc 2>/dev/null),)
 output-armhf-linux-armhf/libiamroot.so: export CC = armv7l-unknown-linux-gnueabihf-gcc
 $(eval $(call libiamroot_so,armhf,linux-armhf,3))
 endif
 
-ifneq ($(shell command -v aarch64-linux-gnu-gcc),)
+ifneq ($(shell command -v aarch64-linux-gnu-gcc 2>/dev/null),)
 aarch64/libiamroot-linux-aarch64.so.1: export CC = aarch64-linux-gnu-gcc
 $(eval $(call libiamroot_so,aarch64,linux-aarch64,1))
 endif
 
-ifneq ($(shell command -v musl-gcc),)
+ifneq ($(shell command -v musl-gcc 2>/dev/null),)
 x86_64/libiamroot-musl-x86_64.so.1: export CC = musl-gcc
 $(eval $(call libiamroot_so,x86_64,musl-x86_64,1))
 endif
 
-ifneq ($(shell command -v aarch64-linux-musl-gcc),)
+ifneq ($(shell command -v aarch64-linux-musl-gcc 2>/dev/null),)
 aarch64/libiamroot-musl-aarch64.so.1: export CC = aarch64-linux-musl-gcc
 $(eval $(call libiamroot_so,aarch64,musl-aarch64,1))
 endif
 
 ifdef CLANG
-ifneq ($(shell command -v clang),)
+ifneq ($(shell command -v clang 2>/dev/null),)
 all: clang/libiamroot-linux-x86-64.so.2
 
 .PRECIOUS: clang/libiamroot-linux-x86_64.so.2
@@ -179,7 +179,7 @@ clean:
 	rm -f *-rootfs.log
 	rm -Rf *-rootfs/
 
-ifneq ($(shell command -v pacstrap),)
+ifneq ($(shell command -v pacstrap 2>/dev/null),)
 test: arch-test
 
 .PHONY: arch-test
@@ -318,7 +318,7 @@ mount-manjaro:
 umount-manjaro:
 endif
 
-ifneq ($(shell command -v debootstrap),)
+ifneq ($(shell command -v debootstrap 2>/dev/null),)
 debian-oldoldstable-chroot:
 debian-oldstable-chroot:
 debian-stable-chroot:
@@ -544,7 +544,7 @@ umount-ubuntu-impish:
 umount-ubuntu-jammy:
 endif
 
-ifneq ($(shell command -v dnf),)
+ifneq ($(shell command -v dnf 2>/dev/null),)
 fedora-33-chroot:
 fedora-34-chroot:
 fedora-35-chroot:
@@ -634,7 +634,7 @@ umount-fedora-35:
 umount-fedora-36:
 endif
 
-ifneq ($(shell command -v zypper),)
+ifneq ($(shell command -v zypper 2>/dev/null),)
 opensuse-leaf-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
 opensuse-leaf-chroot:
 opensuse-tumbleweed-chroot:
@@ -701,7 +701,7 @@ umount-opensuse-leaf:
 umount-opensuse-tumbleweed:
 endif
 
-ifneq ($(shell command -v musl-gcc),)
+ifneq ($(shell command -v musl-gcc 2>/dev/null),)
 .PHONY: alpine-test
 alpine-test: | alpine-minirootfs/usr/bin/shebang.sh
 alpine-test: | alpine-minirootfs/usr/bin/shebang-arg.sh
@@ -736,7 +736,7 @@ alpine-minirootfs-3.16.0-x86_64.tar.gz:
 alpine-minirootfs-%-x86_64.tar.gz:
 	wget http://dl-cdn.alpinelinux.org/alpine/v$(basename $*)/releases/x86_64/alpine-minirootfs-$*-x86_64.tar.gz
 
-ifneq ($(shell command -v alpine-make-rootfs),)
+ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
 alpine-3.14-chroot:
 alpine-3.15-chroot:
 alpine-3.16-chroot:
@@ -824,8 +824,8 @@ x86_64/libiamroot-musl-x86_64.so.1: | gcompat/libgcompat.so.0
 endif
 endif
 
-ifneq ($(shell command -v pacstrap),)
-ifneq ($(shell command -v aarch64-linux-gnu-gcc),)
+ifneq ($(shell command -v pacstrap 2>/dev/null),)
+ifneq ($(shell command -v aarch64-linux-gnu-gcc 2>/dev/null),)
 .PHONY: aarch64-arch-chroot
 aarch64-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-arch-rootfs
 aarch64-arch-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
@@ -858,7 +858,7 @@ aarch64-arch-rootfs/etc/pacman.d/gnupg: | x86_64/libiamroot-linux-x86-64.so.2
 	mv $@.tmp $@
 endif
 
-ifneq ($(shell command -v armv7l-unknown-linux-gnueabihf-gcc),)
+ifneq ($(shell command -v armv7l-unknown-linux-gnueabihf-gcc 2>/dev/null),)
 .PHONY: armv7h-arch-chroot
 armv7h-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/armv7h-arch-rootfs
 armv7h-arch-chroot: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
@@ -892,8 +892,8 @@ armv7h-arch-rootfs/etc/pacman.d/gnupg: | x86_64/libiamroot-linux-x86-64.so.2
 endif
 endif
 
-ifneq ($(shell command -v dnf),)
-ifneq ($(shell command -v aarch64-linux-gnu-gcc),)
+ifneq ($(shell command -v dnf 2>/dev/null),)
+ifneq ($(shell command -v aarch64-linux-gnu-gcc 2>/dev/null),)
 aarch64-fedora-33-chroot:
 aarch64-fedora-34-chroot:
 aarch64-fedora-35-chroot:
@@ -926,7 +926,7 @@ aarch64-fedora-%-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 
 	rm -f aarch64-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
 endif
 
-ifneq ($(shell command -v armv7l-unknown-linux-gnueabihf-gcc),)
+ifneq ($(shell command -v armv7l-unknown-linux-gnueabihf-gcc 2>/dev/null),)
 armhfp-fedora-33-chroot:
 armhfp-fedora-34-chroot:
 armhfp-fedora-35-chroot:
@@ -958,7 +958,7 @@ armhfp-fedora-%-rootfs/etc/machine-id: | armhf/libiamroot-linux-armhf.so.3 x86_6
 endif
 endif
 
-ifneq ($(shell command -v aarch64-linux-musl-gcc),)
+ifneq ($(shell command -v aarch64-linux-musl-gcc 2>/dev/null),)
 aarch64-rootfs: aarch64-alpine-rootfs
 
 .PHONY: aarch64-mini-chroot
@@ -978,7 +978,7 @@ alpine-minirootfs-3.13.0-aarch64.tar.gz:
 alpine-minirootfs-%-aarch64.tar.gz:
 	wget http://dl-cdn.alpinelinux.org/alpine/v$(basename $*)/releases/aarch64/alpine-minirootfs-$*-aarch64.tar.gz
 
-ifneq ($(shell command -v alpine-make-rootfs),)
+ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
 aarch64-alpine-3.14-chroot:
 aarch64-alpine-3.15-chroot:
 aarch64-alpine-3.16-chroot:

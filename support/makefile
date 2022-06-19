@@ -187,11 +187,11 @@ coverage: gcov/index.html
 .PHONY: gcov/index.html
 gcov/index.html:
 	mkdir -p $(@D)
-	gcovr --html-details --html-title iamroot -s -r $(CURDIR) -o $@ output-x86_64-linux-x86-64/
+	gcovr --html-details --html-title iamroot -s -o $@ output-x86_64-linux-x86-64/
 
 .PHONY: cobertura.xml
 cobertura.xml:
-	gcovr --cobertura -s -r $(CURDIR) -o $@ output-x86_64-linux-x86-64/
+	gcovr --cobertura -s -o $@ output-x86_64-linux-x86-64/
 
 .PHONY: clean
 clean:

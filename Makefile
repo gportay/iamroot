@@ -8,7 +8,7 @@ VERSION = 4
 PREFIX ?= /usr/local
 
 %.o: override CPPFLAGS += -D_GNU_SOURCE -DVERSION=$(VERSION)
-%.o: override CFLAGS += -fPIC -Wall -Wextra -Werror
+%.o: override CFLAGS += -fPIC -Wall -Wextra
 %.so: override LDFLAGS += -nodefaultlibs
 
 ifdef COVERAGE
@@ -166,15 +166,6 @@ libiamroot.so: utimensat.o
 libiamroot.so: utimes.o
 libiamroot.so: whereami.o
 libiamroot.so: whoami.o
-
-fstat.o: CFLAGS += -Wno-error=missing-attributes
-fstat64.o: CFLAGS += -Wno-error=missing-attributes
-fstatat64.o: CFLAGS += -Wno-error=missing-attributes
-lstat64.o: CFLAGS += -Wno-error=missing-attributes
-stat64.o: CFLAGS += -Wno-error=missing-attributes
-statfs.o: CFLAGS += -Wno-error=missing-attributes
-statfs64.o: CFLAGS += -Wno-error=missing-attributes
-utimensat.o: CFLAGS += -Wno-error=missing-attributes
 
 .PHONY: doc
 doc: iamroot-shell.1.gz iamroot.7.gz

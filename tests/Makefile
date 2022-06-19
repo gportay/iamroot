@@ -5,7 +5,7 @@
 #
 
 override CPPFLAGS += -D_GNU_SOURCE -Wno-error=deprecated-declarations
-override CFLAGS += -fPIC -Wall -Wextra -Werror
+override CFLAGS += -fPIC -Wall -Wextra
 
 .PHONY: all
 all: libiamnotroot.so

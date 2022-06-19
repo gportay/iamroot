@@ -1,6 +1,7 @@
 # iamroot
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b167e3d1271545d2b6e1a416bcf3d00d)](https://app.codacy.com/gh/gportay/iamroot?utm_source=github.com&utm_medium=referral&utm_content=gportay/iamroot&utm_campaign=Badge_Grade_Settings)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/db94176b5c354fe7bbdf93a194064140)](https://www.codacy.com/gh/gportay/iamroot/dashboard?utm_source=github.com&utm_medium=referral&utm_content=gportay/iamroot&utm_campaign=Badge_Coverage)
 
 _Disclaimer_: The project is still in development; therefore it is not suitable
 for a production usage. Consult the [changelog] for the recent changes. The

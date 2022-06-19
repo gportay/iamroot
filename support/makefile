@@ -166,7 +166,7 @@ test: | alpine-minirootfs
 .PHONY: coverage
 coverage: gcov/index.html
 
-.PHONY: gcov.html
+.PHONY: gcov/index.html
 gcov/index.html:
 	mkdir -p $(@D)
 	gcovr --html-details --html-title iamroot -s -r $(CURDIR) -o $@ output-x86_64-linux-x86-64/

@@ -94,8 +94,8 @@ output-arm-linux/libiamroot.so: export CC = arm-unknown-linux-gnueabi-gcc
 $(eval $(call libiamroot_so,arm,linux,3))
 endif
 
-ifneq ($(shell command -v armv7l-unknown-linux-gnueabihf-gcc 2>/dev/null),)
-output-armhf-linux-armhf/libiamroot.so: export CC = armv7l-unknown-linux-gnueabihf-gcc
+ifneq ($(shell command -v arm-unknown-linux-gnueabihf-gcc 2>/dev/null),)
+output-armhf-linux-armhf/libiamroot.so: export CC = arm-unknown-linux-gnueabihf-gcc
 $(eval $(call libiamroot_so,armhf,linux-armhf,3))
 endif
 
@@ -956,7 +956,7 @@ aarch64-arch-rootfs/etc/pacman.d/gnupg: | x86_64/libiamroot-linux-x86-64.so.2
 	mv $@.tmp $@
 endif
 
-ifneq ($(shell command -v armv7l-unknown-linux-gnueabihf-gcc 2>/dev/null),)
+ifneq ($(shell command -v arm-unknown-linux-gnueabihf-gcc 2>/dev/null),)
 .PHONY: armv7h-arch-chroot
 armv7h-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/armv7h-arch-rootfs
 armv7h-arch-chroot: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
@@ -1026,7 +1026,7 @@ aarch64-fedora-%-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 
 	rm -f aarch64-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
 endif
 
-ifneq ($(shell command -v armv7l-unknown-linux-gnueabihf-gcc 2>/dev/null),)
+ifneq ($(shell command -v arm-unknown-linux-gnueabihf-gcc 2>/dev/null),)
 armhfp-fedora-33-chroot:
 armhfp-fedora-34-chroot:
 armhfp-fedora-35-chroot:

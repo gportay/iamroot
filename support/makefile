@@ -231,7 +231,6 @@ i686-arch-rootfs: export QEMU_LD_PREFIX = $(CURDIR)/i686-arch-rootfs
 i686-arch-rootfs: | i686-arch-rootfs/etc/machine-id
 
 i686-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/i686-arch-rootfs
-i686-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_2 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
 i686-arch-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/|^$(CURDIR)/output-i686-linux/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-x86_64-linux-x86-64/.*\.gcda
 i686-arch-rootfs/etc/machine-id: export EUID = 0
 i686-arch-rootfs/etc/machine-id: | i686-arch-rootfs/etc/pacman.d/gnupg i686/libiamroot-linux.so.2 x86_64/libiamroot-linux-x86-64.so.2

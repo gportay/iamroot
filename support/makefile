@@ -162,6 +162,7 @@ arm-rootfs:
 
 .PHONY: test
 test: | alpine-minirootfs
+	$(MAKE) -f Makefile $@
 
 .PHONY: coverage
 coverage: gcov/index.html

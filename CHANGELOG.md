@@ -41,6 +41,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   symbols on level 2
 - Output the `root` directory for the functions `__fpathperror()`,
   `__pathperror()` and `__pathperror2()`
+- Output the `ENOSYS` `errno` error returned by the original symbols on the
+  notice debug level
 
 ### Deprecated
 

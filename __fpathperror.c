@@ -28,7 +28,7 @@ void __fpathperror(int fd, const char *s)
 	}
 	buf[siz] = 0; /* ensure NULL terminated */
 
-	if ((errno != EPERM) && (errno != EACCES)) {
+	if ((errno != EPERM) && (errno != EACCES) && (errno != ENOSYS)) {
 		__info("%s: %i <-> %s: %s: %m\n", getrootdir(), fd, buf, s);
 		return;
 	}

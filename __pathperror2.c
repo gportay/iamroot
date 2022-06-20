@@ -12,7 +12,7 @@
 __attribute__((visibility("hidden")))
 void __pathperror2(const char *oldpath, const char *newpath, const char *s)
 {
-	if ((errno != EPERM) && (errno != EACCES)) {
+	if ((errno != EPERM) && (errno != EACCES) && (errno != ENOSYS)) {
 		__info("%s: %s: %s: %s: %m\n", getrootdir(), oldpath, newpath,
 		       s);
 		return;

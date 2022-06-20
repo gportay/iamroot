@@ -919,9 +919,6 @@ aarch64-fedora-34-rootfs: | aarch64-fedora-34-rootfs/etc/machine-id
 aarch64-fedora-35-rootfs: | aarch64-fedora-35-rootfs/etc/machine-id
 aarch64-fedora-36-rootfs: | aarch64-fedora-36-rootfs/etc/machine-id
 
-aarch64-fedora-33-rootfs/etc/machine-id: FEDORA_REPO = support/fedora-archive.repo
-aarch64-fedora-33-rootfs/etc/machine-id:
-
 aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib64/ldb:/usr/lib64:/lib64
 aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-aarch64-linux-aarch64/.*\.gcda|^$(CURDIR)/aarch64-fedora-$*-rootfs/var/log/dnf.rpm.log
 aarch64-fedora-%-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2

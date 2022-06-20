@@ -919,6 +919,11 @@ aarch64-fedora-34-rootfs: | aarch64-fedora-34-rootfs/etc/machine-id
 aarch64-fedora-35-rootfs: | aarch64-fedora-35-rootfs/etc/machine-id
 aarch64-fedora-36-rootfs: | aarch64-fedora-36-rootfs/etc/machine-id
 
+aarch64-fedora-33-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib64/ldb/modules/ldb/tdb.so:/usr/lib64/ldb/modules/ldb/mdb.so:/usr/lib64/ldb/modules/ldb/ldb.so
+aarch64-fedora-33-rootfs/etc/machine-id:
+aarch64-fedora-34-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib64/ldb/modules/ldb/tdb.so:/usr/lib64/ldb/modules/ldb/mdb.so:/usr/lib64/ldb/modules/ldb/ldb.so
+aarch64-fedora-34-rootfs/etc/machine-id:
+
 aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib64/ldb:/usr/lib64:/lib64
 aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-aarch64-linux-aarch64/.*\.gcda|^$(CURDIR)/aarch64-fedora-$*-rootfs/var/log/dnf.rpm.log
 aarch64-fedora-%-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
@@ -947,6 +952,11 @@ armhfp-fedora-33-rootfs: | armhfp-fedora-33-rootfs/etc/machine-id
 armhfp-fedora-34-rootfs: | armhfp-fedora-34-rootfs/etc/machine-id
 armhfp-fedora-35-rootfs: | armhfp-fedora-35-rootfs/etc/machine-id
 armhfp-fedora-36-rootfs: | armhfp-fedora-36-rootfs/etc/machine-id
+
+armhfp-fedora-33-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib/ldb/modules/ldb/tdb.so:/usr/lib/ldb/modules/ldb/mdb.so:/usr/lib/ldb/modules/ldb/ldb.so
+armhfp-fedora-33-rootfs/etc/machine-id:
+armhfp-fedora-34-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib/ldb/modules/ldb/tdb.so:/usr/lib/ldb/modules/ldb/mdb.so:/usr/lib/ldb/modules/ldb/ldb.so
+armhfp-fedora-34-rootfs/etc/machine-id:
 
 armhfp-fedora-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib/ldb:/usr/lib:/lib
 armhfp-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_ALLOW = ^/var/run/(console|sepermit|faillock)

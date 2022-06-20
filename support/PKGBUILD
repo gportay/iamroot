@@ -28,11 +28,11 @@ prepare() {
 
 build() {
 	cd "$srcdir/$pkgname"
-	make -f support/makefile x86_64/libiamroot-linux-x86-64.so.2
-	make -f support/makefile x86_64/libiamroot-musl-x86_64.so.1
-	make CFLAGS= -f support/makefile aarch64/libiamroot-linux-aarch64.so.1
-	make CFLAGS= -f support/makefile aarch64/libiamroot-musl-aarch64.so.1
-	make -f support/makefile doc
+	make x86_64/libiamroot-linux-x86-64.so.2
+	make x86_64/libiamroot-musl-x86_64.so.1
+	make CFLAGS= aarch64/libiamroot-linux-aarch64.so.1
+	make CFLAGS= aarch64/libiamroot-musl-aarch64.so.1
+	make doc
 }
 
 check() {
@@ -42,11 +42,11 @@ check() {
 
 package() {
 	cd "$srcdir/$pkgname"
-	make PREFIX=/usr DESTDIR="$pkgdir" -f support/makefile install-exec-x86_64-linux-x86-64.2
-	make PREFIX=/usr DESTDIR="$pkgdir" -f support/makefile install-exec-x86_64-musl-x86_64.1
-	make PREFIX=/usr DESTDIR="$pkgdir" -f support/makefile install-exec-aarch64-linux-aarch64.1
-	make PREFIX=/usr DESTDIR="$pkgdir" -f support/makefile install-exec-aarch64-musl-aarch64.1
-	make PREFIX=/usr DESTDIR="$pkgdir" -f support/makefile install-doc
-	make PREFIX=/usr DESTDIR="$pkgdir" -f support/makefile install-bash-completion
+	make PREFIX=/usr DESTDIR="$pkgdir" install-exec-x86_64-linux-x86-64.2
+	make PREFIX=/usr DESTDIR="$pkgdir" install-exec-x86_64-musl-x86_64.1
+	make PREFIX=/usr DESTDIR="$pkgdir" install-exec-aarch64-linux-aarch64.1
+	make PREFIX=/usr DESTDIR="$pkgdir" install-exec-aarch64-musl-aarch64.1
+	make PREFIX=/usr DESTDIR="$pkgdir" install-doc
+	make PREFIX=/usr DESTDIR="$pkgdir" install-bash-completion
 	install -D -m 644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }

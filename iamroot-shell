@@ -30,6 +30,8 @@ POSIX Shell related options:
 iamroot specific options:
       --chroot DIR              Absolute path to the root directory to chroot
                                 in.
+      --profile-file FILE       Execute initialization file from FILE.
+      --rc-file FILE            Execute commands from FILE.
       --path PATH               PATH to use in chroot.
       --library-path PATH       LD_LIBRARY_PATH to use in chroot.
       --exec FILE               Absolute path to the iamroot exec script to
@@ -64,6 +66,12 @@ Environment variables:
 
       IAMROOT_ROOT              Set absolute path to root directory to chroot
                                 in. Equivalent to --chroot DIR.
+
+      IAMROOT_PROFILE_FILE      Set path to initialization file.
+                                Equivalent to --profile-file FILE.
+
+      IAMROOT_RC_FILE           Set path to command file.
+                                Equivalent to --rc-file FILE.
 
       IAMROOT_PATH              Set PATH to use in chroot.
                                 Equivalent to --path PATH.
@@ -176,6 +184,16 @@ do
 		shift
 		IAMROOT_EXEC="$1"
 		export IAMROOT_EXEC
+	elif [[ "$1" == "--rc-file" ]]
+	then
+		shift
+		IAMROOT_RC_FILE="$1"
+		export IAMROOT_RC_FILE
+	elif [[ "$1" == "--profile-file" ]]
+	then
+		shift
+		IAMROOT_PROFILE_FILE="$1"
+		export IAMROOT_PROFILE_FILE
 	elif [[ "$1" == "--chroot" ]]
 	then
 		shift
@@ -205,6 +223,18 @@ if [[ "${IAMROOT_DEBUG_FD:-}" ]] && [[ ! -e "/proc/$$/$IAMROOT_DEBUG_FD" ]]
 then
 	exec {IAMROOT_DEBUG_FD}>&2
 fi
+
+for i in "${IAMROOT_PROFILE_FILE:-}" "${IAMROOT_RC_FILE:-}"
+do
+	if [[ ! "$i" ]]
+	then
+		continue
+	fi
+
+	cd "${i%/*}"
+	PWD="$OLDPWD" source "${i##*/}"
+	cd "$OLDPWD"
+done
 
 IAMROOTLVL="$((IAMROOTLVL+1))" \
 LD_PRELOAD="$IAMROOT_LIB${LD_PRELOAD+:$LD_PRELOAD}" \

@@ -223,7 +223,7 @@ ci: check test
 
 .PHONY: check
 check:
-	shellcheck -e SC3037 iamroot-shell exec.sh
+	shellcheck -e SC1090 -e SC3037 iamroot-shell exec.sh
 
 .PHONY: test
 test: | x86_64/libiamroot-linux-x86-64.so.2

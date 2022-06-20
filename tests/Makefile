@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
 
-override CPPFLAGS += -D_GNU_SOURCE -Wno-error=deprecated-declarations
+override CPPFLAGS += -D_GNU_SOURCE
 override CFLAGS += -fPIC -Wall -Wextra
 
 .PHONY: all

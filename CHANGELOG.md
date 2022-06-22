@@ -62,6 +62,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `name_to_handle_at()`, `unlinkat()` and `utimensat()`
 - Fix the execution of un-handled commands from the host environment while
   running the script `exec.sh`
+- Fix the value of `IAMROOT_LIB` accross the `execve` calls
 
 ### Security
 

@@ -976,33 +976,50 @@ static char *__getlibiamroot(const char *ldso, int abi)
 
 	ret = getenv(buf);
 	if (ret)
-		return ret;
+		goto exit;
 
 	/* IAMROOT_LIB_LINUX_2 */
-	if (__streq(ldso, "linux") && abi == 2)
-		return "/usr/lib/iamroot/i686/libiamroot-linux.so.2";
+	if (__streq(ldso, "linux") && abi == 2) {
+		ret = "/usr/lib/iamroot/i686/libiamroot-linux.so.2";
+		goto exit;
+	}
 
 	/* IAMROOT_LIB_LINUX_X86_64_2 */
-	if (__streq(ldso, "linux-x86-64") && abi == 2)
-		return "/usr/lib/iamroot/x86_64/libiamroot-linux-x86-64.so.2";
+	if (__streq(ldso, "linux-x86-64") && abi == 2) {
+		ret = "/usr/lib/iamroot/x86_64/libiamroot-linux-x86-64.so.2";
+		goto exit;
+	}
 	
 	/* IAMROOT_LIB_LINUX_ARMHF_3 */
-	if (__streq(ldso, "linux-armhf") && abi == 3)
-		return "/usr/lib/iamroot/armhf/libiamroot-linux-armhf.so.3";
+	if (__streq(ldso, "linux-armhf") && abi == 3) {
+		ret = "/usr/lib/iamroot/armhf/libiamroot-linux-armhf.so.3";
+		goto exit;
+	}
 
 	/* IAMROOT_LIB_LINUX_AARCH64_1 */
-	if (__streq(ldso, "linux-aarch64") && abi == 1)
-		return "/usr/lib/iamroot/aarch64/libiamroot-linux-aarch64.so.1";
+	if (__streq(ldso, "linux-aarch64") && abi == 1) {
+		ret = "/usr/lib/iamroot/aarch64/libiamroot-linux-aarch64.so.1";
+		goto exit;
+	}
 
 	/* IAMROOT_LIB_MUSL_X86_64_1 */
-	if (__streq(ldso, "musl-x86_64") && abi == 1)
-		return "/usr/lib/iamroot/x86_64/libiamroot-musl-x86_64.so.1";
+	if (__streq(ldso, "musl-x86_64") && abi == 1) {
+		ret = "/usr/lib/iamroot/x86_64/libiamroot-musl-x86_64.so.1";
+		goto exit;
+	}
 
 	/* IAMROOT_LIB_MUSL_AARCH64_1 */
-	if (__streq(ldso, "musl-aarch64") && abi == 1)
-		return "/usr/lib/iamroot/aarch64/libiamroot-musl-aarch64.so.1";
+	if (__streq(ldso, "musl-aarch64") && abi == 1) {
+		ret = "/usr/lib/iamroot/aarch64/libiamroot-musl-aarch64.so.1";
+		goto exit;
+	}
 
-	return "/usr/lib/iamroot/libiamroot.so";
+	ret = "/usr/lib/iamroot/libiamroot.so";
+exit:
+	if (setenv("IAMROOT_LIB", ret, 1))
+		return NULL;
+
+	return getenv("IAMROOT_LIB");
 }
 
 static char *__getld_preload(const char *ldso, int abi)

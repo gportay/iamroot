@@ -7,7 +7,8 @@ pkgdesc='Emulating the syscall chroot(2) in an unpriviliged process'
 arch=('x86_64')
 url="https://github.com/gportay/$pkgname"
 license=('GPL')
-makedepends=('i386-musl'
+makedepends=('lib32-glibc'
+             'i386-musl'
              'kernel-headers-musl-i386'
              'musl'
              'kernel-headers-musl'

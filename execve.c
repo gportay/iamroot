@@ -1045,11 +1045,7 @@ static char *__getld_preload(const char *ldso, int abi)
 	if (__streq(ldso, "linux-x86-64") && abi == 2)
 		return "/usr/lib64/libc.so.6:/usr/lib64/libdl.so.2";
 
-	/* IAMROOT_LIB_MUSL_X86_64_1 */
-	if (__streq(ldso, "musl-x86_64") && abi == 1)
-		return "";
-
-	return "/usr/lib:/lib";
+	return "";
 }
 
 static char *__getld_library_path(const char *ldso, int abi)

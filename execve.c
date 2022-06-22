@@ -1099,7 +1099,9 @@ char *__ld_preload(const char *ldso, int abi)
 	if (ret)
 		return NULL;
 
-	ret = pathprependenv(buf, __getlibiamroot(ldso, abi), 1);
+	__strncpy(val, __getlibiamroot(ldso, abi));
+
+	ret = pathprependenv(buf, val, 1);
 	if (ret)
 		return NULL;
 
@@ -1134,7 +1136,9 @@ char *__ld_library_path(const char *ldso, int abi)
 		if (ret)
 			return NULL;
 
-		ret = pathprependenv(buf, getenv("iamroot_rpath"), 1);
+		__strncpy(val, getenv("iamroot_rpath"));
+
+		ret = pathprependenv(buf, val, 1);
 		if (ret)
 			return NULL;
 	}
@@ -1147,7 +1151,9 @@ char *__ld_library_path(const char *ldso, int abi)
 		if (ret)
 			return NULL;
 
-		ret = pathprependenv(buf, getenv("iamroot_runpath"), 1);
+		__strncpy(val, getenv("iamroot_runpath"));
+
+		ret = pathprependenv(buf, val, 1);
 		if (ret)
 			return NULL;
 	}

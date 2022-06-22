@@ -823,7 +823,7 @@ clean-gcompat:
 	-$(MAKE) -C gcompat clean
 
 ifdef COVERAGE
-IAMROOT_LIB_MUSL_X86_64_1 += :$(CURDIR)/gcompat/libgcompat.so.0
+IAMROOT_LIB_MUSL_X86_64_1 := $(IAMROOT_LIB_MUSL_X86_64_1):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64/libiamroot-musl-x86_64.so.1: | gcompat/libgcompat.so.0
 endif
 endif

@@ -877,7 +877,7 @@ gcompat/libgcompat.so.0: | gcompat/Makefile
 
 .PRECIOUS: gcompat/Makefile
 gcompat/Makefile:
-	git clone https://code.foxkit.us/adelie/gcompat.git
+	git clone https://git.adelielinux.org/adelie/gcompat.git
 
 clean: clean-gcompat
 

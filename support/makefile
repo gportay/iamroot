@@ -867,9 +867,10 @@ umount-alpine-3.16:
 umount-alpine-edge:
 endif
 
-.PRECIOUS: gcompat/ld-linux.so.2
-gcompat/ld-linux.so.2: | gcompat/Makefile
-	$(MAKE) -C gcompat ld-linux.so.2 CC=musl-gcc
+.PRECIOUS: gcompat/ld-%
+gcompat/ld-%: LOADER_NAME=ld-$*
+gcompat/ld-%: | gcompat/Makefile
+	$(MAKE) -C gcompat $(@F) LOADER_NAME=ld-$* CC=musl-gcc
 
 .PRECIOUS: gcompat/libgcompat.so.0
 gcompat/libgcompat.so.0: | gcompat/Makefile
@@ -884,6 +885,7 @@ clean: clean-gcompat
 .PHONY: clean-gcompat
 clean-gcompat:
 	-$(MAKE) -C gcompat clean
+	rm -f gcompat/ld-*.so*
 
 ifdef COVERAGE
 IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0

@@ -85,7 +85,7 @@ test: PATH := $(CURDIR):$(PATH)
 test: PREFIX = /usr
 test: export LD_PRELOAD = $(IAMROOT_LIB)
 test: export LD_LIBRARY_PATH := $(CURDIR):/usr/lib64:/lib64
-test: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|$(IAMROOT_LIB)|/lib64/ld-linux-x86-64.so.2
+test: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|$(IAMROOT_LIB)
 test: export IAMROOT_FATAL = 1
 test: | rootfs
 	rm -Rf rootfs/tmp/* rootfs/dev/*

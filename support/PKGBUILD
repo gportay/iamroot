@@ -1,7 +1,7 @@
 # Maintainer: Gaël PORTAY <gael.portay@collabora.com>
 
 pkgname=iamroot-git
-pkgver=master
+pkgver=r1011.a4f354c
 pkgrel=1
 pkgdesc='Emulating the syscall chroot(2) in an unpriviliged process'
 arch=('x86_64')
@@ -16,6 +16,7 @@ makedepends=('i386-musl'
              'aarch64-linux-musl'
              'aarch64-linux-gnu-gcc'
              'kernel-headers-musl-aarch64'
+             'git'
              'asciidoctor')
 checkdepends=('shellcheck')
 provides=("${pkgname%-git}")

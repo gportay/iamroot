@@ -26,7 +26,7 @@ export IAMROOT_LIB_LINUX_ARMHF_3
 IAMROOT_LIB_LINUX_AARCH64_1 = $(CURDIR)/aarch64/libiamroot-linux-aarch64.so.1
 export IAMROOT_LIB_LINUX_AARCH64_1
 
-IAMROOT_LIB_MUSL_I386_1 = $(CURDIR)/x86/libiamroot-musl-i386.so.1
+IAMROOT_LIB_MUSL_I386_1 = $(CURDIR)/i686/libiamroot-musl-i386.so.1
 export IAMROOT_LIB_MUSL_I386_1
 
 IAMROOT_LIB_MUSL_X86_64_1 = $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1
@@ -107,7 +107,7 @@ endif
 ifneq ($(shell command -v i386-musl-gcc 2>/dev/null),)
 x86/libiamroot-musl-i386.so.1: export CC = i386-musl-gcc
 x86/libiamroot-musl-i386.so.1: export CFLAGS += -fno-stack-protector
-$(eval $(call libiamroot_so,x86,musl-i386,1))
+$(eval $(call libiamroot_so,i686,musl-i386,1))
 endif
 
 ifneq ($(shell command -v musl-gcc 2>/dev/null),)

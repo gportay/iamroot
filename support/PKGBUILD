@@ -21,6 +21,7 @@ makedepends=('i386-musl'
 checkdepends=('shellcheck')
 provides=("${pkgname%-git}")
 conflicts=("${pkgname%-git}")
+options=('!strip')
 source=("$pkgname::git+https://github.com/gportay/${pkgname%-git}.git")
 sha256sums=('SKIP')
 validpgpkeys=('8F3491E60E62695ED780AC672FA122CA0501CA71')

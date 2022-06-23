@@ -867,12 +867,15 @@ umount-alpine-3.16:
 umount-alpine-edge:
 endif
 
+.PRECIOUS: gcompat/ld-linux.so.2
 gcompat/ld-linux.so.2: | gcompat/Makefile
 	$(MAKE) -C gcompat ld-linux.so.2 CC=musl-gcc
 
+.PRECIOUS: gcompat/libgcompat.so.0
 gcompat/libgcompat.so.0: | gcompat/Makefile
 	$(MAKE) -C gcompat libgcompat.so.0 CC=musl-gcc LDFLAGS+=-nostdlib
 
+.PRECIOUS: gcompat/Makefile
 gcompat/Makefile:
 	git clone https://code.foxkit.us/adelie/gcompat.git
 

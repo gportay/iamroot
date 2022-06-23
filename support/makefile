@@ -105,8 +105,8 @@ $(eval $(call libiamroot_so,aarch64,linux-aarch64,1))
 endif
 
 ifneq ($(shell command -v i386-musl-gcc 2>/dev/null),)
-x86/libiamroot-musl-i386.so.1: export CC = i386-musl-gcc
-x86/libiamroot-musl-i386.so.1: export CFLAGS += -fno-stack-protector
+i686/libiamroot-musl-i386.so.1: export CC = i386-musl-gcc
+i686/libiamroot-musl-i386.so.1: export CFLAGS += -fno-stack-protector
 $(eval $(call libiamroot_so,i686,musl-i386,1))
 endif
 

@@ -23,7 +23,7 @@ void __fpathperror(int fd, const char *s)
 	if (siz == -1) {
 		__notice("%s: %i: %s: %s\n", getrootdir(), fd, s,
 			 strerror(err));
-		err = errno;
+		errno = err;
 		return;
 	}
 	buf[siz] = 0; /* ensure NULL terminated */

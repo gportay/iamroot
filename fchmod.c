@@ -13,7 +13,12 @@
 
 int fchmod(int fd, mode_t mode)
 {
+	int flags = AT_EMPTY_PATH;
+
 	__debug("%s(fd: %i, mode: 0%03o)\n", __func__, fd, mode);
 
-	return fchmodat(fd, "", mode, 0);
+#ifdef __linux__
+	flags = 0;
+#endif
+	return fchmodat(fd, "", mode, flags);
 }

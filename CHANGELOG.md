@@ -26,6 +26,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `removexattr()` and `setxattr()`
 - Remove the suffix `_<ldso>_<abi>` in the variables `ld_library_path` and
   `ld_preload`
+- Forward the `AT` flag `AT_EMPTY_PATH` from the functions `fchmod()` and
+  `fchown()` to `fchmodat()` and `fchownat()`; except for `chmod()` on Linux 
 
 ### Fixed
 

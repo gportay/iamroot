@@ -16,5 +16,5 @@ int fchown(int fd, uid_t owner, gid_t group)
 	__debug("%s(fd: %i, owner: %i, group: %i)\n", __func__, fd, owner,
 		group);
 
-	return fchownat(fd, "", owner, group, 0);
+	return fchownat(fd, "", owner, group, AT_EMPTY_PATH);
 }

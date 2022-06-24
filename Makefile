@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
 
-VERSION = 4
+VERSION = 5
 PREFIX ?= /usr/local
 
 %.o: override CPPFLAGS += -D_GNU_SOURCE -DVERSION=$(VERSION)

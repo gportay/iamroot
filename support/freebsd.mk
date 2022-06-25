@@ -7,6 +7,9 @@
 IAMROOT_LIB = $(CURDIR)/x86_64/libiamroot-elf.so.1
 export IAMROOT_LIB
 
+IAMROOT_PATH_RESOLUTION_IGNORE = ^/(dev|var/run)/|^/etc/resolv.conf
+export IAMROOT_PATH_RESOLUTION_IGNORE
+
 -include local.mk
 
 .PHONY: all

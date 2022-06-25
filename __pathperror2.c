@@ -13,11 +13,21 @@ __attribute__((visibility("hidden")))
 void __pathperror2(const char *oldpath, const char *newpath, const char *s)
 {
 	if ((errno != EPERM) && (errno != EACCES) && (errno != ENOSYS)) {
+#ifdef __FreeBSD__
+		__info("%s: %s: %s: %s: %i\n", getrootdir(), oldpath, newpath,
+		       s, errno);
+#else
 		__info("%s: %s: %s: %s: %m\n", getrootdir(), oldpath, newpath,
 		       s);
+#endif
 		return;
 	}
 
+#ifdef __FreeBSD__
+	__note_or_fatal("%s: %s: %s: %s: %i\n", getrootdir(), oldpath, newpath,
+			s, errno);
+#else
 	__note_or_fatal("%s: %s: %s: %s: %m\n", getrootdir(), oldpath, newpath,
 			s);
+#endif
 }

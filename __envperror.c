@@ -12,5 +12,9 @@
 __attribute__((visibility("hidden")))
 void __envperror(const char *name, const char *s)
 {
+#ifdef __FreeBSD__
+	__note_or_fatal("%s: %s: %i\n", name, s, errno);
+#else
 	__note_or_fatal("%s: %s: %m\n", name, s);
+#endif
 }

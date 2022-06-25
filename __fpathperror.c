@@ -21,17 +21,31 @@ void __fpathperror(int fd, const char *s)
 	err = errno;
 	siz = __procfdreadlink(fd, buf, sizeof(buf));
 	if (siz == -1) {
+#ifdef __FreeBSD__
+		__notice("%s: %i: %s: %i\n", getrootdir(), fd, s, errno);
+#else
 		__notice("%s: %i: %s: %s\n", getrootdir(), fd, s,
 			 strerror(err));
+#endif
 		errno = err;
 		return;
 	}
 	buf[siz] = 0; /* ensure NULL terminated */
 
 	if ((errno != EPERM) && (errno != EACCES) && (errno != ENOSYS)) {
+#ifdef __FreeBSD__
+		__info("%s: %i <-> %s: %s: %i\n", getrootdir(), fd, buf, s,
+		       errno);
+#else
 		__info("%s: %i <-> %s: %s: %m\n", getrootdir(), fd, buf, s);
+#endif
 		return;
 	}
 
+#ifdef __FreeBSD__
+	__note_or_fatal("%s: %i <-> %s: %s: %i\n", getrootdir(), fd, buf, s,
+			errno);
+#else
 	__note_or_fatal("%s: %i <-> %s: %s: %m\n", getrootdir(), fd, buf, s);
+#endif
 }

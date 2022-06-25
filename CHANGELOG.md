@@ -28,6 +28,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `ld_preload`
 - Forward the `AT` flag `AT_EMPTY_PATH` from the functions `fchmod()` and
   `fchown()` to `fchmodat()` and `fchownat()`; except for `chmod()` on Linux 
+- Be kind and do not prepend the root directory twice if it is part of the path
+  to resolve already
 
 ### Fixed
 

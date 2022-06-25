@@ -1281,8 +1281,7 @@ support: fedora-support
 support: alpine-support
 
 .PHONY: extra-support
-# FIXME: openSUSE is currently broken.
-# extra-support: opensuse-support
+extra-support: opensuse-support
 extra-support: manjaro-support
 
 .PHONY: fixme-support
@@ -1315,7 +1314,8 @@ fedora-support: support/fedora-35-rootfs.txt
 fedora-support: support/fedora-36-rootfs.txt
 
 .PHONY: opensuse-support
-opensuse-support: support/opensuse-leaf-rootfs.txt
+# FIXME: openSUSE Leaf is currently broken.
+# opensuse-support: support/opensuse-leaf-rootfs.txt
 opensuse-support: support/opensuse-tumbleweed-rootfs.txt
 
 .PHONY: alpine-support

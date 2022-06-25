@@ -1299,26 +1299,31 @@ Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains 
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'
 Creating group 'systemd-journal' with GID 499.
 Warning: /opensuse-tumbleweed-rootfs/etc: contains root directory '/opensuse-tumbleweed-rootfs'
-Failed to write files: No such file or directory
+Warning: /opensuse-tumbleweed-rootfs/etc: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'
-Creating group 'systemd-network' with GID 499.
-Creating user 'systemd-network' (systemd Network Management) with UID 499 and GID 499.
+Creating group 'systemd-network' with GID 498.
+Creating user 'systemd-network' (systemd Network Management) with UID 498 and GID 498.
 Warning: /opensuse-tumbleweed-rootfs/etc: contains root directory '/opensuse-tumbleweed-rootfs'
-Failed to write files: No such file or directory
+Warning: /opensuse-tumbleweed-rootfs/etc: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/etc: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/etc: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/etc: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'
-Creating group 'systemd-timesync' with GID 499.
-Creating user 'systemd-timesync' (systemd Time Synchronization) with UID 499 and GID 499.
+Creating group 'systemd-timesync' with GID 497.
+Creating user 'systemd-timesync' (systemd Time Synchronization) with UID 497 and GID 497.
 Warning: /opensuse-tumbleweed-rootfs/etc: contains root directory '/opensuse-tumbleweed-rootfs'
-Failed to write files: No such file or directory
+Warning: /opensuse-tumbleweed-rootfs/etc: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/etc: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/etc: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/etc: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/var/lib/systemd: contains root directory '/opensuse-tumbleweed-rootfs'
-Failed to synchronize seed file: No such file or directory
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'
@@ -1336,12 +1341,6 @@ All rules containing unresolvable specifiers will be skipped.
 /usr/lib/tmpfiles.d/suse.conf:13: Failed to resolve group 'utmp'.
 /usr/lib/tmpfiles.d/suse.conf:14: Failed to resolve group 'utmp'.
 /usr/lib/tmpfiles.d/suse.conf:15: Failed to resolve group 'utmp'.
-/usr/lib/tmpfiles.d/systemd.conf:19: Failed to resolve user 'systemd-network': No such file or directory
-/usr/lib/tmpfiles.d/systemd.conf:20: Failed to resolve user 'systemd-network': No such file or directory
-/usr/lib/tmpfiles.d/systemd.conf:21: Failed to resolve user 'systemd-network': No such file or directory
-/usr/lib/tmpfiles.d/systemd.conf:22: Failed to resolve user 'systemd-network': No such file or directory
-/usr/lib/tmpfiles.d/systemd.conf:26: Failed to resolve group 'systemd-journal'.
-/usr/lib/tmpfiles.d/systemd.conf:29: Failed to resolve group 'systemd-journal'.
 
 Retrieving package sysuser-shadow (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: sysuser-shadow [done]
@@ -1360,46 +1359,284 @@ warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'
-Creating group 'kmem' with GID 499.
-Creating group 'lock' with GID 498.
+Creating group 'kmem' with GID 496.
+Creating group 'lock' with GID 495.
 Creating group 'tty' with GID 5.
-Creating group 'utmp' with GID 497.
-Creating group 'audio' with GID 496.
-Creating group 'cdrom' with GID 495.
-Creating group 'dialout' with GID 494.
-Creating group 'disk' with GID 493.
-Creating group 'input' with GID 492.
-Creating group 'lp' with GID 491.
-Creating group 'render' with GID 490.
-Creating group 'sgx' with GID 489.
-Creating group 'tape' with GID 488.
-Creating group 'video' with GID 487.
-Creating group 'systemd-journal' with GID 486.
-Creating group 'messagebus' with GID 485.
-Creating user 'messagebus' (User for D-Bus) with UID 485 and GID 485.
-Creating group 'systemd-network' with GID 484.
-Creating user 'systemd-network' (systemd Network Management) with UID 484 and GID 484.
-Creating group 'systemd-timesync' with GID 483.
-Creating user 'systemd-timesync' (systemd Time Synchronization) with UID 483 and GID 483.
+Creating group 'utmp' with GID 494.
+Creating group 'audio' with GID 493.
+Creating group 'cdrom' with GID 492.
+Creating group 'dialout' with GID 491.
+Creating group 'disk' with GID 490.
+Creating group 'input' with GID 489.
+Creating group 'lp' with GID 488.
+Creating group 'render' with GID 487.
+Creating group 'sgx' with GID 486.
+Creating group 'tape' with GID 485.
+Creating group 'video' with GID 484.
+Creating group 'messagebus' with GID 483.
+Creating user 'messagebus' (User for D-Bus) with UID 483 and GID 483.
 Warning: /opensuse-tumbleweed-rootfs/etc: contains root directory '/opensuse-tumbleweed-rootfs'
-Failed to write files: No such file or directory
-error: %prein(system-group-hardware-20170617-24.9.noarch) scriptlet failed, exit status 1
-error: system-group-hardware-20170617-24.9.noarch: install failed
-error]
-Installation of system-group-hardware-20170617-24.9.noarch failed:
-Error: Subprocess failed. Error: RPM failed: Command exited with status 1.
-Abort, retry, ignore? [a/r/i] (a): a
-Warning: %posttrans scripts skipped while aborting:
-    openSUSE-release-20220628-1692.1.x86_64.rpm
-    login_defs-4.11.1-1.7.noarch.rpm
-    coreutils-9.1-2.3.x86_64.rpm
-    systemd-presets-common-SUSE-15-24.1.noarch.rpm
-    rpm-4.17.0-8.1.x86_64.rpm
-    ca-certificates-mozilla-2.52-1.4.noarch.rpm
-    systemd-presets-branding-openSUSE-12.2-20.1.noarch.rpm
-    pam-1.5.2-6.5.x86_64.rpm
-    kbd-2.4.0-9.3.x86_64.rpm
+Warning: /opensuse-tumbleweed-rootfs/etc: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/etc: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/etc: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/etc: contains root directory '/opensuse-tumbleweed-rootfs'
 
-Problem occurred during or after installation or removal of packages:
-Installation has been aborted as directed.
-Please see the above error message for a hint.
+Retrieving package libnsl3 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libnsl3.rpm [done]
+(XXX/XXX) Installing: libnsl3 [done]
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libnsl3-2.0.0-1.10.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+Retrieving package libcurl4 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libcurl4.rpm [done]
+(XXX/XXX) Installing: libcurl4 [done]
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libcurl4-7.83.1-1.2.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+Retrieving package aaa_base-extras (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: aaa_base-extras.rpm [done]
+(XXX/XXX) Installing: aaa_base-extras [done]
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/aaa_base-extras-84.87+git20220518.dc83f4e-1.2.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+Updating /etc/sysconfig/backup ...
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'
+Created symlink /etc/systemd/system/timers.target.wants/backup-rpmdb.timer -> /usr/lib/systemd/system/backup-rpmdb.timer.
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'
+Created symlink /etc/systemd/system/timers.target.wants/backup-sysconfig.timer -> /usr/lib/systemd/system/backup-sysconfig.timer.
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'
+Created symlink /etc/systemd/system/timers.target.wants/check-battery.timer -> /usr/lib/systemd/system/check-battery.timer.
+
+Retrieving package libutempter0 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libutempter0.rpm [done]
+(XXX/XXX) Installing: libutempter0 [done]
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libutempter0-1.2.0-3.23.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+FIXME: Command is skipped: /usr/bin/chkstat -n --set --system /usr/libexec/utempter/utempter
+
+Retrieving package python310-base (XXX/XXX), XXX.X MiB ( XXX.X MiB unpacked)
+Retrieving: python310-base.rpm [done]
+(XXX/XXX) Installing: python310-base [done]
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python310-base-3.10.5-2.1.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+Retrieving package libpython3_10-1_0 (XXX/XXX), XXX.X MiB ( XXX.X MiB unpacked)
+Retrieving: libpython3_10-1_0.rpm [done]
+(XXX/XXX) Installing: libpython3_10-1_0 [done]
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpython3_10-1_0-3.10.5-2.1.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+Retrieving package util-linux (XXX/XXX), XXX.X MiB ( XXX.X MiB unpacked)
+Retrieving: util-linux.rpm [done]
+(XXX/XXX) Installing: util-linux [done]
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/util-linux-2.37.4-1.5.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+FIXME: Command is skipped: /usr/bin/chkstat -n --set --system /usr/bin/wall /usr/bin/write /usr/bin/mount /usr/bin/umount
+FIXME: Command is skipped: /usr/bin/chkstat -n --set --system /usr/bin/su
+
+Retrieving package python310-pyparsing (XXX/XXX), XXX.X KiB ( XXX.X MiB unpacked)
+Retrieving: python310-pyparsing [done]
+(XXX/XXX) Installing: python310-pyparsing [done]
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/python310-pyparsing-3.0.7-1.6.noarch.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+Retrieving package python310-ordered-set (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: python310-ordered-set [done]
+(XXX/XXX) Installing: python310-ordered-set [done]
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/python310-ordered-set-4.0.2-2.5.noarch.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+Retrieving package python310-appdirs (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: python310-appdirs [done]
+(XXX/XXX) Installing: python310-appdirs [done]
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/python310-appdirs-1.4.4-3.6.noarch.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+Retrieving package dbus-1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: dbus-1.rpm [done]
+(XXX/XXX) Installing: dbus-1 [done]
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/dbus-1-1.14.0-4.1.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+/usr/bin/systemd-sysusers --replace=/usr/lib/sysusers.d/dbus.conf -
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'
+
+FIXME: Command is skipped: /usr/bin/chkstat -n --set --system /usr/libexec/dbus-1/dbus-daemon-launch-helper
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'
+
+Retrieving package python310-packaging (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: python310-packaging [done]
+(XXX/XXX) Installing: python310-packaging [done]
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/python310-packaging-21.3-3.2.noarch.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+Retrieving package util-linux-systemd (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: util-linux-systemd.rpm [done]
+(XXX/XXX) Installing: util-linux-systemd [done]
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/util-linux-systemd-2.37.4-1.5.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'
+Created symlink /etc/systemd/system/timers.target.wants/fstrim.timer -> /usr/lib/systemd/system/fstrim.timer.
+
+Retrieving package python310-setuptools (XXX/XXX),  XXX.X KiB ( XXX.X MiB unpacked)
+Retrieving: python310-setuptools [done]
+(XXX/XXX) Installing: python310-setuptools [done]
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/python310-setuptools-58.3.0-2.4.noarch.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+Retrieving package python310-pip (XXX/XXX), XXX.X MiB ( XXX.X MiB unpacked)
+Retrieving: python310-pip [done]
+(XXX/XXX) Installing: python310-pip [done]
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/python310-pip-22.0.4-1.4.noarch.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+Retrieving package python310 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: python310.rpm [done]
+(XXX/XXX) Installing: python310 [done]
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python310-3.10.5-2.1.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+Retrieving package python310-dbm (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: python310-dbm.rpm [done]
+(XXX/XXX) Installing: python310-dbm [done]
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python310-dbm-3.10.5-2.1.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+Retrieving package python310-curses (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: python310-curses.rpm [done]
+(XXX/XXX) Installing: python310-curses [done]
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python310-curses-3.10.5-2.1.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+Retrieving package crypto-policies-scripts (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: crypto-policies-scripts [done]
+(XXX/XXX) Installing: crypto-policies-scripts [done]
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/crypto-policies-scripts-20210917.c9d86d1-1.9.noarch.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+Retrieving package libgnutls30 (XXX/XXX), XXX.X KiB ( XXX.X MiB unpacked)
+Retrieving: libgnutls30.rpm [done]
+(XXX/XXX) Installing: libgnutls30 [done]
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgnutls30-3.7.6-1.2.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+Retrieving package dirmngr (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: dirmngr.rpm [done]
+(XXX/XXX) Installing: dirmngr [done]
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/dirmngr-2.3.6-2.2.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+Retrieving package gpg2 (XXX/XXX), XXX.X MiB ( XXX.X MiB unpacked)
+Retrieving: gpg2.rpm [done]
+(XXX/XXX) Installing: gpg2 [done]
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/gpg2-2.3.6-2.2.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+Retrieving package libgpgme11 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: libgpgme11.rpm [done]
+(XXX/XXX) Installing: libgpgme11 [done]
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgpgme11-1.16.0-3.7.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+Retrieving package libzypp (XXX/XXX), XXX.X MiB ( XXX.X MiB unpacked)
+Retrieving: libzypp.rpm [done]
+(XXX/XXX) Installing: libzypp [done]
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libzypp-17.30.2-1.1.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+Retrieving package zypper (XXX/XXX), XXX.X MiB ( XXX.X MiB unpacked)
+Retrieving: zypper.rpm [done]
+(XXX/XXX) Installing: zypper [done]
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/zypper-1.14.53-1.1.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+Retrieving package zypper-needs-restarting (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
+Retrieving: zypper-needs-restarting [done]
+(XXX/XXX) Installing: zypper-needs-restarting [done]
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/zypper-needs-restarting-1.14.53-1.1.noarch.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
+Executing %posttrans script 'openSUSE-release-YYYYMMDD-X.1.x86_64.rpm' [done]
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'
+Created symlink /etc/systemd/system/multi-user.target.wants/remote-fs.target -> /usr/lib/systemd/system/remote-fs.target.
+Created symlink /etc/systemd/system/getty.target.wants/getty@tty1.service -> /usr/lib/systemd/system/getty@.service.
+Created symlink /etc/systemd/system/timers.target.wants/logrotate.timer -> /usr/lib/systemd/system/logrotate.timer.
+Failed to preset unit, unit /etc/systemd/system/timers.target.wants/check-battery.timer does not exist.
+Failed to preset unit, unit /etc/systemd/system/timers.target.wants/backup-rpmdb.timer does not exist.
+Created symlink /etc/systemd/system/default.target.wants/ca-certificates.path -> /usr/lib/systemd/system/ca-certificates.path.
+Failed to preset unit, unit /etc/systemd/system/timers.target.wants/backup-sysconfig.timer does not exist.
+Created symlink /etc/systemd/system/multi-user.target.wants/kbdsettings.service -> /usr/lib/systemd/system/kbdsettings.service.
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'
+Created symlink /etc/systemd/user/basic.target.wants/systemd-tmpfiles-setup.service -> /usr/lib/systemd/user/systemd-tmpfiles-setup.service.
+Created symlink /etc/systemd/user/timers.target.wants/systemd-tmpfiles-clean.timer -> /usr/lib/systemd/user/systemd-tmpfiles-clean.timer.
+rmdir: failed to remove 'var/lib/rpm': Directory not empty
+
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
+Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'
+Failed to preset unit, unit /etc/systemd/system/timers.target.wants/logrotate.timer does not exist.
+Failed to preset unit, unit /etc/systemd/system/timers.target.wants/check-battery.timer does not exist.
+Failed to preset unit, unit /etc/systemd/system/timers.target.wants/backup-rpmdb.timer does not exist.
+Failed to preset unit, unit /etc/systemd/system/default.target.wants/ca-certificates.path does not exist.
+Failed to preset unit, unit /etc/systemd/system/timers.target.wants/backup-sysconfig.timer does not exist.
+Failed to preset unit, unit /etc/systemd/system/multi-user.target.wants/kbdsettings.service does not exist.
+

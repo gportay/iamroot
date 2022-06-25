@@ -380,24 +380,28 @@ static ssize_t _path_resolution(int fd, const char *path, char *buf,
 		
 	if (*path == '/') {
 		const char *root;
-		int n;
 
 		root = getrootdir();
 		if (__streq(root, "/"))
 			root = "";
-		else if (__strlcmp(path, root) == 0)
+
+		if (*root && __strlcmp(path, root) == 0) {
 			__warn_or_fatal("%s: contains root directory '%s'\n",
 					path, root);
+			_strncpy(buf, path, bufsize);
+		} else {
+			int n;
 
-		n = _snprintf(buf, bufsize, "%s%s", root, path);
-		if (n < 0) {
-			errno = EINVAL;
-			return -1;
-		}
+			n = _snprintf(buf, bufsize, "%s%s", root, path);
+			if (n < 0) {
+				errno = EINVAL;
+				return -1;
+			}
 
-		if ((size_t)n >= bufsize) {
-			errno = ENAMETOOLONG;
-			return -1;
+			if ((size_t)n >= bufsize) {
+				errno = ENAMETOOLONG;
+				return -1;
+			}
 		}
 	} else if (fd != AT_FDCWD) {
 		char dirbuf[PATH_MAX];

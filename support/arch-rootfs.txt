@@ -312,6 +312,12 @@ Warning: /usr/lib/systemd/libsystemd-shared-251.2-1.so: is not in root directory
   Skipped: Running in chroot.
 (XXX/XXX) Creating temporary files...
 Warning: /usr/lib/systemd/libsystemd-shared-251.2-1.so: is not in root directory '/arch-rootfs'
+Warning: fchownat: /dev/snd/seq: Ignoring error 'Operation not permitted'!
+Warning: fchmodat: /dev/snd/seq: Ignoring error 'Operation not permitted'!
+Warning: fchownat: /dev/snd/timer: Ignoring error 'Operation not permitted'!
+Warning: fchmodat: /dev/snd/timer: Ignoring error 'Operation not permitted'!
+Warning: fchownat: /dev/loop-control: Ignoring error 'Operation not permitted'!
+Warning: fchmodat: /dev/loop-control: Ignoring error 'Operation not permitted'!
 (XXX/XXX) Reloading device manager configuration...
 Warning: /usr/lib/systemd/libsystemd-shared-251.2-1.so: is not in root directory '/arch-rootfs'
   Skipped: Running in chroot.

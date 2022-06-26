@@ -203,8 +203,6 @@ clean:
 	rm -Rf *-minirootfs/
 
 ifneq ($(shell command -v pacstrap 2>/dev/null),)
-test: arch-test
-
 .PHONY: arch-test
 arch-test: | arch-rootfs/usr/bin/shebang.sh
 arch-test: | arch-rootfs/usr/bin/shebang-arg.sh

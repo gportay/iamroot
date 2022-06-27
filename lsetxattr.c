@@ -42,7 +42,7 @@ int next_lsetxattr(const char *path, const char *name, const void *value,
 int lsetxattr(const char *path, const char *name, const void *value,
 	      size_t size, int flags)
 {
-	char xbuf[XATTR_NAME_MAX + 1];
+	char xbuf[XATTR_LIST_MAX+1]; /* NULL-terminated */
 	char buf[PATH_MAX];
 	ssize_t siz;
 

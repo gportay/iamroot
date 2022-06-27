@@ -40,7 +40,7 @@ int next_removexattr(const char *path, const char *name)
 
 int removexattr(const char *path, const char *name)
 {
-	char xbuf[XATTR_NAME_MAX + 1];
+	char xbuf[XATTR_NAME_MAX+1]; /* NULL-terminated */
 	char buf[PATH_MAX];
 	ssize_t siz;
 

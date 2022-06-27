@@ -62,7 +62,7 @@ int posix_spawn(pid_t *pid, const char *path,
 					   * 13 HASHBANG_ARGV1
 					   * 14 -x
 					   * 15 script.sh
-					   * 16 NULL
+					   * 16 NULL-terminated
 					   */
 	char hashbang[HASHBANG_MAX];
 	char hashbangbuf[PATH_MAX];
@@ -164,22 +164,22 @@ posix_spawn:
 	arg = interparg;
 	while (*arg++)
 		argc++;
-	arg = argv+1;
+	arg = argv+1; /* skip original-argv0 */
 	while (*arg++)
 		argc++;
 
 	if ((argc > 0) && (argc < ARG_MAX)) {
-		char *nargv[argc+1]; /* NULL */
+		char *nargv[argc+1]; /* NULL-terminated */
 		char **narg;
 
 		narg = nargv;
 		arg = interparg;
 		while (*arg)
 			*narg++ = *arg++;
-		arg = argv+1;
+		arg = argv+1; /* skip original-argv0 */
 		while (*arg)
 			*narg++ = *arg++;
-		*narg++ = NULL;
+		*narg++ = NULL; /* NULL-terminated */
 
 		verbose_exec(*nargv, nargv, __environ);
 		return next_posix_spawn(pid, *nargv, file_actions, attrp,

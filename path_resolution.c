@@ -323,7 +323,7 @@ ssize_t fpath(int fd, char *buf, size_t bufsiz)
 	siz = __procfdreadlink(fd, buf, bufsiz);
 	if (siz == -1)
 		return -1;
-	buf[siz] = 0; /* ensure NULL terminated */
+	buf[siz] = 0; /* ensure NULL-terminated */
 
 	return siz;
 }
@@ -459,10 +459,10 @@ static ssize_t _path_resolution(int fd, const char *path, char *buf,
 		char tmp[NAME_MAX];
 		ssize_t s;
 
-		s = next_readlink(buf, tmp, sizeof(tmp) - 1);
+		s = next_readlink(buf, tmp, sizeof(tmp)-1); /* NULL-terminated */
 		if (s == -1)
 			return -1;
-		tmp[s] = 0; /* ensure NULL terminated */
+		tmp[s] = 0; /* ensure NULL-terminated */
 
 		if (*tmp != '/') {
 			char *basename, tmpbuf[PATH_MAX];

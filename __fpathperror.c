@@ -30,7 +30,7 @@ void __fpathperror(int fd, const char *s)
 		errno = err;
 		return;
 	}
-	buf[siz] = 0; /* ensure NULL terminated */
+	buf[siz] = 0; /* ensure NULL-terminated */
 
 	if ((errno != EPERM) && (errno != EACCES) && (errno != ENOSYS)) {
 #ifdef __FreeBSD__

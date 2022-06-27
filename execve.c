@@ -73,7 +73,7 @@ char *__basename(char *path)
 	if (!s)
 		return path;
 
-	return s+1;
+	return s+1; /* trailing-slash */
 }
 
 __attribute__((visibility("hidden")))
@@ -115,7 +115,8 @@ int pathsetenv(const char *root, const char *name, const char *value,
 
 	vallen = __strlen(value);
 	if (vallen > 0) {
-		char *token, *saveptr, val[vallen+1];
+		char val[vallen+1]; /* NULL-terminated */
+		char *token, *saveptr;
 
 		newlen = vallen;
 		newlen += rootlen;
@@ -129,7 +130,8 @@ int pathsetenv(const char *root, const char *name, const char *value,
 	}
 
 	if (newlen > 0) {
-		char *str, *token, *saveptr, val[vallen+1], new_value[newlen+1];
+		char val[vallen+1], new_value[newlen+1]; /* NULL-terminated */
+		char *str, *token, *saveptr;
 
 		str = new_value;
 		__strncpy(val, value);
@@ -796,11 +798,11 @@ ssize_t gethashbang(const char *path, char *buf, size_t bufsize)
 	if (fd == -1)
 		return -1;
 
-	ret = read(fd, buf, bufsize-1);
+	ret = read(fd, buf, bufsize-1); /* NULL-terminated */
 	if (ret == -1) {
 		goto close;
 	}
-	buf[ret] = 0; /* ensure NULL terminated */
+	buf[ret] = 0; /* ensure NULL-terminated */
 
 	/* Not an hashbang interpreter directive */
 	if ((ret < 2) || (buf[0] != '#') || (buf[1] != '!')) {
@@ -1305,7 +1307,7 @@ int __hashbang(const char *path, char * const argv[], char *interp,
 		interparg[i++] = &interp[len+1];
 	interparg[i++] = (char *)path; /* FIXME: original program path as first
 					* positional argument */
-	interparg[i] = NULL; /* ensure NULL terminated */
+	interparg[i] = NULL; /* ensure NULL-terminated */
 
 	return i;
 }
@@ -1498,7 +1500,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 		/* Add path to binary (in chroot, first positional argument) */
 		interparg[i] = (char *)path;
 		i += j;
-		interparg[i] = NULL; /* ensure NULL terminated */
+		interparg[i] = NULL; /* enusre NULL-terminated */
 
 		return i;
 	} else {
@@ -1587,7 +1589,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 		/* Add path to binary (in chroot, first positional argument) */
 		interparg[i] = (char *)path;
 		i += j;
-		interparg[i] = NULL; /* ensure NULL terminated */
+		interparg[i] = NULL; /* ensure NULL-terminated */
 
 		return i;
 	}
@@ -1607,7 +1609,7 @@ int __exec_sh(const char *path, char * const *argv, char **interparg,
 	interparg[i++] = (char *)path; /* original path as first positional
 					* argument
 					*/
-	interparg[i] = NULL; /* ensure NULL terminated */
+	interparg[i] = NULL; /* ensure NULL-terminated */
 
 	ret = setenv("argv0", *argv, 1);
 	if (ret)
@@ -1650,7 +1652,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 					   * 13 HASHBANG_ARGV1
 					   * 14 -x
 					   * 15 script.sh
-					   * 16 NULL
+					   * 16 NULL-terminated
 					   */
 	char hashbang[HASHBANG_MAX];
 	char hashbangbuf[PATH_MAX];
@@ -1750,19 +1752,19 @@ execve:
 	arg = interparg;
 	while (*arg++)
 		argc++;
-	arg = argv+1;
+	arg = argv+1; /* skip original-argv0 */
 	while (*arg++)
 		argc++;
 
 	if ((argc > 0) && (argc < ARG_MAX)) {
-		char *nargv[argc+1]; /* NULL */
+		char *nargv[argc+1]; /* NULL-terminated */
 		char **narg;
 
 		narg = nargv;
 		arg = interparg;
 		while (*arg)
 			*narg++ = *arg++;
-		arg = argv+1;
+		arg = argv+1; /* skip original-argv0 */
 		while (*arg)
 			*narg++ = *arg++;
 		*narg++ = NULL;

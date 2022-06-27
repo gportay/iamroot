@@ -39,7 +39,7 @@ ssize_t next_fgetxattr(int fd, const char *name, void *value, size_t size)
 
 ssize_t fgetxattr(int fd, const char *name, void *value, size_t size)
 {
-	char xbuf[XATTR_NAME_MAX + 1];
+	char xbuf[XATTR_NAME_MAX+1]; /* NULL-terminated */
 	char buf[PATH_MAX];
 	ssize_t siz;
 

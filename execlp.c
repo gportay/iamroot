@@ -26,7 +26,7 @@ int execlp(const char *file, const char *arg, ...)
 	va_end(ap);
 
 	if (argc < ARG_MAX) {
-		char *argv[argc + 1];
+		char *argv[argc+1]; /* NULL-terminated */
 		int i;
 
 		argv[0] = (char *)arg;

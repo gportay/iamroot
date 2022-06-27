@@ -56,7 +56,7 @@ int execveat(int fd, const char *path, char * const argv[],
 					   * 13 HASHBANG_ARGV1
 					   * 14 -x
 					   * 15 script.sh
-					   * 16 NULL
+					   * 16 NULL-terminated
 					   */
 	char hashbang[HASHBANG_MAX];
 	char hashbangbuf[PATH_MAX];
@@ -156,19 +156,19 @@ execveat:
 	arg = interparg;
 	while (*arg++)
 		argc++;
-	arg = argv+1;
+	arg = argv+1; /* skip original-argv0 */
 	while (*arg++)
 		argc++;
 
 	if ((argc > 0) && (argc < ARG_MAX)) {
-		char *nargv[argc+1]; /* NULL */
+		char *nargv[argc+1]; /* NULL-terminated */
 		char **narg;
 
 		narg = nargv;
 		arg = interparg;
 		while (*arg)
 			*narg++ = *arg++;
-		arg = argv+1;
+		arg = argv+1; /* skip original-argv0 */
 		while (*arg)
 			*narg++ = *arg++;
 		*narg++ = NULL;

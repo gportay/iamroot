@@ -41,7 +41,7 @@ int next_fsetxattr(int fd, const char *name, const void *value, size_t size,
 int fsetxattr(int fd, const char *name, const void *value, size_t size,
 	      int flags)
 {
-	char xbuf[XATTR_NAME_MAX + 1];
+	char xbuf[XATTR_NAME_MAX+1]; /* NULL-terminated */
 	char buf[PATH_MAX];
 	ssize_t siz;
 

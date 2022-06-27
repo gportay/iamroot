@@ -44,7 +44,7 @@ int fchdir(int fd)
 		__fpathperror(fd, "__procfdreadlink");
 		return -1;
 	}
-	buf[siz] = 0; /* ensure NULL terminated */
+	buf[siz] = 0; /* ensure NULL-terminated */
 
 	ret = next_fchdir(fd);
 	if (ret) {

@@ -42,7 +42,7 @@ ssize_t next_llistxattr(const char *path, char *list, size_t size)
 
 ssize_t llistxattr(const char *path, char *list, size_t size)
 {
-	char xbuf[XATTR_LIST_MAX + 1];
+	char xbuf[XATTR_LIST_MAX+1]; /* NULL-terminated */
 	char buf[PATH_MAX];
 	ssize_t xsize, siz;
 	ssize_t i, ret;
@@ -57,11 +57,11 @@ ssize_t llistxattr(const char *path, char *list, size_t size)
 
 	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
 
-	xsize = next_llistxattr(buf, xbuf, sizeof(xbuf)-1);
+	xsize = next_llistxattr(buf, xbuf, sizeof(xbuf)-1); /* NULL-terminated */
 	if (xsize == -1)
 		return -1;
 
-	xbuf[xsize] = 0; /* ensure NULL terminated */
+	xbuf[xsize] = 0; /* ensure NULL-terminated */
 
 	ret = 0;
 	i = 0;
@@ -73,13 +73,13 @@ ssize_t llistxattr(const char *path, char *list, size_t size)
 			break;
 
 		if (__strncmp(&xbuf[i], "user.iamroot.") == 0)
-			off += sizeof("user.iamroot.") - 1;
+			off += sizeof("user.iamroot.")-1; /* NULL-terminated */
 
 		if (list)
 			strcpy(&list[ret], &xbuf[i+off]);
 
-		i += len + 1;
-		ret += len + 1 - off;
+		i += len + 1; /* NULL-terminated */
+		ret += len + 1 - off; /* NULL-terminated */
 	} while (i < xsize);
 
 	return ret;

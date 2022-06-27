@@ -26,7 +26,7 @@ int execle(const char *path, const char *arg, ...)
 	va_end(ap);
 
 	if (argc < ARG_MAX) {
-		char **envp, *argv[argc + 1];
+		char **envp, *argv[argc+1]; /* NULL-terminated */
 		int i;
 
 		argv[0] = (char *)arg;

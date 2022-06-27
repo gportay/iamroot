@@ -57,10 +57,8 @@ int setxattr(const char *path, const char *name, const void *value,
 
 		ret = _snprintf(xbuf, sizeof(xbuf), "%s.%s",
 				"user.iamroot", name);
-		if (ret == -1) {
-			errno = ERANGE;
+		if (ret == -1)
 			return -1;
-		}
 
 		name = xbuf;
 	}

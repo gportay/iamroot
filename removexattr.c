@@ -55,10 +55,8 @@ int removexattr(const char *path, const char *name)
 
 		ret = _snprintf(xbuf, sizeof(xbuf), "%s.%s",
 				"user.iamroot", name);
-		if (ret == -1) {
-			errno = ERANGE;
+		if (ret == -1)
 			return -1;
-		}
 
 		name = xbuf;
 	}

@@ -15,14 +15,18 @@ _iamroot-shell()
 		__opendirat __statfs __xmknod __xmknodat __xstat __xstat64
 		access canonicalize_file_name chdir chmod chown chroot creat
 		dlmopen dlopen eaccess euidaccess execl execle execlp exect
-		execv execvP execve execveat execvp execvpe faccessat fchdir
-		fchmod fchmodat fchown fchownat fexecve fgetxattr
-		flistxattr fopen fremovexattr freopen fsetxattr fstat fstat64
-		fstatat fstatat64 futimesat get_current_dir_name getcwd getegid
-		geteuid getgid getuid getwd getxattr lchmod lchown lgetxattr
-		link linkat listxattr llistxattr lremovexattr lsetxattr lstat
-		lstat64 lutimes mkdir mkdirat mkdtemp mkfifo mkfifoat mknod
-		mknodat mkostemp mkostemps mkstemp mkstemps mktemp mount
+		execv execvP execve execveat execvp execvpe extattr_delete_fd
+		extattr_delete_file extattr_delete_link extattr_get_fd
+		extattr_get_file extattr_get_link extattr_list_fd
+		extattr_list_file extattr_list_link extattr_set_fd
+		extattr_set_file extattr_set_link faccessat fchdir fchmod
+		fchmodat fchown fchownat fexecve fgetxattr flistxattr fopen
+		fremovexattr freopen fsetxattr fstat fstat64 fstatat fstatat64
+		futimesat get_current_dir_name getcwd getegid geteuid getgid
+		getuid getwd getxattr lchmod lchown lgetxattr link linkat
+		listxattr llistxattr lremovexattr lsetxattr lstat lstat64
+		lutimes mkdir mkdirat mkdtemp mkfifo mkfifoat mknod mknodat
+		mkostemp mkostemps mkstemp mkstemps mktemp mount
 		name_to_handle_at nmount open openat opendir path_resolution
 		posix_spawn posix_spawnp readlink readlinkat realpath remove
 		removexattr rename renameat renameat2 rmdir running_in_chroot

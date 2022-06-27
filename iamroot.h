@@ -84,6 +84,10 @@ extern char **__environ;
 #define IAMROOT_XATTRS_PREFIX "user.iamroot."
 #endif
 
+#ifdef __FreeBSD__
+#define IAMROOT_EXTATTR_PREFIX "iamroot."
+#endif
+
 int _snprintf(char *, size_t, const char *, ...) __attribute__((format(printf,3,4)));
 
 static inline const char *__libc()

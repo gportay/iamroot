@@ -28,6 +28,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `listxattr()` and `llistxattr()`
 - Fix the checking for the none-user extended attributes namespaces by checking
   against the full prefix `user.iamroot.`
+- Fix the string copy up to the buffer size - 1 bytes for the internal macro
+  `_strncpy()`; the macro copied at most buffer size - 2 bytes
 
 ## [v5] - 2022-06-24
 

@@ -47,7 +47,7 @@ extern "C" {
 
 #define _strncpy(s1, s2, n1) \
 	({ const int l = (n1)-1; \
-	   strncpy((s1), (s2), l-1); \
+	   strncpy((s1), (s2), l); \
 	   (s1)[l] = 0; \
 	   (s1); })
 #define __strchrnul strchrnul

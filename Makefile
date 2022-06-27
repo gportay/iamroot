@@ -95,7 +95,9 @@ libiamroot.so: fchown.o
 libiamroot.so: fchownat.o
 libiamroot.so: fexecve.o
 libiamroot.so: fgetxattr.o
+libiamroot.so: flistxattr.o
 libiamroot.so: fopen.o
+libiamroot.so: fremovexattr.o
 libiamroot.so: freopen.o
 libiamroot.so: fsetxattr.o
 libiamroot.so: fstat.o

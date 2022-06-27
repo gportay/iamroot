@@ -11,7 +11,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Compile for [FreeBSD] 13.1
 - Intercept the [FreeBSD]'s functions `__opendir2()`, `exect`, `execvP()`,
   `mount()`, `nmount()`, `scandir_b()` and `unmount()`
-- Intercept the functions `ftw()` and `nftw()`
+- Intercept the functions `flistxattr()`, `fremovexattr()`, `ftw()` and
+  `nftw()`
 - Use `kinfo_getfile()` to obtain the fd's path on [FreeBSD]
 
 ### Changed

@@ -51,9 +51,6 @@ int lremovexattr(const char *path, const char *name)
 		return -1;
 	}
 
-	__debug("%s(path: '%s' -> '%s', name: '%s', ...)\n", __func__, path,
-		buf, name);
-
 	if (__strncmp(name, "user.iamroot.") != 0) {
 		int ret;
 
@@ -66,6 +63,9 @@ int lremovexattr(const char *path, const char *name)
 
 		name = xbuf;
 	}
+
+	__debug("%s(path: '%s' -> '%s', name: '%s' -> '%s', ...)\n", __func__,
+		path, buf, name, xbuf);
 
 	return next_lremovexattr(buf, name);
 }

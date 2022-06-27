@@ -52,9 +52,6 @@ int fsetxattr(int fd, const char *name, const void *value, size_t size,
 	}
 	buf[siz] = 0;
 
-	__debug("%s(fd: %i <-> '%s', name: '%s', ..., flags: 0x%x)\n",
-		__func__, fd, buf, name, flags);
-
 	if (__strncmp(name, "user.iamroot.") != 0) {
 		int ret;
 
@@ -67,6 +64,9 @@ int fsetxattr(int fd, const char *name, const void *value, size_t size,
 
 		name = xbuf;
 	}
+
+	__debug("%s(fd: %i <-> '%s', name: '%s', ..., flags: 0x%x)\n",
+		__func__, fd, buf, name, flags);
 
 	return next_fsetxattr(fd, name, value, size, flags);
 }

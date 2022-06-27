@@ -52,9 +52,6 @@ int setxattr(const char *path, const char *name, const void *value,
 		return -1;
 	}
 
-	__debug("%s(path: '%s' -> '%s', name: '%s', ..., flags: 0%x)\n",
-		__func__, path, buf, name, flags);
-
 	if (__strncmp(name, "user.iamroot.") != 0) {
 		int ret;
 
@@ -67,6 +64,9 @@ int setxattr(const char *path, const char *name, const void *value,
 
 		name = xbuf;
 	}
+
+	__debug("%s(path: '%s' -> '%s', name: '%s' -> '%s', ..., flags: 0%x)\n",
+		__func__, path, buf, name, xbuf, flags);
 
 	return next_setxattr(buf, name, value, size, flags);
 }

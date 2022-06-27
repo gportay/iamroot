@@ -14,6 +14,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Intercept the functions `ftw()` and `nftw()`
 - Use `kinfo_getfile()` to obtain the fd's path on [FreeBSD]
 
+### Changed
+
+- Output the updated extended attribute name for the functions `fgetxattr()`,
+  `fsetxattr()`, `getxattr()`, `lgetxattr()`, `lremovexattr()`, `lsetxattr()`,
+  `removexattr()` and `setxattr()`
+
 ### Fixed
 
 - Fix the returned value for the functions `listxattr()` and `llistxattr()` if

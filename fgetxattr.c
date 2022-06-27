@@ -50,9 +50,6 @@ ssize_t fgetxattr(int fd, const char *name, void *value, size_t size)
 	}
 	buf[siz] = 0;
 
-	__debug("%s(fd: %i <-> '%s', name: '%s', ...)\n", __func__, fd, buf,
-		name);
-
 	if (__strncmp(name, "user.iamroot.") != 0) {
 		int ret;
 
@@ -65,6 +62,9 @@ ssize_t fgetxattr(int fd, const char *name, void *value, size_t size)
 
 		name = xbuf;
 	}
+
+	__debug("%s(fd: %i <-> '%s', name: '%s' -> %s', ...)\n", __func__, fd,
+		buf, name, xbuf);
 
 	return next_fgetxattr(fd, name, value, size);
 }

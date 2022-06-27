@@ -80,6 +80,8 @@ extern "C" {
 extern char **environ;
 #else
 extern char **__environ;
+
+#define IAMROOT_XATTRS_PREFIX "user.iamroot."
 #endif
 
 int _snprintf(char *, size_t, const char *, ...) __attribute__((format(printf,3,4)));

@@ -52,11 +52,11 @@ int fsetxattr(int fd, const char *name, const void *value, size_t size,
 	}
 	buf[siz] = 0;
 
-	if (__strncmp(name, "user.iamroot.") != 0) {
+	if (__strncmp(name, IAMROOT_XATTRS_PREFIX) != 0) {
 		int ret;
 
-		ret = _snprintf(xbuf, sizeof(xbuf), "%s.%s",
-				"user.iamroot", name);
+		ret = _snprintf(xbuf, sizeof(xbuf), "%s%s",
+				IAMROOT_XATTRS_PREFIX, name);
 		if (ret == -1)
 			return -1;
 

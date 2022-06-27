@@ -71,8 +71,8 @@ ssize_t listxattr(const char *path, char *list, size_t size)
 		if (!len)
 			break;
 
-		if (__strncmp(&xbuf[i], "user.iamroot.") == 0)
-			off += sizeof("user.iamroot.")-1; /* NULL-terminated */
+		if (__strncmp(&xbuf[i], IAMROOT_XATTRS_PREFIX) == 0)
+			off += sizeof(IAMROOT_XATTRS_PREFIX)-1; /* NULL-terminated */
 
 		if (list)
 			strcpy(&list[ret], &xbuf[i+off]);

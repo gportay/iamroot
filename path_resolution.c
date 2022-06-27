@@ -411,8 +411,8 @@ static ssize_t _path_resolution(int fd, const char *path, char *buf,
 		}
 
 		if (*dirbuf != '/') {
-			__warning("%s: ignore '/proc/self/fd/%d'\n", dirbuf,
-				  fd);
+			__warning("%d: ignore relative path '%s'\n", fd,
+				  dirbuf);
 			goto ignore;
 		}
 

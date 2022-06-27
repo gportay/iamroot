@@ -79,7 +79,8 @@ ssize_t llistxattr(const char *path, char *list, size_t size)
 			strcpy(&list[ret], &xbuf[i+off]);
 
 		i += len + 1; /* NULL-terminated */
-		ret += len + 1 - off; /* NULL-terminated */
+		if (len != off)
+			ret += len + 1 - off; /* NULL-terminated */
 	} while (i < xsize);
 
 	return ret;

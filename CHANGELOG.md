@@ -18,6 +18,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Fix the returned value for the functions `listxattr()` and `llistxattr()` if
   empty extended attribute names are encountered (i.e. "user.iamroot.")
+- Fix the out-of-bound calculation of extended attribute name for the functions
+  `listxattr()` and `llistxattr()`
 
 ## [v5] - 2022-06-24
 

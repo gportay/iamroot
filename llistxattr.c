@@ -68,7 +68,7 @@ ssize_t llistxattr(const char *path, char *list, size_t size)
 	do {
 		size_t len, off = 0;
 
-		len = __strlen(&xbuf[i]);
+		len = strnlen(&xbuf[i], sizeof(xbuf)-i);
 		if (!len)
 			break;
 

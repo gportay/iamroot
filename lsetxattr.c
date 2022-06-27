@@ -56,7 +56,7 @@ int lsetxattr(const char *path, const char *name, const void *value,
 	__debug("%s(path: '%s' -> '%s', name: '%s', ...)\n", __func__, path,
 		buf, name);
 
-	if (__strncmp(name, "user") != 0) {
+	if (__strncmp(name, "user.iamroot.") != 0) {
 		int ret;
 
 		ret = _snprintf(xbuf, sizeof(xbuf), "%s.%s",

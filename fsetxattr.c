@@ -55,7 +55,7 @@ int fsetxattr(int fd, const char *name, const void *value, size_t size,
 	__debug("%s(fd: %i <-> '%s', name: '%s', ..., flags: 0x%x)\n",
 		__func__, fd, buf, name, flags);
 
-	if (__strncmp(name, "user") != 0) {
+	if (__strncmp(name, "user.iamroot.") != 0) {
 		int ret;
 
 		ret = _snprintf(xbuf, sizeof(xbuf), "%s.%s",

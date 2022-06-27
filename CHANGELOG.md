@@ -20,6 +20,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   empty extended attribute names are encountered (i.e. "user.iamroot.")
 - Fix the out-of-bound calculation of extended attribute name for the functions
   `listxattr()` and `llistxattr()`
+- Fix the checking for the none-user extended attributes namespaces by checking
+  against the full prefix `user.iamroot.`
 
 ## [v5] - 2022-06-24
 

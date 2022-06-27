@@ -53,7 +53,7 @@ ssize_t fgetxattr(int fd, const char *name, void *value, size_t size)
 	__debug("%s(fd: %i <-> '%s', name: '%s', ...)\n", __func__, fd, buf,
 		name);
 
-	if (__strncmp(name, "user") != 0) {
+	if (__strncmp(name, "user.iamroot.") != 0) {
 		int ret;
 
 		ret = _snprintf(xbuf, sizeof(xbuf), "%s.%s",

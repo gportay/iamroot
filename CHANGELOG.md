@@ -40,8 +40,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `--ld-library-path`
 - The functions `__fxstat()`, `__fxstat64()`, `__lxstat()`, `__lxstat64()`,
   `__xstat()`, `__xstat64()`, `fstat()`, `fstat64()`, `lstat()`, `lstat64()`,
-  `stat()` and `stat64()` calls the internal functions `__fxstatat()`,
-  `__fxstatat64()`, `fstatat()` and `fstatat64()`
+  `stat()` and `stat64()` calls the functions `__fxstatat()`, `__fxstatat64()`,
+  `fstatat()` and `fstatat64()`
+- The functions `fchmod()` and `fchown()` calls the functions `fchownat()` and
+  `fchownat()`
 - Output the architecture, the libc and the pid on level 6 and above
 - Output the architecture and the libc as platform
 - Output the `EPERM` and `EACCES` `errno` errors returned by the original

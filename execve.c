@@ -1286,7 +1286,6 @@ int __hashbang(const char *path, char * const argv[], char *interp,
 	ssize_t siz;
 	size_t len;
 	int i = 0;
-
 	(void)argv;
 
 	/* Get the interpeter directive stored after the hashbang */

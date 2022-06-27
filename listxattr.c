@@ -46,7 +46,6 @@ ssize_t listxattr(const char *path, char *list, size_t size)
 	char buf[PATH_MAX];
 	ssize_t xsize, siz;
 	ssize_t i, ret;
-
 	(void)size;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);

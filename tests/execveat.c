@@ -13,6 +13,7 @@ int execveat(int fd, const char *path, char * const argv[], char * const envp[],
 {
 	(void)fd;
 	(void)flags;
+
 	return execve(path, argv, envp);
 }
 #endif

@@ -21,7 +21,6 @@ static int callback(struct dl_phdr_info *info, size_t size, void *data)
 	char *type;
 	int p_type;
 	int j;
-
 	(void)size;
 	(void)data;
 

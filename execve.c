@@ -90,7 +90,8 @@ int pathprependenv(const char *name, const char *value, int overwrite)
 	newval = __strncpy(buf, value);
 	oldval = getenv(name);
 	if (oldval && *oldval) {
-		__strncat(buf, ":");
+		if (*buf)
+			__strncat(buf, ":");
 		__strncat(buf, oldval);
 	}
 

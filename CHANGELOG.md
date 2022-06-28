@@ -24,6 +24,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Output the updated extended attribute name for the functions `fgetxattr()`,
   `fsetxattr()`, `getxattr()`, `lgetxattr()`, `lremovexattr()`, `lsetxattr()`,
   `removexattr()` and `setxattr()`
+- Remove the suffix `_<ldso>_<abi>` in the variables `ld_library_path` and
+  `ld_preload`
 
 ### Fixed
 

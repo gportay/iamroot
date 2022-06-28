@@ -1120,43 +1120,31 @@ __attribute__((visibility("hidden")))
 char *__ld_preload(const char *ldso, int abi)
 {
 	char val[PATH_MAX];
-	char buf[NAME_MAX];
-	int n, ret;
-
-	n = _snprintf(buf, sizeof(buf), "ld_preload_%s", ldso);
-	if (n == -1)
-		return NULL;
-	__sanitize(buf, 0);
+	int ret;
 
 	__strncpy(val, __getld_preload(ldso, abi));
-	ret = pathsetenv(getrootdir(), buf, val, 1);
+	ret = pathsetenv(getrootdir(), "ld_preload", val, 1);
 	if (ret)
 		return NULL;
 
 	__strncpy(val, __getlibiamroot(ldso, abi));
-	ret = pathprependenv(buf, val, 1);
+	ret = pathprependenv("ld_preload", val, 1);
 	if (ret)
 		return NULL;
 
-	return getenv(buf);
+	return getenv("ld_preload");
 }
 
 __attribute__((visibility("hidden")))
 char *__ld_library_path(const char *ldso, int abi)
 {
 	char val[PATH_MAX];
-	char buf[NAME_MAX];
 	char *runpath;
 	char *rpath;
-	int n, ret;
-
-	n = _snprintf(buf, sizeof(buf), "ld_library_path_%s", ldso);
-	if (n == -1)
-		return NULL;
-	__sanitize(buf, 0);
+	int ret;
 
 	__strncpy(val, __getld_library_path(ldso, abi));
-	ret = pathsetenv(getrootdir(), buf, val, 1);
+	ret = pathsetenv(getrootdir(), "ld_library_path", val, 1);
 	if (ret)
 		return NULL;
 
@@ -1168,7 +1156,7 @@ char *__ld_library_path(const char *ldso, int abi)
 			return NULL;
 
 		__strncpy(val, getenv("iamroot_rpath"));
-		ret = pathprependenv(buf, val, 1);
+		ret = pathprependenv("ld_library_path", val, 1);
 		if (ret)
 			return NULL;
 	}
@@ -1181,12 +1169,12 @@ char *__ld_library_path(const char *ldso, int abi)
 			return NULL;
 
 		__strncpy(val, getenv("iamroot_runpath"));
-		ret = pathprependenv(buf, val, 1);
+		ret = pathprependenv("ld_library_path", val, 1);
 		if (ret)
 			return NULL;
 	}
 
-	return getenv(buf);
+	return getenv("ld_library_path");
 }
 
 __attribute__((visibility("hidden")))

@@ -1281,7 +1281,9 @@ support: fedora-support
 support: alpine-support
 
 .PHONY: extra-support
-extra-support: manjaro-support opensuse-support
+# FIXME: openSUSE is currently broken.
+# extra-support: opensuse-support
+extra-support: manjaro-support
 
 .PHONY: fixme-support
 fixme-support:
@@ -1441,7 +1443,8 @@ log: fedora-log
 log: alpine-log
 
 .PHONY: extra-log
-extra-log: manjaro-log opensuse-log
+extra-log: opensuse-log
+extra-log: manjaro-log
 
 .PHONY: fixme-log
 fixme-log:

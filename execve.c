@@ -1049,7 +1049,10 @@ static char *__getlibiamroot(const char *ldso, int abi)
 		goto exit;
 	}
 
-	ret = "/usr/lib/iamroot/libiamroot.so";
+	ret = getenv("IAMROOT_LIB");
+	if (!ret)
+		ret = "/usr/lib/iamroot/libiamroot.so";
+
 exit:
 	if (setenv("IAMROOT_LIB", ret, 1))
 		return NULL;

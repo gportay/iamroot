@@ -50,6 +50,11 @@ extern "C" {
 	   strncpy((s1), (s2), l); \
 	   (s1)[l] = 0; \
 	   (s1); })
+#define _strncat(s1, s2, n1) \
+	({ const int l = (n1)-1; \
+	   strncat((s1), (s2), l); \
+	   (s1)[l] = 0; \
+	   (s1); })
 #define __strchrnul strchrnul
 #define __strlen(s) strnlen((s), PATH_MAX)
 #define __strnlen(s) strnlen((s), sizeof((s))-1)

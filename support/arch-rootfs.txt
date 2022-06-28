@@ -211,9 +211,7 @@ installing iptables...
 installing kbd...
 installing libelf...
 installing systemd...
-Warning: /usr/lib/systemd/libsystemd-shared-251.2-1.so: is not in root directory '/arch-rootfs'
 Initializing machine ID from random generator.
-Warning: /usr/lib/systemd/libsystemd-shared-251.2-1.so: is not in root directory '/arch-rootfs'
 Creating group 'sys' with GID 3.
 Creating group 'mem' with GID 8.
 Creating group 'ftp' with GID 11.
@@ -274,8 +272,6 @@ Creating group 'tss' with GID 975.
 Creating user 'tss' (tss user for tpm2) with UID 975 and GID 975.
 Creating group 'uuidd' with GID 68.
 Creating user 'uuidd' (n/a) with UID 68 and GID 68.
-Warning: /usr/lib/systemd/libsystemd-shared-251.2-1.so: is not in root directory '/arch-rootfs'
-Warning: /usr/lib/systemd/libsystemd-shared-251.2-1.so: is not in root directory '/arch-rootfs'
 Created symlink /etc/systemd/system/getty.target.wants/getty@tty1.service → /usr/lib/systemd/system/getty@.service.
 Created symlink /etc/systemd/system/multi-user.target.wants/remote-fs.target → /usr/lib/systemd/system/remote-fs.target.
 Optional dependencies for systemd
@@ -299,19 +295,13 @@ Optional dependencies for base
     linux: bare metal support
 :: Running post-transaction hooks...
 (XXX/XXX) Creating system user accounts...
-Warning: /usr/lib/systemd/libsystemd-shared-251.2-1.so: is not in root directory '/arch-rootfs'
 (XXX/XXX) Updating journal message catalog...
-Warning: /usr/lib/systemd/libsystemd-shared-251.2-1.so: is not in root directory '/arch-rootfs'
 (XXX/XXX) Reloading system manager configuration...
-Warning: /usr/lib/systemd/libsystemd-shared-251.2-1.so: is not in root directory '/arch-rootfs'
   Skipped: Running in chroot.
 (XXX/XXX) Updating udev hardware database...
-Warning: /usr/lib/systemd/libsystemd-shared-251.2-1.so: is not in root directory '/arch-rootfs'
 (XXX/XXX) Applying kernel sysctl settings...
-Warning: /usr/lib/systemd/libsystemd-shared-251.2-1.so: is not in root directory '/arch-rootfs'
   Skipped: Running in chroot.
 (XXX/XXX) Creating temporary files...
-Warning: /usr/lib/systemd/libsystemd-shared-251.2-1.so: is not in root directory '/arch-rootfs'
 Warning: fchownat: /dev/snd/seq: Ignoring error 'Operation not permitted'!
 Warning: fchmodat: /dev/snd/seq: Ignoring error 'Operation not permitted'!
 Warning: fchownat: /dev/snd/timer: Ignoring error 'Operation not permitted'!
@@ -319,11 +309,9 @@ Warning: fchmodat: /dev/snd/timer: Ignoring error 'Operation not permitted'!
 Warning: fchownat: /dev/loop-control: Ignoring error 'Operation not permitted'!
 Warning: fchmodat: /dev/loop-control: Ignoring error 'Operation not permitted'!
 (XXX/XXX) Reloading device manager configuration...
-Warning: /usr/lib/systemd/libsystemd-shared-251.2-1.so: is not in root directory '/arch-rootfs'
   Skipped: Running in chroot.
 (XXX/XXX) Arming ConditionNeedsUpdate...
 (XXX/XXX) Rebuilding certificate stores...
 (XXX/XXX) Reloading system bus configuration...
-Warning: /usr/lib/systemd/libsystemd-shared-251.2-1.so: is not in root directory '/arch-rootfs'
   Skipped: Running in chroot.
 Warning: Command is skipped: /usr/bin/umount arch-rootfs/tmp arch-rootfs/run arch-rootfs/dev/shm arch-rootfs/dev/pts arch-rootfs/dev arch-rootfs/sys arch-rootfs/proc

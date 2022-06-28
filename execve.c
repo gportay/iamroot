@@ -98,6 +98,31 @@ int pathprependenv(const char *name, const char *value, int overwrite)
 	return setenv(name, newval, overwrite);
 }
 
+__attribute__((visibility("hidden")))
+int pathappendenv(const char *name, const char *value, int overwrite)
+{
+	char *newval, *oldval;
+	char buf[PATH_MAX];
+
+	if (!name || !value) {
+		errno = EINVAL;
+		return -1;
+	}
+
+	oldval = getenv(name);
+	if (!oldval)
+		return setenv(name, value, overwrite);
+
+	newval = __strncpy(buf, oldval);
+	if (*value) {
+		if (*buf)
+			__strncat(buf, ":");
+		__strncat(buf, value);
+	}
+
+	return setenv(name, newval, overwrite);
+}
+
 int pathsetenv(const char *root, const char *name, const char *value,
 	       int overwrite)
 {
@@ -163,6 +188,72 @@ int pathsetenv(const char *root, const char *name, const char *value,
 
 setenv:
 	return setenv(name, value, overwrite);
+}
+
+static int __librarypath_callback(const char *library, void *user)
+{
+	const char *library_path = (const char *)user;
+	char buf[PATH_MAX];
+	ssize_t siz;
+	(void)user;
+
+	/* ignore dynamic loaders */
+	if (__strncmp(library, "ld-") == 0)
+		return 0;
+
+	if (*library != '/') {
+		siz = path_access(library, F_OK, library_path, buf,
+				  sizeof(buf));
+		if (siz == -1)
+			__warning("%s: library not found in library-path %s\n",
+				  library, library_path);
+
+		goto exit;
+	}
+
+	siz = path_resolution(AT_FDCWD, library, buf, sizeof(buf), 0);
+	if (siz == -1)
+		return -1;
+
+exit:
+	return pathappendenv("ld_preload", buf, 1);
+}
+
+static int __strtok(const char *str, const char *delim,
+		    int (*callback)(const char *, void *), void *user)
+{
+	size_t len;
+
+	if (!str || !callback) {
+		errno = EINVAL;
+		return -1;
+	}
+
+	len = __strlen(str);
+	if (len > 0) {
+		char buf[len+1]; /* NULL-terminated */
+		char *token, *saveptr;
+		int ret;
+
+		__strncpy(buf, str);
+		token = strtok_r(buf, delim, &saveptr);
+		do {
+			if (!token)
+				break;
+
+			ret = callback(token, user);
+			if (ret)
+				return ret;
+		} while ((token = strtok_r(NULL, delim, &saveptr)));
+	}
+
+	return 0;
+}
+
+int path_iterate(const char *path, int (*callback)(const char *, void *),
+		 void *user)
+{
+	return __strtok(path, ":", callback, user);
 }
 
 static regex_t *re_ignore;
@@ -755,6 +846,275 @@ exit:
 	return ret;
 }
 
+static int __dl_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
+		     int (*callback)(const void *, size_t, void *), void *data)
+{
+	size_t strtab_siz = 0;
+	off_t strtab_off = 0;
+	Elf32_Dyn dyn[1024];
+	ssize_t siz = -1;
+	int ret = -1;
+	int i, num;
+	off_t off;
+
+	/* Look for the .shstrtab section */
+	off = ehdr->e_shoff;
+	num = ehdr->e_shnum;
+	for (i = 0; i < num; i++) {
+		Elf32_Shdr shdr;
+
+		siz = pread(fd, &shdr, sizeof(shdr), off);
+		if (siz == -1) {
+			goto exit;
+		} else if ((size_t)siz < sizeof(shdr)) {
+			errno = EIO;
+			goto exit;
+		}
+
+		off += sizeof(shdr);
+
+		/* Not the .shstrtab section */
+		if (shdr.sh_type != SHT_STRTAB)
+			continue;
+
+		strtab_siz = shdr.sh_size;
+		strtab_off = shdr.sh_offset;
+		break;
+	}
+
+	/* No .shstrtab section */
+	if (!strtab_off)
+		goto exit;
+
+	/* Look for the string entry in the .dynamic segment */
+	off = ehdr->e_phoff;
+	num = ehdr->e_phnum;
+	for (i = 0; i < num; i++) {
+		Elf32_Phdr phdr;
+		unsigned int j;
+		size_t str_siz;
+		off_t str_off;
+
+		siz = pread(fd, &phdr, sizeof(phdr), off);
+		if (siz == -1) {
+			goto exit;
+		} else if ((size_t)siz < sizeof(phdr)) {
+			errno = EIO;
+			goto exit;
+		}
+
+		off += sizeof(phdr);
+
+		/* Not the .dynamic segment */
+		if (phdr.p_type != PT_DYNAMIC)
+			continue;
+
+		if (sizeof(dyn) < phdr.p_filesz) {
+			errno = EIO;
+			goto exit;
+		}
+
+		/* copy the .dynamic segment */
+		siz = pread(fd, dyn, phdr.p_filesz, phdr.p_offset);
+		if (siz == -1) {
+			goto exit;
+		} else if ((size_t)siz < phdr.p_filesz) {
+			errno = EIO;
+			goto exit;
+		}
+
+		/* look for the string entry */
+		for (j = 0; j < phdr.p_filesz / sizeof(dyn[0]); j++) {
+			char buf[BUFSIZ];
+			size_t size;
+
+			if (dyn[j].d_tag != dt_tag)
+				continue;
+
+			/*
+			 * copy the NULL-terminated string from the .strtab
+			 * table
+			 */
+			str_off = strtab_off + dyn[j].d_un.d_val;
+			str_siz = strtab_siz - dyn[j].d_un.d_val;
+			size = __min(str_siz, sizeof(buf));
+			siz = pread(fd, buf, size, str_off);
+			if (siz == -1) {
+				goto exit;
+			} else if ((size_t)siz < size) {
+				errno = EIO;
+				goto exit;
+			}
+	
+			ret = callback(buf, size, data);
+			if (ret)
+				break;
+		}
+	}
+
+exit:
+	return ret;
+}
+
+static int __dl_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
+		     int (*callback)(const void *, size_t, void *), void *data)
+{
+	size_t strtab_siz = 0;
+	off_t strtab_off = 0;
+	Elf64_Dyn dyn[1024];
+	ssize_t siz = -1;
+	int ret = -1;
+	int i, num;
+	off_t off;
+
+	/* Look for the .shstrtab section */
+	off = ehdr->e_shoff;
+	num = ehdr->e_shnum;
+	for (i = 0; i < num; i++) {
+		Elf64_Shdr shdr;
+
+		siz = pread(fd, &shdr, sizeof(shdr), off);
+		if (siz == -1) {
+			goto exit;
+		} else if ((size_t)siz < sizeof(shdr)) {
+			errno = EIO;
+			goto exit;
+		}
+
+		off += sizeof(shdr);
+
+		/* Not the .shstrtab section */
+		if (shdr.sh_type != SHT_STRTAB)
+			continue;
+
+		strtab_siz = shdr.sh_size;
+		strtab_off = shdr.sh_offset;
+		break;
+	}
+
+	/* No .shstrtab section */
+	if (!strtab_off)
+		goto exit;
+
+	/* Look for the string entry in the .dynamic segment */
+	off = ehdr->e_phoff;
+	num = ehdr->e_phnum;
+	for (i = 0; i < num; i++) {
+		Elf64_Phdr phdr;
+		unsigned int j;
+		size_t str_siz;
+		off_t str_off;
+
+		siz = pread(fd, &phdr, sizeof(phdr), off);
+		if (siz == -1) {
+			goto exit;
+		} else if ((size_t)siz < sizeof(phdr)) {
+			errno = EIO;
+			goto exit;
+		}
+
+		off += sizeof(phdr);
+
+		/* Not the .dynamic segment */
+		if (phdr.p_type != PT_DYNAMIC)
+			continue;
+
+		if (sizeof(dyn) < phdr.p_filesz) {
+			errno = EIO;
+			goto exit;
+		}
+
+		/* copy the .dynamic segment */
+		siz = pread(fd, dyn, phdr.p_filesz, phdr.p_offset);
+		if (siz == -1) {
+			goto exit;
+		} else if ((size_t)siz < phdr.p_filesz) {
+			errno = EIO;
+			goto exit;
+		}
+
+		/* look for the string entry */
+		for (j = 0; j < phdr.p_filesz / sizeof(dyn[0]); j++) {
+			char buf[BUFSIZ];
+			size_t size;
+
+			if (dyn[j].d_tag != dt_tag)
+				continue;
+
+			/*
+			 * copy the NULL-terminated string from the .strtab
+			 * table
+			 */
+			str_off = strtab_off + dyn[j].d_un.d_val;
+			str_siz = strtab_siz - dyn[j].d_un.d_val;
+			size = __min(str_siz, sizeof(buf));
+			siz = pread(fd, buf, size, str_off);
+			if (siz == -1) {
+				goto exit;
+			} else if ((size_t)siz < size) {
+				errno = EIO;
+				goto exit;
+			}
+	
+			ret = callback(buf, size, data);
+			if (ret)
+				break;
+		}
+	}
+
+exit:
+	return ret;
+}
+
+static int __dl_iterate_shared_object(const char *path, int dt_tag,
+		     int (*callback)(const void *, size_t, void *), void *data)
+{
+	int fd, ret = -1;
+	Elf64_Ehdr ehdr;
+	ssize_t siz;
+
+	fd = next_open(path, O_RDONLY, 0);
+	if (fd == -1)
+		return -1;
+
+	siz = read(fd, &ehdr, sizeof(ehdr));
+	if (siz == -1) {
+		goto close;
+	} else if ((size_t)siz < sizeof(ehdr)) {
+		errno = EIO;
+		goto close;
+	}
+
+	/* Not an ELF */
+	if (memcmp(ehdr.e_ident, ELFMAG, 4) != 0) {
+		errno = ENOEXEC;
+		goto close;
+	}
+
+	/* Not a linked program or shared object */
+	if ((ehdr.e_type != ET_EXEC) && (ehdr.e_type != ET_DYN)) {
+		errno = ENOEXEC;
+		goto close;
+	}
+
+	/* It is a 32-bits ELF */
+	if (ehdr.e_ident[EI_CLASS] == ELFCLASS32)
+		ret = __dl_iterate_ehdr32(fd, (Elf32_Ehdr *)&ehdr, dt_tag,
+					  callback, data);
+	/* It is a 64-bits ELF */
+	else if (ehdr.e_ident[EI_CLASS] == ELFCLASS64)
+		ret = __dl_iterate_ehdr64(fd, (Elf64_Ehdr *)&ehdr, dt_tag,
+					  callback, data);
+	/* It is invalid ELF */
+	else
+		errno = ENOEXEC;
+
+close:
+	__close(fd);
+
+	return ret;
+}
+
 __attribute__((visibility("hidden")))
 ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 {
@@ -1145,12 +1505,44 @@ static char *__getld_library_path(const char *ldso, int abi)
 __attribute__((visibility("hidden")))
 char *__ld_preload(const char *ldso, int abi)
 {
+	char path[PATH_MAX];
 	char val[PATH_MAX];
+	char *runpath;
+	char *needed;
+	char *rpath;
 	int ret;
 
+	__strncpy(path, __getld_library_path(ldso, abi));
+
+	rpath = getenv("rpath");
+	if (rpath) {
+		if (*path)
+			__strncat(path, ":");
+		__strncat(path, rpath);
+	}
+
+	runpath = getenv("runpath");
+	if (runpath) {
+		if (*path)
+			__strncat(path, ":");
+		__strncat(path, runpath);
+	}
+
 	__strncpy(val, __getld_preload(ldso, abi));
-	ret = pathsetenv(getrootdir(), "ld_preload", val, 1);
+
+	needed = getenv("needed");
+	if (needed) {
+		if (*val)
+			__strncat(val, ":");
+		__strncat(val, needed);
+	}
+
+	ret = unsetenv("ld_preload");
 	if (ret)
+		return NULL;
+
+	ret = path_iterate(val, __librarypath_callback, path);
+	if (ret == -1)
 		return NULL;
 
 	__strncpy(val, __getlibiamroot(ldso, abi));
@@ -1201,6 +1593,43 @@ char *__ld_library_path(const char *ldso, int abi)
 	}
 
 	return getenv("ld_library_path");
+}
+
+static int __needed_callback(const void *data, size_t size, void *user)
+{
+	const char *path = (const char *)data;
+	char *needed = (char *)user;
+	(void)size;
+
+	if (!user) {
+		errno = EINVAL;
+		return -1;
+	}
+
+	if (*needed)
+		_strncat(needed, ":", PATH_MAX);
+	_strncat(needed, path, PATH_MAX);
+
+	return 0;
+}
+
+__attribute__((visibility("hidden")))
+char *__needed(const char *path)
+{
+	char buf[PATH_MAX];
+	int ret;
+
+	*buf = 0;
+	ret = __dl_iterate_shared_object(path, DT_NEEDED, __needed_callback,
+					 buf);
+	if (ret)
+		return NULL;
+
+	ret = setenv("needed", buf, 1);
+	if (ret)
+		return NULL;
+
+	return getenv("needed");
 }
 
 __attribute__((visibility("hidden")))
@@ -1346,8 +1775,8 @@ int __loader(const char *path, char * const argv[], char *interp,
 	 */
 	if ((__strncmp(buf, "/lib/ld") == 0) ||
 	    (__strncmp(buf, "/lib64/ld") == 0)) {
-		char *argv0, *xargv1, *rpath, *runpath, *inhibit_rpath,
-		     *ld_library_path, *ld_preload;
+		char *argv0, *xargv1, *needed, *rpath, *runpath,
+		     *inhibit_rpath, *ld_library_path, *ld_preload;
 		int has_argv0 = 1, has_preload = 1, has_inhibit_rpath = 0,
 		    has_inhibit_cache = 0;
 		int ret, i, j, shift = 1, abi = 0;
@@ -1384,6 +1813,10 @@ int __loader(const char *path, char * const argv[], char *interp,
 			if (has_preload == -1)
 				return -1;
 		}
+
+		needed = __needed(path);
+		if (needed)
+			__info("%s: NEEDED=%s\n", path, needed);
 
 		rpath = __rpath(path);
 		if (rpath)
@@ -1517,7 +1950,8 @@ int __loader(const char *path, char * const argv[], char *interp,
 
 		return i;
 	} else {
-		char *argv0, *rpath, *runpath, *ld_library_path, *ld_preload;
+		char *argv0, *needed, *rpath, *runpath, *ld_library_path,
+		     *ld_preload;
 		int ret, i, j, shift = 1, abi = 0;
 		const char *basename;
 		char ldso[NAME_MAX];
@@ -1560,6 +1994,10 @@ int __loader(const char *path, char * const argv[], char *interp,
 		ret = setenv("argv0", argv0, 1);
 		if (ret)
 			return -1;
+
+		needed = __needed(path);
+		if (needed)
+			__info("%s: NEEDED=%s\n", path, needed);
 
 		rpath = __rpath(path);
 		if (rpath)

@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Intercept the functions `flistxattr()`, `fremovexattr()`, `ftw()` and
   `nftw()`
 - Use `kinfo_getfile()` to obtain the fd's path on [FreeBSD]
+- Preload the `NEEDED` libraries using `--preload` or `LD_PRELOAD`
 
 ### Changed
 

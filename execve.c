@@ -995,6 +995,7 @@ static char *__getlibiamroot(const char *ldso, int abi)
 	if (ret)
 		goto exit;
 
+#ifdef __linux__
 	/* IAMROOT_LIB_LINUX_2 */
 	if (__streq(ldso, "linux") && abi == 2) {
 		ret = "/usr/lib/iamroot/i686/libiamroot-linux.so.2";
@@ -1048,6 +1049,15 @@ static char *__getlibiamroot(const char *ldso, int abi)
 		ret = "/usr/lib/iamroot/aarch64/libiamroot-musl-aarch64.so.1";
 		goto exit;
 	}
+#endif
+
+#ifdef __FreeBSD__
+	/* IAMROOT_LIB_ELF_1 */
+	if (__streq(ldso, "elf") && abi == 1) {
+		ret = "/usr/local/lib/iamroot/x86_64/libiamroot-elf.so.1";
+		goto exit;
+	}
+#endif
 
 	ret = getenv("IAMROOT_LIB");
 #ifdef __linux__
@@ -1080,6 +1090,7 @@ static char *__getld_preload(const char *ldso, int abi)
 	if (ret)
 		return ret;
 
+#ifdef __linux__
 	/* IAMROOT_LD_PRELOAD_LINUX_2 */
 	if (__streq(ldso, "linux") && abi == 2)
 		return "/usr/lib/libc.so.6:/usr/lib/libdl.so.2";
@@ -1099,6 +1110,13 @@ static char *__getld_preload(const char *ldso, int abi)
 	/* IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 */
 	if (__streq(ldso, "linux-aarch64") && abi == 1)
 		return "/usr/lib64/libc.so.6:/usr/lib64/libdl.so.2";
+#endif
+
+#ifdef __FreeBSD__
+	/* IAMROOT_LD_PRELOAD_ELF_1 */
+	if (__streq(ldso, "elf") && abi == 1)
+		return "/lib/libc.so.7:/usr/lib/libdl.so.1";
+#endif
 
 	return "";
 }

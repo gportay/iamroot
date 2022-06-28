@@ -121,12 +121,15 @@ libiamroot.so: futimesat.o
 libiamroot.so: get_current_dir_name.o
 libiamroot.so: getcwd.o
 libiamroot.so: geteuid.o
+libiamroot.so: getfh.o
+libiamroot.so: getfhat.o
 libiamroot.so: getuid.o
 libiamroot.so: getwd.o
 libiamroot.so: getxattr.o
 libiamroot.so: group.o
 libiamroot.so: lchmod.o
 libiamroot.so: lchown.o
+libiamroot.so: lgetfh.o
 libiamroot.so: lgetxattr.o
 libiamroot.so: link.o
 libiamroot.so: linkat.o

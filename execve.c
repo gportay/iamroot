@@ -1166,7 +1166,7 @@ char *__ld_library_path(const char *ldso, int abi)
 	if (rpath) {
 		__strncpy(val, rpath);
 
-		ret = pathsetenv(getrootdir(), "iamroot_rpath", rpath, 1);
+		ret = pathsetenv(getrootdir(), "iamroot_rpath", val, 1);
 		if (ret)
 			return NULL;
 
@@ -1181,7 +1181,7 @@ char *__ld_library_path(const char *ldso, int abi)
 	if (runpath) {
 		__strncpy(val, runpath);
 
-		ret = pathsetenv(getrootdir(), "iamroot_runpath", runpath, 1);
+		ret = pathsetenv(getrootdir(), "iamroot_runpath", val, 1);
 		if (ret)
 			return NULL;
 
@@ -1234,16 +1234,17 @@ char *__runpath(const char *path)
 __attribute__((visibility("hidden")))
 char *__inhibit_rpath()
 {
-	char *val;
+	char *inhibit_rpath;
+	char val[PATH_MAX];
 	int ret;
 
-	val = getenv("IAMROOT_INHIBIT_RPATH");
-	if (!val)
-		return NULL;
-
-	ret = pathsetenv(getrootdir(), "inhibit_rpath", val, 1);
-	if (ret)
-		return NULL;
+	inhibit_rpath = getenv("IAMROOT_INHIBIT_RPATH");
+	if (inhibit_rpath) {
+		__strncpy(val, inhibit_rpath);
+		ret = pathsetenv(getrootdir(), "inhibit_rpath", val, 1);
+		if (ret)
+			return NULL;
+	}
 
 	return getenv("inhibit_rpath");
 }

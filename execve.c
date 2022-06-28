@@ -1050,8 +1050,13 @@ static char *__getlibiamroot(const char *ldso, int abi)
 	}
 
 	ret = getenv("IAMROOT_LIB");
+#ifdef __linux__
 	if (!ret)
 		ret = "/usr/lib/iamroot/libiamroot.so";
+#else
+	if (!ret)
+		ret = "/usr/local/lib/iamroot/libiamroot.so";
+#endif
 
 exit:
 	if (setenv("IAMROOT_LIB", ret, 1))
@@ -1240,8 +1245,13 @@ char *__getexec()
 	char *ret;
 
 	ret = getenv("IAMROOT_EXEC");
+#ifdef __linux__
 	if (!ret)
 		return "/usr/lib/iamroot/exec.sh";
+#else
+	if (!ret)
+		return "/usr/local/lib/iamroot/exec.sh";
+#endif
 
 	return ret;
 }

@@ -1327,8 +1327,8 @@ int __loader(const char *path, char * const argv[], char *interp,
 	 */
 	if ((__strncmp(buf, "/lib/ld") == 0) ||
 	    (__strncmp(buf, "/lib64/ld") == 0)) {
-		char *argv0, *xargv1, *rpath, *runpath, *ld_preload,
-		     *ld_library_path, *inhibit_rpath;
+		char *argv0, *xargv1, *rpath, *runpath, *inhibit_rpath,
+		     *ld_library_path, *ld_preload;
 		int has_argv0 = 1, has_preload = 1, has_inhibit_rpath = 0,
 		    has_inhibit_cache = 0;
 		int ret, i, j, shift = 1, abi = 0;
@@ -1374,17 +1374,17 @@ int __loader(const char *path, char * const argv[], char *interp,
 		if (runpath)
 			__info("%s: RUNPATH=%s\n", path, runpath);
 
-		ld_preload = __ld_preload(ldso, abi);
-		if (!ld_preload)
-			__warning("%s: is unset!\n", "ld_preload");
+		inhibit_rpath = __inhibit_rpath();
+		if (inhibit_rpath)
+			__notice("%s: %s\n", "inhibit_rpath", inhibit_rpath);
 
 		ld_library_path = __ld_library_path(ldso, abi);
 		if (!ld_library_path)
 			__warning("%s: is unset!\n", "ld_library_path");
 
-		inhibit_rpath = __inhibit_rpath();
-		if (inhibit_rpath)
-			__notice("%s: %s\n", "inhibit_rpath", inhibit_rpath);
+		ld_preload = __ld_preload(ldso, abi);
+		if (!ld_preload)
+			__warning("%s: is unset!\n", "ld_preload");
 
 		siz = path_resolution(AT_FDCWD, buf, interp, interpsiz, 0);
 		if (siz == -1)
@@ -1498,7 +1498,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 
 		return i;
 	} else {
-		char *argv0, *rpath, *runpath, *ld_preload, *ld_library_path;
+		char *argv0, *rpath, *runpath, *ld_library_path, *ld_preload;
 		int ret, i, j, shift = 1, abi = 0;
 		const char *basename;
 		char ldso[NAME_MAX];
@@ -1550,17 +1550,6 @@ int __loader(const char *path, char * const argv[], char *interp,
 		if (runpath)
 			__info("%s: RUNPATH=%s\n", path, runpath);
 
-		ld_preload = __ld_preload(ldso, abi);
-		if (!ld_preload) {
-			ret = setenv("LD_PRELOAD", ld_preload, 1);
-			if (ret)
-				return -1;
-
-			ret = unsetenv("ld_preload");
-			if (ret)
-				return -1;
-		}
-
 		ld_library_path = __ld_library_path(ldso, abi);
 		if (ld_library_path) {
 			ret = setenv("LD_LIBRARY_PATH", ld_library_path, 1);
@@ -1568,6 +1557,17 @@ int __loader(const char *path, char * const argv[], char *interp,
 				return -1;
 
 			ret = unsetenv("ld_library_path");
+			if (ret)
+				return -1;
+		}
+
+		ld_preload = __ld_preload(ldso, abi);
+		if (!ld_preload) {
+			ret = setenv("LD_PRELOAD", ld_preload, 1);
+			if (ret)
+				return -1;
+
+			ret = unsetenv("ld_preload");
 			if (ret)
 				return -1;
 		}

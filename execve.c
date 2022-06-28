@@ -1129,13 +1129,11 @@ char *__ld_preload(const char *ldso, int abi)
 	__sanitize(buf, 0);
 
 	__strncpy(val, __getld_preload(ldso, abi));
-
 	ret = pathsetenv(getrootdir(), buf, val, 1);
 	if (ret)
 		return NULL;
 
 	__strncpy(val, __getlibiamroot(ldso, abi));
-
 	ret = pathprependenv(buf, val, 1);
 	if (ret)
 		return NULL;
@@ -1158,7 +1156,6 @@ char *__ld_library_path(const char *ldso, int abi)
 	__sanitize(buf, 0);
 
 	__strncpy(val, __getld_library_path(ldso, abi));
-
 	ret = pathsetenv(getrootdir(), buf, val, 1);
 	if (ret)
 		return NULL;
@@ -1166,13 +1163,11 @@ char *__ld_library_path(const char *ldso, int abi)
 	rpath = getenv("rpath");
 	if (rpath) {
 		__strncpy(val, rpath);
-
 		ret = pathsetenv(getrootdir(), "iamroot_rpath", val, 1);
 		if (ret)
 			return NULL;
 
 		__strncpy(val, getenv("iamroot_rpath"));
-
 		ret = pathprependenv(buf, val, 1);
 		if (ret)
 			return NULL;
@@ -1181,13 +1176,11 @@ char *__ld_library_path(const char *ldso, int abi)
 	runpath = getenv("runpath");
 	if (runpath) {
 		__strncpy(val, runpath);
-
 		ret = pathsetenv(getrootdir(), "iamroot_runpath", val, 1);
 		if (ret)
 			return NULL;
 
 		__strncpy(val, getenv("iamroot_runpath"));
-
 		ret = pathprependenv(buf, val, 1);
 		if (ret)
 			return NULL;

@@ -41,6 +41,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   the function `execve()` once again
 - Fix the segmentation fault if `LD_PRELOAD` is unset for the linux ELF dynamic
   loaders
+- Fix the setting of the `LD_PRELOAD` for the generic ELF dynamic loader
 
 ## [v5] - 2022-06-24
 

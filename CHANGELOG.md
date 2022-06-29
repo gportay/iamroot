@@ -39,6 +39,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `_strncpy()`; the macro copied at most buffer size - 2 bytes
 - Fix the invalid reading for setting [dynamic loader][ld.so(8)] option with
   the function `execve()` once again
+- Fix the segmentation fault if `LD_PRELOAD` is unset for the linux ELF dynamic
+  loaders
 
 ## [v5] - 2022-06-24
 

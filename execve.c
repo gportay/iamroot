@@ -1442,7 +1442,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 				__envperror("LD_PRELOAD", "unsetenv");
 				return -1;
 			}
-		} else {
+		} else if (ld_preload) {
 			ret = setenv("LD_PRELOAD", ld_preload, 1);
 			if (ret)
 				return -1;

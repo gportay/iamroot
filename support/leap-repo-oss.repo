@@ -1,5 +1,5 @@
 [repo-oss]
-name=openSUSE-Leaf-Oss
+name=openSUSE-Leap-Oss
 enabled=1
 autorefresh=1
 baseurl=http://download.opensuse.org/distribution/leap/15.4/repo/oss/

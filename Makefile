@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
 
-VERSION = 5
+VERSION = 6
 PREFIX ?= /usr/local
 OS ?= $(shell uname -o)
 IAMROOT_LIB ?= libiamroot.so

@@ -86,7 +86,7 @@ endef
 $(eval $(call libiamroot_so,x86_64,linux-x86-64,2))
 
 output-i686-linux/libiamroot.so: export CC += -m32
-output-i686-linux/libiamroot.so: export CFLAGS += -fno-stack-protector
+output-i686-linux/libiamroot.so: override CFLAGS += -fno-stack-protector
 $(eval $(call libiamroot_so,i686,linux,2))
 
 ifneq ($(shell command -v arm-linux-gnueabi-gcc 2>/dev/null),)
@@ -106,7 +106,7 @@ endif
 
 ifneq ($(shell command -v i386-musl-gcc 2>/dev/null),)
 output-i686-musl-i386/libiamroot.so: export CC = i386-musl-gcc
-output-i686-musl-i386/libiamroot.so: export CFLAGS += -fno-stack-protector
+output-i686-musl-i386/libiamroot.so: override CFLAGS += -fno-stack-protector
 $(eval $(call libiamroot_so,i686,musl-i386,1))
 endif
 

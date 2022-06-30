@@ -80,21 +80,25 @@ The signature will be marked as non-exportable.
 
 
 pub  rsa4096/A50C0F20AEC3AF00
-     created: YYYY-MM-DD  expired: YYYY-MM-DD  usage: SC  
-     trust: marginal      validity: expired
-[ expired] (1). Polichronucci (Arch Linux 32 Master Key) <polichronucci@archlinux.gr>
+     created: YYYY-MM-DD  expires: YYYY-MM-DD  usage: SC  
+     trust: marginal      validity: unknown
+[ unknown] (1). Polichronucci (Arch Linux 32 Master Key) <polichronucci@archlinux.gr>
 
 
 pub  rsa4096/A50C0F20AEC3AF00
-     created: YYYY-MM-DD  expired: YYYY-MM-DD  usage: SC  
-     trust: marginal      validity: expired
+     created: YYYY-MM-DD  expires: YYYY-MM-DD  usage: SC  
+     trust: marginal      validity: unknown
  Primary key fingerprint: A0B2 50C0 FC9F C079 EC04  ADB7 A50C 0F20 AEC3 AF00
 
      Polichronucci (Arch Linux 32 Master Key) <polichronucci@archlinux.gr>
 
-This key has expired!  Unable to sign.
+This key is due to expire on 2023-02-09.
+Are you sure that you want to sign this key with your
+key "Pacman Keyring Master Key <pacman@localhost>" (XXXXXXXXXXXXXXXX)
 
-Key not changed so no update needed.
+The signature will be marked as non-exportable.
+
+
 
 pub  rsa4096/30AB721FE7400FCD
      created: YYYY-MM-DD  expires: never       usage: SC  

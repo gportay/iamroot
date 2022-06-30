@@ -100,28 +100,28 @@ $(eval $(call libiamroot_so,armhf,linux-armhf,3))
 endif
 
 ifneq ($(shell command -v aarch64-linux-gnu-gcc 2>/dev/null),)
-aarch64/libiamroot-linux-aarch64.so.1: export CC = aarch64-linux-gnu-gcc
+output-aarch64-linux-aarch64/libiamroot.so: export CC = aarch64-linux-gnu-gcc
 $(eval $(call libiamroot_so,aarch64,linux-aarch64,1))
 endif
 
 ifneq ($(shell command -v i386-musl-gcc 2>/dev/null),)
-i686/libiamroot-musl-i386.so.1: export CC = i386-musl-gcc
-i686/libiamroot-musl-i386.so.1: export CFLAGS += -fno-stack-protector
+output-i686-musl-i386/libiamroot.so: export CC = i386-musl-gcc
+output-i686-musl-i386/libiamroot.so: export CFLAGS += -fno-stack-protector
 $(eval $(call libiamroot_so,i686,musl-i386,1))
 endif
 
 ifneq ($(shell command -v musl-gcc 2>/dev/null),)
-x86_64/libiamroot-musl-x86_64.so.1: export CC = musl-gcc
+output-x86_64-musl-x86_64/libiamroot.so: export CC = musl-gcc
 $(eval $(call libiamroot_so,x86_64,musl-x86_64,1))
 endif
 
 ifneq ($(shell command -v arm-linux-musleabihf-gcc 2>/dev/null),)
-armhf/libiamroot-musl-armhf.so.1: export CC = arm-linux-musleabihf-gcc
+output-armhf-musl-armhf/libiamroot.so: export CC = arm-linux-musleabihf-gcc
 $(eval $(call libiamroot_so,armhf,musl-armhf,1))
 endif
 
 ifneq ($(shell command -v aarch64-linux-musl-gcc 2>/dev/null),)
-aarch64/libiamroot-musl-aarch64.so.1: export CC = aarch64-linux-musl-gcc
+output-aarch64-musl-aarch64/libiamroot.so: export CC = aarch64-linux-musl-gcc
 $(eval $(call libiamroot_so,aarch64,musl-aarch64,1))
 endif
 

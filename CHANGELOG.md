@@ -9,12 +9,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - Compile for [FreeBSD] 13.1
-- Intercept the [FreeBSD]'s functions `mount()`, `nmount()`, `scandir_b()` and
-  `unmount()` `__opendir2()`, `exect`, `execvP()`, `extattr_delete_fd()`,
-  `extattr_delete_file()`, `extattr_delete_link()`, `extattr_get_fd()`,
-  `extattr_get_file()`, `extattr_get_link()`, `extattr_list_fd()`,
-  `extattr_list_file()`, `extattr_list_link()`, `extattr_set_fd()`,
-  `extattr_set_file()`, `extattr_set_link()`, 
+- Intercept the [FreeBSD]'s functions `__opendir2()`, `exect`, `execvP()`
+  `extattr_delete_fd()`, `extattr_delete_file()`, `extattr_delete_link()`,
+  `extattr_get_fd()`, `extattr_get_file()`, `extattr_get_link()`,
+  `extattr_list_fd()`, `extattr_list_file()`, `extattr_list_link()`,
+  `extattr_set_fd()`, `extattr_set_file()`, `extattr_set_link()`, `mount()`,
+  `nmount()`, `scandir_b()`, and `unmount()`
 - Intercept the functions `flistxattr()`, `fremovexattr()`, `ftw()` and
   `nftw()`
 - Use `kinfo_getfile()` to obtain the fd's path on [FreeBSD]

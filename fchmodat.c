@@ -8,6 +8,9 @@
 #include <errno.h>
 #include <limits.h>
 #include <dlfcn.h>
+#ifdef __linux__
+#include <sys/xattr.h>
+#endif
 
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -54,6 +57,9 @@ int fchmodat(int dfd, const char *path, mode_t mode, int atflags)
 	__remove_at_empty_path_if_needed(buf, atflags);
 	ret = next_fchmodat(dfd, buf, mode, atflags);
 	__ignore_error_and_warn(ret, dfd, path, atflags);
+#ifdef __linux__
+	__set_mode(buf, oldmode, mode);
+#endif
 
 	return ret;
 }

@@ -8,6 +8,9 @@
 #include <errno.h>
 #include <limits.h>
 #include <dlfcn.h>
+#ifdef __linux__
+#include <sys/xattr.h>
+#endif
 
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -39,6 +42,7 @@ int mkfifoat(int dfd, const char *path, mode_t mode)
 	const mode_t oldmode = mode;
 	char buf[PATH_MAX];
 	ssize_t siz;
+	int ret;
 
 	siz = path_resolution(dfd, path, buf, sizeof(buf), 0);
 	if (siz == -1) {
@@ -50,5 +54,10 @@ int mkfifoat(int dfd, const char *path, mode_t mode)
 	__debug("%s(dfd: %d, path: '%s' -> '%s', mode: 0%03o -> 0%03o)\n",
 		__func__, dfd, path, buf, oldmode, mode);
 
-	return next_mkfifoat(dfd, buf, mode);
+	ret = next_mkfifoat(dfd, buf, mode);
+#ifdef __linux__
+	__set_mode(buf, oldmode, mode);
+#endif
+
+	return ret;
 }

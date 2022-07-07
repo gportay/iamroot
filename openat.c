@@ -9,6 +9,10 @@
 #include <errno.h>
 #include <limits.h>
 #include <dlfcn.h>
+#include <sys/stat.h>
+#ifdef __linux__
+#include <sys/xattr.h>
+#endif
 
 #include <fcntl.h>
 
@@ -40,6 +44,7 @@ int openat(int dfd, const char *path, int oflags, ...)
 	char buf[PATH_MAX];
 	int atflags = 0;
 	ssize_t siz;
+	int ret;
 
 	if (oflags & O_NOFOLLOW)
 		atflags = AT_SYMLINK_NOFOLLOW;
@@ -65,7 +70,12 @@ int openat(int dfd, const char *path, int oflags, ...)
 	__debug("%s(dfd: %i, path: '%s' -> '%s', oflags: 0%o, mode: 0%03o -> 0%03o)\n",
 		__func__, dfd, path, buf, oflags, oldmode, mode);
 
-	return next_openat(dfd, buf, oflags, mode);
+	ret = next_openat(dfd, buf, oflags, mode);
+#ifdef __linux__
+	__set_mode(buf, oldmode, mode);
+#endif
+
+	return ret;
 }
 
 #ifdef _LARGEFILE64_SOURCE

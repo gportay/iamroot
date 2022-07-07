@@ -13,6 +13,9 @@ versions with no backward compatibility.
 [iamroot(7)] emulates the syscall [chroot(2)] for unprivileged processes in
 userspace.
 
+It aims to provide a self-contained and all-in-one alternative to [fakeroot(1)]
+and [fakechroot(1)].
+
 The project targets the *Linux* userlands [glibc] and [musl]; the works to
 support *BSD* userlands such as [FreeBSD] (13.1) or [OpenBSD] is on-going.
 
@@ -37,12 +40,12 @@ in chroot, in [chdir.c](chdir.c) and [fchdir.c](fchdir.c) for exiting "chroot
 jail", in [path_resolution.c](path_resolution.c) for resolving pathnames, and
 in [execve.c](execve.c) for exec'ing executable form chroot.
 
-iamroot aims to provide an alternative to [fakechroot(1)], which does great but
-does not run well for creating rootfs with [pacstrap(8)] (Arch Linux, Manjaro),
-[alpine-make-rootfs] (Alpine Linux), [dnf(8)] (Fedora), [zypper(8)] (openSUSE)
-or [debootstrap(8)] (Debian, Ubuntu). Its existing world would likely break if
-it is hacked to address the rootfs-creation related issues (i.e. fixing
-entering-exiting chroot and absolute symlink resolution in short).
+[fakechroot(1)] does not run well for creating rootfs with [pacstrap(8)] (Arch
+Linux, Manjaro), [alpine-make-rootfs] (Alpine Linux), [dnf(8)] (Fedora),
+[zypper(8)] (openSUSE) or [debootstrap(8)] (Debian, Ubuntu).  Its existing
+world would likely break if it is hacked to address the rootfs-creation related
+issues (i.e. fixing entering-exiting chroot and absolute symlink resolution in
+short).
 
 Of course, iamroot cannot substitute to the superuser permissions, and commands
 will end with `EACCESS` or `EPERM` as of reading or writing files in `/proc`,
@@ -84,6 +87,7 @@ later version.
 [debootstrap(8)]: https://linux.die.net/man/8/debootstrap
 [dnf(8)]: https://dnf.readthedocs.io/en/latest/command_ref.html
 [fakechroot(1)]: https://linux.die.net/man/1/fakechroot
+[fakeroot(1)]: https://linux.die.net/man/1/fakeroot-sysv
 [fchdir(2)]: https://linux.die.net/man/2/fchdir
 [fopen(3)]: https://linux.die.net/man/3/fopen
 [glibc]: https://www.gnu.org/software/libc/

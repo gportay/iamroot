@@ -9,6 +9,9 @@
 #include <errno.h>
 #include <limits.h>
 #include <dlfcn.h>
+#ifdef __linux__
+#include <sys/xattr.h>
+#endif
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -42,6 +45,7 @@ int open(const char *path, int oflags, ...)
 	char buf[PATH_MAX];
 	int atflags = 0;
 	ssize_t siz;
+	int ret;
 
 	if (oflags & O_NOFOLLOW)
 		atflags = AT_SYMLINK_NOFOLLOW;
@@ -67,7 +71,12 @@ int open(const char *path, int oflags, ...)
 	__debug("%s(path: '%s' -> '%s', oflags: 0%o, mode: 0%03o -> 0%03o)\n",
 		__func__, path, buf, oflags, oldmode, mode);
 
-	return next_open(buf, oflags, mode);
+	ret = next_open(buf, oflags, mode);
+#ifdef __linux__
+	__set_mode(buf, oldmode, mode);
+#endif
+
+	return ret;
 }
 
 #ifdef _LARGEFILE64_SOURCE

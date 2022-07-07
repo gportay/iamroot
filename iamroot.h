@@ -103,6 +103,7 @@ extern char **environ;
 extern char **__environ;
 
 #define IAMROOT_XATTRS_PREFIX "user.iamroot."
+#define IAMROOT_XATTRS_MODE IAMROOT_XATTRS_PREFIX "mode"
 #endif
 
 #ifdef __FreeBSD__
@@ -219,6 +220,14 @@ void verbose_exec(const char *, char * const[], char * const[]);
 	({ if ((mode & user_mode) != user_mode) { \
 	     __info("%s: %d/%s: Insuffisant user mode 0%03o!\n", __func__, fd, path, mode); \
 	     mode |= user_mode; \
+	   } \
+	   if (mode & S_ISUID) { \
+	     __info("%s: %d/%s: SUID bit 0%04o!\n", __func__, fd, path, mode); \
+	     mode &= ~S_ISUID; \
+	   } \
+	   if (mode & S_ISGID) { \
+	     __info("%s: %d/%s: SGID bit 0%04o!\n", __func__, fd, path, mode); \
+	     mode &= ~S_ISGID; \
 	   } })
 
 #define __fwarn_if_insuffisant_user_modeat(fd, path, mode, flags) \
@@ -232,6 +241,14 @@ void verbose_exec(const char *, char * const[], char * const[]);
 	({ if ((mode & user_mode) != user_mode) { \
 	     __info("%s: %s: Insuffisant user mode 0%03o!\n", __func__, path, mode); \
 	     mode |= user_mode; \
+	   } \
+	   if (mode & S_ISUID) { \
+	     __info("%s: %s: SUID bit 0%04o!\n", __func__, path, mode); \
+	     mode &= ~S_ISUID; \
+	   } \
+	   if (mode & S_ISGID) { \
+	     __info("%s: %s: SGID bit 0%04o!\n", __func__, path, mode); \
+	     mode &= ~S_ISGID; \
 	   } })
 
 #define __warn_if_insuffisant_user_mode(path, mode) \
@@ -249,6 +266,46 @@ void verbose_exec(const char *, char * const[], char * const[]);
 
 #define __warn_if_too_restrictive_umask(mask) \
 	({ __warn_and_set_umask(mask, 0400); })
+
+#ifdef __linux__
+extern ssize_t next_lgetxattr(const char *, const char *, void *, size_t);
+extern int next_lsetxattr(const char *, const char *, const void *, size_t,
+			  int);
+extern int next_lremovexattr(const char *, const char *);
+
+#define __get_mode(path) \
+	({ int save_errno = errno; \
+	   mode_t m; \
+	   if (next_lgetxattr(buf, IAMROOT_XATTRS_MODE, &m, sizeof(m)) != sizeof(m)) \
+		m = (mode_t)-1; \
+	   errno = save_errno; \
+	   m; \
+	})
+
+#define __set_mode(path, oldmode, mode) \
+	({ int save_errno = errno; \
+	   if ((oldmode) == (mode)) { \
+	     next_lremovexattr((path), IAMROOT_XATTRS_MODE); \
+	   } else { \
+	     next_lsetxattr((path), IAMROOT_XATTRS_MODE, &(oldmode), \
+			    sizeof((oldmode)), 0); \
+	   } \
+	   errno = save_errno; \
+	   0; \
+	   })
+
+#define __st_mode(path, statbuf) \
+	({ mode_t m = __get_mode(path); \
+	   if (m != (mode_t)-1) { \
+	     statbuf->st_mode = (statbuf->st_mode & S_IFMT) | m; \
+	   } })
+
+#define __stx_mode(path, statxbuf) \
+	({ mode_t m = __get_mode(path); \
+	   if (m != (mode_t)-1) { \
+	     statxbuf->stx_mode = (statxbuf->stx_mode & S_IFMT) | m; \
+	   } })
+#endif
 
 #define __ignored_errno(e) (((e) != EPERM) && ((e) != EACCES) && ((e) != ENOSYS))
 

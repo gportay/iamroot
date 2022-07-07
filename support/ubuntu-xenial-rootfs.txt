@@ -1938,8 +1938,8 @@ Setting up rsyslog ...
 
 Creating config file /etc/rsyslog.d/50-default.conf with new version
 Adding user `syslog' to group `adm' ...
-Error: not-running /usr/bin/gpasswd -a syslog adm
-adduser: `/usr/bin/gpasswd -a syslog adm' returned error code 1. Exiting.
+Adding user syslog to group adm
+Done.
 Failed to list units: Connection reset by peer
 invoke-rc.d: policy-rc.d denied execution of start.
 Setting up python3.5 ...

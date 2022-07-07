@@ -9,6 +9,9 @@
 #include <errno.h>
 #include <limits.h>
 #include <dlfcn.h>
+#ifdef __linux__
+#include <sys/xattr.h>
+#endif
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -73,6 +76,10 @@ int statx(int dfd, const char *path, int atflags, unsigned int mask,
 	gid = next_getegid();
 	if (statxbuf->stx_gid == gid)
 		statxbuf->stx_gid = 0;
+
+#ifdef __linux__
+	__stx_mode(buf, statxbuf);
+#endif
 
 exit:
 	return ret;

@@ -55,7 +55,6 @@ FreeBSD-%-RELEASE-base-$(ARCH).txz:
 	wget https://download.freebsd.org/releases/$(ARCH)/$*-RELEASE/base.txz -O $@
 
 .PHONY: test
-test: export IAMROOT_FATAL ?= 0
 test: $(ARCH)/libiamroot-elf.so.1
 test:
 	$(MAKE) -f Makefile $@

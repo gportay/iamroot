@@ -10,6 +10,7 @@
 #include <errno.h>
 #include <limits.h>
 #include <dlfcn.h>
+#include <sys/xattr.h>
 
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -71,6 +72,10 @@ int __fxstatat64(int ver, int dfd, const char *path, struct stat64 *statbuf,
 	gid = next_getegid();
 	if (statbuf->st_gid == gid)
 		statbuf->st_gid = 0;
+
+#ifdef __linux__
+	__st_mode(buf, statbuf);
+#endif
 
 exit:
 	return ret;

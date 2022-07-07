@@ -1886,8 +1886,8 @@ Setting up rsyslog ...
 
 Creating config file /etc/rsyslog.d/50-default.conf with new version
 Adding user `syslog' to group `adm' ...
-Error: not-running /usr/bin/gpasswd -a syslog adm
-adduser: `/usr/bin/gpasswd -a syslog adm' returned error code 1. Exiting.
+Adding user syslog to group adm
+Done.
 Created symlink /etc/systemd/system/syslog.service -> /lib/systemd/system/rsyslog.service.
 Created symlink /etc/systemd/system/multi-user.target.wants/rsyslog.service -> /lib/systemd/system/rsyslog.service.
 Running in chroot, ignoring request.

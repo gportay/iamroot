@@ -9,6 +9,9 @@
 #include <errno.h>
 #include <limits.h>
 #include <dlfcn.h>
+#ifdef __linux__
+#include <sys/xattr.h>
+#endif
 
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -69,6 +72,10 @@ int __fxstatat(int ver, int dfd, const char *path, struct stat *statbuf,
 	gid = next_getegid();
 	if (statbuf->st_gid == gid)
 		statbuf->st_gid = 0;
+
+#ifdef __linux__
+	__st_mode(buf, statbuf);
+#endif
 
 exit:
 	return ret;

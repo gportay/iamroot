@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <limits.h>
+#include <sys/xattr.h>
 
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -39,8 +40,8 @@ int __xmknodat(int ver, int dfd, const char *path, mode_t mode, dev_t *dev)
 	fd = next_creat(buf, mode);
 	if (fd == -1)
 		return -1;
-
 	__close(fd);
+	__set_mode(buf, oldmode, mode);
 
 	return 0;
 }

@@ -128,7 +128,6 @@ test: export IAMROOT_LIBRARY_PATH := /lib64:/usr/lib64
 test: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/usr/lib64/libc.so.6:$(CURDIR)/rootfs/usr/lib64/libdl.so.2
 endif
 test: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|.*\.gcda
-test: export IAMROOT_FATAL ?= 1
 test: | rootfs
 	rm -Rf rootfs/tmp/* rootfs/dev/*
 	touch rootfs/tmp/file0

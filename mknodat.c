@@ -8,6 +8,9 @@
 #include <stdio.h>
 #include <errno.h>
 #include <limits.h>
+#ifdef __linux__
+#include <sys/xattr.h>
+#endif
 
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -37,8 +40,10 @@ int mknodat(int dfd, const char *path, mode_t mode, dev_t dev)
 	fd = next_creat(buf, mode);
 	if (fd == -1)
 		return -1;
-
 	__close(fd);
+#ifdef __linux__
+	__set_mode(buf, oldmode, mode);
+#endif
 
 	return 0;
 }

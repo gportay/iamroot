@@ -330,8 +330,6 @@ Running transaction test
 Transaction test succeeded.
 Running transaction
   Running scriptlet: filesystem XXX/XXX
-warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
   Running scriptlet: selinux-policy-targeted XXX/XXX
   Preparing        : XXX/XXX
   Installing       : libgcc XXX/XXX

@@ -863,6 +863,12 @@ Warning: fchownat: /dev/snd/timer: Ignoring error 'Operation not permitted'!
 Warning: fchmodat: /dev/snd/timer: Ignoring error 'Operation not permitted'!
 Warning: fchownat: /dev/loop-control: Ignoring error 'Operation not permitted'!
 Warning: fchmodat: /dev/loop-control: Ignoring error 'Operation not permitted'!
+Warning: fchownat: /dev/kvm: Ignoring error 'Operation not permitted'!
+Warning: fchmodat: /dev/kvm: Ignoring error 'Operation not permitted'!
+Warning: fchownat: /dev/vhost-net: Ignoring error 'Operation not permitted'!
+Warning: fchmodat: /dev/vhost-net: Ignoring error 'Operation not permitted'!
+Warning: fchownat: /dev/vhost-vsock: Ignoring error 'Operation not permitted'!
+Warning: fchmodat: /dev/vhost-vsock: Ignoring error 'Operation not permitted'!
 (XXX/XXX) Reloading device manager configuration...
   Skipped: Running in chroot.
 (XXX/XXX) Arming ConditionNeedsUpdate...

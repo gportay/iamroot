@@ -1217,31 +1217,6 @@ Selecting previously unselected package passwd.
 Preparing to unpack .../passwd ...
 Unpacking passwd ...
 Selecting previously unselected package libsystemd0:amd64.
-dpkg: regarding .../libsystemd0 containing libsystemd0:amd64, pre-dependency problem:
- libsystemd0 pre-depends on libcap2
-  libcap2:amd64 is unpacked, but has never been configured.
-
-dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../libsystemd0 containing libsystemd0:amd64, pre-dependency problem:
- libsystemd0 pre-depends on libgcrypt20
-  libgcrypt20:amd64 is unpacked, but has never been configured.
-
-dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../libsystemd0 containing libsystemd0:amd64, pre-dependency problem:
- libsystemd0 pre-depends on liblz4-1
-  liblz4-1:amd64 is unpacked, but has never been configured.
-
-dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../libsystemd0 containing libsystemd0:amd64, pre-dependency problem:
- libsystemd0 pre-depends on liblzma5
-  liblzma5 is not installed.
-
-dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../libsystemd0 containing libsystemd0:amd64, pre-dependency problem:
- libsystemd0 pre-depends on libzstd1
-  libzstd1:amd64 is unpacked, but has never been configured.
-
-dpkg: warning: ignoring pre-dependency problem!
 Preparing to unpack .../libsystemd0 ...
 Unpacking libsystemd0:amd64 ...
 Selecting previously unselected package libudev1:amd64.
@@ -1692,6 +1667,19 @@ Setting up libncurses6:amd64 ...
 Setting up libmnl0:amd64 ...
 Setting up udev ...
 A chroot environment has been detected, udev not started.
+Warning: fchownat: /dev/snd/seq: Ignoring error 'Operation not permitted'!
+Warning: fchmodat: /dev/snd/seq: Ignoring error 'Operation not permitted'!
+Warning: fchownat: /dev/snd/timer: Ignoring error 'Operation not permitted'!
+Warning: fchmodat: /dev/snd/timer: Ignoring error 'Operation not permitted'!
+Warning: fchmodat: /dev/kvm: Ignoring error 'Operation not permitted'!
+Warning: fchownat: /dev/kvm: Ignoring error 'Operation not permitted'!
+Warning: fchmodat: /dev/kvm: Ignoring error 'Operation not permitted'!
+Warning: fchmodat: /dev/vhost-net: Ignoring error 'Operation not permitted'!
+Warning: fchownat: /dev/vhost-net: Ignoring error 'Operation not permitted'!
+Warning: fchmodat: /dev/vhost-net: Ignoring error 'Operation not permitted'!
+Warning: fchmodat: /dev/vhost-vsock: Ignoring error 'Operation not permitted'!
+Warning: fchownat: /dev/vhost-vsock: Ignoring error 'Operation not permitted'!
+Warning: fchmodat: /dev/vhost-vsock: Ignoring error 'Operation not permitted'!
 Setting up libncursesw6:amd64 ...
 Setting up libk5crypto3:amd64 ...
 Setting up libxtables12:amd64 ...

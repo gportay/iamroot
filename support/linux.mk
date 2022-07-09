@@ -83,6 +83,8 @@ clean-$(1)-$(2).$(3):
 	rm -Rf $(1)/
 endef
 
+export CFLAGS
+
 $(eval $(call libiamroot_so,x86_64,linux-x86-64,2))
 
 output-i686-linux/libiamroot.so: export CC += -m32

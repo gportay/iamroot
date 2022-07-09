@@ -74,7 +74,6 @@ int fstatat64(int fd, const char *path, struct stat64 *statbuf, int flags)
 
 exit:
 	return ret;
-
 }
 
 weak_alias(fstatat64, __fstatat64);

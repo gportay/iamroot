@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [unreleased]
+
+### Fixed
+
+- Fix the invalid argument returned if an empty path is resolved but the flag
+  `AT_EMPTY_PATH` remains for the `at` functions `__fxstatat64()`,
+  `fstatat64()` and `statx()`,
+
 ## [v6] - 2022-06-30
 
 ### Added

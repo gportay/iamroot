@@ -58,6 +58,7 @@ int __fxstatat64(int ver, int fd, const char *path, struct stat64 *statbuf,
 	__debug("%s(fd: %i, path: '%s' -> '%s', ..., flags: 0x%x)\n", __func__,
 		fd, path, buf, flags);
 
+	__remove_at_empty_path_if_needed(buf, flags);
 	ret = next___fxstatat64(ver, fd, buf, statbuf, flags);
 	if (ret == -1)
 		goto exit;

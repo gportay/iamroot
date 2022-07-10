@@ -7,7 +7,9 @@
 VERSION = 6
 PREFIX ?= /usr/local
 OS ?= $(shell uname -o)
+
 IAMROOT_LIB ?= libiamroot.so
+export IAMROOT_LIB
 
 ifeq ($(OS),GNU/Linux)
 IAMROOT_LIB = x86_64/libiamroot-linux-x86-64.so.2

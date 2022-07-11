@@ -1458,6 +1458,7 @@ support/alpine-edge-rootfs.txt: alpine-edge-rootfs.log
 endif
 
 .PHONY: log
+log: all
 log: arch-log
 log: debian-log
 log: ubuntu-log
@@ -1465,11 +1466,12 @@ log: fedora-log
 log: alpine-log
 
 .PHONY: extra-log
+extra-log: all
 extra-log: opensuse-log
 extra-log: manjaro-log
 
 .PHONY: fixme-log
-fixme-log:
+fixme-log: all
 
 .PHONY: arch-log
 arch-log: arch-rootfs.log

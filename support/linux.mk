@@ -1477,8 +1477,7 @@ ifneq ($(shell command -v zypper 2>/dev/null),)
 extra-support: opensuse-support
 
 .PHONY: opensuse-support
-# FIXME: openSUSE Leap is currently broken.
-# opensuse-support: support/opensuse-leap-rootfs.txt
+fixme-support: support/opensuse-leap-rootfs.txt
 opensuse-support: support/opensuse-tumbleweed-rootfs.txt
 
 .PRECIOUS: support/opensuse-leap-rootfs.txt
@@ -1494,7 +1493,7 @@ support/opensuse-tumbleweed-rootfs.txt: opensuse-tumbleweed-rootfs.log
 extra-log: opensuse-log
 
 .PHONY: opensuse-log
-opensuse-log: opensuse-leap-rootfs.log
+fixme-log: opensuse-leap-rootfs.log
 opensuse-log: opensuse-tumbleweed-rootfs.log
 
 opensuse-leap-rootfs-log:
@@ -1507,8 +1506,7 @@ support: alpine-support
 .PHONY: alpine-support
 alpine-support: support/alpine-3.14-rootfs.txt
 alpine-support: support/alpine-3.15-rootfs.txt
-# FIXME: Alpine Linux 3.16 index is currently broken.
-# alpine-support: support/alpine-3.16-rootfs.txt
+fixme-support: support/alpine-3.16-rootfs.txt
 alpine-support: support/alpine-edge-rootfs.txt
 
 .PRECIOUS: support/alpine-3.14-rootfs.txt
@@ -1536,7 +1534,7 @@ log: alpine-log
 .PHONY: alpine-log
 alpine-log: alpine-3.14-rootfs.log
 alpine-log: alpine-3.15-rootfs.log
-alpine-log: alpine-3.16-rootfs.log
+fixme-log: alpine-3.16-rootfs.log
 alpine-log: alpine-edge-rootfs.log
 
 alpine-3.14-rootfs.log:

@@ -51,6 +51,10 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+# Temporary files
+*.log
+*.tmp
+
 # Coverage files
 *.gcda
 *.gcno

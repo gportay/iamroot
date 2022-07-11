@@ -786,33 +786,33 @@ dpkg: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
  missing 'Description' field
 dpkg: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
  missing 'Architecture' field
-dpkg: regarding .../archives/dpkg containing dpkg, pre-dependency problem:
+dpkg: regarding .../dpkg containing dpkg, pre-dependency problem:
  dpkg pre-depends on libbz2-1.0
   libbz2-1.0 is not installed.
 
 dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../archives/dpkg containing dpkg, pre-dependency problem:
+dpkg: regarding .../dpkg containing dpkg, pre-dependency problem:
  dpkg pre-depends on libc6
   libc6 is not installed.
 
 dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../archives/dpkg containing dpkg, pre-dependency problem:
+dpkg: regarding .../dpkg containing dpkg, pre-dependency problem:
  dpkg pre-depends on liblzma5
   liblzma5 is not installed.
 
 dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../archives/dpkg containing dpkg, pre-dependency problem:
+dpkg: regarding .../dpkg containing dpkg, pre-dependency problem:
  dpkg pre-depends on libselinux1
   libselinux1 is not installed.
 
 dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../archives/dpkg containing dpkg, pre-dependency problem:
+dpkg: regarding .../dpkg containing dpkg, pre-dependency problem:
  dpkg pre-depends on zlib1g
   zlib1g is not installed.
 
 dpkg: warning: ignoring pre-dependency problem!
 (Reading database ... XXX files and directories currently installed.)
-Preparing to unpack .../archives/dpkg ...
+Preparing to unpack .../dpkg ...
 Unpacking dpkg ...
 dpkg: dpkg: dependency problems, but configuring anyway as you requested:
  dpkg depends on libbz2-1.0; however:
@@ -944,27 +944,27 @@ Unpacking debianutils ...
 Selecting previously unselected package diffutils.
 Preparing to unpack .../diffutils ...
 Unpacking diffutils ...
-dpkg: regarding .../archives/dpkg containing dpkg, pre-dependency problem:
+dpkg: regarding .../dpkg containing dpkg, pre-dependency problem:
  dpkg pre-depends on libbz2-1.0
   libbz2-1.0:amd64 is unpacked, but has never been configured.
 
 dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../archives/dpkg containing dpkg, pre-dependency problem:
+dpkg: regarding .../dpkg containing dpkg, pre-dependency problem:
  dpkg pre-depends on liblzma5
   liblzma5 is not installed.
 
 dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../archives/dpkg containing dpkg, pre-dependency problem:
+dpkg: regarding .../dpkg containing dpkg, pre-dependency problem:
  dpkg pre-depends on libselinux1
   libselinux1 is not installed.
 
 dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../archives/dpkg containing dpkg, pre-dependency problem:
+dpkg: regarding .../dpkg containing dpkg, pre-dependency problem:
  dpkg pre-depends on zlib1g
   zlib1g is not installed.
 
 dpkg: warning: ignoring pre-dependency problem!
-Preparing to unpack .../archives/dpkg ...
+Preparing to unpack .../dpkg ...
 Unpacking dpkg ...
 Selecting previously unselected package e2fsprogs.
 dpkg: regarding .../e2fsprogs containing e2fsprogs, pre-dependency problem:
@@ -1049,7 +1049,7 @@ dpkg: warning: ignoring pre-dependency problem!
 Preparing to unpack .../archives/grep ...
 Unpacking grep ...
 Selecting previously unselected package gzip.
-Preparing to unpack .../archives/gzip ...
+Preparing to unpack .../gzip ...
 Unpacking gzip ...
 Selecting previously unselected package hostname.
 Preparing to unpack .../hostname ...
@@ -1653,7 +1653,7 @@ Preparing to unpack .../libtext-wrapi18n-perl ...
 Unpacking libtext-wrapi18n-perl ...
 Preparing to unpack .../logrotate ...
 Unpacking logrotate ...
-Preparing to unpack .../archives/nano ...
+Preparing to unpack .../nano ...
 Unpacking nano ...
 Preparing to unpack .../libncurses6 ...
 Unpacking libncurses6:amd64 ...

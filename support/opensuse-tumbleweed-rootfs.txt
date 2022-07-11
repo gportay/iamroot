@@ -85,7 +85,7 @@ warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/ope
 Retrieving package openSUSE-release-appliance-custom (XXX/XXX), XXX.X KiB ( XXX.X   B unpacked)
 Retrieving: openSUSE-release-appliance-custom.rpm [done]
 (XXX/XXX) Installing: openSUSE-release-appliance-custom [done]
-warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/openSUSE-release-appliance-custom-20220708-1711.1.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/openSUSE-release-appliance-custom-20220709-1713.1.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
 
 Retrieving package pam-manpages (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: pam-manpages [done]
@@ -145,7 +145,7 @@ warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/upd
 Retrieving package lsof (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: lsof.rpm [done]
 (XXX/XXX) Installing: lsof [done]
-warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/lsof-4.95.0-2.2.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/lsof-4.95.0-3.1.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
 
 Retrieving package libzstd1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: libzstd1.rpm [done]
@@ -425,7 +425,7 @@ warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/pkg
 Retrieving package libglib-2_0-0 (XXX/XXX), XXX.X KiB ( XXX.X MiB unpacked)
 Retrieving: libglib-2_0-0.rpm [done]
 (XXX/XXX) Installing: libglib-2_0-0 [done]
-warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libglib-2_0-0-2.72.2-1.1.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libglib-2_0-0-2.72.3-1.1.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
 
 Retrieving package netcfg (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: netcfg [done]
@@ -540,7 +540,7 @@ warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/lib
 Retrieving package libproxy1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: libproxy1.rpm [done]
 (XXX/XXX) Installing: libproxy1 [done]
-warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libproxy1-0.4.17-4.2.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libproxy1-0.4.18-1.1.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
 
 Retrieving package libprotobuf-lite31 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: libprotobuf-lite31.rpm [done]
@@ -645,7 +645,7 @@ warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/bas
 Retrieving package zypper-log (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: zypper-log [done]
 (XXX/XXX) Installing: zypper-log [done]
-warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/zypper-log-1.14.53-1.1.noarch.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/zypper-log-1.14.54-1.1.noarch.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
 
 Retrieving package which (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: which.rpm [done]
@@ -680,7 +680,7 @@ warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/pin
 Retrieving package openSUSE-release (XXX/XXX), XXX.X MiB ( XXX.X KiB unpacked)
 Retrieving: openSUSE-release.rpm [done]
 (XXX/XXX) Installing: openSUSE-release [done]
-warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/openSUSE-release-20220708-1711.1.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/openSUSE-release-20220709-1713.1.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
 
 Retrieving package login_defs (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: login_defs [done]
@@ -710,7 +710,7 @@ warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/cor
 Retrieving package patterns-base-minimal_base (XXX/XXX), XXX.X KiB ( XXX.X   B unpacked)
 Retrieving: patterns-base-minimal_base.rpm [done]
 (XXX/XXX) Installing: patterns-base-minimal_base [done]
-warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/patterns-base-minimal_base-20200505-34.1.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/patterns-base-minimal_base-20200505-35.1.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
 
 Retrieving package libpwquality1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: libpwquality1.rpm [done]
@@ -1219,12 +1219,12 @@ warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/lib
 Retrieving package zypper (XXX/XXX), XXX.X MiB ( XXX.X MiB unpacked)
 Retrieving: zypper.rpm [done]
 (XXX/XXX) Installing: zypper [done]
-warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/zypper-1.14.53-1.1.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/zypper-1.14.54-1.1.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
 
 Retrieving package zypper-needs-restarting (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: zypper-needs-restarting [done]
 (XXX/XXX) Installing: zypper-needs-restarting [done]
-warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/zypper-needs-restarting-1.14.53-1.1.noarch.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/zypper-needs-restarting-1.14.54-1.1.noarch.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
 
 Executing %posttrans script 'openSUSE-release-YYYYMMDD-X.1.x86_64.rpm' [done]
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'

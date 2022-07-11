@@ -1285,6 +1285,15 @@ extra-support: all
 .PHONY: fixme-support
 fixme-support: all
 
+.PHONY: log
+log: all
+
+.PHONY: extra-log
+extra-log: all
+
+.PHONY: fixme-log
+fixme-log: all
+
 ifneq ($(shell command -v pacstrap 2>/dev/null),)
 support: arch-support
 
@@ -1311,6 +1320,20 @@ support/i686-arch-rootfs.txt: i686-arch-rootfs.log
 support/manjaro-rootfs.txt: manjaro-rootfs.log
 	support/pacstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
+
+log: arch-log
+
+.PHONY: arch-log
+arch-log: arch-rootfs.log
+arch-log: i686-arch-rootfs.log
+
+extra-log: manjaro-log
+
+.PHONY: manjaro-log
+manjaro-log: manjaro-rootfs.log
+
+arch-rootfs.log:
+i686-arch-rootfs.log:
 endif
 
 ifneq ($(shell command -v debootstrap 2>/dev/null),)
@@ -1342,6 +1365,21 @@ support/debian-stable-rootfs.txt: debian-stable-rootfs.log
 support/debian-testing-rootfs.txt: debian-testing-rootfs.log
 	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
+
+log: debian-log
+
+.PHONY: debian-log
+debian-log: debian-oldoldstable-rootfs.log
+debian-log: debian-oldstable-rootfs.log
+debian-log: debian-stable-rootfs.log
+debian-log: debian-testing-rootfs.log
+debian-log: debian-unstable-rootfs.log
+
+debian-oldoldstable-rootfs.log:
+debian-oldstable-rootfs.log:
+debian-stable-rootfs.log:
+debian-testing-rootfs.log:
+debian-unstable-rootfs.log:
 
 support: ubuntu-support
 
@@ -1375,6 +1413,19 @@ support/ubuntu-impish-rootfs.txt: ubuntu-impish-rootfs.log
 support/ubuntu-jammy-rootfs.txt: ubuntu-jammy-rootfs.log
 	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
+
+log: ubuntu-log
+
+.PHONY: ubuntu-log
+ubuntu-log: ubuntu-bionic-rootfs.log
+ubuntu-log: ubuntu-focal-rootfs.log
+ubuntu-log: ubuntu-impish-rootfs.log
+ubuntu-log: ubuntu-jammy-rootfs.log
+
+ubuntu-bionic-rootfs.log:
+ubuntu-focal-rootfs.log:
+ubuntu-impish-rootfs.log:
+ubuntu-jammy-rootfs.log:
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)
@@ -1405,6 +1456,19 @@ support/fedora-35-rootfs.txt: fedora-35-rootfs.log
 support/fedora-36-rootfs.txt: fedora-36-rootfs.log
 	support/dnf.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
+
+log: fedora-log
+
+.PHONY: fedora-log
+fedora-log: fedora-33-rootfs.log
+fedora-log: fedora-34-rootfs.log
+fedora-log: fedora-35-rootfs.log
+fedora-log: fedora-36-rootfs.log
+
+fedora-33-rootfs.log:
+fedora-34-rootfs.log:
+fedora-35-rootfs.log:
+fedora-36-rootfs.log:
 endif
 
 ifneq ($(shell command -v zypper 2>/dev/null),)
@@ -1424,6 +1488,15 @@ support/opensuse-leap-rootfs.txt: opensuse-leap-rootfs.log
 support/opensuse-tumbleweed-rootfs.txt: opensuse-tumbleweed-rootfs.log
 	support/zypper.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
+
+extra-log: opensuse-log
+
+.PHONY: opensuse-log
+opensuse-log: opensuse-leap-rootfs.log
+opensuse-log: opensuse-tumbleweed-rootfs.log
+
+opensuse-leap-rootfs-log:
+opensuse-tumbleweed-rootfs-log:
 endif
 
 ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
@@ -1455,53 +1528,8 @@ support/alpine-3.16-rootfs.txt: alpine-3.16-rootfs.log
 support/alpine-edge-rootfs.txt: alpine-edge-rootfs.log
 	support/alpine-make-rootfs.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
-endif
 
-.PHONY: log
-log: all
-log: arch-log
-log: debian-log
-log: ubuntu-log
-log: fedora-log
 log: alpine-log
-
-.PHONY: extra-log
-extra-log: all
-extra-log: opensuse-log
-extra-log: manjaro-log
-
-.PHONY: fixme-log
-fixme-log: all
-
-.PHONY: arch-log
-arch-log: arch-rootfs.log
-arch-log: i686-arch-rootfs.log
-
-.PHONY: manjaro-log
-manjaro-log: manjaro-rootfs.log
-
-.PHONY: debian-log
-debian-log: debian-oldoldstable-rootfs.log
-debian-log: debian-oldstable-rootfs.log
-debian-log: debian-stable-rootfs.log
-debian-log: debian-testing-rootfs.log
-debian-log: debian-unstable-rootfs.log
-
-.PHONY: ubuntu-log
-ubuntu-log: ubuntu-bionic-rootfs.log
-ubuntu-log: ubuntu-focal-rootfs.log
-ubuntu-log: ubuntu-impish-rootfs.log
-ubuntu-log: ubuntu-jammy-rootfs.log
-
-.PHONY: fedora-log
-fedora-log: fedora-33-rootfs.log
-fedora-log: fedora-34-rootfs.log
-fedora-log: fedora-35-rootfs.log
-fedora-log: fedora-36-rootfs.log
-
-.PHONY: opensuse-log
-opensuse-log: opensuse-leap-rootfs.log
-opensuse-log: opensuse-tumbleweed-rootfs.log
 
 .PHONY: alpine-log
 alpine-log: alpine-3.14-rootfs.log
@@ -1509,29 +1537,14 @@ alpine-log: alpine-3.15-rootfs.log
 alpine-log: alpine-3.16-rootfs.log
 alpine-log: alpine-edge-rootfs.log
 
-.PHONY: %.log
-.PRECIOUS: %.log
-arch-rootfs.log:
-i686-arch-rootfs.log:
-debian-oldoldstable-rootfs.log:
-debian-oldstable-rootfs.log:
-debian-stable-rootfs.log:
-debian-testing-rootfs.log:
-debian-unstable-rootfs.log:
-ubuntu-bionic-rootfs.log:
-ubuntu-focal-rootfs.log:
-ubuntu-impish-rootfs.log:
-ubuntu-jammy-rootfs.log:
-fedora-33-rootfs.log:
-fedora-34-rootfs.log:
-fedora-35-rootfs.log:
-fedora-36-rootfs.log:
-opensuse-leap-rootfs-log:
-opensuse-tumbleweed-rootfs-log:
 alpine-3.14-rootfs.log:
 alpine-3.15-rootfs.log:
 alpine-3.16-rootfs.log:
 alpine-edge-rootfs.log:
+endif
+
+.PHONY: %.log
+.PRECIOUS: %.log
 %.log: SHELL = /bin/bash -o pipefail
 %.log:
 	$(MAKE) --silent $* 2>&1 | tee $@.tmp

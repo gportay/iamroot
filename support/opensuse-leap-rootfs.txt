@@ -642,15 +642,23 @@ Retrieving: info.rpm [done]
 (XXX/XXX) Installing: info [done]
 warning: /opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/info-6.5-4.17.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
 
+install-info: No such file or directory for /dev/null
+
 Retrieving package readline-doc (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: readline-doc [done]
 (XXX/XXX) Installing: readline-doc [done]
 warning: /opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/readline-doc-7.0-150400.25.22.noarch.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
 
+install-info: No such file or directory for /dev/null
+install-info: No such file or directory for /dev/null
+install-info: No such file or directory for /dev/null
+
 Retrieving package bash-doc (XXX/XXX), XXX.X KiB ( XXX.X MiB unpacked)
 Retrieving: bash-doc [done]
 (XXX/XXX) Installing: bash-doc [done]
 warning: /opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/bash-doc-4.4-150400.25.22.noarch.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
+
+install-info: No such file or directory for /dev/null
 
 Retrieving package zstd (XXX/XXX), XXX.X KiB ( XXX.X MiB unpacked)
 Retrieving: zstd.rpm [done]
@@ -672,10 +680,14 @@ Retrieving: which.rpm [done]
 (XXX/XXX) Installing: which [done]
 warning: /opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/which-2.21-2.20.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
 
+install-info: No such file or directory for /dev/null
+
 Retrieving package time (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: time.rpm [done]
 (XXX/XXX) Installing: time [done]
 warning: /opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/time-1.9-1.15.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
+
+install-info: No such file or directory for /dev/null
 
 Retrieving package systemd-default-settings-branding-openSUSE (XXX/XXX), XXX.X KiB ( XXX.X   B unpacked)
 Retrieving: systemd-default-settings-branding-openSUSE [done]
@@ -692,6 +704,8 @@ Retrieving: sed.rpm [done]
 (XXX/XXX) Installing: sed [done]
 warning: /opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/sed-4.4-11.6.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
 
+install-info: No such file or directory for /dev/null
+
 Retrieving package sed-lang (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: sed-lang [done]
 (XXX/XXX) Installing: sed-lang [done]
@@ -701,6 +715,8 @@ Retrieving package pinentry (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: pinentry.rpm [done]
 (XXX/XXX) Installing: pinentry [done]
 warning: /opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/pinentry-1.1.0-4.3.1.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
+
+install-info: No such file or directory for /dev/null
 
 Retrieving package login_defs (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: login_defs [done]
@@ -716,6 +732,8 @@ Retrieving package libtasn1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: libtasn1.rpm [done]
 (XXX/XXX) Installing: libtasn1 [done]
 warning: /opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libtasn1-4.13-4.5.1.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
+
+install-info: No such file or directory for /dev/null
 
 Retrieving package libfido2-udev (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: libfido2-udev [done]
@@ -742,10 +760,14 @@ Retrieving: gzip.rpm [done]
 (XXX/XXX) Installing: gzip [done]
 warning: /opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/gzip-1.10-7.1.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
 
+install-info: No such file or directory for /dev/null
+
 Retrieving package grep (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: grep.rpm [done]
 (XXX/XXX) Installing: grep [done]
 warning: /opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/grep-3.1-4.3.12.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
+
+install-info: No such file or directory for /dev/null
 
 Retrieving package grep-lang (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: grep-lang [done]
@@ -758,6 +780,8 @@ Retrieving: gawk.rpm [done]
 warning: /opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/gawk-4.2.1-1.41.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
 
 update-alternatives: using /usr/bin/gawk to provide /bin/awk (awk) in auto mode
+install-info: No such file or directory for /dev/null
+install-info: No such file or directory for /dev/null
 
 Retrieving package elfutils (XXX/XXX), XXX.X KiB ( XXX.X MiB unpacked)
 Retrieving: elfutils.rpm [done]
@@ -768,6 +792,8 @@ Retrieving package diffutils (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: diffutils.rpm [done]
 (XXX/XXX) Installing: diffutils [done]
 warning: /opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/diffutils-3.6-4.3.1.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
+
+install-info: No such file or directory for /dev/null
 
 Retrieving package diffutils-lang (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: diffutils-lang [done]
@@ -952,6 +978,8 @@ Retrieving package cpio (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: cpio.rpm [done]
 (XXX/XXX) Installing: cpio [done]
 warning: /opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/cpio-2.13-150400.1.98.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 39db7c82: NOKEY
+
+install-info: No such file or directory for /dev/null
 
 Retrieving package cpio-mt (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: cpio-mt.rpm [done]
@@ -1193,6 +1221,7 @@ Warning: /opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root di
 Creating group systemd-timesync with gid 496.
 Creating user systemd-timesync (systemd Time Synchronization) with uid 496 and gid 496.
 Warning: /opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-leap-rootfs'
+Failed to open /dev/urandom: No such file or directory
 Warning: /opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-leap-rootfs'
 Running in chroot, ignoring command 'daemon-reexec'
 Warning: /opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-leap-rootfs'

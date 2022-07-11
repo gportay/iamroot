@@ -753,10 +753,14 @@ Retrieving: ca-certificates [done]
 (XXX/XXX) Installing: ca-certificates [done]
 warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/ca-certificates-2+git20211004.3efbea9-1.6.noarch.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
 
+/sbin/update-ca-certificates: line 110: /dev/fd/63: No such file or directory
+
 Retrieving package ca-certificates-mozilla (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: ca-certificates-mozilla [done]
 (XXX/XXX) Installing: ca-certificates-mozilla [done]
 warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/ca-certificates-mozilla-2.52-1.4.noarch.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
+
+/sbin/update-ca-certificates: line 110: /dev/fd/63: No such file or directory
 
 Retrieving package systemd-presets-branding-openSUSE (XXX/XXX), XXX.X KiB ( XXX.X   B unpacked)
 Retrieving: systemd-presets-branding-openSUSE [done]
@@ -992,7 +996,7 @@ Warning: /opensuse-tumbleweed-rootfs/etc: contains root directory '/opensuse-tum
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'
-Warning: /opensuse-tumbleweed-rootfs/var/lib/systemd: contains root directory '/opensuse-tumbleweed-rootfs'
+Failed to open /dev/urandom: No such file or directory
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'
@@ -1246,6 +1250,7 @@ Created symlink /etc/systemd/user/basic.target.wants/systemd-tmpfiles-setup.serv
 Created symlink /etc/systemd/user/timers.target.wants/systemd-tmpfiles-clean.timer -> /usr/lib/systemd/user/systemd-tmpfiles-clean.timer.
 rmdir: failed to remove 'var/lib/rpm': Directory not empty
 
+/usr/sbin/update-ca-certificates: line 110: /dev/fd/63: No such file or directory
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'

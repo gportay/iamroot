@@ -211,7 +211,7 @@ Change root directory via *chroot(1)*
 
 Create a new Arch Linux system installation from scratch via *pacstrap(8)*
 
-	[gportay@archlinux ~]$ EUID=0 iamroot-shell -c "pacman-key --gpgdir rootfs/etc/pacman.d/gnupg --init"
+	[gportay@archlinux ~]$ iamroot-shell -c "pacman-key --gpgdir rootfs/etc/pacman.d/gnupg --init"
 	gpg: /home/gportay/rootfs/etc/pacman.d/gnupg/trustdb.gpg: trustdb created
 	gpg: no ultimately trusted keys found
 	gpg: starting migration from earlier GnuPG versions
@@ -219,14 +219,13 @@ Create a new Arch Linux system installation from scratch via *pacstrap(8)*
 	gpg: migration succeeded
 	==> Generating pacman master key. This may take some time.
 	gpg: Generating pacman keyring master key...
-	gpg: key 63E3BF33B8A41C04 marked as ultimately trusted
 	gpg: directory '/home/gportay/rootfs/etc/pacman.d/gnupg/openpgp-revocs.d' created
-	gpg: revocation certificate stored as '/home/gportay/rootfs/etc/pacman.d/gnupg/openpgp-revocs.d/772F83A308F9F12BC32A1D8A63E3BF33B8A41C04.rev'
+	gpg: revocation certificate stored as '/home/gportay/rootfs/etc/pacman.d/gnupg/openpgp-revocs.d/7484186E876B632498A6B12E5CA22B2044E718A1.rev'
 	gpg: Done
 	==> Updating trust database...
 	gpg: marginals needed: 3  completes needed: 1  trust model: pgp
 	gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
-	[gportay@archlinux ~]$ EUID=0 iamroot-shell -c "pacman-key --gpgdir rootfs/etc/pacman.d/gnupg --populate archlinux"
+	[gportay@archlinux ~]$ iamroot-shell -c "pacman-key --gpgdir rootfs/etc/pacman.d/gnupg --populate archlinux"
 	==> Appending keys from archlinux.gpg...
 	==> Locally signing trusted keys in keyring...
 	  -> Locally signed 6 keys.
@@ -242,9 +241,9 @@ Create a new Arch Linux system installation from scratch via *pacstrap(8)*
 	==> Updating trust database...
 	gpg: marginals needed: 3  completes needed: 1  trust model: pgp
 	gpg: depth: 0  valid:   1  signed:   6  trust: 0-, 0q, 0n, 0m, 0f, 1u
-	gpg: depth: 1  valid:   6  signed:  94  trust: 0-, 0q, 0n, 6m, 0f, 0u
-	gpg: depth: 2  valid:  88  signed:  32  trust: 88-, 0q, 0n, 0m, 0f, 0u
-	gpg: next trustdb check due at 2022-05-06
+	gpg: depth: 1  valid:   6  signed:  93  trust: 0-, 0q, 0n, 6m, 0f, 0u
+	gpg: depth: 2  valid:  88  signed:  33  trust: 88-, 0q, 0n, 0m, 0f, 0u
+	gpg: next trustdb check due at 2022-07-18
 	[gportay@archlinux ~]$ EUID=0 iamroot-shell -c "pacstrap rootfs" && echo done
 	==> Creating install root at rootfs
 	Warning: Command is skipped: /usr/bin/mount proc rootfs/proc -t proc -o nosuid,noexec,nodev
@@ -258,39 +257,42 @@ Create a new Arch Linux system installation from scratch via *pacstrap(8)*
 	(...)
 	:: Running post-transaction hooks...
 	( 1/10) Creating system user accounts...
-	Warning: /home/gportay/rootfs: contains root '/home/gportay/rootfs'
 	( 2/10) Updating journal message catalog...
-	Warning: /home/gportay/rootfs: contains root '/home/gportay/rootfs'
 	( 3/10) Reloading system manager configuration...
-	Warning: /home/gportay/rootfs: contains root '/home/gportay/rootfs'
 	  Skipped: Running in chroot.
 	( 4/10) Updating udev hardware database...
-	Warning: /home/gportay/rootfs: contains root '/home/gportay/rootfs'
 	( 5/10) Applying kernel sysctl settings...
-	Warning: /home/gportay/rootfs: contains root '/home/gportay/rootfs'
 	  Skipped: Running in chroot.
 	( 6/10) Creating temporary files...
-	Warning: /home/gportay/rootfs: contains root '/home/gportay/rootfs'
+	Warning: fchownat: /run/systemd/netif: Ignoring error 'Operation not permitted'!
+	Warning: fchmodat: /run/systemd/netif: Ignoring error 'Operation not permitted'!
+	Warning: fchownat: /run/systemd/netif/links: Ignoring error 'Operation not permitted'!
+	Warning: fchmodat: /run/systemd/netif/links: Ignoring error 'Operation not permitted'!
+	Warning: fchownat: /run/systemd/netif/leases: Ignoring error 'Operation not permitted'!
+	Warning: fchmodat: /run/systemd/netif/leases: Ignoring error 'Operation not permitted'!
+	Warning: fchownat: /run/systemd/netif/lldp: Ignoring error 'Operation not permitted'!
+	Warning: fchmodat: /run/systemd/netif/lldp: Ignoring error 'Operation not permitted'!
 	Warning: fchownat: /run/tpm2-tss/eventlog: Ignoring error 'Operation not permitted'!
-	Warning: chmod: /run/tpm2-tss/eventlog: Ignoring error 'Operation not permitted'!
+	Warning: fchmodat: /run/tpm2-tss/eventlog: Ignoring error 'Operation not permitted'!
 	Warning: fchownat: /dev/snd/seq: Ignoring error 'Operation not permitted'!
-	Warning: chmod: /dev/snd/seq: Ignoring error 'Operation not permitted'!
+	Warning: fchmodat: /dev/snd/seq: Ignoring error 'Operation not permitted'!
 	Warning: fchownat: /dev/snd/timer: Ignoring error 'Operation not permitted'!
-	Warning: chmod: /dev/snd/timer: Ignoring error 'Operation not permitted'!
+	Warning: fchmodat: /dev/snd/timer: Ignoring error 'Operation not permitted'!
 	Warning: fchownat: /dev/loop-control: Ignoring error 'Operation not permitted'!
-	Warning: chmod: /dev/loop-control: Ignoring error 'Operation not permitted'!
-	Warning: chmod: /dev/vhost-net: Ignoring error 'Operation not permitted'!
+	Warning: fchmodat: /dev/loop-control: Ignoring error 'Operation not permitted'!
+	Warning: fchownat: /dev/kvm: Ignoring error 'Operation not permitted'!
+	Warning: fchmodat: /dev/kvm: Ignoring error 'Operation not permitted'!
+	Warning: fchownat: /dev/vhost-net: Ignoring error 'Operation not permitted'!
+	Warning: fchmodat: /dev/vhost-net: Ignoring error 'Operation not permitted'!
+	Warning: fchownat: /dev/vhost-vsock: Ignoring error 'Operation not permitted'!
+	Warning: fchmodat: /dev/vhost-vsock: Ignoring error 'Operation not permitted'!
 	Warning: fchownat: /run/log/journal: Ignoring error 'Operation not permitted'!
-	Warning: chmod: /run/log/journal: Ignoring error 'Operation not permitted'!
+	Warning: fchmodat: /run/log/journal: Ignoring error 'Operation not permitted'!
 	( 7/10) Reloading device manager configuration...
-	Warning: /home/gportay/rootfs: contains root '/home/gportay/rootfs'
 	  Skipped: Running in chroot.
 	( 8/10) Arming ConditionNeedsUpdate...
-	Warning: /home/gportay/rootfs: contains root '/home/gportay/rootfs'
 	( 9/10) Rebuilding certificate stores...
-	Warning: /home/gportay/rootfs: contains root '/home/gportay/rootfs'
 	(10/10) Reloading system bus configuration...
-	Warning: /home/gportay/rootfs: contains root '/home/gportay/rootfs'
 	  Skipped: Running in chroot.
 	Warning: Command is skipped: /usr/bin/umount rootfs/tmp rootfs/run rootfs/dev/shm rootfs/dev/pts rootfs/dev rootfs/sys rootfs/proc
 	done

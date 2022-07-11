@@ -115,7 +115,7 @@ Environment variables:
 EOF
 }
 
-IAMROOT_LIB="${IAMROOT_LIB:-/usr/lib/iamroot/libiamroot.so:libdl.so}"
+IAMROOT_LIB="${IAMROOT_LIB:-/usr/lib/iamroot/libiamroot.so}"
 export IAMROOT_LIB
 
 IAMROOT_EXEC="${IAMROOT_EXEC:-/usr/lib/iamroot/exec.sh}"
@@ -235,6 +235,13 @@ do
 	PWD="$OLDPWD" source "${i##*/}"
 	cd "$OLDPWD"
 done
+
+if uname -o | grep -q "GNU/Linux"
+then
+	IAMROOT_LIB="$IAMROOT_LIB:libdl.so.2"
+else
+	IAMROOT_LIB="$IAMROOT_LIB:libdl.so"
+fi
 
 IAMROOTLVL="$((IAMROOTLVL+1))" \
 LD_PRELOAD="$IAMROOT_LIB${LD_PRELOAD+:$LD_PRELOAD}" \

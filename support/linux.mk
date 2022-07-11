@@ -737,7 +737,7 @@ alpine-test: x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.s
 	bash iamroot-shell -c "chroot alpine-minirootfs shebang-busybox.sh one two three"
 	bash iamroot-shell -c "chroot alpine-minirootfs /lib/ld-musl-x86_64.so.1 --preload "$$PWD/x86_64/libiamroot-musl-x86_64.so.1" bin/busybox"
 
-rootfs: alpine-rootfs
+fixme-rootfs: alpine-rootfs
 
 .PHONY: mini-chroot
 mini-chroot: x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2 | alpine-minirootfs
@@ -1499,7 +1499,7 @@ opensuse-tumbleweed-rootfs-log:
 endif
 
 ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
-support: alpine-support
+fixme-support: alpine-support
 
 .PHONY: alpine-support
 alpine-support: support/alpine-3.14-rootfs.txt
@@ -1527,7 +1527,7 @@ support/alpine-edge-rootfs.txt: alpine-edge-rootfs.log
 	support/alpine-make-rootfs.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
-log: alpine-log
+fixme-log: alpine-log
 
 .PHONY: alpine-log
 alpine-log: alpine-3.14-rootfs.log

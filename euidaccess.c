@@ -45,7 +45,8 @@ int euidaccess(const char *path, int mode)
 		return -1;
 	}
 
-	__debug("%s(path: '%s' -> '%s')\n", __func__, path, buf);
+	__debug("%s(path: '%s' -> '%s', mode: 0%03o)\n", __func__, path, buf,
+		mode);
 
 	return next_euidaccess(buf, mode);
 }

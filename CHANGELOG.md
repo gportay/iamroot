@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [unreleased]
 
+### Changed
+
+- Output the mode for the functions `euidaccess()` and `faccessat()`
+
 ### Fixed
 
 - Fix the invalid argument returned if an empty path is resolved but the flag

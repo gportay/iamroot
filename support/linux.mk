@@ -819,7 +819,7 @@ alpine-3.16-rootfs: | alpine-3.16-rootfs/bin/busybox
 alpine-edge-rootfs: | alpine-edge-rootfs/bin/busybox
 
 alpine-%-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
-	bash iamroot-shell -c "alpine-make-rootfs alpine-$*-rootfs --keys-dir /usr/share/apk/keys/x86_64 --mirror-uri http://nl.alpinelinux.org/alpine --branch $*"
+	bash iamroot-shell -c "alpine-make-rootfs alpine-$*-rootfs --keys-dir /usr/share/apk/keys/x86_64 --mirror-uri http://dl-cdn.alpinelinux.org/alpine --branch $*"
 
 qemu-system-x86_64-alpine-3.14:
 qemu-system-x86_64-alpine-3.15:
@@ -919,7 +919,7 @@ i686-alpine-edge-rootfs: | i686-alpine-edge-rootfs/bin/busybox
 
 i686-alpine-%-rootfs/bin/busybox: export APK_OPTS = --arch x86 --no-progress
 i686-alpine-%-rootfs/bin/busybox: | x86/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2
-	bash iamroot-shell -c "alpine-make-rootfs i686-alpine-$*-rootfs --keys-dir /usr/share/apk/keys/x86 --mirror-uri http://nl.alpinelinux.org/alpine --branch $*"
+	bash iamroot-shell -c "alpine-make-rootfs i686-alpine-$*-rootfs --keys-dir /usr/share/apk/keys/x86 --mirror-uri http://dl-cdn.alpinelinux.org/alpine --branch $*"
 endif
 endif
 
@@ -1105,7 +1105,7 @@ aarch64-alpine-3.16-rootfs: | aarch64-alpine-3.16-rootfs/bin/busybox
 aarch64-alpine-edge-rootfs: | aarch64-alpine-edge-rootfs/bin/busybox
 
 aarch64-alpine-%-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
-	bash iamroot-shell -c "APK_OPTS='--arch aarch64' alpine-make-rootfs aarch64-alpine-$*-rootfs --keys-dir /usr/share/apk/keys/aarch64 --mirror-uri http://nl.alpinelinux.org/alpine --branch $*"
+	bash iamroot-shell -c "APK_OPTS='--arch aarch64' alpine-make-rootfs aarch64-alpine-$*-rootfs --keys-dir /usr/share/apk/keys/aarch64 --mirror-uri http://dl.cdn.alpinelinux.org/alpine --branch $*"
 endif
 endif
 
@@ -1506,7 +1506,7 @@ support: alpine-support
 .PHONY: alpine-support
 alpine-support: support/alpine-3.14-rootfs.txt
 alpine-support: support/alpine-3.15-rootfs.txt
-fixme-support: support/alpine-3.16-rootfs.txt
+alpine-support: support/alpine-3.16-rootfs.txt
 alpine-support: support/alpine-edge-rootfs.txt
 
 .PRECIOUS: support/alpine-3.14-rootfs.txt

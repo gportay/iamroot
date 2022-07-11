@@ -1,0 +1,20 @@
+
+> Installing system
+(X/X) Installing alpine-baselayout-data
+(X/X) Installing musl
+(X/X) Installing busybox
+Executing busybox.post-install
+(X/X) Installing alpine-baselayout
+Executing alpine-baselayout.pre-install
+Executing alpine-baselayout.post-install
+(X/X) Installing busybox-suid
+(X/X) Installing scanelf
+(X/X) Installing musl-utils
+Executing busybox.trigger
+OK: X XiB in X packages
+tar: Ignoring unknown extended header keyword 'APK-TOOLS.checksum.SHA1'
+tar: Ignoring unknown extended header keyword 'APK-TOOLS.checksum.SHA1'
+tar: Ignoring unknown extended header keyword 'APK-TOOLS.checksum.SHA1'
+tar: Ignoring unknown extended header keyword 'APK-TOOLS.checksum.SHA1'
+
+> Cleaning-up rootfs

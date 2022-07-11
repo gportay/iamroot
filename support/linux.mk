@@ -1334,6 +1334,8 @@ manjaro-log: manjaro-rootfs.log
 
 arch-rootfs.log:
 i686-arch-rootfs.log:
+
+manjaro-rootfs.log:
 endif
 
 ifneq ($(shell command -v debootstrap 2>/dev/null),)

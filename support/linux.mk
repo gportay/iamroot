@@ -1278,57 +1278,24 @@ mnt:
 
 .PHONY: support
 support: all
-support: arch-support
-support: debian-support
-support: ubuntu-support
-support: fedora-support
-support: alpine-support
 
 .PHONY: extra-support
 extra-support: all
-extra-support: opensuse-support
-extra-support: manjaro-support
 
 .PHONY: fixme-support
 fixme-support: all
+
+ifneq ($(shell command -v pacstrap 2>/dev/null),)
+support: arch-support
 
 .PHONY: arch-support
 arch-support: support/arch-rootfs.txt
 arch-support: support/i686-arch-rootfs.txt
 
+extra-support: manjaro-support
+
 .PHONY: manjaro-support
 manjaro-support: support/manjaro-rootfs.txt
-
-.PHONY: debian-support
-debian-support: support/debian-oldoldstable-rootfs.txt
-debian-support: support/debian-oldstable-rootfs.txt
-debian-support: support/debian-stable-rootfs.txt
-debian-support: support/debian-testing-rootfs.txt
-debian-support: support/debian-unstable-rootfs.txt
-
-.PHONY: ubuntu-support
-ubuntu-support: support/ubuntu-bionic-rootfs.txt
-ubuntu-support: support/ubuntu-focal-rootfs.txt
-ubuntu-support: support/ubuntu-impish-rootfs.txt
-ubuntu-support: support/ubuntu-jammy-rootfs.txt
-
-.PHONY: fedora-support
-fedora-support: support/fedora-33-rootfs.txt
-fedora-support: support/fedora-34-rootfs.txt
-fedora-support: support/fedora-35-rootfs.txt
-fedora-support: support/fedora-36-rootfs.txt
-
-.PHONY: opensuse-support
-# FIXME: openSUSE Leap is currently broken.
-# opensuse-support: support/opensuse-leap-rootfs.txt
-opensuse-support: support/opensuse-tumbleweed-rootfs.txt
-
-.PHONY: alpine-support
-alpine-support: support/alpine-3.14-rootfs.txt
-alpine-support: support/alpine-3.15-rootfs.txt
-# FIXME: Alpine Linux 3.16 index is currently broken.
-# alpine-support: support/alpine-3.16-rootfs.txt
-alpine-support: support/alpine-edge-rootfs.txt
 
 .PRECIOUS: support/%arch-rootfs.txt
 support/arch-rootfs.txt: arch-rootfs.log
@@ -1344,6 +1311,17 @@ support/i686-arch-rootfs.txt: i686-arch-rootfs.log
 support/manjaro-rootfs.txt: manjaro-rootfs.log
 	support/pacstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
+endif
+
+ifneq ($(shell command -v debootstrap 2>/dev/null),)
+support: debian-support
+
+.PHONY: debian-support
+debian-support: support/debian-oldoldstable-rootfs.txt
+debian-support: support/debian-oldstable-rootfs.txt
+debian-support: support/debian-stable-rootfs.txt
+debian-support: support/debian-testing-rootfs.txt
+debian-support: support/debian-unstable-rootfs.txt
 
 .PRECIOUS: support/debian-oldoldstable-rootfs.txt
 support/debian-oldoldstable-rootfs.txt: debian-oldoldstable-rootfs.log
@@ -1364,6 +1342,14 @@ support/debian-stable-rootfs.txt: debian-stable-rootfs.log
 support/debian-testing-rootfs.txt: debian-testing-rootfs.log
 	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
+
+support: ubuntu-support
+
+.PHONY: ubuntu-support
+ubuntu-support: support/ubuntu-bionic-rootfs.txt
+ubuntu-support: support/ubuntu-focal-rootfs.txt
+ubuntu-support: support/ubuntu-impish-rootfs.txt
+ubuntu-support: support/ubuntu-jammy-rootfs.txt
 
 .PRECIOUS: support/debian-unstable-rootfs.txt
 support/debian-unstable-rootfs.txt: debian-unstable-rootfs.log
@@ -1389,6 +1375,16 @@ support/ubuntu-impish-rootfs.txt: ubuntu-impish-rootfs.log
 support/ubuntu-jammy-rootfs.txt: ubuntu-jammy-rootfs.log
 	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
+endif
+
+ifneq ($(shell command -v dnf 2>/dev/null),)
+support: fedora-support
+
+.PHONY: fedora-support
+fedora-support: support/fedora-33-rootfs.txt
+fedora-support: support/fedora-34-rootfs.txt
+fedora-support: support/fedora-35-rootfs.txt
+fedora-support: support/fedora-36-rootfs.txt
 
 .PRECIOUS: support/fedora-33-rootfs.txt
 support/fedora-33-rootfs.txt: fedora-33-rootfs.log
@@ -1409,6 +1405,15 @@ support/fedora-35-rootfs.txt: fedora-35-rootfs.log
 support/fedora-36-rootfs.txt: fedora-36-rootfs.log
 	support/dnf.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
+endif
+
+ifneq ($(shell command -v zypper 2>/dev/null),)
+extra-support: opensuse-support
+
+.PHONY: opensuse-support
+# FIXME: openSUSE Leap is currently broken.
+# opensuse-support: support/opensuse-leap-rootfs.txt
+opensuse-support: support/opensuse-tumbleweed-rootfs.txt
 
 .PRECIOUS: support/opensuse-leap-rootfs.txt
 support/opensuse-leap-rootfs.txt: opensuse-leap-rootfs.log
@@ -1419,6 +1424,17 @@ support/opensuse-leap-rootfs.txt: opensuse-leap-rootfs.log
 support/opensuse-tumbleweed-rootfs.txt: opensuse-tumbleweed-rootfs.log
 	support/zypper.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
+endif
+
+ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
+support: alpine-support
+
+.PHONY: alpine-support
+alpine-support: support/alpine-3.14-rootfs.txt
+alpine-support: support/alpine-3.15-rootfs.txt
+# FIXME: Alpine Linux 3.16 index is currently broken.
+# alpine-support: support/alpine-3.16-rootfs.txt
+alpine-support: support/alpine-edge-rootfs.txt
 
 .PRECIOUS: support/alpine-3.14-rootfs.txt
 support/alpine-3.14-rootfs.txt: alpine-3.14-rootfs.log
@@ -1439,6 +1455,7 @@ support/alpine-3.16-rootfs.txt: alpine-3.16-rootfs.log
 support/alpine-edge-rootfs.txt: alpine-edge-rootfs.log
 	support/alpine-make-rootfs.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
+endif
 
 .PHONY: log
 log: arch-log

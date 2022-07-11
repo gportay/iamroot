@@ -235,7 +235,7 @@ arch-rootfs/etc/pacman.d/gnupg: | x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "pacman-key --conf support/x86_64-pacman.conf --gpgdir $@.tmp --populate archlinux"
 	mv $@.tmp $@
 
-i686-rootfs: i686-arch-rootfs
+fixme-rootfs: i686-arch-rootfs
 
 .PHONY: i686-arch-chroot
 i686-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/i686-arch-rootfs
@@ -1297,7 +1297,7 @@ support: arch-support
 
 .PHONY: arch-support
 arch-support: support/arch-rootfs.txt
-arch-support: support/i686-arch-rootfs.txt
+fixme-support: support/i686-arch-rootfs.txt
 
 extra-support: manjaro-support
 
@@ -1323,7 +1323,7 @@ log: arch-log
 
 .PHONY: arch-log
 arch-log: arch-rootfs.log
-arch-log: i686-arch-rootfs.log
+fixme-log: i686-arch-rootfs.log
 
 extra-log: manjaro-log
 

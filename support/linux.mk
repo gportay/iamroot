@@ -243,8 +243,6 @@ i686-arch-chroot: export IAMROOT_LD_PRELOAD_LINUX_2 = /usr/lib/libc.so.6:/usr/li
 i686-arch-chroot: | i686-arch-rootfs
 	bash iamroot-shell -c "chroot i686-arch-rootfs"
 
-i686-rootfs: i686-arch-rootfs
-
 .PHONY: i686-arch-rootfs
 i686-arch-rootfs: export QEMU_LD_PREFIX = $(CURDIR)/i686-arch-rootfs
 i686-arch-rootfs: | i686-arch-rootfs/etc/machine-id

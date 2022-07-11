@@ -1277,6 +1277,7 @@ mnt:
 	mkdir -p $@
 
 .PHONY: support
+support: all
 support: arch-support
 support: debian-support
 support: ubuntu-support
@@ -1284,11 +1285,12 @@ support: fedora-support
 support: alpine-support
 
 .PHONY: extra-support
+extra-support: all
 extra-support: opensuse-support
 extra-support: manjaro-support
 
 .PHONY: fixme-support
-fixme-support:
+fixme-support: all
 
 .PHONY: arch-support
 arch-support: support/arch-rootfs.txt

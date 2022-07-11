@@ -1534,7 +1534,7 @@ log: alpine-log
 .PHONY: alpine-log
 alpine-log: alpine-3.14-rootfs.log
 alpine-log: alpine-3.15-rootfs.log
-fixme-log: alpine-3.16-rootfs.log
+alpine-log: alpine-3.16-rootfs.log
 alpine-log: alpine-edge-rootfs.log
 
 alpine-3.14-rootfs.log:

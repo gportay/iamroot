@@ -170,6 +170,7 @@ libiamroot.so: renameat2.o
 libiamroot.so: rmdir.o
 libiamroot.so: running_in_chroot.o
 libiamroot.so: scandir.o
+libiamroot.so: scandir64.o
 libiamroot.so: scandir_b.o
 libiamroot.so: scandirat.o
 libiamroot.so: setegid.o

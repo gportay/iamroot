@@ -595,7 +595,7 @@ fedora-34-rootfs/etc/machine-id:
 
 fedora-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib64/ldb:/usr/lib64:/lib64
 fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_ALLOW = ^/var/run/(console|sepermit|faillock)
-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-x86_64-linux-x86-64/.*\.gcda|^$(CURDIR)/fedora-$*-rootfs/var/log/dnf.rpm.log
+fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|var/run)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-x86_64-linux-x86-64/.*\.gcda|^$(CURDIR)/fedora-$*-rootfs/var/log/dnf.rpm.log
 fedora-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	install -D -m644 support/fedora.repo fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
 	bash iamroot-shell -c "dnf --releasever $* --assumeyes --installroot $(CURDIR)/fedora-$*-rootfs group install minimal-environment"
@@ -1018,7 +1018,7 @@ aarch64-fedora-34-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib
 aarch64-fedora-34-rootfs/etc/machine-id:
 
 aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib64/ldb:/usr/lib64:/lib64
-aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-aarch64-linux-aarch64/.*\.gcda|^$(CURDIR)/aarch64-fedora-$*-rootfs/var/log/dnf.rpm.log
+aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|var/run)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-aarch64-linux-aarch64/.*\.gcda|^$(CURDIR)/aarch64-fedora-$*-rootfs/var/log/dnf.rpm.log
 aarch64-fedora-%-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 	install -D -m644 support/fedora.repo aarch64-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
 	bash iamroot-shell -c "dnf --forcearch aarch64 --releasever $* --assumeyes --installroot $(CURDIR)/aarch64-fedora-$*-rootfs group install minimal-environment"
@@ -1053,7 +1053,7 @@ armhfp-fedora-34-rootfs/etc/machine-id:
 
 armhfp-fedora-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib/ldb:/usr/lib:/lib
 armhfp-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_ALLOW = ^/var/run/(console|sepermit|faillock)
-armhfp-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev|var/run)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-armhf-linux-armhf/.*\.gcda|^$(CURDIR)/armhfp-fedora-$*-rootfs/var/log/dnf.rpm.log
+armhfp-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|var/run)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/output-armhf-linux-armhf/.*\.gcda|^$(CURDIR)/armhfp-fedora-$*-rootfs/var/log/dnf.rpm.log
 armhfp-fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2:/usr/lib/libpthread.so.0:/usr/lib/librt.so.1
 armhfp-fedora-%-rootfs/etc/machine-id: | armhf/libiamroot-linux-armhf.so.3 x86_64/libiamroot-linux-x86-64.so.2
 	install -D -m644 support/fedora.repo armhfp-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo

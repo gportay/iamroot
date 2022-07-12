@@ -15,7 +15,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `mkdir()`, `mkfifo()`, `readlink()`, `rename()`, `symlink()`, and `unlink()`
   to the `at` functions `faccessat()`, `linkat()`, `mkdirat()`, `mkfifoat()`,
   `readlinkat()`, `renameat()`, `symlinkat()`, and `unlinkat()`
-- Forward the none-`at` function `utimes()` to the `at` function `utimensat()`
+- Forward the none-`at` functions `utime()`, and `utimes()` to the `at`
+  function `utimensat()`
 
 ### Fixed
 

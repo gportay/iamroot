@@ -14,39 +14,37 @@
 
 #include "iamroot.h"
 
-__attribute__((visibility("hidden")))
-int next_futimesat(int fd, const char *path, const struct timeval times[2])
+/*
+ * Stolen from musl (src/stat/futimesat.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+#include <sys/time.h>
+#include <sys/stat.h>
+#include <errno.h>
+#include "syscall.h"
+
+int __futimesat(int dirfd, const char *pathname, const struct timeval times[2])
 {
-	int (*sym)(int, const char *, const struct timeval [2]);
-	int ret;
-
-	sym = dlsym(RTLD_NEXT, "futimesat");
-	if (!sym) {
-		__dlperror(__func__);
-		errno = ENOSYS;
-		return -1;
+	struct timespec ts[2];
+	if (times) {
+		int i;
+		for (i=0; i<2; i++) {
+			if (times[i].tv_usec >= 1000000)
+				return __syscall_ret(-EINVAL);
+			ts[i].tv_sec = times[i].tv_sec;
+			ts[i].tv_nsec = times[i].tv_usec * 1000;
+		}
 	}
-
-	ret = sym(fd, path, times);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return utimensat(dirfd, pathname, times ? ts : 0, 0);
 }
 
 int futimesat(int fd, const char *path, const struct timeval times[2])
 {
-	char buf[PATH_MAX];
-	ssize_t siz;
+	__debug("%s(fd: %d, path: '%s', ...)\n", __func__, fd, path);
 
-	siz = path_resolution(fd, path, buf, sizeof(buf), AT_SYMLINK_NOFOLLOW);
-	if (siz == -1) {
-		__pathperror(path, __func__);
-		return -1;
-	}
-
-	__debug("%s(fd: %d, path: '%s' -> '%s', ...)\n", __func__, fd, path,
-		buf);
-
-	return next_futimesat(fd, buf, times);
+	return __futimesat(fd, path, times);
 }

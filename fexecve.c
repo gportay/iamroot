@@ -16,22 +16,6 @@
 #define __syscall syscall
 
 /*
- * Stolen from musl (src/internal/syscall_ret.c)
- *
- * SPDX-FileCopyrightText: The musl Contributors
- *
- * SPDX-License-Identifier: MIT
- */
-static long __syscall_ret(unsigned long r)
-{
-	if (r > -4096UL) {
-		errno = -r;
-		return -1;
-	}
-	return r;
-}
-
-/*
  * Stolen from musl (src/process/fexecve.c)
  *
  * SPDX-FileCopyrightText: The musl Contributors

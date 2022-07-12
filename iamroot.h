@@ -7,6 +7,8 @@
 #ifndef _IAMROOT_H_
 #define _IAMROOT_H_
 
+extern int errno;
+
 /*
  * Stolen from musl (src/include/features.h)
  *
@@ -18,6 +20,22 @@
 #define hidden __attribute__((__visibility__("hidden")))
 #define weak_alias(old, new) \
 	extern __typeof(old) new __attribute__((__weak__, __alias__(#old)))
+
+/*
+ * Stolen from musl (src/internal/syscall_ret.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+static inline long __syscall_ret(unsigned long r)
+{
+	if (r > -4096UL) {
+		errno = -r;
+		return -1;
+	}
+	return r;
+}
 
 /*
  * Stolen from systemd (src/fundamental/string-util-fundamental.h)

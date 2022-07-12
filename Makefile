@@ -64,6 +64,7 @@ libiamroot.so: __xstat.o
 libiamroot.so: __xstat64.o
 libiamroot.so: access.o
 libiamroot.so: canonicalize_file_name.o
+libiamroot.so: catopen.o
 libiamroot.so: chdir.o
 libiamroot.so: chmod.o
 libiamroot.so: chown.o

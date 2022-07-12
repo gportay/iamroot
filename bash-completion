@@ -13,9 +13,9 @@ _iamroot-shell()
 		__libc_start_main __lxstat __lxstat64 __nss_files_fopen __open
 		__open64 __open64_2 __open_2 __openat64_2 __openat_2 __opendir
 		__opendir2 __opendirat __statfs __xmknod __xmknodat __xstat
-		__xstat64 access canonicalize_file_name chdir chmod chown
-		chroot creat dlmopen dlopen eaccess euidaccess execl execle
-		execlp exect execv execvP execve execveat execvp execvpe
+		__xstat64 access canonicalize_file_name catopen chdir chmod
+		chown chroot creat dlmopen dlopen eaccess euidaccess execl
+		execle execlp exect execv execvP execve execveat execvp execvpe
 		extattr_delete_fd extattr_delete_file extattr_delete_link
 		extattr_get_fd extattr_get_file extattr_get_link
 		extattr_list_fd extattr_list_file extattr_list_link

@@ -49,6 +49,8 @@ static int __fexecve(int fd, char * const argv[], char * const envp[])
 	return -1;
 }
 
+#undef __syscall
+
 int fexecve(int fd, char * const argv[], char * const envp[])
 {
 	__debug("%s(fd: %i, argv: { '%s', '%s', ... }, envp: %p)\n",

@@ -192,6 +192,10 @@ toolong:
 	return 0;
 }
 
+#undef SYMLOOP_MAX
+#undef readlink
+#undef getcwd
+
 char *realpath(const char *path, char *resolved_path)
 {
 	char buf[PATH_MAX];

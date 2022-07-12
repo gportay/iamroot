@@ -740,8 +740,6 @@ dpkg: base-files: dependency problems, but configuring anyway as you requested:
   Package awk is not installed.
 
 Setting up base-files ...
-Warning: fchownat: /run/utmp: Ignoring error 'Operation not permitted'!
-Warning: fchmodat: /run/utmp: Ignoring error 'Operation not permitted'!
 dpkg: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
  missing description
 dpkg: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':

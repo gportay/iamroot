@@ -161,8 +161,12 @@ endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-umount2 rootfs/proc
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution / | tee /dev/stderr | grep -q "^/\$$"
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /proc/ | tee /dev/stderr | grep -q "^/proc/\$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /run/ | tee /dev/stderr | grep -q "^/run\$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /var/run/ | tee /dev/stderr | grep -q "^/run\$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /sys/ | tee /dev/stderr | grep -q "^/sys/\$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /dev/ | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/dev\$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /run | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/run\$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /var/run | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/run\$$"
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin LD_LIBRARY_PATH=$(CURDIR) test-pathsetenv LD_LIBRARY_PATH /usr/local/lib:/usr/lib:/lib  | tee /dev/stderr | grep -q "^/usr/local/lib:/usr/lib:/lib$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-pathsetenv LD_LIBRARY_PATH /usr/local/lib:/usr/lib:/lib  | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/usr/local/lib:$(CURDIR)/rootfs/usr/lib:$(CURDIR)/rootfs/lib$$"
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-openat - rootfs/tmp/file0
@@ -239,6 +243,9 @@ endif
 	install -d -m755 $(DESTDIR)/sys
 	install -d -m755 $(DESTDIR)/dev
 	install -d -m777 $(DESTDIR)/tmp
+	install -d -m755 $(DESTDIR)/run
+	install -d -m777 $(DESTDIR)/var
+	ln -sf /run $(DESTDIR)/var/run
 
 .PHONY: clean
 clean:

@@ -166,6 +166,200 @@ ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
 }
 #endif
 
+#define SYMLOOP_MAX 40
+#define readlink(...) next_readlinkat(AT_FDCWD, __VA_ARGS__)
+#define getcwd next_getcwd
+#define strlen __strnlen
+
+extern ssize_t next_readlinkat(int, const char *, char *, size_t);
+extern char *next_getcwd(char *, size_t);
+
+/*
+ * Stolen from musl (src/misc/realpath.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+static size_t slash_len(const char *s)
+{
+	const char *s0 = s;
+	while (*s == '/') s++;
+	return s-s0;
+}
+
+/*
+ * Stolen and hacked from musl (src/misc/realpath.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+__attribute__((visibility("hidden")))
+char *__realpath(const char *filename, char *resolved)
+{
+	char stack[PATH_MAX+1];
+	char output[PATH_MAX];
+	size_t p, q, l, l0, cnt=0, nup=0;
+	int errno_save = errno;
+	int check_dir=0;
+
+	if (!filename) {
+		errno = EINVAL;
+		return 0;
+	}
+	l = strnlen(filename, sizeof stack);
+	if (!l) {
+		errno = ENOENT;
+		return 0;
+	}
+	if (l >= PATH_MAX) goto toolong;
+	p = sizeof stack - l - 1;
+	q = 0;
+	memcpy(stack+p, filename, l+1);
+
+	/* Main loop. Each iteration pops the next part from stack of
+	 * remaining path components and consumes any slashes that follow.
+	 * If not a link, it's moved to output; if a link, contents are
+	 * pushed to the stack. */
+restart:
+	for (; ; p+=slash_len(stack+p)) {
+		/* If stack starts with /, the whole component is / or //
+		 * and the output state must be reset. */
+		if (stack[p] == '/') {
+			check_dir=0;
+			nup=0;
+			q=0;
+			output[q++] = '/';
+			p++;
+			/* Initial // is special. */
+			if (stack[p] == '/' && stack[p+1] != '/')
+				output[q++] = '/';
+			continue;
+		}
+
+		char *z = __strchrnul(stack+p, '/');
+		l0 = l = z-(stack+p);
+
+		if (!l && !check_dir) break;
+
+		/* Skip any . component but preserve check_dir status. */
+		if (l==1 && stack[p]=='.') {
+			p += l;
+			continue;
+		}
+
+		/* Copy next component onto output at least temporarily, to
+		 * call readlink, but wait to advance output position until
+		 * determining it's not a link. */
+		if (q && output[q-1] != '/') {
+			if (!p) goto toolong;
+			stack[--p] = '/';
+			l++;
+		}
+		if (q+l >= PATH_MAX) goto toolong;
+		memcpy(output+q, stack+p, l);
+		output[q+l] = 0;
+		p += l;
+
+		int up = 0;
+		if (l0==2 && stack[p-2]=='.' && stack[p-1]=='.') {
+			up = 1;
+			/* Any non-.. path components we could cancel start
+			 * after nup repetitions of the 3-byte string "../";
+			 * if there are none, accumulate .. components to
+			 * later apply to cwd, if needed. */
+			if (q <= 3*nup) {
+				nup++;
+				q += l;
+				continue;
+			}
+			/* When previous components are already known to be
+			 * directories, processing .. can skip readlink. */
+			if (!check_dir) goto skip_readlink;
+		}
+		ssize_t k = readlink(output, stack, p);
+		if (k==(ssize_t)p) goto toolong;
+		if (!k) {
+			if (errno == ENOENT) goto skip_readlink;
+			errno = ENOENT;
+			return 0;
+		}
+		if (k<0) {
+			if (errno == ENOENT) goto skip_readlink;
+			if (errno != EINVAL) return 0;
+skip_readlink:
+			errno = 0;
+			check_dir = 0;
+			if (up) {
+				while(q && output[q-1]!='/') q--;
+				if (q>1 && (q>2 || output[0]!='/')) q--;
+				continue;
+			}
+			if (l0) q += l;
+			check_dir = stack[p];
+			continue;
+		}
+		if (++cnt == SYMLOOP_MAX) {
+			errno = ELOOP;
+			return 0;
+		}
+
+		/* If link is an absolute path, prepend root to resolve
+		 * in chroot path. */
+		if (*stack == '/') {
+			const char *r = getrootdir();
+			ssize_t lr = __strlen(r);
+			memmove(stack+lr, stack, k);
+			memcpy(stack, r, lr);
+			k += lr;
+		}
+
+		/* If link contents end in /, strip any slashes already on
+		 * stack to avoid /->// or //->/// or spurious toolong. */
+		if (stack[k-1]=='/') while (stack[p]=='/') p++;
+		p -= k;
+		memmove(stack+p, stack, k);
+
+		/* Skip the stack advancement in case we have a new
+		 * absolute base path. */
+		goto restart;
+	}
+
+	output[q] = 0;
+
+	if (output[0] != '/') {
+		if (!getcwd(stack, sizeof stack)) return 0;
+		l = strlen(stack);
+		/* Cancel any initial .. components. */
+		p = 0;
+		while (nup--) {
+			while(l>1 && stack[l-1]!='/') l--;
+			if (l>1) l--;
+			p += 2;
+			if (p<q) p++;
+		}
+		if (q-p && stack[l-1]!='/') stack[l++] = '/';
+		if (l + (q-p) + 1 >= PATH_MAX) goto toolong;
+		memmove(output + l, output + p, q - p + 1);
+		memcpy(output, stack, l);
+		q = l + q-p;
+	}
+
+	errno = errno_save;
+	if (resolved) return memcpy(resolved, output, q+1);
+	else return strdup(output);
+
+toolong:
+	errno = ENAMETOOLONG;
+	return 0;
+}
+
+#undef SYMLOOP_MAX
+#undef readlink
+#undef getcwd
+#undef strlen
+
 static regex_t *re_allow;
 static regex_t *re_ignore;
 
@@ -358,12 +552,11 @@ int path_ignored(int fd, const char *path)
 	return ignore(path);
 }
 
-static ssize_t _path_resolution(int fd, const char *path, char *buf,
-				size_t bufsize, int flags, int symlinks)
+ssize_t path_resolution(int fd, const char *path, char *buf, size_t bufsize,
+			int flags)
 {
 	const char *root;
 	size_t len;
-	int ret;
 
 	if (fd == -1 || !path) {
 		errno = EINVAL;
@@ -432,45 +625,11 @@ static ssize_t _path_resolution(int fd, const char *path, char *buf,
 		goto exit;
 	}
 
-	if (!follow_symlink(flags))
-		goto exit;
+	if (follow_symlink(flags)) {
+		char tmp[PATH_MAX];
 
-	symlinks++;
-	if (symlinks >= MAXSYMLINKS) {
-		errno = ELOOP;
-		return -1;
-	}
-
-	ret = issymlink(buf);
-	if (ret == -1)
-		goto exit;
-
-	if (ret) {
-		char tmp[NAME_MAX];
-		ssize_t s;
-
-		s = next_readlinkat(AT_FDCWD, buf, tmp,
-				    sizeof(tmp)-1); /* NULL-terminated */
-		if (s == -1)
-			return -1;
-		tmp[s] = 0; /* ensure NULL-terminated */
-
-		if (*tmp != '/') {
-			char *basename, tmpbuf[PATH_MAX];
-
-			__strncpy(tmpbuf, path);
-			sanitize(tmpbuf, sizeof(tmpbuf));
-
-			basename = __basename(tmpbuf);
-			strcpy(basename, tmp);
-			sanitize(tmpbuf, sizeof(tmpbuf));
-
-			return _path_resolution(AT_FDCWD, tmpbuf, buf, bufsize,
-						flags, symlinks);
-		}
-
-		return _path_resolution(AT_FDCWD, tmp, buf, bufsize, flags,
-					symlinks);
+		_strncpy(tmp, buf, bufsize);
+		__realpath(tmp, buf);
 	}
 
 exit:
@@ -479,12 +638,6 @@ exit:
 ignore:
 	_strncpy(buf, path, bufsize);
 	return strnlen(buf, bufsize);
-}
-
-ssize_t path_resolution(int fd, const char *path, char *buf, size_t bufsize,
-			int flags)
-{
-	return _path_resolution(fd, path, buf, bufsize, flags, 0);
 }
 
 __attribute__((visibility("hidden")))

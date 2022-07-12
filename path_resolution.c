@@ -36,7 +36,7 @@ extern int next_lstat(const char *, struct stat *);
 
 #ifdef __FreeBSD__
 /*
- * Slolen from FreeBSD (lib/libutil/kinfo_getfile.c)
+ * Stolen from FreeBSD (lib/libutil/kinfo_getfile.c)
  *
  * SPDX-FileContributor: The Regents of the University of California
  *
@@ -136,7 +136,7 @@ ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
 }
 #else
 /*
- * Slolen from musl (src/internal/procfdname.c)
+ * Stolen from musl (src/internal/procfdname.c)
  *
  * SPDX-FileCopyrightText: The musl Contributors
  *

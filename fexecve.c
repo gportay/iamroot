@@ -16,7 +16,7 @@
 #define __syscall syscall
 
 /*
- * Slolen from musl (src/internal/syscall_ret.c)
+ * Stolen from musl (src/internal/syscall_ret.c)
  *
  * SPDX-FileCopyrightText: The musl Contributors
  *
@@ -32,7 +32,7 @@ static long __syscall_ret(unsigned long r)
 }
 
 /*
- * Slolen from musl (src/process/fexecve.c)
+ * Stolen from musl (src/process/fexecve.c)
  *
  * SPDX-FileCopyrightText: The musl Contributors
  *

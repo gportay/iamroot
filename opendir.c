@@ -50,3 +50,7 @@ DIR *opendir(const char *path)
 
 	return next_opendir(buf);
 }
+
+#ifdef __GLIBC__
+weak_alias(opendir, __opendir);
+#endif

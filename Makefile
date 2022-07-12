@@ -51,12 +51,8 @@ libiamroot.so: __libc_start_main.o
 libiamroot.so: __lxstat.o
 libiamroot.so: __lxstat64.o
 libiamroot.so: __nss_files_fopen.o
-libiamroot.so: __open.o
-libiamroot.so: __open64_2.o
 libiamroot.so: __open_2.o
-libiamroot.so: __openat64_2.o
 libiamroot.so: __openat_2.o
-libiamroot.so: __opendir.o
 libiamroot.so: __opendir2.o
 libiamroot.so: __opendirat.o
 libiamroot.so: __pathdlperror.o

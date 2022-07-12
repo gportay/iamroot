@@ -54,4 +54,6 @@ int __openat_2(int fd, const char *path, int flags)
 
 	return next___openat_2(fd, buf, flags);
 }
+
+weak_alias(__openat_2, __openat64_2);
 #endif

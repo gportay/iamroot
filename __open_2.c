@@ -56,4 +56,6 @@ int __open_2(const char *path, int flags)
 
 	return next___open_2(buf, flags);
 }
+
+weak_alias(__open_2, __open64_2);
 #endif

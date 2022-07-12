@@ -70,6 +70,7 @@ int open(const char *path, int flags, ...)
 }
 
 #ifdef __GLIBC__
+weak_alias(open, __open);
 weak_alias(open, open64);
 weak_alias(open, __open64);
 #endif

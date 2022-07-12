@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [unreleased]
 
+### Added
+
+- Create additional weak aliases for [glibc] `__` and `64` variants
+
 ### Changed
 
 - Output the mode for the functions `euidaccess()` and `faccessat()`

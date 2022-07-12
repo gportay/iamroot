@@ -31,7 +31,7 @@ typedef struct {
 } __regex_t;
 
 extern char *next_realpath(const char *, char *);
-extern ssize_t next_readlink(const char *, char *, size_t);
+extern ssize_t next_readlinkat(int, const char *, char *, size_t);
 extern int next_lstat(const char *, struct stat *);
 
 #ifdef __FreeBSD__
@@ -136,7 +136,7 @@ ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
 }
 #else
 /*
- * Stolen from musl (src/internal/procfdname.c)
+ * Stolen and hacked from musl (src/internal/procfdname.c)
  *
  * SPDX-FileCopyrightText: The musl Contributors
  *
@@ -162,7 +162,7 @@ ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
 {
 	char tmp[sizeof("/proc/self/fd/") + 4];
 	__procfdname(tmp, fd);
-	return next_readlink(tmp, buf, bufsize);
+	return next_readlinkat(AT_FDCWD, tmp, buf, bufsize);
 }
 #endif
 
@@ -463,7 +463,8 @@ static ssize_t _path_resolution(int fd, const char *path, char *buf,
 		char tmp[NAME_MAX];
 		ssize_t s;
 
-		s = next_readlink(buf, tmp, sizeof(tmp)-1); /* NULL-terminated */
+		s = next_readlinkat(AT_FDCWD, buf, tmp,
+				    sizeof(tmp)-1); /* NULL-terminated */
 		if (s == -1)
 			return -1;
 		tmp[s] = 0; /* ensure NULL-terminated */

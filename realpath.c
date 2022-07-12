@@ -17,10 +17,10 @@
 #include "iamroot.h"
 
 #define SYMLOOP_MAX 40
-#define readlink next_readlink
+#define readlink(...) next_readlinkat(AT_FDCWD, __VA_ARGS__)
 #define getcwd next_getcwd
 
-extern ssize_t next_readlink(const char *, char *, size_t);
+extern ssize_t next_readlinkat(int, const char *, char *, size_t);
 extern char *next_getcwd(char *, size_t);
 
 /*

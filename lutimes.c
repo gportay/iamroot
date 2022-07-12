@@ -4,49 +4,26 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
-#include <stdio.h>
-#include <errno.h>
-#include <limits.h>
-#include <fcntl.h>
-#include <dlfcn.h>
+/*
+ * Stolen from musl (src/legacy/lutimes.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 
+#include <sys/stat.h>
 #include <sys/time.h>
+#include <fcntl.h>
 
-#include "iamroot.h"
-
-__attribute__((visibility("hidden")))
-int next_lutimes(const char *path, const struct timeval times[2])
+int lutimes(const char *filename, const struct timeval tv[2])
 {
-	int (*sym)(const char *, const struct timeval[2]);
-	int ret;
-
-	sym = dlsym(RTLD_NEXT, "lutimes");
-	if (!sym) {
-		__dlperror(__func__);
-		errno = ENOSYS;
-		return -1;
+	struct timespec times[2];
+	if (tv) {
+		times[0].tv_sec  = tv[0].tv_sec;
+		times[0].tv_nsec = tv[0].tv_usec * 1000;
+		times[1].tv_sec  = tv[1].tv_sec;
+		times[1].tv_nsec = tv[1].tv_usec * 1000;
 	}
-
-	ret = sym(path, times);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
-}
-
-int lutimes(const char *path, const struct timeval times[2])
-{
-	char buf[PATH_MAX];
-	ssize_t siz;
-
-	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
-			      AT_SYMLINK_NOFOLLOW);
-	if (siz == -1) {
-		__pathperror(path, __func__);
-		return -1;
-	}
-
-	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
-
-	return next_lutimes(buf, times);
+	return utimensat(AT_FDCWD, filename, tv ? times : 0, AT_SYMLINK_NOFOLLOW);
 }

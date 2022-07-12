@@ -11,9 +11,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Output the mode for the functions `euidaccess()` and `faccessat()`
 - Output the three-dots `...` for the functions `futimesat()`, `lutimes()`,
   `utime()`, `utimensat()`, and `utimes()`, 
-- Forward the none-`at` functions `mkdir()`, `mkfifo()`, `readlink()`, and
-  `symlink()`, to the `at` functions `mkdirat()`, `mkfifoat()`, `readlinkat()`,
-  and `symlinkat()`
+- Forward the none-`at` functions `link()`, `mkdir()`, `mkfifo()`,
+  `readlink()`, `symlink()`, and `unlink()` to the `at` functions `linkat()`,
+  `mkdirat()`, `mkfifoat()`, `readlinkat()`, `symlinkat()`, and `unlinkat()`
 
 ### Fixed
 

@@ -52,6 +52,6 @@ FILE *freopen(const char *path, const char *mode, FILE *stream)
 	return next_freopen(buf, mode, stream);
 }
 
-#ifdef __GLIBC__
+#ifdef _LARGEFILE64_SOURCE
 weak_alias(freopen, freopen64);
 #endif

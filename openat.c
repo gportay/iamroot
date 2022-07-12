@@ -67,6 +67,6 @@ int openat(int fd, const char *path, int flags, ...)
 	return next_openat(fd, buf, flags, mode);
 }
 
-#ifdef __GLIBC__
+#ifdef _LARGEFILE64_SOURCE
 weak_alias(openat, openat64);
 #endif

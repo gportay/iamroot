@@ -69,8 +69,12 @@ int open(const char *path, int flags, ...)
 	return next_open(buf, flags, mode);
 }
 
+#ifdef _LARGEFILE64_SOURCE
+weak_alias(open, open64);
+#endif
 #ifdef __GLIBC__
 weak_alias(open, __open);
-weak_alias(open, open64);
+#ifdef _LARGEFILE64_SOURCE
 weak_alias(open, __open64);
+#endif
 #endif

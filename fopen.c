@@ -52,6 +52,6 @@ FILE *fopen(const char *path, const char *mode)
 	return next_fopen(buf, mode);
 }
 
-#ifdef __GLIBC__
+#ifdef _LARGEFILE64_SOURCE
 weak_alias(fopen, fopen64);
 #endif

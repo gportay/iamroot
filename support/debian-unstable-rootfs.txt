@@ -1676,19 +1676,6 @@ Setting up libncurses6:amd64 ...
 Setting up libmnl0:amd64 ...
 Setting up udev ...
 A chroot environment has been detected, udev not started.
-Warning: fchownat: /dev/snd/seq: Ignoring error 'Operation not permitted'!
-Warning: fchmodat: /dev/snd/seq: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /dev/snd/timer: Ignoring error 'Operation not permitted'!
-Warning: fchmodat: /dev/snd/timer: Ignoring error 'Operation not permitted'!
-Warning: fchmodat: /dev/kvm: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /dev/kvm: Ignoring error 'Operation not permitted'!
-Warning: fchmodat: /dev/kvm: Ignoring error 'Operation not permitted'!
-Warning: fchmodat: /dev/vhost-net: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /dev/vhost-net: Ignoring error 'Operation not permitted'!
-Warning: fchmodat: /dev/vhost-net: Ignoring error 'Operation not permitted'!
-Warning: fchmodat: /dev/vhost-vsock: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /dev/vhost-vsock: Ignoring error 'Operation not permitted'!
-Warning: fchmodat: /dev/vhost-vsock: Ignoring error 'Operation not permitted'!
 Setting up libncursesw6:amd64 ...
 Setting up libk5crypto3:amd64 ...
 Setting up libxtables12:amd64 ...

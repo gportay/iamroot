@@ -150,6 +150,7 @@ libiamroot.so: mkstemp.o
 libiamroot.so: mkstemps.o
 libiamroot.so: mktemp.o
 libiamroot.so: mount.o
+libiamroot.so: mq_open.o
 libiamroot.so: name_to_handle_at.o
 libiamroot.so: nftw.o
 libiamroot.so: nftw64.o

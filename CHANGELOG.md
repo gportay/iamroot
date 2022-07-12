@@ -11,7 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Create additional weak aliases for [glibc] `__` and `64` variants
 - Intercept the [glibc] `64` variant functions `nftw64()`, `scandir64()` and
   `truncate64()`
-- Intercept the function `catopen()`
+- Intercept the functions `catopen()` and `mq_open()`
 
 ### Changed
 

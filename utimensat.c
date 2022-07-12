@@ -48,8 +48,8 @@ int utimensat(int fd, const char *path, const struct timespec times[2],
 		return -1;
 	}
 
-	__debug("%s(fd: %i, path: '%s' -> '%s', flags: 0x%x)\n", __func__, fd,
-		path, buf, flags);
+	__debug("%s(fd: %i, path: '%s' -> '%s', ..., flags: 0x%x)\n", __func__,
+		fd, path, buf, flags);
 
 	__remove_at_empty_path_if_needed(buf, flags);
 	return next_utimensat(fd, buf, times, flags);

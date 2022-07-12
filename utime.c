@@ -46,7 +46,7 @@ int utime(const char *path, const struct utimbuf *times)
 		return -1;
 	}
 
-	__debug("%s(path: '%s' -> '%s')\n", __func__, path, buf);
+	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
 
 	return next_utime(buf, times);
 }

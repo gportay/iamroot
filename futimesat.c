@@ -45,7 +45,8 @@ int futimesat(int fd, const char *path, const struct timeval times[2])
 		return -1;
 	}
 
-	__debug("%s(fd: %d, path: '%s' -> '%s')\n", __func__, fd, path, buf);
+	__debug("%s(fd: %d, path: '%s' -> '%s', ...)\n", __func__, fd, path,
+		buf);
 
 	return next_futimesat(fd, buf, times);
 }

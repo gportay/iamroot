@@ -112,12 +112,12 @@ test: | rootfs
 	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-fstatat - /tmp/file0 0 0
 	test-lchown rootfs/tmp/symlink0 0 0
 	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-fchownat - /tmp/file0 0 0
-	test-get_current_dir_name | tee /dev/stderr | grep -q '$(CURDIR)'
-	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-get_current_dir_name | tee /dev/stderr | grep -q '/'
-	test-getcwd | tee /dev/stderr | grep -q '$(CURDIR)'
-	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-getcwd | tee /dev/stderr | grep -q '/'
-	test-getwd | tee /dev/stderr | grep -q '$(CURDIR)'
-	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-getwd | tee /dev/stderr | grep -q '/'
+	test-get_current_dir_name | tee /dev/stderr | grep -q '^$(CURDIR)$$'
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-get_current_dir_name | tee /dev/stderr | grep -q '^/$$'
+	test-getcwd | tee /dev/stderr | grep -q '^$(CURDIR)$$'
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-getcwd | tee /dev/stderr | grep -q '^/$$'
+	test-getwd | tee /dev/stderr | grep -q '^$(CURDIR)$$'
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-getwd | tee /dev/stderr | grep -q '^/$$'
 	test-link rootfs/tmp/file0 rootfs/tmp/link1
 	test-linkat - rootfs/tmp/file0 - rootfs/tmp/link2 0
 	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-linkat - /tmp/file0 - /tmp/link3 0

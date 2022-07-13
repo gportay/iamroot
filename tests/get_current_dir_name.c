@@ -6,6 +6,10 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#ifndef __USE_GNU
+#include <string.h>
+#include <limits.h>
+#endif
 
 #include <unistd.h>
 
@@ -13,10 +17,18 @@
 
 int main()
 {
+#ifndef __USE_GNU
+	char buf[PATH_MAX];
+#endif
 	char *cwd = NULL;
 
 #ifdef __USE_GNU
 	cwd = get_current_dir_name();
+#else
+	cwd = getcwd(buf, sizeof(buf));
+	if (!cwd)
+		return EXIT_FAILURE;
+	cwd = strdup(buf);
 #endif
 	if (!cwd)
 		return EXIT_FAILURE;

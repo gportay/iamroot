@@ -393,15 +393,8 @@ static ssize_t _path_resolution(int fd, const char *path, char *buf,
 			int n;
 
 			n = _snprintf(buf, bufsize, "%s%s", root, path);
-			if (n < 0) {
-				errno = EINVAL;
+			if (n < 0)
 				return -1;
-			}
-
-			if ((size_t)n >= bufsize) {
-				errno = ENAMETOOLONG;
-				return -1;
-			}
 		}
 	} else if (fd != AT_FDCWD) {
 		char dirbuf[PATH_MAX];
@@ -421,15 +414,8 @@ static ssize_t _path_resolution(int fd, const char *path, char *buf,
 		}
 
 		n = _snprintf(buf, bufsize, "%s/%s", dirbuf, path);
-		if (n < 0) {
-			errno = EINVAL;
+		if (n < 0)
 			return -1;
-		}
-
-		if ((size_t)n >= bufsize) {
-			errno = ENAMETOOLONG;
-			return -1;
-		}
 	} else {
 		_strncpy(buf, path, bufsize);
 	}

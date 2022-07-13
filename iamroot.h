@@ -67,12 +67,12 @@ extern "C" {
 	({ const int l = (n1)-1; \
 	   strncpy((s1), (s2), l); \
 	   (s1)[l] = 0; \
-	   (s1); })
+	   (char *)(s1); })
 #define _strncat(s1, s2, n1) \
 	({ const int l = (n1)-1; \
 	   strncat((s1), (s2), l); \
 	   (s1)[l] = 0; \
-	   (s1); })
+	   (char *)(s1); })
 #define __strchrnul strchrnul
 #define __strlen(s) strnlen((s), PATH_MAX)
 #define __strnlen(s) strnlen((s), sizeof((s))-1)
@@ -82,17 +82,17 @@ extern "C" {
 	({ const int l = __strlen((s2)); \
 	   strncpy((s1), (s2), l); \
 	   (s1)[l] = 0; \
-	   (s1); })
+	   (char *)(s1); })
 #define __strncpy(s1, s2) \
 	({ const int l = sizeof((s1))-1; \
 	   strncpy((s1), (s2), l); \
 	   (s1)[l] = 0; \
-	   (s1); })
+	   (char *)(s1); })
 #define __strncat(s1, s2) \
 	({ const int l = sizeof((s1))-1; \
 	   strncat((s1), (s2), l); \
 	   (s1)[l] = 0; \
-	   (s1); })
+	   (char *)(s1); })
 
 /* See https://www.in-ulm.de/~mascheck/various/shebang/#results */
 #define HASHBANG_MAX NAME_MAX

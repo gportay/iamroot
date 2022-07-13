@@ -19,6 +19,7 @@
 #define SYMLOOP_MAX 40
 #define readlink(...) next_readlinkat(AT_FDCWD, __VA_ARGS__)
 #define getcwd next_getcwd
+#define strlen __strnlen
 
 extern ssize_t next_readlinkat(int, const char *, char *, size_t);
 extern char *next_getcwd(char *, size_t);
@@ -195,6 +196,7 @@ toolong:
 #undef SYMLOOP_MAX
 #undef readlink
 #undef getcwd
+#undef strlen
 
 char *realpath(const char *path, char *resolved_path)
 {

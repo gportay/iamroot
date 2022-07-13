@@ -93,96 +93,96 @@ test: | rootfs
 	touch rootfs/tmp/file0
 	ln -s file0 rootfs/tmp/symlink0
 	test-access rootfs/tmp/file0 0
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-access /tmp/file0 0
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-access /tmp/file0 0
 	test-chmod rootfs/tmp/file0 01644
 	test-fchmodat . rootfs/tmp/file0 02644
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-fchmodat - /tmp/file0 04644
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-fchmodat - /tmp/file0 04644
 	test-chown rootfs/tmp/file0 0 0
 	test-faccessat . rootfs/Makefile 0 0
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-faccessat - /Makefile 0 0
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-faccessat - /Makefile 0 0
 	test-fchown rootfs/tmp/file0 0 0
 	test-fchownat - rootfs/tmp/file0 0 0
 	test-stat rootfs/tmp/file0
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-stat /tmp/file0
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-stat /tmp/file0
 	test-lstat rootfs/tmp/symlink0
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-lstat /tmp/symlink0
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-lstat /tmp/symlink0
 	test-fstat rootfs/tmp/file0
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-fstat /tmp/file0
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-fstat /tmp/file0
 	test-fstatat - rootfs/tmp/file0 0 0
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-fstatat - /tmp/file0 0 0
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-fstatat - /tmp/file0 0 0
 	test-lchown rootfs/tmp/symlink0 0 0
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-fchownat - /tmp/file0 0 0
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-fchownat - /tmp/file0 0 0
 	test-get_current_dir_name | tee /dev/stderr | grep -q '$(CURDIR)'
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-get_current_dir_name | tee /dev/stderr | grep -q '/'
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-get_current_dir_name | tee /dev/stderr | grep -q '/'
 	test-getcwd | tee /dev/stderr | grep -q '$(CURDIR)'
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-getcwd | tee /dev/stderr | grep -q '/'
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-getcwd | tee /dev/stderr | grep -q '/'
 	test-getwd | tee /dev/stderr | grep -q '$(CURDIR)'
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-getwd | tee /dev/stderr | grep -q '/'
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-getwd | tee /dev/stderr | grep -q '/'
 	test-link rootfs/tmp/file0 rootfs/tmp/link1
 	test-linkat - rootfs/tmp/file0 - rootfs/tmp/link2 0
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-linkat - /tmp/file0 - /tmp/link3 0
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-linkat - /tmp/file0 - /tmp/link3 0
 	test-mkdir rootfs/tmp/dir0 0555
 	test-mkdirat . rootfs/tmp/dir1 0555
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkdirat . /tmp/dir2 0755
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkdirat . /tmp/dir2 0755
 	test-mknod rootfs/dev/dev0 0644 0 0
 	test-mknodat - rootfs/dev/dev1 0666 0 1
 	test-mknodat . rootfs/dev/dev2 0666 0 2
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mknod /dev/dev3 0644 0 3
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mknodat - /dev/dev4 0666 0 4
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mknodat . /dev/dev5 0666 0 5
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mknod /dev/dev3 0644 0 3
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mknodat - /dev/dev4 0666 0 4
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mknodat . /dev/dev5 0666 0 5
 	test-__xmknod 1 rootfs/dev/dev6 0644 0 6
 	test-__xmknodat 1 - rootfs/dev/dev7 0666 0 7
 	test-__xmknodat 1 . rootfs/dev/dev8 0666 0 8
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-__xmknod 1 /dev/dev9 0644 0 9
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-__xmknodat 1 - /dev/dev10 0666 0 10
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-__xmknodat 1 . /dev/dev11 0666 0 11
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-__xmknod 1 /dev/dev9 0644 0 9
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-__xmknodat 1 - /dev/dev10 0666 0 10
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-__xmknodat 1 . /dev/dev11 0666 0 11
 	test-mount -t procfs none rootfs/proc
 	test-path_resolution / | tee /dev/stderr | grep -q "^/\$$"
 	test-path_resolution /proc/ | tee /dev/stderr | grep -q "^/proc/\$$"
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /sys/ | tee /dev/stderr | grep -q "^/sys/\$$"
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /dev/ | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/dev\$$"
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution "$$IAMROOT_LIB"  | tee /dev/stderr | grep -q "^$$IAMROOT_LIB$$"
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /sys/ | tee /dev/stderr | grep -q "^/sys/\$$"
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /dev/ | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/dev\$$"
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution "$$IAMROOT_LIB"  | tee /dev/stderr | grep -q "^$$IAMROOT_LIB$$"
 	test-pathsetenv LD_LIBRARY_PATH /usr/local/lib:/usr/lib:/lib  | tee /dev/stderr | grep -q "^/usr/local/lib:/usr/lib:/lib$$"
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-pathsetenv LD_LIBRARY_PATH /usr/local/lib:/usr/lib:/lib  | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/usr/local/lib:$(CURDIR)/rootfs/usr/lib:$(CURDIR)/rootfs/lib$$"
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-pathsetenv LD_LIBRARY_PATH /usr/local/lib:/usr/lib:/lib  | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/usr/local/lib:$(CURDIR)/rootfs/usr/lib:$(CURDIR)/rootfs/lib$$"
 	test-openat - rootfs/tmp/file0
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-openat . /tmp/file0
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-openat . /tmp/file0
 	test-opendir rootfs/tmp/dir0
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-opendir /tmp/dir0
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-opendir /tmp/dir0
 	test-rename rootfs/tmp/file0 rootfs/tmp/file1
 	test-renameat - rootfs/tmp/file1 - rootfs/tmp/file2
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-renameat - /tmp/file2 - /tmp/file3
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-renameat2 - /tmp/file3 - /tmp/file0 0
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-renameat - /tmp/file2 - /tmp/file3
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-renameat2 - /tmp/file3 - /tmp/file0 0
 	test-rmdir rootfs/tmp/dir0
 	test-rmdir rootfs/tmp/dir1
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-rmdir /tmp/dir2
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-rmdir /tmp/dir2
 	test-sanitize ""                  | tee /dev/stderr | grep -vc '^$$'   | grep -q '^0$$'
 	test-sanitize . ./ ././ ./. ././. | tee /dev/stderr | grep -vc '^\.$$' | grep -q '^0$$'
 	test-sanitize / // ///  //. //./. | tee /dev/stderr | grep -vc '^/$$'  | grep -q '^0$$'
 	test-scandir .
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-scandirat - /
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-scandirat - /
 	test-statfs .
 	test-statvfs .
 	test-statx - rootfs/tmp/file0 0 0
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-statx - /tmp/file0 0 0
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-statx - /tmp/file0 0 0
 	test-symlink file0 rootfs/tmp/symlink1
 	test-symlinkat file0 . rootfs/tmp/symlink2
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-symlinkat file0 . /tmp/symlink3
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-symlinkat file0 . /tmp/symlink3
 	test-readlink /proc/self/exe                                                      | tee /dev/stderr | grep -q "^$(CURDIR)/test-readlink$$"
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-readlink /proc/self/exe     | tee /dev/stderr | grep -q "^$(PREFIX)/bin/test-readlink$$"
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-readlink /proc/self/exe     | tee /dev/stderr | grep -q "^$(PREFIX)/bin/test-readlink$$"
 	test-readlinkat . /proc/self/exe                                                  | tee /dev/stderr | grep -q "^$(CURDIR)/test-readlinkat$$"
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-readlinkat . /proc/self/exe | tee /dev/stderr | grep -q "^$(PREFIX)/bin/test-readlinkat$$"
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-readlinkat . /proc/self/exe | tee /dev/stderr | grep -q "^$(PREFIX)/bin/test-readlinkat$$"
 	test-utimes rootfs/tmp/file0 0x3fffffff 0x3fffffff
 	test-lutimes rootfs/tmp/symlink0 0x3fffffff 0x3fffffff
 	test-utimensat . rootfs/tmp/file0 0x3fffffff 0x3fffffff
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-utimensat . /tmp/file0 0x3fffffff 0x3fffffff
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-utimensat . /tmp/file0 0x3fffffff 0x3fffffff
 	test-unlink rootfs/tmp/file0
 	test-unlinkat . rootfs/dev/dev1 0
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-unlinkat - /dev/dev2 0
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-unlinkat - /dev/dev2 0
 	test-unshare whoami
 	test-dlopen libiamnotroot.so
-	PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs IAMROOT_LIBRARY_PATH=$(PREFIX)/lib64:$(PREFIX)/lib test-dlopen libiamnotroot.so
+	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs IAMROOT_LIBRARY_PATH=$(PREFIX)/lib64:$(PREFIX)/lib test-dlopen libiamnotroot.so
 	! test-dl_iterate_phdr | grep '$(CURDIR)/rootfs'
-	! PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-dl_iterate_phdr | grep '$(CURDIR)/rootfs'
+	cd rootfs/ && ! PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-dl_iterate_phdr | grep '$(CURDIR)/rootfs'
 
 rootfs: DESTDIR = $(CURDIR)/rootfs
 rootfs: PREFIX ?= /usr

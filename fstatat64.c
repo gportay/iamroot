@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#ifdef __linux__
 #include <unistd.h>
 #include <stdio.h>
 #include <errno.h>
@@ -15,7 +16,7 @@
 
 #include "iamroot.h"
 
-#ifdef __GLIBC__
+#ifdef _LARGEFILE64_SOURCE
 extern uid_t next_geteuid();
 
 __attribute__((visibility("hidden")))
@@ -78,4 +79,5 @@ exit:
 
 weak_alias(fstatat64, __fstatat64);
 weak_alias(fstatat64, __fstatat_time64);
+#endif
 #endif

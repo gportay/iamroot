@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#ifdef __linux__
 #include <unistd.h>
 #include <stdio.h>
 #include <errno.h>
@@ -15,7 +16,7 @@
 
 #include "iamroot.h"
 
-#ifdef __GLIBC__
+#ifdef _LARGEFILE64_SOURCE
 extern uid_t next_geteuid();
 
 __attribute__((visibility("hidden")))
@@ -73,4 +74,5 @@ int __fxstatat64(int ver, int fd, const char *path, struct stat64 *statbuf,
 exit:
 	return ret;
 }
+#endif
 #endif

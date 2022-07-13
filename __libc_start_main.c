@@ -67,7 +67,7 @@ static int __dl_iterate_phdr_callback(struct dl_phdr_info *info, size_t size,
 	if (!token) {
 		if (__strlcmp(val, info->dlpi_name) == 0)
 			return 0;
-	} else if (token && *token) {
+	} else if (*token) {
 		do {
 			if (__strlcmp(token, info->dlpi_name) == 0)
 				return 0;

@@ -24,7 +24,9 @@ int main(int argc, char * const argv[])
 {
 	mode_t mode;
 	dev_t dev;
+#ifdef __linux__
 	int ver;
+#endif
 
 	if (argc < 6) {
 		fprintf(stderr, "Too few arguments\n");
@@ -34,7 +36,9 @@ int main(int argc, char * const argv[])
 		exit(EXIT_FAILURE);
 	}
 
+#ifdef __linux__
 	ver = strtoul(argv[1], NULL, 0);
+#endif
 	mode = strtoul(argv[3], NULL, 0);
 	dev = makedev(strtoul(argv[4], NULL, 0), strtoul(argv[5], NULL, 0));
 

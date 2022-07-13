@@ -233,11 +233,12 @@ static int __strtok(const char *str, const char *delim,
 	if (len > 0) {
 		char buf[len+1]; /* NULL-terminated */
 		char *token, *saveptr;
-		int ret;
 
 		__strncpy(buf, str);
 		token = strtok_r(buf, delim, &saveptr);
 		do {
+			int ret;
+
 			if (!token)
 				break;
 

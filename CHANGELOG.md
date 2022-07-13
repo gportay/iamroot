@@ -21,6 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `readlinkat()`, `renameat()`, `symlinkat()`, and `unlinkat()`
 - Forward the none-`at` functions `futimesat()`, `lutimes()`, `utime()`, and
   `utimes()` to the `at` function `utimensat()`
+- The function `eaccess()` is now a weak alias to `euidaccess()`
 
 ### Fixed
 

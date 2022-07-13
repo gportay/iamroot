@@ -17,3 +17,5 @@ int euidaccess(const char *path, int mode)
 
 	return faccessat(AT_FDCWD, path, mode, AT_EACCESS);
 }
+
+weak_alias(euidaccess, eaccess);

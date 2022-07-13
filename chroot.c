@@ -241,7 +241,7 @@ char *striprootdir(char *path)
 		memcpy(ret, &ret[len], __strlen(ret)-len+1); /* NULL-terminated */
 
 	if (!*ret)
-		strncpy(ret, "/", size-1); /* NULL-terminated */
+		_strncpy(ret, "/", size);
 
 	return ret;
 }
@@ -275,7 +275,7 @@ int chroot(const char *path)
 		cwd[len++] = '/';
 		cwd[len] = 0;
 
-		cwd = strncat(cwd, path, sizeof(buf)-len-1); /* NULL-terminated */
+		cwd = _strncat(cwd, path, sizeof(buf)-len);
 		buf[sizeof(buf)-1] = 0; /* NULL-terminated */
 	} else {
 		ssize_t siz;

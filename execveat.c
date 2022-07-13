@@ -145,8 +145,6 @@ exec_sh:
 	if (ret == -1)
 		return -1;
 
-	program = interparg[0];
-
 execveat:
 	ret = setenv("IAMROOT_VERSION", __xstr(VERSION), 1);
 	if (ret)

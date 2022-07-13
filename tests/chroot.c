@@ -141,7 +141,7 @@ int main(int argc, char * const argv[])
 	}
 
 	if (!__streq(cwd, buf))
-		ret = EXIT_FAILURE;
+		goto exit;
 
 	ret = EXIT_SUCCESS;
 

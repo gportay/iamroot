@@ -15,7 +15,7 @@ int main()
 {
 	char *cwd = NULL;
 
-#ifdef  __USE_GNU
+#ifdef __USE_GNU
 	cwd = get_current_dir_name();
 #endif
 	if (!cwd)

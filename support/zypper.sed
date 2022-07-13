@@ -58,7 +58,7 @@
 	s,\([[:lower:][:upper:][:digit:]._+-]\+\)-\([[:digit:]]\+:[[:alnum:]._~^+-]\+\|[[:alnum:]._~^+-]\+\)-\([[:alnum:].%{?}-]\+\)\.\([[:lower:][:digit:]]\+\.[[:alnum:]_]\+\|[[:alnum:]_]\+\),\1,
 }
 
-/^Additional rpm output/,/^$:/ {
+/^warning:/ {
 	# /var/tmp/rpm-tmp.XXXXXX: line X: file: strerror
 	/^\/var\/tmp\/rpm-tmp\./ {
 		s,/rpm-tmp\.[[:alnum:]]\{6\,6\},/rpm-tmp.XXXXXX,

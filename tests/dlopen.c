@@ -37,9 +37,8 @@ int main(int argc, char * const argv[])
 
 	ret = EXIT_SUCCESS;
 
-	if (handle)
-		if (dlclose(handle))
-			__dlperror("dlclose");
+	if (dlclose(handle))
+		__dlperror("dlclose");
 
 	return ret;
 }

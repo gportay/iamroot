@@ -191,6 +191,8 @@ libiamroot.so: statfs64.o
 libiamroot.so: statvfs.o
 libiamroot.so: statvfs64.o
 libiamroot.so: statx.o
+libiamroot.so: swapoff.o
+libiamroot.so: swapon.o
 libiamroot.so: symlink.o
 libiamroot.so: symlinkat.o
 libiamroot.so: tempnam.o

@@ -13,8 +13,6 @@
 #include <unistd.h>
 #include <sys/types.h>
 
-int truncate(const char *path, off_t length);
-
 #include "iamroot.h"
 
 __attribute__((visibility("hidden")))

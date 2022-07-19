@@ -89,6 +89,8 @@ endef
 export CC
 export CFLAGS
 
+test: x86_64/libiamroot-linux-x86-64.so.2
+
 $(eval $(call libiamroot_so,x86_64,linux-x86-64,2))
 
 output-i686-linux/libiamroot.so: override CC += -m32
@@ -190,11 +192,11 @@ coverage: gcov/index.html
 .PHONY: gcov/index.html
 gcov/index.html:
 	mkdir -p $(@D)
-	gcovr --html-details --html-title iamroot -s -o $@ output-x86_64-linux-x86-64/
+	gcovr --html-details --html-title iamroot -s -o $@ output-x86_64-linux-x86-64/ tests/
 
 .PHONY: cobertura.xml
 cobertura.xml:
-	gcovr --cobertura -s -o $@ output-x86_64-linux-x86-64/
+	gcovr --cobertura -s -o $@ output-x86_64-linux-x86-64/ tests/
 
 .PHONY: clean
 clean:

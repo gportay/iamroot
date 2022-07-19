@@ -89,7 +89,7 @@ test: PREFIX = /usr
 test: export LD_PRELOAD = $(IAMROOT_LIB)
 test: export LD_LIBRARY_PATH := $(CURDIR):/usr/lib64:/lib64
 test: export IAMROOT_LIBRARY_PATH := $(CURDIR):/usr/lib64:/lib64
-test: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|$(IAMROOT_LIB)
+test: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/
 test: export IAMROOT_FATAL = 1
 test: | rootfs
 	rm -Rf rootfs/tmp/* rootfs/dev/*
@@ -144,7 +144,6 @@ test: | rootfs
 	test-path_resolution /proc/ | tee /dev/stderr | grep -q "^/proc/\$$"
 	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /sys/ | tee /dev/stderr | grep -q "^/sys/\$$"
 	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /dev/ | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/dev\$$"
-	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution "$$IAMROOT_LIB"  | tee /dev/stderr | grep -q "^$$IAMROOT_LIB$$"
 	test-pathsetenv LD_LIBRARY_PATH /usr/local/lib:/usr/lib:/lib  | tee /dev/stderr | grep -q "^/usr/local/lib:/usr/lib:/lib$$"
 	cd rootfs/ && PATH=$(PREFIX)/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-pathsetenv LD_LIBRARY_PATH /usr/local/lib:/usr/lib:/lib  | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/usr/local/lib:$(CURDIR)/rootfs/usr/lib:$(CURDIR)/rootfs/lib$$"
 	test-openat - rootfs/tmp/file0

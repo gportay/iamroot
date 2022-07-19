@@ -181,7 +181,7 @@ aarch64-rootfs:
 arm-rootfs:
 
 .PHONY: test
-test: | alpine-minirootfs
+test:
 	$(MAKE) -f Makefile $@
 
 .PHONY: coverage

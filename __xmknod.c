@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#ifdef __linux__
 #include <stdio.h>
 #include <fcntl.h>
 
@@ -19,3 +20,4 @@ int __xmknod(int ver, const char *path, mode_t mode, dev_t *dev)
 
 	return __xmknodat(ver, AT_FDCWD, path, mode, dev);
 }
+#endif

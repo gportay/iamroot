@@ -58,6 +58,7 @@ dkms.conf
 # Coverage files
 *.gcda
 *.gcno
+gcov/
 
 # Output directories
 output*/

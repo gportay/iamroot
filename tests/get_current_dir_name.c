@@ -6,6 +6,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <errno.h>
 #ifndef __USE_GNU
 #include <string.h>
 #include <limits.h>

@@ -7,8 +7,6 @@
 #ifndef _IAMROOT_H_
 #define _IAMROOT_H_
 
-extern int errno;
-
 /*
  * Stolen from musl (src/include/features.h)
  *

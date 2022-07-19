@@ -6,6 +6,7 @@
 
 #ifdef __FreeBSD__
 #include <unistd.h>
+#include <errno.h>
 
 #include "iamroot.h"
 

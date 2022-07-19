@@ -35,7 +35,6 @@ all: $(IAMROOT_LIB)
 x86_64/libiamroot-linux-x86-64.so.2: libiamroot.so
 	install -D -m755 $< $@
 
-x86_64/libiamroot-elf.so.1: export CC = gcc
 x86_64/libiamroot-elf.so.1: libiamroot.so
 	mkdir -p $(@D)
 	install -D -m755 $< $@

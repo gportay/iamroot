@@ -21,7 +21,6 @@ all: x86_64/libiamroot-elf.so.1
 .PRECIOUS: x86_64/libiamroot-elf.so.1
 x86_64/libiamroot-elf.so.1: $(wildcard *.c)
 
-.PHONY: freebsd-%-chroot
 freebsd-13.1-chroot:
 freebsd-%-chroot: x86_64/libiamroot-elf.so.1 | freebsd-%-rootfs
 	bash iamroot-shell -c "chroot freebsd-$*-rootfs"

@@ -67,6 +67,8 @@ libiamroot.so: acct.o
 libiamroot.so: canonicalize_file_name.o
 libiamroot.so: catopen.o
 libiamroot.so: chdir.o
+libiamroot.so: chflags.o
+libiamroot.so: chflagsat.o
 libiamroot.so: chmod.o
 libiamroot.so: chown.o
 libiamroot.so: chroot.o
@@ -128,6 +130,7 @@ libiamroot.so: getwd.o
 libiamroot.so: getxattr.o
 libiamroot.so: group.o
 libiamroot.so: inotify_add_watch.o
+libiamroot.so: lchflags.o
 libiamroot.so: lchmod.o
 libiamroot.so: lchown.o
 libiamroot.so: lgetfh.o

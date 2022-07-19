@@ -25,7 +25,7 @@
 #include <sys/time.h>
 #include <sys/stat.h>
 #include <errno.h>
-#include "syscall.h"
+#include <sys/syscall.h>
 
 int __futimesat(int dirfd, const char *pathname, const struct timeval times[2])
 {

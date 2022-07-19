@@ -232,8 +232,6 @@ libiamroot.so: unshare.o
 libiamroot.so: utime.o
 libiamroot.so: utimensat.o
 libiamroot.so: utimes.o
-libiamroot.so: whereami.o
-libiamroot.so: whoami.o
 
 .PHONY: doc
 doc: iamroot-shell.1.gz iamroot.7.gz

@@ -12,6 +12,12 @@ override CFLAGS += -fPIC -Wall -Wextra
 IAMROOT_LIB ?= $(CURDIR)/libiamroot.so
 export IAMROOT_LIB
 
+ifdef COVERAGE
+test-%: override CFLAGS += -fprofile-arcs -ftest-coverage
+test-%: override LDFLAGS += -fprofile-arcs
+test-%: override LDLIBS += -lgcov
+endif
+
 .PHONY: all
 all: libiamnotroot.so
 all: test-__xmknod

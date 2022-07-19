@@ -18,7 +18,7 @@
 
 #include "iamroot.h"
 
-extern int whereami(char *buf, size_t bufsize) weak;
+extern ssize_t next_readlinkat(int, const char *, char *, size_t) weak;
 
 static pid_t execvpf(const char *file, char * const argv[])
 {
@@ -99,6 +99,7 @@ int main(int argc, char * const argv[])
 	static char buf[PATH_MAX], cwd[PATH_MAX];
 	int fd = -1, ret = EXIT_FAILURE;
 	const char *root;
+	ssize_t siz;
 
 	if (argc < 2) {
 		fprintf(stderr, "Too few arguments\n");
@@ -136,10 +137,9 @@ int main(int argc, char * const argv[])
 		goto exit;
 	}
 
-	if (whereami(buf, sizeof(buf)) == -1) {
-		perror("whereami");
+	siz = next_readlinkat(AT_FDCWD, "/proc/self/cwd", buf, sizeof(buf));
+	if (siz == -1)
 		goto exit;
-	}
 
 	if (!__streq(cwd, buf))
 		goto exit;

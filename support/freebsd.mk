@@ -13,6 +13,9 @@ export IAMROOT_LIB_ELF_1
 IAMROOT_PATH_RESOLUTION_IGNORE = ^/(dev|var/run)/|^/etc/resolv.conf
 export IAMROOT_PATH_RESOLUTION_IGNORE
 
+IAMROOT_PATH = /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
+export IAMROOT_PATH
+
 -include local.mk
 
 .PHONY: all

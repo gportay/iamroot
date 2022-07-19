@@ -63,6 +63,7 @@ libiamroot.so: __xmknodat.o
 libiamroot.so: __xstat.o
 libiamroot.so: __xstat64.o
 libiamroot.so: access.o
+libiamroot.so: acct.o
 libiamroot.so: canonicalize_file_name.o
 libiamroot.so: catopen.o
 libiamroot.so: chdir.o

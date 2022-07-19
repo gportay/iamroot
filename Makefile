@@ -98,6 +98,7 @@ libiamroot.so: extattr_set_fd.o
 libiamroot.so: extattr_set_file.o
 libiamroot.so: extattr_set_link.o
 libiamroot.so: faccessat.o
+libiamroot.so: fanotify_mark.o
 libiamroot.so: fchdir.o
 libiamroot.so: fchmod.o
 libiamroot.so: fchmodat.o

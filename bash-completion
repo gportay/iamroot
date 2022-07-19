@@ -20,8 +20,8 @@ _iamroot-shell()
 		extattr_delete_link extattr_get_fd extattr_get_file
 		extattr_get_link extattr_list_fd extattr_list_file
 		extattr_list_link extattr_set_fd extattr_set_file
-		extattr_set_link faccessat fchdir fchmod fchmodat fchown
-		fchownat fexecve fgetxattr flistxattr fopen fremovexattr
+		extattr_set_link faccessat fanotify_mark fchdir fchmod fchmodat
+		fchown fchownat fexecve fgetxattr flistxattr fopen fremovexattr
 		freopen fsetxattr ftok fstat fstat64 fstatat fstatat64 ftw
 		futimesat get_current_dir_name getcwd getegid geteuid getgid
 		getfh getfhat getuid getwd getxattr inotify_add_watch lchmod

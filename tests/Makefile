@@ -194,7 +194,10 @@ rootfs: install
 .PHONY: install
 install:
 	install -D -m644 Makefile $(DESTDIR)/Makefile
-	install -D -m755 test-* --target-directory=$(DESTDIR)$(PREFIX)/bin
+	for i in *.c; do \
+		test -e test-$${i%.c} || continue; \
+		install -D -m755 test-$${i%.c} --target-directory=$(DESTDIR)$(PREFIX)/bin; \
+	done
 	install -D -m755 /usr/lib64/libc.so.6 /usr/lib64/libdl.so.2 --target-directory=$(DESTDIR)/usr/lib64
 	install -D -m755 /lib64/ld-linux-x86-64.so.2 --target-directory=$(DESTDIR)/lib64
 	install -D -m755 libiamnotroot.so --target-directory=$(DESTDIR)$(PREFIX)/lib64

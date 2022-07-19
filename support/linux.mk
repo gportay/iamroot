@@ -56,6 +56,9 @@ define libiamroot_so =
 all: $(1)/libiamroot-$(2).so.$(3)
 ci: $(1)/libiamroot-$(2).so.$(3)
 
+$(1)/libiamroot-$(2).so.$(3): output-$(1)-$(2)/libiamroot.so
+	install -D -m755 $$< $$@
+
 .PRECIOUS: $(1)/libiamroot-$(2).so.$(3)
 $(1)/libiamroot-$(2).so.$(3): output-$(1)-$(2)/libiamroot.so
 
@@ -156,9 +159,6 @@ output-%/libiamroot.so: $(wildcard *.c) | output-%
 .PRECIOUS: output-%
 output-%:
 	mkdir $@
-
-%.so.1 %.so.2 %.so.3:
-	install -D -m755 $< $@
 
 .NOTPARALLEL: fixme-rootfs
 .PHONY: fixme-rootfs

@@ -5,12 +5,6 @@
  */
 
 #include <stdio.h>
-#include <errno.h>
-#include <limits.h>
-#include <dlfcn.h>
-
-#include <fcntl.h>
-#include <sys/time.h>
 
 #include "iamroot.h"
 

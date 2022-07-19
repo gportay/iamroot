@@ -33,6 +33,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `utimes()` to the `at` function `utimensat()`
 - The function `eaccess()` is now a weak alias to `euidaccess()`
 
+### Removed
+
+- Remove [glibc] private function `__nss_files_fopen()`
+
 ### Fixed
 
 - Fix the invalid argument returned if an empty path is resolved but the flag

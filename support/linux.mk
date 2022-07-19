@@ -5,11 +5,9 @@
 #
 
 PREFIX ?= /usr/local
+ARCH ?= $(shell uname -m 2>/dev/null)
 KVER ?= $(shell uname -r 2>/dev/null)
 VMLINUX_KVER ?= $(shell vmlinux --version 2>/dev/null)
-
-IAMROOT_LIB = $(CURDIR)/x86_64/libiamroot-linux-x86-64.so.2
-export IAMROOT_LIB
 
 IAMROOT_LIB_LINUX_2 = $(CURDIR)/i686/libiamroot-linux.so.2
 export IAMROOT_LIB_LINUX_2
@@ -43,6 +41,16 @@ export IAMROOT_EXEC
 
 IAMROOT_EXEC_IGNORE = ldd|mountpoint
 export IAMROOT_EXEC_IGNORE
+
+ifeq ($(ARCH),x86_64)
+IAMROOT_LIB = $(IAMROOT_LIB_LINUX_X86_64_2)
+export IAMROOT_LIB
+endif
+
+ifeq ($(ARCH),aarch64)
+IAMROOT_LIB = $(IAMROOT_LIB_LINUX_AARCH64_1)
+export IAMROOT_LIB
+endif
 
 -include local.mk
 
@@ -89,9 +97,12 @@ endef
 export CC
 export CFLAGS
 
-test: x86_64/libiamroot-linux-x86-64.so.2
+ifeq ($(ARCH),x86_64)
+libiamroot.so: x86_64/libiamroot-linux-x86-64.so.2
+	install -D -m755 $< $@
 
 $(eval $(call libiamroot_so,x86_64,linux-x86-64,2))
+test: x86_64/libiamroot-linux-x86-64.so.2
 
 output-i686-linux/libiamroot.so: override CC += -m32
 output-i686-linux/libiamroot.so: override CFLAGS += -fno-stack-protector
@@ -153,6 +164,15 @@ clean-clang-linux-x86-64.2:
 	rm -Rf clang/
 endif
 endif
+endif
+
+ifeq ($(ARCH),aarch64)
+libiamroot.so: aarch64/libiamroot-linux-aarch64.so.1
+	install -D -m755 $< $@
+
+$(eval $(call libiamroot_so,aarch64,linux-aarch64,1))
+test: aarch64/libiamroot-linux-aarch64.so.1
+endif
 
 .PRECIOUS: output-%/libiamroot.so
 output-%/libiamroot.so: $(wildcard *.c) | output-%
@@ -213,7 +233,7 @@ ifneq ($(shell command -v pacstrap 2>/dev/null),)
 .PHONY: arch-test
 arch-test: | arch-rootfs/usr/bin/shebang.sh
 arch-test: | arch-rootfs/usr/bin/shebang-arg.sh
-arch-test: x86_64/libiamroot-linux-x86-64.so.2 | arch-rootfs
+arch-test: $(IAMROOT_LIB) | arch-rootfs
 	bash iamroot-shell -c "chroot arch-rootfs shebang.sh one two three"
 	bash iamroot-shell -c "chroot arch-rootfs shebang-arg.sh one two three"
 
@@ -231,10 +251,11 @@ arch-rootfs: | arch-rootfs/etc/machine-id
 
 arch-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
 arch-rootfs/etc/machine-id: export EUID = 0
-arch-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
+arch-rootfs/etc/machine-id: | $(IAMROOT_LIB)
 	mkdir arch-rootfs
 	bash iamroot-shell -c "pacstrap -GMC support/x86_64-pacman.conf arch-rootfs"
 
+ifeq ($(ARCH),x86_64)
 i686-rootfs: i686-arch-rootfs
 
 .PHONY: i686-arch-chroot
@@ -262,7 +283,7 @@ endif
 
 arch.ext4:
 
-arch-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
+arch-postrootfs: | $(IAMROOT_LIB)
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i arch-rootfs/etc/passwd
 	sed -e '/^root::/s,^root::,root:x:,' \
@@ -300,7 +321,7 @@ endif
 
 manjaro.ext4:
 
-manjaro-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
+manjaro-postrootfs: | $(IAMROOT_LIB)
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i manjaro-rootfs/etc/passwd
 	sed -e '/^root::/s,^root::,root:x:,' \
@@ -315,6 +336,7 @@ mount-manjaro:
 
 umount-manjaro:
 endif
+endif
 
 ifneq ($(shell command -v debootstrap 2>/dev/null),)
 debian-oldoldstable-chroot:
@@ -322,8 +344,9 @@ debian-oldstable-chroot:
 debian-stable-chroot:
 debian-testing-chroot:
 debian-unstable-chroot:
-debian-%-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+debian-%-chroot: export IAMROOT_LIBRARY_PATH = /lib/$(ARCH)-linux-gnu:/lib:/usr/lib/$(ARCH)-linux-gnu:/usr/lib
 debian-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
+debian-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
 debian-%-chroot: | debian-%-rootfs
 	bash iamroot-shell -c "chroot debian-$*-rootfs"
 
@@ -342,8 +365,9 @@ debian-stable-rootfs: | debian-stable-rootfs/etc/machine-id
 debian-testing-rootfs: | debian-testing-rootfs/etc/machine-id
 debian-unstable-rootfs: | debian-unstable-rootfs/etc/machine-id
 
-debian-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+debian-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib/$(ARCH)-linux-gnu:/lib:/usr/lib/$(ARCH)-linux-gnu:/usr/lib
 debian-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
+debian-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
 debian-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update
 debian-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
 # System has not been booted with systemd as init system (PID 1). Can't operate.
@@ -354,7 +378,7 @@ debian-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 debian-%-rootfs/etc/machine-id: export PERL_DL_NONLAZY = 1
 debian-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://deb.debian.org/debian
 debian-%-rootfs/etc/machine-id: export DEBOOTSTRAPFLAGS ?= --merged-usr --no-check-gpg
-debian-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
+debian-%-rootfs/etc/machine-id: | $(IAMROOT_LIB)
 	mkdir -p debian-$*-rootfs
 	bash iamroot-shell -c "debootstrap --keep-debootstrap-dir $(DEBOOTSTRAPFLAGS) $* debian-$*-rootfs $(DEBOOTSTRAP_MIRROR)"
 	cat debian-$*-rootfs/debootstrap/debootstrap.log
@@ -386,9 +410,10 @@ debian-stable.ext4:
 debian-testing.ext4:
 debian-unstable.ext4:
 
-debian-oldoldstable-postrootfs: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+debian-oldoldstable-postrootfs: export IAMROOT_LIBRARY_PATH = /lib/$(ARCH)-linux-gnu:/lib:/usr/lib/$(ARCH)-linux-gnu:/usr/lib
 debian-oldoldstable-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
-debian-oldoldstable-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
+debian-oldoldstable-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2
+debian-oldoldstable-postrootfs: | $(IAMROOT_LIB)
 debian-oldoldstable-postrootfs:
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i debian-oldoldstable-rootfs/etc/passwd
@@ -402,9 +427,10 @@ debian-oldstable-postrootfs:
 debian-stable-postrootfs:
 debian-testing-postrootfs:
 debian-unstable-postrootfs:
-debian-%-postrootfs: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+debian-%-postrootfs: export IAMROOT_LIBRARY_PATH = /lib/$(ARCH)-linux-gnu:/lib:/usr/lib/$(ARCH)-linux-gnu:/usr/lib
 debian-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
-debian-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
+debian-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2
+debian-%-postrootfs: | $(IAMROOT_LIB)
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i debian-$*-rootfs/etc/passwd
 	sed -e '/^root::/s,^root::,root:x:,' \
@@ -439,8 +465,9 @@ ubuntu-xenial-chroot:
 ubuntu-bionic-chroot:
 ubuntu-focal-chroot:
 ubuntu-jammy-chroot:
-ubuntu-%-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+ubuntu-%-chroot: export IAMROOT_LIBRARY_PATH = /lib/$(ARCH)-linux-gnu:/lib:/usr/lib/$(ARCH)-linux-gnu:/usr/lib
 ubuntu-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
+ubuntu-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
 ubuntu-%-chroot: | ubuntu-%-rootfs
 	bash iamroot-shell -c "chroot ubuntu-$*-rootfs"
 
@@ -468,8 +495,9 @@ ubuntu-xenial-rootfs/etc/machine-id:
 ubuntu-bionic-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|/var/lib/dpkg/info/initramfs-tools.postinst
 ubuntu-bionic-rootfs/etc/machine-id:
 
-ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib/$(ARCH)-linux-gnu:/lib:/usr/lib/$(ARCH)-linux-gnu:/usr/lib
 ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
+ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
 ubuntu-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update
 ubuntu-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
 # Processing triggers for libc-bin ...
@@ -491,7 +519,7 @@ ubuntu-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 ubuntu-%-rootfs/etc/machine-id: export PERL_DL_NONLAZY = 1
 ubuntu-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
 ubuntu-%-rootfs/etc/machine-id: export DEBOOTSTRAPFLAGS ?= --merged-usr --no-check-gpg
-ubuntu-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
+ubuntu-%-rootfs/etc/machine-id: | $(IAMROOT_LIB)
 	mkdir -p ubuntu-$*-rootfs
 	bash iamroot-shell -c "debootstrap --keep-debootstrap-dir $(DEBOOTSTRAPFLAGS) $* ubuntu-$*-rootfs $(DEBOOTSTRAP_MIRROR)"
 	cat ubuntu-$*-rootfs/debootstrap/debootstrap.log
@@ -528,8 +556,9 @@ ubuntu-bionic-postrootfs:
 ubuntu-focal-postrootfs:
 ubuntu-jammy-postrootfs:
 ubuntu-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
-ubuntu-%-postrootfs: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
-ubuntu-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
+ubuntu-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2
+ubuntu-%-postrootfs: export IAMROOT_LIBRARY_PATH = /lib/$(ARCH)-linux-gnu:/lib:/usr/lib/$(ARCH)-linux-gnu:/usr/lib
+ubuntu-%-postrootfs: | $(IAMROOT_LIB)
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i ubuntu-$*-rootfs/etc/passwd
 	sed -e '/^root::/s,^root::,root:x:,' \
@@ -1346,6 +1375,7 @@ debian-unstable-rootfs.log:
 support: ubuntu-support
 
 .PHONY: ubuntu-support
+ifeq ($(ARCH),x86_64)
 ubuntu-support: support/ubuntu-trusty-rootfs.txt
 ubuntu-support: support/ubuntu-xenial-rootfs.txt
 ubuntu-support: support/ubuntu-bionic-rootfs.txt
@@ -1376,10 +1406,12 @@ support/ubuntu-focal-rootfs.txt: ubuntu-focal-rootfs.log
 support/ubuntu-jammy-rootfs.txt: ubuntu-jammy-rootfs.log
 	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
+endif
 
 log: ubuntu-log
 
 .PHONY: ubuntu-log
+ifeq ($(ARCH),x86_64)
 ubuntu-log: ubuntu-trusty-rootfs.log
 ubuntu-log: ubuntu-xenial-rootfs.log
 ubuntu-log: ubuntu-bionic-rootfs.log
@@ -1391,6 +1423,7 @@ ubuntu-xenial-rootfs.log:
 ubuntu-bionic-rootfs.log:
 ubuntu-focal-rootfs.log:
 ubuntu-jammy-rootfs.log:
+endif
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)

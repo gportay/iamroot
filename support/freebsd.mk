@@ -4,10 +4,12 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
 
-IAMROOT_LIB = $(CURDIR)/amd64/libiamroot-elf.so.1
+ARCH ?= $(shell uname -m 2>/dev/null)
+
+IAMROOT_LIB = $(CURDIR)/$(ARCH)/libiamroot-elf.so.1
 export IAMROOT_LIB
 
-IAMROOT_LIB_ELF_1 = $(CURDIR)/amd64/libiamroot-elf.so.1
+IAMROOT_LIB_ELF_1 = $(CURDIR)/$(ARCH)/libiamroot-elf.so.1
 export IAMROOT_LIB_ELF_1
 
 IAMROOT_PATH_RESOLUTION_IGNORE = ^/dev/|^/etc/resolv.conf
@@ -22,10 +24,10 @@ export IAMROOT_EXEC
 -include local.mk
 
 .PHONY: all
-all: amd64/libiamroot-elf.so.1
+all: $(ARCH)/libiamroot-elf.so.1
 
-.PRECIOUS: amd64/libiamroot-elf.so.1
-amd64/libiamroot-elf.so.1: output-amd64/libiamroot.so
+.PRECIOUS: $(ARCH)/libiamroot-elf.so.1
+$(ARCH)/libiamroot-elf.so.1: output-$(ARCH)/libiamroot.so
 	install -d -m755 $(@D)
 	install -m755 $< $@
 
@@ -38,23 +40,23 @@ output-%:
 	mkdir $@
 
 freebsd-13.1-chroot:
-freebsd-%-chroot: amd64/libiamroot-elf.so.1 | freebsd-%-rootfs
+freebsd-%-chroot: $(ARCH)/libiamroot-elf.so.1 | freebsd-%-rootfs
 	bash iamroot-shell -c "chroot freebsd-$*-rootfs"
 
 freebsd-13.1-rootfs:
-freebsd-%-rootfs: | amd64/libiamroot-elf.so.1 FreeBSD-%-RELEASE-base-amd64.txz
+freebsd-%-rootfs: | $(ARCH)/libiamroot-elf.so.1 FreeBSD-%-RELEASE-base-$(ARCH).txz
 	rm -Rf $@
 	mkdir -p $@.tmp
-	tar xf FreeBSD-$*-RELEASE-base-amd64.txz -C $@.tmp
+	tar xf FreeBSD-$*-RELEASE-base-$(ARCH).txz -C $@.tmp
 	mv $@.tmp $@
 
-FreeBSD-13.1-RELEASE-base-amd64.txz:
-FreeBSD-%-RELEASE-base-amd64.txz:
-	wget https://download.freebsd.org/releases/amd64/$*-RELEASE/base.txz -O $@
+FreeBSD-13.1-RELEASE-base-$(ARCH).txz:
+FreeBSD-%-RELEASE-base-$(ARCH).txz:
+	wget https://download.freebsd.org/releases/$(ARCH)/$*-RELEASE/base.txz -O $@
 
 .PHONY: test
 test: export IAMROOT_FATAL ?= 0
-test: amd64/libiamroot-elf.so.1
+test: $(ARCH)/libiamroot-elf.so.1
 test:
 	$(MAKE) -f Makefile $@
 
@@ -63,7 +65,7 @@ clean:
 	$(MAKE) -f Makefile $@
 	rm -Rf freebsd-*-rootfs/
 	rm -Rf output-*/
-	rm -Rf amd64/
+	rm -Rf $(ARCH)/
 
 %:
 	$(MAKE) -f Makefile $@

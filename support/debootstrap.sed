@@ -76,6 +76,9 @@
 	/^\/var\/lib\/dpkg\/info\/.*.postinst: /{
 		s,\([[:lower:][:digit:]+.-]\+\):\([[:lower:][:digit:]]\+\),\1,
 	}
+
+	# amd64: ok
+	/^[[:lower:][:digit:]]\+: ok$/d
 }
 
 # Creating group 'bin' with GID 1.

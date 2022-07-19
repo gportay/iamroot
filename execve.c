@@ -1110,6 +1110,8 @@ static char *__getlibiamroot(const char *ldso, int abi)
 	if (__streq(ldso, "elf") && abi == 1) {
 #if defined(__x86_64__)
 		ret = "/usr/local/lib/iamroot/amd64/libiamroot-elf.so.1";
+#elif defined(__aarch64__)
+		ret = "/usr/local/lib/iamroot/arm64/libiamroot-elf.so.1";
 #else
 		ret = "/usr/local/lib/iamroot/libiamroot-elf.so.1";
 #endif

@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
 
+ARCH ?= $(shell uname -m)
 OS ?= $(shell uname -o)
 
 override CPPFLAGS += -D_GNU_SOURCE
@@ -293,8 +294,22 @@ ifeq ($(OS),FreeBSD)
 	install -m444 libiamnotroot.so $(DESTDIR)/usr/local/lib
 endif
 ifeq ($(OS),GNU/Linux)
+ifeq ($(shell test -d /lib/$(ARCH)-linux-gnu/ && echo 1),1)
+	install -D -m755 /usr/lib/$(ARCH)-linux-gnu/libc.so.6 /usr/lib/$(ARCH)-linux-gnu/libdl.so.2 --target-directory=$(DESTDIR)/usr/lib64
+	ln -sf lib64 $(DESTDIR)/usr/lib
+	ln -sf . $(DESTDIR)/usr/lib/$(ARCH)-linux-gnu
+else
 	install -D -m755 /usr/lib64/libc.so.6 /usr/lib64/libdl.so.2 --target-directory=$(DESTDIR)/usr/lib64
+	ln -sf lib64 $(DESTDIR)/usr/lib
+endif
+ifeq ($(ARCH),x86_64)
 	install -D -m755 /lib64/ld-linux-x86-64.so.2 --target-directory=$(DESTDIR)/lib64
+	ln -sf lib64 $(DESTDIR)/lib
+endif
+ifeq ($(ARCH),aarch64)
+	install -D -m755 /lib/ld-linux-aarch64.so.1 --target-directory=$(DESTDIR)/lib
+	ln -sf lib $(DESTDIR)/lib64
+endif
 	install -D -m755 libiamnotroot.so --target-directory=$(DESTDIR)/usr/lib64
 endif
 	install -d -m755 $(DESTDIR)/proc

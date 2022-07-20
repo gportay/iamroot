@@ -7,6 +7,9 @@
 override CPPFLAGS += -D_GNU_SOURCE
 override CFLAGS += -fPIC -Wall -Wextra
 
+IAMROOT_LIB ?= $(CURDIR)/libiamroot.so
+export IAMROOT_LIB
+
 .PHONY: all
 all: libiamnotroot.so
 all: test-__xmknod

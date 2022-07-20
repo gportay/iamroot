@@ -4,6 +4,8 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
 
+OS ?= $(shell uname -o)
+
 override CPPFLAGS += -D_GNU_SOURCE
 override CFLAGS += -fPIC -Wall -Wextra
 
@@ -86,8 +88,14 @@ test-pathsetenv: override LDLIBS += libiamnotroot.so
 .PHONY: test
 test: PATH := $(CURDIR):$(PATH)
 test: export LD_PRELOAD = $(IAMROOT_LIB)
+ifeq ($(OS),FreeBSD)
+test: export LD_LIBRARY_PATH := $(CURDIR):/lib:/usr/lib:/usr/local/lib
+test: export IAMROOT_LIBRARY_PATH := $(CURDIR):/lib:/usr/lib:/usr/local/lib
+endif
+ifeq ($(OS),GNU/Linux)
 test: export LD_LIBRARY_PATH := $(CURDIR):/usr/lib64:/lib64
 test: export IAMROOT_LIBRARY_PATH := $(CURDIR):/usr/lib64:/lib64
+endif
 test: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/
 test: export IAMROOT_FATAL = 1
 test: | rootfs
@@ -96,7 +104,11 @@ test: | rootfs
 	ln -s file0 rootfs/tmp/symlink0
 	test-access rootfs/tmp/file0 0
 	cd rootfs/ && env PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-access /tmp/file0 0
+ifeq ($(OS),FreeBSD)
+	test-chmod rootfs/tmp/file0 00644
+else
 	test-chmod rootfs/tmp/file0 01644
+endif
 	test-fchmodat . rootfs/tmp/file0 02644
 	cd rootfs/ && env PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-fchmodat - /tmp/file0 04644
 	test-chown rootfs/tmp/file0 0 0
@@ -181,20 +193,31 @@ test: | rootfs
 	cd rootfs/ && env PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-unlinkat - /dev/dev2 0
 	test-unshare whoami
 	test-dlopen libiamnotroot.so
-	cd rootfs/ && env PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs IAMROOT_LIBRARY_PATH=/usr/lib64:/usr/lib test-dlopen libiamnotroot.so
+	cd rootfs/ && env PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs IAMROOT_LIBRARY_PATH=/usr/local/lib:/usr/lib64:/usr/lib:/lib64:/lib test-dlopen libiamnotroot.so
 	! test-dl_iterate_phdr | grep '$(CURDIR)/rootfs'
 	cd rootfs/ && ! env PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-dl_iterate_phdr | grep '$(CURDIR)/rootfs'
 
 rootfs: DESTDIR = $(CURDIR)/rootfs
 rootfs:
-	install -D -m644 Makefile $(DESTDIR)/Makefile
+	install -d -m755 $(DESTDIR)
+	install -m644 Makefile $(DESTDIR)/
+	install -d -m755 $(DESTDIR)/usr/bin
 	for i in *.c; do \
 		test -e test-$${i%.c} || continue; \
-		install -D -m755 test-$${i%.c} --target-directory=$(DESTDIR)/usr/bin; \
+		install -m755 test-$${i%.c} $(DESTDIR)/usr/bin/; \
 	done
+ifeq ($(OS),FreeBSD)
+	install -d -m755 $(DESTDIR)/libexec $(DESTDIR)/lib $(DESTDIR)/usr/lib $(DESTDIR)/usr/local/lib
+	install -m444 /lib/libc.so.7 $(DESTDIR)/lib
+	install -m444 /usr/lib/libdl.so.1 $(DESTDIR)/usr/lib
+	install -m555 /libexec/ld-elf.so.1 $(DESTDIR)/libexec
+	install -m444 libiamnotroot.so $(DESTDIR)/usr/local/lib
+endif
+ifeq ($(OS),GNU/Linux)
 	install -D -m755 /usr/lib64/libc.so.6 /usr/lib64/libdl.so.2 --target-directory=$(DESTDIR)/usr/lib64
 	install -D -m755 /lib64/ld-linux-x86-64.so.2 --target-directory=$(DESTDIR)/lib64
 	install -D -m755 libiamnotroot.so --target-directory=$(DESTDIR)/usr/lib64
+endif
 	install -d -m755 $(DESTDIR)/proc
 	install -d -m755 $(DESTDIR)/sys
 	install -d -m755 $(DESTDIR)/dev

@@ -8,16 +8,8 @@ VERSION = 6
 PREFIX ?= /usr/local
 OS ?= $(shell uname -o)
 
-IAMROOT_LIB ?= libiamroot.so
+IAMROOT_LIB ?= $(CURDIR)/libiamroot.so
 export IAMROOT_LIB
-
-ifeq ($(OS),GNU/Linux)
-IAMROOT_LIB = x86_64/libiamroot-linux-x86-64.so.2
-endif
-
-ifeq ($(OS),FreeBSD)
-IAMROOT_LIB = x86_64/libiamroot-elf.so.1
-endif
 
 IAMROOT_LIB_LINUX_2 = $(IAMROOT_LIB)
 export IAMROOT_LIB_LINUX_2
@@ -63,14 +55,7 @@ ifdef COVERAGE
 endif
 
 .PHONY: all
-all: $(IAMROOT_LIB)
-
-x86_64/libiamroot-linux-x86-64.so.2: libiamroot.so
-	install -D -m755 $< $@
-
-x86_64/libiamroot-elf.so.1: libiamroot.so
-	mkdir -p $(@D)
-	install -D -m755 $< $@
+all: libiamroot.so
 
 libiamroot.so: __abort.o
 libiamroot.so: __envperror.o
@@ -261,8 +246,7 @@ install: install-exec install-doc install-bash-completion
 install-exec:
 	install -D -m 755 iamroot-shell $(DESTDIR)$(PREFIX)/bin/iamroot-shell
 	sed -e "s,\$$PWD,$(PREFIX)/lib/iamroot," -i $(DESTDIR)$(PREFIX)/bin/iamroot-shell
-	install -D -m 755 x86_64/libiamroot-linux-x86-64.so.2 $(DESTDIR)$(PREFIX)/lib/iamroot/x86_64/libiamroot-linux-x86-64.so.2
-	ln -sf x86_64/libiamroot-linux-x86-64.so.2 $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
+	install -D -m 755 libiamroot.so $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
 	install -D -m 755 exec.sh $(DESTDIR)$(PREFIX)/lib/iamroot/exec.sh
 
 .PHONY: install-doc
@@ -282,7 +266,6 @@ install-bash-completion:
 .PHONY: uninstall
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/iamroot-shell
-	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/x86_64/libiamroot-linux-x86-64.so.2
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/exec.sh
 	rm -f $(DESTDIR)$(PREFIX)/share/man/man1/iamroot-shell.1.gz
@@ -309,17 +292,17 @@ check:
 	shellcheck -e SC1090 -e SC3037 iamroot-shell exec.sh
 
 .PHONY: test
-test: | $(IAMROOT_LIB)
+test: | libiamroot.so
 	$(MAKE) -C tests
-	$(MAKE) -C tests $@ IAMROOT_LIB=$(CURDIR)/$(IAMROOT_LIB)
+	$(MAKE) -C tests $@
 
 .PHONY: shell
-shell: $(IAMROOT_LIB)
+shell: libiamroot.so
 	bash iamroot-shell
 
 .PHONY: clean
 clean:
-	rm -Rf x86_64/ libiamroot.so *.o *.i
+	rm -Rf libiamroot.so *.o *.i
 	$(MAKE) -C tests $@
 
 .PHONY: mrproper

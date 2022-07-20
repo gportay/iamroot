@@ -188,10 +188,7 @@ test: | rootfs
 
 rootfs: DESTDIR = $(CURDIR)/rootfs
 rootfs: PREFIX ?= /usr
-rootfs: install
-
-.PHONY: install
-install:
+rootfs:
 	install -D -m644 Makefile $(DESTDIR)/Makefile
 	for i in *.c; do \
 		test -e test-$${i%.c} || continue; \

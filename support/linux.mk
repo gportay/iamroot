@@ -74,7 +74,7 @@ install: install-exec-$(1)-$(2).$(3)
 
 .PHONY: install-exec-$(1)-$(2).$(3)
 install-exec-$(1)-$(2).$(3):
-	install -D -m 755 $(1)/libiamroot-$(2).so.$(3) $(DESTDIR)$(PREFIX)/lib/iamroot/$(1)/libiamroot-$(2).so.$(3)
+	install -D -m755 $(1)/libiamroot-$(2).so.$(3) $(DESTDIR)$(PREFIX)/lib/iamroot/$(1)/libiamroot-$(2).so.$(3)
 	ln -sf libiamroot-$(2).so.$(3) $(DESTDIR)$(PREFIX)/lib/iamroot/$(1)/libiamroot-$(2).so
 
 uninstall: uninstall-$(1)-$(2).$(3)

@@ -261,7 +261,7 @@ install-doc:
 install-bash-completion:
 	completionsdir=$${BASHCOMPLETIONSDIR:-$$(pkg-config --define-variable=prefix=$(PREFIX) \
 	                             --variable=completionsdir \
-	                             bash-completion)}; \
+	                             bash-completion 2>/dev/null)}; \
 	if [ -n "$$completionsdir" ]; then \
 		install -m644 $(DESTDIR)$$completionsdir/; \
 		install -m644 bash-completion $(DESTDIR)$$completionsdir/iamroot-shell; \

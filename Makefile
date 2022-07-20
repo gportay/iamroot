@@ -244,15 +244,18 @@ install: install-exec install-doc install-bash-completion
 
 .PHONY: install-exec
 install-exec:
-	install -D -m 755 iamroot-shell $(DESTDIR)$(PREFIX)/bin/iamroot-shell
-	sed -e "s,\$$PWD,$(PREFIX)/lib/iamroot," -i $(DESTDIR)$(PREFIX)/bin/iamroot-shell
-	install -D -m 755 libiamroot.so $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
-	install -D -m 755 exec.sh $(DESTDIR)$(PREFIX)/lib/iamroot/exec.sh
+	install -d -m755 $(DESTDIR)$(PREFIX)/bin/ $(DESTDIR)$(PREFIX)/lib/iamroot/
+	install -m755 libiamroot.so $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
+	sed -e "s,\$$PWD,$(PREFIX)/lib/iamroot," iamroot-shell >$(DESTDIR)$(PREFIX)/bin/iamroot-shell
+	chmod a+x $(DESTDIR)$(PREFIX)/bin/iamroot-shell
+	install -m755 libiamroot.so $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
+	install -m755 exec.sh $(DESTDIR)$(PREFIX)/lib/iamroot/exec.sh
 
 .PHONY: install-doc
 install-doc:
-	install -D -m 644 iamroot-shell.1.gz $(DESTDIR)$(PREFIX)/share/man/man1/iamroot-shell.1.gz
-	install -D -m 644 iamroot.7.gz $(DESTDIR)$(PREFIX)/share/man/man7/iamroot.7.gz
+	install -d -m755 $(DESTDIR)$(PREFIX)/share/man/man1/ $(DESTDIR)$(PREFIX)/share/man/man7/
+	install -m644 iamroot-shell.1.gz $(DESTDIR)$(PREFIX)/share/man/man1/iamroot-shell.1.gz
+	install -m644 iamroot.7.gz $(DESTDIR)$(PREFIX)/share/man/man7/iamroot.7.gz
 
 .PHONY: install-bash-completion
 install-bash-completion:
@@ -260,7 +263,8 @@ install-bash-completion:
 	                             --variable=completionsdir \
 	                             bash-completion)}; \
 	if [ -n "$$completionsdir" ]; then \
-		install -D -m 644 bash-completion $(DESTDIR)$$completionsdir/iamroot-shell; \
+		install -m644 $(DESTDIR)$$completionsdir/; \
+		install -m644 bash-completion $(DESTDIR)$$completionsdir/iamroot-shell; \
 	fi
 
 .PHONY: uninstall

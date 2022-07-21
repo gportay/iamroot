@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -19,6 +19,7 @@ struct options {
 
 static int getoptions(struct options *opts, int argc, char * const argv[])
 {
+#ifdef __linux__
 	static const struct option long_options[] = {
 		{ "lazy",  required_argument, NULL, 'l' },
 		{ "force", required_argument, NULL, 'f' },
@@ -49,6 +50,7 @@ static int getoptions(struct options *opts, int argc, char * const argv[])
 			return -1;
 		}
 	}
+#endif
 
 	return optind;
 }
@@ -70,10 +72,12 @@ int main(int argc, char * const argv[])
 		exit(EXIT_FAILURE);
 	}
 
+#ifdef __linux__
 	if (umount2(argv[optind], options.flags)) {
 		perror("umount2");
 		return EXIT_FAILURE;
 	}
+#endif
 
 	return EXIT_SUCCESS;
 }

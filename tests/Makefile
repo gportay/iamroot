@@ -76,6 +76,7 @@ all: test-statx
 all: test-symlink
 all: test-symlinkat
 all: test-umount
+all: test-umount2
 all: test-unlink
 all: test-unlinkat
 all: test-unshare
@@ -159,6 +160,7 @@ endif
 	cd rootfs/ && env PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-__xmknodat 1 . /dev/dev11 0666 0 11
 	test-mount -t procfs none rootfs/proc
 	test-umount rootfs/proc
+	test-umount2 rootfs/proc
 	test-path_resolution / | tee /dev/stderr | grep -q "^/\$$"
 	test-path_resolution /proc/ | tee /dev/stderr | grep -q "^/proc/\$$"
 	cd rootfs/ && env PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /sys/ | tee /dev/stderr | grep -q "^/sys/\$$"

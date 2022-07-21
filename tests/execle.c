@@ -12,7 +12,7 @@ extern char **environ;
 
 int main(void)
 {
-	execle("sh", "-sh", "-c", "echo \"$@\"", "sh", "one", "two", "three",
-	       NULL, environ);
+	execle("/bin/sh", "-sh", "-c", "echo \"$@\"", "sh", "one", "two",
+	       "three", NULL, environ);
 	_exit(127);
 }

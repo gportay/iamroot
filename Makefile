@@ -6,7 +6,6 @@
 
 VERSION = 6
 PREFIX ?= /usr/local
-OS ?= $(shell uname -o)
 
 IAMROOT_LIB ?= $(CURDIR)/libiamroot.so
 export IAMROOT_LIB

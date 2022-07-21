@@ -198,6 +198,10 @@ gcov/index.html:
 cobertura.xml:
 	gcovr --cobertura -s -o $@ output-x86_64-linux-x86-64/ tests/
 
+.PHONY: codacy
+codacy: cobertura.xml
+	bash <(curl -Ls https://coverage.codacy.com/get.sh)
+
 .PHONY: clean
 clean:
 	$(MAKE) -f Makefile $@

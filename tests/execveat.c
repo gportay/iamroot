@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#include <stdio.h>
+
 #include <fcntl.h>
 #include <unistd.h>
 
@@ -31,8 +33,10 @@ int main(void)
 
 #ifdef __linux__
 	execveat(AT_FDCWD, "/bin/sh", argv, environ, AT_EMPTY_PATH);
+	perror("execveat");
 #else
 	execve("/bin/sh", argv, environ);
+	perror("execve");
 #endif
 	_exit(127);
 }

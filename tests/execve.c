@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#include <stdio.h>
+
 #include <unistd.h>
 
 #ifdef __FreeBSD__
@@ -16,5 +18,6 @@ int main(void)
 				"three", NULL };
 
 	execve("/bin/sh", argv, environ);
+	perror("execve");
 	_exit(127);
 }

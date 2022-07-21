@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#include <stdio.h>
+
 #include <unistd.h>
 
 int main(void)
@@ -13,8 +15,10 @@ int main(void)
 
 #ifdef __USE_GNU
 	execvpe("sh", argv, environ);
+	perror("execvpe");
 #else
 	execvp("sh", argv);
+	perror("execvp");
 #endif
 	_exit(127);
 }

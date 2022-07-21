@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#include <stdio.h>
 #include <fcntl.h>
 
 #include <unistd.h>
@@ -23,5 +24,6 @@ int main(void)
 		_exit(127);
 
 	fexecve(fd, argv, environ);
+	perror("execl");
 	_exit(127);
 }

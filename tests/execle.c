@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <paths.h>
 
 #include <unistd.h>
 
@@ -14,7 +15,7 @@ extern char **environ;
 
 int main(void)
 {
-	execle("/bin/sh", "-sh", "-c", "echo \"$@\"", "sh", "one", "two",
+	execle(_PATH_BSHELL, "-sh", "-c", "echo \"$@\"", "sh", "one", "two",
 	       "three", NULL, environ);
 	perror("execle");
 	_exit(127);

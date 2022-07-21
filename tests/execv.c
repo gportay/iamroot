@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <paths.h>
 
 #include <unistd.h>
 
@@ -13,7 +14,7 @@ int main(void)
 	char * const argv[] = { "-sh", "-c", "echo \"$@\"", "sh", "one", "two",
 				"three", NULL };
 
-	execv("/bin/sh", argv);
+	execv(_PATH_BSHELL, argv);
 	perror("execv");
 	_exit(127);
 }

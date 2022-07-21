@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <paths.h>
 #include <fcntl.h>
 
 #include <unistd.h>
@@ -19,7 +20,7 @@ int main(void)
 				"three", NULL };
 	int fd;
 
-	fd = open("/bin/sh", O_RDONLY);
+	fd = open(_PATH_BSHELL, O_RDONLY);
 	if (fd == -1)
 		_exit(127);
 

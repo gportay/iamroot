@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <paths.h>
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -32,10 +33,10 @@ int main(void)
 				"three", NULL };
 
 #ifdef __linux__
-	execveat(AT_FDCWD, "/bin/sh", argv, environ, AT_EMPTY_PATH);
+	execveat(AT_FDCWD, _PATH_BSHELL, argv, environ, AT_EMPTY_PATH);
 	perror("execveat");
 #else
-	execve("/bin/sh", argv, environ);
+	execve(_PATH_BSHELL, argv, environ);
 	perror("execve");
 #endif
 	_exit(127);

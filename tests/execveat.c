@@ -9,7 +9,8 @@
 
 #ifdef __GLIBC__
 #if !__GLIBC_PREREQ(2,34)
-int execveat(int fd, const char *path, char * const argv[], char * const envp[], int flags)
+int execveat(int fd, const char *path, char * const argv[],
+	     char * const envp[], int flags)
 {
 	(void)fd;
 	(void)flags;

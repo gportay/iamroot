@@ -5,13 +5,14 @@
  */
 
 #include <stdio.h>
+#include <paths.h>
 
 #include <unistd.h>
 
 int main(void)
 {
-	execl("sh", "-sh", "-c", "echo \"$@\"", "sh", "one", "two", "three",
-	      NULL);
+	execl(_PATH_BSHELL, "-sh", "-c", "echo \"$@\"", "sh", "one", "two",
+	      "three", NULL);
 	perror("execl");
 	_exit(127);
 }

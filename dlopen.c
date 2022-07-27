@@ -47,7 +47,7 @@ void *dlopen(const char *path, int flags)
 
 	if (!strchr(path, '/'))
 		if (path_access(path, F_OK, getenv("IAMROOT_LIBRARY_PATH"),
-				buf, sizeof(buf)) == -1)
+				buf, sizeof(buf)) != -1)
 			goto next;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);

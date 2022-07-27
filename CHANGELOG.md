@@ -43,6 +43,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the invalid argument returned if an empty path is resolved but the flag
   `AT_EMPTY_PATH` remains for the `at` functions `__fxstatat64()`,
   `fstatat64()` and `statx()`,
+- Fix the handling for path argument without slash in the functions `dlopen()`
+  and `dlmopen()` by loading the dynamic shared object (shared library) from
+  the environment variable `IAMROOT_LD_LIBRARY_PATH`
 
 ## [v6] - 2022-06-30
 
@@ -251,9 +254,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the ignoring of empty paths in the function `path_resolution()`
 - Fix the handling for NULL dir argument in the function `tempnam()`
 - Fix the behaviour for the functions `posix_spawn()` and `posix_spawnp()`
-- Fix the handling for path argument without slash in the functions `dlopen()`
-  and `dlmopen()` by loading the dynamic shared object (shared library) from
-  the environment variable `IAMROOT_LD_LIBRARY_PATH`
 - Fix the symbol names for `__openat64_2()` and `opendir64()`
 - Fix the buffer overflow with the functions `get_current_dir_name()`,
   `getcwd()` and `getwd()`

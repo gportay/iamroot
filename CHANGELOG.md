@@ -102,7 +102,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   environment variable `IAMROOT_PATH_RESOLUTION_ALLOW` to resolve the given
   paths in the chroot, even if the path is ignored (i.e. the allow regex takes
   precedence the ignore regex)
-- The internal function `path_resolution()` handle the at-flag `AT_EMPTY_PATH`
+- The internal function `path_resolution()` handles the at-flag `AT_EMPTY_PATH`
 - Intercept the function `dl_iterate_phdr()`
 - Add the `iamroot-shell`'s options `--profile-file` and `--rc-file` to
   customize startup
@@ -199,7 +199,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `__open64_2()`, `__open_2()`, `__openat64_2()`, `__openat_2()`, `open()`,
   `open64()`, `openat()` and `openat64()`
 - Output the symbol name on path resolution error
-- The internal function `sanitize()` do not sanitize the empty paths
+- The internal function `sanitize()` does not sanitize the empty paths
 - The internal function `path_resolution()` returns `ELOOP` if too many
   symbolic links were followed
 - The internal function `path_resolution()` follows relative symlinks

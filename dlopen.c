@@ -59,8 +59,8 @@ void *dlopen(const char *path, int flags)
 	}
 
 next:
-	__debug("%s(path: '%s' -> '%s', flags: 0x%x)\n", __func__, path,
-		buf, flags);
+	__debug("%s(path: '%s' -> '%s', flags: 0x%x)\n", __func__, path, buf,
+		flags);
 
 	return next_dlopen(buf, flags);
 }

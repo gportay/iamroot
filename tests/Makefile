@@ -83,6 +83,7 @@ all: test-unshare
 all: test-utimensat
 all: test-utimes
 
+libiamnotroot.so: override LDFLAGS += -nodefaultlibs
 libiamnotroot.so: iamnotroot.o
 
 test-dlopen: override LDLIBS += -ldl

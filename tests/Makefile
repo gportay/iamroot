@@ -206,15 +206,15 @@ endif
 	cd rootfs/ && env PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs IAMROOT_LIBRARY_PATH=/usr/local/lib:/usr/lib64:/usr/lib:/lib64:/lib test-dlopen libiamnotroot.so
 	! test-dl_iterate_phdr | grep '$(CURDIR)/rootfs'
 	cd rootfs/ && ! env PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-dl_iterate_phdr | grep '$(CURDIR)/rootfs'
-	test-execl
-	test-execle
-	test-execlp
-	test-execv
-	test-execve
-	test-execveat
-	test-execvp
-	test-execvpe
-	test-fexecve
+	test-execl | grep '^one two three$$'
+	test-execle | grep '^one two three$$'
+	test-execlp | grep '^one two three$$'
+	test-execv | grep '^one two three$$'
+	test-execve | grep '^one two three$$'
+	test-execveat | grep '^one two three$$'
+	test-execvp | grep '^one two three$$'
+	test-execvpe | grep '^one two three$$'
+	test-fexecve | grep '^one two three$$'
 
 rootfs: DESTDIR = $(CURDIR)/rootfs
 rootfs:

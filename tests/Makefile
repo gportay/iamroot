@@ -98,11 +98,9 @@ test-pathsetenv: override LDLIBS += libiamnotroot.so
 test: PATH := $(CURDIR):$(PATH)
 test: export LD_PRELOAD = $(IAMROOT_LIB)
 ifeq ($(OS),FreeBSD)
-test: export LD_LIBRARY_PATH := $(CURDIR):/lib:/usr/lib:/usr/local/lib
 test: export IAMROOT_LIBRARY_PATH := $(CURDIR):/lib:/usr/lib:/usr/local/lib
 endif
 ifeq ($(OS),GNU/Linux)
-test: export LD_LIBRARY_PATH := $(CURDIR):/usr/lib64:/lib64
 test: export IAMROOT_LIBRARY_PATH := $(CURDIR):/usr/lib64:/lib64
 endif
 test: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|.*\.gcda
@@ -162,11 +160,11 @@ endif
 	test-mount -t procfs none rootfs/proc
 	test-umount rootfs/proc
 	test-umount2 rootfs/proc
-	test-path_resolution / | tee /dev/stderr | grep -q "^/\$$"
-	test-path_resolution /proc/ | tee /dev/stderr | grep -q "^/proc/\$$"
+	env LD_LIBRARY_PATH=$(CURDIR) test-path_resolution / | tee /dev/stderr | grep -q "^/\$$"
+	env LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /proc/ | tee /dev/stderr | grep -q "^/proc/\$$"
 	cd rootfs/ && env PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /sys/ | tee /dev/stderr | grep -q "^/sys/\$$"
 	cd rootfs/ && env PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /dev/ | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/dev\$$"
-	test-pathsetenv LD_LIBRARY_PATH /usr/local/lib:/usr/lib:/lib  | tee /dev/stderr | grep -q "^/usr/local/lib:/usr/lib:/lib$$"
+	env LD_LIBRARY_PATH=$(CURDIR) test-pathsetenv LD_LIBRARY_PATH /usr/local/lib:/usr/lib:/lib  | tee /dev/stderr | grep -q "^/usr/local/lib:/usr/lib:/lib$$"
 	cd rootfs/ && env PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-pathsetenv LD_LIBRARY_PATH /usr/local/lib:/usr/lib:/lib  | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/usr/local/lib:$(CURDIR)/rootfs/usr/lib:$(CURDIR)/rootfs/lib$$"
 	test-openat - rootfs/tmp/file0
 	cd rootfs/ && env PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-openat . /tmp/file0
@@ -203,7 +201,7 @@ endif
 	test-unlinkat . rootfs/dev/dev1 0
 	cd rootfs/ && env PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-unlinkat - /dev/dev2 0
 	test-unshare whoami
-	test-dlopen libiamnotroot.so
+	env LD_LIBRARY_PATH=$(CURDIR) test-dlopen libiamnotroot.so
 	cd rootfs/ && env PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs IAMROOT_LIBRARY_PATH=/usr/local/lib:/usr/lib64:/usr/lib:/lib64:/lib test-dlopen libiamnotroot.so
 	! test-dl_iterate_phdr | grep '$(CURDIR)/rootfs'
 	cd rootfs/ && ! env PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-dl_iterate_phdr | grep '$(CURDIR)/rootfs'

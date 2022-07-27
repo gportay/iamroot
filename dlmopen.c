@@ -45,10 +45,12 @@ void *dlmopen(Lmid_t lmid, const char *path, int flags)
 	if (!path || !inchroot())
 		return next_dlmopen(lmid, path, flags);
 
-	if (!strchr(path, '/'))
-		if (path_access(path, F_OK, getenv("IAMROOT_LIBRARY_PATH"),
-				buf, sizeof(buf)) != -1)
+	if (!strchr(path, '/')) {
+		siz = path_access(path, F_OK, getenv("IAMROOT_LIBRARY_PATH"),
+				  buf, sizeof(buf));
+		if (siz != -1)
 			goto next;
+	}
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1) {

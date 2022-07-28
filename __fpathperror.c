@@ -32,7 +32,7 @@ void __fpathperror(int fd, const char *s)
 	}
 	buf[siz] = 0; /* ensure NULL-terminated */
 
-	if ((errno != EPERM) && (errno != EACCES) && (errno != ENOSYS)) {
+	if (__ignored_errno(errno)) {
 #ifdef __FreeBSD__
 		__info("%s: %i <-> %s: %s: %i\n", getrootdir(), fd, buf, s,
 		       errno);

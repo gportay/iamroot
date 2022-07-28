@@ -12,7 +12,7 @@
 __attribute__((visibility("hidden")))
 void __pathperror(const char *path, const char *s)
 {
-	if ((errno != EPERM) && (errno != EACCES) && (errno != ENOSYS)) {
+	if (__ignored_errno(errno)) {
 #ifdef __FreeBSD__
 		__info("%s: %s: %s: %i\n", getrootdir(), path, s, errno);
 #else

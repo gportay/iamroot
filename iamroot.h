@@ -249,6 +249,8 @@ void verbose_exec(const char *, char * const[], char * const[]);
 #define __warn_if_too_restrictive_umask(mask) \
 	({ __warn_and_set_umask(mask, 0400); })
 
+#define __ignored_errno(e) (((e) != EPERM) && ((e) != EACCES) && ((e) != ENOSYS))
+
 #define __ignored_error(rc) ((rc == -1) && (errno == EPERM))
 
 #define __ignore_error_and_warn(rc, fd, path, flags) \

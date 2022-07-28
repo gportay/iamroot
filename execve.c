@@ -418,303 +418,6 @@ int issuid(const char *path)
 	return (statbuf.st_mode & S_ISUID) != 0;
 }
 
-static ssize_t getdynamicentry32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
-				 char *buf, size_t bufsize)
-{
-	size_t strtab_siz = 0;
-	off_t strtab_off = 0;
-	ssize_t ret = -1;
-	int i, num;
-	off_t off;
-
-	/* Not an ELF */
-	if (memcmp(ehdr->e_ident, ELFMAG, 4) != 0) {
-		errno = ENOEXEC;
-		goto exit;
-	}
-
-	/* Not a linked program or shared object */
-	if ((ehdr->e_type != ET_EXEC) && (ehdr->e_type != ET_DYN)) {
-		errno = ENOEXEC;
-		goto exit;
-	}
-
-	/* Look for the .shstrtab section */
-	off = ehdr->e_shoff;
-	num = ehdr->e_shnum;
-	for (i = 0; i < num; i++) {
-		Elf32_Shdr shdr;
-
-		ret = pread(fd, &shdr, sizeof(shdr), off);
-		if (ret == -1) {
-			goto exit;
-		} else if ((size_t)ret < sizeof(shdr)) {
-			errno = EIO;
-			ret = -1;
-			goto exit;
-		}
-
-		off += sizeof(shdr);
-
-		/* Not the .shstrtab section */
-		if (shdr.sh_type != SHT_STRTAB)
-			continue;
-
-		strtab_siz = shdr.sh_size;
-		strtab_off = shdr.sh_offset;
-		break;
-	}
-
-	/* No .shstrtab section */
-	if (!strtab_off) {
-		ret = -1;
-		goto exit;
-	}
-
-	/* Look for the string entry in the .dynamic segment */
-	off = ehdr->e_phoff;
-	num = ehdr->e_phnum;
-	for (i = 0; i < num; i++) {
-		Elf32_Dyn *dyn = (Elf32_Dyn *)buf;
-		off_t str_off, val = 0;
-		size_t str_siz = 0;
-		unsigned int j;
-		Elf32_Phdr phdr;
-
-		ret = pread(fd, &phdr, sizeof(phdr), off);
-		if (ret == -1) {
-			goto exit;
-		} else if ((size_t)ret < sizeof(phdr)) {
-			errno = EIO;
-			ret = -1;
-			goto exit;
-		}
-
-		off += sizeof(phdr);
-
-		/* Not the .dynamic segment */
-		if (phdr.p_type != PT_DYNAMIC)
-			continue;
-
-		if (bufsize < phdr.p_filesz) {
-			errno = EIO;
-			ret = -1;
-			goto exit;
-		}
-
-		/* copy the .dynamic segment */
-		ret = pread(fd, buf, phdr.p_filesz, phdr.p_offset);
-		if (ret == -1) {
-			goto exit;
-		} else if ((size_t)ret < phdr.p_filesz) {
-			errno = EIO;
-			ret = -1;
-			goto exit;
-		}
-
-		/* look for the string entry */
-		for (j = 0; j < phdr.p_filesz / sizeof(*dyn); j++) {
-			if (dyn[j].d_tag != dt_tag)
-				continue;
-
-			val = dyn[j].d_un.d_val;
-			break;
-		}
-
-		/* No string entry */
-		if (j == phdr.p_filesz / sizeof(*dyn))
-			continue;
-
-		/* copy the NULL-terminated string from the .strtab table */
-		str_off = strtab_off + val;
-		str_siz = strtab_siz - val;
-		ret = pread(fd, buf, __min(str_siz, bufsize), str_off);
-		if (ret == -1) {
-			goto exit;
-		} else if ((size_t)ret < __min(str_siz, bufsize)) {
-			errno = EIO;
-			ret = -1;
-			goto exit;
-		}
-
-		ret = strnlen(buf, bufsize);
-		errno = 0;
-		goto exit;
-	}
-
-	errno = ENOENT;
-	ret = -1;
-
-exit:
-	return ret;
-}
-
-static ssize_t getdynamicentry64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
-				 char *buf, size_t bufsize)
-{
-	size_t strtab_siz = 0;
-	off_t strtab_off = 0;
-	ssize_t ret = -1;
-	int i, num;
-	off_t off;
-
-	/* Not an ELF */
-	if (memcmp(ehdr->e_ident, ELFMAG, 4) != 0) {
-		errno = ENOEXEC;
-		goto exit;
-	}
-
-	/* Not a linked program or shared object */
-	if ((ehdr->e_type != ET_EXEC) && (ehdr->e_type != ET_DYN)) {
-		errno = ENOEXEC;
-		goto exit;
-	}
-
-	/* Look for the .shstrtab section */
-	off = ehdr->e_shoff;
-	num = ehdr->e_shnum;
-	for (i = 0; i < num; i++) {
-		Elf64_Shdr shdr;
-
-		ret = pread(fd, &shdr, sizeof(shdr), off);
-		if (ret == -1) {
-			goto exit;
-		} else if ((size_t)ret < sizeof(shdr)) {
-			errno = EIO;
-			ret = -1;
-			goto exit;
-		}
-
-		off += sizeof(shdr);
-
-		/* Not the .shstrtab section */
-		if (shdr.sh_type != SHT_STRTAB)
-			continue;
-
-		strtab_siz = shdr.sh_size;
-		strtab_off = shdr.sh_offset;
-		break;
-	}
-
-	/* No .shstrtab section */
-	if (!strtab_off) {
-		ret = -1;
-		goto exit;
-	}
-
-	/* Look for the string entry in the .dynamic segment */
-	off = ehdr->e_phoff;
-	num = ehdr->e_phnum;
-	for (i = 0; i < num; i++) {
-		Elf64_Dyn *dyn = (Elf64_Dyn *)buf;
-		off_t str_off, val = 0;
-		size_t str_siz = 0;
-		unsigned int j;
-		Elf64_Phdr phdr;
-
-		ret = pread(fd, &phdr, sizeof(phdr), off);
-		if (ret == -1) {
-			goto exit;
-		} else if ((size_t)ret < sizeof(phdr)) {
-			errno = EIO;
-			ret = -1;
-			goto exit;
-		}
-
-		off += sizeof(phdr);
-
-		/* Not the .dynamic segment */
-		if (phdr.p_type != PT_DYNAMIC)
-			continue;
-
-		if (bufsize < phdr.p_filesz) {
-			errno = EIO;
-			ret = -1;
-			goto exit;
-		}
-
-		/* copy the .dynamic segment */
-		ret = pread(fd, buf, phdr.p_filesz, phdr.p_offset);
-		if (ret == -1) {
-			goto exit;
-		} else if ((size_t)ret < phdr.p_filesz) {
-			errno = EIO;
-			ret = -1;
-			goto exit;
-		}
-
-		/* look for the string entry */
-		for (j = 0; j < phdr.p_filesz / sizeof(*dyn); j++) {
-			if (dyn[j].d_tag != dt_tag)
-				continue;
-
-			val = dyn[j].d_un.d_val;
-			break;
-		}
-
-		/* No string entry */
-		if (j == phdr.p_filesz / sizeof(*dyn))
-			continue;
-
-		/* copy the NULL-terminated string from the .strtab table */
-		str_off = strtab_off + val;
-		str_siz = strtab_siz - val;
-		ret = pread(fd, buf, __min(str_siz, bufsize), str_off);
-		if (ret == -1) {
-			goto exit;
-		} else if ((size_t)ret < __min(str_siz, bufsize)) {
-			errno = EIO;
-			ret = -1;
-			goto exit;
-		}
-
-		ret = strnlen(buf, bufsize);
-		errno = 0;
-		goto exit;
-	}
-
-	errno = ENOENT;
-	ret = -1;
-
-exit:
-	return ret;
-}
-
-static ssize_t getdynamicentry(const char *path, int dt_tag, char *buf,
-			       size_t bufsize)
-{
-	ssize_t ret = -1;
-	Elf64_Ehdr ehdr;
-	int fd;
-
-	fd = next_open(path, O_RDONLY, 0);
-	if (fd == -1)
-		return -1;
-
-	ret = read(fd, &ehdr, sizeof(ehdr));
-	if (ret == -1) {
-		goto close;
-	} else if ((size_t)ret < sizeof(ehdr)) {
-		errno = EIO;
-		ret = -1;
-		goto close;
-	}
-
-	errno = ENOEXEC;
-	ret = -1;
-	if (ehdr.e_ident[EI_CLASS] == ELFCLASS32)
-		ret = getdynamicentry32(fd, (Elf32_Ehdr *)&ehdr, dt_tag, buf,
-					bufsize);
-	else if (ehdr.e_ident[EI_CLASS] == ELFCLASS64)
-		ret = getdynamicentry64(fd, (Elf64_Ehdr *)&ehdr, dt_tag, buf,
-					bufsize);
-
-close:
-	__close(fd);
-
-	return ret;
-}
-
 static ssize_t getinterp32(int fd, Elf32_Ehdr *ehdr, char *buf, size_t bufsize)
 {
 	ssize_t ret = -1;
@@ -1596,7 +1299,7 @@ char *__ld_library_path(const char *ldso, int abi)
 	return getenv("ld_library_path");
 }
 
-static int __needed_callback(const void *data, size_t size, void *user)
+static int __path_callback(const void *data, size_t size, void *user)
 {
 	const char *path = (const char *)data;
 	char *needed = (char *)user;
@@ -1621,7 +1324,7 @@ char *__needed(const char *path)
 	int ret;
 
 	*buf = 0;
-	ret = __dl_iterate_shared_object(path, DT_NEEDED, __needed_callback,
+	ret = __dl_iterate_shared_object(path, DT_NEEDED, __path_callback,
 					 buf);
 	if (ret)
 		return NULL;
@@ -1637,11 +1340,11 @@ __attribute__((visibility("hidden")))
 char *__rpath(const char *path)
 {
 	char buf[PATH_MAX];
-	ssize_t siz;
 	int ret;
 
-	siz = getdynamicentry(path, DT_RPATH, buf, sizeof(buf));
-	if (siz == -1)
+	*buf = 0;
+	ret = __dl_iterate_shared_object(path, DT_RPATH, __path_callback, buf);
+	if (ret)
 		return NULL;
 
 	ret = setenv("rpath", buf, 1);
@@ -1655,11 +1358,12 @@ __attribute__((visibility("hidden")))
 char *__runpath(const char *path)
 {
 	char buf[PATH_MAX];
-	ssize_t siz;
 	int ret;
 
-	siz = getdynamicentry(path, DT_RUNPATH, buf, sizeof(buf));
-	if (siz == -1)
+	*buf = 0;
+	ret = __dl_iterate_shared_object(path, DT_RUNPATH, __path_callback,
+					 buf);
+	if (ret)
 		return NULL;
 
 	ret = setenv("runpath", buf, 1);

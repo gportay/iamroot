@@ -822,7 +822,7 @@ close:
 __attribute__((visibility("hidden")))
 ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 {
-	ssize_t ret = -1;
+	ssize_t siz, ret = -1;
 	Elf64_Ehdr ehdr;
 	int fd;
 
@@ -830,17 +830,15 @@ ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 	if (fd == -1)
 		return -1;
 
-	ret = read(fd, &ehdr, sizeof(ehdr));
-	if (ret == -1) {
+	siz = read(fd, &ehdr, sizeof(ehdr));
+	if (siz == -1) {
 		goto close;
-	} else if ((size_t)ret < sizeof(ehdr)) {
+	} else if ((size_t)siz < sizeof(ehdr)) {
 		errno = EIO;
-		ret = -1;
 		goto close;
 	}
 
 	errno = ENOEXEC;
-	ret = -1;
 	if (ehdr.e_ident[EI_CLASS] == ELFCLASS32)
 		ret = getinterp32(fd, (Elf32_Ehdr *)&ehdr, buf, bufsize);
 	else if (ehdr.e_ident[EI_CLASS] == ELFCLASS64)

@@ -424,18 +424,6 @@ static ssize_t getinterp32(int fd, Elf32_Ehdr *ehdr, char *buf, size_t bufsize)
 	int i, num;
 	off_t off;
 
-	/* Not an ELF */
-	if (memcmp(ehdr->e_ident, ELFMAG, 4) != 0) {
-		errno = ENOEXEC;
-		goto exit;
-	}
-
-	/* Not a linked program or shared object */
-	if ((ehdr->e_type != ET_EXEC) && (ehdr->e_type != ET_DYN)) {
-		errno = ENOEXEC;
-		goto exit;
-	}
-
 	/* Look for the .interp section */
 	off = ehdr->e_phoff;
 	num = ehdr->e_phnum;
@@ -489,18 +477,6 @@ static ssize_t getinterp64(int fd, Elf64_Ehdr *ehdr, char *buf, size_t bufsize)
 	ssize_t ret = -1;
 	int i, num;
 	off_t off;
-
-	/* Not an ELF */
-	if (memcmp(ehdr->e_ident, ELFMAG, 4) != 0) {
-		errno = ENOEXEC;
-		goto exit;
-	}
-
-	/* Not a linked program or shared object */
-	if ((ehdr->e_type != ET_EXEC) && (ehdr->e_type != ET_DYN)) {
-		errno = ENOEXEC;
-		goto exit;
-	}
 
 	/* Look for the .interp section */
 	off = ehdr->e_phoff;
@@ -838,11 +814,27 @@ ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 		goto close;
 	}
 
-	errno = ENOEXEC;
+	/* Not an ELF */
+	if (memcmp(ehdr.e_ident, ELFMAG, 4) != 0) {
+		errno = ENOEXEC;
+		goto close;
+	}
+
+	/* Not a linked program or shared object */
+	if ((ehdr.e_type != ET_EXEC) && (ehdr.e_type != ET_DYN)) {
+		errno = ENOEXEC;
+		goto close;
+	}
+
+	/* It is a 32-bits ELF */
 	if (ehdr.e_ident[EI_CLASS] == ELFCLASS32)
 		ret = getinterp32(fd, (Elf32_Ehdr *)&ehdr, buf, bufsize);
+	/* It is a 64-bits ELF */
 	else if (ehdr.e_ident[EI_CLASS] == ELFCLASS64)
 		ret = getinterp64(fd, (Elf64_Ehdr *)&ehdr, buf, bufsize);
+	/* It is invalid ELF */
+	else
+		errno = ENOEXEC;
 
 close:
 	__close(fd);

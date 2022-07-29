@@ -1425,9 +1425,9 @@ Created symlink /etc/systemd/system/multi-user.target.wants/remote-fs.target -> 
 Created symlink /etc/systemd/system/dbus-org.freedesktop.timesync1.service -> /lib/systemd/system/systemd-timesyncd.service.
 Created symlink /etc/systemd/system/sysinit.target.wants/systemd-timesyncd.service -> /lib/systemd/system/systemd-timesyncd.service.
 Initializing machine ID from random generator.
-FIXME: Command is skipped: /usr/bin/chfn -f systemd Time Synchronization systemd-timesync
-FIXME: Command is skipped: /usr/bin/chfn -f systemd Network Management systemd-network
-FIXME: Command is skipped: /usr/bin/chfn -f systemd Resolver systemd-resolve
+FIXME: Command is skipped: /bin/chfn -f systemd Time Synchronization systemd-timesync
+FIXME: Command is skipped: /bin/chfn -f systemd Network Management systemd-network
+FIXME: Command is skipped: /bin/chfn -f systemd Resolver systemd-resolve
 Processing triggers for libc-bin ...
 (Reading database ... XXX files and directories currently installed.)
 Preparing to unpack .../systemd-sysv ...

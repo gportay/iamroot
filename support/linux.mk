@@ -466,7 +466,6 @@ umount-debian-unstable:
 
 ubuntu-bionic-chroot:
 ubuntu-focal-chroot:
-ubuntu-impish-chroot:
 ubuntu-jammy-chroot:
 ubuntu-%-chroot: export IAMROOT_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
 ubuntu-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
@@ -477,12 +476,10 @@ ubuntu-%-chroot: | ubuntu-%-rootfs
 .PHONY: ubuntu-rootfs
 ubuntu-rootfs: ubuntu-bionic-rootfs
 ubuntu-rootfs: ubuntu-focal-rootfs
-ubuntu-rootfs: ubuntu-impish-rootfs
 ubuntu-rootfs: ubuntu-jammy-rootfs
 
 ubuntu-bionic-rootfs: | ubuntu-bionic-rootfs/etc/machine-id
 ubuntu-focal-rootfs: | ubuntu-focal-rootfs/etc/machine-id
-ubuntu-impish-rootfs: | ubuntu-impish-rootfs/etc/machine-id
 ubuntu-jammy-rootfs: | ubuntu-jammy-rootfs/etc/machine-id
 
 ubuntu-bionic-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|/var/lib/dpkg/info/initramfs-tools.postinst
@@ -521,26 +518,21 @@ qemu-system-x86_64-ubuntu-bionic:
 qemu-system-x86_64-ubuntu-bionic: override CMDLINE += rw
 qemu-system-x86_64-ubuntu-focal:
 qemu-system-x86_64-ubuntu-focal: override CMDLINE += rw
-qemu-system-x86_64-ubuntu-impish:
-qemu-system-x86_64-ubuntu-impish: override CMDLINE += rw
 qemu-system-x86_64-ubuntu-jammy:
 qemu-system-x86_64-ubuntu-jammy: override CMDLINE += rw
 
 ifneq ($(VMLINUX_KVER),)
 vmlinux-ubuntu-bionic:
 vmlinux-ubuntu-focal:
-vmlinux-ubuntu-impish:
 vmlinux-ubuntu-jammy:
 endif
 
 ubuntu-bionic.ext4:
 ubuntu-focal.ext4:
-ubuntu-impish.ext4:
 ubuntu-jammy.ext4:
 
 ubuntu-bionic-postrootfs:
 ubuntu-focal-postrootfs:
-ubuntu-impish-postrootfs:
 ubuntu-jammy-postrootfs:
 ubuntu-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
 ubuntu-%-postrootfs: export IAMROOT_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
@@ -557,17 +549,14 @@ ubuntu-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 
 chroot-ubuntu-bionic:
 chroot-ubuntu-focal:
-chroot-ubuntu-impish:
 chroot-ubuntu-jammy:
 
 mount-ubuntu-bionic:
 mount-ubuntu-focal:
-mount-ubuntu-impish:
 mount-ubuntu-jammy:
 
 umount-ubuntu-bionic:
 umount-ubuntu-focal:
-umount-ubuntu-impish:
 umount-ubuntu-jammy:
 endif
 
@@ -1390,7 +1379,6 @@ support: ubuntu-support
 .PHONY: ubuntu-support
 ubuntu-support: support/ubuntu-bionic-rootfs.txt
 ubuntu-support: support/ubuntu-focal-rootfs.txt
-ubuntu-support: support/ubuntu-impish-rootfs.txt
 ubuntu-support: support/ubuntu-jammy-rootfs.txt
 
 .PRECIOUS: support/debian-unstable-rootfs.txt
@@ -1408,11 +1396,6 @@ support/ubuntu-focal-rootfs.txt: ubuntu-focal-rootfs.log
 	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
-.PRECIOUS: support/ubuntu-impish-rootfs.txt
-support/ubuntu-impish-rootfs.txt: ubuntu-impish-rootfs.log
-	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
-
 .PRECIOUS: support/ubuntu-jammy-rootfs.txt
 support/ubuntu-jammy-rootfs.txt: ubuntu-jammy-rootfs.log
 	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
@@ -1423,12 +1406,10 @@ log: ubuntu-log
 .PHONY: ubuntu-log
 ubuntu-log: ubuntu-bionic-rootfs.log
 ubuntu-log: ubuntu-focal-rootfs.log
-ubuntu-log: ubuntu-impish-rootfs.log
 ubuntu-log: ubuntu-jammy-rootfs.log
 
 ubuntu-bionic-rootfs.log:
 ubuntu-focal-rootfs.log:
-ubuntu-impish-rootfs.log:
 ubuntu-jammy-rootfs.log:
 endif
 

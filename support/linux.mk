@@ -492,6 +492,16 @@ ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib/x86_64-li
 ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
 ubuntu-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update
 ubuntu-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
+# Processing triggers for libc-bin ...
+# dpkg: cycle found while processing triggers:
+#  chain of packages whose triggers are or may be responsible:
+#   libc-bin -> libc-bin
+#  packages' pending triggers which are or may be unresolvable:
+#   libc-bin: ldconfig
+# dpkg: error processing package libc-bin (--configure):
+#  triggers looping, abandoned
+# Errors were encountered while processing:
+#  libc-bin
 ubuntu-%-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
 # System has not been booted with systemd as init system (PID 1). Can't operate.
 # Failed to connect to bus: Host is down

@@ -464,6 +464,7 @@ umount-debian-stable:
 umount-debian-testing:
 umount-debian-unstable:
 
+ubuntu-trusty-chroot:
 ubuntu-xenial-chroot:
 ubuntu-bionic-chroot:
 ubuntu-focal-chroot:
@@ -475,15 +476,21 @@ ubuntu-%-chroot: | ubuntu-%-rootfs
 
 .NOTPARALLEL: ubuntu-rootfs
 .PHONY: ubuntu-rootfs
+ubuntu-rootfs: ubuntu-trusty-rootfs
 ubuntu-rootfs: ubuntu-xenial-rootfs
 ubuntu-rootfs: ubuntu-bionic-rootfs
 ubuntu-rootfs: ubuntu-focal-rootfs
 ubuntu-rootfs: ubuntu-jammy-rootfs
 
+ubuntu-trusty-rootfs: | ubuntu-trusty-rootfs/etc/machine-id
 ubuntu-xenial-rootfs: | ubuntu-xenial-rootfs/etc/machine-id
 ubuntu-bionic-rootfs: | ubuntu-bionic-rootfs/etc/machine-id
 ubuntu-focal-rootfs: | ubuntu-focal-rootfs/etc/machine-id
 ubuntu-jammy-rootfs: | ubuntu-jammy-rootfs/etc/machine-id
+
+ubuntu-trusty-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
+ubuntu-trusty-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|/var/lib/dpkg/info/(initscripts|initramfs-tools).postinst
+ubuntu-trusty-rootfs/etc/machine-id:
 
 ubuntu-xenial-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
 ubuntu-xenial-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|/var/lib/dpkg/info/initramfs-tools.postinst
@@ -521,6 +528,8 @@ ubuntu-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	cat ubuntu-$*-rootfs/debootstrap/debootstrap.log
 	rm -Rf ubuntu-$*-rootfs/debootstrap/
 
+qemu-system-x86_64-ubuntu-trusty:
+qemu-system-x86_64-ubuntu-trusty: override CMDLINE += rw
 qemu-system-x86_64-ubuntu-xenial:
 qemu-system-x86_64-ubuntu-xenial: override CMDLINE += rw
 qemu-system-x86_64-ubuntu-bionic:
@@ -531,17 +540,20 @@ qemu-system-x86_64-ubuntu-jammy:
 qemu-system-x86_64-ubuntu-jammy: override CMDLINE += rw
 
 ifneq ($(VMLINUX_KVER),)
+vmlinux-ubuntu-trusty:
 vmlinux-ubuntu-xenial:
 vmlinux-ubuntu-bionic:
 vmlinux-ubuntu-focal:
 vmlinux-ubuntu-jammy:
 endif
 
+ubuntu-trusty.ext4:
 ubuntu-xenial.ext4:
 ubuntu-bionic.ext4:
 ubuntu-focal.ext4:
 ubuntu-jammy.ext4:
 
+ubuntu-trusty-postrootfs:
 ubuntu-xenial-postrootfs:
 ubuntu-bionic-postrootfs:
 ubuntu-focal-postrootfs:
@@ -559,16 +571,19 @@ ubuntu-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "chroot ubuntu-$*-rootfs systemctl disable sshd.service"
 	bash iamroot-shell -c "chroot ubuntu-$*-rootfs pam-auth-update"
 
+chroot-ubuntu-trusty:
 chroot-ubuntu-xenial:
 chroot-ubuntu-bionic:
 chroot-ubuntu-focal:
 chroot-ubuntu-jammy:
 
+mount-ubuntu-trusty:
 mount-ubuntu-xenial:
 mount-ubuntu-bionic:
 mount-ubuntu-focal:
 mount-ubuntu-jammy:
 
+umount-ubuntu-trusty:
 umount-ubuntu-xenial:
 umount-ubuntu-bionic:
 umount-ubuntu-focal:
@@ -1392,6 +1407,7 @@ debian-unstable-rootfs.log:
 support: ubuntu-support
 
 .PHONY: ubuntu-support
+ubuntu-support: support/ubuntu-trusty-rootfs.txt
 ubuntu-support: support/ubuntu-xenial-rootfs.txt
 ubuntu-support: support/ubuntu-bionic-rootfs.txt
 ubuntu-support: support/ubuntu-focal-rootfs.txt
@@ -1399,6 +1415,11 @@ ubuntu-support: support/ubuntu-jammy-rootfs.txt
 
 .PRECIOUS: support/debian-unstable-rootfs.txt
 support/debian-unstable-rootfs.txt: debian-unstable-rootfs.log
+	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
+	mv $@.tmp $@
+
+.PRECIOUS: support/ubuntu-trusty-rootfs.txt
+support/ubuntu-trusty-rootfs.txt: ubuntu-trusty-rootfs.log
 	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
@@ -1425,11 +1446,13 @@ support/ubuntu-jammy-rootfs.txt: ubuntu-jammy-rootfs.log
 log: ubuntu-log
 
 .PHONY: ubuntu-log
+ubuntu-log: ubuntu-trusty-rootfs.log
 ubuntu-log: ubuntu-xenial-rootfs.log
 ubuntu-log: ubuntu-bionic-rootfs.log
 ubuntu-log: ubuntu-focal-rootfs.log
 ubuntu-log: ubuntu-jammy-rootfs.log
 
+ubuntu-trusty-rootfs.log:
 ubuntu-xenial-rootfs.log:
 ubuntu-bionic-rootfs.log:
 ubuntu-focal-rootfs.log:

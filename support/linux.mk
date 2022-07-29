@@ -376,13 +376,13 @@ debian-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib/x86_64-li
 debian-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
 debian-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update
 debian-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
-debian-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://deb.debian.org/debian
 # System has not been booted with systemd as init system (PID 1). Can't operate.
 # Failed to connect to bus: Host is down
 # invoke-rc.d: could not determine current runlevel
 debian-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 # debconf: PERL_DL_NONLAZY is not set, if debconf is running from a preinst script, this is not safe
 debian-%-rootfs/etc/machine-id: export PERL_DL_NONLAZY = 1
+debian-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://deb.debian.org/debian
 debian-%-rootfs/etc/machine-id: export DEBOOTSTRAPFLAGS ?= --no-check-gpg
 debian-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	mkdir -p debian-$*-rootfs
@@ -485,24 +485,24 @@ ubuntu-focal-rootfs: | ubuntu-focal-rootfs/etc/machine-id
 ubuntu-impish-rootfs: | ubuntu-impish-rootfs/etc/machine-id
 ubuntu-jammy-rootfs: | ubuntu-jammy-rootfs/etc/machine-id
 
+ubuntu-bionic-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|/var/lib/dpkg/info/initramfs-tools.postinst
 ubuntu-bionic-rootfs/etc/machine-id:
 ubuntu-focal-rootfs/etc/machine-id:
 ubuntu-impish-rootfs/etc/machine-id:
 ubuntu-jammy-rootfs/etc/machine-id:
 
-ubuntu-bionic-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|/var/lib/dpkg/info/initramfs-tools.postinst
 ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
 ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
 ubuntu-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update
 ubuntu-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
 ubuntu-%-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
-ubuntu-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
 # System has not been booted with systemd as init system (PID 1). Can't operate.
 # Failed to connect to bus: Host is down
 # invoke-rc.d: could not determine current runlevel
 ubuntu-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 # debconf: PERL_DL_NONLAZY is not set, if debconf is running from a preinst script, this is not safe
 ubuntu-%-rootfs/etc/machine-id: export PERL_DL_NONLAZY = 1
+ubuntu-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
 ubuntu-%-rootfs/etc/machine-id: export DEBOOTSTRAPFLAGS ?= --no-check-gpg
 ubuntu-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	mkdir -p ubuntu-$*-rootfs

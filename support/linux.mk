@@ -487,9 +487,6 @@ ubuntu-jammy-rootfs: | ubuntu-jammy-rootfs/etc/machine-id
 
 ubuntu-bionic-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|/var/lib/dpkg/info/initramfs-tools.postinst
 ubuntu-bionic-rootfs/etc/machine-id:
-ubuntu-focal-rootfs/etc/machine-id:
-ubuntu-impish-rootfs/etc/machine-id:
-ubuntu-jammy-rootfs/etc/machine-id:
 
 ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib/x86_64-linux-gnu:/usr/lib:/lib/x86_64-linux-gnu:/lib
 ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0

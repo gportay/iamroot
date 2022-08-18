@@ -743,8 +743,6 @@ Running in chroot, ignoring command 'try-restart'
 
   Running scriptlet: firewalld XXX/XXX
   Running scriptlet: rootfiles XXX/XXX
-Warning: running /fedora-33-rootfs/sbin/ldconfig -r /fedora-33-rootfs
-
   Verifying        : NetworkManager XXX/XXX
   Verifying        : NetworkManager-libnm XXX/XXX
   Verifying        : acl XXX/XXX

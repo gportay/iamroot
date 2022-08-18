@@ -876,8 +876,6 @@ Created symlink /etc/systemd/system/multi-user.target.wants/sshd.service → /us
   Running scriptlet: rpm XXX/XXX
   Running scriptlet: authselect-libs XXX/XXX
   Running scriptlet: grub2-common XXX/XXX
-Warning: running /fedora-36-rootfs/bin/mountpoint -q /fedora-36-rootfs/boot/efi
-
   Running scriptlet: systemd-resolved XXX/XXX
 '/etc/resolv.conf' -> '../run/systemd/resolve/stub-resolv.conf'
 
@@ -886,8 +884,6 @@ Warning: running /fedora-36-rootfs/bin/mountpoint -q /fedora-36-rootfs/boot/efi
   Running scriptlet: sssd-common XXX/XXX
   Running scriptlet: firewalld XXX/XXX
   Running scriptlet: rootfiles XXX/XXX
-Warning: running /fedora-36-rootfs/sbin/ldconfig -r /fedora-36-rootfs
-
   Verifying        : ModemManager-glib XXX/XXX
   Verifying        : NetworkManager XXX/XXX
   Verifying        : NetworkManager-libnm XXX/XXX

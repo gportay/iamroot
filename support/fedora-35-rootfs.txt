@@ -743,16 +743,12 @@ Created symlink /etc/systemd/system/multi-user.target.wants/sshd.service → /us
   Running scriptlet: ca-certificates XXX/XXX
   Running scriptlet: pam XXX/XXX
   Running scriptlet: grub2-common XXX/XXX
-Warning: running /fedora-35-rootfs/bin/mountpoint -q /fedora-35-rootfs/boot/efi
-
   Running scriptlet: selinux-policy-targeted XXX/XXX
   Running scriptlet: sssd-common XXX/XXX
 Running in chroot, ignoring command 'set-property'
 
   Running scriptlet: firewalld XXX/XXX
   Running scriptlet: rootfiles XXX/XXX
-Warning: running /fedora-35-rootfs/sbin/ldconfig -r /fedora-35-rootfs
-
   Verifying        : NetworkManager XXX/XXX
   Verifying        : NetworkManager-libnm XXX/XXX
   Verifying        : acl XXX/XXX

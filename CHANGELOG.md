@@ -33,6 +33,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Forward the none-`at` functions `futimesat()`, `lutimes()`, `utime()`, and
   `utimes()` to the `at` function `utimensat()`
 - The function `eaccess()` is now a weak alias to `euidaccess()`
+- Output traces in `exec.sh` starting from debug level 2
 
 ### Removed
 

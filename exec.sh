@@ -30,6 +30,24 @@ fixme() {
 	log "FIXME" "$@"
 }
 
+notice() {
+	if [ "${IAMROOT_DEBUG:-0}" -le 1 ]
+	then
+		return
+	fi
+
+	log "Notice" "$@"
+}
+
+info() {
+	if [ "$IAMROOT_DEBUG" -le 2 ]
+	then
+		return
+	fi
+
+	log "Info" "$@"
+}
+
 path_resolution() {
 	if [ "${1##*/}" != "$1" ]
 	then
@@ -47,7 +65,7 @@ shift
 
 case "${path##*/}" in
 mount|umount)
-	warn "not-running" "$argv0" "$@"
+	notice "not-running" "$argv0" "$@"
 	exit 0
 	;;
 mountpoint)
@@ -63,7 +81,7 @@ mountpoint)
 	done
 	set -- "${args[@]}"
 
-	warn "running" "$inchroot_path" "$@"
+	notice "running" "$inchroot_path" "$@"
 	exec "$inchroot_path" "$@"
 	;;
 chfn|chkstat|pam-auth-update|update-ca-certificates|*.postinst)
@@ -71,7 +89,7 @@ chfn|chkstat|pam-auth-update|update-ca-certificates|*.postinst)
 	exit 0
 	;;
 ldd|busybox)
-	warn "running" "$inchroot_path" "$@"
+	info "running" "$inchroot_path" "$@"
 	exec "$inchroot_path" "$@"
 	;;
 ldconfig|ldconfig.real)
@@ -87,7 +105,7 @@ ldconfig|ldconfig.real)
 		fi
 	fi
 
-	warn "running" "$inchroot_path" "$@"
+	notice "running" "$inchroot_path" "$@"
 	exec "$inchroot_path" "$@"
 	;;
 gpasswd|passwd|su)

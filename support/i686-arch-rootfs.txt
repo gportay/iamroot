@@ -169,66 +169,66 @@ installing kbd...
 installing libelf...
 installing systemd...
 Initializing machine ID from random generator.
-Creating group 'sys' with GID 3.
-Creating group 'mem' with GID 8.
-Creating group 'ftp' with GID 11.
-Creating group 'mail' with GID 12.
-Creating group 'log' with GID 19.
-Creating group 'smmsp' with GID 25.
-Creating group 'proc' with GID 26.
-Creating group 'games' with GID 50.
-Creating group 'lock' with GID 54.
-Creating group 'network' with GID 90.
-Creating group 'floppy' with GID 94.
-Creating group 'scanner' with GID 96.
-Creating group 'power' with GID 98.
-Creating group 'nobody' with GID 65534.
-Creating group 'adm' with GID 999.
-Creating group 'wheel' with GID 998.
-Creating group 'utmp' with GID 997.
-Creating group 'audio' with GID 996.
-Creating group 'disk' with GID 995.
-Creating group 'input' with GID 994.
-Creating group 'kmem' with GID 993.
-Creating group 'kvm' with GID 992.
-Creating group 'lp' with GID 991.
-Creating group 'optical' with GID 990.
-Creating group 'render' with GID 989.
-Creating group 'sgx' with GID 988.
-Creating group 'storage' with GID 987.
-Creating group 'tty' with GID 5.
-Creating group 'uucp' with GID 986.
-Creating group 'video' with GID 985.
-Creating group 'users' with GID 984.
-Creating group 'systemd-journal' with GID 983.
-Creating group 'rfkill' with GID 982.
-Creating group 'bin' with GID 1.
-Creating user 'bin' (n/a) with UID 1 and GID 1.
-Creating group 'daemon' with GID 2.
-Creating user 'daemon' (n/a) with UID 2 and GID 2.
-Creating user 'mail' (n/a) with UID 8 and GID 12.
-Creating user 'ftp' (n/a) with UID 14 and GID 11.
-Creating group 'http' with GID 33.
-Creating user 'http' (n/a) with UID 33 and GID 33.
-Creating user 'nobody' (Nobody) with UID 65534 and GID 65534.
-Creating group 'dbus' with GID 81.
-Creating user 'dbus' (System Message Bus) with UID 81 and GID 81.
-Creating group 'systemd-coredump' with GID 981.
-Creating user 'systemd-coredump' (systemd Core Dumper) with UID 981 and GID 981.
-Creating group 'systemd-network' with GID 980.
-Creating user 'systemd-network' (systemd Network Management) with UID 980 and GID 980.
-Creating group 'systemd-oom' with GID 979.
-Creating user 'systemd-oom' (systemd Userspace OOM Killer) with UID 979 and GID 979.
-Creating group 'systemd-journal-remote' with GID 978.
-Creating user 'systemd-journal-remote' (systemd Journal Remote) with UID 978 and GID 978.
-Creating group 'systemd-resolve' with GID 977.
-Creating user 'systemd-resolve' (systemd Resolver) with UID 977 and GID 977.
-Creating group 'systemd-timesync' with GID 976.
-Creating user 'systemd-timesync' (systemd Time Synchronization) with UID 976 and GID 976.
-Creating group 'tss' with GID 975.
-Creating user 'tss' (tss user for tpm2) with UID 975 and GID 975.
-Creating group 'uuidd' with GID 68.
-Creating user 'uuidd' (n/a) with UID 68 and GID 68.
+Creating group 'sys' with GID XXX.
+Creating group 'mem' with GID XXX.
+Creating group 'ftp' with GID XXX.
+Creating group 'mail' with GID XXX.
+Creating group 'log' with GID XXX.
+Creating group 'smmsp' with GID XXX.
+Creating group 'proc' with GID XXX.
+Creating group 'games' with GID XXX.
+Creating group 'lock' with GID XXX.
+Creating group 'network' with GID XXX.
+Creating group 'floppy' with GID XXX.
+Creating group 'scanner' with GID XXX.
+Creating group 'power' with GID XXX.
+Creating group 'nobody' with GID XXX.
+Creating group 'adm' with GID XXX.
+Creating group 'wheel' with GID XXX.
+Creating group 'utmp' with GID XXX.
+Creating group 'audio' with GID XXX.
+Creating group 'disk' with GID XXX.
+Creating group 'input' with GID XXX.
+Creating group 'kmem' with GID XXX.
+Creating group 'kvm' with GID XXX.
+Creating group 'lp' with GID XXX.
+Creating group 'optical' with GID XXX.
+Creating group 'render' with GID XXX.
+Creating group 'sgx' with GID XXX.
+Creating group 'storage' with GID XXX.
+Creating group 'tty' with GID XXX.
+Creating group 'uucp' with GID XXX.
+Creating group 'video' with GID XXX.
+Creating group 'users' with GID XXX.
+Creating group 'systemd-journal' with GID XXX.
+Creating group 'rfkill' with GID XXX.
+Creating group 'bin' with GID XXX.
+Creating user 'bin' (n/a) with UID XXX and GID XXX.
+Creating group 'daemon' with GID XXX.
+Creating user 'daemon' (n/a) with UID XXX and GID XXX.
+Creating user 'mail' (n/a) with UID XXX and GID XXX.
+Creating user 'ftp' (n/a) with UID XXX and GID XXX.
+Creating group 'http' with GID XXX.
+Creating user 'http' (n/a) with UID XXX and GID XXX.
+Creating user 'nobody' (Nobody) with UID XXX and GID XXX.
+Creating group 'dbus' with GID XXX.
+Creating user 'dbus' (System Message Bus) with UID XXX and GID XXX.
+Creating group 'systemd-coredump' with GID XXX.
+Creating user 'systemd-coredump' (systemd Core Dumper) with UID XXX and GID XXX.
+Creating group 'systemd-network' with GID XXX.
+Creating user 'systemd-network' (systemd Network Management) with UID XXX and GID XXX.
+Creating group 'systemd-oom' with GID XXX.
+Creating user 'systemd-oom' (systemd Userspace OOM Killer) with UID XXX and GID XXX.
+Creating group 'systemd-journal-remote' with GID XXX.
+Creating user 'systemd-journal-remote' (systemd Journal Remote) with UID XXX and GID XXX.
+Creating group 'systemd-resolve' with GID XXX.
+Creating user 'systemd-resolve' (systemd Resolver) with UID XXX and GID XXX.
+Creating group 'systemd-timesync' with GID XXX.
+Creating user 'systemd-timesync' (systemd Time Synchronization) with UID XXX and GID XXX.
+Creating group 'tss' with GID XXX.
+Creating user 'tss' (tss user for tpm2) with UID XXX and GID XXX.
+Creating group 'uuidd' with GID XXX.
+Creating user 'uuidd' (n/a) with UID XXX and GID XXX.
 Created symlink /etc/systemd/system/getty.target.wants/getty@tty1.service → /usr/lib/systemd/system/getty@.service.
 Created symlink /etc/systemd/system/multi-user.target.wants/remote-fs.target → /usr/lib/systemd/system/remote-fs.target.
 Optional dependencies for systemd

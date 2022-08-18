@@ -970,14 +970,14 @@ Incorrect file mode bits for /etc/machine-id which should be 0444, fixing...
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'
-Creating group 'systemd-journal' with GID 499.
+Creating group 'systemd-journal' with GID XXX.
 Warning: /opensuse-tumbleweed-rootfs/etc: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/etc: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'
-Creating group 'systemd-timesync' with GID 498.
-Creating user 'systemd-timesync' (systemd Time Synchronization) with UID 498 and GID 498.
+Creating group 'systemd-timesync' with GID XXX.
+Creating user 'systemd-timesync' (systemd Time Synchronization) with UID XXX and GID XXX.
 Warning: /opensuse-tumbleweed-rootfs/etc: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/etc: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/etc: contains root directory '/opensuse-tumbleweed-rootfs'
@@ -1019,22 +1019,22 @@ warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/sys
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'
-Creating group 'kmem' with GID 497.
-Creating group 'lock' with GID 496.
-Creating group 'tty' with GID 5.
-Creating group 'utmp' with GID 495.
-Creating group 'audio' with GID 494.
-Creating group 'cdrom' with GID 493.
-Creating group 'dialout' with GID 492.
-Creating group 'disk' with GID 491.
-Creating group 'input' with GID 490.
-Creating group 'lp' with GID 489.
-Creating group 'render' with GID 488.
-Creating group 'sgx' with GID 487.
-Creating group 'tape' with GID 486.
-Creating group 'video' with GID 485.
-Creating group 'messagebus' with GID 484.
-Creating user 'messagebus' (User for D-Bus) with UID 484 and GID 484.
+Creating group 'kmem' with GID XXX.
+Creating group 'lock' with GID XXX.
+Creating group 'tty' with GID XXX.
+Creating group 'utmp' with GID XXX.
+Creating group 'audio' with GID XXX.
+Creating group 'cdrom' with GID XXX.
+Creating group 'dialout' with GID XXX.
+Creating group 'disk' with GID XXX.
+Creating group 'input' with GID XXX.
+Creating group 'lp' with GID XXX.
+Creating group 'render' with GID XXX.
+Creating group 'sgx' with GID XXX.
+Creating group 'tape' with GID XXX.
+Creating group 'video' with GID XXX.
+Creating group 'messagebus' with GID XXX.
+Creating user 'messagebus' (User for D-Bus) with UID XXX and GID XXX.
 Warning: /opensuse-tumbleweed-rootfs/etc: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/etc: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/etc: contains root directory '/opensuse-tumbleweed-rootfs'

@@ -670,17 +670,17 @@ useradd warning: tss's uid 59 outside of the SYS_UID_MIN 201 and SYS_UID_MAX 999
   Running scriptlet: systemd-resolved XXX/XXX
   Installing       : systemd XXX/XXX
   Running scriptlet: systemd XXX/XXX
-Creating group 'input' with GID 104.
-Creating group 'kvm' with GID 36.
-Creating group 'render' with GID 105.
-Creating group 'sgx' with GID 106.
-Creating group 'systemd-journal' with GID 190.
-Creating group 'systemd-network' with GID 192.
-Creating user 'systemd-network' (systemd Network Management) with UID 192 and GID 192.
-Creating group 'systemd-oom' with GID 999.
-Creating user 'systemd-oom' (systemd Userspace OOM Killer) with UID 999 and GID 999.
-Creating group 'systemd-resolve' with GID 193.
-Creating user 'systemd-resolve' (systemd Resolver) with UID 193 and GID 193.
+Creating group 'input' with GID XXX.
+Creating group 'kvm' with GID XXX.
+Creating group 'render' with GID XXX.
+Creating group 'sgx' with GID XXX.
+Creating group 'systemd-journal' with GID XXX.
+Creating group 'systemd-network' with GID XXX.
+Creating user 'systemd-network' (systemd Network Management) with UID XXX and GID XXX.
+Creating group 'systemd-oom' with GID XXX.
+Creating user 'systemd-oom' (systemd Userspace OOM Killer) with UID XXX and GID XXX.
+Creating group 'systemd-resolve' with GID XXX.
+Creating user 'systemd-resolve' (systemd Resolver) with UID XXX and GID XXX.
 
   Installing       : systemd-udev XXX/XXX
   Running scriptlet: systemd-udev XXX/XXX

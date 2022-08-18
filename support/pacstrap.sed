@@ -94,3 +94,10 @@ s,\x1b\[[[:digit:];]*m,,g
 	//p
 	d
 }
+
+# Creating group 'bin' with GID 1.
+# Creating user 'bin' (n/a) with UID 1 and GID 1.
+/^Creating \(user\|group\) '.*'/{
+	s,UID [[:digit:]]\+,UID XXX,
+	s,GID [[:digit:]]\+,GID XXX,
+}

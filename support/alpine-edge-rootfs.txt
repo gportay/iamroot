@@ -4,6 +4,7 @@
 (X/X) Installing musl
 (X/X) Installing busybox
 Executing busybox.post-install
+(X/X) Installing busybox-binsh
 (X/X) Installing alpine-baselayout
 Executing alpine-baselayout.pre-install
 Executing alpine-baselayout.post-install

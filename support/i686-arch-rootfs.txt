@@ -1,11 +1,11 @@
 ==> Creating install root at i686-arch-rootfs
-Warning: Command is skipped: /usr/bin/mount proc i686-arch-rootfs/proc -t proc -o nosuid,noexec,nodev
-Warning: Command is skipped: /usr/bin/mount sys i686-arch-rootfs/sys -t sysfs -o nosuid,noexec,nodev,ro
-Warning: Command is skipped: /usr/bin/mount udev i686-arch-rootfs/dev -t devtmpfs -o mode=0755,nosuid
-Warning: Command is skipped: /usr/bin/mount devpts i686-arch-rootfs/dev/pts -t devpts -o mode=0620,gid=5,nosuid,noexec
-Warning: Command is skipped: /usr/bin/mount shm i686-arch-rootfs/dev/shm -t tmpfs -o mode=1777,nosuid,nodev
-Warning: Command is skipped: /usr/bin/mount run i686-arch-rootfs/run -t tmpfs -o nosuid,nodev,mode=0755
-Warning: Command is skipped: /usr/bin/mount tmp i686-arch-rootfs/tmp -t tmpfs -o mode=1777,strictatime,nodev,nosuid
+Warning: not-running /usr/bin/mount proc i686-arch-rootfs/proc -t proc -o nosuid,noexec,nodev
+Warning: not-running /usr/bin/mount sys i686-arch-rootfs/sys -t sysfs -o nosuid,noexec,nodev,ro
+Warning: not-running /usr/bin/mount udev i686-arch-rootfs/dev -t devtmpfs -o mode=0755,nosuid
+Warning: not-running /usr/bin/mount devpts i686-arch-rootfs/dev/pts -t devpts -o mode=0620,gid=5,nosuid,noexec
+Warning: not-running /usr/bin/mount shm i686-arch-rootfs/dev/shm -t tmpfs -o mode=1777,nosuid,nodev
+Warning: not-running /usr/bin/mount run i686-arch-rootfs/run -t tmpfs -o nosuid,nodev,mode=0755
+Warning: not-running /usr/bin/mount tmp i686-arch-rootfs/tmp -t tmpfs -o mode=1777,strictatime,nodev,nosuid
 ==> Installing packages to i686-arch-rootfs
 :: Synchronizing package databases...
 resolving dependencies...
@@ -284,4 +284,4 @@ Warning: fchmodat: /dev/vhost-vsock: Ignoring error 'Operation not permitted'!
 (XXX/XXX) Rebuilding certificate stores...
 (XXX/XXX) Reloading system bus configuration...
   Skipped: Running in chroot.
-Warning: Command is skipped: /usr/bin/umount i686-arch-rootfs/tmp i686-arch-rootfs/run i686-arch-rootfs/dev/shm i686-arch-rootfs/dev/pts i686-arch-rootfs/dev i686-arch-rootfs/sys i686-arch-rootfs/proc
+Warning: not-running /usr/bin/umount i686-arch-rootfs/tmp i686-arch-rootfs/run i686-arch-rootfs/dev/shm i686-arch-rootfs/dev/pts i686-arch-rootfs/dev i686-arch-rootfs/sys i686-arch-rootfs/proc

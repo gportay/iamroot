@@ -876,7 +876,7 @@ Created symlink /etc/systemd/system/multi-user.target.wants/sshd.service → /us
   Running scriptlet: rpm XXX/XXX
   Running scriptlet: authselect-libs XXX/XXX
   Running scriptlet: grub2-common XXX/XXX
-Warning: Command is rewritten to: /bin/mountpoint -q /fedora-36-rootfs/boot/efi
+Warning: running /fedora-36-rootfs/bin/mountpoint -q /fedora-36-rootfs/boot/efi
 
   Running scriptlet: systemd-resolved XXX/XXX
 '/etc/resolv.conf' -> '../run/systemd/resolve/stub-resolv.conf'

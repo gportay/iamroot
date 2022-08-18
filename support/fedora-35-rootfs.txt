@@ -743,7 +743,7 @@ Created symlink /etc/systemd/system/multi-user.target.wants/sshd.service → /us
   Running scriptlet: ca-certificates XXX/XXX
   Running scriptlet: pam XXX/XXX
   Running scriptlet: grub2-common XXX/XXX
-Warning: Command is rewritten to: /bin/mountpoint -q /fedora-35-rootfs/boot/efi
+Warning: running /fedora-35-rootfs/bin/mountpoint -q /fedora-35-rootfs/boot/efi
 
   Running scriptlet: selinux-policy-targeted XXX/XXX
   Running scriptlet: sssd-common XXX/XXX

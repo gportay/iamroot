@@ -47,7 +47,7 @@ shift
 
 case "${path##*/}" in
 mount|umount)
-	warn "Command is skipped:" "$argv0" "$@"
+	warn "not-running" "$argv0" "$@"
 	exit 0
 	;;
 mountpoint)
@@ -63,11 +63,11 @@ mountpoint)
 	done
 	set -- "${args[@]}"
 
-	warn "Command is rewritten to:" "$argv0" "$@"
+	warn "running" "$inchroot_path" "$@"
 	exec "$inchroot_path" "$@"
 	;;
 chfn|chkstat|pam-auth-update|update-ca-certificates|*.postinst)
-	fixme "Command is skipped:" "$argv0" "$@"
+	fixme "not-running" "$argv0" "$@"
 	exit 0
 	;;
 ldd|busybox)
@@ -89,7 +89,7 @@ ldconfig|ldconfig.real)
 	exec "$inchroot_path" "$@"
 	;;
 gpasswd|passwd|su)
-	error "Command not handled:" "$argv0" "$@"
+	error "not-running" "$argv0" "$@"
 	exit 1
 	;;
 bbsuid)

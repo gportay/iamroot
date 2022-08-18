@@ -23,6 +23,7 @@ all: libiamnotroot.so
 all: test-__xmknod
 all: test-__xmknodat
 all: test-access
+all: test-acct
 all: test-chmod
 all: test-chown
 all: test-chroot
@@ -116,6 +117,8 @@ test: | rootfs
 	ln -s file0 rootfs/tmp/symlink0
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-access rootfs/tmp/file0 0
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-access /tmp/file0 0
+	-env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-acct rootfs/var/log/pacct 
+	-cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-acct /var/log/pacct
 ifeq ($(OS),FreeBSD)
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-chmod rootfs/tmp/file0 00644
 else
@@ -263,6 +266,7 @@ endif
 	install -d -m777 $(DESTDIR)/tmp
 	install -d -m755 $(DESTDIR)/run
 	install -d -m777 $(DESTDIR)/var
+	install -d -m755 $(DESTDIR)/var/log
 	ln -sf /run $(DESTDIR)/var/run
 
 .PHONY: clean

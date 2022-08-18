@@ -54,6 +54,8 @@ all: test-lstat
 all: test-lutimes
 all: test-mkdir
 all: test-mkdirat
+all: test-mkfifo
+all: test-mkfifoat
 all: test-mknod
 all: test-mknodat
 all: test-mount
@@ -153,6 +155,9 @@ endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mkdir rootfs/tmp/dir0 0555
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mkdirat . rootfs/tmp/dir1 0555
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkdirat . /tmp/dir2 0755
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mkfifo rootfs/tmp/fifo0 0555
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mkfifoat . rootfs/tmp/fifo1 0555
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkfifoat . /tmp/fifo2 0755
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mknod rootfs/dev/dev0 0644 0 0
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mknodat - rootfs/dev/dev1 0666 0 1
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mknodat . rootfs/dev/dev2 0666 0 2

@@ -73,6 +73,8 @@ all: test-stat
 all: test-statfs
 all: test-statvfs
 all: test-statx
+all: test-swapoff
+all: test-swapon
 all: test-symlink
 all: test-symlinkat
 all: test-tmpnam
@@ -193,6 +195,10 @@ endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-statvfs .
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-statx - rootfs/tmp/file0 0 0
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-statx - /tmp/file0 0 0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-swapon /tmp/file0 0
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-swapon /tmp/file0 0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-swapoff /tmp/file0
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-swapoff /tmp/file0
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-symlink file0 rootfs/tmp/symlink1
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-symlinkat file0 . rootfs/tmp/symlink2
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-symlinkat file0 . /tmp/symlink3

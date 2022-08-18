@@ -751,6 +751,8 @@ Running in chroot, ignoring command 'set-property'
 
   Running scriptlet: firewalld XXX/XXX
   Running scriptlet: rootfiles XXX/XXX
+Warning: running /fedora-35-rootfs/sbin/ldconfig -r /fedora-35-rootfs
+
   Verifying        : NetworkManager XXX/XXX
   Verifying        : NetworkManager-libnm XXX/XXX
   Verifying        : acl XXX/XXX

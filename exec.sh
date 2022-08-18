@@ -71,6 +71,7 @@ chfn|chkstat|pam-auth-update|update-ca-certificates|*.postinst)
 	exit 0
 	;;
 ldd|busybox)
+	warn "running" "$inchroot_path" "$@"
 	exec "$inchroot_path" "$@"
 	;;
 ldconfig|ldconfig.real)
@@ -86,6 +87,7 @@ ldconfig|ldconfig.real)
 		fi
 	fi
 
+	warn "running" "$inchroot_path" "$@"
 	exec "$inchroot_path" "$@"
 	;;
 gpasswd|passwd|su)

@@ -886,6 +886,8 @@ Warning: running /fedora-36-rootfs/bin/mountpoint -q /fedora-36-rootfs/boot/efi
   Running scriptlet: sssd-common XXX/XXX
   Running scriptlet: firewalld XXX/XXX
   Running scriptlet: rootfiles XXX/XXX
+Warning: running /fedora-36-rootfs/sbin/ldconfig -r /fedora-36-rootfs
+
   Verifying        : ModemManager-glib XXX/XXX
   Verifying        : NetworkManager XXX/XXX
   Verifying        : NetworkManager-libnm XXX/XXX

@@ -188,11 +188,19 @@ endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /           | tee /dev/stderr | grep -q "^/\$$"
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /proc/      | tee /dev/stderr | grep -q "^/proc/\$$"
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /run/       | tee /dev/stderr | grep -q "^/run\$$"
+ifeq ($(OS),FreeBSD)
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /var/run/   | tee /dev/stderr | grep -q "^/var/run\$$"
+else
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /var/run/   | tee /dev/stderr | grep -q "^/run\$$"
+endif
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /sys/    | tee /dev/stderr | grep -q "^/sys/\$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /dev/    | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/dev\$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /run     | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/run\$$"
+ifeq ($(OS),FreeBSD)
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /var/run | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/var/run\$$"
+else
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /var/run | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/run\$$"
+endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin LD_LIBRARY_PATH=$(CURDIR) test-pathsetenv LD_LIBRARY_PATH /usr/local/lib:/usr/lib:/lib     | tee /dev/stderr | grep -q "^/usr/local/lib:/usr/lib:/lib$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-pathsetenv LD_LIBRARY_PATH /usr/local/lib:/usr/lib:/lib  | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/usr/local/lib:$(CURDIR)/rootfs/usr/lib:$(CURDIR)/rootfs/lib$$"
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-openat - rootfs/tmp/file0
@@ -284,7 +292,11 @@ endif
 	install -d -m755 $(DESTDIR)/run
 	install -d -m777 $(DESTDIR)/var
 	install -d -m755 $(DESTDIR)/var/log
+ifeq ($(OS),FreeBSD)
+	install -d -m755 $(DESTDIR)/var/run
+else
 	ln -sf /run $(DESTDIR)/var/run
+endif
 
 .PHONY: clean
 clean:

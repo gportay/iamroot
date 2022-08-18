@@ -79,8 +79,11 @@ ldconfig|ldconfig.real)
 		set -- "$@" -r "$IAMROOT_ROOT"
 
 		# Fixes: $IAMROOT_ROOT/usr/sbin/ldconfig: need absolute file name for configuration file when using -r
-		sed -e 's,include ld.so.conf.d/\*.conf,include /etc/ld.so.conf.d/*.conf,' \
-		    -i "$IAMROOT_ROOT/etc/ld.so.conf"
+		if [ -r "$IAMROOT_ROOT/etc/ld.so.conf" ]
+		then
+			sed -e 's,include ld.so.conf.d/\*.conf,include /etc/ld.so.conf.d/*.conf,' \
+			    -i "$IAMROOT_ROOT/etc/ld.so.conf"
+		fi
 	fi
 
 	exec "$inchroot_path" "$@"

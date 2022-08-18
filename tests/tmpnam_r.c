@@ -5,6 +5,7 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
 
 #include <stdio.h>
 
@@ -20,6 +21,7 @@ int main(int argc, char * const argv[])
 		exit(EXIT_FAILURE);
 	}
 
+	memset(buf, 0, sizeof(buf));
 	strncpy(buf, argv[1], sizeof(buf)-1);
 
 	if (tmpnam_r(buf) == NULL) {

@@ -758,7 +758,7 @@ i686-rootfs: i686-alpine-rootfs
 
 .PHONY: mini-chroot-i686
 x86-mini-chroot: export QEMU_LD_PREFIX = $(CURDIR)/x86-alpine-minirootfs
-x86-mini-chroot: x86/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2 | x86-alpine-minirootfs
+x86-mini-chroot: i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2 | x86-alpine-minirootfs
 	bash iamroot-shell -c "chroot x86-alpine-minirootfs /bin/sh"
 
 .PHONY: x86-alpine-minirootfs
@@ -913,7 +913,7 @@ i686-alpine-3.16-rootfs: | i686-alpine-3.16-rootfs/bin/busybox
 i686-alpine-edge-rootfs: | i686-alpine-edge-rootfs/bin/busybox
 
 i686-alpine-%-rootfs/bin/busybox: export APK_OPTS = --arch x86 --no-progress
-i686-alpine-%-rootfs/bin/busybox: | x86/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2
+i686-alpine-%-rootfs/bin/busybox: | i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "alpine-make-rootfs i686-alpine-$*-rootfs --keys-dir /usr/share/apk/keys/x86 --mirror-uri http://dl-cdn.alpinelinux.org/alpine --branch $*"
 endif
 endif

@@ -7,9 +7,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#ifdef __linux__
 #include <sys/swap.h>
 
-#ifdef __linux__
 int main(int argc, char * const argv[])
 {
 	if (argc < 2) {

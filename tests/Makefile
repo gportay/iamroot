@@ -174,10 +174,10 @@ endif
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-__xmknod 1 /dev/dev9 0644 0 9
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-__xmknodat 1 - /dev/dev10 0666 0 10
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-__xmknodat 1 . /dev/dev11 0666 0 11
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mkostemp rootfs/tmp/tmp-XXXXXX 0666                              | tee /dev/stderr | grep -q "^rootfs/tmp/tmp-......\$$"
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkostemp /tmp/tmp-XXXXXX 0666       | tee /dev/stderr | grep -q "^/tmp/tmp-......\$$"
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mkostemps rootfs/tmp/tmp-XXXXXXXXX 3 0666                        | tee /dev/stderr | grep -q "^rootfs/tmp/tmp-......XXX\$$"
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkostemps /tmp/tmp-XXXXXXXXX 3 0666 | tee /dev/stderr | grep -q "^/tmp/tmp-......XXX\$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mkostemp rootfs/tmp/tmp-XXXXXX 0                                 | tee /dev/stderr | grep -q "^rootfs/tmp/tmp-......\$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkostemp /tmp/tmp-XXXXXX 0          | tee /dev/stderr | grep -q "^/tmp/tmp-......\$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mkostemps rootfs/tmp/tmp-XXXXXXXXX 3 0                           | tee /dev/stderr | grep -q "^rootfs/tmp/tmp-......XXX\$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkostemps /tmp/tmp-XXXXXXXXX 3 0    | tee /dev/stderr | grep -q "^/tmp/tmp-......XXX\$$"
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mkstemp rootfs/tmp/tmp-XXXXXX                                    | tee /dev/stderr | grep -q "^rootfs/tmp/tmp-......\$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkstemp /tmp/tmp-XXXXXX             | tee /dev/stderr | grep -q "^/tmp/tmp-......\$$"
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mkstemps rootfs/tmp/tmp-XXXXXXXXX 3                              | tee /dev/stderr | grep -q "^rootfs/tmp/tmp-......XXX\$$"

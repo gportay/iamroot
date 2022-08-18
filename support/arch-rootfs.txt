@@ -1,34 +1,3 @@
-gpg: /arch-rootfs/etc/pacman.d/gnupg.tmp/trustdb.gpg: trustdb created
-gpg: no ultimately trusted keys found
-gpg: starting migration from earlier GnuPG versions
-gpg: porting secret keys from '/arch-rootfs/etc/pacman.d/gnupg.tmp/secring.gpg' to gpg-agent
-gpg: migration succeeded
-==> Generating pacman master key. This may take some time.
-gpg: Generating pacman keyring master key...
-gpg: directory '/arch-rootfs/etc/pacman.d/gnupg.tmp/openpgp-revocs.d' created
-gpg: revocation certificate stored as '/arch-rootfs/etc/pacman.d/gnupg.tmp/openpgp-revocs.dXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.rev'
-gpg: Done
-==> Updating trust database...
-gpg: marginals needed: X  completes needed: X  trust model: pgp
-gpg: depth: X  valid:   X  signed:   X  trust: X-, Xq, Xn, Xm, Xf, Xu
-==> Appending keys from archlinux.gpg...
-==> Locally signing trusted keys in keyring...
-  -> Locally signed X keys.
-==> Importing owner trust values...
-gpg: setting ownertrust to X
-gpg: setting ownertrust to X
-gpg: setting ownertrust to X
-gpg: inserting ownertrust of X
-gpg: setting ownertrust to X
-gpg: setting ownertrust to X
-==> Disabling revoked keys in keyring...
-  -> Disabled X keys.
-==> Updating trust database...
-gpg: marginals needed: X  completes needed: X  trust model: pgp
-gpg: depth: X  valid:   X  signed:   X  trust: X-, Xq, Xn, Xm, Xf, Xu
-gpg: depth: X  valid:   X  signed:  X  trust: X-, Xq, Xn, Xm, Xf, Xu
-gpg: depth: X  valid:  X  signed:  X  trust: X-, Xq, Xn, Xm, Xf, Xu
-gpg: next trustdb check due at YYYY-MM-DD
 ==> Creating install root at arch-rootfs
 Warning: Command is skipped: /usr/bin/mount proc arch-rootfs/proc -t proc -o nosuid,noexec,nodev
 Warning: Command is skipped: /usr/bin/mount sys arch-rootfs/sys -t sysfs -o nosuid,noexec,nodev,ro

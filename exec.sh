@@ -102,7 +102,7 @@ bbsuid)
 	exit 0
 	;;
 *)
-	warn "host-running" "$argv0" "$@"
+	warn "running" "$argv0" "$@"
 	exec "$inchroot_path" "$@"
 	;;
 esac

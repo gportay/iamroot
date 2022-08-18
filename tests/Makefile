@@ -290,7 +290,7 @@ endif
 	install -d -m755 $(DESTDIR)/dev
 	install -d -m777 $(DESTDIR)/tmp
 	install -d -m755 $(DESTDIR)/run
-	install -d -m777 $(DESTDIR)/var
+	install -d -m755 $(DESTDIR)/var
 	install -d -m755 $(DESTDIR)/var/log
 ifeq ($(OS),FreeBSD)
 	install -d -m755 $(DESTDIR)/var/run

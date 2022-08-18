@@ -75,6 +75,8 @@ all: test-statvfs
 all: test-statx
 all: test-symlink
 all: test-symlinkat
+all: test-truncate
+all: test-truncate64
 all: test-umount
 all: test-umount2
 all: test-unlink
@@ -196,6 +198,10 @@ endif
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-readlink /proc/self/exe     | tee /dev/stderr | grep -q "^/usr/bin/test-readlink$$"
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-readlinkat . /proc/self/exe                              | tee /dev/stderr | grep -q "^$(CURDIR)/test-readlinkat$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-readlinkat . /proc/self/exe | tee /dev/stderr | grep -q "^/usr/bin/test-readlinkat$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-truncate rootfs/tmp/file0 1
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-truncate /tmp/file0 0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-truncate64 rootfs/tmp/file0 1
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-truncate64 /tmp/file0 0
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-utimes rootfs/tmp/file0 0x3fffffff 0x3fffffff
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-lutimes rootfs/tmp/symlink0 0x3fffffff 0x3fffffff
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-utimensat . rootfs/tmp/file0 0x3fffffff 0x3fffffff

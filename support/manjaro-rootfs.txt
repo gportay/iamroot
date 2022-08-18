@@ -1,11 +1,4 @@
 ==> Creating install root at manjaro-rootfs
-Warning: Command is skipped: /usr/bin/mount proc manjaro-rootfs/proc -t proc -o nosuid,noexec,nodev
-Warning: Command is skipped: /usr/bin/mount sys manjaro-rootfs/sys -t sysfs -o nosuid,noexec,nodev,ro
-Warning: Command is skipped: /usr/bin/mount udev manjaro-rootfs/dev -t devtmpfs -o mode=0755,nosuid
-Warning: Command is skipped: /usr/bin/mount devpts manjaro-rootfs/dev/pts -t devpts -o mode=0620,gid=5,nosuid,noexec
-Warning: Command is skipped: /usr/bin/mount shm manjaro-rootfs/dev/shm -t tmpfs -o mode=1777,nosuid,nodev
-Warning: Command is skipped: /usr/bin/mount run manjaro-rootfs/run -t tmpfs -o nosuid,nodev,mode=0755
-Warning: Command is skipped: /usr/bin/mount tmp manjaro-rootfs/tmp -t tmpfs -o mode=1777,strictatime,nodev,nosuid
 ==> Installing packages to manjaro-rootfs
 :: Synchronizing package databases...
 resolving dependencies...
@@ -336,4 +329,3 @@ Warning: fchmodat: /dev/vhost-vsock: Ignoring error 'Operation not permitted'!
 Warning: /usr/lib/perl5/5.36/core_perl/CORE/libperl.so: is not in root directory '/manjaro-rootfs'
 (XXX/XXX) Configuring pacman-mirrors ...
 hint: use `pacman-mirrors` to generate and update your pacman mirrorlist.
-Warning: Command is skipped: /usr/bin/umount manjaro-rootfs/tmp manjaro-rootfs/run manjaro-rootfs/dev/shm manjaro-rootfs/dev/pts manjaro-rootfs/dev manjaro-rootfs/sys manjaro-rootfs/proc

@@ -741,7 +741,7 @@ Retrieving: permissions-config.rpm [done]
 warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/permissions-config.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
 
 Updating /etc/sysconfig/security ...
-FIXME: Command is skipped: /usr/bin/chkstat --system
+FIXME: not-running /usr/bin/chkstat --system
 
 Retrieving package iproute2 (XXX/XXX), XXX.X MiB ( XXX.X MiB unpacked)
 Retrieving: iproute2.rpm [done]
@@ -792,15 +792,15 @@ Retrieving: pam.rpm [done]
 (XXX/XXX) Installing: pam [done]
 warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/pam.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
 
-FIXME: Command is skipped: /usr/bin/chkstat -n --set --system /usr/sbin/unix_chkpwd
-FIXME: Command is skipped: /usr/bin/chkstat -n --set --system /usr/sbin/unix2_chkpwd
+FIXME: not-running /usr/bin/chkstat -n --set --system /usr/sbin/unix_chkpwd
+FIXME: not-running /usr/bin/chkstat -n --set --system /usr/sbin/unix2_chkpwd
 
 Retrieving package iputils (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: iputils.rpm [done]
 (XXX/XXX) Installing: iputils [done]
 warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/iputils.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
 
-FIXME: Command is skipped: /usr/bin/chkstat -n --set --system /usr/bin/clockdiff
+FIXME: not-running /usr/bin/chkstat -n --set --system /usr/bin/clockdiff
 
 Retrieving package libzck1 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: libzck1.rpm [done]
@@ -1084,7 +1084,7 @@ Retrieving: libutempter0.rpm [done]
 (XXX/XXX) Installing: libutempter0 [done]
 warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libutempter0.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
 
-FIXME: Command is skipped: /usr/bin/chkstat -n --set --system /usr/libexec/utempter/utempter
+FIXME: not-running /usr/bin/chkstat -n --set --system /usr/libexec/utempter/utempter
 
 Retrieving package python310-base (XXX/XXX), XXX.X MiB ( XXX.X MiB unpacked)
 Retrieving: python310-base.rpm [done]
@@ -1101,8 +1101,8 @@ Retrieving: util-linux.rpm [done]
 (XXX/XXX) Installing: util-linux [done]
 warning: /opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/util-linux.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
 
-FIXME: Command is skipped: /usr/bin/chkstat -n --set --system /usr/bin/wall /usr/bin/write /usr/bin/mount /usr/bin/umount
-FIXME: Command is skipped: /usr/bin/chkstat -n --set --system /usr/bin/su
+FIXME: not-running /usr/bin/chkstat -n --set --system /usr/bin/wall /usr/bin/write /usr/bin/mount /usr/bin/umount
+FIXME: not-running /usr/bin/chkstat -n --set --system /usr/bin/su
 
 Retrieving package python310-setuptools (XXX/XXX), XXX.X MiB ( XXX.X MiB unpacked)
 Retrieving: python310-setuptools [done]
@@ -1134,7 +1134,7 @@ Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains 
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'
 
-FIXME: Command is skipped: /usr/bin/chkstat -n --set --system /usr/libexec/dbus-1/dbus-daemon-launch-helper
+FIXME: not-running /usr/bin/chkstat -n --set --system /usr/libexec/dbus-1/dbus-daemon-launch-helper
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libcrypto.so.1.1.hmac: contains root directory '/opensuse-tumbleweed-rootfs'
 Warning: /opensuse-tumbleweed-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '/opensuse-tumbleweed-rootfs'

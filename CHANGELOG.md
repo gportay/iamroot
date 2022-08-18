@@ -39,6 +39,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Remove [glibc] private function `__nss_files_fopen()`
 - Remove internal functions `whereami()` and `whoami()`
+- Remove [glibc] specific function `tmpnam_r()` from none-glibc build
 
 ### Fixed
 

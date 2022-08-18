@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 
+#ifdef __GLIBC__
 int main(int argc, char * const argv[])
 {
 	char buf[L_tmpnam];
@@ -33,3 +34,9 @@ int main(int argc, char * const argv[])
 
 	return EXIT_SUCCESS;
 }
+#else
+int main(void)
+{
+	return EXIT_SUCCESS;
+}
+#endif

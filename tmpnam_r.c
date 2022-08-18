@@ -24,7 +24,7 @@ char *next_tmpnam_r(char path[L_tmpnam])
 char *next_tmpnam_r(char *path)
 #endif
 {
-#if defined __GLIBC__ && !__GLIBC_PREREQ(2,34)
+#if defined __GLIBC__ && __GLIBC_PREREQ(2,34)
 	char *(*sym)(char []);
 #else
 	char *(*sym)(char *);

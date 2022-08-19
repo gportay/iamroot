@@ -54,6 +54,7 @@ all: test-lstat
 all: test-lutimes
 all: test-mkdir
 all: test-mkdirat
+all: test-mkdtemp
 all: test-mkfifo
 all: test-mkfifoat
 all: test-mknod
@@ -62,6 +63,7 @@ all: test-mkostemp
 all: test-mkostemps
 all: test-mkstemp
 all: test-mkstemps
+all: test-mktemp
 all: test-mount
 all: test-openat
 all: test-opendir
@@ -182,6 +184,10 @@ endif
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkstemp /tmp/tmp-XXXXXX             | tee /dev/stderr | grep -q "^/tmp/tmp-......\$$"
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mkstemps rootfs/tmp/tmp-XXXXXXXXX 3                              | tee /dev/stderr | grep -q "^rootfs/tmp/tmp-......XXX\$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkstemps /tmp/tmp-XXXXXXXXX 3       | tee /dev/stderr | grep -q "^/tmp/tmp-......XXX\$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mktemp rootfs/tmp/tmp-XXXXXX                                     | tee /dev/stderr | grep -q "^rootfs/tmp/tmp-......\$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mktemp /tmp/tmp-XXXXXX              | tee /dev/stderr | grep -q "^/tmp/tmp-......\$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mkdtemp rootfs/tmp/tmpdir-XXXXXX                                 | tee /dev/stderr | grep -q "^rootfs/tmp/tmpdir-......\$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkdtemp /tmp/tmpdir-XXXXXX          | tee /dev/stderr | grep -q "^/tmp/tmpdir-......\$$"
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mount -t procfs none rootfs/proc
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-umount rootfs/proc
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-umount2 rootfs/proc

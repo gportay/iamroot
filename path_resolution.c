@@ -307,7 +307,7 @@ skip_readlink:
 
 		/* If link is an absolute path, prepend root to resolve
 		 * in chroot path. */
-		if (*stack == '/') {
+		if (*stack == '/' && inchroot()) {
 			const char *r = getrootdir();
 			ssize_t lr = __strlen(r);
 			memmove(stack+lr, stack, k);

@@ -11,9 +11,7 @@
 #include <limits.h>
 #include <fcntl.h>
 #include <dlfcn.h>
-#ifdef __linux__
 #include <linux/limits.h>
-#endif
 
 #include <sys/types.h>
 #include <sys/xattr.h>

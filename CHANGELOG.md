@@ -34,6 +34,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `utimes()` to the `at` function `utimensat()`
 - The function `eaccess()` is now a weak alias to `euidaccess()`
 - Output traces in `exec.sh` starting from debug level 2
+- Forward the function `mkstemps()` to the function `mkostemps()`
 
 ### Removed
 

@@ -162,11 +162,9 @@ output-%/libiamroot.so: $(wildcard *.c) | output-%
 output-%:
 	mkdir $@
 
-.NOTPARALLEL: fixme-rootfs
 .PHONY: fixme-rootfs
 fixme-rootfs:
 
-.NOTPARALLEL: rootfs
 .PHONY: rootfs
 rootfs: i686-rootfs
 
@@ -331,7 +329,6 @@ debian-%-chroot: | debian-%-rootfs
 
 rootfs: debian-rootfs
 
-.NOTPARALLEL: debian-rootfs
 .PHONY: debian-rootfs
 debian-rootfs: debian-oldoldstable-rootfs 
 debian-rootfs: debian-oldstable-rootfs 
@@ -447,7 +444,6 @@ ubuntu-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gn
 ubuntu-%-chroot: | ubuntu-%-rootfs
 	bash iamroot-shell -c "chroot ubuntu-$*-rootfs"
 
-.NOTPARALLEL: ubuntu-rootfs
 .PHONY: ubuntu-rootfs
 ubuntu-rootfs: ubuntu-trusty-rootfs
 ubuntu-rootfs: ubuntu-xenial-rootfs
@@ -574,7 +570,6 @@ fedora-%-chroot: | fedora-%-rootfs
 
 rootfs: fedora-rootfs
 
-.NOTPARALLEL: fedora-rootfs
 .PHONY: fedora-rootfs
 fedora-rootfs: fedora-33-rootfs
 fedora-rootfs: fedora-34-rootfs
@@ -662,7 +657,6 @@ opensuse-%-chroot: | opensuse-%-rootfs
 
 extra-rootfs: opensuse-rootfs
 
-.NOTPARALLEL: opensuse-rootfs
 .PHONY: opensuse-rootfs
 opensuse-rootfs: | opensuse-tumbleweed-rootfs
 
@@ -801,7 +795,6 @@ alpine-edge-chroot:
 alpine-%-chroot: | alpine-%-rootfs
 	bash iamroot-shell -c "chroot alpine-$*-rootfs /bin/ash"
 
-.NOTPARALLEL: alpine-rootfs
 .PHONY: alpine-rootfs
 alpine-rootfs: alpine-3.14-rootfs
 alpine-rootfs: alpine-3.15-rootfs
@@ -900,7 +893,6 @@ i686-alpine-edge-chroot:
 i686-alpine-%-chroot: | i686-alpine-%-rootfs
 	bash iamroot-shell -c "chroot i686-alpine-$*-rootfs /bin/ash"
 
-.NOTPARALLEL: i686-alpine-rootfs
 .PHONY: i686-alpine-rootfs
 i686-alpine-rootfs: i686-alpine-3.14-rootfs
 i686-alpine-rootfs: i686-alpine-3.15-rootfs

@@ -12,6 +12,9 @@
 #ifdef __linux__
 #include <sys/xattr.h>
 #endif
+#ifdef __FreeBSD__
+#include <sys/extattr.h>
+#endif
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -72,9 +75,7 @@ int open(const char *path, int oflags, ...)
 		__func__, path, buf, oflags, oldmode, mode);
 
 	ret = next_open(buf, oflags, mode);
-#ifdef __linux__
 	__set_mode(buf, oldmode, mode);
-#endif
 
 	return ret;
 }

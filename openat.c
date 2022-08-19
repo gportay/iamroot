@@ -13,6 +13,9 @@
 #ifdef __linux__
 #include <sys/xattr.h>
 #endif
+#ifdef __FreeBSD__
+#include <sys/extattr.h>
+#endif
 
 #include <fcntl.h>
 
@@ -71,9 +74,7 @@ int openat(int dfd, const char *path, int oflags, ...)
 		__func__, dfd, path, buf, oflags, oldmode, mode);
 
 	ret = next_openat(dfd, buf, oflags, mode);
-#ifdef __linux__
 	__set_mode(buf, oldmode, mode);
-#endif
 
 	return ret;
 }

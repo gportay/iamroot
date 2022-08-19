@@ -11,6 +11,9 @@
 #ifdef __linux__
 #include <sys/xattr.h>
 #endif
+#ifdef __FreeBSD__
+#include <sys/extattr.h>
+#endif
 
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -55,9 +58,7 @@ int creat(const char *path, mode_t mode)
 		path, buf, oldmode, mode);
 
 	ret = next_creat(buf, mode);
-#ifdef __linux__
 	__set_mode(buf, oldmode, mode);
-#endif
 
 	return ret;
 }

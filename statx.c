@@ -77,9 +77,7 @@ int statx(int dfd, const char *path, int atflags, unsigned int mask,
 	if (statxbuf->stx_gid == gid)
 		statxbuf->stx_gid = 0;
 
-#ifdef __linux__
 	__stx_mode(buf, statxbuf);
-#endif
 
 exit:
 	return ret;

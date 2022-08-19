@@ -11,6 +11,9 @@
 #ifdef __linux__
 #include <sys/xattr.h>
 #endif
+#ifdef __FreeBSD__
+#include <sys/extattr.h>
+#endif
 
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -41,9 +44,7 @@ int mknodat(int dfd, const char *path, mode_t mode, dev_t dev)
 	if (fd == -1)
 		return -1;
 	__close(fd);
-#ifdef __linux__
 	__set_mode(buf, oldmode, mode);
-#endif
 
 	return 0;
 }

@@ -12,6 +12,9 @@
 #ifdef __linux__
 #include <sys/xattr.h>
 #endif
+#ifdef __FreeBSD__
+#include <sys/extattr.h>
+#endif
 
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -75,9 +78,7 @@ int fstatat(int dfd, const char *path, struct stat *statbuf, int atflags)
 	if (statbuf->st_gid == gid)
 		statbuf->st_gid = 0;
 
-#ifdef __linux__
 	__st_mode(buf, statbuf);
-#endif
 
 exit:
 	return ret;

@@ -108,6 +108,7 @@ extern char **__environ;
 
 #ifdef __FreeBSD__
 #define IAMROOT_EXTATTR_PREFIX "iamroot."
+#define IAMROOT_EXTATTR_MODE IAMROOT_EXTATTR_PREFIX "mode"
 #endif
 
 int _snprintf(char *, size_t, const char *, ...) __attribute__((format(printf,3,4)));
@@ -293,6 +294,40 @@ extern int next_lremovexattr(const char *, const char *);
 	   errno = save_errno; \
 	   0; \
 	   })
+#endif
+
+#ifdef __FreeBSD__
+extern ssize_t next_extattr_get_link(const char *, int, const char *, void *,
+				     size_t);
+extern ssize_t next_extattr_set_link(const char *, int, const char *, const void *,
+				 size_t);
+extern int next_extattr_delete_link(const char *, int, const char *);
+
+#define __get_mode(path) \
+	({ int save_errno = errno; \
+	   mode_t m; \
+	   if (next_extattr_get_link(buf, EXTATTR_NAMESPACE_USER, \
+				     IAMROOT_EXTATTR_MODE, &m, sizeof(m)) \
+				     != sizeof(m)) \
+		m = (mode_t)-1; \
+	   errno = save_errno; \
+	   m; \
+	})
+
+#define __set_mode(path, oldmode, mode) \
+	({ int save_errno = errno; \
+	   if ((oldmode) == (mode)) { \
+	     next_extattr_delete_link((path), EXTATTR_NAMESPACE_USER, \
+				      IAMROOT_EXTATTR_MODE); \
+	   } else { \
+	     next_extattr_set_link((path), EXTATTR_NAMESPACE_USER, \
+				   IAMROOT_EXTATTR_MODE, &(oldmode), \
+				   sizeof((oldmode))); \
+	   } \
+	   errno = save_errno; \
+	   0; \
+	   })
+#endif
 
 #define __st_mode(path, statbuf) \
 	({ mode_t m = __get_mode(path); \
@@ -305,7 +340,6 @@ extern int next_lremovexattr(const char *, const char *);
 	   if (m != (mode_t)-1) { \
 	     statxbuf->stx_mode = (statxbuf->stx_mode & S_IFMT) | m; \
 	   } })
-#endif
 
 #define __ignored_errno(e) (((e) != EPERM) && ((e) != EACCES) && ((e) != ENOSYS))
 

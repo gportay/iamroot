@@ -26,10 +26,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Build from an AArch64 world; tested on [FreeBSD] and [Debian]
 - Output the traces for the functions `setegid()`, `seteuid()`, `setgid()` and
   `setuid()`
-- Save and load the user permissions to Linux's extended attributes for the
-  functions `__fxstatat()`, `__fxstatat64()`, `__xmknodat()`, `creat()`,
-  `fchmodat()`, `fstatat()`, `fstatat64()`, `mkdirat()`, `mkfifoat()`,
-  `mknodat()`, `open()`, `openat()` and `statx()`
+- Save and load the user permissions to extended attributes for the functions
+  `__fxstatat()`, `__fxstatat64()`, `__xmknodat()`, `creat()`, `fchmodat()`,
+  `fstatat()`, `fstatat64()`, `mkdirat()`, `mkfifoat()`, `mknodat()`, `open()`,
+  `openat()` and `statx()`
 
 ### Changed
 

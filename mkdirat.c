@@ -11,6 +11,9 @@
 #ifdef __linux__
 #include <sys/xattr.h>
 #endif
+#ifdef __FreeBSD__
+#include <sys/extattr.h>
+#endif
 
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -55,9 +58,7 @@ int mkdirat(int dfd, const char *path, mode_t mode)
 		__func__, dfd, path, buf, oldmode, mode);
 
 	ret = next_mkdirat(dfd, buf, mode);
-#ifdef __linux__
 	__set_mode(buf, oldmode, mode);
-#endif
 
 	return ret;
 }

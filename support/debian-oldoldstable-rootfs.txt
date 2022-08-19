@@ -1417,10 +1417,10 @@ Created symlink /etc/systemd/system/sysinit.target.wants/systemd-timesyncd.servi
 Initializing machine ID from random generator.
 Adding group `systemd-journal' (GID 101) ...
 Done.
-FIXME: not-running /usr/bin/chfn -f systemd Time Synchronization systemd-timesync
-FIXME: not-running /usr/bin/chfn -f systemd Network Management systemd-network
-FIXME: not-running /usr/bin/chfn -f systemd Resolver systemd-resolve
-FIXME: not-running /usr/bin/chfn -f systemd Bus Proxy systemd-bus-proxy
+FIXME: not-running /bin/chfn -f systemd Time Synchronization systemd-timesync
+FIXME: not-running /bin/chfn -f systemd Network Management systemd-network
+FIXME: not-running /bin/chfn -f systemd Resolver systemd-resolve
+FIXME: not-running /bin/chfn -f systemd Bus Proxy systemd-bus-proxy
 Warning: /debian-oldoldstable-rootfs/usr/lib/systemd/catalog: contains root directory '/debian-oldoldstable-rootfs'
 Warning: /debian-oldoldstable-rootfs/usr/lib/systemd/catalog/systemd.be.catalog: contains root directory '/debian-oldoldstable-rootfs'
 Warning: /debian-oldoldstable-rootfs/usr/lib/systemd/catalog/systemd.be@latin.catalog: contains root directory '/debian-oldoldstable-rootfs'
@@ -1647,8 +1647,8 @@ Setting up libslang2 ...
 Setting up cron ...
 Adding group `crontab' (GID 107) ...
 Done.
-Warning: /debian-oldoldstable-rootfs/lib/systemd/system-preset: contains root directory '/debian-oldoldstable-rootfs'
-Warning: /debian-oldoldstable-rootfs/lib/systemd/system-preset/90-systemd.preset: contains root directory '/debian-oldoldstable-rootfs'
+Warning: /debian-oldoldstable-rootfs/usr/lib/systemd/system-preset: contains root directory '/debian-oldoldstable-rootfs'
+Warning: /debian-oldoldstable-rootfs/usr/lib/systemd/system-preset/90-systemd.preset: contains root directory '/debian-oldoldstable-rootfs'
 Created symlink /etc/systemd/system/multi-user.target.wants/cron.service -> /lib/systemd/system/cron.service.
 update-rc.d: warning: start and stop actions are no longer supported; falling back to defaults
 Running in chroot, ignoring request.
@@ -1657,8 +1657,8 @@ Setting up libmnl0 ...
 Setting up libassuan0 ...
 Setting up logrotate ...
 Setting up rsyslog ...
-Warning: /debian-oldoldstable-rootfs/lib/systemd/system-preset: contains root directory '/debian-oldoldstable-rootfs'
-Warning: /debian-oldoldstable-rootfs/lib/systemd/system-preset/90-systemd.preset: contains root directory '/debian-oldoldstable-rootfs'
+Warning: /debian-oldoldstable-rootfs/usr/lib/systemd/system-preset: contains root directory '/debian-oldoldstable-rootfs'
+Warning: /debian-oldoldstable-rootfs/usr/lib/systemd/system-preset/90-systemd.preset: contains root directory '/debian-oldoldstable-rootfs'
 Created symlink /etc/systemd/system/syslog.service -> /lib/systemd/system/rsyslog.service.
 Created symlink /etc/systemd/system/multi-user.target.wants/rsyslog.service -> /lib/systemd/system/rsyslog.service.
 Running in chroot, ignoring request.
@@ -1687,19 +1687,19 @@ Setting up iptables ...
 Setting up libtext-wrapi18n-perl ...
 Setting up libp11-kit0 ...
 Setting up apt ...
-Warning: /debian-oldoldstable-rootfs/lib/systemd/system-preset: contains root directory '/debian-oldoldstable-rootfs'
-Warning: /debian-oldoldstable-rootfs/lib/systemd/system-preset/90-systemd.preset: contains root directory '/debian-oldoldstable-rootfs'
+Warning: /debian-oldoldstable-rootfs/usr/lib/systemd/system-preset: contains root directory '/debian-oldoldstable-rootfs'
+Warning: /debian-oldoldstable-rootfs/usr/lib/systemd/system-preset/90-systemd.preset: contains root directory '/debian-oldoldstable-rootfs'
 Created symlink /etc/systemd/system/timers.target.wants/apt-daily-upgrade.timer -> /lib/systemd/system/apt-daily-upgrade.timer.
-Warning: /debian-oldoldstable-rootfs/lib/systemd/system-preset: contains root directory '/debian-oldoldstable-rootfs'
-Warning: /debian-oldoldstable-rootfs/lib/systemd/system-preset/90-systemd.preset: contains root directory '/debian-oldoldstable-rootfs'
+Warning: /debian-oldoldstable-rootfs/usr/lib/systemd/system-preset: contains root directory '/debian-oldoldstable-rootfs'
+Warning: /debian-oldoldstable-rootfs/usr/lib/systemd/system-preset/90-systemd.preset: contains root directory '/debian-oldoldstable-rootfs'
 Created symlink /etc/systemd/system/timers.target.wants/apt-daily.timer -> /lib/systemd/system/apt-daily.timer.
 Setting up pinentry-curses ...
 Setting up libnewt0.52 ...
 Setting up gnupg-agent ...
 Setting up ifupdown ...
 Creating /etc/network/interfaces.
-Warning: /debian-oldoldstable-rootfs/lib/systemd/system-preset: contains root directory '/debian-oldoldstable-rootfs'
-Warning: /debian-oldoldstable-rootfs/lib/systemd/system-preset/90-systemd.preset: contains root directory '/debian-oldoldstable-rootfs'
+Warning: /debian-oldoldstable-rootfs/usr/lib/systemd/system-preset: contains root directory '/debian-oldoldstable-rootfs'
+Warning: /debian-oldoldstable-rootfs/usr/lib/systemd/system-preset/90-systemd.preset: contains root directory '/debian-oldoldstable-rootfs'
 Created symlink /etc/systemd/system/multi-user.target.wants/networking.service -> /lib/systemd/system/networking.service.
 Created symlink /etc/systemd/system/network-online.target.wants/networking.service -> /lib/systemd/system/networking.service.
 Setting up apt-utils ...

@@ -1323,6 +1323,11 @@ support/debian-testing-rootfs.txt: debian-testing-rootfs.log
 	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
+.PRECIOUS: support/debian-unstable-rootfs.txt
+support/debian-unstable-rootfs.txt: debian-unstable-rootfs.log
+	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
+	mv $@.tmp $@
+
 log: debian-log
 
 .PHONY: debian-log
@@ -1346,11 +1351,6 @@ ubuntu-support: support/ubuntu-xenial-rootfs.txt
 ubuntu-support: support/ubuntu-bionic-rootfs.txt
 ubuntu-support: support/ubuntu-focal-rootfs.txt
 ubuntu-support: support/ubuntu-jammy-rootfs.txt
-
-.PRECIOUS: support/debian-unstable-rootfs.txt
-support/debian-unstable-rootfs.txt: debian-unstable-rootfs.log
-	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
 
 .PRECIOUS: support/ubuntu-trusty-rootfs.txt
 support/ubuntu-trusty-rootfs.txt: ubuntu-trusty-rootfs.log

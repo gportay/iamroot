@@ -1142,7 +1142,7 @@ dpkg: regarding .../libpam-modules containing libpam-modules:amd64, pre-dependen
 
 dpkg: warning: ignoring pre-dependency problem!
 dpkg: regarding .../libpam-modules containing libpam-modules:amd64, pre-dependency problem:
- libpam-modules pre-depends on libpam-modules-bin (= 1.4.0-13)
+ libpam-modules pre-depends on libpam-modules-bin (= 1.5.2-2)
   libpam-modules-bin is not installed.
 
 dpkg: warning: ignoring pre-dependency problem!

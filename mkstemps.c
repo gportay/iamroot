@@ -56,7 +56,7 @@ int mkstemps(char *path, int suffixlen)
 	memcpy(path, buf+__strlen(buf)-len, len);
 
 exit:
-	__debug("%s(path: '%s' -> '%s')\n", __func__, path, buf);
+	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
 
 	return ret;
 }

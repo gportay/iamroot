@@ -14,7 +14,7 @@
 
 ssize_t readlink(const char *path, char *buf, size_t bufsize)
 {
-	__debug("%s(path: '%s'...)\n", __func__, path);
+	__debug("%s(path: '%s', ...)\n", __func__, path);
 
 	return readlinkat(AT_FDCWD, path, buf, bufsize);
 }

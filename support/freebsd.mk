@@ -42,6 +42,11 @@ FreeBSD-13.1-RELEASE-base-amd64.txz:
 FreeBSD-%-RELEASE-base-amd64.txz:
 	wget https://download.freebsd.org/releases/amd64/$*-RELEASE/base.txz -O $@
 
+.PHONY: test
+test: export IAMROOT_FATAL ?= 0
+test:
+	$(MAKE) -f Makefile $@
+
 .PHONY: clean
 clean:
 	$(MAKE) -f Makefile $@

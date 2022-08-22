@@ -118,7 +118,7 @@ ifeq ($(OS),GNU/Linux)
 test: export IAMROOT_LIBRARY_PATH := $(CURDIR):/usr/lib64:/lib64
 endif
 test: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|.*\.gcda
-test: export IAMROOT_FATAL = 1
+test: export IAMROOT_FATAL ?= 1
 test: | rootfs
 	rm -Rf rootfs/tmp/* rootfs/dev/*
 	touch rootfs/tmp/file0

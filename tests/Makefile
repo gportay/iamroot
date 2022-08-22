@@ -62,6 +62,7 @@ all: test-mknod
 all: test-mknodat
 all: test-mkostemp
 all: test-mkostemps
+all: test-mkostempsat
 all: test-mkstemp
 all: test-mkstemps
 all: test-mktemp
@@ -183,6 +184,8 @@ endif
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkostemp /tmp/tmp-XXXXXX 0          | tee /dev/stderr | grep -q "^/tmp/tmp-......\$$"
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-mkostemps rootfs/tmp/tmp-XXXXXXXXX 3 0                                          | tee /dev/stderr | grep -q "^rootfs/tmp/tmp-......XXX\$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkostemps /tmp/tmp-XXXXXXXXX 3 0    | tee /dev/stderr | grep -q "^/tmp/tmp-......XXX\$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-mkostempsat . rootfs/tmp/tmp-XXXXXXXX 2 0                                       | tee /dev/stderr | grep -q "^rootfs/tmp/tmp-......XX\$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkostempsat - /tmp/tmp-XXXXXXXX 2 0 | tee /dev/stderr | grep -q "^/tmp/tmp-......XX\$$"
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-mkstemp rootfs/tmp/tmp-XXXXXX                                                   | tee /dev/stderr | grep -q "^rootfs/tmp/tmp-......\$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkstemp /tmp/tmp-XXXXXX             | tee /dev/stderr | grep -q "^/tmp/tmp-......\$$"
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-mkstemps rootfs/tmp/tmp-XXXXXXXXX 3                                             | tee /dev/stderr | grep -q "^rootfs/tmp/tmp-......XXX\$$"

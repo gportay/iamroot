@@ -169,6 +169,7 @@ libiamroot.so: mknod.o
 libiamroot.so: mknodat.o
 libiamroot.so: mkostemp.o
 libiamroot.so: mkostemps.o
+libiamroot.so: mkostempsat.o
 libiamroot.so: mkstemp.o
 libiamroot.so: mkstemps.o
 libiamroot.so: mktemp.o

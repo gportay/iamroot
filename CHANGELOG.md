@@ -18,7 +18,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `__lxstat64()`, `__xstat64()`, `fopen64()`, `freopen64()`, `fstat64()`,
   `fstatat64()`, `lstat64()`, `open64()`, `openat64()` and `stat64()` for
   [musl] world
-- Intercept the [FreeBSD]'s functions `chflags()`, `chflagsat` and `lchflags()`
+- Intercept the [FreeBSD]'s functions `chflags()`, `chflagsat`, `lchflags()`
+  and `mkostempsat()`
 - The internal function `path_resolution()` expands all symlinks
 - Support tests on [FreeBSD] 13.1
 - Build from an AArch64 world; tested on [FreeBSD] and [Debian]

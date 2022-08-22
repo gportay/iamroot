@@ -36,6 +36,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Output traces in `exec.sh` starting from debug level 2
 - Forward the functions `mkstemp()` and `mkstemps()` to the function
   `mkostemps()`
+- Update the [FreeBSD]'s x86 64-bit architecture name to `amd64`
 
 ### Removed
 

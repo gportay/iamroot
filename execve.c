@@ -1108,7 +1108,11 @@ static char *__getlibiamroot(const char *ldso, int abi)
 #ifdef __FreeBSD__
 	/* IAMROOT_LIB_ELF_1 */
 	if (__streq(ldso, "elf") && abi == 1) {
-		ret = "/usr/local/lib/iamroot/x86_64/libiamroot-elf.so.1";
+#if defined(__x86_64__)
+		ret = "/usr/local/lib/iamroot/amd64/libiamroot-elf.so.1";
+#else
+		ret = "/usr/local/lib/iamroot/libiamroot-elf.so.1";
+#endif
 		goto exit;
 	}
 #endif

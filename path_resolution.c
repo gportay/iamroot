@@ -553,7 +553,7 @@ int path_ignored(int dfd, const char *path)
 }
 
 ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
-			int flags)
+			int atflags)
 {
 	const char *root;
 	size_t len;
@@ -566,7 +566,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 	if (ignore(path))
 		goto ignore;
 
-	if (!*path && (flags & AT_EMPTY_PATH)) {
+	if (!*path && (atflags & AT_EMPTY_PATH)) {
 		_strncpy(buf, path, bufsize);
 		return 0;
 	}
@@ -625,7 +625,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		goto exit;
 	}
 
-	if (follow_symlink(flags)) {
+	if (follow_symlink(atflags)) {
 		char tmp[PATH_MAX];
 
 		_strncpy(tmp, buf, bufsize);
@@ -641,7 +641,7 @@ ignore:
 }
 
 __attribute__((visibility("hidden")))
-char *__getpath(int dfd, const char *path, int flags)
+char *__getpath(int dfd, const char *path, int atflags)
 {
 	static char buf[PATH_MAX];
 	ssize_t siz;
@@ -651,13 +651,13 @@ char *__getpath(int dfd, const char *path, int flags)
 		if (!*path)
 			path = __fpath(dfd);
 
-		if (follow_symlink(flags))
+		if (follow_symlink(atflags))
 			return next_realpath(path, buf);
 
 		return _strncpy(buf, path, sizeof(buf));
 	}
 
-	siz = path_resolution(dfd, path, buf, sizeof(buf), flags);
+	siz = path_resolution(dfd, path, buf, sizeof(buf), atflags);
 	if (!siz)
 		return NULL;
 

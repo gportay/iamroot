@@ -17,7 +17,7 @@
 
 __attribute__((visibility("hidden")))
 int next_utimensat(int dfd, const char *path, const struct timespec times[2],
-		   int flags)
+		   int atflags)
 {
 	int (*sym)(int, const char *, const struct timespec[2], int);
 	int ret;
@@ -29,7 +29,7 @@ int next_utimensat(int dfd, const char *path, const struct timespec times[2],
 		return -1;
 	}
 
-	ret = sym(dfd, path, times, flags);
+	ret = sym(dfd, path, times, atflags);
 	if (ret == -1)
 		__pathperror(path, __func__);
 
@@ -37,7 +37,7 @@ int next_utimensat(int dfd, const char *path, const struct timespec times[2],
 }
 
 int utimensat(int dfd, const char *path, const struct timespec times[2],
-	      int flags)
+	      int atflags)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
@@ -49,11 +49,11 @@ int utimensat(int dfd, const char *path, const struct timespec times[2],
 		return -1;
 	}
 
-	__debug("%s(dfd: %i, path: '%s' -> '%s', ..., flags: 0x%x)\n",
-		__func__, dfd, path, buf, flags);
+	__debug("%s(dfd: %i, path: '%s' -> '%s', ..., atflags: 0x%x)\n",
+		__func__, dfd, path, buf, atflags);
 
-	__remove_at_empty_path_if_needed(buf, flags);
-	return next_utimensat(dfd, buf, times, flags);
+	__remove_at_empty_path_if_needed(buf, atflags);
+	return next_utimensat(dfd, buf, times, atflags);
 }
 
 #ifdef __GLIBC__

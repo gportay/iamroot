@@ -18,7 +18,7 @@
 
 __attribute__((visibility("hidden")))
 int next_execveat(int dfd, const char *path, char * const argv[],
-		  char * const envp[], int flags)
+		  char * const envp[], int atflags)
 {
 	int (*sym)(int, const char *, char * const[], char * const[],
 		   int);
@@ -31,7 +31,7 @@ int next_execveat(int dfd, const char *path, char * const argv[],
 		return -1;
 	}
 
-	ret = sym(dfd, path, argv, envp, flags);
+	ret = sym(dfd, path, argv, envp, atflags);
 	if (ret == -1)
 		__pathperror(path, __func__);
 
@@ -39,7 +39,7 @@ int next_execveat(int dfd, const char *path, char * const argv[],
 }
 
 int execveat(int dfd, const char *path, char * const argv[],
-	     char * const envp[], int flags)
+	     char * const envp[], int atflags)
 {
 	char *interparg[15+1] = { NULL }; /*  0 ARGV0
 					   *  1 /lib/ld.so
@@ -72,14 +72,14 @@ int execveat(int dfd, const char *path, char * const argv[],
 	if (exec_ignored(path))
 		goto exec_sh;
 
-	siz = path_resolution(dfd, path, buf, sizeof(buf), flags);
+	siz = path_resolution(dfd, path, buf, sizeof(buf), atflags);
 	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
-	__debug("%s(dfd, %d, path: '%s' -> '%s', argv: { '%s', '%s', ... }, envp: %p, flags: 0x%x)\n",
-		__func__, dfd, path, buf, argv[0], argv[1], envp, flags);
+	__debug("%s(dfd, %d, path: '%s' -> '%s', argv: { '%s', '%s', ... }, envp: %p, atflags: 0x%x)\n",
+		__func__, dfd, path, buf, argv[0], argv[1], envp, atflags);
 
 	interparg[0] = *argv; /* original argv0 as argv0 */
 	program = buf;
@@ -99,7 +99,7 @@ int execveat(int dfd, const char *path, char * const argv[],
 	/* Do not proceed to any hack if not in chroot */
 	if (!inchroot()) {
 		verbose_exec(path, argv, envp);
-		return next_execveat(dfd, path, argv, envp, flags);
+		return next_execveat(dfd, path, argv, envp, atflags);
 	}
 
 	ret = __hashbang(program, argv, hashbang, sizeof(hashbang), interparg);
@@ -132,7 +132,7 @@ loader:
 	    (__strncmp(path, "/lib/ld") == 0) ||
 	    (__strncmp(path, "/lib64/ld") == 0)) {
 		verbose_exec(buf, argv, envp);
-		return next_execveat(dfd, buf, argv, envp, flags);
+		return next_execveat(dfd, buf, argv, envp, atflags);
 	}
 
 	ret = __loader(program, argv, loaderbuf, sizeof(loaderbuf), interparg);
@@ -173,8 +173,8 @@ execveat:
 		*narg++ = NULL;
 
 		verbose_exec(*nargv, nargv, __environ);
-		__remove_at_empty_path_if_needed(*nargv, flags);
-		return next_execveat(dfd, *nargv, nargv, __environ, flags);
+		__remove_at_empty_path_if_needed(*nargv, atflags);
+		return next_execveat(dfd, *nargv, nargv, __environ, atflags);
 	}
 
 	errno = EINVAL;

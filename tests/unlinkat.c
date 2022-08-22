@@ -16,7 +16,7 @@
 
 int main(int argc, char * const argv[])
 {
-	int flags = 0, fd = AT_FDCWD, ret = EXIT_FAILURE;
+	int atflags = 0, fd = AT_FDCWD, ret = EXIT_FAILURE;
 
 	if (argc < 3) {
 		fprintf(stderr, "Too few arguments\n");
@@ -27,7 +27,7 @@ int main(int argc, char * const argv[])
 	}
 
 	if (argc == 4)
-		flags = strtoul(argv[3], NULL, 0);
+		atflags = strtoul(argv[3], NULL, 0);
 
 	if (__strncmp(argv[1], "-") != 0) {
 		fd = open(".", O_DIRECTORY);
@@ -37,7 +37,7 @@ int main(int argc, char * const argv[])
 		}
 	}
 
-	if (unlinkat(fd, argv[2], flags)) {
+	if (unlinkat(fd, argv[2], atflags)) {
 		perror("unlinkat");
 		goto exit;
 	}

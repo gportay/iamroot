@@ -22,7 +22,7 @@
 extern uid_t next_geteuid();
 
 __attribute__((visibility("hidden")))
-int next_statx(int dfd, const char *path, int flags, unsigned int mask,
+int next_statx(int dfd, const char *path, int atflags, unsigned int mask,
 	       struct statx *statxbuf)
 {
 	int (*sym)(int, const char *, int, unsigned int, struct statx *);
@@ -35,14 +35,14 @@ int next_statx(int dfd, const char *path, int flags, unsigned int mask,
 		return -1;
 	}
 
-	ret = sym(dfd, path, flags, mask, statxbuf);
+	ret = sym(dfd, path, atflags, mask, statxbuf);
 	if (ret == -1)
 		__pathperror(path, __func__);
 
 	return ret;
 }
 
-int statx(int dfd, const char *path, int flags, unsigned int mask,
+int statx(int dfd, const char *path, int atflags, unsigned int mask,
 	  struct statx *statxbuf)
 {
 	char buf[PATH_MAX];
@@ -51,17 +51,17 @@ int statx(int dfd, const char *path, int flags, unsigned int mask,
 	gid_t gid;
 	int ret;
 
-	siz = path_resolution(dfd, path, buf, sizeof(buf), flags);
+	siz = path_resolution(dfd, path, buf, sizeof(buf), atflags);
 	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
-	__debug("%s(dfd: %i, path: '%s' -> '%s', flags: 0x%x...)\n", __func__,
-		dfd, path, buf, flags);
+	__debug("%s(dfd: %i, path: '%s' -> '%s', atflags: 0x%x...)\n",
+		__func__, dfd, path, buf, atflags);
 
-	__remove_at_empty_path_if_needed(buf, flags);
-	ret = next_statx(dfd, buf, flags, mask, statxbuf);
+	__remove_at_empty_path_if_needed(buf, atflags);
+	ret = next_statx(dfd, buf, atflags, mask, statxbuf);
 	if (ret == -1)
 		goto exit;
 

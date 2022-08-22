@@ -16,7 +16,7 @@
 
 __attribute__((visibility("hidden")))
 int next_linkat(int oldfd, const char *oldpath, int newfd, const char *newpath,
-		int flags)
+		int atflags)
 {
 	int (*sym)(int, const char *, int, const char *, int);
 	int ret;
@@ -28,7 +28,7 @@ int next_linkat(int oldfd, const char *oldpath, int newfd, const char *newpath,
 		return -1;
 	}
 
-	ret = sym(oldfd, oldpath, newfd, newpath, flags);
+	ret = sym(oldfd, oldpath, newfd, newpath, atflags);
 	if (ret == -1)
 		__pathperror2(oldpath, newpath, __func__);
 
@@ -36,12 +36,12 @@ int next_linkat(int oldfd, const char *oldpath, int newfd, const char *newpath,
 }
 
 int linkat(int oldfd, const char *oldpath, int newfd, const char *newpath,
-	   int flags)
+	   int atflags)
 {
 	char oldbuf[PATH_MAX], newbuf[PATH_MAX];
 	ssize_t siz;
 
-	siz = path_resolution(oldfd, oldpath, oldbuf, sizeof(oldbuf), flags);
+	siz = path_resolution(oldfd, oldpath, oldbuf, sizeof(oldbuf), atflags);
 	if (siz == -1) {
 		__pathperror(oldpath, __func__);
 		return -1;
@@ -53,11 +53,11 @@ int linkat(int oldfd, const char *oldpath, int newfd, const char *newpath,
 		return -1;
 	}
 
-	__debug("%s(oldfd: %i, oldpath: '%s' -> '%s', newfd: %i, newpath: '%s' -> '%s', flags: 0x%x)\n",
+	__debug("%s(oldfd: %i, oldpath: '%s' -> '%s', newfd: %i, newpath: '%s' -> '%s', atflags: 0x%x)\n",
 		__func__, oldfd, oldpath, oldbuf, newfd, newpath, newbuf,
-		flags);
+		atflags);
 
-	__remove_at_empty_path_if_needed(oldbuf, flags);
-	__remove_at_empty_path_if_needed(newbuf, flags);
-	return next_linkat(oldfd, oldbuf, newfd, newbuf, flags);
+	__remove_at_empty_path_if_needed(oldbuf, atflags);
+	__remove_at_empty_path_if_needed(newbuf, atflags);
+	return next_linkat(oldfd, oldbuf, newfd, newbuf, atflags);
 }

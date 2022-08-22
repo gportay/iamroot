@@ -18,7 +18,7 @@
 #include "iamroot.h"
 
 __attribute__((visibility("hidden")))
-int next_getfhat(int dfd, char *path, fhandle_t *fhp, int flags)
+int next_getfhat(int dfd, char *path, fhandle_t *fhp, int atflags)
 {
 	int (*sym)(int, char *, fhandle_t *, int);
 	int ret;
@@ -30,27 +30,27 @@ int next_getfhat(int dfd, char *path, fhandle_t *fhp, int flags)
 		return -1;
 	}
 
-	ret = sym(dfd, path, fhp, flags);
+	ret = sym(dfd, path, fhp, atflags);
 	if (ret == -1)
 		__pathperror(path, __func__);
 
 	return ret;
 }
 
-int getfhat(int dfd, char *path, fhandle_t *fhp, int flags)
+int getfhat(int dfd, char *path, fhandle_t *fhp, int atflags)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
 
-	siz = path_resolution(dfd, path, buf, sizeof(buf), flags);
+	siz = path_resolution(dfd, path, buf, sizeof(buf), atflags);
 	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
-	__debug("%s(dfd: %i, path: '%s' -> '%s', ..., flags: 0x%x)\n",
-		__func__, dfd, path, buf, flags);
+	__debug("%s(dfd: %i, path: '%s' -> '%s', ..., atflags: 0x%x)\n",
+		__func__, dfd, path, buf, atflags);
 
-	return next_getfhat(dfd, buf, fhp, flags);
+	return next_getfhat(dfd, buf, fhp, atflags);
 }
 #endif

@@ -15,7 +15,7 @@
 #include "iamroot.h"
 
 __attribute__((visibility("hidden")))
-int next_fchmodat(int dfd, const char *path, mode_t mode, int flags)
+int next_fchmodat(int dfd, const char *path, mode_t mode, int atflags)
 {
 	int (*sym)(int, const char *, mode_t, int);
 	int ret;
@@ -27,32 +27,32 @@ int next_fchmodat(int dfd, const char *path, mode_t mode, int flags)
 		return -1;
 	}
 
-	ret = sym(dfd, path, mode, flags);
+	ret = sym(dfd, path, mode, atflags);
 	if (ret == -1)
 		__pathperror(path, __func__);
 
 	return ret;
 }
 
-int fchmodat(int dfd, const char *path, mode_t mode, int flags)
+int fchmodat(int dfd, const char *path, mode_t mode, int atflags)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
 	int ret;
 
-	siz = path_resolution(dfd, path, buf, sizeof(buf), flags);
+	siz = path_resolution(dfd, path, buf, sizeof(buf), atflags);
 	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
-	__debug("%s(dfd: %i, path: '%s' -> '%s', mode: 0%03o, flags: 0x%x)\n",
-		__func__, dfd, path, buf, mode, flags);
-	__fwarn_if_insuffisant_user_modeat(dfd, buf, mode, flags);
+	__debug("%s(dfd: %i, path: '%s' -> '%s', mode: 0%03o, atflags: 0x%x)\n",
+		__func__, dfd, path, buf, mode, atflags);
+	__fwarn_if_insuffisant_user_modeat(dfd, buf, mode, atflags);
 
-	__remove_at_empty_path_if_needed(buf, flags);
-	ret = next_fchmodat(dfd, buf, mode, flags);
-	__ignore_error_and_warn(ret, dfd, path, flags);
+	__remove_at_empty_path_if_needed(buf, atflags);
+	ret = next_fchmodat(dfd, buf, mode, atflags);
+	__ignore_error_and_warn(ret, dfd, path, atflags);
 
 	return ret;
 }

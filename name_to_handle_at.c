@@ -19,7 +19,7 @@
 __attribute__((visibility("hidden")))
 int next_name_to_handle_at(int dfd, const char *path,
 			   struct file_handle *handle, int *mount_id,
-			   int flags)
+			   int atflags)
 {
 	int (*sym)(int, const char *, struct file_handle *, int *, int);
 	int ret;
@@ -31,7 +31,7 @@ int next_name_to_handle_at(int dfd, const char *path,
 		return -1;
 	}
 
-	ret = sym(dfd, path, handle, mount_id, flags);
+	ret = sym(dfd, path, handle, mount_id, atflags);
 	if (ret == -1)
 		__pathperror(path, __func__);
 
@@ -39,21 +39,21 @@ int next_name_to_handle_at(int dfd, const char *path,
 }
 
 int name_to_handle_at(int dfd, const char *path, struct file_handle *handle,
-		      int *mount_id, int flags)
+		      int *mount_id, int atflags)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
 
-	siz = path_resolution(dfd, path, buf, sizeof(buf), flags);
+	siz = path_resolution(dfd, path, buf, sizeof(buf), atflags);
 	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
-	__debug("%s(path: '%s' -> '%s', ..., flags: 0x%x)\n", __func__, path,
-		buf, flags);
+	__debug("%s(path: '%s' -> '%s', ..., atflags: 0x%x)\n", __func__, path,
+		buf, atflags);
 
-	__remove_at_empty_path_if_needed(buf, flags);
-	return next_name_to_handle_at(dfd, buf, handle, mount_id, flags);
+	__remove_at_empty_path_if_needed(buf, atflags);
+	return next_name_to_handle_at(dfd, buf, handle, mount_id, atflags);
 }
 #endif

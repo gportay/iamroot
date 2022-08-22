@@ -13,10 +13,10 @@
 #ifdef __GLIBC__
 #if !__GLIBC_PREREQ(2,34)
 int execveat(int dfd, const char *path, char * const argv[],
-	     char * const envp[], int flags)
+	     char * const envp[], int atflags)
 {
 	(void)dfd;
-	(void)flags;
+	(void)atflags;
 
 	return execve(path, argv, envp);
 }

@@ -17,7 +17,7 @@
 
 int main(int argc, char * const argv[])
 {
-	int flags = 0, fd = AT_FDCWD, ret = EXIT_FAILURE;
+	int atflags = 0, fd = AT_FDCWD, ret = EXIT_FAILURE;
 	struct timespec times[2] = { 0 };
 
 	if (argc < 5) {
@@ -31,7 +31,7 @@ int main(int argc, char * const argv[])
 	times[0].tv_sec = strtoul(argv[3], NULL, 0);
 	times[1].tv_sec = strtoul(argv[4], NULL, 0);
 	if (argc == 6)
-		flags = strtoul(argv[5], NULL, 0);
+		atflags = strtoul(argv[5], NULL, 0);
 
 	if (__strncmp(argv[1], "-") != 0) {
 		fd = open(".", O_DIRECTORY);
@@ -41,7 +41,7 @@ int main(int argc, char * const argv[])
 		}
 	}
 
-	if (utimensat(fd, argv[2], times, flags)) {
+	if (utimensat(fd, argv[2], times, atflags)) {
 		perror("utimensat");
 		goto exit;
 	}

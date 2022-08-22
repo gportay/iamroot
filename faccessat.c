@@ -15,7 +15,7 @@
 #include "iamroot.h"
 
 __attribute__((visibility("hidden")))
-int next_faccessat(int dfd, const char *path, int mode, int flags)
+int next_faccessat(int dfd, const char *path, int mode, int atflags)
 {
 	int (*sym)(int, const char *, int, int);
 	int ret;
@@ -27,27 +27,27 @@ int next_faccessat(int dfd, const char *path, int mode, int flags)
 		return -1;
 	}
 
-	ret = sym(dfd, path, mode, flags);
+	ret = sym(dfd, path, mode, atflags);
 	if (ret == -1)
 		__pathperror(path, __func__);
 
 	return ret;
 }
 
-int faccessat(int dfd, const char *path, int mode, int flags)
+int faccessat(int dfd, const char *path, int mode, int atflags)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
 
-	siz = path_resolution(dfd, path, buf, sizeof(buf), flags);
+	siz = path_resolution(dfd, path, buf, sizeof(buf), atflags);
 	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
-	__debug("%s(dfd: %i, path: '%s' -> '%s', mode: 0%03o, flags: 0x%x)\n",
-		__func__, dfd, path, buf, mode, flags);
+	__debug("%s(dfd: %i, path: '%s' -> '%s', mode: 0%03o, atflags: 0x%x)\n",
+		__func__, dfd, path, buf, mode, atflags);
 
-	__remove_at_empty_path_if_needed(buf, flags);
-	return next_faccessat(dfd, buf, mode, flags);
+	__remove_at_empty_path_if_needed(buf, atflags);
+	return next_faccessat(dfd, buf, mode, atflags);
 }

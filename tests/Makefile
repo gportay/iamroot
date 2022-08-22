@@ -191,28 +191,24 @@ endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-mount -t procfs none rootfs/proc
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-umount rootfs/proc
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-umount2 rootfs/proc
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /                          | tee /dev/stderr | grep -q "^/\$$"
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /run/                      | tee /dev/stderr | grep -q "^/run\$$"
 ifeq ($(OS),FreeBSD)
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /var/run/                  | tee /dev/stderr | grep -q "^/var/run\$$"
-else
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /var/run/                  | tee /dev/stderr | grep -q "^/run\$$"
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /proc/                     | tee /dev/stderr | grep -q "^/proc/\$$"
-endif
-ifeq ($(OS),FreeBSD)
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /                                                                         | tee /dev/stderr | grep -q "^/\$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /run/                                                                     | tee /dev/stderr | grep -q "^/run\$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /var/run/                                                                 | tee /dev/stderr | grep -q "^/var/run\$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/local/lib IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /dev/    | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/dev\$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/local/lib IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /run     | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/run\$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/local/lib IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /var/run | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/var/run\$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR) test-pathsetenv LD_LIBRARY_PATH /usr/local/lib:/usr/lib:/lib                                                                    | tee /dev/stderr | grep -q "^/usr/local/lib:/usr/lib:/lib$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/local/lib IAMROOT_ROOT=$(CURDIR)/rootfs test-pathsetenv LD_LIBRARY_PATH /usr/local/lib:/usr/lib:/lib   | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/usr/local/lib:$(CURDIR)/rootfs/usr/lib:$(CURDIR)/rootfs/lib$$"
 else
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /                                                                         | tee /dev/stderr | grep -q "^/\$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /run/                                                                     | tee /dev/stderr | grep -q "^/run\$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /var/run/                                                                 | tee /dev/stderr | grep -q "^/run\$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /proc/                                                                    | tee /dev/stderr | grep -q "^/proc/\$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib64 IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /dev/        | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/dev\$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib64 IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /run         | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/run\$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib64 IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /var/run     | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/run\$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib64 IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /sys/        | tee /dev/stderr | grep -q "^/sys/\$$"
-endif
-ifeq ($(OS),FreeBSD)
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR) test-pathsetenv LD_LIBRARY_PATH /usr/local/lib:/usr/lib:/lib                                                                    | tee /dev/stderr | grep -q "^/usr/local/lib:/usr/lib:/lib$$"
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/local/lib IAMROOT_ROOT=$(CURDIR)/rootfs test-pathsetenv LD_LIBRARY_PATH /usr/local/lib:/usr/lib:/lib   | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/usr/local/lib:$(CURDIR)/rootfs/usr/lib:$(CURDIR)/rootfs/lib$$"
-else
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR) test-pathsetenv LD_LIBRARY_PATH /usr/local/lib64:/usr/lib64:/lib64                                                              | tee /dev/stderr | grep -q "^/usr/local/lib64:/usr/lib64:/lib64$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib64 IAMROOT_ROOT=$(CURDIR)/rootfs test-pathsetenv LD_LIBRARY_PATH /usr/local/lib64:/usr/lib64:/lib64 | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/usr/local/lib64:$(CURDIR)/rootfs/usr/lib64:$(CURDIR)/rootfs/lib64$$"
 endif

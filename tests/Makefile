@@ -129,7 +129,8 @@ test: | rootfs
 	-cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-acct /var/log/pacct
 ifeq ($(OS),FreeBSD)
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-chmod rootfs/tmp/file0 00644
-else
+endif
+ifeq ($(OS),GNU/Linux)
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-chmod rootfs/tmp/file0 01644
 endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-fchmodat . rootfs/tmp/file0 02644
@@ -200,7 +201,8 @@ ifeq ($(OS),FreeBSD)
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/local/lib IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /var/run | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/var/run\$$"
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR) test-pathsetenv LD_LIBRARY_PATH /usr/local/lib:/usr/lib:/lib                                                                    | tee /dev/stderr | grep -q "^/usr/local/lib:/usr/lib:/lib$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/local/lib IAMROOT_ROOT=$(CURDIR)/rootfs test-pathsetenv LD_LIBRARY_PATH /usr/local/lib:/usr/lib:/lib   | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/usr/local/lib:$(CURDIR)/rootfs/usr/lib:$(CURDIR)/rootfs/lib$$"
-else
+endif
+ifeq ($(OS),GNU/Linux)
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /                                                                         | tee /dev/stderr | grep -q "^/\$$"
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /run/                                                                     | tee /dev/stderr | grep -q "^/run\$$"
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /var/run/                                                                 | tee /dev/stderr | grep -q "^/run\$$"
@@ -303,7 +305,8 @@ endif
 	install -d -m755 $(DESTDIR)/var/log
 ifeq ($(OS),FreeBSD)
 	install -d -m755 $(DESTDIR)/var/run
-else
+endif
+ifeq ($(OS),GNU/Linux)
 	ln -sf /run $(DESTDIR)/var/run
 endif
 

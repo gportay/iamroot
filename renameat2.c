@@ -14,8 +14,8 @@
 #include "iamroot.h"
 
 __attribute__((visibility("hidden")))
-int next_renameat2(int oldfd, const char *oldpath, int newfd, const char *newpath,
-		   unsigned int flags)
+int next_renameat2(int oldfd, const char *oldpath, int newfd,
+		   const char *newpath, unsigned int flags)
 {
 	int (*sym)(int, const char *, int, const char *, unsigned int);
 	int ret;

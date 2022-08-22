@@ -55,6 +55,7 @@ int main(int argc, char * const argv[])
 		goto exit;
 	}
 #else
+	(void)ver;
 	if (mknodat(fd, argv[3], mode, dev)) {
 		perror("mknodat");
 		goto exit;

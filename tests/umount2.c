@@ -19,7 +19,6 @@ struct options {
 
 static int getoptions(struct options *opts, int argc, char * const argv[])
 {
-#ifdef __linux__
 	static const struct option long_options[] = {
 		{ "lazy",  required_argument, NULL, 'l' },
 		{ "force", required_argument, NULL, 'f' },
@@ -38,11 +37,15 @@ static int getoptions(struct options *opts, int argc, char * const argv[])
 
 		switch (c) {
 		case 'l':
+#ifdef __linux__
 			opts->flags |= MNT_DETACH;
+#endif
 			break;
 
 		case 'f':
+#ifdef __linux__
 			opts->flags |= MNT_FORCE;
+#endif
 			break;
 
 		default:
@@ -50,7 +53,6 @@ static int getoptions(struct options *opts, int argc, char * const argv[])
 			return -1;
 		}
 	}
-#endif
 
 	return optind;
 }
@@ -77,6 +79,8 @@ int main(int argc, char * const argv[])
 		perror("umount2");
 		return EXIT_FAILURE;
 	}
+#else
+	(void)argv;
 #endif
 
 	return EXIT_SUCCESS;

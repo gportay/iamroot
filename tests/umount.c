@@ -24,6 +24,8 @@ int main(int argc, char * const argv[])
 		perror("umount");
 		return EXIT_FAILURE;
 	}
+#else
+	(void)argv;
 #endif
 
 	return EXIT_SUCCESS;

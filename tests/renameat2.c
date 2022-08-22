@@ -51,6 +51,7 @@ int main(int argc, char * const argv[])
 		goto exit;
 	}
 #else
+	(void)flags;
 	if (renameat(oldfd, argv[2], newfd, argv[4])) {
 		perror("renameat");
 		goto exit;

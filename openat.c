@@ -15,7 +15,7 @@
 #include "iamroot.h"
 
 __attribute__((visibility("hidden")))
-int next_openat(int fd, const char *path, int flags, mode_t mode)
+int next_openat(int dfd, const char *path, int flags, mode_t mode)
 {
 	int (*sym)(int, const char *, int, ...);
 	int ret;
@@ -27,14 +27,14 @@ int next_openat(int fd, const char *path, int flags, mode_t mode)
 		return -1;
 	}
 
-	ret = sym(fd, path, flags, mode);
+	ret = sym(dfd, path, flags, mode);
 	if (ret == -1)
 		__pathperror(path, __func__);
 
 	return ret;
 }
 
-int openat(int fd, const char *path, int flags, ...)
+int openat(int dfd, const char *path, int flags, ...)
 {
 	char buf[PATH_MAX];
 	int atflags = 0;
@@ -44,7 +44,7 @@ int openat(int fd, const char *path, int flags, ...)
 	if (flags & O_NOFOLLOW)
 		atflags = AT_SYMLINK_NOFOLLOW;
 
-	siz = path_resolution(fd, path, buf, sizeof(buf), atflags);
+	siz = path_resolution(dfd, path, buf, sizeof(buf), atflags);
 	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
@@ -59,12 +59,12 @@ int openat(int fd, const char *path, int flags, ...)
 	}
 #endif
 
-	__debug("%s(fd: %i, path: '%s' -> '%s', flags: 0%o, mode: 0%03o)\n",
-		__func__, fd, path, buf, flags, mode);
+	__debug("%s(dfd: %i, path: '%s' -> '%s', flags: 0%o, mode: 0%03o)\n",
+		__func__, dfd, path, buf, flags, mode);
 	if (flags & O_CREAT)
-		__fwarn_if_insuffisant_user_modeat(fd, buf, mode, 0);
+		__fwarn_if_insuffisant_user_modeat(dfd, buf, mode, 0);
 
-	return next_openat(fd, buf, flags, mode);
+	return next_openat(dfd, buf, flags, mode);
 }
 
 #ifdef _LARGEFILE64_SOURCE

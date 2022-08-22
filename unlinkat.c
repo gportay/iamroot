@@ -15,7 +15,7 @@
 #include "iamroot.h"
 
 __attribute__((visibility("hidden")))
-int next_unlinkat(int fd, const char *path, int flags)
+int next_unlinkat(int dfd, const char *path, int flags)
 {
 	int (*sym)(int, const char *, int);
 	int ret;
@@ -27,29 +27,29 @@ int next_unlinkat(int fd, const char *path, int flags)
 		return -1;
 	}
 
-	ret = sym(fd, path, flags);
+	ret = sym(dfd, path, flags);
 	if (ret == -1)
 		__pathperror(path, __func__);
 
 	return ret;
 }
 
-int unlinkat(int fd, const char *path, int flags)
+int unlinkat(int dfd, const char *path, int flags)
 {
 	char buf[PATH_MAX];
 
 	ssize_t siz;
 
-	siz = path_resolution(fd, path, buf, sizeof(buf),
+	siz = path_resolution(dfd, path, buf, sizeof(buf),
 			      flags | AT_SYMLINK_NOFOLLOW);
 	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
-	__debug("%s(fd: %d, path: '%s' -> '%s', flags: 0x%x)\n", __func__, fd,
-		path, buf, flags);
+	__debug("%s(dfd: %d, path: '%s' -> '%s', flags: 0x%x)\n", __func__,
+		dfd, path, buf, flags);
 
 	__remove_at_empty_path_if_needed(buf, flags);
-	return next_unlinkat(fd, buf, flags);
+	return next_unlinkat(dfd, buf, flags);
 }

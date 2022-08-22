@@ -37,9 +37,9 @@ int __futimesat(int dirfd, const char *pathname, const struct timeval times[2])
 	return utimensat(dirfd, pathname, times ? ts : 0, 0);
 }
 
-int futimesat(int fd, const char *path, const struct timeval times[2])
+int futimesat(int dfd, const char *path, const struct timeval times[2])
 {
-	__debug("%s(fd: %d, path: '%s', ...)\n", __func__, fd, path);
+	__debug("%s(dfd: %d, path: '%s', ...)\n", __func__, dfd, path);
 
-	return __futimesat(fd, path, times);
+	return __futimesat(dfd, path, times);
 }

@@ -17,7 +17,7 @@
 #include "iamroot.h"
 
 __attribute__((visibility("hidden")))
-int next_chflagsat(int fd, const char *path, unsigned long flags, int atflag)
+int next_chflagsat(int dfd, const char *path, unsigned long flags, int atflag)
 {
 	int (*sym)(int, const char *, unsigned long, int);
 	int ret;
@@ -29,27 +29,27 @@ int next_chflagsat(int fd, const char *path, unsigned long flags, int atflag)
 		return -1;
 	}
 
-	ret = sym(fd, path, flags, atflag);
+	ret = sym(dfd, path, flags, atflag);
 	if (ret == -1)
 		__pathperror(path, __func__);
 
 	return ret;
 }
 
-int chflagsat(int fd, const char *path, unsigned long flags, int atflag)
+int chflagsat(int dfd, const char *path, unsigned long flags, int atflag)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
 
-	siz = path_resolution(fd, path, buf, sizeof(buf), atflag);
+	siz = path_resolution(dfd, path, buf, sizeof(buf), atflag);
 	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
-	__debug("%s(fd: %i, path: '%s', ..., flags: 0x%x)\n", __func__, fd,
+	__debug("%s(dnfd: %i, path: '%s', ..., flags: 0x%x)\n", __func__, dfd,
 		path, atflag);
 
-	return next_chflagsat(fd, path, flags, atflag);
+	return next_chflagsat(dfd, path, flags, atflag);
 }
 #endif

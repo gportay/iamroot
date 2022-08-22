@@ -17,7 +17,7 @@
 
 int main(int argc, char * const argv[])
 {
-	int fd = AT_FDCWD, ret = EXIT_FAILURE;
+	int dfd = AT_FDCWD, ret = EXIT_FAILURE;
 	char buf[PATH_MAX];
 	int length;
 	int flags;
@@ -39,14 +39,14 @@ int main(int argc, char * const argv[])
 
 #ifdef __FreeBSD__
 	if (__strncmp(argv[1], "-") != 0) {
-		fd = open(".", O_DIRECTORY);
-		if (fd == -1) {
+		dfd = open(".", O_DIRECTORY);
+		if (dfd == -1) {
 			perror("open");
 			return EXIT_FAILURE;
 		}
 	}
 
-	if (mkostempsat(fd, buf, length, flags) == -1) {
+	if (mkostempsat(dfd, buf, length, flags) == -1) {
 		perror("mkostempsat");
 		goto exit;
 	}
@@ -62,8 +62,8 @@ int main(int argc, char * const argv[])
 	ret = EXIT_SUCCESS;
 
 exit:
-	if (fd != AT_FDCWD)
-		if (close(fd))
+	if (dfd != AT_FDCWD)
+		if (close(dfd))
 			perror("close");
 
 	return ret;

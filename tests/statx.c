@@ -19,7 +19,7 @@
 #ifdef __GLIBC__
 int main(int argc, char * const argv[])
 {
-	int fd = AT_FDCWD, flags = 0, ret = EXIT_FAILURE;
+	int dfd = AT_FDCWD, flags = 0, ret = EXIT_FAILURE;
 	struct statx statxbuf;
 	unsigned int mask;
 
@@ -35,14 +35,14 @@ int main(int argc, char * const argv[])
 	mask = strtoul(argv[3], NULL, 0);
 
 	if (__strncmp(argv[1], "-") != 0) {
-		fd = open(".", O_RDONLY);
-		if (fd == -1) {
+		dfd = open(".", O_RDONLY);
+		if (dfd == -1) {
 			perror("open");
 			return EXIT_FAILURE;
 		}
 	}
 
-	if (statx(fd, argv[2], flags, mask, &statxbuf)) {
+	if (statx(dfd, argv[2], flags, mask, &statxbuf)) {
 		perror("statx");
 		goto exit;
 	}
@@ -50,8 +50,8 @@ int main(int argc, char * const argv[])
 	ret = EXIT_SUCCESS;
 
 exit:
-	if (fd != AT_FDCWD)
-		if (close(fd))
+	if (dfd != AT_FDCWD)
+		if (close(dfd))
 			perror("close");
 
 	return ret;

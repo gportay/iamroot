@@ -43,12 +43,12 @@ int _snprintf(char *buf, size_t bufsize, const char *fmt, ...)
 }
 
 __attribute__((visibility("hidden")))
-int fissymlinkat(int fd, const char *path, int flags)
+int fissymlinkat(int dfd, const char *path, int flags)
 {
 	struct stat statbuf;
 	int ret;
 
-	ret = next_fstatat(fd, path, &statbuf, flags);
+	ret = next_fstatat(dfd, path, &statbuf, flags);
 	if (ret == -1)
 		return ret;
 
@@ -82,12 +82,12 @@ int issymlink(const char *path)
 }
 
 __attribute__((visibility("hidden")))
-int fisdirectoryat(int fd, const char *path, int flags)
+int fisdirectoryat(int dfd, const char *path, int flags)
 {
 	struct stat statbuf;
 	int ret;
 
-	ret = next_fstatat(fd, path, &statbuf, flags);
+	ret = next_fstatat(dfd, path, &statbuf, flags);
 	if (ret == -1)
 		return ret;
 
@@ -121,12 +121,12 @@ int fisdirectory(int fd)
 }
 
 __attribute__((visibility("hidden")))
-int fisfileat(int fd, const char *path, int flags)
+int fisfileat(int dfd, const char *path, int flags)
 {
 	struct stat statbuf;
 	int ret;
 
-	ret = next_fstatat(fd, path, &statbuf, flags);
+	ret = next_fstatat(dfd, path, &statbuf, flags);
 	if (ret == -1)
 		return ret;
 

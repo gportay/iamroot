@@ -16,7 +16,7 @@
 
 int main(int argc, char * const argv[])
 {
-	int fd = AT_FDCWD, ret = EXIT_FAILURE;
+	int dfd = AT_FDCWD, ret = EXIT_FAILURE;
 
 	if (argc < 4) {
 		fprintf(stderr, "Too few arguments\n");
@@ -27,14 +27,14 @@ int main(int argc, char * const argv[])
 	}
 
 	if (__strncmp(argv[2], "-") != 0) {
-		fd = open(".", O_DIRECTORY);
-		if (fd == -1) {
+		dfd = open(".", O_DIRECTORY);
+		if (dfd == -1) {
 			perror("open");
 			return EXIT_FAILURE;
 		}
 	}
 
-	if (symlinkat(argv[1], fd, argv[3])) {
+	if (symlinkat(argv[1], dfd, argv[3])) {
 		perror("symlinkat");
 		goto exit;
 	}
@@ -42,8 +42,8 @@ int main(int argc, char * const argv[])
 	ret = EXIT_SUCCESS;
 
 exit:
-	if (fd != AT_FDCWD)
-		if (close(fd))
+	if (dfd != AT_FDCWD)
+		if (close(dfd))
 			perror("close");
 
 	return ret;

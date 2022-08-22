@@ -21,7 +21,7 @@
 
 int main(int argc, char * const argv[])
 {
-	int fd = AT_FDCWD, ret = EXIT_FAILURE;
+	int dfd = AT_FDCWD, ret = EXIT_FAILURE;
 	mode_t mode;
 	dev_t dev;
 
@@ -37,14 +37,14 @@ int main(int argc, char * const argv[])
 	dev = makedev(strtoul(argv[4], NULL, 0), strtoul(argv[5], NULL, 0));
 
 	if (__strncmp(argv[1], "-") != 0) {
-		fd = open(".", O_DIRECTORY);
-		if (fd == -1) {
+		dfd = open(".", O_DIRECTORY);
+		if (dfd == -1) {
 			perror("open");
 			return EXIT_FAILURE;
 		}
 	}
 
-	if (mknodat(fd, argv[2], mode, dev)) {
+	if (mknodat(dfd, argv[2], mode, dev)) {
 		perror("mknodat");
 		goto exit;
 	}
@@ -52,8 +52,8 @@ int main(int argc, char * const argv[])
 	ret = EXIT_SUCCESS;
 
 exit:
-	if (fd != AT_FDCWD)
-		if (close(fd))
+	if (dfd != AT_FDCWD)
+		if (close(dfd))
 			perror("close");
 
 	return ret;

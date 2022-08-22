@@ -17,7 +17,7 @@
 
 int main(int argc, char * const argv[])
 {
-	int fd = AT_FDCWD, ret = EXIT_FAILURE;
+	int dfd = AT_FDCWD, ret = EXIT_FAILURE;
 	char buf[PATH_MAX];
 	ssize_t siz;
 
@@ -30,14 +30,14 @@ int main(int argc, char * const argv[])
 	}
 
 	if (__strncmp(argv[2], "-") != 0) {
-		fd = open(".", O_DIRECTORY);
-		if (fd == -1) {
+		dfd = open(".", O_DIRECTORY);
+		if (dfd == -1) {
 			perror("open");
 			return EXIT_FAILURE;
 		}
 	}
 
-	siz = readlinkat(fd, argv[2], buf, sizeof(buf)-1);
+	siz = readlinkat(dfd, argv[2], buf, sizeof(buf)-1);
 	if (siz == -1) {
 		perror("readlinkat");
 		goto exit;
@@ -47,8 +47,8 @@ int main(int argc, char * const argv[])
 	printf("%s\n", buf);
 
 exit:
-	if (fd != AT_FDCWD)
-		if (close(fd))
+	if (dfd != AT_FDCWD)
+		if (close(dfd))
 			perror("close");
 
 	return ret;

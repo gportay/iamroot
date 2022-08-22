@@ -536,13 +536,13 @@ static char *__fpath(int fd)
 }
 
 __attribute__((visibility("hidden")))
-int path_ignored(int fd, const char *path)
+int path_ignored(int dfd, const char *path)
 {
-	if (fd != AT_FDCWD) {
+	if (dfd != AT_FDCWD) {
 		char buf[PATH_MAX];
 		ssize_t siz;
 
-		siz = fpath(fd, buf, sizeof(buf));
+		siz = fpath(dfd, buf, sizeof(buf));
 		if (siz == -1)
 			return -1;
 
@@ -552,13 +552,13 @@ int path_ignored(int fd, const char *path)
 	return ignore(path);
 }
 
-ssize_t path_resolution(int fd, const char *path, char *buf, size_t bufsize,
+ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 			int flags)
 {
 	const char *root;
 	size_t len;
 
-	if (fd == -1 || !path) {
+	if (dfd == -1 || !path) {
 		errno = EINVAL;
 		return -1;
 	}
@@ -589,19 +589,19 @@ ssize_t path_resolution(int fd, const char *path, char *buf, size_t bufsize,
 			if (n < 0)
 				return -1;
 		}
-	} else if (fd != AT_FDCWD) {
+	} else if (dfd != AT_FDCWD) {
 		char dirbuf[PATH_MAX];
 		ssize_t siz;
 		int n;
 
-		siz = fpath(fd, dirbuf, sizeof(dirbuf));
+		siz = fpath(dfd, dirbuf, sizeof(dirbuf));
 		if (siz == -1) {
-			__fpathperror(fd, "fpath");
+			__fpathperror(dfd, "fpath");
 			return -1;
 		}
 
 		if (*dirbuf != '/') {
-			__warning("%d: ignore relative path '%s'\n", fd,
+			__warning("%d: ignore relative path '%s'\n", dfd,
 				  dirbuf);
 			goto ignore;
 		}
@@ -641,15 +641,15 @@ ignore:
 }
 
 __attribute__((visibility("hidden")))
-char *__getpath(int fd, const char *path, int flags)
+char *__getpath(int dfd, const char *path, int flags)
 {
 	static char buf[PATH_MAX];
 	ssize_t siz;
 
 	*buf = 0;
-	if (path_ignored(fd, path) > 0) {
+	if (path_ignored(dfd, path) > 0) {
 		if (!*path)
-			path = __fpath(fd);
+			path = __fpath(dfd);
 
 		if (follow_symlink(flags))
 			return next_realpath(path, buf);
@@ -657,7 +657,7 @@ char *__getpath(int fd, const char *path, int flags)
 		return _strncpy(buf, path, sizeof(buf));
 	}
 
-	siz = path_resolution(fd, path, buf, sizeof(buf), flags);
+	siz = path_resolution(dfd, path, buf, sizeof(buf), flags);
 	if (!siz)
 		return NULL;
 

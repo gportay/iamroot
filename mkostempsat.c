@@ -17,7 +17,7 @@
 #include "iamroot.h"
 
 __attribute__((visibility("hidden")))
-int next_mkostempsat(int fd, char *path, int suffixlen, int flags)
+int next_mkostempsat(int dfd, char *path, int suffixlen, int flags)
 {
 	int (*sym)(int, char *, int, int);
 	int ret;
@@ -29,27 +29,27 @@ int next_mkostempsat(int fd, char *path, int suffixlen, int flags)
 		return -1;
 	}
 
-	ret = sym(fd, path, suffixlen, flags);
+	ret = sym(dfd, path, suffixlen, flags);
 	if (ret == -1)
 		__pathperror(path, __func__);
 
 	return ret;
 }
 
-int mkostempsat(int fd, char *path, int suffixlen, int flags)
+int mkostempsat(int dfd, char *path, int suffixlen, int flags)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
 	size_t len;
 	int ret;
 
-	siz = path_resolution(fd, path, buf, sizeof(buf), 0);
+	siz = path_resolution(dfd, path, buf, sizeof(buf), 0);
 	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
-	ret = next_mkostempsat(fd, buf, suffixlen, flags);
+	ret = next_mkostempsat(dfd, buf, suffixlen, flags);
 	if (ret == -1)
 		goto exit;
 
@@ -57,7 +57,7 @@ int mkostempsat(int fd, char *path, int suffixlen, int flags)
 	memcpy(path, buf+__strlen(buf)-len, len);
 
 exit:
-	__debug("%s(fd: %d, path: '%s' -> '%s', flags: 0%o)\n", __func__, fd,
+	__debug("%s(dfd: %d, path: '%s' -> '%s', flags: 0%o)\n", __func__, dfd,
 		path, buf, flags);
 
 	return ret;

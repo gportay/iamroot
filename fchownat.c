@@ -17,7 +17,8 @@
 extern uid_t next_geteuid();
 
 __attribute__((visibility("hidden")))
-int next_fchownat(int fd, const char *path, uid_t owner, gid_t group, int flags)
+int next_fchownat(int dfd, const char *path, uid_t owner, gid_t group,
+		  int flags)
 {
 	int (*sym)(int, const char *, uid_t, gid_t, int);
 	int ret;
@@ -29,20 +30,20 @@ int next_fchownat(int fd, const char *path, uid_t owner, gid_t group, int flags)
 		return -1;
 	}
 
-	ret = sym(fd, path, owner, group, flags);
+	ret = sym(dfd, path, owner, group, flags);
 	if (ret == -1)
 		__pathperror(path, __func__);
 
 	return ret;
 }
 
-int fchownat(int fd, const char *path, uid_t owner, gid_t group, int flags)
+int fchownat(int dfd, const char *path, uid_t owner, gid_t group, int flags)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
 	int ret;
 
-	siz = path_resolution(fd, path, buf, sizeof(buf), flags);
+	siz = path_resolution(dfd, path, buf, sizeof(buf), flags);
 	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
@@ -51,12 +52,12 @@ int fchownat(int fd, const char *path, uid_t owner, gid_t group, int flags)
 	owner = next_geteuid();
 	group = getegid();
 
-	__debug("%s(fd: %i, path: '%s' -> '%s', owner: %i, group: %i, flags: 0x%x)\n",
-		__func__, fd, path, buf, owner, group, flags);
+	__debug("%s(dfd: %i, path: '%s' -> '%s', owner: %i, group: %i, flags: 0x%x)\n",
+		__func__, dfd, path, buf, owner, group, flags);
 
 	__remove_at_empty_path_if_needed(buf, flags);
-	ret = next_fchownat(fd, buf, owner, group, flags);
-	__ignore_error_and_warn(ret, fd, path, flags);
+	ret = next_fchownat(dfd, buf, owner, group, flags);
+	__ignore_error_and_warn(ret, dfd, path, flags);
 
 	return ret;
 }

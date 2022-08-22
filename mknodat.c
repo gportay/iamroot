@@ -16,21 +16,22 @@
 
 extern int next_creat(const char *, mode_t);
 
-int mknodat(int fd, const char *path, mode_t mode, dev_t dev)
+int mknodat(int dfd, const char *path, mode_t mode, dev_t dev)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
+	int fd;
 	(void)dev;
 
-	siz = path_resolution(fd, path, buf, sizeof(buf), 0);
+	siz = path_resolution(dfd, path, buf, sizeof(buf), 0);
 	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
-	__debug("%s(fd %i, path: '%s' -> '%s', mode: 0%03o)\n", __func__, fd,
+	__debug("%s(dfd %i, path: '%s' -> '%s', mode: 0%03o)\n", __func__, dfd,
 		path, buf, mode);
-	__fwarn_if_insuffisant_user_modeat(fd, buf, mode, 0);
+	__fwarn_if_insuffisant_user_modeat(dfd, buf, mode, 0);
 
 	fd = next_creat(buf, mode);
 	if (fd == -1)

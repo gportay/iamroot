@@ -15,7 +15,7 @@
 #include "iamroot.h"
 
 __attribute__((visibility("hidden")))
-int next_mkdirat(int fd, const char *path, mode_t mode)
+int next_mkdirat(int dfd, const char *path, mode_t mode)
 {
 	int (*sym)(int, const char *, mode_t);
 	int ret;
@@ -27,27 +27,27 @@ int next_mkdirat(int fd, const char *path, mode_t mode)
 		return -1;
 	}
 
-	ret = sym(fd, path, mode);
+	ret = sym(dfd, path, mode);
 	if (ret == -1)
 		__pathperror(path, __func__);
 
 	return ret;
 }
 
-int mkdirat(int fd, const char *path, mode_t mode)
+int mkdirat(int dfd, const char *path, mode_t mode)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
 
-	siz = path_resolution(fd, path, buf, sizeof(buf), 0);
+	siz = path_resolution(dfd, path, buf, sizeof(buf), 0);
 	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
-	__debug("%s(fd: %d, path: '%s' -> '%s', mode: 0%03o)\n", __func__, fd,
-		path, buf, mode);
-	__fwarn_if_insuffisant_user_modeat(fd, buf, mode, 0);
+	__debug("%s(dfd: %d, path: '%s' -> '%s', mode: 0%03o)\n", __func__,
+		dfd, path, buf, mode);
+	__fwarn_if_insuffisant_user_modeat(dfd, buf, mode, 0);
 
-	return next_mkdirat(fd, buf, mode);
+	return next_mkdirat(dfd, buf, mode);
 }

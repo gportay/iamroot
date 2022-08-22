@@ -21,10 +21,10 @@
 __attribute__((visibility("hidden")))
 #ifdef __GLIBC__
 int next_fanotify_mark(int fanotify_fd, unsigned int flags, uint64_t mask,
-		       int fd, const char *path)
+		       int dfd, const char *path)
 #else
 int next_fanotify_mark(int fanotify_fd, unsigned int flags, unsigned long mask,
-		       int fd, const char *path)
+		       int dfd, const char *path)
 #endif
 {
 #ifdef __GLIBC__
@@ -41,7 +41,7 @@ int next_fanotify_mark(int fanotify_fd, unsigned int flags, unsigned long mask,
 		return -1;
 	}
 
-	ret = sym(fanotify_fd, flags, mask, fd, path);
+	ret = sym(fanotify_fd, flags, mask, dfd, path);
 	if (ret == -1)
 		__pathperror(path, __func__);
 
@@ -49,11 +49,11 @@ int next_fanotify_mark(int fanotify_fd, unsigned int flags, unsigned long mask,
 }
 
 #ifdef __GLIBC__
-int fanotify_mark(int fanotify_fd, unsigned int flags, uint64_t mask, int fd,
+int fanotify_mark(int fanotify_fd, unsigned int flags, uint64_t mask, int dfd,
 		  const char *path)
 #else
 int fanotify_mark(int fanotify_fd, unsigned int flags, unsigned long long mask,
-		  int fd, const char *path)
+		  int dfd, const char *path)
 #endif
 {
 	char buf[PATH_MAX];
@@ -65,8 +65,8 @@ int fanotify_mark(int fanotify_fd, unsigned int flags, unsigned long long mask,
 		return -1;
 	}
 
-	__debug("%s(..., fd: %i, path: '%s')\n", __func__, fd, path);
+	__debug("%s(..., dfd: %i, path: '%s')\n", __func__, dfd, path);
 
-	return next_fanotify_mark(fanotify_fd, flags, mask, fd, path);
+	return next_fanotify_mark(fanotify_fd, flags, mask, dfd, path);
 }
 #endif

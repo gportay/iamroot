@@ -15,7 +15,7 @@
 #include "iamroot.h"
 
 __attribute__((visibility("hidden")))
-int next_scandirat(int fd, const char *path, struct dirent ***namelist,
+int next_scandirat(int dfd, const char *path, struct dirent ***namelist,
 		  int (*filter)(const struct dirent *),
 		  int (*compar)(const struct dirent **, const struct dirent **))
 {
@@ -31,21 +31,21 @@ int next_scandirat(int fd, const char *path, struct dirent ***namelist,
 		return -1;
 	}
 
-	ret = sym(fd, path, namelist, filter, compar);
+	ret = sym(dfd, path, namelist, filter, compar);
 	if (ret == -1)
 		__pathperror(path, __func__);
 
 	return ret;
 }
 
-int scandirat(int fd, const char *path, struct dirent ***namelist,
+int scandirat(int dfd, const char *path, struct dirent ***namelist,
 	      int (*filter)(const struct dirent *),
 	      int (*compar)(const struct dirent **, const struct dirent **))
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
 
-	siz = path_resolution(fd, path, buf, sizeof(buf), 0);
+	siz = path_resolution(dfd, path, buf, sizeof(buf), 0);
 	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
@@ -53,5 +53,5 @@ int scandirat(int fd, const char *path, struct dirent ***namelist,
 
 	__debug("%s(path: '%s' -> '%s')\n", __func__, path, buf);
 
-	return next_scandirat(fd, buf, namelist, filter, compar);
+	return next_scandirat(dfd, buf, namelist, filter, compar);
 }

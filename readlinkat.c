@@ -15,7 +15,7 @@
 #include "iamroot.h"
 
 __attribute__((visibility("hidden")))
-ssize_t next_readlinkat(int fd, const char *path, char *buf, size_t bufsize)
+ssize_t next_readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 {
 	ssize_t (*sym)(int, const char *, char *, size_t);
 	ssize_t ret;
@@ -27,14 +27,14 @@ ssize_t next_readlinkat(int fd, const char *path, char *buf, size_t bufsize)
 		return -1;
 	}
 
-	ret = sym(fd, path, buf, bufsize);
+	ret = sym(dfd, path, buf, bufsize);
 	if (ret == -1)
 		__pathperror(path, __func__);
 
 	return ret;
 }
 
-ssize_t readlinkat(int fd, const char *path, char *buf, size_t bufsize)
+ssize_t readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 {
 	char tmp[PATH_MAX];
 	const char *root;
@@ -54,7 +54,8 @@ ssize_t readlinkat(int fd, const char *path, char *buf, size_t bufsize)
 		return ret;
 	}
 
-	siz = path_resolution(fd, path, tmp, sizeof(tmp), AT_SYMLINK_NOFOLLOW);
+	siz = path_resolution(dfd, path, tmp, sizeof(tmp),
+			      AT_SYMLINK_NOFOLLOW);
 	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
@@ -76,7 +77,7 @@ ssize_t readlinkat(int fd, const char *path, char *buf, size_t bufsize)
 		}
 	}
 
-	ret = next_readlinkat(fd, tmp, buf, bufsize);
+	ret = next_readlinkat(dfd, tmp, buf, bufsize);
 	if (ret == -1)
 		goto exit;
 
@@ -93,7 +94,7 @@ ssize_t readlinkat(int fd, const char *path, char *buf, size_t bufsize)
 		buf[ret++] = '/';
 
 exit:
-	__debug("%s(fd: %i, path: '%s' -> '%s', ...)\n", __func__, fd, path,
+	__debug("%s(dfd: %i, path: '%s' -> '%s', ...)\n", __func__, dfd, path,
 		tmp);
 
 	return ret;

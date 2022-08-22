@@ -16,7 +16,7 @@
 
 #ifdef __GLIBC__
 __attribute__((visibility("hidden")))
-DIR *next___opendirat(int fd, const char *path)
+DIR *next___opendirat(int dfd, const char *path)
 {
 	DIR *(*sym)(int, const char *);
 	DIR *ret;
@@ -28,26 +28,26 @@ DIR *next___opendirat(int fd, const char *path)
 		return NULL;
 	}
 
-	ret = sym(fd, path);
+	ret = sym(dfd, path);
 	if (!ret)
 		__pathperror(path, __func__);
 
 	return ret;
 }
 
-DIR *__opendirat(int fd, const char *path)
+DIR *__opendirat(int dfd, const char *path)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
 
-	siz = path_resolution(fd, path, buf, sizeof(buf), 0);
+	siz = path_resolution(dfd, path, buf, sizeof(buf), 0);
 	if (siz == -1) {
 		__pathperror(path, __func__);
 		return NULL;
 	}
 
-	__debug("%s(fd: %d, path: '%s' -> '%s')\n", __func__, fd, path, buf);
+	__debug("%s(dfd: %d, path: '%s' -> '%s')\n", __func__, dfd, path, buf);
 
-	return next___opendirat(fd, buf);
+	return next___opendirat(dfd, buf);
 }
 #endif

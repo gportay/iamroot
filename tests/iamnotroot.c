@@ -30,10 +30,10 @@ int pathsetenv(const char *root, const char *name, const char *value,
 	return -1;
 }
 
-ssize_t path_resolution(int fd, const char *path, char *buf, size_t bufsize,
+ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 			int flags)
 {
-	(void)fd;
+	(void)dfd;
 	(void)path;
 	(void)buf;
 	(void)bufsize;

@@ -18,7 +18,7 @@
 extern uid_t next_geteuid();
 
 __attribute__((visibility("hidden")))
-int next_fstatat(int fd, const char *path, struct stat *statbuf, int flags)
+int next_fstatat(int dfd, const char *path, struct stat *statbuf, int flags)
 {
 	int (*sym)(int, const char *, struct stat *, int);
 	int ret;
@@ -28,20 +28,20 @@ int next_fstatat(int fd, const char *path, struct stat *statbuf, int flags)
 		int next___fxstatat(int, int, const char *, struct stat *,
 				    int);
 #if defined(__arm__)
-		return next___fxstatat(3, fd, path, statbuf, flags);
+		return next___fxstatat(3, dfd, path, statbuf, flags);
 #else
-		return next___fxstatat(0, fd, path, statbuf, flags);
+		return next___fxstatat(0, dfd, path, statbuf, flags);
 #endif
 	}
 
-	ret = sym(fd, path, statbuf, flags);
+	ret = sym(dfd, path, statbuf, flags);
 	if (ret == -1)
 		__pathperror(path, __func__);
 
 	return ret;
 }
 
-int fstatat(int fd, const char *path, struct stat *statbuf, int flags)
+int fstatat(int dfd, const char *path, struct stat *statbuf, int flags)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
@@ -49,17 +49,17 @@ int fstatat(int fd, const char *path, struct stat *statbuf, int flags)
 	gid_t gid;
 	int ret;
 
-	siz = path_resolution(fd, path, buf, sizeof(buf), flags);
+	siz = path_resolution(dfd, path, buf, sizeof(buf), flags);
 	if (siz == -1) {
 		__pathperror(path, __func__);
 		return -1;
 	}
 
-	__debug("%s(fd: %i, path: '%s' -> '%s', ..., flags: 0x%x)\n", __func__,
-		fd, path, buf, flags);
+	__debug("%s(dfd: %i, path: '%s' -> '%s', ..., flags: 0x%x)\n",
+		__func__, dfd, path, buf, flags);
 
 	__remove_at_empty_path_if_needed(buf, flags);
-	ret = next_fstatat(fd, buf, statbuf, flags);
+	ret = next_fstatat(dfd, buf, statbuf, flags);
 	if (ret == -1)
 		goto exit;
 

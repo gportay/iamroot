@@ -16,7 +16,7 @@
 
 int main(int argc, char * const argv[])
 {
-	int fd = AT_FDCWD, flags = 0, ret = EXIT_FAILURE;
+	int dfd = AT_FDCWD, flags = 0, ret = EXIT_FAILURE;
 	uid_t owner;
 	gid_t group;
 
@@ -34,14 +34,14 @@ int main(int argc, char * const argv[])
 		flags = strtoul(argv[5], NULL, 0);
 
 	if (__strncmp(argv[1], "-") != 0) {
-		fd = open(argv[1], O_DIRECTORY);
-		if (fd == -1) {
+		dfd = open(argv[1], O_DIRECTORY);
+		if (dfd == -1) {
 			perror("open");
 			return EXIT_FAILURE;
 		}
 	}
 
-	if (fchownat(fd, argv[2], owner, group, flags)) {
+	if (fchownat(dfd, argv[2], owner, group, flags)) {
 		perror("fchownat");
 		goto exit;
 	}
@@ -49,8 +49,8 @@ int main(int argc, char * const argv[])
 	ret = EXIT_SUCCESS;
 
 exit:
-	if (fd != AT_FDCWD)
-		if (close(fd))
+	if (dfd != AT_FDCWD)
+		if (close(dfd))
 			perror("close");
 
 	return ret;

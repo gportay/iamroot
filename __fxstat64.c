@@ -16,11 +16,11 @@
 #ifdef _LARGEFILE64_SOURCE
 extern int __fxstatat64(int, int, const char *, struct stat64 *, int);
 
-int __fxstat64(int ver, int fd, struct stat64 *statbuf)
+int __fxstat64(int ver, int dfd, struct stat64 *statbuf)
 {
-	__debug("%s(fd: %i, ...)\n", __func__, fd);
+	__debug("%s(dfd: %i, ...)\n", __func__, dfd);
 
-	return __fxstatat64(ver, fd, "", statbuf, AT_EMPTY_PATH);
+	return __fxstatat64(ver, dfd, "", statbuf, AT_EMPTY_PATH);
 }
 #endif
 #endif

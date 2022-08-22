@@ -17,7 +17,7 @@
 #include "iamroot.h"
 
 __attribute__((visibility("hidden")))
-DIR *next___opendir2(const char *path, int flags)
+DIR *next___opendir2(const char *path, int oflags)
 {
 	DIR *(*sym)(const char *, int);
 	DIR *ret;
@@ -29,14 +29,14 @@ DIR *next___opendir2(const char *path, int flags)
 		return NULL;
 	}
 
-	ret = sym(path, flags);
+	ret = sym(path, oflags);
 	if (!ret)
 		__pathperror(path, __func__);
 
 	return ret;
 }
 
-DIR *__opendir2(const char *path, int flags)
+DIR *__opendir2(const char *path, int oflags)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
@@ -47,9 +47,9 @@ DIR *__opendir2(const char *path, int flags)
 		return NULL;
 	}
 
-	__debug("%s(path: '%s' -> '%s', flags: 0%o)\n", __func__, path, buf,
-		flags);
+	__debug("%s(path: '%s' -> '%s', oflags: 0%o)\n", __func__, path, buf,
+		oflags);
 
-	return next___opendir2(buf, flags);
+	return next___opendir2(buf, oflags);
 }
 #endif

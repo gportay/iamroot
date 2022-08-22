@@ -17,7 +17,7 @@
 
 #ifdef __GLIBC__
 __attribute__((visibility("hidden")))
-int next___open_2(const char *path, int flags)
+int next___open_2(const char *path, int oflags)
 {
 	int (*sym)(const char *, int);
 	int ret;
@@ -29,20 +29,20 @@ int next___open_2(const char *path, int flags)
 		return -1;
 	}
 
-	ret = sym(path, flags);
+	ret = sym(path, oflags);
 	if (ret == -1)
 		__pathperror(path, __func__);
 
 	return ret;
 }
 
-int __open_2(const char *path, int flags)
+int __open_2(const char *path, int oflags)
 {
 	char buf[PATH_MAX];
 	int atflags = 0;
 	ssize_t siz;
 
-	if (flags & O_NOFOLLOW)
+	if (oflags & O_NOFOLLOW)
 		atflags = AT_SYMLINK_NOFOLLOW;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), atflags);
@@ -51,10 +51,10 @@ int __open_2(const char *path, int flags)
 		return -1;
 	}
 
-	__debug("%s(path: '%s' -> '%s', flags: 0%o)\n", __func__, path, buf,
-		flags);
+	__debug("%s(path: '%s' -> '%s', oflags: 0%o)\n", __func__, path, buf,
+		oflags);
 
-	return next___open_2(buf, flags);
+	return next___open_2(buf, oflags);
 }
 
 weak_alias(__open_2, __open64_2);

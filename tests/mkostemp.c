@@ -14,7 +14,7 @@
 int main(int argc, char * const argv[])
 {
 	char buf[PATH_MAX];
-	int flags;
+	int oflags;
 
 	if (argc < 3) {
 		fprintf(stderr, "Too few arguments\n");
@@ -27,9 +27,9 @@ int main(int argc, char * const argv[])
 	memset(buf, 0, sizeof(buf));
 	strncpy(buf, argv[1], sizeof(buf)-1);
 
-	flags = strtol(argv[2], NULL, 0);
+	oflags = strtol(argv[2], NULL, 0);
 
-	if (mkostemp(buf, flags) == -1) {
+	if (mkostemp(buf, oflags) == -1) {
 		perror("mkostemp");
 		return EXIT_FAILURE;
 	}

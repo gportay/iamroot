@@ -16,7 +16,7 @@
 #include "iamroot.h"
 
 __attribute__((visibility("hidden")))
-int next_mkostemps(char *path, int suffixlen, int flags)
+int next_mkostemps(char *path, int suffixlen, int oflags)
 {
 	int (*sym)(char *, int, int);
 	int ret;
@@ -28,14 +28,14 @@ int next_mkostemps(char *path, int suffixlen, int flags)
 		return -1;
 	}
 
-	ret = sym(path, suffixlen, flags);
+	ret = sym(path, suffixlen, oflags);
 	if (ret == -1)
 		__pathperror(path, __func__);
 
 	return ret;
 }
 
-int mkostemps(char *path, int suffixlen, int flags)
+int mkostemps(char *path, int suffixlen, int oflags)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
@@ -48,7 +48,7 @@ int mkostemps(char *path, int suffixlen, int flags)
 		return -1;
 	}
 
-	ret = next_mkostemps(buf, suffixlen, flags);
+	ret = next_mkostemps(buf, suffixlen, oflags);
 	if (ret == -1)
 		goto exit;
 
@@ -56,8 +56,8 @@ int mkostemps(char *path, int suffixlen, int flags)
 	memcpy(path, buf+__strlen(buf)-len, len);
 
 exit:
-	__debug("%s(path: '%s' -> '%s', flags: 0%o)\n", __func__, path, buf,
-		flags);
+	__debug("%s(path: '%s' -> '%s', oflags: 0%o)\n", __func__, path, buf,
+		oflags);
 
 	return ret;
 }

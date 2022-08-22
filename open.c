@@ -17,7 +17,7 @@
 #include "iamroot.h"
 
 __attribute__((visibility("hidden")))
-int next_open(const char *path, int flags, mode_t mode)
+int next_open(const char *path, int oflags, mode_t mode)
 {
 	int (*sym)(const char *, int, ...);
 	int ret;
@@ -29,21 +29,21 @@ int next_open(const char *path, int flags, mode_t mode)
 		return -1;
 	}
 
-	ret = sym(path, flags, mode);
+	ret = sym(path, oflags, mode);
 	if (ret == -1)
 		__pathperror(path, __func__);
 
 	return ret;
 }
 
-int open(const char *path, int flags, ...)
+int open(const char *path, int oflags, ...)
 {
 	char buf[PATH_MAX];
 	int atflags = 0;
 	mode_t mode = 0;
 	ssize_t siz;
 
-	if (flags & O_NOFOLLOW)
+	if (oflags & O_NOFOLLOW)
 		atflags = AT_SYMLINK_NOFOLLOW;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), atflags);
@@ -53,20 +53,20 @@ int open(const char *path, int flags, ...)
 	}
 
 #ifdef __linux__
-	if ((flags & O_CREAT) || (flags & O_TMPFILE) == O_TMPFILE) {
+	if ((oflags & O_CREAT) || (oflags & O_TMPFILE) == O_TMPFILE) {
 		va_list ap;
-		va_start(ap, flags);
+		va_start(ap, oflags);
 		mode = va_arg(ap, mode_t);
 		va_end(ap);
 	}
 #endif
 
-	__debug("%s(path: '%s' -> '%s', flags: 0%o, mode: 0%03o)\n", __func__,
-		path, buf, flags, mode);
-	if (flags & O_CREAT)
+	__debug("%s(path: '%s' -> '%s', oflags: 0%o, mode: 0%03o)\n", __func__,
+		path, buf, oflags, mode);
+	if (oflags & O_CREAT)
 		__warn_if_insuffisant_user_mode(buf, mode);
 
-	return next_open(buf, flags, mode);
+	return next_open(buf, oflags, mode);
 }
 
 #ifdef _LARGEFILE64_SOURCE

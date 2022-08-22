@@ -15,7 +15,7 @@
 
 #ifdef __GLIBC__
 __attribute__((visibility("hidden")))
-int next___openat_2(int dfd, const char *path, int flags)
+int next___openat_2(int dfd, const char *path, int oflags)
 {
 	int (*sym)(int, const char *, int);
 	int ret;
@@ -27,20 +27,20 @@ int next___openat_2(int dfd, const char *path, int flags)
 		return -1;
 	}
 
-	ret = sym(dfd, path, flags);
+	ret = sym(dfd, path, oflags);
 	if (ret == -1)
 		__pathperror(path, __func__);
 
 	return ret;
 }
 
-int __openat_2(int dfd, const char *path, int flags)
+int __openat_2(int dfd, const char *path, int oflags)
 {
 	char buf[PATH_MAX];
 	int atflags = 0;
 	ssize_t siz;
 
-	if (flags & O_NOFOLLOW)
+	if (oflags & O_NOFOLLOW)
 		atflags = AT_SYMLINK_NOFOLLOW;
 
 	siz = path_resolution(dfd, path, buf, sizeof(buf), atflags);
@@ -49,10 +49,10 @@ int __openat_2(int dfd, const char *path, int flags)
 		return -1;
 	}
 
-	__debug("%s(dfd: %d, path: '%s' -> '%s', flags: 0%o)\n", __func__, dfd,
-		path, buf, flags);
+	__debug("%s(dfd: %d, path: '%s' -> '%s', oflags: 0%o)\n", __func__,
+		dfd, path, buf, oflags);
 
-	return next___openat_2(dfd, buf, flags);
+	return next___openat_2(dfd, buf, oflags);
 }
 
 weak_alias(__openat_2, __openat64_2);

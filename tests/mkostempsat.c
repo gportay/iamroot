@@ -20,7 +20,7 @@ int main(int argc, char * const argv[])
 	int dfd = AT_FDCWD, ret = EXIT_FAILURE;
 	char buf[PATH_MAX];
 	int length;
-	int flags;
+	int oflags;
 
 	if (argc < 5) {
 		fprintf(stderr, "Too few arguments\n");
@@ -35,7 +35,7 @@ int main(int argc, char * const argv[])
 	strncpy(buf, argv[2], sizeof(buf)-1);
 
 	length = strtol(argv[3], NULL, 0);
-	flags = strtol(argv[4], NULL, 0);
+	oflags = strtol(argv[4], NULL, 0);
 
 #ifdef __FreeBSD__
 	if (__strncmp(argv[1], "-") != 0) {
@@ -46,12 +46,12 @@ int main(int argc, char * const argv[])
 		}
 	}
 
-	if (mkostempsat(dfd, buf, length, flags) == -1) {
+	if (mkostempsat(dfd, buf, length, oflags) == -1) {
 		perror("mkostempsat");
 		goto exit;
 	}
 #else
-	if (mkostemps(buf, length, flags) == -1) {
+	if (mkostemps(buf, length, oflags) == -1) {
 		perror("mkostemps");
 		goto exit;
 	}

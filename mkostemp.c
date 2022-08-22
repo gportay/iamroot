@@ -11,11 +11,11 @@
 
 #include "iamroot.h"
 
-int mkostemp(char *path, int flags)
+int mkostemp(char *path, int oflags)
 {
-	__debug("%s(path: '%s', flags: 0%o)\n", __func__, path, flags);
+	__debug("%s(path: '%s', oflags: 0%o)\n", __func__, path, oflags);
 
-	return mkostemps(path, 0, flags);
+	return mkostemps(path, 0, oflags);
 }
 
 #ifdef __GLIBC__

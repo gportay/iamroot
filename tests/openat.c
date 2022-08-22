@@ -16,7 +16,7 @@
 
 int main(int argc, char * const argv[])
 {
-	int flags = 0, fd = AT_FDCWD, fd2 = -1, ret = EXIT_FAILURE;
+	int oflags = 0, fd = AT_FDCWD, fd2 = -1, ret = EXIT_FAILURE;
 	mode_t mode = 0;
 
 	if (argc < 3) {
@@ -28,7 +28,7 @@ int main(int argc, char * const argv[])
 	}
 
 	if (argc > 3)
-		flags = strtoul(argv[3], NULL, 0);
+		oflags = strtoul(argv[3], NULL, 0);
 
 	if (argc > 4)
 		mode = strtoul(argv[4], NULL, 0);
@@ -41,7 +41,7 @@ int main(int argc, char * const argv[])
 		}
 	}
 
-	fd2 = openat(fd, argv[2], flags, mode);
+	fd2 = openat(fd, argv[2], oflags, mode);
 	if (fd2 == -1) {
 		perror("openat");
 		goto exit;

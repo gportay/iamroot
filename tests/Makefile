@@ -258,7 +258,7 @@ endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-unshare whoami
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin LD_LIBRARY_PATH=$(CURDIR) test-dlopen libiamnotroot.so
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs IAMROOT_LIBRARY_PATH=/usr/local/lib:/usr/lib64:/usr/lib:/lib64:/lib test-dlopen libiamnotroot.so
-	! test-dl_iterate_phdr | grep '$(CURDIR)/rootfs'
+	! env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-dl_iterate_phdr | grep '$(CURDIR)/rootfs'
 	cd rootfs/ && ! env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-dl_iterate_phdr | grep '$(CURDIR)/rootfs'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-execl    | grep '^one two three$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-execle   | grep '^one two three$$'

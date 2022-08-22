@@ -38,16 +38,10 @@ char *next_mkdtemp(char *path)
 char *mkdtemp(char *path)
 {
 	char buf[PATH_MAX];
-	ssize_t siz;
 	size_t len;
 	char *ret;
 
-	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
-	if (siz == -1) {
-		__pathperror(path, __func__);
-		return NULL;
-	}
-
+	__strncpy(buf, path);
 	ret = next_mkdtemp(buf);
 	if (!*ret)
 		goto exit;
@@ -56,7 +50,7 @@ char *mkdtemp(char *path)
 	memcpy(path, buf+__strlen(buf)-len, len);
 
 exit:
-	__debug("%s(path: '%s' -> '%s')\n", __func__, path, buf);
+	__debug("%s(path: '%s')\n", __func__, path);
 
 	return path;
 }

@@ -47,7 +47,7 @@ int linkat(int oldfd, const char *oldpath, int newfd, const char *newpath,
 		return -1;
 	}
 
-	siz = path_resolution(newfd, newpath, newbuf, sizeof(newbuf), flags);
+	siz = path_resolution(newfd, newpath, newbuf, sizeof(newbuf), 0);
 	if (siz == -1) {
 		__pathperror(newpath, __func__);
 		return -1;

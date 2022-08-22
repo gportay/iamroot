@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   [musl] world
 - Intercept the [FreeBSD]'s functions `chflags()`, `chflagsat` and `lchflags()`
 - The internal function `path_resolution()` expands all symlinks
+- Support tests on [FreeBSD] 13.1
 
 ### Changed
 

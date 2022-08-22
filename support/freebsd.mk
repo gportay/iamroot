@@ -54,6 +54,7 @@ FreeBSD-%-RELEASE-base-amd64.txz:
 
 .PHONY: test
 test: export IAMROOT_FATAL ?= 0
+test: x86_64/libiamroot-elf.so.1
 test:
 	$(MAKE) -f Makefile $@
 

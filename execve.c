@@ -1195,7 +1195,7 @@ static char *__getld_library_path(const char *ldso, int abi)
 	if (!ret)
 		ret = getenv("IAMROOT_LIBRARY_PATH");
 	if (!ret)
-		return "/lib:/usr/lib";
+		return "/lib:/usr/local/lib:/usr/lib";
 
 	return ret;
 }

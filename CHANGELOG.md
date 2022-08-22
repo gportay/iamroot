@@ -38,7 +38,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Forward the functions `mkstemp()` and `mkstemps()` to the function
   `mkostemps()`
 - Update the [FreeBSD]'s x86 64-bit architecture name to `amd64`
-- Update the library path order to `/lib:/usr/lib`
+- Update the library path order to `/lib:/usr/local/lib:/usr/lib`
 
 ### Removed
 

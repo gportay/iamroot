@@ -123,152 +123,152 @@ test: | rootfs
 	rm -Rf rootfs/tmp/* rootfs/dev/*
 	touch rootfs/tmp/file0
 	ln -s file0 rootfs/tmp/symlink0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-access rootfs/tmp/file0 0
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-access /tmp/file0 0
-	-env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-acct rootfs/var/log/pacct 
-	-cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-acct /var/log/pacct
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-access rootfs/tmp/file0 0
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-access /tmp/file0 0
+	-env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-acct rootfs/var/log/pacct 
+	-cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-acct /var/log/pacct
 ifeq ($(OS),FreeBSD)
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-chmod rootfs/tmp/file0 00644
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-chmod rootfs/tmp/file0 00644
 else
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-chmod rootfs/tmp/file0 01644
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-chmod rootfs/tmp/file0 01644
 endif
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-fchmodat . rootfs/tmp/file0 02644
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-fchmodat - /tmp/file0 04644
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-chown rootfs/tmp/file0 0 0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-faccessat . rootfs/Makefile 0 0
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-faccessat - /Makefile 0 0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-fchown rootfs/tmp/file0 0 0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-fchownat - rootfs/tmp/file0 0 0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-stat rootfs/tmp/file0
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-stat /tmp/file0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-lstat rootfs/tmp/symlink0
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-lstat /tmp/symlink0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-fstat rootfs/tmp/file0
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-fstat /tmp/file0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-fstatat - rootfs/tmp/file0 0 0
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-fstatat - /tmp/file0 0 0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-lchown rootfs/tmp/symlink0 0 0
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-fchownat - /tmp/file0 0 0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-get_current_dir_name                              | tee /dev/stderr | grep -q '^$(CURDIR)$$'
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-get_current_dir_name | tee /dev/stderr | grep -q '^/$$'
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-getcwd                                            | tee /dev/stderr | grep -q '^$(CURDIR)$$'
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-getcwd               | tee /dev/stderr | grep -q '^/$$'
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-getwd                                             | tee /dev/stderr | grep -q '^$(CURDIR)$$'
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-getwd                | tee /dev/stderr | grep -q '^/$$'
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-link rootfs/tmp/file0 rootfs/tmp/link1
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-linkat - rootfs/tmp/file0 - rootfs/tmp/link2 0
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-linkat - /tmp/file0 - /tmp/link3 0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mkdir rootfs/tmp/dir0 0555
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mkdirat . rootfs/tmp/dir1 0555
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkdirat . /tmp/dir2 0755
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mkfifo rootfs/tmp/fifo0 0555
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mkfifoat . rootfs/tmp/fifo1 0555
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkfifoat . /tmp/fifo2 0755
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mknod rootfs/dev/dev0 0644 0 0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mknodat - rootfs/dev/dev1 0666 0 1
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mknodat . rootfs/dev/dev2 0666 0 2
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mknod /dev/dev3 0644 0 3
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mknodat - /dev/dev4 0666 0 4
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mknodat . /dev/dev5 0666 0 5
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-__xmknod 1 rootfs/dev/dev6 0644 0 6
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-__xmknodat 1 - rootfs/dev/dev7 0666 0 7
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-__xmknodat 1 . rootfs/dev/dev8 0666 0 8
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-__xmknod 1 /dev/dev9 0644 0 9
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-__xmknodat 1 - /dev/dev10 0666 0 10
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-__xmknodat 1 . /dev/dev11 0666 0 11
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mkostemp rootfs/tmp/tmp-XXXXXX 0                                 | tee /dev/stderr | grep -q "^rootfs/tmp/tmp-......\$$"
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkostemp /tmp/tmp-XXXXXX 0          | tee /dev/stderr | grep -q "^/tmp/tmp-......\$$"
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mkostemps rootfs/tmp/tmp-XXXXXXXXX 3 0                           | tee /dev/stderr | grep -q "^rootfs/tmp/tmp-......XXX\$$"
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkostemps /tmp/tmp-XXXXXXXXX 3 0    | tee /dev/stderr | grep -q "^/tmp/tmp-......XXX\$$"
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mkstemp rootfs/tmp/tmp-XXXXXX                                    | tee /dev/stderr | grep -q "^rootfs/tmp/tmp-......\$$"
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkstemp /tmp/tmp-XXXXXX             | tee /dev/stderr | grep -q "^/tmp/tmp-......\$$"
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mkstemps rootfs/tmp/tmp-XXXXXXXXX 3                              | tee /dev/stderr | grep -q "^rootfs/tmp/tmp-......XXX\$$"
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkstemps /tmp/tmp-XXXXXXXXX 3       | tee /dev/stderr | grep -q "^/tmp/tmp-......XXX\$$"
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mktemp rootfs/tmp/tmp-XXXXXX                                     | tee /dev/stderr | grep -q "^rootfs/tmp/tmp-......\$$"
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mktemp /tmp/tmp-XXXXXX              | tee /dev/stderr | grep -q "^/tmp/tmp-......\$$"
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mkdtemp rootfs/tmp/tmpdir-XXXXXX                                 | tee /dev/stderr | grep -q "^rootfs/tmp/tmpdir-......\$$"
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkdtemp /tmp/tmpdir-XXXXXX          | tee /dev/stderr | grep -q "^/tmp/tmpdir-......\$$"
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-mount -t procfs none rootfs/proc
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-umount rootfs/proc
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-umount2 rootfs/proc
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /           | tee /dev/stderr | grep -q "^/\$$"
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /proc/      | tee /dev/stderr | grep -q "^/proc/\$$"
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /run/       | tee /dev/stderr | grep -q "^/run\$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-fchmodat . rootfs/tmp/file0 02644
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-fchmodat - /tmp/file0 04644
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-chown rootfs/tmp/file0 0 0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-faccessat . rootfs/Makefile 0 0
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-faccessat - /Makefile 0 0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-fchown rootfs/tmp/file0 0 0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-fchownat - rootfs/tmp/file0 0 0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-stat rootfs/tmp/file0
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-stat /tmp/file0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-lstat rootfs/tmp/symlink0
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-lstat /tmp/symlink0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-fstat rootfs/tmp/file0
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-fstat /tmp/file0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-fstatat - rootfs/tmp/file0 0 0
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-fstatat - /tmp/file0 0 0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-lchown rootfs/tmp/symlink0 0 0
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-fchownat - /tmp/file0 0 0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-get_current_dir_name                                             | tee /dev/stderr | grep -q '^$(CURDIR)$$'
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-get_current_dir_name | tee /dev/stderr | grep -q '^/$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-getcwd                                                           | tee /dev/stderr | grep -q '^$(CURDIR)$$'
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-getcwd               | tee /dev/stderr | grep -q '^/$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-getwd                                                            | tee /dev/stderr | grep -q '^$(CURDIR)$$'
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-getwd                | tee /dev/stderr | grep -q '^/$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-link rootfs/tmp/file0 rootfs/tmp/link1
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-linkat - rootfs/tmp/file0 - rootfs/tmp/link2 0
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-linkat - /tmp/file0 - /tmp/link3 0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-mkdir rootfs/tmp/dir0 0555
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-mkdirat . rootfs/tmp/dir1 0555
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkdirat . /tmp/dir2 0755
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-mkfifo rootfs/tmp/fifo0 0555
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-mkfifoat . rootfs/tmp/fifo1 0555
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkfifoat . /tmp/fifo2 0755
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-mknod rootfs/dev/dev0 0644 0 0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-mknodat - rootfs/dev/dev1 0666 0 1
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-mknodat . rootfs/dev/dev2 0666 0 2
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mknod /dev/dev3 0644 0 3
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mknodat - /dev/dev4 0666 0 4
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mknodat . /dev/dev5 0666 0 5
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-__xmknod 1 rootfs/dev/dev6 0644 0 6
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-__xmknodat 1 - rootfs/dev/dev7 0666 0 7
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-__xmknodat 1 . rootfs/dev/dev8 0666 0 8
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-__xmknod 1 /dev/dev9 0644 0 9
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-__xmknodat 1 - /dev/dev10 0666 0 10
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-__xmknodat 1 . /dev/dev11 0666 0 11
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-mkostemp rootfs/tmp/tmp-XXXXXX 0                                                | tee /dev/stderr | grep -q "^rootfs/tmp/tmp-......\$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkostemp /tmp/tmp-XXXXXX 0          | tee /dev/stderr | grep -q "^/tmp/tmp-......\$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-mkostemps rootfs/tmp/tmp-XXXXXXXXX 3 0                                          | tee /dev/stderr | grep -q "^rootfs/tmp/tmp-......XXX\$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkostemps /tmp/tmp-XXXXXXXXX 3 0    | tee /dev/stderr | grep -q "^/tmp/tmp-......XXX\$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-mkstemp rootfs/tmp/tmp-XXXXXX                                                   | tee /dev/stderr | grep -q "^rootfs/tmp/tmp-......\$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkstemp /tmp/tmp-XXXXXX             | tee /dev/stderr | grep -q "^/tmp/tmp-......\$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-mkstemps rootfs/tmp/tmp-XXXXXXXXX 3                                             | tee /dev/stderr | grep -q "^rootfs/tmp/tmp-......XXX\$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkstemps /tmp/tmp-XXXXXXXXX 3       | tee /dev/stderr | grep -q "^/tmp/tmp-......XXX\$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-mktemp rootfs/tmp/tmp-XXXXXX                                                    | tee /dev/stderr | grep -q "^rootfs/tmp/tmp-......\$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mktemp /tmp/tmp-XXXXXX              | tee /dev/stderr | grep -q "^/tmp/tmp-......\$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-mkdtemp rootfs/tmp/tmpdir-XXXXXX                                                | tee /dev/stderr | grep -q "^rootfs/tmp/tmpdir-......\$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkdtemp /tmp/tmpdir-XXXXXX          | tee /dev/stderr | grep -q "^/tmp/tmpdir-......\$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-mount -t procfs none rootfs/proc
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-umount rootfs/proc
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-umount2 rootfs/proc
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /                          | tee /dev/stderr | grep -q "^/\$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /proc/                     | tee /dev/stderr | grep -q "^/proc/\$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /run/                      | tee /dev/stderr | grep -q "^/run\$$"
 ifeq ($(OS),FreeBSD)
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /var/run/   | tee /dev/stderr | grep -q "^/var/run\$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /var/run/                  | tee /dev/stderr | grep -q "^/var/run\$$"
 else
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /var/run/   | tee /dev/stderr | grep -q "^/run\$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR) test-path_resolution /var/run/                  | tee /dev/stderr | grep -q "^/run\$$"
 endif
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /sys/    | tee /dev/stderr | grep -q "^/sys/\$$"
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /dev/    | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/dev\$$"
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /run     | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/run\$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /sys/    | tee /dev/stderr | grep -q "^/sys/\$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /dev/    | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/dev\$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /run     | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/run\$$"
 ifeq ($(OS),FreeBSD)
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /var/run | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/var/run\$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /var/run | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/var/run\$$"
 else
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /var/run | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/run\$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution /var/run | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/run\$$"
 endif
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin LD_LIBRARY_PATH=$(CURDIR) test-pathsetenv LD_LIBRARY_PATH /usr/local/lib:/usr/lib:/lib     | tee /dev/stderr | grep -q "^/usr/local/lib:/usr/lib:/lib$$"
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-pathsetenv LD_LIBRARY_PATH /usr/local/lib:/usr/lib:/lib  | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/usr/local/lib:$(CURDIR)/rootfs/usr/lib:$(CURDIR)/rootfs/lib$$"
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-openat - rootfs/tmp/file0
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-openat . /tmp/file0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-opendir rootfs/tmp/dir0
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-opendir /tmp/dir0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-rename rootfs/tmp/file0 rootfs/tmp/file1
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-renameat - rootfs/tmp/file1 - rootfs/tmp/file2
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-renameat - /tmp/file2 - /tmp/file3
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-renameat2 - /tmp/file3 - /tmp/file0 0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-rmdir rootfs/tmp/dir0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-rmdir rootfs/tmp/dir1
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-rmdir /tmp/dir2
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-sanitize ""                  | tee /dev/stderr | grep -vc '^$$'   | grep -q '^0$$'
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-sanitize . ./ ././ ./. ././. | tee /dev/stderr | grep -vc '^\.$$' | grep -q '^0$$'
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-sanitize / // ///  //. //./. | tee /dev/stderr | grep -vc '^/$$'  | grep -q '^0$$'
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-scandir .
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-scandirat - /
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-statfs .
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-statvfs .
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-statx - rootfs/tmp/file0 0 0
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-statx - /tmp/file0 0 0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-swapon /tmp/file0 0
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-swapon /tmp/file0 0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-swapoff /tmp/file0
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-swapoff /tmp/file0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-symlink file0 rootfs/tmp/symlink1
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-symlinkat file0 . rootfs/tmp/symlink2
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-symlinkat file0 . /tmp/symlink3
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-readlink /proc/self/exe                                  | tee /dev/stderr | grep -q "^$(CURDIR)/test-readlink$$"
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-readlink /proc/self/exe     | tee /dev/stderr | grep -q "^/usr/bin/test-readlink$$"
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-readlinkat . /proc/self/exe                              | tee /dev/stderr | grep -q "^$(CURDIR)/test-readlinkat$$"
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-readlinkat . /proc/self/exe | tee /dev/stderr | grep -q "^/usr/bin/test-readlinkat$$"
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-tmpnam /tmp/tmp0
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-tmpnam /tmp/tmp1
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-tmpnam_r /tmp/tmp2
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-tmpnam_r /tmp/tmp3
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-truncate rootfs/tmp/file0 1
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-truncate /tmp/file0 0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-truncate64 rootfs/tmp/file0 1
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-truncate64 /tmp/file0 0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-utimes rootfs/tmp/file0 0x3fffffff 0x3fffffff
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-lutimes rootfs/tmp/symlink0 0x3fffffff 0x3fffffff
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-utimensat . rootfs/tmp/file0 0x3fffffff 0x3fffffff
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-utimensat . /tmp/file0 0x3fffffff 0x3fffffff
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-unlink rootfs/tmp/file0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-unlinkat . rootfs/dev/dev1 0
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-unlinkat - /dev/dev2 0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-unshare whoami
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin LD_LIBRARY_PATH=$(CURDIR) test-dlopen libiamnotroot.so
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs IAMROOT_LIBRARY_PATH=/usr/local/lib:/usr/lib64:/usr/lib:/lib64:/lib test-dlopen libiamnotroot.so
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR) test-pathsetenv LD_LIBRARY_PATH /usr/local/lib:/usr/lib:/lib                    | tee /dev/stderr | grep -q "^/usr/local/lib:/usr/lib:/lib$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-pathsetenv LD_LIBRARY_PATH /usr/local/lib:/usr/lib:/lib  | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/usr/local/lib:$(CURDIR)/rootfs/usr/lib:$(CURDIR)/rootfs/lib$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-openat - rootfs/tmp/file0
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-openat . /tmp/file0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-opendir rootfs/tmp/dir0
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-opendir /tmp/dir0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-rename rootfs/tmp/file0 rootfs/tmp/file1
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-renameat - rootfs/tmp/file1 - rootfs/tmp/file2
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-renameat - /tmp/file2 - /tmp/file3
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-renameat2 - /tmp/file3 - /tmp/file0 0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-rmdir rootfs/tmp/dir0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-rmdir rootfs/tmp/dir1
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-rmdir /tmp/dir2
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-sanitize ""                  | tee /dev/stderr | grep -vc '^$$'   | grep -q '^0$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-sanitize . ./ ././ ./. ././. | tee /dev/stderr | grep -vc '^\.$$' | grep -q '^0$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-sanitize / // ///  //. //./. | tee /dev/stderr | grep -vc '^/$$'  | grep -q '^0$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-scandir .
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-scandirat - /
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-statfs .
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-statvfs .
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-statx - rootfs/tmp/file0 0 0
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-statx - /tmp/file0 0 0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-swapon /tmp/file0 0
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-swapon /tmp/file0 0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-swapoff /tmp/file0
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-swapoff /tmp/file0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-symlink file0 rootfs/tmp/symlink1
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-symlinkat file0 . rootfs/tmp/symlink2
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-symlinkat file0 . /tmp/symlink3
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-readlink /proc/self/exe                                                 | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/usr/bin/test-readlink$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-readlink /proc/self/exe     | tee /dev/stderr | grep -q "^/usr/bin/test-readlink$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-readlinkat . /proc/self/exe                                             | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/usr/bin/test-readlinkat$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-readlinkat . /proc/self/exe | tee /dev/stderr | grep -q "^/usr/bin/test-readlinkat$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-tmpnam /tmp/tmp0
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-tmpnam /tmp/tmp1
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-tmpnam_r /tmp/tmp2
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-tmpnam_r /tmp/tmp3
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-truncate rootfs/tmp/file0 1
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-truncate /tmp/file0 0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-truncate64 rootfs/tmp/file0 1
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-truncate64 /tmp/file0 0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-utimes rootfs/tmp/file0 0x3fffffff 0x3fffffff
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-lutimes rootfs/tmp/symlink0 0x3fffffff 0x3fffffff
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-utimensat . rootfs/tmp/file0 0x3fffffff 0x3fffffff
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-utimensat . /tmp/file0 0x3fffffff 0x3fffffff
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-unlink rootfs/tmp/file0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-unlinkat . rootfs/dev/dev1 0
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-unlinkat - /dev/dev2 0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/usr/bin test-unshare whoami
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR) test-dlopen libiamnotroot.so
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs IAMROOT_LIBRARY_PATH=/usr/local/lib:/usr/lib64:/usr/lib:/lib64:/lib test-dlopen libiamnotroot.so
 	! env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-dl_iterate_phdr | grep '$(CURDIR)/rootfs'
-	cd rootfs/ && ! env LD_PRELOAD=$(IAMROOT_LIB) PATH=/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-dl_iterate_phdr | grep '$(CURDIR)/rootfs'
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-execl    | grep '^one two three$$'
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-execle   | grep '^one two three$$'
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-execlp   | grep '^one two three$$'
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-execv    | grep '^one two three$$'
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-execve   | grep '^one two three$$'
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-execveat | grep '^one two three$$'
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-execvp   | grep '^one two three$$'
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-execvpe  | grep '^one two three$$'
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR):/usr/bin:/bin test-fexecve  | grep '^one two three$$'
+	cd rootfs/ && ! env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-dl_iterate_phdr | grep '$(CURDIR)/rootfs'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-execl    | grep '^one two three$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-execle   | grep '^one two three$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-execlp   | grep '^one two three$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-execv    | grep '^one two three$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-execve   | grep '^one two three$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-execveat | grep '^one two three$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-execvp   | grep '^one two three$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-execvpe  | grep '^one two three$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-fexecve  | grep '^one two three$$'
 
 rootfs: DESTDIR = $(CURDIR)/rootfs
 rootfs:

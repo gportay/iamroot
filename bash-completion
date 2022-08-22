@@ -41,7 +41,7 @@ _iamroot-shell()
 	COMMON_PATH=(/bin /sbin /usr/bin /usr/sbin /usr/local/bin
 		/usr/local/sbin)
 
-	COMMON_LIBRARY_PATH=(/lib /usr/lib /usr/local/lib)
+	COMMON_LIBRARY_PATH=(/usr/lib /usr/local/lib /usr/lib)
 
 	case "$prev" in
 	--chroot)

@@ -25,7 +25,17 @@ export IAMROOT_EXEC
 all: x86_64/libiamroot-elf.so.1
 
 .PRECIOUS: x86_64/libiamroot-elf.so.1
-x86_64/libiamroot-elf.so.1: $(wildcard *.c)
+x86_64/libiamroot-elf.so.1: output-x86_64/libiamroot.so
+	install -d -m755 $(@D)
+	install -m755 $< $@
+
+.PRECIOUS: output-%/libiamroot.so
+output-%/libiamroot.so: $(wildcard *.c) | output-%
+	$(MAKE) -f $(CURDIR)/Makefile -C output-$* libiamroot.so VPATH=$(CURDIR)
+
+.PRECIOUS: output-%
+output-%:
+	mkdir $@
 
 freebsd-13.1-chroot:
 freebsd-%-chroot: x86_64/libiamroot-elf.so.1 | freebsd-%-rootfs
@@ -51,6 +61,8 @@ test:
 clean:
 	$(MAKE) -f Makefile $@
 	rm -Rf freebsd-*-rootfs/
+	rm -Rf output-*/
+	rm -Rf x86/
 
 %:
 	$(MAKE) -f Makefile $@

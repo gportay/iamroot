@@ -47,7 +47,7 @@ DIR *__opendir2(const char *path, int flags)
 		return NULL;
 	}
 
-	__debug("%s(path: '%s' -> '%s', flags: 0x%x)\n", __func__, path, buf,
+	__debug("%s(path: '%s' -> '%s', flags: 0%o)\n", __func__, path, buf,
 		flags);
 
 	return next___opendir2(buf, flags);

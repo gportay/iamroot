@@ -222,7 +222,7 @@ codacy: cobertura.xml
 clean:
 	$(MAKE) -f Makefile $@
 	rm -f cobertura.xml
-	rm -Rf *.gcda *.gcno
+	rm -f *.gcda *.gcno
 	rm -f *.ext4 *.cpio
 	rm -f *-rootfs.log
 	rm -Rf *-rootfs/

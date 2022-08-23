@@ -15,6 +15,7 @@
 
 #include "iamroot.h"
 
+extern uid_t next_getegid();
 extern uid_t next_geteuid();
 
 __attribute__((visibility("hidden")))
@@ -67,7 +68,7 @@ int fstatat(int dfd, const char *path, struct stat *statbuf, int atflags)
 	if (statbuf->st_uid == uid)
 		statbuf->st_uid = geteuid();
 
-	gid = getegid();
+	gid = next_getegid();
 	if (statbuf->st_gid == gid)
 		statbuf->st_gid = 0;
 

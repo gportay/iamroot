@@ -14,6 +14,7 @@
 
 #include "iamroot.h"
 
+extern uid_t next_getegid();
 extern uid_t next_geteuid();
 
 __attribute__((visibility("hidden")))
@@ -50,7 +51,7 @@ int lchown(const char *path, uid_t owner, gid_t group)
 	}
 
 	owner = next_geteuid();
-	group = getegid();
+	group = next_getegid();
 
 	__debug("%s(path: '%s' -> '%s', owner: %i, group: %i)\n", __func__,
 		path, buf, owner, group);

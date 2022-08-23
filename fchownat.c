@@ -14,6 +14,7 @@
 
 #include "iamroot.h"
 
+extern uid_t next_getegid();
 extern uid_t next_geteuid();
 
 __attribute__((visibility("hidden")))
@@ -50,7 +51,7 @@ int fchownat(int dfd, const char *path, uid_t owner, gid_t group, int atflags)
 	}
 
 	owner = next_geteuid();
-	group = getegid();
+	group = next_getegid();
 
 	__debug("%s(dfd: %i, path: '%s' -> '%s', owner: %i, group: %i, atflags: 0x%x)\n",
 		__func__, dfd, path, buf, owner, group, atflags);

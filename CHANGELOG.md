@@ -11,7 +11,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Create additional weak aliases for [glibc] `__` and `64` variants
 - Intercept the [glibc] `64` variant functions `nftw64()`, `scandir64()` and
   `truncate64()`
-- Intercept the functions `acct()`, `catopen()`, `ftok()` and `mq_open()`
+- Intercept the functions `acct()`, `catopen()`, `ftok()`, `getegid()`,
+  `getgid()` and `mq_open()`
 - Intercept the Linux's functions `fanotify_mark()`, `inotify_add_watch()`,
   `swapon()` and `swapoff()`
 - Create the `64` weak aliases `__fxstat64()`, `__fxstatat64()`,
@@ -291,7 +292,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   [Alpine Linux]
 - Create a [Fedora] rootfs via [dnf(8)]
 - Intercept the functions `umask()`, `fchmod()`, `fgetxattr()`, `fsetxattr()`,
-  `getegid()`, `getgid()`, `setegid()`, `seteuid()`, `setgid()` and `setuid()`
+  `setegid()`, `seteuid()`, `setgid()` and `setuid()`
 - Update and add a warning if the mode is lacking for user permissions in the
   functions `__open()`, `__open64()`, `__xmknod()`, `__xmknodat()`, `chmod()`,
   `creat()`, `creat64()`, `fchmodat()`, `lchmod()`, `mkdir()`, `mkdirat()`,

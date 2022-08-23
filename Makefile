@@ -136,9 +136,11 @@ libiamroot.so: ftw.o
 libiamroot.so: futimesat.o
 libiamroot.so: get_current_dir_name.o
 libiamroot.so: getcwd.o
+libiamroot.so: getegid.o
 libiamroot.so: geteuid.o
 libiamroot.so: getfh.o
 libiamroot.so: getfhat.o
+libiamroot.so: getgid.o
 libiamroot.so: getuid.o
 libiamroot.so: getwd.o
 libiamroot.so: getxattr.o

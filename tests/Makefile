@@ -47,6 +47,7 @@ all: test-fstat
 all: test-fstatat
 all: test-get_current_dir_name
 all: test-getcwd
+all: test-getgroups
 all: test-getwd
 all: test-lchown
 all: test-link
@@ -81,6 +82,7 @@ all: test-rmdir
 all: test-sanitize
 all: test-scandir
 all: test-scandirat
+all: test-setgroups
 all: test-stat
 all: test-statfs
 all: test-statvfs
@@ -282,6 +284,12 @@ endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-execvp   | grep '^one two three$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-execvpe  | grep '^one two three$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-fexecve  | grep '^one two three$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                           test-getgroups            | tee /dev/stderr | grep -q '^1 0$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_GROUPS=0:100:1000 test-getgroups            | tee /dev/stderr | grep -q '^3 0 100 1000$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_GROUPS=0:100:1000 test-getgroups 3          | tee /dev/stderr | grep -q '^3 0 100 1000$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_GROUPS=0:100:1000 test-getgroups 2 2>&1     | tee /dev/stderr | grep -q '^getgroups: Invalid argument$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_GROUPS=0:100:1000 test-setgroups            | tee /dev/stderr | grep -q '^$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                           test-setgroups 0 100 1000 | tee /dev/stderr | grep -q '^0:100:1000$$'
 
 rootfs: DESTDIR = $(CURDIR)/rootfs
 rootfs:

@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Intercept the [glibc] `64` variant functions `nftw64()`, `scandir64()` and
   `truncate64()`
 - Intercept the functions `acct()`, `catopen()`, `ftok()`, `getegid()`,
-  `getgid()` and `mq_open()`
+  `getgid()`, `getgroups()`, `mq_open()` and `setgroups()`
 - Intercept the Linux's functions `fanotify_mark()`, `inotify_add_watch()`,
   `swapon()` and `swapoff()`
 - Create the `64` weak aliases `__fxstat64()`, `__fxstatat64()`,

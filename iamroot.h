@@ -173,6 +173,7 @@ int path_ignored(int, const char *);
 ssize_t path_resolution(int, const char *, char *, size_t, int);
 char *__getpath(int, const char *, int);
 ssize_t path_access(const char *, int, const char *, char *, size_t);
+int path_iterate(const char *, int (*)(const char *, void *), void *);
 
 void __procfdname(char *, unsigned);
 ssize_t __procfdreadlink(int, char *, size_t);

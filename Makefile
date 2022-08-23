@@ -141,6 +141,7 @@ libiamroot.so: geteuid.o
 libiamroot.so: getfh.o
 libiamroot.so: getfhat.o
 libiamroot.so: getgid.o
+libiamroot.so: getgroups.o
 libiamroot.so: getuid.o
 libiamroot.so: getwd.o
 libiamroot.so: getxattr.o
@@ -203,6 +204,7 @@ libiamroot.so: scandirat.o
 libiamroot.so: setegid.o
 libiamroot.so: seteuid.o
 libiamroot.so: setgid.o
+libiamroot.so: setgroups.o
 libiamroot.so: setuid.o
 libiamroot.so: setxattr.o
 libiamroot.so: shadow.o

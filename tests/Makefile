@@ -47,6 +47,7 @@ all: test-fstat
 all: test-fstatat
 all: test-get_current_dir_name
 all: test-getcwd
+all: test-getgid
 all: test-getgroups
 all: test-getuid
 all: test-getwd
@@ -83,6 +84,7 @@ all: test-rmdir
 all: test-sanitize
 all: test-scandir
 all: test-scandirat
+all: test-setgid
 all: test-setgroups
 all: test-setuid
 all: test-stat
@@ -277,6 +279,9 @@ endif
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-dlopen libiamnotroot.so
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-dl_iterate_phdr                                               | grep '$(CURDIR)/rootfs'
 	cd rootfs/ && ! env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-dl_iterate_phdr | grep '$(CURDIR)/rootfs'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                  test-getgid | grep '^0$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin IAMROOT_GID=1000 test-getgid | grep '^1000$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-setgid 0
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                  test-getuid | grep '^0$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin IAMROOT_UID=1000 test-getuid | grep '^1000$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-setuid 0

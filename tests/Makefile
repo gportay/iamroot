@@ -286,8 +286,8 @@ rootfs:
 	install -m644 Makefile $(DESTDIR)/
 	install -d -m755 $(DESTDIR)/usr/bin
 	for i in *.c; do \
-		test -e test-$${i%.c} || continue; \
-		install -m755 test-$${i%.c} $(DESTDIR)/usr/bin/; \
+		test -e $${i%.c} || continue; \
+		install -m755 $${i%.c} $(DESTDIR)/usr/bin/; \
 	done
 ifeq ($(OS),FreeBSD)
 	install -d -m755 $(DESTDIR)/libexec $(DESTDIR)/lib $(DESTDIR)/usr/lib $(DESTDIR)/usr/local/lib
@@ -332,12 +332,12 @@ endif
 .PHONY: clean
 clean:
 	rm -f *.gcda *.gcno
-	rm -f libiamnotroot.so *.o test-*
+	rm -f libiamnotroot.so *.o
+	for i in *.c; do \
+		rm -f $${i%.c}; \
+	done
 	rm -Rf rootfs/
 
 %.so: override LDFLAGS += -shared
 %.so:
 	$(LINK.o) $^ $(LOADLIBES) $(LDLIBS) -o $@
-
-test-%: %.c
-	$(LINK.c) $^ $(LOADLIBES) $(LDLIBS) -o $@

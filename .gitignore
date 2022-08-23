@@ -71,5 +71,4 @@ output*/
 busybox*/
 
 # Tests
-tests/test-*
 tests/rootfs/

@@ -251,6 +251,7 @@ static int __strtok(const char *str, const char *delim,
 	return 0;
 }
 
+__attribute__((visibility("hidden")))
 int path_iterate(const char *path, int (*callback)(const char *, void *),
 		 void *user)
 {

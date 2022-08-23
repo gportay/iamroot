@@ -195,7 +195,6 @@ static int __librarypath_callback(const char *library, void *user)
 	const char *library_path = (const char *)user;
 	char buf[PATH_MAX];
 	ssize_t siz;
-	(void)user;
 
 	/* ignore dynamic loaders */
 	if (__strncmp(library, "ld-") == 0)

@@ -331,6 +331,7 @@ endif
 
 .PHONY: clean
 clean:
+	rm -f *.gcda *.gcno
 	rm -f libiamnotroot.so *.o test-*
 	rm -Rf rootfs/
 

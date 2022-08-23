@@ -221,6 +221,7 @@ codacy: cobertura.xml
 .PHONY: clean
 clean:
 	$(MAKE) -f Makefile $@
+	rm -f cobertura.xml
 	rm -Rf *.gcda *.gcno
 	rm -f *.ext4 *.cpio
 	rm -f *-rootfs.log

@@ -42,5 +42,7 @@ int setgid(gid_t gid)
 	if (ret == -1)
 		return -1;
 
+	__debug("%s(gid: %u)\n", __func__, gid);
+
 	return setenv("IAMROOT_GID", buf, 1);
 }

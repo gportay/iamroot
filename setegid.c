@@ -42,5 +42,7 @@ int setegid(gid_t gid)
 	if (ret == -1)
 		return -1;
 
+	__debug("%s(uid: %u)\n", __func__, gid);
+
 	return setenv("IAMROOT_EGID", buf, 1);
 }

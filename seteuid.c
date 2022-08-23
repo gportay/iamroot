@@ -42,5 +42,7 @@ int seteuid(uid_t uid)
 	if (ret == -1)
 		return -1;
 
+	__debug("%s(uid: %u)\n", __func__, uid);
+
 	return setenv("IAMROOT_EUID", buf, 1);
 }

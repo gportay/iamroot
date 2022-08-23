@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021-2022 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -39,10 +39,10 @@ gid_t getgid()
 
 	errno = 0;
 	ul = strtoul(getenv("IAMROOT_GID") ?: "0", NULL, 0);
-	if (!errno)
-		return ul;
+	if (errno)
+		ul = 0;
 
 	__debug("%s(): IAMROOT_GID: %lu\n", __func__, ul);
 
-	return 0;
+	return ul;
 }

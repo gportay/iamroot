@@ -43,6 +43,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `mkostemps()`
 - Update the [FreeBSD]'s x86 64-bit architecture name to `amd64`
 - Update the library path order to `/lib:/usr/local/lib:/usr/lib`
+- Output the traces for the functions `getegid()`, `geteuid()`, `getgid()` and
+  `getuid()` even if their according environment variables `IAMROOT_EGID`,
+  `IAMROOT_EUID`, `IAMROOT_GID` and `IAMROOT_UID` are unset
 
 ### Removed
 

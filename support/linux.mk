@@ -212,7 +212,7 @@ gcov/index.html:
 
 .PHONY: cobertura.xml
 cobertura.xml:
-	gcovr --cobertura -s -o $@ output-x86_64-linux-x86-64/ tests/
+	gcovr --cobertura -e "tests/.*\.c" -s -o $@ output-x86_64-linux-x86-64/ tests/
 
 .PHONY: codacy
 codacy: cobertura.xml

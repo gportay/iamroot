@@ -39,9 +39,9 @@ mqd_t next_mq_open(const char *path, int oflags, mode_t mode,
 
 mqd_t mq_open(const char *path, int oflags, ...)
 {
+	mode_t oldmode = 0, mode = 0;
 	struct mq_attr *attr = NULL;
 	char buf[PATH_MAX];
-	mode_t mode = 0;
 	ssize_t siz;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
@@ -54,15 +54,15 @@ mqd_t mq_open(const char *path, int oflags, ...)
 		va_list ap;
 		va_start(ap, oflags);
 		mode = va_arg(ap, mode_t);
+		oldmode = mode;
 		attr = va_arg(ap, struct mq_attr *);
 		va_end(ap);
 	}
 
-	__debug("%s(path: '%s' -> '%s', oflags: 0%o, mode: 0%03o, ...)\n",
-		__func__, path, buf, oflags, mode);
-
 	if (oflags & O_CREAT)
 		__warn_if_insuffisant_user_mode(buf, mode);
+	__debug("%s(path: '%s' -> '%s', oflags: 0%o, mode: 0%03o -> 0%03o, ...)\n",
+		__func__, path, buf, oflags, oldmode, mode);
 
 	return next_mq_open(buf, oflags, mode, attr);
 }

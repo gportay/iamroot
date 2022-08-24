@@ -36,6 +36,7 @@ int next_creat(const char *path, mode_t mode)
 
 int creat(const char *path, mode_t mode)
 {
+	const mode_t oldmode = mode;
 	char buf[PATH_MAX];
 	ssize_t siz;
 
@@ -45,9 +46,9 @@ int creat(const char *path, mode_t mode)
 		return -1;
 	}
 
-	__debug("%s(path: '%s' -> '%s', mode: 0%03o)\n", __func__, path, buf,
-		mode);
 	__warn_if_insuffisant_user_mode(buf, mode);
+	__debug("%s(path: '%s' -> '%s', mode: 0%03o -> 0%03o)\n", __func__,
+		path, buf, oldmode, mode);
 
 	return next_creat(buf, mode);
 }

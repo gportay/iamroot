@@ -36,6 +36,7 @@ int next_fchmodat(int dfd, const char *path, mode_t mode, int atflags)
 
 int fchmodat(int dfd, const char *path, mode_t mode, int atflags)
 {
+	const mode_t oldmode = mode;
 	char buf[PATH_MAX];
 	ssize_t siz;
 	int ret;
@@ -46,9 +47,9 @@ int fchmodat(int dfd, const char *path, mode_t mode, int atflags)
 		return -1;
 	}
 
-	__debug("%s(dfd: %i, path: '%s' -> '%s', mode: 0%03o, atflags: 0x%x)\n",
-		__func__, dfd, path, buf, mode, atflags);
 	__fwarn_if_insuffisant_user_modeat(dfd, buf, mode, atflags);
+	__debug("%s(dfd: %i, path: '%s' -> '%s', mode: 0%03o -> 0%03o, atflags: 0x%x)\n",
+		__func__, dfd, path, buf, oldmode, mode, atflags);
 
 	__remove_at_empty_path_if_needed(buf, atflags);
 	ret = next_fchmodat(dfd, buf, mode, atflags);

@@ -36,9 +36,9 @@ int next_openat(int dfd, const char *path, int oflags, mode_t mode)
 
 int openat(int dfd, const char *path, int oflags, ...)
 {
+	mode_t oldmode = 0, mode = 0;
 	char buf[PATH_MAX];
 	int atflags = 0;
-	mode_t mode = 0;
 	ssize_t siz;
 
 	if (oflags & O_NOFOLLOW)
@@ -55,14 +55,15 @@ int openat(int dfd, const char *path, int oflags, ...)
 		va_list ap;
 		va_start(ap, oflags);
 		mode = va_arg(ap, mode_t);
+		oldmode = mode;
 		va_end(ap);
 	}
 #endif
 
-	__debug("%s(dfd: %i, path: '%s' -> '%s', oflags: 0%o, mode: 0%03o)\n",
-		__func__, dfd, path, buf, oflags, mode);
 	if (oflags & O_CREAT)
 		__fwarn_if_insuffisant_user_modeat(dfd, buf, mode, 0);
+	__debug("%s(dfd: %i, path: '%s' -> '%s', oflags: 0%o, mode: 0%03o -> 0%03o)\n",
+		__func__, dfd, path, buf, oflags, oldmode, mode);
 
 	return next_openat(dfd, buf, oflags, mode);
 }

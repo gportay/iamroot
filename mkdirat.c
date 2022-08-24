@@ -36,6 +36,7 @@ int next_mkdirat(int dfd, const char *path, mode_t mode)
 
 int mkdirat(int dfd, const char *path, mode_t mode)
 {
+	const mode_t oldmode = mode;
 	char buf[PATH_MAX];
 	ssize_t siz;
 
@@ -45,9 +46,9 @@ int mkdirat(int dfd, const char *path, mode_t mode)
 		return -1;
 	}
 
-	__debug("%s(dfd: %d, path: '%s' -> '%s', mode: 0%03o)\n", __func__,
-		dfd, path, buf, mode);
 	__fwarn_if_insuffisant_user_modeat(dfd, buf, mode, 0);
+	__debug("%s(dfd: %d, path: '%s' -> '%s', mode: 0%03o -> 0%03o)\n",
+		__func__, dfd, path, buf, oldmode, mode);
 
 	return next_mkdirat(dfd, buf, mode);
 }

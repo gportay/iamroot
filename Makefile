@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
 
-VERSION = 6
+VERSION = 7
 PREFIX ?= /usr/local
 
 IAMROOT_LIB ?= $(CURDIR)/libiamroot.so

@@ -211,48 +211,9 @@ Change root directory via *chroot(1)*
 
 Create a new Arch Linux system installation from scratch via *pacstrap(8)*
 
-	[gportay@archlinux ~]$ iamroot-shell -c "pacman-key --gpgdir rootfs/etc/pacman.d/gnupg --init"
-	gpg: /home/gportay/rootfs/etc/pacman.d/gnupg/trustdb.gpg: trustdb created
-	gpg: no ultimately trusted keys found
-	gpg: starting migration from earlier GnuPG versions
-	gpg: porting secret keys from '/home/gportay/rootfs/etc/pacman.d/gnupg/secring.gpg' to gpg-agent
-	gpg: migration succeeded
-	==> Generating pacman master key. This may take some time.
-	gpg: Generating pacman keyring master key...
-	gpg: directory '/home/gportay/rootfs/etc/pacman.d/gnupg/openpgp-revocs.d' created
-	gpg: revocation certificate stored as '/home/gportay/rootfs/etc/pacman.d/gnupg/openpgp-revocs.d/7484186E876B632498A6B12E5CA22B2044E718A1.rev'
-	gpg: Done
-	==> Updating trust database...
-	gpg: marginals needed: 3  completes needed: 1  trust model: pgp
-	gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
-	[gportay@archlinux ~]$ iamroot-shell -c "pacman-key --gpgdir rootfs/etc/pacman.d/gnupg --populate archlinux"
-	==> Appending keys from archlinux.gpg...
-	==> Locally signing trusted keys in keyring...
-	  -> Locally signed 6 keys.
-	==> Importing owner trust values...
-	gpg: setting ownertrust to 4
-	gpg: setting ownertrust to 4
-	gpg: setting ownertrust to 4
-	gpg: inserting ownertrust of 4
-	gpg: setting ownertrust to 4
-	gpg: setting ownertrust to 4
-	==> Disabling revoked keys in keyring...
-	  -> Disabled 49 keys.
-	==> Updating trust database...
-	gpg: marginals needed: 3  completes needed: 1  trust model: pgp
-	gpg: depth: 0  valid:   1  signed:   6  trust: 0-, 0q, 0n, 0m, 0f, 1u
-	gpg: depth: 1  valid:   6  signed:  93  trust: 0-, 0q, 0n, 6m, 0f, 0u
-	gpg: depth: 2  valid:  88  signed:  33  trust: 88-, 0q, 0n, 0m, 0f, 0u
-	gpg: next trustdb check due at 2022-07-18
-	[gportay@archlinux ~]$ EUID=0 iamroot-shell -c "pacstrap rootfs" && echo done
+	[gportay@archlinux ~]$ mkdir -p rootfs
+	[gportay@archlinux ~]$ env EUID=0 iamroot-shell -c "pacstrap -GM rootfs" && echo done
 	==> Creating install root at rootfs
-	Warning: Command is skipped: /usr/bin/mount proc rootfs/proc -t proc -o nosuid,noexec,nodev
-	Warning: Command is skipped: /usr/bin/mount sys rootfs/sys -t sysfs -o nosuid,noexec,nodev,ro
-	Warning: Command is skipped: /usr/bin/mount udev rootfs/dev -t devtmpfs -o mode=0755,nosuid
-	Warning: Command is skipped: /usr/bin/mount devpts rootfs/dev/pts -t devpts -o mode=0620,gid=5,nosuid,noexec
-	Warning: Command is skipped: /usr/bin/mount shm rootfs/dev/shm -t tmpfs -o mode=1777,nosuid,nodev
-	Warning: Command is skipped: /usr/bin/mount /run rootfs/run --bind
-	Warning: Command is skipped: /usr/bin/mount tmp rootfs/tmp -t tmpfs -o mode=1777,strictatime,nodev,nosuid
 	==> Installing packages to rootfs
 	(...)
 	:: Running post-transaction hooks...
@@ -294,7 +255,6 @@ Create a new Arch Linux system installation from scratch via *pacstrap(8)*
 	( 9/10) Rebuilding certificate stores...
 	(10/10) Reloading system bus configuration...
 	  Skipped: Running in chroot.
-	Warning: Command is skipped: /usr/bin/umount rootfs/tmp rootfs/run rootfs/dev/shm rootfs/dev/pts rootfs/dev rootfs/sys rootfs/proc
 	done
 
 Note: Some post-transaction hooks failed due to lack of privileges.

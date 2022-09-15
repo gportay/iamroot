@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [unreleased]
+
+### Added
+
+- Save and load the user ownership to extended attributes for the functions
+  `__fxstatat()`, `__fxstatat64()`, `fchownat()`, `fstatat()`, `fstatat64()`
+  and `statx()`
+
 ## [v7] - 2022-09-08
 
 ### Added

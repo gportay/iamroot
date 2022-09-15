@@ -104,11 +104,15 @@ extern char **__environ;
 
 #define IAMROOT_XATTRS_PREFIX "user.iamroot."
 #define IAMROOT_XATTRS_MODE IAMROOT_XATTRS_PREFIX "mode"
+#define IAMROOT_XATTRS_UID  IAMROOT_XATTRS_PREFIX "uid"
+#define IAMROOT_XATTRS_GID  IAMROOT_XATTRS_PREFIX "gid"
 #endif
 
 #ifdef __FreeBSD__
 #define IAMROOT_EXTATTR_PREFIX "iamroot."
 #define IAMROOT_EXTATTR_MODE IAMROOT_EXTATTR_PREFIX "mode"
+#define IAMROOT_EXTATTR_UID  IAMROOT_EXTATTR_PREFIX "uid"
+#define IAMROOT_EXTATTR_GID  IAMROOT_EXTATTR_PREFIX "gid"
 #endif
 
 int _snprintf(char *, size_t, const char *, ...) __attribute__((format(printf,3,4)));
@@ -294,6 +298,48 @@ extern int next_lremovexattr(const char *, const char *);
 	   errno = save_errno; \
 	   0; \
 	})
+
+#define __get_uid(path) \
+	({ int save_errno = errno; \
+	   uid_t u; \
+	   if (next_lgetxattr(buf, IAMROOT_XATTRS_UID, &u, sizeof(u)) != sizeof(u)) \
+		u = (uid_t)-1; \
+	   errno = save_errno; \
+	   u; \
+	})
+
+#define __set_uid(path, olduid, uid) \
+	({ int save_errno = errno; \
+	   if ((olduid) == (uid)) { \
+	     next_lremovexattr((path), IAMROOT_XATTRS_UID); \
+	   } else { \
+	     next_lsetxattr((path), IAMROOT_XATTRS_UID, &(olduid), \
+			    sizeof((olduid)), 0); \
+	   } \
+	   errno = save_errno; \
+	   0; \
+	})
+
+#define __get_gid(path) \
+	({ int save_errno = errno; \
+	   gid_t g; \
+	   if (next_lgetxattr(buf, IAMROOT_XATTRS_GID, &g, sizeof(g)) != sizeof(g)) \
+		g = (gid_t)-1; \
+	   errno = save_errno; \
+	   g; \
+	})
+
+#define __set_gid(path, oldgid, gid) \
+	({ int save_errno = errno; \
+	   if ((oldgid) == (gid)) { \
+	     next_lremovexattr((path), IAMROOT_XATTRS_GID); \
+	   } else { \
+	     next_lsetxattr((path), IAMROOT_XATTRS_GID, &(oldgid), \
+			    sizeof((oldgid)), 0); \
+	   } \
+	   errno = save_errno; \
+	   0; \
+	})
 #endif
 
 #ifdef __FreeBSD__
@@ -327,6 +373,56 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 	   errno = save_errno; \
 	   0; \
 	})
+
+#define __get_uid(path) \
+	({ int save_errno = errno; \
+	   uid_t u; \
+	   if (next_extattr_get_link(buf, EXTATTR_NAMESPACE_USER, \
+				     IAMROOT_EXTATTR_UID, &u, sizeof(u)) \
+				     != sizeof(u)) \
+		u = (uid_t)-1; \
+	   errno = save_errno; \
+	   u; \
+	})
+
+#define __set_uid(path, olduid, uid) \
+	({ int save_errno = errno; \
+	   if ((olduid) == (uid)) { \
+	     next_extattr_delete_link((path), EXTATTR_NAMESPACE_USER, \
+				      IAMROOT_EXTATTR_UID); \
+	   } else { \
+	     next_extattr_set_link((path), EXTATTR_NAMESPACE_USER, \
+				   IAMROOT_EXTATTR_UID, &(olduid), \
+				   sizeof((olduid))); \
+	   } \
+	   errno = save_errno; \
+	   0; \
+	})
+
+#define __get_gid(path) \
+	({ int save_errno = errno; \
+	   gid_t g; \
+	   if (next_extattr_get_link(buf, EXTATTR_NAMESPACE_USER, \
+				     IAMROOT_EXTATTR_MODE, &g, sizeof(g)) \
+				     != sizeof(g)) \
+		g = (gid_t)-1; \
+	   errno = save_errno; \
+	   g; \
+	})
+
+#define __set_gid(path, oldgid, gid) \
+	({ int save_errno = errno; \
+	   if ((oldgid) == (gid)) { \
+	     next_extattr_delete_link((path), EXTATTR_NAMESPACE_USER, \
+				      IAMROOT_EXTATTR_GID); \
+	   } else { \
+	     next_extattr_set_link((path), EXTATTR_NAMESPACE_USER, \
+				   IAMROOT_EXTATTR_GID, &(oldgid), \
+				   sizeof((oldgid))); \
+	   } \
+	   errno = save_errno; \
+	   0; \
+	})
 #endif
 
 #define __st_mode(path, statbuf) \
@@ -339,6 +435,30 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 	({ mode_t m = __get_mode(path); \
 	   if (m != (mode_t)-1) { \
 	     statxbuf->stx_mode = (statxbuf->stx_mode & S_IFMT) | m; \
+	   } })
+
+#define __st_uid(path, statbuf) \
+	({ uid_t u = __get_uid(path); \
+	   if (u != (uid_t)-1) { \
+	     statbuf->st_uid = u; \
+	   } })
+
+#define __stx_uid(path, statxbuf) \
+	({ uid_t u = __get_uid(path); \
+	   if (u != (uid_t)-1) { \
+	     statxbuf->stx_uid = u; \
+	   } })
+
+#define __st_gid(path, statbuf) \
+	({ gid_t g = __get_gid(path); \
+	   if (g != (gid_t)-1) { \
+	     statbuf->st_gid = g; \
+	   } })
+
+#define __stx_gid(path, statxbuf) \
+	({ gid_t g = __get_gid(path); \
+	   if (g != (gid_t)-1) { \
+	     statxbuf->stx_gid = g; \
 	   } })
 
 #define __ignored_errno(e) (((e) != EPERM) && ((e) != EACCES) && ((e) != ENOSYS))

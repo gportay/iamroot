@@ -21,9 +21,6 @@
 
 #include "iamroot.h"
 
-extern uid_t next_getegid();
-extern uid_t next_geteuid();
-
 __attribute__((visibility("hidden")))
 int next___fxstatat(int ver, int dfd, const char *path, struct stat *statbuf,
 		    int atflags)
@@ -68,15 +65,17 @@ int __fxstatat(int ver, int dfd, const char *path, struct stat *statbuf,
 	if (ret == -1)
 		goto exit;
 
-	uid = next_geteuid();
-	if (statbuf->st_uid == uid)
-		statbuf->st_uid = geteuid();
+	uid = __get_uid(buf);
+	if (uid == (uid_t)-1)
+		statbuf->st_uid = 0;
 
-	gid = next_getegid();
-	if (statbuf->st_gid == gid)
+	gid = __get_gid(buf);
+	if (gid == (gid_t)-1)
 		statbuf->st_gid = 0;
 
 	__st_mode(buf, statbuf);
+	__st_uid(buf, statbuf);
+	__st_gid(buf, statbuf);
 
 exit:
 	return ret;

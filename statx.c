@@ -22,9 +22,6 @@
 
 #ifdef __GLIBC__
 #if __GLIBC_PREREQ(2,28)
-extern uid_t next_getegid();
-extern uid_t next_geteuid();
-
 __attribute__((visibility("hidden")))
 int next_statx(int dfd, const char *path, int atflags, unsigned int mask,
 	       struct statx *statxbuf)
@@ -69,15 +66,17 @@ int statx(int dfd, const char *path, int atflags, unsigned int mask,
 	if (ret == -1)
 		goto exit;
 
-	uid = next_geteuid();
-	if (statxbuf->stx_uid == uid)
-		statxbuf->stx_uid = geteuid();
+	uid = __get_uid(buf);
+	if (uid == (uid_t)-1)
+		statxbuf->stx_uid = 0;
 
-	gid = next_getegid();
-	if (statxbuf->stx_gid == gid)
+	gid = __get_gid(buf);
+	if (gid == (gid_t)-1)
 		statxbuf->stx_gid = 0;
 
 	__stx_mode(buf, statxbuf);
+	__stx_uid(buf, statxbuf);
+	__stx_gid(buf, statxbuf);
 
 exit:
 	return ret;

@@ -293,7 +293,7 @@ extern int next_lremovexattr(const char *, const char *);
 	   } \
 	   errno = save_errno; \
 	   0; \
-	   })
+	})
 #endif
 
 #ifdef __FreeBSD__

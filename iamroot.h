@@ -326,7 +326,7 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 	   } \
 	   errno = save_errno; \
 	   0; \
-	   })
+	})
 #endif
 
 #define __st_mode(path, statbuf) \

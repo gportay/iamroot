@@ -5,7 +5,7 @@ pkgver=7
 pkgrel=1
 pkgdesc='Emulating the syscall chroot(2) in an unpriviliged process'
 arch=('x86_64')
-url="https://github.com/gportay/$pkgname"
+url="https://github.com/gportay/${pkgname%-git}"
 license=('GPL')
 makedepends=('lib32-glibc'
              'i386-musl'

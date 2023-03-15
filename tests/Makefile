@@ -1,5 +1,5 @@
 #
-# Copyright 2021-2022 Gaël PORTAY
+# Copyright 2021-2023 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -134,7 +134,7 @@ test: | rootfs
 	ln -s file0 rootfs/tmp/symlink0
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-access rootfs/tmp/file0 0
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-access /tmp/file0 0
-	-env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-acct rootfs/var/log/pacct 
+	-env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-acct rootfs/var/log/pacct
 	-cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-acct /var/log/pacct
 ifeq ($(OS),FreeBSD)
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-chmod rootfs/tmp/file0 00644

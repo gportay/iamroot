@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -498,7 +498,7 @@ static inline void __close(int fd)
 {
 	extern int errno;
 	int save_errno;
-	
+
 	save_errno = errno;
 	if (close(fd))
 		__fpathperror(fd, "close");

@@ -352,10 +352,10 @@ debian-%-chroot: | debian-%-rootfs
 rootfs: debian-rootfs
 
 .PHONY: debian-rootfs
-debian-rootfs: debian-oldoldstable-rootfs 
-debian-rootfs: debian-oldstable-rootfs 
-debian-rootfs: debian-stable-rootfs 
-debian-rootfs: debian-testing-rootfs 
+debian-rootfs: debian-oldoldstable-rootfs
+debian-rootfs: debian-oldstable-rootfs
+debian-rootfs: debian-stable-rootfs
+debian-rootfs: debian-testing-rootfs
 debian-rootfs: debian-unstable-rootfs
 
 debian-oldoldstable-rootfs: | debian-oldoldstable-rootfs/etc/machine-id
@@ -1039,9 +1039,9 @@ armhfp-fedora-%-chroot: | armhfp-fedora-%-rootfs
 arm-rootfs: armhfp-fedora-rootfs
 
 .PHONY: armhfp-fedora-rootfs
-armhfp-fedora-rootfs: armhfp-fedora-33-rootfs 
-armhfp-fedora-rootfs: armhfp-fedora-34-rootfs 
-armhfp-fedora-rootfs: armhfp-fedora-35-rootfs 
+armhfp-fedora-rootfs: armhfp-fedora-33-rootfs
+armhfp-fedora-rootfs: armhfp-fedora-34-rootfs
+armhfp-fedora-rootfs: armhfp-fedora-35-rootfs
 armhfp-fedora-rootfs: armhfp-fedora-36-rootfs
 
 armhfp-fedora-33-rootfs: | armhfp-fedora-33-rootfs/etc/machine-id

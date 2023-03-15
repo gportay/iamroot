@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -43,7 +43,7 @@ __attribute__((visibility("hidden")))
 int __getcolor()
 {
 	int save_errno;
-	
+
 	save_errno = errno;
 	if (!isatty(__getdebug_fd())) {
 		errno = save_errno;

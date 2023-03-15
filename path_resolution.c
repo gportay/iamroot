@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2022 Gaël PORTAY
+ * Copyright 2020-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -570,7 +570,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		_strncpy(buf, path, bufsize);
 		return 0;
 	}
-		
+
 	if (*path == '/') {
 		const char *root;
 

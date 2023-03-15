@@ -1,6 +1,6 @@
 #!/bin/sed -f
 #
-# Copyright 2022 Gaël PORTAY
+# Copyright 2022-2023 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -72,7 +72,7 @@
 	# dpkg: warning: parsing file '/var/lib/dpkg/status' near line X package 'dpkg':
 	s,line \([[:digit:]]\+\) ,line X: ,
 
-	# /var/lib/dpkg/info/libc6:amd64.postinst: 1: which: not found                    
+	# /var/lib/dpkg/info/libc6:amd64.postinst: 1: which: not found
 	/^\/var\/lib\/dpkg\/info\/.*.postinst: /{
 		s,\([[:lower:][:digit:]+.-]\+\):\([[:lower:][:digit:]]\+\),\1,
 	}

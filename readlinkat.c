@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -63,7 +63,7 @@ ssize_t readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 
 	if (__streq(tmp, "/proc/self/exe")) {
 		const char *exe;
-	       
+
 		exe = __getexe();
 		if (exe) {
 			ret = __strlen(exe);

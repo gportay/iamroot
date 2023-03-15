@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2022 Gaël PORTAY
+ * Copyright 2020-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -625,7 +625,7 @@ static int __dl_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
 				errno = EIO;
 				goto exit;
 			}
-	
+
 			ret = callback(buf, size, data);
 			if (ret)
 				break;
@@ -735,7 +735,7 @@ static int __dl_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
 				errno = EIO;
 				goto exit;
 			}
-	
+
 			ret = callback(buf, size, data);
 			if (ret)
 				break;
@@ -987,7 +987,7 @@ const char *__getexe()
 	if (!exec)
 		return NULL;
 
-	len = 0;	
+	len = 0;
 	root = __getroot();
 	if (root)
 		len = __strlen(root);
@@ -1061,7 +1061,7 @@ static char *__getlibiamroot(const char *ldso, int abi)
 		ret = "/usr/lib/iamroot/x86_64/libiamroot-linux-x86-64.so.2";
 		goto exit;
 	}
-	
+
 	/* IAMROOT_LIB_LINUX_3 */
 	if (__streq(ldso, "linux") && abi == 3) {
 		ret = "/usr/lib/iamroot/arm/libiamroot-linux.so.3";

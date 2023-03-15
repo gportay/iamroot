@@ -604,6 +604,10 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 			goto ignore;
 		}
 
+		if (*root && __strlcmp(dirbuf, root) != 0 && !ignore(dirbuf))
+			__warn_or_fatal("%i <-> '%s': does not contains root directory '%s'\n",
+					dfd, dirbuf, root);
+
 		n = _snprintf(buf, bufsize, "%s/%s", dirbuf, path);
 		if (n < 0)
 			return -1;

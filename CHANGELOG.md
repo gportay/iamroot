@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Output the directory fd for the functions `name_to_handle_at()` and
   `scandirat()`
+- Output a warning if the directory fd does not contain the root directory
 
 ### Fixed
 

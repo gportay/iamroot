@@ -27,7 +27,7 @@ pkgver() {
 
 prepare() {
 	cd "$srcdir/$pkgname"
-	ln -sf support/makefile
+	ln -sf support/linux.mk makefile
 	touch local.mk
 	sed -e "/^VERSION = /s,\w$,$pkgver," -i Makefile
 	sed -e "/^VERSION=/s,\w$,$pkgver," -i iamroot-shell

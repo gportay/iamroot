@@ -16,6 +16,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Fix the output of the open flags for the function `renameat2()`
 - Fix the alteration of the `errno` error in the function `__procfdreadlink()`
+- Fix the loading of the user ownership from extended attributes of the
+  resolved paths in the function `fchownat()`
 
 ## [v8] - 2022-09-20
 

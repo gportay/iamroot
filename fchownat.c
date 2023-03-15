@@ -49,8 +49,8 @@ int fchownat(int dfd, const char *path, uid_t owner, gid_t group, int atflags)
 		return -1;
 	}
 
-	owner = __get_uid();
-	group = __get_gid();
+	owner = __get_uid(buf);
+	group = __get_gid(buf);
 
 	__debug("%s(dfd: %i, path: '%s' -> '%s', owner: %i, group: %i, atflags: 0x%x)\n",
 		__func__, dfd, path, buf, owner, group, atflags);

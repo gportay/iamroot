@@ -1,5 +1,5 @@
 #
-# Copyright 2021-2022 Gaël PORTAY
+# Copyright 2021-2023 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -784,8 +784,6 @@ alpine-minirootfs-3.16.0-x86_64.tar.gz:
 alpine-minirootfs-%-x86_64.tar.gz:
 	wget http://dl-cdn.alpinelinux.org/alpine/v$(basename $*)/releases/x86_64/alpine-minirootfs-$*-x86_64.tar.gz
 
-i686-rootfs: i686-alpine-rootfs
-
 .PHONY: mini-chroot-i686
 x86-mini-chroot: export QEMU_LD_PREFIX = $(CURDIR)/x86-alpine-minirootfs
 x86-mini-chroot: i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2 | x86-alpine-minirootfs
@@ -890,7 +888,6 @@ umount-alpine-3.14:
 umount-alpine-3.15:
 umount-alpine-3.16:
 umount-alpine-edge:
-endif
 
 .PRECIOUS: gcompat/ld-%
 gcompat/ld-%: LOADER_NAME=ld-$*
@@ -929,6 +926,8 @@ i686-alpine-edge-chroot:
 i686-alpine-%-chroot: | i686-alpine-%-rootfs
 	bash iamroot-shell -c "chroot i686-alpine-$*-rootfs /bin/ash"
 
+i686-rootfs: i686-alpine-rootfs
+
 .PHONY: i686-alpine-rootfs
 i686-alpine-rootfs: i686-alpine-3.14-rootfs
 i686-alpine-rootfs: i686-alpine-3.15-rootfs
@@ -943,6 +942,7 @@ i686-alpine-edge-rootfs: | i686-alpine-edge-rootfs/bin/busybox
 i686-alpine-%-rootfs/bin/busybox: export APK_OPTS = --arch x86 --no-progress
 i686-alpine-%-rootfs/bin/busybox: | i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "alpine-make-rootfs i686-alpine-$*-rootfs --keys-dir /usr/share/apk/keys/x86 --mirror-uri http://dl-cdn.alpinelinux.org/alpine --branch $*"
+endif
 endif
 endif
 

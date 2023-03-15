@@ -571,13 +571,11 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		return 0;
 	}
 
+	root = getrootdir();
+	if (__streq(root, "/"))
+		root = "";
+
 	if (*path == '/') {
-		const char *root;
-
-		root = getrootdir();
-		if (__streq(root, "/"))
-			root = "";
-
 		if (*root && __strlcmp(path, root) == 0) {
 			__warn_or_fatal("%s: contains root directory '%s'\n",
 					path, root);
@@ -615,11 +613,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 
 	sanitize(buf, bufsize);
 
-	root = getrootdir();
-	if (__streq(root, "/"))
-		root = "";
 	len = __strlen(root);
-
 	if (ignore(buf+len)) {
 		memcpy(buf, buf+len, __strlen(buf+len)+1);
 		goto exit;

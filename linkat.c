@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -15,8 +15,8 @@
 #include "iamroot.h"
 
 __attribute__((visibility("hidden")))
-int next_linkat(int oldfd, const char *oldpath, int newfd, const char *newpath,
-		int atflags)
+int next_linkat(int olddfd, const char *oldpath, int newdfd,
+		const char *newpath, int atflags)
 {
 	int (*sym)(int, const char *, int, const char *, int);
 	int ret;
@@ -28,36 +28,36 @@ int next_linkat(int oldfd, const char *oldpath, int newfd, const char *newpath,
 		return -1;
 	}
 
-	ret = sym(oldfd, oldpath, newfd, newpath, atflags);
+	ret = sym(olddfd, oldpath, newdfd, newpath, atflags);
 	if (ret == -1)
 		__pathperror2(oldpath, newpath, __func__);
 
 	return ret;
 }
 
-int linkat(int oldfd, const char *oldpath, int newfd, const char *newpath,
+int linkat(int olddfd, const char *oldpath, int newdfd, const char *newpath,
 	   int atflags)
 {
 	char oldbuf[PATH_MAX], newbuf[PATH_MAX];
 	ssize_t siz;
 
-	siz = path_resolution(oldfd, oldpath, oldbuf, sizeof(oldbuf), atflags);
+	siz = path_resolution(olddfd, oldpath, oldbuf, sizeof(oldbuf), atflags);
 	if (siz == -1) {
 		__pathperror(oldpath, __func__);
 		return -1;
 	}
 
-	siz = path_resolution(newfd, newpath, newbuf, sizeof(newbuf), 0);
+	siz = path_resolution(newdfd, newpath, newbuf, sizeof(newbuf), 0);
 	if (siz == -1) {
 		__pathperror(newpath, __func__);
 		return -1;
 	}
 
-	__debug("%s(oldfd: %i, oldpath: '%s' -> '%s', newfd: %i, newpath: '%s' -> '%s', atflags: 0x%x)\n",
-		__func__, oldfd, oldpath, oldbuf, newfd, newpath, newbuf,
+	__debug("%s(olddfd: %i, oldpath: '%s' -> '%s', newdfd: %i, newpath: '%s' -> '%s', atflags: 0x%x)\n",
+		__func__, olddfd, oldpath, oldbuf, newdfd, newpath, newbuf,
 		atflags);
 
 	__remove_at_empty_path_if_needed(oldbuf, atflags);
 	__remove_at_empty_path_if_needed(newbuf, atflags);
-	return next_linkat(oldfd, oldbuf, newfd, newbuf, atflags);
+	return next_linkat(olddfd, oldbuf, newdfd, newbuf, atflags);
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -16,7 +16,7 @@
 
 int main(int argc, char * const argv[])
 {
-	int oldfd = AT_FDCWD, newfd = AT_FDCWD, ret = EXIT_FAILURE;
+	int olddfd = AT_FDCWD, newdfd = AT_FDCWD, ret = EXIT_FAILURE;
 
 	if (argc < 5) {
 		fprintf(stderr, "Too few arguments\n");
@@ -27,22 +27,22 @@ int main(int argc, char * const argv[])
 	}
 
 	if (__strncmp(argv[1], "-") != 0) {
-		oldfd = open(".", O_DIRECTORY);
-		if (oldfd == -1) {
+		olddfd = open(".", O_DIRECTORY);
+		if (olddfd == -1) {
 			perror("open");
 			return EXIT_FAILURE;
 		}
 	}
 
 	if (__strncmp(argv[3], "-") != 0) {
-		newfd = open(".", O_DIRECTORY);
-		if (newfd == -1) {
+		newdfd = open(".", O_DIRECTORY);
+		if (newdfd == -1) {
 			perror("open");
 			goto exit;
 		}
 	}
 
-	if (renameat(oldfd, argv[2], newfd, argv[4])) {
+	if (renameat(olddfd, argv[2], newdfd, argv[4])) {
 		perror("renameat");
 		goto exit;
 	}
@@ -50,12 +50,12 @@ int main(int argc, char * const argv[])
 	ret = EXIT_SUCCESS;
 
 exit:
-	if (oldfd != AT_FDCWD)
-		if (close(oldfd))
+	if (olddfd != AT_FDCWD)
+		if (close(olddfd))
 			perror("close");
 
-	if (newfd != AT_FDCWD)
-		if (close(newfd))
+	if (newdfd != AT_FDCWD)
+		if (close(newdfd))
 			perror("close");
 
 	return ret;

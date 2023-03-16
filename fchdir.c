@@ -39,12 +39,11 @@ int fchdir(int fd)
 	ssize_t siz;
 	int ret;
 
-	siz = __procfdreadlink(fd, buf, sizeof(buf));
+	siz = fpath(fd, buf, sizeof(buf));
 	if (siz == -1) {
-		__fpathperror(fd, "__procfdreadlink");
+		__fpathperror(fd, __func__);
 		return -1;
 	}
-	buf[siz] = 0; /* ensure NULL-terminated */
 
 	ret = next_fchdir(fd);
 	if (ret) {

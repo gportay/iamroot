@@ -45,12 +45,11 @@ int extattr_delete_fd(int fd, int attrnamespace, const char *attrname)
 	char buf[PATH_MAX];
 	ssize_t siz;
 
-	siz = __procfdreadlink(fd, buf, sizeof(buf));
+	siz = fpath(fd, buf, sizeof(buf));
 	if (siz == -1) {
-		__fpathperror(fd, "__procfdreadlink");
+		__fpathperror(fd, __func__);
 		return -1;
 	}
-	buf[siz] = 0;
 
 	if (attrnamespace == EXTATTR_NAMESPACE_SYSTEM) {
 		int ret;

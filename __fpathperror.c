@@ -19,7 +19,7 @@ void __fpathperror(int fd, const char *s)
 	int err;
 
 	err = errno;
-	siz = __procfdreadlink(fd, buf, sizeof(buf));
+	siz = fpath(fd, buf, sizeof(buf));
 	if (siz == -1) {
 #ifdef __FreeBSD__
 		__notice("%s: %i: %s: %i\n", getrootdir(), fd, s, errno);
@@ -30,7 +30,6 @@ void __fpathperror(int fd, const char *s)
 		errno = err;
 		return;
 	}
-	buf[siz] = 0; /* ensure NULL-terminated */
 
 	if (__ignored_errno(errno)) {
 #ifdef __FreeBSD__

@@ -45,12 +45,11 @@ int fsetxattr(int fd, const char *name, const void *value, size_t size,
 	char buf[PATH_MAX];
 	ssize_t siz;
 
-	siz = __procfdreadlink(fd, buf, sizeof(buf));
+	siz = fpath(fd, buf, sizeof(buf));
 	if (siz == -1) {
-		__fpathperror(fd, "__procfdreadlink");
+		__fpathperror(fd, __func__);
 		return -1;
 	}
-	buf[siz] = 0;
 
 	if (__strncmp(name, IAMROOT_XATTRS_PREFIX) != 0) {
 		int ret;

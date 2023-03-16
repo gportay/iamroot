@@ -48,12 +48,11 @@ ssize_t extattr_list_fd(int fd, int attrnamespace, void *data, size_t nbytes)
 	ssize_t i, ret;
 	(void)nbytes;
 
-	siz = __procfdreadlink(fd, buf, sizeof(buf));
+	siz = fpath(fd, buf, sizeof(buf));
 	if (siz == -1) {
-		__fpathperror(fd, "__procfdreadlink");
+		__fpathperror(fd, __func__);
 		return -1;
 	}
-	buf[siz] = 0;
 
 	if (attrnamespace == EXTATTR_NAMESPACE_SYSTEM)
 		attrnamespace = EXTATTR_NAMESPACE_USER;

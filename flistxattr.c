@@ -46,12 +46,11 @@ ssize_t flistxattr(int fd, char *list, size_t size)
 	ssize_t i, ret;
 	(void)size;
 
-	siz = __procfdreadlink(fd, buf, sizeof(buf));
+	siz = fpath(fd, buf, sizeof(buf));
 	if (siz == -1) {
-		__fpathperror(fd, "__procfdreadlink");
+		__fpathperror(fd, __func__);
 		return -1;
 	}
-	buf[siz] = 0;
 
 	__debug("%s(fd: %i <-> '%s', ...)\n", __func__, fd, buf);
 

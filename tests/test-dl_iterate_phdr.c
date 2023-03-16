@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Gaël PORTAY
+ * Copyright 2022-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -24,7 +24,7 @@ static int callback(struct dl_phdr_info *info, size_t size, void *data)
 	(void)size;
 	(void)data;
 
-	printf("Name: \"%s\" (%d segments)\n", info->dlpi_name, info->dlpi_phnum);
+	printf("Name: \"%s\" (%i segments)\n", info->dlpi_name, info->dlpi_phnum);
 
 	for (j = 0; j < info->dlpi_phnum; j++) {
 		p_type = info->dlpi_phdr[j].p_type;

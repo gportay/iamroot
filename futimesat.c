@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -39,7 +39,7 @@ int __futimesat(int dirfd, const char *pathname, const struct timeval times[2])
 
 int futimesat(int dfd, const char *path, const struct timeval times[2])
 {
-	__debug("%s(dfd: %d, path: '%s', ...)\n", __func__, dfd, path);
+	__debug("%s(dfd: %i, path: '%s', ...)\n", __func__, dfd, path);
 
 	return __futimesat(dfd, path, times);
 }

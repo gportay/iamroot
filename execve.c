@@ -1141,7 +1141,7 @@ static char *__getld_preload(const char *ldso, int abi)
 	char *ret;
 	int n;
 
-	n = _snprintf(buf, sizeof(buf), "IAMROOT_LD_PRELOAD_%s_%d", ldso, abi);
+	n = _snprintf(buf, sizeof(buf), "IAMROOT_LD_PRELOAD_%s_%i", ldso, abi);
 	if (n == -1)
 		return NULL;
 	__sanitize(buf, 1);
@@ -1486,7 +1486,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 		char * const *arg;
 
 		basename = __basename(buf);
-		ret = sscanf(basename, "ld-%" __xstr(NAME_MAX) "[^.].so.%d",
+		ret = sscanf(basename, "ld-%" __xstr(NAME_MAX) "[^.].so.%i",
 			     ldso, &abi);
 		if (ret < 2) {
 			errno = ENOTSUP;
@@ -1660,7 +1660,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 		char *xargv1;
 
 		basename = __basename(buf);
-		ret = sscanf(basename, "ld-%" __xstr(NAME_MAX) "[^.].so.%d",
+		ret = sscanf(basename, "ld-%" __xstr(NAME_MAX) "[^.].so.%i",
 			     ldso, &abi);
 		if (ret < 2) {
 			errno = ENOTSUP;

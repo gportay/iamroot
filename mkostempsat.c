@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Gaël PORTAY
+ * Copyright 2022-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -57,7 +57,7 @@ int mkostempsat(int dfd, char *path, int suffixlen, int oflags)
 	memcpy(path, buf+__strlen(buf)-len, len);
 
 exit:
-	__debug("%s(dfd: %d, path: '%s' -> '%s', oflags: 0%o)\n", __func__,
+	__debug("%s(dfd: %i, path: '%s' -> '%s', oflags: 0%o)\n", __func__,
 		dfd, path, buf, oflags);
 
 	return ret;

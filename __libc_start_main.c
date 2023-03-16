@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Gaël PORTAY
+ * Copyright 2022-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -91,7 +91,7 @@ int __libc_start_main(int (*main)(int, char **, char **), int argc,
 	const char *root;
 	char *argv0;
 
-	__debug("%s(main: %p, argc: %d, argv: { '%s', '%s', ... }, ...)\n",
+	__debug("%s(main: %p, argc: %i, argv: { '%s', '%s', ... }, ...)\n",
 		__func__, main, argc, argv[0], argv[1]);
 
 	argv0 = getenv("argv0");

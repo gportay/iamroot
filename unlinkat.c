@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -47,7 +47,7 @@ int unlinkat(int dfd, const char *path, int atflags)
 		return -1;
 	}
 
-	__debug("%s(dfd: %d, path: '%s' -> '%s', atflags: 0x%x)\n", __func__,
+	__debug("%s(dfd: %i, path: '%s' -> '%s', atflags: 0x%x)\n", __func__,
 		dfd, path, buf, atflags);
 
 	__remove_at_empty_path_if_needed(buf, atflags);

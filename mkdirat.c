@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -54,7 +54,7 @@ int mkdirat(int dfd, const char *path, mode_t mode)
 	}
 
 	__fwarn_if_insuffisant_user_modeat(dfd, buf, mode, 0);
-	__debug("%s(dfd: %d, path: '%s' -> '%s', mode: 0%03o -> 0%03o)\n",
+	__debug("%s(dfd: %i, path: '%s' -> '%s', mode: 0%03o -> 0%03o)\n",
 		__func__, dfd, path, buf, oldmode, mode);
 
 	ret = next_mkdirat(dfd, buf, mode);

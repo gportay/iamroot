@@ -223,15 +223,15 @@ void verbose_exec(const char *, char * const[], char * const[]);
 
 #define __fwarn_and_set_user_modeat(fd, path, mode, flags, user_mode) \
 	({ if ((mode & user_mode) != user_mode) { \
-	     __info("%s: %d/%s: Insuffisant user mode 0%03o!\n", __func__, fd, path, mode); \
+	     __info("%s: %i/%s: Insuffisant user mode 0%03o!\n", __func__, fd, path, mode); \
 	     mode |= user_mode; \
 	   } \
 	   if (mode & S_ISUID) { \
-	     __info("%s: %d/%s: SUID bit 0%04o!\n", __func__, fd, path, mode); \
+	     __info("%s: %i/%s: SUID bit 0%04o!\n", __func__, fd, path, mode); \
 	     mode &= ~S_ISUID; \
 	   } \
 	   if (mode & S_ISGID) { \
-	     __info("%s: %d/%s: SGID bit 0%04o!\n", __func__, fd, path, mode); \
+	     __info("%s: %i/%s: SGID bit 0%04o!\n", __func__, fd, path, mode); \
 	     mode &= ~S_ISGID; \
 	   } })
 

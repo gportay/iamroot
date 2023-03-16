@@ -601,7 +601,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		}
 
 		if (*dirbuf != '/') {
-			__warning("%d: ignore relative path '%s'\n", dfd,
+			__warning("%i: ignore relative path '%s'\n", dfd,
 				  dirbuf);
 			goto ignore;
 		}

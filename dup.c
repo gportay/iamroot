@@ -32,7 +32,15 @@ int next_dup(int fd)
 
 int dup(int fd)
 {
+	int ret;
+
 	__debug("%s(fd: %i <-> '%s')\n", __func__, fd, __fpath(fd));
 
-	return next_dup(fd);
+	ret = next_dup(fd);
+
+	if (ret >= 0)
+		__notice("%s: %i -> '%s' -> %i\n", __func__, fd, __fpath(ret),
+			 ret);
+
+	return ret;
 }

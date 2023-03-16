@@ -72,6 +72,9 @@ int open(const char *path, int oflags, ...)
 	ret = next_open(buf, oflags, mode);
 	__set_mode(buf, oldmode, mode);
 
+	if (ret >= 0)
+		__notice("%s: %i -> '%s'\n", __func__, ret, __fpath(ret));
+
 	return ret;
 }
 

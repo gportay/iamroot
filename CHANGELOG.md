@@ -74,6 +74,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `next_fsetxattr()`, `next_lgetxattr()`, `next_lremovexattr()`,
   `next_lsetxattr()` and `next_readlinkat()` on level debug
 - The environment variable `USER` is now set to the usurper user login name
+- Output the opened, duplicated and closed fd
 
 ### Deprecated
 

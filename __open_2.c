@@ -38,6 +38,7 @@ int __open_2(const char *path, int oflags)
 	char buf[PATH_MAX];
 	int atflags = 0;
 	ssize_t siz;
+	int ret;
 
 	if (oflags & O_NOFOLLOW)
 		atflags = AT_SYMLINK_NOFOLLOW;
@@ -49,7 +50,12 @@ int __open_2(const char *path, int oflags)
 	__debug("%s(path: '%s' -> '%s', oflags: 0%o)\n", __func__, path, buf,
 		oflags);
 
-	return next___open_2(buf, oflags);
+	ret = next___open_2(buf, oflags);
+
+	if (ret >= 0)
+		__notice("%s: %i -> '%s'\n", __func__, ret, __fpath(ret));
+
+	return ret;
 }
 
 #ifdef _LARGEFILE64_SOURCE

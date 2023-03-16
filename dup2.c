@@ -32,8 +32,16 @@ int next_dup2(int oldfd, int newfd)
 
 int dup2(int oldfd, int newfd)
 {
+	int ret;
+
 	__debug("%s(oldfd: %i <-> '%s', newfd: %i <-> '%s')\n", __func__,
 		oldfd, __fpath(oldfd), newfd, __fpath2(newfd));
 
-	return next_dup2(oldfd, newfd);
+	ret = next_dup2(oldfd, newfd);
+
+	if (ret >= 0)
+		__notice("%s: %i -> '%s' -> %i -> '%s'\n", __func__, oldfd,
+			 __fpath(oldfd), newfd, __fpath2(newfd));
+
+	return ret;
 }

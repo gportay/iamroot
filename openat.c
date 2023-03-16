@@ -71,6 +71,9 @@ int openat(int dfd, const char *path, int oflags, ...)
 	ret = next_openat(dfd, buf, oflags, mode);
 	__set_mode(buf, oldmode, mode);
 
+	if (ret >= 0)
+		__notice("%s: %i -> '%s'\n", __func__, ret, __fpath(ret));
+
 	return ret;
 }
 

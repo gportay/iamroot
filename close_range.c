@@ -58,6 +58,8 @@ static int __callback(const char *path, const char *filename, void *user)
 		__strncat(data->buf, ", ");
 	__strncat(data->buf, filename);
 
+	__notice("%s: %i -> '%s'\n", "close_range", fd, __fpath(fd));
+
 	return 0;
 }
 

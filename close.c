@@ -34,5 +34,7 @@ int close(int fd)
 {
 	__debug("%s(fd: %i <-> '%s')\n", __func__, fd, __fpath(fd));
 
+	__notice("%s: %i -> '%s'\n", __func__, fd, __fpath(fd));
+
 	return next_close(fd);
 }

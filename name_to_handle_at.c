@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -50,8 +50,8 @@ int name_to_handle_at(int dfd, const char *path, struct file_handle *handle,
 		return -1;
 	}
 
-	__debug("%s(path: '%s' -> '%s', ..., atflags: 0x%x)\n", __func__, path,
-		buf, atflags);
+	__debug("%s(dfd: %i, path: '%s' -> '%s', ..., atflags: 0x%x)\n", __func__,
+		dfd, path, buf, atflags);
 
 	__remove_at_empty_path_if_needed(buf, atflags);
 	return next_name_to_handle_at(dfd, buf, handle, mount_id, atflags);

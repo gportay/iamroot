@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -12,22 +12,23 @@
 __attribute__((visibility("hidden")))
 void __pathperror2(const char *oldpath, const char *newpath, const char *s)
 {
+	const char *oldp = *oldpath ? oldpath : "(empty)";
+	const char *newp = *newpath ? newpath : "(empty)";
+
 	if (__ignored_errno(errno)) {
 #ifdef __FreeBSD__
-		__info("%s: %s: %s: %s: %i\n", getrootdir(), oldpath, newpath,
-		       s, errno);
+		__info("%s: %s: %s: %s: %i\n", getrootdir(), oldp, newp, s,
+		       errno);
 #else
-		__info("%s: %s: %s: %s: %m\n", getrootdir(), oldpath, newpath,
-		       s);
+		__info("%s: %s: %s: %s: %m\n", getrootdir(), oldp, newp, s);
 #endif
 		return;
 	}
 
 #ifdef __FreeBSD__
-	__note_or_fatal("%s: %s: %s: %s: %i\n", getrootdir(), oldpath, newpath,
-			s, errno);
+	__note_or_fatal("%s: %s: %s: %s: %i\n", getrootdir(), oldp, newp, s,
+			errno);
 #else
-	__note_or_fatal("%s: %s: %s: %s: %m\n", getrootdir(), oldpath, newpath,
-			s);
+	__note_or_fatal("%s: %s: %s: %s: %m\n", getrootdir(), oldp, newp, s);
 #endif
 }

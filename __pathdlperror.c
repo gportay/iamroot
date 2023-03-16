@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -13,5 +13,7 @@
 __attribute__((visibility("hidden")))
 void __pathdlperror(const char *path, const char *s)
 {
-	__note_or_fatal("%s: %s: %s\n", path, s, dlerror());
+	const char *p = *path ? path : "(empty)";
+
+	__note_or_fatal("%s: %s: %s\n", p, s, dlerror());
 }

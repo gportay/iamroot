@@ -175,6 +175,8 @@ int __hashbang(const char *, char * const [], char *, size_t, char *[]);
 
 char *__basename(char *);
 char *__path_sanitize(char *, size_t);
+char *__fpath(int);
+char *__fpath2(int);
 ssize_t fpath(int, char *, size_t);
 int __path_ignored(int, const char *);
 ssize_t path_resolution(int, const char *, char *, size_t, int);

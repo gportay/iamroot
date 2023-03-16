@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -46,8 +46,8 @@ int symlinkat(const char *string, int dfd, const char *path)
 		return -1;
 	}
 
-	__debug("%s(string: '%s', dfd: %i, path: '%s' -> '%s')\n", __func__,
-		string, dfd, path, buf);
+	__debug("%s(string: '%s', dfd: %i <-> '%s', path: '%s' -> '%s')\n",
+		__func__, string, dfd, __fpath(dfd), path, buf);
 
 	return next_symlinkat(string, dfd, buf);
 }

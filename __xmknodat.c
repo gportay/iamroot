@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -34,8 +34,8 @@ int __xmknodat(int ver, int dfd, const char *path, mode_t mode, dev_t *dev)
 	}
 
 	__warn_if_insuffisant_user_mode(buf, mode);
-	__debug("%s(dfd %i, path: '%s' -> '%s', mode: 0%03o -> 0%03o)\n",
-		__func__, dfd, path, buf, oldmode, mode);
+	__debug("%s(dfd %i <-> '%s', path: '%s' -> '%s', mode: 0%03o -> 0%03o)\n",
+		__func__, dfd, __fpath(dfd), path, buf, oldmode, mode);
 
 	fd = next_creat(buf, mode);
 	if (fd == -1)

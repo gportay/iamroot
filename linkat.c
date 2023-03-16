@@ -53,9 +53,9 @@ int linkat(int olddfd, const char *oldpath, int newdfd, const char *newpath,
 		return -1;
 	}
 
-	__debug("%s(olddfd: %i, oldpath: '%s' -> '%s', newdfd: %i, newpath: '%s' -> '%s', atflags: 0x%x)\n",
-		__func__, olddfd, oldpath, oldbuf, newdfd, newpath, newbuf,
-		atflags);
+	__debug("%s(olddfd: %i <-> '%s', oldpath: '%s' -> '%s', newdfd: %i <-> '%s', newpath: '%s' -> '%s', atflags: 0x%x)\n",
+		__func__, olddfd, __fpath(olddfd), oldpath, oldbuf, newdfd,
+		__fpath2(newdfd), newpath, newbuf, atflags);
 
 	__remove_at_empty_path_if_needed(oldbuf, atflags);
 	__remove_at_empty_path_if_needed(newbuf, atflags);

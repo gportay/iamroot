@@ -94,8 +94,8 @@ ssize_t readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 		buf[ret++] = '/';
 
 exit:
-	__debug("%s(dfd: %i, path: '%s' -> '%s', ...)\n", __func__, dfd, path,
-		tmp);
+	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', ...)\n", __func__,
+		dfd, __fpath(dfd), path, tmp);
 
 	return ret;
 }

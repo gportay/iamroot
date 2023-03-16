@@ -53,8 +53,9 @@ int renameat(int olddfd, const char *oldpath, int newdfd, const char *newpath)
 		return -1;
 	}
 
-	__debug("%s(olddfd: %i, oldpath: '%s' -> '%s', newdfd: %i, newpath: '%s' -> '%s')\n",
-		__func__, olddfd, oldpath, oldbuf, newdfd, newpath, newbuf);
+	__debug("%s(olddfd: %i <-> '%s', oldpath: '%s' -> '%s', newdfd: %i <-> '%s', newpath: '%s' -> '%s')\n",
+		__func__, olddfd, __fpath(olddfd), oldpath, oldbuf, newdfd,
+		__fpath2(newdfd), newpath, newbuf);
 
 	return next_renameat(olddfd, oldbuf, newdfd, newbuf);
 }

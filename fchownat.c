@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -52,8 +52,8 @@ int fchownat(int dfd, const char *path, uid_t owner, gid_t group, int atflags)
 	owner = __get_uid(buf);
 	group = __get_gid(buf);
 
-	__debug("%s(dfd: %i, path: '%s' -> '%s', owner: %i, group: %i, atflags: 0x%x)\n",
-		__func__, dfd, path, buf, owner, group, atflags);
+	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', owner: %i, group: %i, atflags: 0x%x)\n",
+		__func__, dfd, __fpath(dfd), path, buf, owner, group, atflags);
 
 	__remove_at_empty_path_if_needed(buf, atflags);
 	ret = next_fchownat(dfd, buf, owner, group, atflags);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -54,8 +54,9 @@ int fchmodat(int dfd, const char *path, mode_t mode, int atflags)
 	}
 
 	__fwarn_if_insuffisant_user_modeat(dfd, buf, mode, atflags);
-	__debug("%s(dfd: %i, path: '%s' -> '%s', mode: 0%03o -> 0%03o, atflags: 0x%x)\n",
-		__func__, dfd, path, buf, oldmode, mode, atflags);
+	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', mode: 0%03o -> 0%03o, atflags: 0x%x)\n",
+		__func__, dfd, __fpath(dfd), path, buf, oldmode, mode,
+		atflags);
 
 	__remove_at_empty_path_if_needed(buf, atflags);
 	ret = next_fchmodat(dfd, buf, mode, atflags);

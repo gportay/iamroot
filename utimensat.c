@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -49,8 +49,8 @@ int utimensat(int dfd, const char *path, const struct timespec times[2],
 		return -1;
 	}
 
-	__debug("%s(dfd: %i, path: '%s' -> '%s', ..., atflags: 0x%x)\n",
-		__func__, dfd, path, buf, atflags);
+	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', ..., atflags: 0x%x)\n",
+		__func__, dfd, __fpath(dfd), path, buf, atflags);
 
 	__remove_at_empty_path_if_needed(buf, atflags);
 	return next_utimensat(dfd, buf, times, atflags);

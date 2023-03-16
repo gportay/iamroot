@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Gaël PORTAY
+ * Copyright 2022-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -48,8 +48,8 @@ int getfhat(int dfd, char *path, fhandle_t *fhp, int atflags)
 		return -1;
 	}
 
-	__debug("%s(dfd: %i, path: '%s' -> '%s', ..., atflags: 0x%x)\n",
-		__func__, dfd, path, buf, atflags);
+	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', ..., atflags: 0x%x)\n",
+		__func__, dfd, __fpath(dfd), path, buf, atflags);
 
 	return next_getfhat(dfd, buf, fhp, atflags);
 }

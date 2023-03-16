@@ -21,6 +21,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Output the full command from level 1 to 4
 - Remove the relative path warning as the `proc` file-system may return also
   pipe or socket for the given fd
+- Output the path of directory fd for the functions `__fxstat()`,
+  `__fxstatat()`, `__xmknodat()`, `faccessat()`, `fchmodat()`, `fchownat()`,
+  `fstatat()`, `fstatat64()`, `futimesat()`, `getfhat()`, `linkat()`,
+  `mkdirat()`, `mkfifoat()`, `mknodat()`, `mkostempsat()`,
+  `name_to_handle_at()`, `openat()`, `path_resolution()`, `readlinkat()`,
+  `renameat()`, `symlinkat()`, `unlinkat()` and `utimensat()`
 
 ### Fixed
 

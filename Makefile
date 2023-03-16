@@ -91,6 +91,9 @@ libiamroot.so: creat.o
 libiamroot.so: dl_iterate_phdr.o
 libiamroot.so: dlmopen.o
 libiamroot.so: dlopen.o
+libiamroot.so: dup.o
+libiamroot.so: dup2.o
+libiamroot.so: dup3.o
 libiamroot.so: euidaccess.o
 libiamroot.so: execl.o
 libiamroot.so: execle.o

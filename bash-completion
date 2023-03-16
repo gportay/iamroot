@@ -14,9 +14,9 @@ _iamroot-shell()
 		__open64_2 __open_2 __openat64_2 __opendir __opendir2 __statfs
 		__xmknod __xmknodat __xstat __xstat64 access acct
 		canonicalize_file_name catopen chdir chflags chflagsat chmod
-		chown chroot close creat dlmopen dlopen eaccess euidaccess
-		execl execle execlp exect execv execvP execve execveat execvp
-		execvpe extattr_delete_fd extattr_delete_file
+		chown chroot close creat dlmopen dlopen dup dup2 dup3 eaccess
+		euidaccess execl execle execlp exect execv execvP execve
+		execveat execvp execvpe extattr_delete_fd extattr_delete_file
 		extattr_delete_link extattr_get_fd extattr_get_file
 		extattr_get_link extattr_list_fd extattr_list_file
 		extattr_list_link extattr_set_fd extattr_set_file

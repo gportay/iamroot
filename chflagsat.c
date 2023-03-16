@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Gaël PORTAY
+ * Copyright 2022-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -47,7 +47,7 @@ int chflagsat(int dfd, const char *path, unsigned long flags, int atflag)
 		return -1;
 	}
 
-	__debug("%s(dnfd: %i, path: '%s', ..., flags: 0x%x)\n", __func__, dfd,
+	__debug("%s(dfd: %i, path: '%s', ..., flags: 0x%x)\n", __func__, dfd,
 		path, atflag);
 
 	return next_chflagsat(dfd, path, flags, atflag);

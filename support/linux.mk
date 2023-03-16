@@ -232,7 +232,7 @@ ifneq ($(shell command -v pacstrap 2>/dev/null),)
 .PHONY: arch-test
 arch-test: | arch-rootfs/usr/bin/shebang.sh
 arch-test: | arch-rootfs/usr/bin/shebang-arg.sh
-arch-test: $(IAMROOT_LIB) | arch-rootfs
+arch-test: $(subst $(CURDIR)/,,$(IAMROOT_LIB)) | arch-rootfs
 	bash iamroot-shell -c "chroot arch-rootfs shebang.sh one two three"
 	bash iamroot-shell -c "chroot arch-rootfs shebang-arg.sh one two three"
 
@@ -250,7 +250,7 @@ arch-rootfs: | arch-rootfs/etc/machine-id
 
 arch-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
 arch-rootfs/etc/machine-id: export EUID = 0
-arch-rootfs/etc/machine-id: | $(IAMROOT_LIB)
+arch-rootfs/etc/machine-id: $(subst $(CURDIR)/,,$(IAMROOT_LIB))
 	mkdir arch-rootfs
 	bash iamroot-shell -c "pacstrap -GMC support/x86_64-pacman.conf arch-rootfs"
 
@@ -282,7 +282,7 @@ endif
 
 arch.ext4:
 
-arch-postrootfs: | $(IAMROOT_LIB)
+arch-postrootfs: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i arch-rootfs/etc/passwd
 	sed -e '/^root::/s,^root::,root:x:,' \
@@ -320,7 +320,7 @@ endif
 
 manjaro.ext4:
 
-manjaro-postrootfs: | $(IAMROOT_LIB)
+manjaro-postrootfs: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i manjaro-rootfs/etc/passwd
 	sed -e '/^root::/s,^root::,root:x:,' \
@@ -379,7 +379,7 @@ debian-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 debian-%-rootfs/etc/machine-id: export PERL_DL_NONLAZY = 1
 debian-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://deb.debian.org/debian
 debian-%-rootfs/etc/machine-id: export DEBOOTSTRAPFLAGS ?= --merged-usr --no-check-gpg
-debian-%-rootfs/etc/machine-id: | $(IAMROOT_LIB)
+debian-%-rootfs/etc/machine-id: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
 	mkdir -p debian-$*-rootfs
 	bash iamroot-shell -c "debootstrap --keep-debootstrap-dir $(DEBOOTSTRAPFLAGS) $* debian-$*-rootfs $(DEBOOTSTRAP_MIRROR)"
 	cat debian-$*-rootfs/debootstrap/debootstrap.log
@@ -414,7 +414,7 @@ debian-unstable.ext4:
 debian-oldoldstable-postrootfs: export IAMROOT_LIBRARY_PATH = /lib/$(ARCH)-linux-gnu:/lib:/usr/lib/$(ARCH)-linux-gnu:/usr/lib
 debian-oldoldstable-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
 debian-oldoldstable-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2
-debian-oldoldstable-postrootfs: | $(IAMROOT_LIB)
+debian-oldoldstable-postrootfs: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
 debian-oldoldstable-postrootfs:
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i debian-oldoldstable-rootfs/etc/passwd
@@ -431,7 +431,7 @@ debian-unstable-postrootfs:
 debian-%-postrootfs: export IAMROOT_LIBRARY_PATH = /lib/$(ARCH)-linux-gnu:/lib:/usr/lib/$(ARCH)-linux-gnu:/usr/lib
 debian-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
 debian-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2
-debian-%-postrootfs: | $(IAMROOT_LIB)
+debian-%-postrootfs: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i debian-$*-rootfs/etc/passwd
 	sed -e '/^root::/s,^root::,root:x:,' \
@@ -526,7 +526,7 @@ ubuntu-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 ubuntu-%-rootfs/etc/machine-id: export PERL_DL_NONLAZY = 1
 ubuntu-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
 ubuntu-%-rootfs/etc/machine-id: export DEBOOTSTRAPFLAGS ?= --merged-usr --no-check-gpg
-ubuntu-%-rootfs/etc/machine-id: | $(IAMROOT_LIB)
+ubuntu-%-rootfs/etc/machine-id: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
 	mkdir -p ubuntu-$*-rootfs
 	bash iamroot-shell -c "debootstrap --keep-debootstrap-dir $(DEBOOTSTRAPFLAGS) $* ubuntu-$*-rootfs $(DEBOOTSTRAP_MIRROR)"
 	cat ubuntu-$*-rootfs/debootstrap/debootstrap.log
@@ -565,7 +565,7 @@ ubuntu-jammy-postrootfs:
 ubuntu-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
 ubuntu-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2
 ubuntu-%-postrootfs: export IAMROOT_LIBRARY_PATH = /lib/$(ARCH)-linux-gnu:/lib:/usr/lib/$(ARCH)-linux-gnu:/usr/lib
-ubuntu-%-postrootfs: | $(IAMROOT_LIB)
+ubuntu-%-postrootfs: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i ubuntu-$*-rootfs/etc/passwd
 	sed -e '/^root::/s,^root::,root:x:,' \

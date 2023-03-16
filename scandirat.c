@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -51,7 +51,7 @@ int scandirat(int dfd, const char *path, struct dirent ***namelist,
 		return -1;
 	}
 
-	__debug("%s(path: '%s' -> '%s')\n", __func__, path, buf);
+	__debug("%s(dfd: %i, path: '%s' -> '%s')\n", __func__, dfd, path, buf);
 
 	return next_scandirat(dfd, buf, namelist, filter, compar);
 }

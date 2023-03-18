@@ -1,5 +1,5 @@
 #
-# Copyright 2021-2022 Gaël PORTAY
+# Copyright 2021-2023 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -10,9 +10,9 @@ _iamroot-shell()
 	_init_completion || return
 
 	DEBUG_FUNCS=(__fstat __fxstat __fxstat64 __fxstatat __fxstatat64
-		__libc_start_main __lxstat __lxstat64 __nss_files_fopen __open
-		__open64 __open64_2 __open_2 __openat64_2 __opendir __opendir2
-		__statfs __xmknod __xmknodat __xstat __xstat64 access acct
+		__libc_start_main __lxstat __lxstat64 __open __open64
+		__open64_2 __open_2 __openat64_2 __opendir __opendir2 __statfs
+		__xmknod __xmknodat __xstat __xstat64 access acct
 		canonicalize_file_name catopen chdir chmod chown chroot creat
 		dlmopen dlopen eaccess euidaccess execl execle execlp exect
 		execv execvP execve execveat execvp execvpe extattr_delete_fd

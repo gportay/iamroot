@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -39,7 +39,7 @@ static size_t slash_len(const char *s)
 }
 
 /*
- * Stolen from musl (src/misc/realpath.c)
+ * Stolen and hacked from musl (src/misc/realpath.c)
  *
  * SPDX-FileCopyrightText: The musl Contributors
  *

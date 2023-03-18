@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [unreleased]
 
+### Added
+
+- Create weak aliases for the [glibc] functions `__openat_2()` and
+  `__openat64_2()`
+
 ### Changed
 
 - Output the directory fd for the functions `name_to_handle_at()` and

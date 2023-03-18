@@ -161,8 +161,12 @@ __attribute__((visibility("hidden")))
 ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
 {
 	char tmp[sizeof("/proc/self/fd/") + 4];
+	int errno_save = errno;
+	ssize_t ret;
 	__procfdname(tmp, fd);
-	return next_readlinkat(AT_FDCWD, tmp, buf, bufsize);
+	ret = next_readlinkat(AT_FDCWD, tmp, buf, bufsize);
+	errno = errno_save;
+	return ret;
 }
 #endif
 

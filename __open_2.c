@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -57,5 +57,7 @@ int __open_2(const char *path, int oflags)
 	return next___open_2(buf, oflags);
 }
 
+#ifdef _LARGEFILE64_SOURCE
 weak_alias(__open_2, __open64_2);
+#endif
 #endif

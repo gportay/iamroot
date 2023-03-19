@@ -610,6 +610,7 @@ fedora-33-chroot:
 fedora-34-chroot:
 fedora-35-chroot:
 fedora-36-chroot:
+fedora-37-chroot:
 fedora-%-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
 fedora-%-chroot: | fedora-%-rootfs
 	bash iamroot-shell -c "chroot fedora-$*-rootfs"
@@ -621,21 +622,29 @@ fedora-rootfs: fedora-33-rootfs
 fedora-rootfs: fedora-34-rootfs
 fedora-rootfs: fedora-35-rootfs
 fedora-rootfs: fedora-36-rootfs
+fedora-rootfs: fedora-37-rootfs
 
 fedora-33-rootfs: | fedora-33-rootfs/etc/machine-id
 fedora-34-rootfs: | fedora-34-rootfs/etc/machine-id
 fedora-35-rootfs: | fedora-35-rootfs/etc/machine-id
 fedora-36-rootfs: | fedora-36-rootfs/etc/machine-id
+fedora-37-rootfs: | fedora-37-rootfs/etc/machine-id
 
 fedora-33-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib64/ldb/modules/ldb/tdb.so:/usr/lib64/ldb/modules/ldb/mdb.so:/usr/lib64/ldb/modules/ldb/ldb.so
+fedora-33-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora-archive.repo
 fedora-33-rootfs/etc/machine-id:
+
 fedora-34-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib64/ldb/modules/ldb/tdb.so:/usr/lib64/ldb/modules/ldb/mdb.so:/usr/lib64/ldb/modules/ldb/ldb.so
 fedora-34-rootfs/etc/machine-id:
 
+fedora-35-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora-archive.repo
+fedora-35-rootfs/etc/machine-id:
+
 fedora-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib64/ldb:/lib64:/usr/lib64
 fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/fedora-$*-rootfs/var/log/dnf.rpm.log
+fedora-%-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora.repo
 fedora-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
-	install -D -m644 support/fedora.repo fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
+	install -D -m644 $(FEDORA_REPO) fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
 	bash iamroot-shell -c "dnf --releasever $* --assumeyes --installroot $(CURDIR)/fedora-$*-rootfs group install minimal-environment"
 	rm -f fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
 
@@ -647,23 +656,28 @@ qemu-system-x86_64-fedora-35:
 qemu-system-x86_64-fedora-35: override CMDLINE += rw
 qemu-system-x86_64-fedora-36:
 qemu-system-x86_64-fedora-36: override CMDLINE += rw
+qemu-system-x86_64-fedora-37:
+qemu-system-x86_64-fedora-37: override CMDLINE += rw
 
 ifneq ($(VMLINUX_KVER),)
 vmlinux-fedora-33:
 vmlinux-fedora-34:
 vmlinux-fedora-35:
 vmlinux-fedora-36:
+vmlinux-fedora-37:
 endif
 
 fedora-33.ext4:
 fedora-34.ext4:
 fedora-35.ext4:
 fedora-36.ext4:
+fedora-37.ext4:
 
 fedora-33-postrootfs:
 fedora-34-postrootfs:
 fedora-35-postrootfs:
 fedora-36-postrootfs:
+fedora-37-postrootfs:
 fedora-%-postrootfs: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
 fedora-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	sed -e '/^root:x:/s,^root:x:,root::,' \
@@ -681,16 +695,19 @@ chroot-fedora-33:
 chroot-fedora-34:
 chroot-fedora-35:
 chroot-fedora-36:
+chroot-fedora-37:
 
 mount-fedora-33:
 mount-fedora-34:
 mount-fedora-35:
 mount-fedora-36:
+mount-fedora-37:
 
 umount-fedora-33:
 umount-fedora-34:
 umount-fedora-35:
 umount-fedora-36:
+umount-fedora-37:
 endif
 
 ifneq ($(shell command -v zypper 2>/dev/null),)
@@ -1020,6 +1037,7 @@ aarch64-fedora-33-chroot:
 aarch64-fedora-34-chroot:
 aarch64-fedora-35-chroot:
 aarch64-fedora-36-chroot:
+aarch64-fedora-37-chroot:
 aarch64-fedora-%-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
 aarch64-fedora-%-chroot: | aarch64-fedora-%-rootfs
 	bash iamroot-shell -c "chroot aarch64-fedora-$*-rootfs"
@@ -1031,21 +1049,27 @@ aarch64-fedora-rootfs: aarch64-fedora-33-rootfs
 aarch64-fedora-rootfs: aarch64-fedora-34-rootfs
 aarch64-fedora-rootfs: aarch64-fedora-35-rootfs
 aarch64-fedora-rootfs: aarch64-fedora-36-rootfs
+aarch64-fedora-rootfs: aarch64-fedora-37-rootfs
 
 aarch64-fedora-33-rootfs: | aarch64-fedora-33-rootfs/etc/machine-id
 aarch64-fedora-34-rootfs: | aarch64-fedora-34-rootfs/etc/machine-id
 aarch64-fedora-35-rootfs: | aarch64-fedora-35-rootfs/etc/machine-id
 aarch64-fedora-36-rootfs: | aarch64-fedora-36-rootfs/etc/machine-id
+aarch64-fedora-37-rootfs: | aarch64-fedora-37-rootfs/etc/machine-id
 
 aarch64-fedora-33-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib64/ldb/modules/ldb/tdb.so:/usr/lib64/ldb/modules/ldb/mdb.so:/usr/lib64/ldb/modules/ldb/ldb.so
+aarch64-fedora-33-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora-archive.repo
 aarch64-fedora-33-rootfs/etc/machine-id:
 aarch64-fedora-34-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib64/ldb/modules/ldb/tdb.so:/usr/lib64/ldb/modules/ldb/mdb.so:/usr/lib64/ldb/modules/ldb/ldb.so
 aarch64-fedora-34-rootfs/etc/machine-id:
+aarch64-fedora-35-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora-archive.repo
+aarch64-fedora-35-rootfs/etc/machine-id:
 
 aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib64/ldb:/lib64:/usr/lib64
 aarch64-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/aarch64-fedora-$*-rootfs/var/log/dnf.rpm.log
+aarch64-fedora-%-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora.repo
 aarch64-fedora-%-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
-	install -D -m644 support/fedora.repo aarch64-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
+	install -D -m644 $(FEDORA_REPO) aarch64-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
 	bash iamroot-shell -c "dnf --forcearch aarch64 --releasever $* --assumeyes --installroot $(CURDIR)/aarch64-fedora-$*-rootfs group install minimal-environment"
 	rm -f aarch64-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
 endif
@@ -1072,15 +1096,19 @@ armhfp-fedora-35-rootfs: | armhfp-fedora-35-rootfs/etc/machine-id
 armhfp-fedora-36-rootfs: | armhfp-fedora-36-rootfs/etc/machine-id
 
 armhfp-fedora-33-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib/ldb/modules/ldb/tdb.so:/usr/lib/ldb/modules/ldb/mdb.so:/usr/lib/ldb/modules/ldb/ldb.so
+armhfp-fedora-33-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora-archive.repo
 armhfp-fedora-33-rootfs/etc/machine-id:
 armhfp-fedora-34-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib/ldb/modules/ldb/tdb.so:/usr/lib/ldb/modules/ldb/mdb.so:/usr/lib/ldb/modules/ldb/ldb.so
 armhfp-fedora-34-rootfs/etc/machine-id:
+armhfp-fedora-35-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora-archive.repo
+armhfp-fedora-35-rootfs/etc/machine-id:
 
 armhfp-fedora-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib/ldb:/lib:/usr/lib
 armhfp-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/armhfp-fedora-$*-rootfs/var/log/dnf.rpm.log
 armhfp-fedora-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2:/usr/lib/libpthread.so.0:/usr/lib/librt.so.1
+armhfp-fedora-%-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora.repo
 armhfp-fedora-%-rootfs/etc/machine-id: | armhf/libiamroot-linux-armhf.so.3 x86_64/libiamroot-linux-x86-64.so.2
-	install -D -m644 support/fedora.repo armhfp-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
+	install -D -m644 $(FEDORA_REPO) armhfp-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
 	bash iamroot-shell -c "dnf --forcearch armv7hl --releasever $* --assumeyes --installroot $(CURDIR)/armhfp-fedora-$*-rootfs group install minimal-environment"
 	rm -f armhfp-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
 endif
@@ -1474,6 +1502,7 @@ fedora-support: support/fedora-33-rootfs.txt
 fedora-support: support/fedora-34-rootfs.txt
 fedora-support: support/fedora-35-rootfs.txt
 fedora-support: support/fedora-36-rootfs.txt
+fedora-support: support/fedora-37-rootfs.txt
 
 .PRECIOUS: support/fedora-33-rootfs.txt
 support/fedora-33-rootfs.txt: fedora-33-rootfs.log
@@ -1495,6 +1524,11 @@ support/fedora-36-rootfs.txt: fedora-36-rootfs.log
 	support/dnf.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
+.PRECIOUS: support/fedora-37-rootfs.txt
+support/fedora-37-rootfs.txt: fedora-37-rootfs.log
+	support/dnf.sed -e 's,$(CURDIR),,g' $< >$@.tmp
+	mv $@.tmp $@
+
 log: fedora-log
 
 .PHONY: fedora-log
@@ -1507,6 +1541,7 @@ fedora-33-rootfs.log:
 fedora-34-rootfs.log:
 fedora-35-rootfs.log:
 fedora-36-rootfs.log:
+fedora-37-rootfs.log:
 endif
 
 ifneq ($(shell command -v zypper 2>/dev/null),)

@@ -465,6 +465,7 @@ ubuntu-xenial-chroot:
 ubuntu-bionic-chroot:
 ubuntu-focal-chroot:
 ubuntu-jammy-chroot:
+ubuntu-kinetic-chroot:
 ubuntu-%-chroot: export IAMROOT_LIBRARY_PATH = /lib/$(ARCH)-linux-gnu:/lib:/usr/lib/$(ARCH)-linux-gnu:/usr/lib
 ubuntu-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
 ubuntu-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
@@ -477,12 +478,14 @@ ubuntu-rootfs: ubuntu-xenial-rootfs
 ubuntu-rootfs: ubuntu-bionic-rootfs
 ubuntu-rootfs: ubuntu-focal-rootfs
 ubuntu-rootfs: ubuntu-jammy-rootfs
+ubuntu-rootfs: ubuntu-kinetic-rootfs
 
 ubuntu-trusty-rootfs: | ubuntu-trusty-rootfs/etc/machine-id
 ubuntu-xenial-rootfs: | ubuntu-xenial-rootfs/etc/machine-id
 ubuntu-bionic-rootfs: | ubuntu-bionic-rootfs/etc/machine-id
 ubuntu-focal-rootfs: | ubuntu-focal-rootfs/etc/machine-id
 ubuntu-jammy-rootfs: | ubuntu-jammy-rootfs/etc/machine-id
+ubuntu-kinetic-rootfs: | ubuntu-kinetic-rootfs/etc/machine-id
 
 ubuntu-trusty-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
 ubuntu-trusty-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|/var/lib/dpkg/info/(initscripts|initramfs-tools).postinst
@@ -541,6 +544,8 @@ qemu-system-x86_64-ubuntu-focal:
 qemu-system-x86_64-ubuntu-focal: override CMDLINE += rw
 qemu-system-x86_64-ubuntu-jammy:
 qemu-system-x86_64-ubuntu-jammy: override CMDLINE += rw
+qemu-system-x86_64-ubuntu-kinetic:
+qemu-system-x86_64-ubuntu-kinetic: override CMDLINE += rw
 
 ifneq ($(VMLINUX_KVER),)
 vmlinux-ubuntu-trusty:
@@ -548,6 +553,7 @@ vmlinux-ubuntu-xenial:
 vmlinux-ubuntu-bionic:
 vmlinux-ubuntu-focal:
 vmlinux-ubuntu-jammy:
+vmlinux-ubuntu-kinetic:
 endif
 
 ubuntu-trusty.ext4:
@@ -555,12 +561,14 @@ ubuntu-xenial.ext4:
 ubuntu-bionic.ext4:
 ubuntu-focal.ext4:
 ubuntu-jammy.ext4:
+ubuntu-kinetic.ext4:
 
 ubuntu-trusty-postrootfs:
 ubuntu-xenial-postrootfs:
 ubuntu-bionic-postrootfs:
 ubuntu-focal-postrootfs:
 ubuntu-jammy-postrootfs:
+ubuntu-kinetic-postrootfs:
 ubuntu-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
 ubuntu-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2
 ubuntu-%-postrootfs: export IAMROOT_LIBRARY_PATH = /lib/$(ARCH)-linux-gnu:/lib:/usr/lib/$(ARCH)-linux-gnu:/usr/lib
@@ -580,18 +588,21 @@ chroot-ubuntu-xenial:
 chroot-ubuntu-bionic:
 chroot-ubuntu-focal:
 chroot-ubuntu-jammy:
+chroot-ubuntu-kinetic:
 
 mount-ubuntu-trusty:
 mount-ubuntu-xenial:
 mount-ubuntu-bionic:
 mount-ubuntu-focal:
 mount-ubuntu-jammy:
+mount-ubuntu-kinetic:
 
 umount-ubuntu-trusty:
 umount-ubuntu-xenial:
 umount-ubuntu-bionic:
 umount-ubuntu-focal:
 umount-ubuntu-jammy:
+umount-ubuntu-kinetic:
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)
@@ -1387,6 +1398,7 @@ ubuntu-support: support/ubuntu-xenial-rootfs.txt
 ubuntu-support: support/ubuntu-bionic-rootfs.txt
 ubuntu-support: support/ubuntu-focal-rootfs.txt
 ubuntu-support: support/ubuntu-jammy-rootfs.txt
+ubuntu-support: support/ubuntu-kinetic-rootfs.txt
 
 .PRECIOUS: support/ubuntu-trusty-rootfs.txt
 support/ubuntu-trusty-rootfs.txt: ubuntu-trusty-rootfs.log
@@ -1412,6 +1424,11 @@ support/ubuntu-focal-rootfs.txt: ubuntu-focal-rootfs.log
 support/ubuntu-jammy-rootfs.txt: ubuntu-jammy-rootfs.log
 	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
+
+.PRECIOUS: support/ubuntu-kinetic-rootfs.txt
+support/ubuntu-kinetic-rootfs.txt: ubuntu-kinetic-rootfs.log
+	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
+	mv $@.tmp $@
 endif
 
 log: ubuntu-log
@@ -1423,12 +1440,14 @@ ubuntu-log: ubuntu-xenial-rootfs.log
 ubuntu-log: ubuntu-bionic-rootfs.log
 ubuntu-log: ubuntu-focal-rootfs.log
 ubuntu-log: ubuntu-jammy-rootfs.log
+ubuntu-log: ubuntu-kinetic-rootfs.log
 
 ubuntu-trusty-rootfs.log:
 ubuntu-xenial-rootfs.log:
 ubuntu-bionic-rootfs.log:
 ubuntu-focal-rootfs.log:
 ubuntu-jammy-rootfs.log:
+ubuntu-kinetic-rootfs.log:
 endif
 endif
 

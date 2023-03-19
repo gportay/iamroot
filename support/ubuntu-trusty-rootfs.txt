@@ -2042,8 +2042,8 @@ Setting up rsyslog ...
 
 Creating config file /etc/rsyslog.d/50-default.conf with new version
 Adding user `syslog' to group `adm' ...
-Adding user syslog to group adm
-Done.
+Inconsistency detected by ld.so: dl-open.c: 689: _dl_open: Assertion `_dl_debug_initialize (0, args.nsid)->r_state == RT_CONSISTENT' failed!
+adduser: `/usr/bin/gpasswd -a syslog adm' returned error code 127. Exiting.
 initctl.REAL: Unable to connect to Upstart: Failed to connect to socket /com/ubuntu/upstart: Connection refused
 invoke-rc.d: policy-rc.d denied execution of start.
 Processing triggers for ureadahead ...

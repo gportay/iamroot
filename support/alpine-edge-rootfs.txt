@@ -13,9 +13,8 @@ Executing alpine-baselayout.post-install
 (X/X) Installing musl-utils
 Executing busybox.trigger
 OK: X XiB in X packages
-tar: Ignoring unknown extended header keyword 'APK-TOOLS.checksum.SHA1'
-tar: Ignoring unknown extended header keyword 'APK-TOOLS.checksum.SHA1'
-tar: Ignoring unknown extended header keyword 'APK-TOOLS.checksum.SHA1'
-tar: Ignoring unknown extended header keyword 'APK-TOOLS.checksum.SHA1'
+(X/X) Installing alpine-keys
+(X/X) Installing alpine-release
+OK: X XiB in X packages
 
 > Cleaning-up rootfs

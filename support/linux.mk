@@ -9,33 +9,6 @@ ARCH ?= $(shell uname -m 2>/dev/null)
 KVER ?= $(shell uname -r 2>/dev/null)
 VMLINUX_KVER ?= $(shell vmlinux --version 2>/dev/null)
 
-IAMROOT_LIB_LINUX_2 = $(CURDIR)/i686/libiamroot-linux.so.2
-export IAMROOT_LIB_LINUX_2
-
-IAMROOT_LIB_LINUX_X86_64_2 = $(CURDIR)/x86_64/libiamroot-linux-x86-64.so.2
-export IAMROOT_LIB_LINUX_X86_64_2
-
-IAMROOT_LIB_LINUX_3 = $(CURDIR)/arm/libiamroot-linux.so.3
-export IAMROOT_LIB_LINUX_3
-
-IAMROOT_LIB_LINUX_ARMHF_3 = $(CURDIR)/armhf/libiamroot-linux-armhf.so.3
-export IAMROOT_LIB_LINUX_ARMHF_3
-
-IAMROOT_LIB_LINUX_AARCH64_1 = $(CURDIR)/aarch64/libiamroot-linux-aarch64.so.1
-export IAMROOT_LIB_LINUX_AARCH64_1
-
-IAMROOT_LIB_MUSL_I386_1 = $(CURDIR)/i686/libiamroot-musl-i386.so.1
-export IAMROOT_LIB_MUSL_I386_1
-
-IAMROOT_LIB_MUSL_X86_64_1 = $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1
-export IAMROOT_LIB_MUSL_X86_64_1
-
-IAMROOT_LIB_MUSL_ARMHF_1 = $(CURDIR)/armhf/libiamroot-musl-armhf.so.1
-export IAMROOT_LIB_MUSL_ARMHF_1
-
-IAMROOT_LIB_MUSL_AARCH64_1 = $(CURDIR)/aarch64/libiamroot-musl-aarch64.so.1
-export IAMROOT_LIB_MUSL_AARCH64_1
-
 IAMROOT_EXEC = $(CURDIR)/exec.sh
 export IAMROOT_EXEC
 
@@ -52,6 +25,44 @@ IAMROOT_LIB = $(IAMROOT_LIB_LINUX_AARCH64_1)
 export IAMROOT_LIB
 endif
 
+#
+# Stolen from buildroot (support/misc/utils.mk)
+#
+# SPDX-FileCopyrightText: The musl Contributors
+#
+# SPDX-License-Identifier: MIT
+#
+# Case conversion macros. This is inspired by the 'up' macro from gmsl
+# (http://gmsl.sf.net). It is optimised very heavily because these macros
+# are used a lot. It is about 5 times faster than forking a shell and tr.
+#
+# The caseconvert-helper creates a definition of the case conversion macro.
+# After expansion by the outer $(eval ), the UPPERCASE macro is defined as:
+# $(strip $(eval __tmp := $(1))  $(eval __tmp := $(subst a,A,$(__tmp))) ... )
+# In other words, every letter is substituted one by one.
+#
+# The caseconvert-helper allows us to create this definition out of the
+# [FROM] and [TO] lists, so we don't need to write down every substition
+# manually. The uses of $ and $$ quoting are chosen in order to do as
+# much expansion as possible up-front.
+#
+# Note that it would be possible to conceive a slightly more optimal
+# implementation that avoids the use of __tmp, but that would be even
+# more unreadable and is not worth the effort.
+
+[FROM] := a b c d e f g h i j k l m n o p q r s t u v w x y z - .
+[TO]   := A B C D E F G H I J K L M N O P Q R S T U V W X Y Z _ _
+
+define caseconvert-helper
+$(1) = $$(strip \
+	$$(eval __tmp := $$(1))\
+	$(foreach c, $(2),\
+		$$(eval __tmp := $$(subst $(word 1,$(subst :, ,$c)),$(word 2,$(subst :, ,$c)),$$(__tmp))))\
+	$$(__tmp))
+endef
+
+$(eval $(call caseconvert-helper,UPPERCASE,$(join $(addsuffix :,$([FROM])),$([TO]))))
+
 -include local.mk
 
 MAKEFLAGS += --no-print-directory
@@ -59,7 +70,21 @@ MAKEFLAGS += --no-print-directory
 .PHONY: all
 all:
 
+.PHONY: vars
+vars:
+	@echo export "IAMROOT_LIB=$(IAMROOT_LIB)"
+	@echo export "IAMROOT_EXEC=$(IAMROOT_EXEC)"
+	@echo export "IAMROOT_EXEC_IGNORE=$(IAMROOT_EXEC_IGNORE)"
+
 define libiamroot_so =
+iamroot_lib_$(2)_$(3) = $(1)/libiamroot-$(2).so.$(3)
+IAMROOT_LIB_$(call UPPERCASE,$(2))_$(3) = $(CURDIR)/$(1)/libiamroot-$(2).so.$(3)
+export IAMROOT_LIB_$(call UPPERCASE,$(2))_$(3)
+
+vars: iamroot_lib_$(2)_$(3)
+iamroot_lib_$(2)_$(3):
+	@echo export "IAMROOT_LIB_$(call UPPERCASE,$(2))_$(3)=$$(IAMROOT_LIB_$(call UPPERCASE,$(2))_$(3))"
+
 all: $(1)/libiamroot-$(2).so.$(3)
 ci: $(1)/libiamroot-$(2).so.$(3)
 

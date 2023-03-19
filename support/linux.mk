@@ -240,12 +240,12 @@ endef
 define alpine-make-rootfs-rootfs
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export APK_OPTS = --arch $(1) --no-progress
 
-$(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/ash,alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --mirror-uri http://dl-cdn.alpinelinux.org/alpine --branch $(3)))
+$(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/ash,alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --mirror-uri http://mirrors.edge.kernel.org/alpine --branch $(3)))
 $(1)-$(2)-$(3)-shell: | x86_64/libiamroot-linux-x86-64.so.2
 
 $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/busybox
 $(1)-$(2)-$(3)-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
-	bash iamroot-shell -c "alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --mirror-uri http://dl-cdn.alpinelinux.org/alpine --branch $(3) $$(ALPINE_MAKE_ROOTFSFLAGS)"
+	bash iamroot-shell -c "alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --mirror-uri http://mirrors.edge.kernel.org/alpine --branch $(3) $$(ALPINE_MAKE_ROOTFSFLAGS)"
 
 $(eval $(call log,alpine-make-rootfs,$(1)-$(2)-$(3)-rootfs))
 
@@ -406,7 +406,7 @@ $(1)-alpine-mini-rootfs/bin/busybox: | x86_64/libiamroot-linux-x86-64.so.2 alpin
 	tar xf alpine-minirootfs-3.17.0-$(1).tar.gz -C $(1)-alpine-mini-rootfs
 
 alpine-minirootfs-3.17.0-$(1).tar.gz:
-	wget http://dl-cdn.alpinelinux.org/alpine/v3.17/releases/$(1)/alpine-minirootfs-3.17.0-$(1).tar.gz
+	wget http://mirrors.edge.kernel.org/alpine/v3.17/releases/$(1)/alpine-minirootfs-3.17.0-$(1).tar.gz
 
 $(1)-alpine-minirootfs/usr/bin/%: support/% | $(1)-alpine-minirootfs
 	cp $< $@

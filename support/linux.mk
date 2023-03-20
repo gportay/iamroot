@@ -1498,8 +1498,8 @@ extra-log: opensuse-log
 fixme-log: opensuse-leap-rootfs.log
 opensuse-log: opensuse-tumbleweed-rootfs.log
 
-opensuse-leap-rootfs-log:
-opensuse-tumbleweed-rootfs-log:
+opensuse-leap-rootfs.log:
+opensuse-tumbleweed-rootfs.log:
 endif
 
 ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)

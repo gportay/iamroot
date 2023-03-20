@@ -91,6 +91,16 @@ clean-$(1)-$(2).$(3):
 	rm -Rf $(1)/
 endef
 
+define chroot
+.PHONY: $(1)-$(2)-chroot
+$(1)-$(2)-chroot: export QEMU_LD_PREFIX = $(CURDIR)/$(1)-$(2)-rootfs
+$(1)-$(2)-chroot: export IAMROOT_LD_PRELOAD_LINUX_2 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
+$(1)-$(2)-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
+$(1)-$(2)-chroot: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
+$(1)-$(2)-chroot: | $(1)-$(2)-rootfs
+	bash iamroot-shell -c "chroot $(1)-$(2)-rootfs $(3)"
+endef
+
 define run
 .PHONY: qemu-system-$(1)-$(2)
 qemu-system-$(1)-$(2): override CMDLINE += panic=5
@@ -378,9 +388,7 @@ arch-test: $(subst $(CURDIR)/,,$(IAMROOT_LIB)) | x86_64-arch-rootfs
 x86_64-arch-rootfs/usr/bin/%: support/% | x86_64-arch-rootfs
 	cp $< $@
 
-.PHONY: x86_64-arch-chroot
-x86_64-arch-chroot: | x86_64-arch-rootfs
-	bash iamroot-shell -c "chroot x86_64-arch-rootfs"
+$(eval $(call chroot,x86_64,arch,/bin/bash))
 
 rootfs: x86_64-arch-rootfs
 
@@ -395,11 +403,7 @@ x86_64-arch-rootfs/etc/machine-id: $(subst $(CURDIR)/,,$(IAMROOT_LIB))
 
 i686-rootfs: i686-arch-rootfs
 
-.PHONY: i686-arch-chroot
-i686-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/i686-arch-rootfs
-i686-arch-chroot: export IAMROOT_LD_PRELOAD_LINUX_2 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
-i686-arch-chroot: | i686-arch-rootfs
-	bash iamroot-shell -c "chroot i686-arch-rootfs"
+$(eval $(call chroot,i686,arch,/bin/bash))
 
 .PHONY: i686-arch-rootfs
 i686-arch-rootfs: export QEMU_LD_PREFIX = $(CURDIR)/i686-arch-rootfs
@@ -416,9 +420,7 @@ $(eval $(call run,x86_64,arch))
 
 $(eval $(call pacstrap-postrootfs,x86_64,arch))
 
-x86_64-manjaro-stable-chroot:
-x86_64-manjaro-%-chroot: | x86_64-manjaro-%-rootfs
-	bash iamroot-shell -c "chroot x86_64-manjaro-$*-rootfs"
+$(eval $(call chroot,x86_64,manjaro-stable,/bin/bash))
 
 extra-rootfs: x86_64-manjaro-stable-rootfs
 
@@ -438,16 +440,26 @@ $(eval $(call pacstrap-postrootfs,x86_64,manjaro-stable))
 endif
 
 ifneq ($(shell command -v debootstrap 2>/dev/null),)
-x86_64-debian-oldoldstable-chroot:
-x86_64-debian-oldstable-chroot:
-x86_64-debian-stable-chroot:
-x86_64-debian-testing-chroot:
-x86_64-debian-unstable-chroot:
-x86_64-debian-%-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
-x86_64-debian-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-x86_64-debian-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
-x86_64-debian-%-chroot: | x86_64-debian-%-rootfs
-	bash iamroot-shell -c "chroot x86_64-debian-$*-rootfs"
+$(eval $(call chroot,x86_64,debian-oldoldstable,/bin/bash))
+$(eval $(call chroot,x86_64,debian-oldstable,/bin/bash))
+$(eval $(call chroot,x86_64,debian-stable,/bin/bash))
+$(eval $(call chroot,x86_64,debian-testing,/bin/bash))
+$(eval $(call chroot,x86_64,debian-unstable,/bin/bash))
+x86_64-debian-oldoldstable-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+x86_64-debian-oldoldstable-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
+x86_64-debian-oldoldstable-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
+x86_64-debian-oldstable-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+x86_64-debian-oldstable-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
+x86_64-debian-oldstable-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
+x86_64-debian-stable-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+x86_64-debian-stable-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
+x86_64-debian-stable-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
+x86_64-debian-testing-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+x86_64-debian-testing-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
+x86_64-debian-testing-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
+x86_64-debian-unstable-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+x86_64-debian-unstable-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
+x86_64-debian-unstable-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
 
 rootfs: x86_64-debian-rootfs
 
@@ -513,17 +525,30 @@ $(eval $(call debootstrap-postrootfs,x86_64,debian-stable))
 $(eval $(call debootstrap-postrootfs,x86_64,debian-testing))
 $(eval $(call debootstrap-postrootfs,x86_64,debian-unstable))
 
-x86_64-ubuntu-trusty-chroot:
-x86_64-ubuntu-xenial-chroot:
-x86_64-ubuntu-bionic-chroot:
-x86_64-ubuntu-focal-chroot:
-x86_64-ubuntu-jammy-chroot:
-x86_64-ubuntu-kinetic-chroot:
-x86_64-ubuntu-%-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
-x86_64-ubuntu-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-x86_64-ubuntu-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
-x86_64-ubuntu-%-chroot: | x86_64-ubuntu-%-rootfs
-	bash iamroot-shell -c "chroot x86_64-ubuntu-$*-rootfs"
+$(eval $(call chroot,x86_64,ubuntu-trusty,/bin/bash))
+$(eval $(call chroot,x86_64,ubuntu-xenial,/bin/bash))
+$(eval $(call chroot,x86_64,ubuntu-bionic,/bin/bash))
+$(eval $(call chroot,x86_64,ubuntu-focal,/bin/bash))
+$(eval $(call chroot,x86_64,ubuntu-jammy,/bin/bash))
+$(eval $(call chroot,x86_64,ubuntu-kinetic,/bin/bash))
+x86_64-ubuntu-trusty-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+x86_64-ubuntu-trusty-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
+x86_64-ubuntu-trusty-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
+x86_64-ubuntu-xenial-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+x86_64-ubuntu-xenial-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
+x86_64-ubuntu-xenial-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
+x86_64-ubuntu-bionic-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+x86_64-ubuntu-bionic-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
+x86_64-ubuntu-bionic-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
+x86_64-ubuntu-focal-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+x86_64-ubuntu-focal-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
+x86_64-ubuntu-focal-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
+x86_64-ubuntu-jammy-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+x86_64-ubuntu-jammy-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
+x86_64-ubuntu-jammy-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
+x86_64-ubuntu-xenial-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+x86_64-ubuntu-xenial-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
+x86_64-ubuntu-xenial-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
 
 .PHONY: x86_64-ubuntu-rootfs
 x86_64-ubuntu-rootfs: x86_64-ubuntu-trusty-rootfs
@@ -610,14 +635,16 @@ $(eval $(call debootstrap-postrootfs,x86_64,ubuntu-kinetic))
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)
-x86_64-fedora-33-chroot:
-x86_64-fedora-34-chroot:
-x86_64-fedora-35-chroot:
-x86_64-fedora-36-chroot:
-x86_64-fedora-37-chroot:
-x86_64-fedora-%-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
-x86_64-fedora-%-chroot: | x86_64-fedora-%-rootfs
-	bash iamroot-shell -c "chroot x86_64-fedora-$*-rootfs"
+$(eval $(call chroot,x86_64,fedora-33,/bin/bash))
+$(eval $(call chroot,x86_64,fedora-34,/bin/bash))
+$(eval $(call chroot,x86_64,fedora-35,/bin/bash))
+$(eval $(call chroot,x86_64,fedora-36,/bin/bash))
+$(eval $(call chroot,x86_64,fedora-37,/bin/bash))
+x86_64-fedora-33-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
+x86_64-fedora-34-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
+x86_64-fedora-35-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
+x86_64-fedora-36-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
+x86_64-fedora-37-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
 
 rootfs: x86_64-fedora-rootfs
 
@@ -672,12 +699,10 @@ $(eval $(call dnf-postrootfs,x86_64,fedora-37))
 endif
 
 ifneq ($(shell command -v zypper 2>/dev/null),)
+$(eval $(call chroot,x86_64,opensuse-leap,/bin/bash))
+$(eval $(call chroot,x86_64,opensuse-tumbleweed,/bin/bash))
 x86_64-opensuse-leap-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
-x86_64-opensuse-leap-chroot:
-x86_64-opensuse-tumbleweed-chroot:
 x86_64-opensuse-%-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
-x86_64-opensuse-%-chroot: | x86_64-opensuse-%-rootfs
-	bash iamroot-shell -c "chroot x86_64-opensuse-$*-rootfs"
 
 extra-rootfs: opensuse-rootfs
 
@@ -782,13 +807,11 @@ alpine-minirootfs-%-armhf.tar.gz:
 endif
 
 ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
-x86_64-alpine-3.14-chroot:
-x86_64-alpine-3.15-chroot:
-x86_64-alpine-3.16-chroot:
-x86_64-alpine-3.17-chroot:
-x86_64-alpine-edge-chroot:
-x86_64-alpine-%-chroot: | x86_64-alpine-%-rootfs
-	bash iamroot-shell -c "chroot x86_64-alpine-$*-rootfs /bin/ash"
+$(eval $(call chroot,x86_64,alpine-3.14,/bin/ash))
+$(eval $(call chroot,x86_64,alpine-3.15,/bin/ash))
+$(eval $(call chroot,x86_64,alpine-3.16,/bin/ash))
+$(eval $(call chroot,x86_64,alpine-3.17,/bin/ash))
+$(eval $(call chroot,x86_64,alpine-edge,/bin/ash))
 
 .PHONY: alpine-rootfs
 alpine-rootfs: x86_64-alpine-3.14-rootfs
@@ -851,13 +874,11 @@ x86_64/libiamroot-musl-x86_64.so.1: | gcompat/libgcompat.so.0
 endif
 
 ifneq ($(shell command -v i386-musl-gcc 2>/dev/null),)
-x86-alpine-3.14-chroot:
-x86-alpine-3.15-chroot:
-x86-alpine-3.16-chroot:
-x86-alpine-3.17-chroot:
-x86-alpine-edge-chroot:
-x86-alpine-%-chroot: | i686-alpine-%-rootfs
-	bash iamroot-shell -c "chroot x86-alpine-$*-rootfs /bin/ash"
+$(eval $(call chroot,x86,alpine-3.14,/bin/ash))
+$(eval $(call chroot,x86,alpine-3.15,/bin/ash))
+$(eval $(call chroot,x86,alpine-3.16,/bin/ash))
+$(eval $(call chroot,x86,alpine-3.17,/bin/ash))
+$(eval $(call chroot,x86,alpine-edge,/bin/ash))
 
 i686-rootfs: x86-alpine-rootfs
 
@@ -883,11 +904,7 @@ endif
 
 ifneq ($(shell command -v pacstrap 2>/dev/null),)
 ifneq ($(shell command -v aarch64-linux-gnu-gcc 2>/dev/null),)
-.PHONY: aarch64-arch-chroot
-aarch64-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-arch-rootfs
-aarch64-arch-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
-aarch64-arch-chroot: | aarch64-arch-rootfs
-	bash iamroot-shell -c "chroot aarch64-arch-rootfs"
+$(eval $(call chroot,aarch64,arch,/bin/bash))
 
 aarch64-rootfs: aarch64-arch-rootfs
 
@@ -905,11 +922,7 @@ aarch64-arch-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_
 endif
 
 ifneq ($(shell command -v arm-linux-gnueabihf-gcc 2>/dev/null),)
-.PHONY: armv7h-arch-chroot
-armv7h-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/armv7h-arch-rootfs
-armv7h-arch-chroot: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
-armv7h-arch-chroot: | armv7h-arch-rootfs
-	bash iamroot-shell -c "chroot armv7h-arch-rootfs"
+$(eval $(call chroot,armv7h,arch,/bin/bash))
 
 arm-rootfs: armv7h-arch-rootfs
 
@@ -929,14 +942,16 @@ endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)
 ifneq ($(shell command -v aarch64-linux-gnu-gcc 2>/dev/null),)
-aarch64-fedora-33-chroot:
-aarch64-fedora-34-chroot:
-aarch64-fedora-35-chroot:
-aarch64-fedora-36-chroot:
-aarch64-fedora-37-chroot:
-aarch64-fedora-%-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
-aarch64-fedora-%-chroot: | aarch64-fedora-%-rootfs
-	bash iamroot-shell -c "chroot aarch64-fedora-$*-rootfs"
+$(eval $(call chroot,aarch64,fedora-33,/bin/bash))
+$(eval $(call chroot,aarch64,fedora-34,/bin/bash))
+$(eval $(call chroot,aarch64,fedora-35,/bin/bash))
+$(eval $(call chroot,aarch64,fedora-36,/bin/bash))
+$(eval $(call chroot,aarch64,fedora-37,/bin/bash))
+aarch64-fedora-33-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
+aarch64-fedora-34-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
+aarch64-fedora-35-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
+aarch64-fedora-36-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
+aarch64-fedora-37-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
 
 aarch64-rootfs: aarch64-fedora-rootfs
 
@@ -971,12 +986,11 @@ aarch64-fedora-%-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 
 endif
 
 ifneq ($(shell command -v arm-linux-gnueabihf-gcc 2>/dev/null),)
-armv7hl-fedora-33-chroot:
-armv7hl-fedora-34-chroot:
-armv7hl-fedora-35-chroot:
-armv7hl-fedora-36-chroot:
-armv7hl-fedora-%-chroot: | armv7hl-fedora-%-rootfs
-	bash iamroot-shell -c "chroot armv7hl-fedora-$*-rootfs"
+$(eval $(call chroot,armv7hl,fedora-33,/bin/bash))
+$(eval $(call chroot,armv7hl,fedora-34,/bin/bash))
+$(eval $(call chroot,armv7hl,fedora-35,/bin/bash))
+$(eval $(call chroot,armv7hl,fedora-36,/bin/bash))
+$(eval $(call chroot,armv7hl,fedora-37,/bin/bash))
 
 arm-rootfs: armv7hl-fedora-rootfs
 
@@ -1031,14 +1045,11 @@ alpine-minirootfs-%-aarch64.tar.gz:
 	wget http://dl-cdn.alpinelinux.org/alpine/v$(basename $*)/releases/aarch64/alpine-minirootfs-$*-aarch64.tar.gz
 
 ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
-aarch64-alpine-3.14-chroot:
-aarch64-alpine-3.15-chroot:
-aarch64-alpine-3.16-chroot:
-aarch64-alpine-3.17-chroot:
-aarch64-alpine-edge-chroot:
-aarch64-alpine-%-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-alpine-$*-rootfs
-aarch64-alpine-%-chroot: | aarch64-alpine-%-rootfs
-	bash iamroot-shell -c "chroot aarch64-alpine-$*-rootfs"
+$(eval $(call chroot,aarch64,alpine-3.14,/bin/ash))
+$(eval $(call chroot,aarch64,alpine-3.15,/bin/ash))
+$(eval $(call chroot,aarch64,alpine-3.16,/bin/ash))
+$(eval $(call chroot,aarch64,alpine-3.17,/bin/ash))
+$(eval $(call chroot,aarch64,alpine-edge,/bin/ash))
 
 .PHONY: aarch64-alpine-rootfs
 aarch64-alpine-rootfs: aarch64-alpine-3.14-rootfs

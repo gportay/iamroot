@@ -91,6 +91,145 @@ clean-$(1)-$(2).$(3):
 	rm -Rf $(1)/
 endef
 
+define run
+.PHONY: qemu-system-$(1)-$(2)
+qemu-system-$(1)-$(2): override CMDLINE += panic=5
+qemu-system-$(1)-$(2): override CMDLINE += console=ttyS0
+qemu-system-$(1)-$(2): override QEMUSYSTEMFLAGS += -enable-kvm -m 4G -machine q35 -smp 4 -cpu host
+qemu-system-$(1)-$(2): override QEMUSYSTEMFLAGS += -nographic -serial mon:stdio
+qemu-system-$(1)-$(2): override QEMUSYSTEMFLAGS += -kernel /boot/vmlinuz-linux
+qemu-system-$(1)-$(2): override QEMUSYSTEMFLAGS += -initrd initrd-rootfs.cpio
+qemu-system-$(1)-$(2): override QEMUSYSTEMFLAGS += -drive file=$(1)-$(2).ext4,if=virtio
+qemu-system-$(1)-$(2): override QEMUSYSTEMFLAGS += -append "$$(CMDLINE)"
+qemu-system-$(1)-$(2): | $(1)-$(2).ext4 initrd-rootfs.cpio
+	qemu-system-x86_64 $$(QEMUSYSTEMFLAGS)
+
+ifneq ($(VMLINUX_KVER),)
+.PHONY: vmlinux-$(2)
+vmlinux-$(2): override VMLINUXFLAGS+=panic=5
+vmlinux-$(2): override VMLINUXFLAGS+=console=tty0 con0=fd:0,fd:1 con=none
+vmlinux-$(2): override VMLINUXFLAGS+=mem=256M
+vmlinux-$(2): override VMLINUXFLAGS+=rw
+vmlinux-$(2): override VMLINUXFLAGS+=ubd0=$(1)-$(2).ext4
+vmlinux-$(2): override VMLINUXFLAGS+=$$(CMDLINE)
+vmlinux-$(2): | $(1)-$(2).ext4
+	settings=$$$$(stty -g); \
+	if ! vmlinux $$(VMLINUXFLAGS); then \
+		echo stty "$$$$settings"; \
+		false; \
+	fi; \
+	stty "$$$$settings"
+endif
+
+.PRECIOUS: $(1)-$(2).ext4
+ifneq ($(KVER),)
+MODULESDIRS_$(1)-$(2) += $(1)-$(2)-rootfs/usr/lib/modules/$(KVER)
+endif
+ifneq ($(VMLINUX_KVER),)
+MODULESDIRS_$(1)-$(2) += $(1)-$(2)-rootfs/usr/lib/modules/$(VMLINUX_KVER)
+endif
+$(1)-$(2).ext4: | x86_64/libiamroot-linux-x86-64.so.2 $(1)-$(2)-rootfs $$(MODULESDIRS_$(1)-$(2))
+	$(MAKE) $(1)-$(2)-postrootfs
+	rm -f $$@.tmp
+	fallocate --length 2G $$@.tmp
+	bash iamroot-shell -c "mkfs.ext4 -d $(1)-$(2)-rootfs $$@.tmp"
+	mv $$@.tmp $$@
+
+.PHONY: $(1)-$(2)-postrootfs
+$(1)-$(2)-postrootfs:
+
+.PRECIOUS: $(1)-$(2)-rootfs/usr/lib/modules/$(KVER) $(1)-$(2)-rootfs/usr/lib/modules/$(VMLINUX_KVER)
+$(1)-$(2)-rootfs/usr/lib/modules/$(KVER) $(1)-$(2)-rootfs/usr/lib/modules/$(VMLINUX_KVER): | x86_64/libiamroot-linux-x86-64.so.2 $(1)-$(2)-rootfs
+	rm -Rf $$@.tmp $$@
+	mkdir -p $$(@D)
+	bash iamroot-shell -c "rsync -a /usr/lib/modules/$$(@F)/. $$@.tmp/."
+	mv $$@.tmp $$@
+
+.PHONY: chroot-$(1)-$(2)
+chroot-$(1)-$(2):
+	$(MAKE) mount-$(1)-$(2)
+	-sudo chroot mnt $(SHELL)
+	$(MAKE) umount-$(1)-$(2)
+
+.PHONY: mount-$(1)-$(2)
+mount-$(1)-$(2): | $(1)-$(2).ext4 mnt
+	sudo mount -oloop $(1)-$(2).ext4 mnt
+
+.PHONY: umount-$(1)-$(2)
+umount-$(1)-$(2): | mnt
+	sudo umount mnt
+endef
+
+define pacstrap-postrootfs
+$(1)-$(2)-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
+	sed -e '/^root:x:/s,^root:x:,root::,' \
+	    -i $(1)-$(2)-rootfs/etc/passwd
+	sed -e '/^root::/s,^root::,root:x:,' \
+	    -i $(1)-$(2)-rootfs/etc/shadow
+	mkdir -p $(1)-$(2)-rootfs/var/lib/systemd/linger
+	rm -f $(1)-$(2)-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
+	bash iamroot-shell -c "chroot $(1)-$(2)-rootfs systemctl enable getty@tty0.service"
+endef
+
+define debootstrap-postrootfs
+$(1)-$(2)-postrootfs: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+$(1)-$(2)-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
+$(1)-$(2)-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
+	sed -e '/^root:x:/s,^root:x:,root::,' \
+	    -i $(1)-$(2)-rootfs/etc/passwd
+	sed -e '/^root::/s,^root::,root:x:,' \
+	    -i $(1)-$(2)-rootfs/etc/shadow
+	rm -f $(1)-$(2)-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
+	bash iamroot-shell -c "chroot $(1)-$(2)-rootfs systemctl enable getty@tty0.service"
+	rm -f $(1)-$(2)-rootfs/etc/systemd/system/multi-user.target.wants/sshd.service
+	bash iamroot-shell -c "chroot $(1)-$(2)-rootfs systemctl disable sshd.service"
+	bash iamroot-shell -c "chroot $(1)-$(2)-rootfs pam-auth-update"
+endef
+
+define dnf-postrootfs
+$(1)-$(2)-postrootfs: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
+$(1)-$(2)-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
+	sed -e '/^root:x:/s,^root:x:,root::,' \
+	    -i $(1)-$(2)-rootfs/etc/passwd
+	sed -e '/^root::/s,^root::,root:x:,' \
+	    -i $(1)-$(2)-rootfs/etc/shadow
+	touch $(1)-$(2)-rootfs/etc/systemd/zram-generator.conf
+	mkdir -p $(1)-$(2)-rootfs/var/lib/systemd/linger
+	rm -f $(1)-$(2)-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
+	bash iamroot-shell -c "chroot $(1)-$(2)-rootfs systemctl enable getty@tty0.service"
+	rm -f $(1)-$(2)-rootfs/etc/systemd/system/multi-user.target.wants/sshd.service
+	bash iamroot-shell -c "chroot $(1)-$(2)-rootfs systemctl disable sshd.service"
+endef
+
+define zypper-postrootfs
+$(1)-$(2)-postrootfs: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
+$(1)-$(2)-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
+	sed -e '/^root:x:/s,^root:x:,root::,' \
+	    -i $(1)-$(2)-rootfs/etc/passwd
+	sed -e '/^root:\*:/s,^root:\*:,root:x:,' \
+	    -i $(1)-$(2)-rootfs/etc/shadow
+	bash iamroot-shell -c "chroot $(1)-$(2)-rootfs pam-config -a --nullok"
+	mkdir -p $(1)-$(2)-rootfs/var/lib/systemd/linger
+	rm -f $(1)-$(2)-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
+	bash iamroot-shell -c "chroot $(1)-$(2)-rootfs systemctl enable getty@tty0.service"
+	rm -f $(1)-$(2)-rootfs/etc/systemd/system/getty.target.wants/getty@ttyS0.service
+	bash iamroot-shell -c "chroot $(1)-$(2)-rootfs systemctl enable getty@ttyS0.service"
+endef
+
+define alpine-postrootfs
+$(1)-$(2)-postrootfs:
+	sed -e '/^root:x:/s,^root:x:,root::,' \
+	    -i $(1)-$(2)-rootfs/etc/passwd
+	sed -e '/^UNKNOWN$$:/d' \
+	    -e '1iUNKNOWN' \
+	    -i $(1)-$(2)-rootfs/etc/securetty
+	sed -e '/^tty1:/itty0::respawn:/sbin/getty 38400 tty0' \
+	    -e '/^tty[1-9]:/s,^,#,' \
+	    -e '/^#ttyS0:/s,^#,,g' \
+	    -i $(1)-$(2)-rootfs/etc/inittab
+	chmod +r $(1)-$(2)-rootfs/bin/bbsuid
+endef
+
 export CC
 export CFLAGS
 
@@ -273,28 +412,9 @@ i686-arch-rootfs/etc/machine-id: | i686/libiamroot-linux.so.2 x86_64/libiamroot-
 	mkdir i686-arch-rootfs
 	bash iamroot-shell -c "pacstrap -GMC support/i686-arch-pacman.conf i686-arch-rootfs"
 
-qemu-system-x86_64-arch:
+$(eval $(call run,x86_64,arch))
 
-ifneq ($(VMLINUX_KVER),)
-vmlinux-arch:
-endif
-
-x86_64-arch.ext4:
-
-x86_64-arch-postrootfs: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
-	sed -e '/^root:x:/s,^root:x:,root::,' \
-	    -i x86_64-arch-rootfs/etc/passwd
-	sed -e '/^root::/s,^root::,root:x:,' \
-	    -i x86_64-arch-rootfs/etc/shadow
-	mkdir -p x86_64-arch-rootfs/var/lib/systemd/linger
-	rm -f x86_64-arch-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
-	bash iamroot-shell -c "chroot x86_64-arch-rootfs systemctl enable getty@tty0.service"
-
-chroot-arch:
-
-mount-arch:
-
-umount-arch:
+$(eval $(call pacstrap-postrootfs,x86_64,arch))
 
 x86_64-manjaro-stable-chroot:
 x86_64-manjaro-%-chroot: | x86_64-manjaro-%-rootfs
@@ -312,28 +432,9 @@ x86_64-manjaro-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	mkdir x86_64-manjaro-$*-rootfs
 	bash iamroot-shell -c "pacstrap -GMC support/x86_64-manjaro-$*-pacman.conf x86_64-manjaro-$*-rootfs base"
 
-qemu-system-x86_64-manjaro-stable:
+$(eval $(call run,x86_64,manjaro-stable))
 
-ifneq ($(VMLINUX_KVER),)
-vmlinux-manjaro-stable:
-endif
-
-x86_64-manjaro-stable.ext4:
-
-x86_64-manjaro-%-postrootfs: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
-	sed -e '/^root:x:/s,^root:x:,root::,' \
-	    -i x86_64-manjaro-$*-rootfs/etc/passwd
-	sed -e '/^root::/s,^root::,root:x:,' \
-	    -i x86_64-manjaro-$*-rootfs/etc/shadow
-	mkdir -p x86_64-manjaro-$*-rootfs/var/lib/systemd/linger
-	rm -f x86_64-manjaro-$*-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
-	bash iamroot-shell -c "chroot x86_64-manjaro-$*-rootfs systemctl enable getty@tty0.service"
-
-chroot-manjaro-stable:
-
-mount-manjaro-stable:
-
-umount-manjaro-stable:
+$(eval $(call pacstrap-postrootfs,x86_64,manjaro-stable))
 endif
 
 ifneq ($(shell command -v debootstrap 2>/dev/null),)
@@ -384,37 +485,21 @@ x86_64-debian-%-rootfs/etc/machine-id: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
 	cat x86_64-debian-$*-rootfs/debootstrap/debootstrap.log
 	rm -Rf x86_64-debian-$*-rootfs/debootstrap/
 
-qemu-system-x86_64-debian-oldoldstable:
+$(eval $(call run,x86_64,debian-oldoldstable))
+$(eval $(call run,x86_64,debian-oldstable))
+$(eval $(call run,x86_64,debian-stable))
+$(eval $(call run,x86_64,debian-testing))
+$(eval $(call run,x86_64,debian-unstable))
+
 qemu-system-x86_64-debian-oldoldstable: override CMDLINE += rw
-qemu-system-x86_64-debian-oldstable:
 qemu-system-x86_64-debian-oldstable: override CMDLINE += rw
-qemu-system-x86_64-debian-stable:
 qemu-system-x86_64-debian-stable: override CMDLINE += rw
-qemu-system-x86_64-debian-testing:
 qemu-system-x86_64-debian-testing: override CMDLINE += rw
-qemu-system-x86_64-debian-unstable:
 qemu-system-x86_64-debian-unstable: override CMDLINE += rw
-
-ifneq ($(VMLINUX_KVER),)
-vmlinux-debian-oldoldstable:
-vmlinux-debian-oldstable:
-vmlinux-debian-stable:
-vmlinux-debian-testing:
-vmlinux-debian-unstable:
-endif
-
-x86_64-debian-oldoldstable.ext4:
-x86_64-debian-oldstable.ext4:
-x86_64-debian-stable.ext4:
-x86_64-debian-stable.ext4:
-x86_64-debian-testing.ext4:
-x86_64-debian-unstable.ext4:
 
 x86_64-debian-oldoldstable-postrootfs: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
 x86_64-debian-oldoldstable-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
-x86_64-debian-oldoldstable-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2
-x86_64-debian-oldoldstable-postrootfs: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
-x86_64-debian-oldoldstable-postrootfs:
+x86_64-debian-oldoldstable-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i x86_64-debian-oldoldstable-rootfs/etc/passwd
 	sed -e '/^root::/s,^root::,root:x:,' \
@@ -423,42 +508,10 @@ x86_64-debian-oldoldstable-postrootfs:
 	bash iamroot-shell -c "chroot x86_64-debian-oldoldstable-rootfs systemctl enable getty@tty0.service"
 	bash iamroot-shell -c "chroot x86_64-debian-oldoldstable-rootfs pam-auth-update"
 
-x86_64-debian-oldstable-postrootfs:
-x86_64-debian-stable-postrootfs:
-x86_64-debian-testing-postrootfs:
-x86_64-debian-unstable-postrootfs:
-x86_64-debian-%-postrootfs: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
-x86_64-debian-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
-x86_64-debian-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2
-x86_64-debian-%-postrootfs: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
-	sed -e '/^root:x:/s,^root:x:,root::,' \
-	    -i x86_64-debian-$*-rootfs/etc/passwd
-	sed -e '/^root::/s,^root::,root:x:,' \
-	    -i x86_64-debian-$*-rootfs/etc/shadow
-	rm -f x86_64-debian-$*-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
-	bash iamroot-shell -c "chroot x86_64-debian-$*-rootfs systemctl enable getty@tty0.service"
-	rm -f x86_64-debian-$*-rootfs/etc/systemd/system/multi-user.target.wants/sshd.service
-	bash iamroot-shell -c "chroot x86_64-debian-$*-rootfs systemctl disable sshd.service"
-	bash iamroot-shell -c "chroot x86_64-debian-$*-rootfs pam-auth-update"
-
-chroot-debian-oldoldstable:
-chroot-debian-oldstable:
-chroot-debian-stable:
-chroot-debian-stable:
-chroot-debian-testing:
-chroot-debian-unstable:
-
-mount-debian-oldoldstable:
-mount-debian-oldstable:
-mount-debian-stable:
-mount-debian-testing:
-mount-debian-unstable:
-
-umount-debian-oldoldstable:
-umount-debian-oldstable:
-umount-debian-stable:
-umount-debian-testing:
-umount-debian-unstable:
+$(eval $(call debootstrap-postrootfs,x86_64,debian-oldstable))
+$(eval $(call debootstrap-postrootfs,x86_64,debian-stable))
+$(eval $(call debootstrap-postrootfs,x86_64,debian-testing))
+$(eval $(call debootstrap-postrootfs,x86_64,debian-unstable))
 
 x86_64-ubuntu-trusty-chroot:
 x86_64-ubuntu-xenial-chroot:
@@ -534,75 +587,26 @@ x86_64-ubuntu-%-rootfs/etc/machine-id: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
 	cat x86_64-ubuntu-$*-rootfs/debootstrap/debootstrap.log
 	rm -Rf x86_64-ubuntu-$*-rootfs/debootstrap/
 
-qemu-system-x86_64-ubuntu-trusty:
+$(eval $(call run,x86_64,ubuntu-trusty))
+$(eval $(call run,x86_64,ubuntu-xenial))
+$(eval $(call run,x86_64,ubuntu-bionic))
+$(eval $(call run,x86_64,ubuntu-focal))
+$(eval $(call run,x86_64,ubuntu-jammy))
+$(eval $(call run,x86_64,ubuntu-kinetic))
+
 qemu-system-x86_64-ubuntu-trusty: override CMDLINE += rw
-qemu-system-x86_64-ubuntu-xenial:
 qemu-system-x86_64-ubuntu-xenial: override CMDLINE += rw
-qemu-system-x86_64-ubuntu-bionic:
 qemu-system-x86_64-ubuntu-bionic: override CMDLINE += rw
-qemu-system-x86_64-ubuntu-focal:
 qemu-system-x86_64-ubuntu-focal: override CMDLINE += rw
-qemu-system-x86_64-ubuntu-jammy:
 qemu-system-x86_64-ubuntu-jammy: override CMDLINE += rw
-qemu-system-x86_64-ubuntu-kinetic:
 qemu-system-x86_64-ubuntu-kinetic: override CMDLINE += rw
 
-ifneq ($(VMLINUX_KVER),)
-vmlinux-ubuntu-trusty:
-vmlinux-ubuntu-xenial:
-vmlinux-ubuntu-bionic:
-vmlinux-ubuntu-focal:
-vmlinux-ubuntu-jammy:
-vmlinux-ubuntu-kinetic:
-endif
-
-x86_64-ubuntu-trusty.ext4:
-x86_64-ubuntu-xenial.ext4:
-x86_64-ubuntu-bionic.ext4:
-x86_64-ubuntu-focal.ext4:
-x86_64-ubuntu-jammy.ext4:
-x86_64-ubuntu-kinetic.ext4:
-
-x86_64-uubuntu-trusty-postrootfs:
-x86_64-uubuntu-xenial-postrootfs:
-x86_64-uubuntu-bionic-postrootfs:
-x86_64-uubuntu-focal-postrootfs:
-x86_64-uubuntu-jammy-postrootfs:
-x86_64-uubuntu-kinetic-postrootfs:
-x86_64-ubuntu-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
-x86_64-ubuntu-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2
-x86_64-ubuntu-%-postrootfs: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
-x86_64-ubuntu-%-postrootfs: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
-	sed -e '/^root:x:/s,^root:x:,root::,' \
-	    -i x86_64-ubuntu-$*-rootfs/etc/passwd
-	sed -e '/^root::/s,^root::,root:x:,' \
-	    -i x86_64-ubuntu-$*-rootfs/etc/shadow
-	rm -f x86_64-ubuntu-$*-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
-	bash iamroot-shell -c "chroot x86_64-ubuntu-$*-rootfs systemctl enable getty@tty0.service"
-	rm -f x86_64-ubuntu-$*-rootfs/etc/systemd/system/multi-user.target.wants/sshd.service
-	bash iamroot-shell -c "chroot x86_64-ubuntu-$*-rootfs systemctl disable sshd.service"
-	bash iamroot-shell -c "chroot x86_64-ubuntu-$*-rootfs pam-auth-update"
-
-chroot-ubuntu-trusty:
-chroot-ubuntu-xenial:
-chroot-ubuntu-bionic:
-chroot-ubuntu-focal:
-chroot-ubuntu-jammy:
-chroot-ubuntu-kinetic:
-
-mount-ubuntu-trusty:
-mount-ubuntu-xenial:
-mount-ubuntu-bionic:
-mount-ubuntu-focal:
-mount-ubuntu-jammy:
-mount-ubuntu-kinetic:
-
-umount-ubuntu-trusty:
-umount-ubuntu-xenial:
-umount-ubuntu-bionic:
-umount-ubuntu-focal:
-umount-ubuntu-jammy:
-umount-ubuntu-kinetic:
+$(eval $(call debootstrap-postrootfs,x86_64,ubuntu-trusty))
+$(eval $(call debootstrap-postrootfs,x86_64,ubuntu-xenial))
+$(eval $(call debootstrap-postrootfs,x86_64,ubuntu-bionic))
+$(eval $(call debootstrap-postrootfs,x86_64,ubuntu-focal))
+$(eval $(call debootstrap-postrootfs,x86_64,ubuntu-jammy))
+$(eval $(call debootstrap-postrootfs,x86_64,ubuntu-kinetic))
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)
@@ -648,66 +652,23 @@ x86_64-fedora-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "dnf --releasever $* --assumeyes --installroot $(CURDIR)/x86_64-fedora-$*-rootfs group install minimal-environment"
 	rm -f x86_64-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
 
-qemu-system-x86_64-fedora-33:
+$(eval $(call run,x86_64,fedora-33))
+$(eval $(call run,x86_64,fedora-34))
+$(eval $(call run,x86_64,fedora-35))
+$(eval $(call run,x86_64,fedora-36))
+$(eval $(call run,x86_64,fedora-37))
+
 qemu-system-x86_64-fedora-33: override CMDLINE += rw
-qemu-system-x86_64-fedora-34:
 qemu-system-x86_64-fedora-34: override CMDLINE += rw
-qemu-system-x86_64-fedora-35:
 qemu-system-x86_64-fedora-35: override CMDLINE += rw
-qemu-system-x86_64-fedora-36:
 qemu-system-x86_64-fedora-36: override CMDLINE += rw
-qemu-system-x86_64-fedora-37:
 qemu-system-x86_64-fedora-37: override CMDLINE += rw
 
-ifneq ($(VMLINUX_KVER),)
-vmlinux-fedora-33:
-vmlinux-fedora-34:
-vmlinux-fedora-35:
-vmlinux-fedora-36:
-vmlinux-fedora-37:
-endif
-
-x86_64-fedora-33.ext4:
-x86_64-fedora-34.ext4:
-x86_64-fedora-35.ext4:
-x86_64-fedora-36.ext4:
-x86_64-fedora-37.ext4:
-
-x86_64-fedora-33-postrootfs:
-x86_64-fedora-34-postrootfs:
-x86_64-fedora-35-postrootfs:
-x86_64-fedora-36-postrootfs:
-x86_64-fedora-37-postrootfs:
-x86_64-fedora-%-postrootfs: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
-x86_64-fedora-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
-	sed -e '/^root:x:/s,^root:x:,root::,' \
-	    -i x86_64-fedora-$*-rootfs/etc/passwd
-	sed -e '/^root::/s,^root::,root:x:,' \
-	    -i x86_64-fedora-$*-rootfs/etc/shadow
-	touch x86_64-fedora-$*-rootfs/etc/systemd/zram-generator.conf
-	mkdir -p x86_64-fedora-$*-rootfs/var/lib/systemd/linger
-	rm -f x86_64-fedora-$*-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
-	bash iamroot-shell -c "chroot x86_64-fedora-$*-rootfs systemctl enable getty@tty0.service"
-	rm -f x86_64-fedora-$*-rootfs/etc/systemd/system/multi-user.target.wants/sshd.service
-	bash iamroot-shell -c "chroot x86_64-fedora-$*-rootfs systemctl disable sshd.service"
-
-chroot-fedora-33:
-chroot-fedora-34:
-chroot-fedora-35:
-chroot-fedora-36:
-chroot-fedora-37:
-
-mount-fedora-33:
-mount-fedora-34:
-mount-fedora-35:
-mount-fedora-36:
-mount-fedora-37:
-
-umount-fedora-33:
-umount-fedora-34:
-umount-fedora-35:
-umount-fedora-36:
-umount-fedora-37:
+$(eval $(call dnf-postrootfs,x86_64,fedora-33))
+$(eval $(call dnf-postrootfs,x86_64,fedora-34))
+$(eval $(call dnf-postrootfs,x86_64,fedora-35))
+$(eval $(call dnf-postrootfs,x86_64,fedora-36))
+$(eval $(call dnf-postrootfs,x86_64,fedora-37))
 endif
 
 ifneq ($(shell command -v zypper 2>/dev/null),)
@@ -737,43 +698,15 @@ x86_64-opensuse-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "zypper --root $(CURDIR)/x86_64-opensuse-$*-rootfs addrepo --no-gpgcheck support/opensuse-$*-repo-oss.repo"
 	bash iamroot-shell -c "zypper --root $(CURDIR)/x86_64-opensuse-$*-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd"
 
-qemu-system-x86_64-opensuse-leap:
+$(eval $(call run,x86_64,opensuse-leap))
+$(eval $(call run,x86_64,opensuse-tumbleweed))
+
 qemu-system-x86_64-opensuse-leap: override CMDLINE += rw init=/usr/lib/systemd/systemd
-qemu-system-x86_64-opensuse-tumbleweed:
 qemu-system-x86_64-opensuse-tumbleweed: override CMDLINE += rw
 
-ifneq ($(VMLINUX_KVER),)
-vmlinux-opensuse-leap:
-vmlinux-opensuse-tumbleweed:
-endif
-
-x86_64-opensuse-leap.ext4:
-x86_64-opensuse-tumbleweed.ext4:
-
+$(eval $(call zypper-postrootfs,x86_64,opensuse-leap))
+$(eval $(call zypper-postrootfs,x86_64,opensuse-tumbleweed))
 x86_64-opensuse-leap-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
-x86_64-opensuse-leap-postrootfs:
-x86_64-opensuse-tumbleweed-postrootfs:
-x86_64-opensuse-%-postrootfs: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
-x86_64-opensuse-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
-	sed -e '/^root:x:/s,^root:x:,root::,' \
-	    -i x86_64-opensuse-$*-rootfs/etc/passwd
-	sed -e '/^root:\*:/s,^root:\*:,root:x:,' \
-	    -i x86_64-opensuse-$*-rootfs/etc/shadow
-	bash iamroot-shell -c "chroot x86_64-opensuse-$*-rootfs pam-config -a --nullok"
-	mkdir -p x86_64-opensuse-$*-rootfs/var/lib/systemd/linger
-	rm -f x86_64-opensuse-$*-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
-	bash iamroot-shell -c "chroot x86_64-opensuse-$*-rootfs systemctl enable getty@tty0.service"
-	rm -f x86_64-opensuse-$*-rootfs/etc/systemd/system/getty.target.wants/getty@ttyS0.service
-	bash iamroot-shell -c "chroot x86_64-opensuse-$*-rootfs systemctl enable getty@ttyS0.service"
-
-chroot-opensuse-leap:
-chroot-opensuse-tumbleweed:
-
-mount-opensuse-leap:
-mount-opensuse-tumbleweed:
-
-umount-opensuse-leap:
-umount-opensuse-tumbleweed:
 endif
 
 ifneq ($(shell command -v musl-gcc 2>/dev/null),)
@@ -873,57 +806,20 @@ x86_64-alpine-edge-rootfs: | x86_64-alpine-edge-rootfs/bin/busybox
 x86_64-alpine-%-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "alpine-make-rootfs x86_64-alpine-$*-rootfs --keys-dir /usr/share/apk/keys/x86_64 --mirror-uri http://dl-cdn.alpinelinux.org/alpine --branch $*"
 
-qemu-system-x86_64-alpine-3.14:
-qemu-system-x86_64-alpine-3.15:
-qemu-system-x86_64-alpine-3.16:
-qemu-system-x86_64-alpine-3.17:
-qemu-system-x86_64-alpine-edge:
+$(eval $(call run,x86_64,alpine-3.14))
+$(eval $(call run,x86_64,alpine-3.15))
+$(eval $(call run,x86_64,alpine-3.16))
+$(eval $(call run,x86_64,alpine-3.17))
+$(eval $(call run,x86_64,alpine-edge))
 
-ifneq ($(VMLINUX_KVER),)
-vmlinux-alpine-3.14:
-vmlinux-alpine-3.15:
-vmlinux-alpine-3.16:
-vmlinux-alpine-3.17:
-vmlinux-alpine-edge:
-endif
-
-x86_64-alpine-3.14.ext4:
-x86_64-alpine-3.15.ext4:
-x86_64-alpine-3.16.ext4:
-x86_64-alpine-3.17.ext4:
-x86_64-alpine-edge.ext4:
-
-x86_64-alpine-%-postrootfs:
-	sed -e '/^root:x:/s,^root:x:,root::,' \
-	    -i x86_64-alpine-$*-rootfs/etc/passwd
-	sed -e '/^UNKNOWN$$:/d' \
-	    -e '1iUNKNOWN' \
-	    -i x86_64-alpine-$*-rootfs/etc/securetty
-	sed -e '/^tty1:/itty0::respawn:/sbin/getty 38400 tty0' \
-	    -e '/^tty[1-9]:/s,^,#,' \
-	    -e '/^#ttyS0:/s,^#,,g' \
-	    -i x86_64-alpine-$*-rootfs/etc/inittab
-	chmod +r x86_64-alpine-$*-rootfs/bin/bbsuid
+$(eval $(call alpine-postrootfs,x86_64,alpine-3.14))
+$(eval $(call alpine-postrootfs,x86_64,alpine-3.15))
+$(eval $(call alpine-postrootfs,x86_64,alpine-3.16))
+$(eval $(call alpine-postrootfs,x86_64,alpine-3.17))
+$(eval $(call alpine-postrootfs,x86_64,alpine-edge))
 
 chroot-alpine-%: PATH = /usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin
 chroot-alpine-%: SHELL = /bin/sh
-chroot-alpine-3.14:
-chroot-alpine-3.15:
-chroot-alpine-3.16:
-chroot-alpine-3.17:
-chroot-alpine-edge:
-
-mount-alpine-3.14:
-mount-alpine-3.15:
-mount-alpine-3.16:
-mount-alpine-3.17:
-mount-alpine-edge:
-
-umount-alpine-3.14:
-umount-alpine-3.15:
-umount-alpine-3.16:
-umount-alpine-3.17:
-umount-alpine-edge:
 
 .PRECIOUS: gcompat/ld-%
 gcompat/ld-%: LOADER_NAME=ld-$*
@@ -1162,17 +1058,6 @@ aarch64-alpine-%-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1 x86_
 endif
 endif
 
-qemu-system-%: override CMDLINE += panic=5
-qemu-system-%: override CMDLINE += console=ttyS0
-qemu-system-%: override QEMUSYSTEMFLAGS += -enable-kvm -m 4G -machine q35 -smp 4 -cpu host
-qemu-system-%: override QEMUSYSTEMFLAGS += -nographic -serial mon:stdio
-qemu-system-%: override QEMUSYSTEMFLAGS += -kernel /boot/vmlinuz-linux
-qemu-system-%: override QEMUSYSTEMFLAGS += -initrd initrd-rootfs.cpio
-qemu-system-%: override QEMUSYSTEMFLAGS += -drive file=$*.ext4,if=virtio
-qemu-system-%: override QEMUSYSTEMFLAGS += -append "$(CMDLINE)"
-qemu-system-%: | %.ext4 initrd-rootfs.cpio
-	qemu-system-x86_64 $(QEMUSYSTEMFLAGS)
-
 ifneq ($(KVER),)
 .PRECIOUS: %-rootfs/lib/modules/$(KVER) %-rootfs/usr/lib/modules/$(KVER)
 %-rootfs/lib/modules/$(KVER): | %-rootfs
@@ -1224,46 +1109,6 @@ endif
 %.cpio:
 	cd $* && find . | cpio -H newc -o -R root:root >$(CURDIR)/$@
 
-ifneq ($(VMLINUX_KVER),)
-vmlinux-%: override VMLINUXFLAGS+=panic=5
-vmlinux-%: override VMLINUXFLAGS+=console=tty0 con0=fd:0,fd:1 con=none
-vmlinux-%: override VMLINUXFLAGS+=mem=256M
-vmlinux-%: override VMLINUXFLAGS+=rw
-vmlinux-%: override VMLINUXFLAGS+=ubd0=$*.ext4
-vmlinux-%: override VMLINUXFLAGS+=$(CMDLINE)
-vmlinux-%: | %.ext4
-	settings=$$(stty -g); \
-	if ! vmlinux $(VMLINUXFLAGS); then \
-		stty "$$settings"; \
-		false; \
-	fi; \
-	stty "$$settings"
-endif
-
-.PRECIOUS: %.ext4
-ifneq ($(KVER),)
-MODULESDIRS += %-rootfs/usr/lib/modules/$(KVER)
-endif
-ifneq ($(VMLINUX_KVER),)
-MODULESDIRS += %-rootfs/usr/lib/modules/$(VMLINUX_KVER)
-endif
-%.ext4: | x86_64/libiamroot-linux-x86-64.so.2 %-rootfs $(MODULESDIRS)
-	$(MAKE) $*-postrootfs
-	rm -f $@.tmp
-	fallocate --length 2G $@.tmp
-	bash iamroot-shell -c "mkfs.ext4 -d $*-rootfs $@.tmp"
-	mv $@.tmp $@
-
-.PRECIOUS: %-rootfs/usr/lib/modules/$(KVER) %-rootfs/usr/lib/modules/$(VMLINUX_KVER)
-%-rootfs/usr/lib/modules/$(KVER) %-rootfs/usr/lib/modules/$(VMLINUX_KVER): | x86_64/libiamroot-linux-x86-64.so.2 %-rootfs
-	rm -Rf $@.tmp $@
-	mkdir -p $(@D)
-	bash iamroot-shell -c "rsync -a /usr/lib/modules/$(@F)/. $@.tmp/."
-	mv $@.tmp $@
-
-.PHONY: %-postrootfs
-%-postrootfs:
-
 .PHONY: static-chroot
 static-chroot: x86_64/libiamroot-linux-x86-64.so.2 | static-rootfs
 	bash iamroot-shell -c "chroot static-rootfs /bin/sh"
@@ -1305,17 +1150,6 @@ busybox/Makefile:
 busybox_menuconfig:
 busybox_%:
 	$(MAKE) -C busybox $* CONFIG_STATIC=y CC=musl-gcc LD=musl-gcc
-
-chroot-%:
-	$(MAKE) mount-$*
-	-sudo chroot mnt $(SHELL)
-	$(MAKE) umount-$*
-
-mount-%: | %.ext4 mnt
-	sudo mount -oloop $*.ext4 mnt
-
-umount-%: | mnt
-	sudo umount mnt
 
 mnt:
 	mkdir -p $@

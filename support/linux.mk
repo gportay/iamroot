@@ -227,33 +227,33 @@ clean:
 	rm -Rf *-rootfs/
 	rm -Rf *-minirootfs/
 
+ifeq ($(ARCH),x86_64)
 ifneq ($(shell command -v pacstrap 2>/dev/null),)
 .PHONY: arch-test
-arch-test: | arch-rootfs/usr/bin/shebang.sh
-arch-test: | arch-rootfs/usr/bin/shebang-arg.sh
-arch-test: $(subst $(CURDIR)/,,$(IAMROOT_LIB)) | arch-rootfs
-	bash iamroot-shell -c "chroot arch-rootfs shebang.sh one two three"
-	bash iamroot-shell -c "chroot arch-rootfs shebang-arg.sh one two three"
+arch-test: | x86_64-arch-rootfs/usr/bin/shebang.sh
+arch-test: | x86_64-arch-rootfs/usr/bin/shebang-arg.sh
+arch-test: $(subst $(CURDIR)/,,$(IAMROOT_LIB)) | x86_64-arch-rootfs
+	bash iamroot-shell -c "chroot x86_64-arch-rootfs shebang.sh one two three"
+	bash iamroot-shell -c "chroot x86_64-arch-rootfs shebang-arg.sh one two three"
 
-arch-rootfs/usr/bin/%: support/% | arch-rootfs
+x86_64-arch-rootfs/usr/bin/%: support/% | x86_64-arch-rootfs
 	cp $< $@
 
-.PHONY: arch-chroot
-arch-chroot: | arch-rootfs
-	bash iamroot-shell -c "chroot arch-rootfs"
+.PHONY: x86_64-arch-chroot
+x86_64-arch-chroot: | x86_64-arch-rootfs
+	bash iamroot-shell -c "chroot x86_64-arch-rootfs"
 
-rootfs: arch-rootfs
+rootfs: x86_64-arch-rootfs
 
-.PHONY: arch-rootfs
-arch-rootfs: | arch-rootfs/etc/machine-id
+.PHONY: x86_64-arch-rootfs
+x86_64-arch-rootfs: | x86_64-arch-rootfs/etc/machine-id
 
-arch-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
-arch-rootfs/etc/machine-id: export EUID = 0
-arch-rootfs/etc/machine-id: $(subst $(CURDIR)/,,$(IAMROOT_LIB))
-	mkdir arch-rootfs
-	bash iamroot-shell -c "pacstrap -GMC support/x86_64-arch-pacman.conf arch-rootfs"
+x86_64-arch-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
+x86_64-arch-rootfs/etc/machine-id: export EUID = 0
+x86_64-arch-rootfs/etc/machine-id: $(subst $(CURDIR)/,,$(IAMROOT_LIB))
+	mkdir x86_64-arch-rootfs
+	bash iamroot-shell -c "pacstrap -GMC support/x86_64-arch-pacman.conf x86_64-arch-rootfs"
 
-ifeq ($(ARCH),x86_64)
 i686-rootfs: i686-arch-rootfs
 
 .PHONY: i686-arch-chroot
@@ -279,16 +279,16 @@ ifneq ($(VMLINUX_KVER),)
 vmlinux-arch:
 endif
 
-arch.ext4:
+x86_64-arch.ext4:
 
-arch-postrootfs: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
+x86_64-arch-postrootfs: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
 	sed -e '/^root:x:/s,^root:x:,root::,' \
-	    -i arch-rootfs/etc/passwd
+	    -i x86_64-arch-rootfs/etc/passwd
 	sed -e '/^root::/s,^root::,root:x:,' \
-	    -i arch-rootfs/etc/shadow
-	mkdir -p arch-rootfs/var/lib/systemd/linger
-	rm -f arch-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
-	bash iamroot-shell -c "chroot arch-rootfs systemctl enable getty@tty0.service"
+	    -i x86_64-arch-rootfs/etc/shadow
+	mkdir -p x86_64-arch-rootfs/var/lib/systemd/linger
+	rm -f x86_64-arch-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
+	bash iamroot-shell -c "chroot x86_64-arch-rootfs systemctl enable getty@tty0.service"
 
 chroot-arch:
 
@@ -296,21 +296,21 @@ mount-arch:
 
 umount-arch:
 
-manjaro-stable-chroot:
-manjaro-%-chroot: | manjaro-%-rootfs
-	bash iamroot-shell -c "chroot manjaro-$*-rootfs"
+x86_64-manjaro-stable-chroot:
+x86_64-manjaro-%-chroot: | x86_64-manjaro-%-rootfs
+	bash iamroot-shell -c "chroot x86_64-manjaro-$*-rootfs"
 
-extra-rootfs: manjaro-stable-rootfs
+extra-rootfs: x86_64-manjaro-stable-rootfs
 
-.PHONY: manjaro-stable-rootfs
-manjaro-stable-rootfs: | manjaro-stable-rootfs/etc/machine-id
+.PHONY: x86_64-manjaro-stable-rootfs
+x86_64-manjaro-stable-rootfs: | x86_64-manjaro-stable-rootfs/etc/machine-id
 
-manjaro-stable-rootfs/etc/machine-id:
-manjaro-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
-manjaro-%-rootfs/etc/machine-id: export EUID = 0
-manjaro-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
-	mkdir manjaro-$*-rootfs
-	bash iamroot-shell -c "pacstrap -GMC support/x86_64-manjaro-$*-pacman.conf manjaro-$*-rootfs base"
+x86_64-manjaro-stable-rootfs/etc/machine-id:
+x86_64-manjaro-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
+x86_64-manjaro-%-rootfs/etc/machine-id: export EUID = 0
+x86_64-manjaro-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
+	mkdir x86_64-manjaro-$*-rootfs
+	bash iamroot-shell -c "pacstrap -GMC support/x86_64-manjaro-$*-pacman.conf x86_64-manjaro-$*-rootfs base"
 
 qemu-system-x86_64-manjaro-stable:
 
@@ -318,16 +318,16 @@ ifneq ($(VMLINUX_KVER),)
 vmlinux-manjaro-stable:
 endif
 
-manjaro-stable.ext4:
+x86_64-manjaro-stable.ext4:
 
-manjaro-stable-postrootfs: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
+x86_64-manjaro-%-postrootfs: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
 	sed -e '/^root:x:/s,^root:x:,root::,' \
-	    -i manjaro-stable-rootfs/etc/passwd
+	    -i x86_64-manjaro-$*-rootfs/etc/passwd
 	sed -e '/^root::/s,^root::,root:x:,' \
-	    -i manjaro-stable-rootfs/etc/shadow
-	mkdir -p manjaro-stable-rootfs/var/lib/systemd/linger
-	rm -f manjaro-stable-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
-	bash iamroot-shell -c "chroot manjaro-stable-rootfs systemctl enable getty@tty0.service"
+	    -i x86_64-manjaro-$*-rootfs/etc/shadow
+	mkdir -p x86_64-manjaro-$*-rootfs/var/lib/systemd/linger
+	rm -f x86_64-manjaro-$*-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
+	bash iamroot-shell -c "chroot x86_64-manjaro-$*-rootfs systemctl enable getty@tty0.service"
 
 chroot-manjaro-stable:
 
@@ -335,55 +335,54 @@ mount-manjaro-stable:
 
 umount-manjaro-stable:
 endif
-endif
 
 ifneq ($(shell command -v debootstrap 2>/dev/null),)
-debian-oldoldstable-chroot:
-debian-oldstable-chroot:
-debian-stable-chroot:
-debian-testing-chroot:
-debian-unstable-chroot:
-debian-%-chroot: export IAMROOT_LIBRARY_PATH = /lib/$(ARCH)-linux-gnu:/lib:/usr/lib/$(ARCH)-linux-gnu:/usr/lib
-debian-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-debian-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
-debian-%-chroot: | debian-%-rootfs
-	bash iamroot-shell -c "chroot debian-$*-rootfs"
+x86_64-debian-oldoldstable-chroot:
+x86_64-debian-oldstable-chroot:
+x86_64-debian-stable-chroot:
+x86_64-debian-testing-chroot:
+x86_64-debian-unstable-chroot:
+x86_64-debian-%-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+x86_64-debian-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
+x86_64-debian-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
+x86_64-debian-%-chroot: | x86_64-debian-%-rootfs
+	bash iamroot-shell -c "chroot x86_64-debian-$*-rootfs"
 
-rootfs: debian-rootfs
+rootfs: x86_64-debian-rootfs
 
-.PHONY: debian-rootfs
-debian-rootfs: debian-oldoldstable-rootfs
-debian-rootfs: debian-oldstable-rootfs
-debian-rootfs: debian-stable-rootfs
-debian-rootfs: debian-testing-rootfs
-debian-rootfs: debian-unstable-rootfs
+.PHONY: x86_64-debian-rootfs
+x86_64-debian-rootfs: x86_64-debian-oldoldstable-rootfs
+x86_64-debian-rootfs: x86_64-debian-oldstable-rootfs
+x86_64-debian-rootfs: x86_64-debian-stable-rootfs
+x86_64-debian-rootfs: x86_64-debian-testing-rootfs
+x86_64-debian-rootfs: x86_64-debian-unstable-rootfs
 
-debian-oldoldstable-rootfs: | debian-oldoldstable-rootfs/etc/machine-id
-debian-oldstable-rootfs: | debian-oldstable-rootfs/etc/machine-id
-debian-stable-rootfs: | debian-stable-rootfs/etc/machine-id
-debian-testing-rootfs: | debian-testing-rootfs/etc/machine-id
-debian-unstable-rootfs: | debian-unstable-rootfs/etc/machine-id
+x86_64-debian-oldoldstable-rootfs: | x86_64-debian-oldoldstable-rootfs/etc/machine-id
+x86_64-debian-oldstable-rootfs: | x86_64-debian-oldstable-rootfs/etc/machine-id
+x86_64-debian-stable-rootfs: | x86_64-debian-stable-rootfs/etc/machine-id
+x86_64-debian-testing-rootfs: | x86_64-debian-testing-rootfs/etc/machine-id
+x86_64-debian-unstable-rootfs: | x86_64-debian-unstable-rootfs/etc/machine-id
 
-debian-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib/$(ARCH)-linux-gnu:/lib:/usr/lib/$(ARCH)-linux-gnu:/usr/lib
-debian-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-debian-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
+x86_64-debian-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+x86_64-debian-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
+x86_64-debian-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
 # chfn: PAM: Critical error - immediate abort
 # adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
-debian-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn
-debian-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
+x86_64-debian-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn
+x86_64-debian-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
 # System has not been booted with systemd as init system (PID 1). Can't operate.
 # Failed to connect to bus: Host is down
 # invoke-rc.d: could not determine current runlevel
-debian-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
+x86_64-debian-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 # debconf: PERL_DL_NONLAZY is not set, if debconf is running from a preinst script, this is not safe
-debian-%-rootfs/etc/machine-id: export PERL_DL_NONLAZY = 1
-debian-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://deb.debian.org/debian
-debian-%-rootfs/etc/machine-id: export DEBOOTSTRAPFLAGS ?= --merged-usr --no-check-gpg
-debian-%-rootfs/etc/machine-id: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
-	mkdir -p debian-$*-rootfs
-	bash iamroot-shell -c "debootstrap --keep-debootstrap-dir $(DEBOOTSTRAPFLAGS) $* debian-$*-rootfs $(DEBOOTSTRAP_MIRROR)"
-	cat debian-$*-rootfs/debootstrap/debootstrap.log
-	rm -Rf debian-$*-rootfs/debootstrap/
+x86_64-debian-%-rootfs/etc/machine-id: export PERL_DL_NONLAZY = 1
+x86_64-debian-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://deb.debian.org/debian
+x86_64-debian-%-rootfs/etc/machine-id: export DEBOOTSTRAPFLAGS ?= --merged-usr --no-check-gpg
+x86_64-debian-%-rootfs/etc/machine-id: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
+	mkdir -p x86_64-debian-$*-rootfs
+	bash iamroot-shell -c "debootstrap --keep-debootstrap-dir $(DEBOOTSTRAPFLAGS) $* x86_64-debian-$*-rootfs $(DEBOOTSTRAP_MIRROR)"
+	cat x86_64-debian-$*-rootfs/debootstrap/debootstrap.log
+	rm -Rf x86_64-debian-$*-rootfs/debootstrap/
 
 qemu-system-x86_64-debian-oldoldstable:
 qemu-system-x86_64-debian-oldoldstable: override CMDLINE += rw
@@ -404,43 +403,43 @@ vmlinux-debian-testing:
 vmlinux-debian-unstable:
 endif
 
-debian-oldoldstable.ext4:
-debian-oldstable.ext4:
-debian-stable.ext4:
-debian-stable.ext4:
-debian-testing.ext4:
-debian-unstable.ext4:
+x86_64-debian-oldoldstable.ext4:
+x86_64-debian-oldstable.ext4:
+x86_64-debian-stable.ext4:
+x86_64-debian-stable.ext4:
+x86_64-debian-testing.ext4:
+x86_64-debian-unstable.ext4:
 
-debian-oldoldstable-postrootfs: export IAMROOT_LIBRARY_PATH = /lib/$(ARCH)-linux-gnu:/lib:/usr/lib/$(ARCH)-linux-gnu:/usr/lib
-debian-oldoldstable-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
-debian-oldoldstable-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2
-debian-oldoldstable-postrootfs: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
-debian-oldoldstable-postrootfs:
+x86_64-debian-oldoldstable-postrootfs: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+x86_64-debian-oldoldstable-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
+x86_64-debian-oldoldstable-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2
+x86_64-debian-oldoldstable-postrootfs: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
+x86_64-debian-oldoldstable-postrootfs:
 	sed -e '/^root:x:/s,^root:x:,root::,' \
-	    -i debian-oldoldstable-rootfs/etc/passwd
+	    -i x86_64-debian-oldoldstable-rootfs/etc/passwd
 	sed -e '/^root::/s,^root::,root:x:,' \
-	    -i debian-oldoldstable-rootfs/etc/shadow
-	rm -f debian-oldoldstable-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
-	bash iamroot-shell -c "chroot debian-oldoldstable-rootfs systemctl enable getty@tty0.service"
-	bash iamroot-shell -c "chroot debian-oldoldstable-rootfs pam-auth-update"
+	    -i x86_64-debian-oldoldstable-rootfs/etc/shadow
+	rm -f x86_64-debian-oldoldstable-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
+	bash iamroot-shell -c "chroot x86_64-debian-oldoldstable-rootfs systemctl enable getty@tty0.service"
+	bash iamroot-shell -c "chroot x86_64-debian-oldoldstable-rootfs pam-auth-update"
 
-debian-oldstable-postrootfs:
-debian-stable-postrootfs:
-debian-testing-postrootfs:
-debian-unstable-postrootfs:
-debian-%-postrootfs: export IAMROOT_LIBRARY_PATH = /lib/$(ARCH)-linux-gnu:/lib:/usr/lib/$(ARCH)-linux-gnu:/usr/lib
-debian-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
-debian-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2
-debian-%-postrootfs: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
+x86_64-debian-oldstable-postrootfs:
+x86_64-debian-stable-postrootfs:
+x86_64-debian-testing-postrootfs:
+x86_64-debian-unstable-postrootfs:
+x86_64-debian-%-postrootfs: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+x86_64-debian-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
+x86_64-debian-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2
+x86_64-debian-%-postrootfs: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
 	sed -e '/^root:x:/s,^root:x:,root::,' \
-	    -i debian-$*-rootfs/etc/passwd
+	    -i x86_64-debian-$*-rootfs/etc/passwd
 	sed -e '/^root::/s,^root::,root:x:,' \
-	    -i debian-$*-rootfs/etc/shadow
-	rm -f debian-$*-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
-	bash iamroot-shell -c "chroot debian-$*-rootfs systemctl enable getty@tty0.service"
-	rm -f debian-$*-rootfs/etc/systemd/system/multi-user.target.wants/sshd.service
-	bash iamroot-shell -c "chroot debian-$*-rootfs systemctl disable sshd.service"
-	bash iamroot-shell -c "chroot debian-$*-rootfs pam-auth-update"
+	    -i x86_64-debian-$*-rootfs/etc/shadow
+	rm -f x86_64-debian-$*-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
+	bash iamroot-shell -c "chroot x86_64-debian-$*-rootfs systemctl enable getty@tty0.service"
+	rm -f x86_64-debian-$*-rootfs/etc/systemd/system/multi-user.target.wants/sshd.service
+	bash iamroot-shell -c "chroot x86_64-debian-$*-rootfs systemctl disable sshd.service"
+	bash iamroot-shell -c "chroot x86_64-debian-$*-rootfs pam-auth-update"
 
 chroot-debian-oldoldstable:
 chroot-debian-oldstable:
@@ -461,55 +460,55 @@ umount-debian-stable:
 umount-debian-testing:
 umount-debian-unstable:
 
-ubuntu-trusty-chroot:
-ubuntu-xenial-chroot:
-ubuntu-bionic-chroot:
-ubuntu-focal-chroot:
-ubuntu-jammy-chroot:
-ubuntu-kinetic-chroot:
-ubuntu-%-chroot: export IAMROOT_LIBRARY_PATH = /lib/$(ARCH)-linux-gnu:/lib:/usr/lib/$(ARCH)-linux-gnu:/usr/lib
-ubuntu-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-ubuntu-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
-ubuntu-%-chroot: | ubuntu-%-rootfs
-	bash iamroot-shell -c "chroot ubuntu-$*-rootfs"
+x86_64-ubuntu-trusty-chroot:
+x86_64-ubuntu-xenial-chroot:
+x86_64-ubuntu-bionic-chroot:
+x86_64-ubuntu-focal-chroot:
+x86_64-ubuntu-jammy-chroot:
+x86_64-ubuntu-kinetic-chroot:
+x86_64-ubuntu-%-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+x86_64-ubuntu-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
+x86_64-ubuntu-%-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
+x86_64-ubuntu-%-chroot: | x86_64-ubuntu-%-rootfs
+	bash iamroot-shell -c "chroot x86_64-ubuntu-$*-rootfs"
 
-.PHONY: ubuntu-rootfs
-ubuntu-rootfs: ubuntu-trusty-rootfs
-ubuntu-rootfs: ubuntu-xenial-rootfs
-ubuntu-rootfs: ubuntu-bionic-rootfs
-ubuntu-rootfs: ubuntu-focal-rootfs
-ubuntu-rootfs: ubuntu-jammy-rootfs
-ubuntu-rootfs: ubuntu-kinetic-rootfs
+.PHONY: x86_64-ubuntu-rootfs
+x86_64-ubuntu-rootfs: x86_64-ubuntu-trusty-rootfs
+x86_64-ubuntu-rootfs: x86_64-ubuntu-xenial-rootfs
+x86_64-ubuntu-rootfs: x86_64-ubuntu-bionic-rootfs
+x86_64-ubuntu-rootfs: x86_64-ubuntu-focal-rootfs
+x86_64-ubuntu-rootfs: x86_64-ubuntu-jammy-rootfs
+x86_64-ubuntu-rootfs: x86_64-ubuntu-kinetic-rootfs
 
-ubuntu-trusty-rootfs: | ubuntu-trusty-rootfs/etc/machine-id
-ubuntu-xenial-rootfs: | ubuntu-xenial-rootfs/etc/machine-id
-ubuntu-bionic-rootfs: | ubuntu-bionic-rootfs/etc/machine-id
-ubuntu-focal-rootfs: | ubuntu-focal-rootfs/etc/machine-id
-ubuntu-jammy-rootfs: | ubuntu-jammy-rootfs/etc/machine-id
-ubuntu-kinetic-rootfs: | ubuntu-kinetic-rootfs/etc/machine-id
+x86_64-ubuntu-trusty-rootfs: | x86_64-ubuntu-trusty-rootfs/etc/machine-id
+x86_64-ubuntu-xenial-rootfs: | x86_64-ubuntu-xenial-rootfs/etc/machine-id
+x86_64-ubuntu-bionic-rootfs: | x86_64-ubuntu-bionic-rootfs/etc/machine-id
+x86_64-ubuntu-focal-rootfs: | x86_64-ubuntu-focal-rootfs/etc/machine-id
+x86_64-ubuntu-jammy-rootfs: | x86_64-ubuntu-jammy-rootfs/etc/machine-id
+x86_64-ubuntu-kinetic-rootfs: | x86_64-ubuntu-kinetic-rootfs/etc/machine-id
 
-ubuntu-trusty-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
-ubuntu-trusty-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|/var/lib/dpkg/info/(initscripts|initramfs-tools).postinst
-ubuntu-trusty-rootfs/etc/machine-id:
+x86_64-ubuntu-trusty-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
+x86_64-ubuntu-trusty-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|/var/lib/dpkg/info/(initscripts|initramfs-tools).postinst
+x86_64-ubuntu-trusty-rootfs/etc/machine-id:
 
-ubuntu-xenial-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
+x86_64-ubuntu-xenial-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
 # chfn: PAM: Critical error - immediate abort
 # adduser: `/usr/bin/chfn -f systemd Time Synchronization systemd-timesync' returned error code 1. Exiting.
-ubuntu-xenial-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/initramfs-tools.postinst
-ubuntu-xenial-rootfs/etc/machine-id:
+x86_64-ubuntu-xenial-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/initramfs-tools.postinst
+x86_64-ubuntu-xenial-rootfs/etc/machine-id:
 
 # chfn: PAM: Critical error - immediate abort
 # adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
-ubuntu-bionic-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/initramfs-tools.postinst
-ubuntu-bionic-rootfs/etc/machine-id:
+x86_64-ubuntu-bionic-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/initramfs-tools.postinst
+x86_64-ubuntu-bionic-rootfs/etc/machine-id:
 
-ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib/$(ARCH)-linux-gnu:/lib:/usr/lib/$(ARCH)-linux-gnu:/usr/lib
-ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
+x86_64-ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+x86_64-ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
+x86_64-ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
 # chfn: PAM: Critical error - immediate abort
 # adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
-ubuntu-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn
-ubuntu-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
+x86_64-ubuntu-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn
+x86_64-ubuntu-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
 # Processing triggers for libc-bin ...
 # dpkg: cycle found while processing triggers:
 #  chain of packages whose triggers are or may be responsible:
@@ -520,20 +519,20 @@ ubuntu-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|
 #  triggers looping, abandoned
 # Errors were encountered while processing:
 #  libc-bin
-ubuntu-%-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
+x86_64-ubuntu-%-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
 # System has not been booted with systemd as init system (PID 1). Can't operate.
 # Failed to connect to bus: Host is down
 # invoke-rc.d: could not determine current runlevel
-ubuntu-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
+x86_64-ubuntu-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
 # debconf: PERL_DL_NONLAZY is not set, if debconf is running from a preinst script, this is not safe
-ubuntu-%-rootfs/etc/machine-id: export PERL_DL_NONLAZY = 1
-ubuntu-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
-ubuntu-%-rootfs/etc/machine-id: export DEBOOTSTRAPFLAGS ?= --merged-usr --no-check-gpg
-ubuntu-%-rootfs/etc/machine-id: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
-	mkdir -p ubuntu-$*-rootfs
-	bash iamroot-shell -c "debootstrap --keep-debootstrap-dir $(DEBOOTSTRAPFLAGS) $* ubuntu-$*-rootfs $(DEBOOTSTRAP_MIRROR)"
-	cat ubuntu-$*-rootfs/debootstrap/debootstrap.log
-	rm -Rf ubuntu-$*-rootfs/debootstrap/
+x86_64-ubuntu-%-rootfs/etc/machine-id: export PERL_DL_NONLAZY = 1
+x86_64-ubuntu-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
+x86_64-ubuntu-%-rootfs/etc/machine-id: export DEBOOTSTRAPFLAGS ?= --merged-usr --no-check-gpg
+x86_64-ubuntu-%-rootfs/etc/machine-id: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
+	mkdir -p x86_64-ubuntu-$*-rootfs
+	bash iamroot-shell -c "debootstrap --keep-debootstrap-dir $(DEBOOTSTRAPFLAGS) $* x86_64-ubuntu-$*-rootfs $(DEBOOTSTRAP_MIRROR)"
+	cat x86_64-ubuntu-$*-rootfs/debootstrap/debootstrap.log
+	rm -Rf x86_64-ubuntu-$*-rootfs/debootstrap/
 
 qemu-system-x86_64-ubuntu-trusty:
 qemu-system-x86_64-ubuntu-trusty: override CMDLINE += rw
@@ -557,32 +556,32 @@ vmlinux-ubuntu-jammy:
 vmlinux-ubuntu-kinetic:
 endif
 
-ubuntu-trusty.ext4:
-ubuntu-xenial.ext4:
-ubuntu-bionic.ext4:
-ubuntu-focal.ext4:
-ubuntu-jammy.ext4:
-ubuntu-kinetic.ext4:
+x86_64-ubuntu-trusty.ext4:
+x86_64-ubuntu-xenial.ext4:
+x86_64-ubuntu-bionic.ext4:
+x86_64-ubuntu-focal.ext4:
+x86_64-ubuntu-jammy.ext4:
+x86_64-ubuntu-kinetic.ext4:
 
-ubuntu-trusty-postrootfs:
-ubuntu-xenial-postrootfs:
-ubuntu-bionic-postrootfs:
-ubuntu-focal-postrootfs:
-ubuntu-jammy-postrootfs:
-ubuntu-kinetic-postrootfs:
-ubuntu-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
-ubuntu-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2
-ubuntu-%-postrootfs: export IAMROOT_LIBRARY_PATH = /lib/$(ARCH)-linux-gnu:/lib:/usr/lib/$(ARCH)-linux-gnu:/usr/lib
-ubuntu-%-postrootfs: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
+x86_64-uubuntu-trusty-postrootfs:
+x86_64-uubuntu-xenial-postrootfs:
+x86_64-uubuntu-bionic-postrootfs:
+x86_64-uubuntu-focal-postrootfs:
+x86_64-uubuntu-jammy-postrootfs:
+x86_64-uubuntu-kinetic-postrootfs:
+x86_64-ubuntu-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
+x86_64-ubuntu-%-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2
+x86_64-ubuntu-%-postrootfs: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+x86_64-ubuntu-%-postrootfs: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
 	sed -e '/^root:x:/s,^root:x:,root::,' \
-	    -i ubuntu-$*-rootfs/etc/passwd
+	    -i x86_64-ubuntu-$*-rootfs/etc/passwd
 	sed -e '/^root::/s,^root::,root:x:,' \
-	    -i ubuntu-$*-rootfs/etc/shadow
-	rm -f ubuntu-$*-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
-	bash iamroot-shell -c "chroot ubuntu-$*-rootfs systemctl enable getty@tty0.service"
-	rm -f ubuntu-$*-rootfs/etc/systemd/system/multi-user.target.wants/sshd.service
-	bash iamroot-shell -c "chroot ubuntu-$*-rootfs systemctl disable sshd.service"
-	bash iamroot-shell -c "chroot ubuntu-$*-rootfs pam-auth-update"
+	    -i x86_64-ubuntu-$*-rootfs/etc/shadow
+	rm -f x86_64-ubuntu-$*-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
+	bash iamroot-shell -c "chroot x86_64-ubuntu-$*-rootfs systemctl enable getty@tty0.service"
+	rm -f x86_64-ubuntu-$*-rootfs/etc/systemd/system/multi-user.target.wants/sshd.service
+	bash iamroot-shell -c "chroot x86_64-ubuntu-$*-rootfs systemctl disable sshd.service"
+	bash iamroot-shell -c "chroot x86_64-ubuntu-$*-rootfs pam-auth-update"
 
 chroot-ubuntu-trusty:
 chroot-ubuntu-xenial:
@@ -607,47 +606,47 @@ umount-ubuntu-kinetic:
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)
-fedora-33-chroot:
-fedora-34-chroot:
-fedora-35-chroot:
-fedora-36-chroot:
-fedora-37-chroot:
-fedora-%-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
-fedora-%-chroot: | fedora-%-rootfs
-	bash iamroot-shell -c "chroot fedora-$*-rootfs"
+x86_64-fedora-33-chroot:
+x86_64-fedora-34-chroot:
+x86_64-fedora-35-chroot:
+x86_64-fedora-36-chroot:
+x86_64-fedora-37-chroot:
+x86_64-fedora-%-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
+x86_64-fedora-%-chroot: | x86_64-fedora-%-rootfs
+	bash iamroot-shell -c "chroot x86_64-fedora-$*-rootfs"
 
-rootfs: fedora-rootfs
+rootfs: x86_64-fedora-rootfs
 
-.PHONY: fedora-rootfs
-fedora-rootfs: fedora-33-rootfs
-fedora-rootfs: fedora-34-rootfs
-fedora-rootfs: fedora-35-rootfs
-fedora-rootfs: fedora-36-rootfs
-fedora-rootfs: fedora-37-rootfs
+.PHONY: x86_64-fedora-rootfs
+fedora-rootfs: x86_64-fedora-33-rootfs
+fedora-rootfs: x86_64-fedora-34-rootfs
+fedora-rootfs: x86_64-fedora-35-rootfs
+fedora-rootfs: x86_64-fedora-36-rootfs
+fedora-rootfs: x86_64-fedora-37-rootfs
 
-fedora-33-rootfs: | fedora-33-rootfs/etc/machine-id
-fedora-34-rootfs: | fedora-34-rootfs/etc/machine-id
-fedora-35-rootfs: | fedora-35-rootfs/etc/machine-id
-fedora-36-rootfs: | fedora-36-rootfs/etc/machine-id
-fedora-37-rootfs: | fedora-37-rootfs/etc/machine-id
+x86_64-fedora-33-rootfs: | x86_64-fedora-33-rootfs/etc/machine-id
+x86_64-fedora-34-rootfs: | x86_64-fedora-34-rootfs/etc/machine-id
+x86_64-fedora-35-rootfs: | x86_64-fedora-35-rootfs/etc/machine-id
+x86_64-fedora-36-rootfs: | x86_64-fedora-36-rootfs/etc/machine-id
+x86_64-fedora-37-rootfs: | x86_64-fedora-37-rootfs/etc/machine-id
 
-fedora-33-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib64/ldb/modules/ldb/tdb.so:/usr/lib64/ldb/modules/ldb/mdb.so:/usr/lib64/ldb/modules/ldb/ldb.so
-fedora-33-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora-archive.repo
-fedora-33-rootfs/etc/machine-id:
+x86_64-fedora-33-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib64/ldb/modules/ldb/tdb.so:/usr/lib64/ldb/modules/ldb/mdb.so:/usr/lib64/ldb/modules/ldb/ldb.so
+x86_64-fedora-33-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora-archive.repo
+x86_64-fedora-33-rootfs/etc/machine-id:
 
-fedora-34-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib64/ldb/modules/ldb/tdb.so:/usr/lib64/ldb/modules/ldb/mdb.so:/usr/lib64/ldb/modules/ldb/ldb.so
-fedora-34-rootfs/etc/machine-id:
+x86_64-fedora-34-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib64/ldb/modules/ldb/tdb.so:/usr/lib64/ldb/modules/ldb/mdb.so:/usr/lib64/ldb/modules/ldb/ldb.so
+x86_64-fedora-34-rootfs/etc/machine-id:
 
-fedora-35-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora-archive.repo
-fedora-35-rootfs/etc/machine-id:
+x86_64-fedora-35-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora-archive.repo
+x86_64-fedora-35-rootfs/etc/machine-id:
 
-fedora-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib64/ldb:/lib64:/usr/lib64
-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/fedora-$*-rootfs/var/log/dnf.rpm.log
-fedora-%-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora.repo
-fedora-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
-	install -D -m644 $(FEDORA_REPO) fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
-	bash iamroot-shell -c "dnf --releasever $* --assumeyes --installroot $(CURDIR)/fedora-$*-rootfs group install minimal-environment"
-	rm -f fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
+x86_64-fedora-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib64/ldb:/lib64:/usr/lib64
+x86_64-fedora-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/x86_64-fedora-$*-rootfs/var/log/dnf.rpm.log
+x86_64-fedora-%-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora.repo
+x86_64-fedora-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
+	install -D -m644 $(FEDORA_REPO) x86_64-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
+	bash iamroot-shell -c "dnf --releasever $* --assumeyes --installroot $(CURDIR)/x86_64-fedora-$*-rootfs group install minimal-environment"
+	rm -f x86_64-fedora-$*-rootfs/etc/distro.repos.d/fedora.repo
 
 qemu-system-x86_64-fedora-33:
 qemu-system-x86_64-fedora-33: override CMDLINE += rw
@@ -668,29 +667,29 @@ vmlinux-fedora-36:
 vmlinux-fedora-37:
 endif
 
-fedora-33.ext4:
-fedora-34.ext4:
-fedora-35.ext4:
-fedora-36.ext4:
-fedora-37.ext4:
+x86_64-fedora-33.ext4:
+x86_64-fedora-34.ext4:
+x86_64-fedora-35.ext4:
+x86_64-fedora-36.ext4:
+x86_64-fedora-37.ext4:
 
-fedora-33-postrootfs:
-fedora-34-postrootfs:
-fedora-35-postrootfs:
-fedora-36-postrootfs:
-fedora-37-postrootfs:
-fedora-%-postrootfs: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
-fedora-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
+x86_64-fedora-33-postrootfs:
+x86_64-fedora-34-postrootfs:
+x86_64-fedora-35-postrootfs:
+x86_64-fedora-36-postrootfs:
+x86_64-fedora-37-postrootfs:
+x86_64-fedora-%-postrootfs: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
+x86_64-fedora-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	sed -e '/^root:x:/s,^root:x:,root::,' \
-	    -i fedora-$*-rootfs/etc/passwd
+	    -i x86_64-fedora-$*-rootfs/etc/passwd
 	sed -e '/^root::/s,^root::,root:x:,' \
-	    -i fedora-$*-rootfs/etc/shadow
-	touch fedora-$*-rootfs/etc/systemd/zram-generator.conf
-	mkdir -p fedora-$*-rootfs/var/lib/systemd/linger
-	rm -f fedora-$*-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
-	bash iamroot-shell -c "chroot fedora-$*-rootfs systemctl enable getty@tty0.service"
-	rm -f fedora-$*-rootfs/etc/systemd/system/multi-user.target.wants/sshd.service
-	bash iamroot-shell -c "chroot fedora-$*-rootfs systemctl disable sshd.service"
+	    -i x86_64-fedora-$*-rootfs/etc/shadow
+	touch x86_64-fedora-$*-rootfs/etc/systemd/zram-generator.conf
+	mkdir -p x86_64-fedora-$*-rootfs/var/lib/systemd/linger
+	rm -f x86_64-fedora-$*-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
+	bash iamroot-shell -c "chroot x86_64-fedora-$*-rootfs systemctl enable getty@tty0.service"
+	rm -f x86_64-fedora-$*-rootfs/etc/systemd/system/multi-user.target.wants/sshd.service
+	bash iamroot-shell -c "chroot x86_64-fedora-$*-rootfs systemctl disable sshd.service"
 
 chroot-fedora-33:
 chroot-fedora-34:
@@ -712,31 +711,31 @@ umount-fedora-37:
 endif
 
 ifneq ($(shell command -v zypper 2>/dev/null),)
-opensuse-leap-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
-opensuse-leap-chroot:
-opensuse-tumbleweed-chroot:
-opensuse-%-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
-opensuse-%-chroot: | opensuse-%-rootfs
-	bash iamroot-shell -c "chroot opensuse-$*-rootfs"
+x86_64-opensuse-leap-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
+x86_64-opensuse-leap-chroot:
+x86_64-opensuse-tumbleweed-chroot:
+x86_64-opensuse-%-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
+x86_64-opensuse-%-chroot: | x86_64-opensuse-%-rootfs
+	bash iamroot-shell -c "chroot x86_64-opensuse-$*-rootfs"
 
 extra-rootfs: opensuse-rootfs
 
 .PHONY: opensuse-rootfs
-opensuse-rootfs: | opensuse-tumbleweed-rootfs
+opensuse-rootfs: | x86_64-opensuse-tumbleweed-rootfs
 
-opensuse-leap-rootfs: | opensuse-leap-rootfs/etc/machine-id
-opensuse-tumbleweed-rootfs: | opensuse-tumbleweed-rootfs/etc/machine-id
+x86_64-opensuse-leap-rootfs: | x86_64-opensuse-leap-rootfs/etc/machine-id
+x86_64-opensuse-tumbleweed-rootfs: | x86_64-opensuse-tumbleweed-rootfs/etc/machine-id
 
-opensuse-leap-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
-opensuse-leap-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|/usr/bin/chkstat|/usr/sbin/update-ca-certificates
-opensuse-leap-rootfs/etc/machine-id:
+x86_64-opensuse-leap-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
+x86_64-opensuse-leap-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|/usr/bin/chkstat|/usr/sbin/update-ca-certificates
+x86_64-opensuse-leap-rootfs/etc/machine-id:
 
-opensuse-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
-opensuse-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|/usr/bin/chkstat
-opensuse-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
-opensuse-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
-	bash iamroot-shell -c "zypper --root $(CURDIR)/opensuse-$*-rootfs addrepo --no-gpgcheck support/$*-repo-oss.repo"
-	bash iamroot-shell -c "zypper --root $(CURDIR)/opensuse-$*-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd"
+x86_64-opensuse-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
+x86_64-opensuse-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|/usr/bin/chkstat
+x86_64-opensuse-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
+x86_64-opensuse-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
+	bash iamroot-shell -c "zypper --root $(CURDIR)/x86_64-opensuse-$*-rootfs addrepo --no-gpgcheck support/$*-repo-oss.repo"
+	bash iamroot-shell -c "zypper --root $(CURDIR)/x86_64-opensuse-$*-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd"
 
 qemu-system-x86_64-opensuse-leap:
 qemu-system-x86_64-opensuse-leap: override CMDLINE += rw init=/usr/lib/systemd/systemd
@@ -748,24 +747,24 @@ vmlinux-opensuse-leap:
 vmlinux-opensuse-tumbleweed:
 endif
 
-opensuse-leap.ext4:
-opensuse-tumbleweed.ext4:
+x86_64-opensuse-leap.ext4:
+x86_64-opensuse-tumbleweed.ext4:
 
-opensuse-leap-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
-opensuse-leap-postrootfs:
-opensuse-tumbleweed-postrootfs:
-opensuse-%-postrootfs: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
-opensuse-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
+x86_64-opensuse-leap-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
+x86_64-opensuse-leap-postrootfs:
+x86_64-opensuse-tumbleweed-postrootfs:
+x86_64-opensuse-%-postrootfs: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
+x86_64-opensuse-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	sed -e '/^root:x:/s,^root:x:,root::,' \
-	    -i opensuse-$*-rootfs/etc/passwd
+	    -i x86_64-opensuse-$*-rootfs/etc/passwd
 	sed -e '/^root:\*:/s,^root:\*:,root:x:,' \
-	    -i opensuse-$*-rootfs/etc/shadow
-	bash iamroot-shell -c "chroot opensuse-$*-rootfs pam-config -a --nullok"
-	mkdir -p opensuse-$*-rootfs/var/lib/systemd/linger
-	rm -f opensuse-$*-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
-	bash iamroot-shell -c "chroot opensuse-$*-rootfs systemctl enable getty@tty0.service"
-	rm -f opensuse-$*-rootfs/etc/systemd/system/getty.target.wants/getty@ttyS0.service
-	bash iamroot-shell -c "chroot opensuse-$*-rootfs systemctl enable getty@ttyS0.service"
+	    -i x86_64-opensuse-$*-rootfs/etc/shadow
+	bash iamroot-shell -c "chroot x86_64-opensuse-$*-rootfs pam-config -a --nullok"
+	mkdir -p x86_64-opensuse-$*-rootfs/var/lib/systemd/linger
+	rm -f x86_64-opensuse-$*-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
+	bash iamroot-shell -c "chroot x86_64-opensuse-$*-rootfs systemctl enable getty@tty0.service"
+	rm -f x86_64-opensuse-$*-rootfs/etc/systemd/system/getty.target.wants/getty@ttyS0.service
+	bash iamroot-shell -c "chroot x86_64-opensuse-$*-rootfs systemctl enable getty@ttyS0.service"
 
 chroot-opensuse-leap:
 chroot-opensuse-tumbleweed:
@@ -850,29 +849,29 @@ alpine-minirootfs-%-armhf.tar.gz:
 endif
 
 ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
-alpine-3.14-chroot:
-alpine-3.15-chroot:
-alpine-3.16-chroot:
-alpine-3.17-chroot:
-alpine-edge-chroot:
-alpine-%-chroot: | alpine-%-rootfs
-	bash iamroot-shell -c "chroot alpine-$*-rootfs /bin/ash"
+x86_64-alpine-3.14-chroot:
+x86_64-alpine-3.15-chroot:
+x86_64-alpine-3.16-chroot:
+x86_64-alpine-3.17-chroot:
+x86_64-alpine-edge-chroot:
+x86_64-alpine-%-chroot: | x86_64-alpine-%-rootfs
+	bash iamroot-shell -c "chroot x86_64-alpine-$*-rootfs /bin/ash"
 
 .PHONY: alpine-rootfs
-alpine-rootfs: alpine-3.14-rootfs
-alpine-rootfs: alpine-3.15-rootfs
-alpine-rootfs: alpine-3.16-rootfs
-alpine-rootfs: alpine-3.17-rootfs
-alpine-rootfs: alpine-edge-rootfs
+alpine-rootfs: x86_64-alpine-3.14-rootfs
+alpine-rootfs: x86_64-alpine-3.15-rootfs
+alpine-rootfs: x86_64-alpine-3.16-rootfs
+alpine-rootfs: x86_64-alpine-3.17-rootfs
+alpine-rootfs: x86_64-alpine-edge-rootfs
 
-alpine-3.14-rootfs: | alpine-3.14-rootfs/bin/busybox
-alpine-3.15-rootfs: | alpine-3.15-rootfs/bin/busybox
-alpine-3.16-rootfs: | alpine-3.16-rootfs/bin/busybox
-alpine-3.17-rootfs: | alpine-3.17-rootfs/bin/busybox
-alpine-edge-rootfs: | alpine-edge-rootfs/bin/busybox
+x86_64-alpine-3.14-rootfs: | x86_64-alpine-3.14-rootfs/bin/busybox
+x86_64-alpine-3.15-rootfs: | x86_64-alpine-3.15-rootfs/bin/busybox
+x86_64-alpine-3.16-rootfs: | x86_64-alpine-3.16-rootfs/bin/busybox
+x86_64-alpine-3.17-rootfs: | x86_64-alpine-3.17-rootfs/bin/busybox
+x86_64-alpine-edge-rootfs: | x86_64-alpine-edge-rootfs/bin/busybox
 
-alpine-%-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
-	bash iamroot-shell -c "alpine-make-rootfs alpine-$*-rootfs --keys-dir /usr/share/apk/keys/x86_64 --mirror-uri http://dl-cdn.alpinelinux.org/alpine --branch $*"
+x86_64-alpine-%-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
+	bash iamroot-shell -c "alpine-make-rootfs x86_64-alpine-$*-rootfs --keys-dir /usr/share/apk/keys/x86_64 --mirror-uri http://dl-cdn.alpinelinux.org/alpine --branch $*"
 
 qemu-system-x86_64-alpine-3.14:
 qemu-system-x86_64-alpine-3.15:
@@ -888,23 +887,23 @@ vmlinux-alpine-3.17:
 vmlinux-alpine-edge:
 endif
 
-alpine-3.14.ext4:
-alpine-3.15.ext4:
-alpine-3.16.ext4:
-alpine-3.17.ext4:
-alpine-edge.ext4:
+x86_64-alpine-3.14.ext4:
+x86_64-alpine-3.15.ext4:
+x86_64-alpine-3.16.ext4:
+x86_64-alpine-3.17.ext4:
+x86_64-alpine-edge.ext4:
 
-alpine-%-postrootfs:
+x86_64-alpine-%-postrootfs:
 	sed -e '/^root:x:/s,^root:x:,root::,' \
-	    -i alpine-$*-rootfs/etc/passwd
+	    -i x86_64-alpine-$*-rootfs/etc/passwd
 	sed -e '/^UNKNOWN$$:/d' \
 	    -e '1iUNKNOWN' \
-	    -i alpine-$*-rootfs/etc/securetty
+	    -i x86_64-alpine-$*-rootfs/etc/securetty
 	sed -e '/^tty1:/itty0::respawn:/sbin/getty 38400 tty0' \
 	    -e '/^tty[1-9]:/s,^,#,' \
 	    -e '/^#ttyS0:/s,^#,,g' \
-	    -i alpine-$*-rootfs/etc/inittab
-	chmod +r alpine-$*-rootfs/bin/bbsuid
+	    -i x86_64-alpine-$*-rootfs/etc/inittab
+	chmod +r x86_64-alpine-$*-rootfs/bin/bbsuid
 
 chroot-alpine-%: PATH = /usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin
 chroot-alpine-%: SHELL = /bin/sh
@@ -1163,15 +1162,15 @@ aarch64-alpine-%-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1 x86_
 endif
 endif
 
-qemu-system-x86_64-%: override CMDLINE += panic=5
-qemu-system-x86_64-%: override CMDLINE += console=ttyS0
-qemu-system-x86_64-%: override QEMUSYSTEMFLAGS += -enable-kvm -m 4G -machine q35 -smp 4 -cpu host
-qemu-system-x86_64-%: override QEMUSYSTEMFLAGS += -nographic -serial mon:stdio
-qemu-system-x86_64-%: override QEMUSYSTEMFLAGS += -kernel /boot/vmlinuz-linux
-qemu-system-x86_64-%: override QEMUSYSTEMFLAGS += -initrd initrd-rootfs.cpio
-qemu-system-x86_64-%: override QEMUSYSTEMFLAGS += -drive file=$*.ext4,if=virtio
-qemu-system-x86_64-%: override QEMUSYSTEMFLAGS += -append "$(CMDLINE)"
-qemu-system-x86_64-%: | %.ext4 initrd-rootfs.cpio
+qemu-system-%: override CMDLINE += panic=5
+qemu-system-%: override CMDLINE += console=ttyS0
+qemu-system-%: override QEMUSYSTEMFLAGS += -enable-kvm -m 4G -machine q35 -smp 4 -cpu host
+qemu-system-%: override QEMUSYSTEMFLAGS += -nographic -serial mon:stdio
+qemu-system-%: override QEMUSYSTEMFLAGS += -kernel /boot/vmlinuz-linux
+qemu-system-%: override QEMUSYSTEMFLAGS += -initrd initrd-rootfs.cpio
+qemu-system-%: override QEMUSYSTEMFLAGS += -drive file=$*.ext4,if=virtio
+qemu-system-%: override QEMUSYSTEMFLAGS += -append "$(CMDLINE)"
+qemu-system-%: | %.ext4 initrd-rootfs.cpio
 	qemu-system-x86_64 $(QEMUSYSTEMFLAGS)
 
 ifneq ($(KVER),)
@@ -1343,16 +1342,16 @@ ifneq ($(shell command -v pacstrap 2>/dev/null),)
 support: arch-support
 
 .PHONY: arch-support
-arch-support: support/arch-rootfs.txt
+arch-support: support/x86_64-arch-rootfs.txt
 arch-support: support/i686-arch-rootfs.txt
 
 extra-support: manjaro-support
 
 .PHONY: manjaro-support
-manjaro-support: support/manjaro-stable-rootfs.txt
+manjaro-support: support/x86_64-manjaro-stable-rootfs.txt
 
-.PRECIOUS: support/arch-rootfs.txt
-support/arch-rootfs.txt: arch-rootfs.log
+.PRECIOUS: support/x86_64-arch-rootfs.txt
+support/x86_64-arch-rootfs.txt: x86_64-arch-rootfs.log
 	support/pacstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
@@ -1361,212 +1360,208 @@ support/i686-arch-rootfs.txt: i686-arch-rootfs.log
 	support/pacstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
-.PRECIOUS: support/manjaro-stable-rootfs.txt
-support/manjaro-stable-rootfs.txt: manjaro-stable-rootfs.log
+.PRECIOUS: support/x86_64-manjaro-stable-rootfs.txt
+support/x86_64-manjaro-stable-rootfs.txt: x86_64-manjaro-stable-rootfs.log
 	support/pacstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
 log: arch-log
 
 .PHONY: arch-log
-arch-log: arch-rootfs.log
+arch-log: x86_64-arch-rootfs.log
 arch-log: i686-arch-rootfs.log
 
 extra-log: manjaro-log
 
 .PHONY: manjaro-log
-manjaro-log: manjaro-stable-rootfs.log
+manjaro-log: x86_64-manjaro-stable-rootfs.log
 
-arch-rootfs.log:
+x86_64-arch-rootfs.log:
 i686-arch-rootfs.log:
 
-manjaro-stable-rootfs.log:
+x86_64-manjaro-stable-rootfs.log:
 endif
 
 ifneq ($(shell command -v debootstrap 2>/dev/null),)
 support: debian-support
 
 .PHONY: debian-support
-debian-support: support/debian-oldoldstable-rootfs.txt
-debian-support: support/debian-oldstable-rootfs.txt
-debian-support: support/debian-stable-rootfs.txt
-debian-support: support/debian-testing-rootfs.txt
-debian-support: support/debian-unstable-rootfs.txt
+debian-support: support/x86_64-debian-oldoldstable-rootfs.txt
+debian-support: support/x86_64-debian-oldstable-rootfs.txt
+debian-support: support/x86_64-debian-stable-rootfs.txt
+debian-support: support/x86_64-debian-testing-rootfs.txt
+debian-support: support/x86_64-debian-unstable-rootfs.txt
 
-.PRECIOUS: support/debian-oldoldstable-rootfs.txt
-support/debian-oldoldstable-rootfs.txt: debian-oldoldstable-rootfs.log
+.PRECIOUS: support/x86_64-debian-oldoldstable-rootfs.txt
+support/x86_64-debian-oldoldstable-rootfs.txt: x86_64-debian-oldoldstable-rootfs.log
 	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
-.PRECIOUS: support/debian-oldstable-rootfs.txt
-support/debian-oldstable-rootfs.txt: debian-oldstable-rootfs.log
+.PRECIOUS: support/x86_64-debian-oldstable-rootfs.txt
+support/x86_64-debian-oldstable-rootfs.txt: x86_64-debian-oldstable-rootfs.log
 	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
-.PRECIOUS: support/debian-stable-rootfs.txt
-support/debian-stable-rootfs.txt: debian-stable-rootfs.log
+.PRECIOUS: support/x86_64-debian-stable-rootfs.txt
+support/x86_64-debian-stable-rootfs.txt: x86_64-debian-stable-rootfs.log
 	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
-.PRECIOUS: support/debian-testing-rootfs.txt
-support/debian-testing-rootfs.txt: debian-testing-rootfs.log
+.PRECIOUS: support/x86_64-debian-testing-rootfs.txt
+support/x86_64-debian-testing-rootfs.txt: x86_64-debian-testing-rootfs.log
 	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
-.PRECIOUS: support/debian-unstable-rootfs.txt
-support/debian-unstable-rootfs.txt: debian-unstable-rootfs.log
+.PRECIOUS: support/x86_64-debian-unstable-rootfs.txt
+support/x86_64-debian-unstable-rootfs.txt: x86_64-debian-unstable-rootfs.log
 	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
 log: debian-log
 
 .PHONY: debian-log
-debian-log: debian-oldoldstable-rootfs.log
-debian-log: debian-oldstable-rootfs.log
-debian-log: debian-stable-rootfs.log
-debian-log: debian-testing-rootfs.log
-debian-log: debian-unstable-rootfs.log
+debian-log: x86_64-debian-oldoldstable-rootfs.log
+debian-log: x86_64-debian-oldstable-rootfs.log
+debian-log: x86_64-debian-stable-rootfs.log
+debian-log: x86_64-debian-testing-rootfs.log
+debian-log: x86_64-debian-unstable-rootfs.log
 
-debian-oldoldstable-rootfs.log:
-debian-oldstable-rootfs.log:
-debian-stable-rootfs.log:
-debian-testing-rootfs.log:
-debian-unstable-rootfs.log:
+x86_64-debian-oldoldstable-rootfs.log:
+x86_64-debian-oldstable-rootfs.log:
+x86_64-debian-stable-rootfs.log:
+x86_64-debian-testing-rootfs.log:
+x86_64-debian-unstable-rootfs.log:
 
 support: ubuntu-support
 
 .PHONY: ubuntu-support
-ifeq ($(ARCH),x86_64)
-ubuntu-support: support/ubuntu-trusty-rootfs.txt
-ubuntu-support: support/ubuntu-xenial-rootfs.txt
-ubuntu-support: support/ubuntu-bionic-rootfs.txt
-ubuntu-support: support/ubuntu-focal-rootfs.txt
-ubuntu-support: support/ubuntu-jammy-rootfs.txt
-ubuntu-support: support/ubuntu-kinetic-rootfs.txt
+ubuntu-support: support/x86_64-ubuntu-trusty-rootfs.txt
+ubuntu-support: support/x86_64-ubuntu-xenial-rootfs.txt
+ubuntu-support: support/x86_64-ubuntu-bionic-rootfs.txt
+ubuntu-support: support/x86_64-ubuntu-focal-rootfs.txt
+ubuntu-support: support/x86_64-ubuntu-jammy-rootfs.txt
+ubuntu-support: support/x86_64-ubuntu-kinetic-rootfs.txt
 
-.PRECIOUS: support/ubuntu-trusty-rootfs.txt
-support/ubuntu-trusty-rootfs.txt: ubuntu-trusty-rootfs.log
+.PRECIOUS: support/x86_64-ubuntu-trusty-rootfs.txt
+support/x86_64-ubuntu-trusty-rootfs.txt: x86_64-ubuntu-trusty-rootfs.log
 	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
-.PRECIOUS: support/ubuntu-xenial-rootfs.txt
-support/ubuntu-xenial-rootfs.txt: ubuntu-xenial-rootfs.log
+.PRECIOUS: support/x86_64-ubuntu-xenial-rootfs.txt
+support/x86_64-ubuntu-xenial-rootfs.txt: x86_64-ubuntu-xenial-rootfs.log
 	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
-.PRECIOUS: support/ubuntu-bionic-rootfs.txt
-support/ubuntu-bionic-rootfs.txt: ubuntu-bionic-rootfs.log
+.PRECIOUS: support/x86_64-ubuntu-bionic-rootfs.txt
+support/x86_64-ubuntu-bionic-rootfs.txt: x86_64-ubuntu-bionic-rootfs.log
 	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
-.PRECIOUS: support/ubuntu-focal-rootfs.txt
-support/ubuntu-focal-rootfs.txt: ubuntu-focal-rootfs.log
+.PRECIOUS: support/x86_64-ubuntu-focal-rootfs.txt
+support/x86_64-ubuntu-focal-rootfs.txt: x86_64-ubuntu-focal-rootfs.log
 	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
-.PRECIOUS: support/ubuntu-jammy-rootfs.txt
-support/ubuntu-jammy-rootfs.txt: ubuntu-jammy-rootfs.log
+.PRECIOUS: support/x86_64-ubuntu-jammy-rootfs.txt
+support/x86_64-ubuntu-jammy-rootfs.txt: x86_64-ubuntu-jammy-rootfs.log
 	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
-.PRECIOUS: support/ubuntu-kinetic-rootfs.txt
-support/ubuntu-kinetic-rootfs.txt: ubuntu-kinetic-rootfs.log
+.PRECIOUS: support/x86_64-ubuntu-kinetic-rootfs.txt
+support/x86_64-ubuntu-kinetic-rootfs.txt: x86_64-ubuntu-kinetic-rootfs.log
 	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
-endif
 
 log: ubuntu-log
 
 .PHONY: ubuntu-log
-ifeq ($(ARCH),x86_64)
-ubuntu-log: ubuntu-trusty-rootfs.log
-ubuntu-log: ubuntu-xenial-rootfs.log
-ubuntu-log: ubuntu-bionic-rootfs.log
-ubuntu-log: ubuntu-focal-rootfs.log
-ubuntu-log: ubuntu-jammy-rootfs.log
-ubuntu-log: ubuntu-kinetic-rootfs.log
+ubuntu-log: x86_64-ubuntu-trusty-rootfs.log
+ubuntu-log: x86_64-ubuntu-xenial-rootfs.log
+ubuntu-log: x86_64-ubuntu-bionic-rootfs.log
+ubuntu-log: x86_64-ubuntu-focal-rootfs.log
+ubuntu-log: x86_64-ubuntu-jammy-rootfs.log
+ubuntu-log: x86_64-ubuntu-kinetic-rootfs.log
 
-ubuntu-trusty-rootfs.log:
-ubuntu-xenial-rootfs.log:
-ubuntu-bionic-rootfs.log:
-ubuntu-focal-rootfs.log:
-ubuntu-jammy-rootfs.log:
-ubuntu-kinetic-rootfs.log:
-endif
+x86_64-ubuntu-trusty-rootfs.log:
+x86_64-ubuntu-xenial-rootfs.log:
+x86_64-ubuntu-bionic-rootfs.log:
+x86_64-ubuntu-focal-rootfs.log:
+x86_64-ubuntu-jammy-rootfs.log:
+x86_64-ubuntu-kinetic-rootfs.log:
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)
 support: fedora-support
 
 .PHONY: fedora-support
-fedora-support: support/fedora-33-rootfs.txt
-fedora-support: support/fedora-34-rootfs.txt
-fedora-support: support/fedora-35-rootfs.txt
-fedora-support: support/fedora-36-rootfs.txt
-fedora-support: support/fedora-37-rootfs.txt
+fedora-support: support/x86_64-fedora-33-rootfs.txt
+fedora-support: support/x86_64-fedora-34-rootfs.txt
+fedora-support: support/x86_64-fedora-35-rootfs.txt
+fedora-support: support/x86_64-fedora-36-rootfs.txt
+fedora-support: support/x86_64-fedora-37-rootfs.txt
 
-.PRECIOUS: support/fedora-33-rootfs.txt
-support/fedora-33-rootfs.txt: fedora-33-rootfs.log
+.PRECIOUS: support/x86_64-fedora-33-rootfs.txt
+support/x86_64-fedora-33-rootfs.txt: x86_64-fedora-33-rootfs.log
 	support/dnf.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
-.PRECIOUS: support/fedora-34-rootfs.txt
-support/fedora-34-rootfs.txt: fedora-34-rootfs.log
+.PRECIOUS: support/x86_64-fedora-34-rootfs.txt
+support/x86_64-fedora-34-rootfs.txt: x86_64-fedora-34-rootfs.log
 	support/dnf.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
-.PRECIOUS: support/fedora-35-rootfs.txt
-support/fedora-35-rootfs.txt: fedora-35-rootfs.log
+.PRECIOUS: support/x86_64-fedora-35-rootfs.txt
+support/x86_64-fedora-35-rootfs.txt: x86_64-fedora-35-rootfs.log
 	support/dnf.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
-.PRECIOUS: support/fedora-36-rootfs.txt
-support/fedora-36-rootfs.txt: fedora-36-rootfs.log
+.PRECIOUS: support/x86_64-fedora-36-rootfs.txt
+support/x86_64-fedora-36-rootfs.txt: x86_64-fedora-36-rootfs.log
 	support/dnf.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
-.PRECIOUS: support/fedora-37-rootfs.txt
-support/fedora-37-rootfs.txt: fedora-37-rootfs.log
+.PRECIOUS: support/x86_64-fedora-37-rootfs.txt
+support/x86_64-fedora-37-rootfs.txt: x86_64-fedora-37-rootfs.log
 	support/dnf.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
 log: fedora-log
 
 .PHONY: fedora-log
-fedora-log: fedora-33-rootfs.log
-fedora-log: fedora-34-rootfs.log
-fedora-log: fedora-35-rootfs.log
-fedora-log: fedora-36-rootfs.log
+fedora-log: x86_64-fedora-33-rootfs.log
+fedora-log: x86_64-fedora-34-rootfs.log
+fedora-log: x86_64-fedora-35-rootfs.log
+fedora-log: x86_64-fedora-36-rootfs.log
 
-fedora-33-rootfs.log:
-fedora-34-rootfs.log:
-fedora-35-rootfs.log:
-fedora-36-rootfs.log:
-fedora-37-rootfs.log:
+x86_64-fedora-33-rootfs.log:
+x86_64-fedora-34-rootfs.log:
+x86_64-fedora-35-rootfs.log:
+x86_64-fedora-36-rootfs.log:
+x86_64-fedora-37-rootfs.log:
 endif
 
 ifneq ($(shell command -v zypper 2>/dev/null),)
 extra-support: opensuse-support
 
 .PHONY: opensuse-support
-fixme-support: support/opensuse-leap-rootfs.txt
-opensuse-support: support/opensuse-tumbleweed-rootfs.txt
+fixme-support: support/x86_64-opensuse-leap-rootfs.txt
+opensuse-support: support/x86_64-opensuse-tumbleweed-rootfs.txt
 
-.PRECIOUS: support/opensuse-leap-rootfs.txt
-support/opensuse-leap-rootfs.txt: opensuse-leap-rootfs.log
+.PRECIOUS: support/x86_64-opensuse-leap-rootfs.txt
+support/x86_64-opensuse-leap-rootfs.txt: x86_64-opensuse-leap-rootfs.log
 	support/zypper.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
-.PRECIOUS: support/opensuse-tumbleweed-rootfs.txt
-support/opensuse-tumbleweed-rootfs.txt: opensuse-tumbleweed-rootfs.log
+.PRECIOUS: support/x86_64-opensuse-tumbleweed-rootfs.txt
+support/x86_64-opensuse-tumbleweed-rootfs.txt: x86_64-opensuse-tumbleweed-rootfs.log
 	support/zypper.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
 extra-log: opensuse-log
 
 .PHONY: opensuse-log
-fixme-log: opensuse-leap-rootfs.log
-opensuse-log: opensuse-tumbleweed-rootfs.log
+fixme-log: x86_64-opensuse-leap-rootfs.log
+opensuse-log: x86_64-opensuse-tumbleweed-rootfs.log
 
 opensuse-leap-rootfs.log:
 opensuse-tumbleweed-rootfs.log:
@@ -1576,51 +1571,51 @@ ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
 support: alpine-support
 
 .PHONY: alpine-support
-alpine-support: support/alpine-3.14-rootfs.txt
-alpine-support: support/alpine-3.15-rootfs.txt
-alpine-support: support/alpine-3.16-rootfs.txt
-alpine-support: support/alpine-3.17-rootfs.txt
-alpine-support: support/alpine-edge-rootfs.txt
+alpine-support: support/x86_64-alpine-3.14-rootfs.txt
+alpine-support: support/x86_64-alpine-3.15-rootfs.txt
+alpine-support: support/x86_64-alpine-3.16-rootfs.txt
+alpine-support: support/x86_64-alpine-3.17-rootfs.txt
+alpine-support: support/x86_64-alpine-edge-rootfs.txt
 
-.PRECIOUS: support/alpine-3.14-rootfs.txt
-support/alpine-3.14-rootfs.txt: alpine-3.14-rootfs.log
+.PRECIOUS: support/x86_64-alpine-3.14-rootfs.txt
+support/x86_64-alpine-3.14-rootfs.txt: x86_64-alpine-3.14-rootfs.log
 	support/alpine-make-rootfs.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
-.PRECIOUS: support/alpine-3.15-rootfs.txt
-support/alpine-3.15-rootfs.txt: alpine-3.15-rootfs.log
+.PRECIOUS: support/x86_64-alpine-3.15-rootfs.txt
+support/x86_64-alpine-3.15-rootfs.txt: x86_64-alpine-3.15-rootfs.log
 	support/alpine-make-rootfs.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
-.PRECIOUS: support/alpine-3.16-rootfs.txt
-support/alpine-3.16-rootfs.txt: alpine-3.16-rootfs.log
+.PRECIOUS: support/x86_64-alpine-3.16-rootfs.txt
+support/x86_64-alpine-3.16-rootfs.txt: x86_64-alpine-3.16-rootfs.log
 	support/alpine-make-rootfs.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
-.PRECIOUS: support/alpine-3.17-rootfs.txt
-support/alpine-3.17-rootfs.txt: alpine-3.17-rootfs.log
+.PRECIOUS: support/x86_64-alpine-3.17-rootfs.txt
+support/x86_64-alpine-3.17-rootfs.txt: x86_64-alpine-3.17-rootfs.log
 	support/alpine-make-rootfs.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
-.PRECIOUS: support/alpine-edge-rootfs.txt
-support/alpine-edge-rootfs.txt: alpine-edge-rootfs.log
+.PRECIOUS: support/x86_64-alpine-edge-rootfs.txt
+support/x86_64-alpine-edge-rootfs.txt: x86_64-alpine-edge-rootfs.log
 	support/alpine-make-rootfs.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
 log: alpine-log
 
 .PHONY: alpine-log
-alpine-log: alpine-3.14-rootfs.log
-alpine-log: alpine-3.15-rootfs.log
-alpine-log: alpine-3.16-rootfs.log
-alpine-log: alpine-3.17-rootfs.log
-alpine-log: alpine-edge-rootfs.log
+alpine-log: x86_64-alpine-3.14-rootfs.log
+alpine-log: x86_64-alpine-3.15-rootfs.log
+alpine-log: x86_64-alpine-3.16-rootfs.log
+alpine-log: x86_64-alpine-3.17-rootfs.log
+alpine-log: x86_64-alpine-edge-rootfs.log
 
-alpine-3.14-rootfs.log:
-alpine-3.15-rootfs.log:
-alpine-3.16-rootfs.log:
-alpine-3.17-rootfs.log:
-alpine-edge-rootfs.log:
+x86_64-alpine-3.14-rootfs.log:
+x86_64-alpine-3.15-rootfs.log:
+x86_64-alpine-3.16-rootfs.log:
+x86_64-alpine-3.17-rootfs.log:
+x86_64-alpine-edge-rootfs.log:
 endif
 
 .PHONY: %.log
@@ -1629,6 +1624,7 @@ endif
 %.log:
 	$(MAKE) --silent $* 2>&1 | tee $@.tmp
 	mv $@.tmp $@
+endif
 
 %:
 	$(MAKE) -f Makefile $@

@@ -732,7 +732,7 @@ opensuse-%-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	sed -e '/^root:\*:/s,^root:\*:,root:x:,' \
 	    -i opensuse-$*-rootfs/etc/shadow
 	bash iamroot-shell -c "chroot opensuse-$*-rootfs pam-config -a --nullok"
-	mkdir -p arch-rootfs/var/lib/systemd/linger
+	mkdir -p opensuse-$*-rootfs/var/lib/systemd/linger
 	rm -f opensuse-$*-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
 	bash iamroot-shell -c "chroot opensuse-$*-rootfs systemctl enable getty@tty0.service"
 	rm -f opensuse-$*-rootfs/etc/systemd/system/getty.target.wants/getty@ttyS0.service

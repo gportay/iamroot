@@ -1296,7 +1296,7 @@ extra-support: manjaro-support
 .PHONY: manjaro-support
 manjaro-support: support/manjaro-rootfs.txt
 
-.PRECIOUS: support/%arch-rootfs.txt
+.PRECIOUS: support/arch-rootfs.txt
 support/arch-rootfs.txt: arch-rootfs.log
 	support/pacstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@

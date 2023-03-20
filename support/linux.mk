@@ -60,7 +60,6 @@ MAKEFLAGS += --no-print-directory
 all:
 
 define libiamroot_so =
-
 all: $(1)/libiamroot-$(2).so.$(3)
 ci: $(1)/libiamroot-$(2).so.$(3)
 

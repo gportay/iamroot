@@ -296,43 +296,44 @@ mount-arch:
 
 umount-arch:
 
-.PHONY: manjaro-chroot
-manjaro-chroot: | manjaro-rootfs
-	bash iamroot-shell -c "chroot manjaro-rootfs"
+manjaro-stable-chroot:
+manjaro-%-chroot: | manjaro-%-rootfs
+	bash iamroot-shell -c "chroot manjaro-$*-rootfs"
 
-extra-rootfs: manjaro-rootfs
+extra-rootfs: manjaro-stable-rootfs
 
-.PHONY: manjaro-rootfs
-manjaro-rootfs: | manjaro-rootfs/etc/machine-id
+.PHONY: manjaro-stable-rootfs
+manjaro-stable-rootfs: | manjaro-stable-rootfs/etc/machine-id
 
-manjaro-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
-manjaro-rootfs/etc/machine-id: export EUID = 0
-manjaro-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
-	mkdir manjaro-rootfs
-	bash iamroot-shell -c "pacstrap -GMC support/x86_64-manjaro-stable-pacman.conf manjaro-rootfs base"
+manjaro-stable-rootfs/etc/machine-id:
+manjaro-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
+manjaro-%-rootfs/etc/machine-id: export EUID = 0
+manjaro-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
+	mkdir manjaro-$*-rootfs
+	bash iamroot-shell -c "pacstrap -GMC support/x86_64-manjaro-$*-pacman.conf manjaro-$*-rootfs base"
 
-qemu-system-x86_64-manjaro:
+qemu-system-x86_64-manjaro-stable:
 
 ifneq ($(VMLINUX_KVER),)
-vmlinux-manjaro:
+vmlinux-manjaro-stable:
 endif
 
-manjaro.ext4:
+manjaro-stable.ext4:
 
-manjaro-postrootfs: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
+manjaro-stable-postrootfs: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
 	sed -e '/^root:x:/s,^root:x:,root::,' \
-	    -i manjaro-rootfs/etc/passwd
+	    -i manjaro-stable-rootfs/etc/passwd
 	sed -e '/^root::/s,^root::,root:x:,' \
-	    -i manjaro-rootfs/etc/shadow
-	mkdir -p manjaro-rootfs/var/lib/systemd/linger
-	rm -f manjaro-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
-	bash iamroot-shell -c "chroot manjaro-rootfs systemctl enable getty@tty0.service"
+	    -i manjaro-stable-rootfs/etc/shadow
+	mkdir -p manjaro-stable-rootfs/var/lib/systemd/linger
+	rm -f manjaro-stable-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
+	bash iamroot-shell -c "chroot manjaro-stable-rootfs systemctl enable getty@tty0.service"
 
-chroot-manjaro:
+chroot-manjaro-stable:
 
-mount-manjaro:
+mount-manjaro-stable:
 
-umount-manjaro:
+umount-manjaro-stable:
 endif
 endif
 
@@ -1348,7 +1349,7 @@ arch-support: support/i686-arch-rootfs.txt
 extra-support: manjaro-support
 
 .PHONY: manjaro-support
-manjaro-support: support/manjaro-rootfs.txt
+manjaro-support: support/manjaro-stable-rootfs.txt
 
 .PRECIOUS: support/arch-rootfs.txt
 support/arch-rootfs.txt: arch-rootfs.log
@@ -1360,8 +1361,8 @@ support/i686-arch-rootfs.txt: i686-arch-rootfs.log
 	support/pacstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
-.PRECIOUS: support/manjaro-rootfs.txt
-support/manjaro-rootfs.txt: manjaro-rootfs.log
+.PRECIOUS: support/manjaro-stable-rootfs.txt
+support/manjaro-stable-rootfs.txt: manjaro-stable-rootfs.log
 	support/pacstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
 	mv $@.tmp $@
 
@@ -1374,12 +1375,12 @@ arch-log: i686-arch-rootfs.log
 extra-log: manjaro-log
 
 .PHONY: manjaro-log
-manjaro-log: manjaro-rootfs.log
+manjaro-log: manjaro-stable-rootfs.log
 
 arch-rootfs.log:
 i686-arch-rootfs.log:
 
-manjaro-rootfs.log:
+manjaro-stable-rootfs.log:
 endif
 
 ifneq ($(shell command -v debootstrap 2>/dev/null),)

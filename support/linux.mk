@@ -447,19 +447,14 @@ $(eval $(call chroot,x86_64,debian-testing,/bin/bash))
 $(eval $(call chroot,x86_64,debian-unstable,/bin/bash))
 x86_64-debian-oldoldstable-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
 x86_64-debian-oldoldstable-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-x86_64-debian-oldoldstable-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
 x86_64-debian-oldstable-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
 x86_64-debian-oldstable-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-x86_64-debian-oldstable-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
 x86_64-debian-stable-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
 x86_64-debian-stable-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-x86_64-debian-stable-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
 x86_64-debian-testing-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
 x86_64-debian-testing-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-x86_64-debian-testing-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
 x86_64-debian-unstable-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
 x86_64-debian-unstable-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-x86_64-debian-unstable-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
 
 rootfs: x86_64-debian-rootfs
 
@@ -478,7 +473,6 @@ x86_64-debian-unstable-rootfs: | x86_64-debian-unstable-rootfs/etc/machine-id
 
 x86_64-debian-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
 x86_64-debian-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-x86_64-debian-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
 # chfn: PAM: Critical error - immediate abort
 # adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
 x86_64-debian-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn
@@ -533,22 +527,16 @@ $(eval $(call chroot,x86_64,ubuntu-jammy,/bin/bash))
 $(eval $(call chroot,x86_64,ubuntu-kinetic,/bin/bash))
 x86_64-ubuntu-trusty-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
 x86_64-ubuntu-trusty-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-x86_64-ubuntu-trusty-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
 x86_64-ubuntu-xenial-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
 x86_64-ubuntu-xenial-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-x86_64-ubuntu-xenial-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
 x86_64-ubuntu-bionic-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
 x86_64-ubuntu-bionic-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-x86_64-ubuntu-bionic-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
 x86_64-ubuntu-focal-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
 x86_64-ubuntu-focal-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-x86_64-ubuntu-focal-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
 x86_64-ubuntu-jammy-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
 x86_64-ubuntu-jammy-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-x86_64-ubuntu-jammy-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
 x86_64-ubuntu-xenial-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
 x86_64-ubuntu-xenial-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-x86_64-ubuntu-xenial-chroot: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
 
 .PHONY: x86_64-ubuntu-rootfs
 x86_64-ubuntu-rootfs: x86_64-ubuntu-trusty-rootfs
@@ -582,7 +570,6 @@ x86_64-ubuntu-bionic-rootfs/etc/machine-id:
 
 x86_64-ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
 x86_64-ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-x86_64-ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu/libc.so.6:/lib/aarch64-linux-gnu/libdl.so.2:/lib/aarch64-linux-gnu/libpthread.so.0
 # chfn: PAM: Critical error - immediate abort
 # adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
 x86_64-ubuntu-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn

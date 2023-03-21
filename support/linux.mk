@@ -251,7 +251,7 @@ arch-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|
 arch-rootfs/etc/machine-id: export EUID = 0
 arch-rootfs/etc/machine-id: $(subst $(CURDIR)/,,$(IAMROOT_LIB))
 	mkdir arch-rootfs
-	bash iamroot-shell -c "pacstrap -GMC support/x86_64-pacman.conf arch-rootfs"
+	bash iamroot-shell -c "pacstrap -GMC support/x86_64-arch-pacman.conf arch-rootfs"
 
 ifeq ($(ARCH),x86_64)
 i686-rootfs: i686-arch-rootfs
@@ -271,7 +271,7 @@ i686-arch-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc
 i686-arch-rootfs/etc/machine-id: export EUID = 0
 i686-arch-rootfs/etc/machine-id: | i686/libiamroot-linux.so.2 x86_64/libiamroot-linux-x86-64.so.2
 	mkdir i686-arch-rootfs
-	bash iamroot-shell -c "pacstrap -GMC support/i686-pacman.conf i686-arch-rootfs"
+	bash iamroot-shell -c "pacstrap -GMC support/i686-arch-pacman.conf i686-arch-rootfs"
 
 qemu-system-x86_64-arch:
 
@@ -1005,7 +1005,7 @@ aarch64-arch-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(p
 aarch64-arch-rootfs/etc/machine-id: export EUID = 0
 aarch64-arch-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 	mkdir aarch64-arch-rootfs
-	bash iamroot-shell -c "pacstrap -GMC support/aarch64-pacman.conf aarch64-arch-rootfs"
+	bash iamroot-shell -c "pacstrap -GMC support/aarch64-arch-pacman.conf aarch64-arch-rootfs"
 endif
 
 ifneq ($(shell command -v arm-linux-gnueabihf-gcc 2>/dev/null),)
@@ -1027,7 +1027,7 @@ armv7h-arch-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(pr
 armv7h-arch-rootfs/etc/machine-id: export EUID = 0
 armv7h-arch-rootfs/etc/machine-id: | armhf/libiamroot-linux-armhf.so.3 x86_64/libiamroot-linux-x86-64.so.2
 	mkdir armv7h-arch-rootfs
-	bash iamroot-shell -c "pacstrap -GMC support/armv7h-pacman.conf armv7h-arch-rootfs"
+	bash iamroot-shell -c "pacstrap -GMC support/armv7h-arch-pacman.conf armv7h-arch-rootfs"
 endif
 endif
 

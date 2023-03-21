@@ -1,6 +1,6 @@
 #!/bin/sed -f
 #
-# Copyright 2022 Gaël PORTAY
+# Copyright 2022-2023 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -68,6 +68,7 @@
 	# warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/filesystem-84.87-3.2.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
 	/^warning:/{
 		s,\([[:lower:][:upper:][:digit:]._+-]\+\)-\([[:digit:]]\+:[[:alnum:]._~^+-]\+\|[[:alnum:]._~^+-]\+\)-\([[:alnum:].%{?}-]\+\)\.\([[:lower:][:digit:]]\+\.[[:alnum:]_]\+\|[[:alnum:]_]\+\),\1,
+		s,key ID \([[:xdigit:]]\+\): ,key ID xxxxxxxx: ,
 	}
 }
 

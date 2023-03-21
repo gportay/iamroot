@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -49,7 +49,6 @@ char *getcwd(char *buf, size_t size)
 		__pathperror(buf, __func__);
 		return NULL;
 	}
-
 
 	__debug("%s(buf: %p, size: %lu)\n", __func__, buf, (unsigned long)size);
 

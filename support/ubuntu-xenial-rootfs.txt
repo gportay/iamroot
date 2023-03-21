@@ -1606,21 +1606,9 @@ update-rc.d: warning: start and stop actions are no longer supported; falling ba
 Failed to list units: Access denied
 invoke-rc.d: policy-rc.d denied execution of start.
 Setting up systemd ...
-Warning: /ubuntu-xenial-rootfs/etc/systemd/system/getty@tty1.service: contains root directory '/ubuntu-xenial-rootfs'
-Warning: /ubuntu-xenial-rootfs/lib/systemd/system/getty@tty1.service: contains root directory '/ubuntu-xenial-rootfs'
-Warning: /ubuntu-xenial-rootfs/etc/systemd/system/getty@tty1.service: contains root directory '/ubuntu-xenial-rootfs'
-Warning: /ubuntu-xenial-rootfs/lib/systemd/system/getty@tty1.service: contains root directory '/ubuntu-xenial-rootfs'
-Warning: /ubuntu-xenial-rootfs/etc/systemd/system/getty@.service: contains root directory '/ubuntu-xenial-rootfs'
-Warning: /ubuntu-xenial-rootfs/lib/systemd/system/getty@.service: contains root directory '/ubuntu-xenial-rootfs'
-Created symlink /etc/systemd/system/getty.target.wants/getty@tty1.service, pointing to /ubuntu-xenial-rootfs/lib/systemd/system/getty@.service.
-Warning: /ubuntu-xenial-rootfs/etc/systemd/system/remote-fs.target: contains root directory '/ubuntu-xenial-rootfs'
-Warning: /ubuntu-xenial-rootfs/lib/systemd/system/remote-fs.target: contains root directory '/ubuntu-xenial-rootfs'
-Created symlink /etc/systemd/system/multi-user.target.wants/remote-fs.target, pointing to /ubuntu-xenial-rootfs/lib/systemd/system/remote-fs.target.
-Warning: /ubuntu-xenial-rootfs/etc/systemd/system/systemd-timesyncd.service: contains root directory '/ubuntu-xenial-rootfs'
-Warning: /ubuntu-xenial-rootfs/lib/systemd/system/systemd-timesyncd.service: contains root directory '/ubuntu-xenial-rootfs'
-Warning: /ubuntu-xenial-rootfs/etc/systemd/system/systemd-timesyncd.service: contains root directory '/ubuntu-xenial-rootfs'
-Warning: /ubuntu-xenial-rootfs/lib/systemd/system/systemd-timesyncd.service: contains root directory '/ubuntu-xenial-rootfs'
-Created symlink /etc/systemd/system/sysinit.target.wants/systemd-timesyncd.service, pointing to /ubuntu-xenial-rootfs/lib/systemd/system/systemd-timesyncd.service.
+Created symlink /etc/systemd/system/getty.target.wants/getty@tty1.service, pointing to /lib/systemd/system/getty@.service.
+Created symlink /etc/systemd/system/multi-user.target.wants/remote-fs.target, pointing to /lib/systemd/system/remote-fs.target.
+Created symlink /etc/systemd/system/sysinit.target.wants/systemd-timesyncd.service, pointing to /lib/systemd/system/systemd-timesyncd.service.
 Initializing machine ID from random generator.
 Adding group `systemd-journal' (GID 101) ...
 Done.
@@ -1628,17 +1616,6 @@ FIXME: not-running /usr/bin/chfn -f systemd Time Synchronization systemd-timesyn
 FIXME: not-running /usr/bin/chfn -f systemd Network Management systemd-network
 FIXME: not-running /usr/bin/chfn -f systemd Resolver systemd-resolve
 FIXME: not-running /usr/bin/chfn -f systemd Bus Proxy systemd-bus-proxy
-Warning: /ubuntu-xenial-rootfs/usr/lib/systemd/catalog: contains root directory '/ubuntu-xenial-rootfs'
-Warning: /ubuntu-xenial-rootfs/usr/lib/systemd/catalog/systemd.be.catalog: contains root directory '/ubuntu-xenial-rootfs'
-Warning: /ubuntu-xenial-rootfs/usr/lib/systemd/catalog/systemd.be@latin.catalog: contains root directory '/ubuntu-xenial-rootfs'
-Warning: /ubuntu-xenial-rootfs/usr/lib/systemd/catalog/systemd.catalog: contains root directory '/ubuntu-xenial-rootfs'
-Warning: /ubuntu-xenial-rootfs/usr/lib/systemd/catalog/systemd.fr.catalog: contains root directory '/ubuntu-xenial-rootfs'
-Warning: /ubuntu-xenial-rootfs/usr/lib/systemd/catalog/systemd.it.catalog: contains root directory '/ubuntu-xenial-rootfs'
-Warning: /ubuntu-xenial-rootfs/usr/lib/systemd/catalog/systemd.pl.catalog: contains root directory '/ubuntu-xenial-rootfs'
-Warning: /ubuntu-xenial-rootfs/usr/lib/systemd/catalog/systemd.pt_BR.catalog: contains root directory '/ubuntu-xenial-rootfs'
-Warning: /ubuntu-xenial-rootfs/usr/lib/systemd/catalog/systemd.ru.catalog: contains root directory '/ubuntu-xenial-rootfs'
-Warning: /ubuntu-xenial-rootfs/usr/lib/systemd/catalog/systemd.zh_CN.catalog: contains root directory '/ubuntu-xenial-rootfs'
-Warning: /ubuntu-xenial-rootfs/usr/lib/systemd/catalog/systemd.zh_TW.catalog: contains root directory '/ubuntu-xenial-rootfs'
 unable to set CAP_SETFCAP effective capability: Operation not permitted
 Setting up systemd-sysv ...
 Setting up init ...

@@ -1725,16 +1725,6 @@ Setting up ifupdown ...
 Creating /etc/network/interfaces.
 Setting up upstart ...
 Setting up udev ...
-Warning: /ubuntu-trusty-rootfs/etc/udev/hwdb.d: contains root directory '/ubuntu-trusty-rootfs'
-Warning: /ubuntu-trusty-rootfs/lib/udev/hwdb.d: contains root directory '/ubuntu-trusty-rootfs'
-Warning: /ubuntu-trusty-rootfs/lib/udev/hwdb.d/20-OUI.hwdb: contains root directory '/ubuntu-trusty-rootfs'
-Warning: /ubuntu-trusty-rootfs/lib/udev/hwdb.d/20-acpi-vendor.hwdb: contains root directory '/ubuntu-trusty-rootfs'
-Warning: /ubuntu-trusty-rootfs/lib/udev/hwdb.d/20-bluetooth-vendor-product.hwdb: contains root directory '/ubuntu-trusty-rootfs'
-Warning: /ubuntu-trusty-rootfs/lib/udev/hwdb.d/20-pci-classes.hwdb: contains root directory '/ubuntu-trusty-rootfs'
-Warning: /ubuntu-trusty-rootfs/lib/udev/hwdb.d/20-pci-vendor-model.hwdb: contains root directory '/ubuntu-trusty-rootfs'
-Warning: /ubuntu-trusty-rootfs/lib/udev/hwdb.d/20-usb-classes.hwdb: contains root directory '/ubuntu-trusty-rootfs'
-Warning: /ubuntu-trusty-rootfs/lib/udev/hwdb.d/20-usb-vendor-model.hwdb: contains root directory '/ubuntu-trusty-rootfs'
-Warning: /ubuntu-trusty-rootfs/lib/udev/hwdb.d/60-keyboard.hwdb: contains root directory '/ubuntu-trusty-rootfs'
 initctl.REAL: Unable to connect to Upstart: Failed to connect to socket /com/ubuntu/upstart: Connection refused
 invoke-rc.d: policy-rc.d denied execution of restart.
 Removing 'diversion of /bin/udevadm to /bin/udevadm.upgrade by fake-udev'

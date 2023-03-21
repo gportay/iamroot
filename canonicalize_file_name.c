@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -38,6 +38,7 @@ char *canonicalize_file_name(const char *path)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
+	char *ret;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1) {
@@ -47,5 +48,16 @@ char *canonicalize_file_name(const char *path)
 
 	__debug("%s(path: '%s' -> '%s')\n", __func__, path, buf);
 
-	return next_canonicalize_file_name(buf);
+	ret = next_canonicalize_file_name(buf);
+	if (!ret)
+		return NULL;
+
+	ret = striprootdir(ret);
+	if (!ret) {
+		__pathperror(buf, __func__);
+		free(ret);
+		return NULL;
+	}
+
+	return ret;
 }

@@ -160,6 +160,13 @@ $(1)-$(2)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "zypper --root $(CURDIR)/$(1)-$(2)-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd"
 endef
 
+define alpine-make-rootfs-rootfs
+$(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/busybox
+$(1)-$(2)-$(3)-rootfs/bin/busybox: export APK_OPTS = --arch $(1) --no-progress
+$(1)-$(2)-$(3)-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
+	bash iamroot-shell -c "alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --mirror-uri http://dl-cdn.alpinelinux.org/alpine --branch $(3)"
+endef
+
 define run
 .PHONY: qemu-system-$(1)-$(2)
 qemu-system-$(1)-$(2): override CMDLINE += panic=5
@@ -792,14 +799,16 @@ alpine-rootfs: x86_64-alpine-3.16-rootfs
 alpine-rootfs: x86_64-alpine-3.17-rootfs
 alpine-rootfs: x86_64-alpine-edge-rootfs
 
-x86_64-alpine-3.14-rootfs: | x86_64-alpine-3.14-rootfs/bin/busybox
-x86_64-alpine-3.15-rootfs: | x86_64-alpine-3.15-rootfs/bin/busybox
-x86_64-alpine-3.16-rootfs: | x86_64-alpine-3.16-rootfs/bin/busybox
-x86_64-alpine-3.17-rootfs: | x86_64-alpine-3.17-rootfs/bin/busybox
-x86_64-alpine-edge-rootfs: | x86_64-alpine-edge-rootfs/bin/busybox
-
-x86_64-alpine-%-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
-	bash iamroot-shell -c "alpine-make-rootfs x86_64-alpine-$*-rootfs --keys-dir /usr/share/apk/keys/x86_64 --mirror-uri http://dl-cdn.alpinelinux.org/alpine --branch $*"
+$(eval $(call alpine-make-rootfs-rootfs,x86_64,alpine,3.14))
+$(eval $(call alpine-make-rootfs-rootfs,x86_64,alpine,3.15))
+$(eval $(call alpine-make-rootfs-rootfs,x86_64,alpine,3.16))
+$(eval $(call alpine-make-rootfs-rootfs,x86_64,alpine,3.17))
+$(eval $(call alpine-make-rootfs-rootfs,x86_64,alpine,edge))
+x86_64-alpine-3.14-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
+x86_64-alpine-3.15-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
+x86_64-alpine-3.16-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
+x86_64-alpine-3.17-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
+x86_64-alpine-edge-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 
 $(eval $(call run,x86_64,alpine-3.14))
 $(eval $(call run,x86_64,alpine-3.15))
@@ -867,9 +876,16 @@ x86-alpine-3.16-rootfs: | x86-alpine-3.16-rootfs/bin/busybox
 x86-alpine-3.17-rootfs: | x86-alpine-3.17-rootfs/bin/busybox
 x86-alpine-edge-rootfs: | x86-alpine-edge-rootfs/bin/busybox
 
-x86-alpine-%-rootfs/bin/busybox: export APK_OPTS = --arch x86 --no-progress
-x86-alpine-%-rootfs/bin/busybox: | i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2
-	bash iamroot-shell -c "alpine-make-rootfs x86-alpine-$*-rootfs --keys-dir /usr/share/apk/keys/x86 --mirror-uri http://dl-cdn.alpinelinux.org/alpine --branch $*"
+$(eval $(call alpine-make-rootfs-rootfs,x86,alpine,3.14))
+$(eval $(call alpine-make-rootfs-rootfs,x86,alpine,3.15))
+$(eval $(call alpine-make-rootfs-rootfs,x86,alpine,3.16))
+$(eval $(call alpine-make-rootfs-rootfs,x86,alpine,3.17))
+$(eval $(call alpine-make-rootfs-rootfs,x86,alpine,edge))
+x86-alpine-3.14-rootfs/bin/busybox: | i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2
+x86-alpine-3.15-rootfs/bin/busybox: | i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2
+x86-alpine-3.16-rootfs/bin/busybox: | i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2
+x86-alpine-3.17-rootfs/bin/busybox: | i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2
+x86-alpine-edge-rootfs/bin/busybox: | i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2
 endif
 endif
 endif
@@ -1025,8 +1041,16 @@ aarch64-alpine-3.16-rootfs: | aarch64-alpine-3.16-rootfs/bin/busybox
 aarch64-alpine-3.17-rootfs: | aarch64-alpine-3.17-rootfs/bin/busybox
 aarch64-alpine-edge-rootfs: | aarch64-alpine-edge-rootfs/bin/busybox
 
-aarch64-alpine-%-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
-	bash iamroot-shell -c "APK_OPTS='--arch aarch64' alpine-make-rootfs aarch64-alpine-$*-rootfs --keys-dir /usr/share/apk/keys/aarch64 --mirror-uri http://dl-cdn.alpinelinux.org/alpine --branch $*"
+$(eval $(call alpine-make-rootfs-rootfs,aarch64,alpine,3.14))
+$(eval $(call alpine-make-rootfs-rootfs,aarch64,alpine,3.15))
+$(eval $(call alpine-make-rootfs-rootfs,aarch64,alpine,3.16))
+$(eval $(call alpine-make-rootfs-rootfs,aarch64,alpine,3.17))
+$(eval $(call alpine-make-rootfs-rootfs,aarch64,alpine,edge))
+aarch64-alpine-3.14-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
+aarch64-alpine-3.15-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
+aarch64-alpine-3.16-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
+aarch64-alpine-3.17-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
+aarch64-alpine-edge-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 endif
 endif
 

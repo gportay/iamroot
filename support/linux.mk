@@ -150,6 +150,16 @@ $(1)-$(2)-$(3)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	rm -f $(1)-$(2)-$(3)-rootfs/etc/distro.repos.d/fedora.repo
 endef
 
+define zypper-rootfs
+$(1)-$(2)-rootfs: | $(1)-$(2)-rootfs/etc/machine-id
+$(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
+$(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|/usr/bin/chkstat
+$(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
+$(1)-$(2)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
+	bash iamroot-shell -c "zypper --root $(CURDIR)/$(1)-$(2)-rootfs addrepo --no-gpgcheck support/$(2)-repo-oss.repo"
+	bash iamroot-shell -c "zypper --root $(CURDIR)/$(1)-$(2)-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd"
+endef
+
 define run
 .PHONY: qemu-system-$(1)-$(2)
 qemu-system-$(1)-$(2): override CMDLINE += panic=5
@@ -669,7 +679,8 @@ ifneq ($(shell command -v zypper 2>/dev/null),)
 $(eval $(call chroot,x86_64,opensuse-leap,/bin/bash))
 $(eval $(call chroot,x86_64,opensuse-tumbleweed,/bin/bash))
 x86_64-opensuse-leap-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
-x86_64-opensuse-%-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
+x86_64-opensuse-leap-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
+x86_64-opensuse-tumbleweed-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
 
 extra-rootfs: opensuse-rootfs
 
@@ -679,16 +690,10 @@ opensuse-rootfs: | x86_64-opensuse-tumbleweed-rootfs
 x86_64-opensuse-leap-rootfs: | x86_64-opensuse-leap-rootfs/etc/machine-id
 x86_64-opensuse-tumbleweed-rootfs: | x86_64-opensuse-tumbleweed-rootfs/etc/machine-id
 
+$(eval $(call zypper-rootfs,x86_64,opensuse-leap))
+$(eval $(call zypper-rootfs,x86_64,opensuse-tumbleweed))
 x86_64-opensuse-leap-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
 x86_64-opensuse-leap-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|/usr/bin/chkstat|/usr/sbin/update-ca-certificates
-x86_64-opensuse-leap-rootfs/etc/machine-id:
-
-x86_64-opensuse-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
-x86_64-opensuse-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|/usr/bin/chkstat
-x86_64-opensuse-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
-x86_64-opensuse-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
-	bash iamroot-shell -c "zypper --root $(CURDIR)/x86_64-opensuse-$*-rootfs addrepo --no-gpgcheck support/opensuse-$*-repo-oss.repo"
-	bash iamroot-shell -c "zypper --root $(CURDIR)/x86_64-opensuse-$*-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd"
 
 $(eval $(call run,x86_64,opensuse-leap))
 $(eval $(call run,x86_64,opensuse-tumbleweed))

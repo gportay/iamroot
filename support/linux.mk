@@ -101,6 +101,19 @@ $(1)-$(2)-chroot: | $(1)-$(2)-rootfs
 	bash iamroot-shell -c "chroot $(1)-$(2)-rootfs $(3)"
 endef
 
+define pacstrap-rootfs
+$(1)-$(2)-rootfs: | $(1)-$(2)-rootfs/etc/machine-id
+$(1)-$(2)-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/$(1)-$(2)-rootfs
+$(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
+$(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_2 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
+$(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
+$(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
+$(1)-$(2)-rootfs/etc/machine-id: export EUID = 0
+$(1)-$(2)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
+	mkdir $(1)-$(2)-rootfs
+	bash iamroot-shell -c "pacstrap -GMC support/$(1)-$(2)-pacman.conf $(1)-$(2)-rootfs $(3)"
+endef
+
 define run
 .PHONY: qemu-system-$(1)-$(2)
 qemu-system-$(1)-$(2): override CMDLINE += panic=5
@@ -392,14 +405,7 @@ $(eval $(call chroot,x86_64,arch,/bin/bash))
 
 rootfs: x86_64-arch-rootfs
 
-.PHONY: x86_64-arch-rootfs
-x86_64-arch-rootfs: | x86_64-arch-rootfs/etc/machine-id
-
-x86_64-arch-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
-x86_64-arch-rootfs/etc/machine-id: export EUID = 0
-x86_64-arch-rootfs/etc/machine-id: $(subst $(CURDIR)/,,$(IAMROOT_LIB))
-	mkdir x86_64-arch-rootfs
-	bash iamroot-shell -c "pacstrap -GMC support/x86_64-arch-pacman.conf x86_64-arch-rootfs"
+$(eval $(call pacstrap-rootfs,x86_64,arch,base))
 
 i686-rootfs: i686-arch-rootfs
 
@@ -409,12 +415,8 @@ $(eval $(call chroot,i686,arch,/bin/bash))
 i686-arch-rootfs: export QEMU_LD_PREFIX = $(CURDIR)/i686-arch-rootfs
 i686-arch-rootfs: | i686-arch-rootfs/etc/machine-id
 
-i686-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/i686-arch-rootfs
-i686-arch-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
-i686-arch-rootfs/etc/machine-id: export EUID = 0
+$(eval $(call pacstrap-rootfs,i686,arch,base))
 i686-arch-rootfs/etc/machine-id: | i686/libiamroot-linux.so.2 x86_64/libiamroot-linux-x86-64.so.2
-	mkdir i686-arch-rootfs
-	bash iamroot-shell -c "pacstrap -GMC support/i686-arch-pacman.conf i686-arch-rootfs"
 
 $(eval $(call run,x86_64,arch))
 
@@ -427,12 +429,7 @@ extra-rootfs: x86_64-manjaro-stable-rootfs
 .PHONY: x86_64-manjaro-stable-rootfs
 x86_64-manjaro-stable-rootfs: | x86_64-manjaro-stable-rootfs/etc/machine-id
 
-x86_64-manjaro-stable-rootfs/etc/machine-id:
-x86_64-manjaro-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
-x86_64-manjaro-%-rootfs/etc/machine-id: export EUID = 0
-x86_64-manjaro-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
-	mkdir x86_64-manjaro-$*-rootfs
-	bash iamroot-shell -c "pacstrap -GMC support/x86_64-manjaro-$*-pacman.conf x86_64-manjaro-$*-rootfs base"
+$(eval $(call pacstrap-rootfs,x86_64,manjaro-stable,base))
 
 $(eval $(call run,x86_64,manjaro-stable))
 
@@ -899,13 +896,8 @@ aarch64-rootfs: aarch64-arch-rootfs
 aarch64-arch-rootfs: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-arch-rootfs
 aarch64-arch-rootfs: | aarch64-arch-rootfs/etc/machine-id
 
-aarch64-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-arch-rootfs
-aarch64-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
-aarch64-arch-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
-aarch64-arch-rootfs/etc/machine-id: export EUID = 0
+$(eval $(call pacstrap-rootfs,aarch64,arch,base))
 aarch64-arch-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
-	mkdir aarch64-arch-rootfs
-	bash iamroot-shell -c "pacstrap -GMC support/aarch64-arch-pacman.conf aarch64-arch-rootfs"
 endif
 
 ifneq ($(shell command -v arm-linux-gnueabihf-gcc 2>/dev/null),)
@@ -917,13 +909,8 @@ arm-rootfs: armv7h-arch-rootfs
 armv7h-arch-rootfs: export QEMU_LD_PREFIX = $(CURDIR)/armv7h-arch-rootfs
 armv7h-arch-rootfs: | armv7h-arch-rootfs/etc/machine-id
 
-armv7h-arch-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/armv7h-arch-rootfs
-armv7h-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
-armv7h-arch-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
-armv7h-arch-rootfs/etc/machine-id: export EUID = 0
+$(eval $(call pacstrap-rootfs,armv7h,arch,base))
 armv7h-arch-rootfs/etc/machine-id: | armhf/libiamroot-linux-armhf.so.3 x86_64/libiamroot-linux-x86-64.so.2
-	mkdir armv7h-arch-rootfs
-	bash iamroot-shell -c "pacstrap -GMC support/armv7h-arch-pacman.conf armv7h-arch-rootfs"
 endif
 endif
 

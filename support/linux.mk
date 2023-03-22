@@ -114,6 +114,29 @@ $(1)-$(2)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "pacstrap -GMC support/$(1)-$(2)-pacman.conf $(1)-$(2)-rootfs $(3)"
 endef
 
+define debootstrap-rootfs
+$(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/etc/machine-id
+$(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib/$(1)-linux-gnu:/lib:/usr/lib/$(1)-linux-gnu:/usr/lib
+$(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/$(1)-linux-gnu/libc.so.6:/lib/$(1)-linux-gnu/libdl.so.2:/lib/$(1)-linux-gnu/libpthread.so.0
+# chfn: PAM: Critical error - immediate abort
+# adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
+$(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn
+$(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
+# System has not been booted with systemd as init system (PID 1). Can't operate.
+# Failed to connect to bus: Host is down
+# invoke-rc.d: could not determine current runlevel
+$(1)-$(2)-$(3)-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
+# debconf: PERL_DL_NONLAZY is not set, if debconf is running from a preinst script, this is not safe
+$(1)-$(2)-$(3)-rootfs/etc/machine-id: export PERL_DL_NONLAZY = 1
+$(1)-$(2)-$(3)-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://deb.debian.org/debian
+$(1)-$(2)-$(3)-rootfs/etc/machine-id: export DEBOOTSTRAPFLAGS ?= --merged-usr --no-check-gpg
+$(1)-$(2)-$(3)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
+	mkdir -p $(1)-$(2)-$(3)-rootfs
+	bash iamroot-shell -c "debootstrap --keep-debootstrap-dir $$(DEBOOTSTRAPFLAGS) $(3) $(1)-$(2)-$(3)-rootfs $$(DEBOOTSTRAP_MIRROR)"
+	cat $(1)-$(2)-$(3)-rootfs/debootstrap/debootstrap.log
+	rm -Rf $(1)-$(2)-$(3)-rootfs/debootstrap/
+endef
+
 define run
 .PHONY: qemu-system-$(1)-$(2)
 qemu-system-$(1)-$(2): override CMDLINE += panic=5
@@ -462,31 +485,11 @@ x86_64-debian-rootfs: x86_64-debian-stable-rootfs
 x86_64-debian-rootfs: x86_64-debian-testing-rootfs
 x86_64-debian-rootfs: x86_64-debian-unstable-rootfs
 
-x86_64-debian-oldoldstable-rootfs: | x86_64-debian-oldoldstable-rootfs/etc/machine-id
-x86_64-debian-oldstable-rootfs: | x86_64-debian-oldstable-rootfs/etc/machine-id
-x86_64-debian-stable-rootfs: | x86_64-debian-stable-rootfs/etc/machine-id
-x86_64-debian-testing-rootfs: | x86_64-debian-testing-rootfs/etc/machine-id
-x86_64-debian-unstable-rootfs: | x86_64-debian-unstable-rootfs/etc/machine-id
-
-x86_64-debian-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
-x86_64-debian-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-# chfn: PAM: Critical error - immediate abort
-# adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
-x86_64-debian-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn
-x86_64-debian-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
-# System has not been booted with systemd as init system (PID 1). Can't operate.
-# Failed to connect to bus: Host is down
-# invoke-rc.d: could not determine current runlevel
-x86_64-debian-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
-# debconf: PERL_DL_NONLAZY is not set, if debconf is running from a preinst script, this is not safe
-x86_64-debian-%-rootfs/etc/machine-id: export PERL_DL_NONLAZY = 1
-x86_64-debian-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://deb.debian.org/debian
-x86_64-debian-%-rootfs/etc/machine-id: export DEBOOTSTRAPFLAGS ?= --merged-usr --no-check-gpg
-x86_64-debian-%-rootfs/etc/machine-id: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
-	mkdir -p x86_64-debian-$*-rootfs
-	bash iamroot-shell -c "debootstrap --keep-debootstrap-dir $(DEBOOTSTRAPFLAGS) $* x86_64-debian-$*-rootfs $(DEBOOTSTRAP_MIRROR)"
-	cat x86_64-debian-$*-rootfs/debootstrap/debootstrap.log
-	rm -Rf x86_64-debian-$*-rootfs/debootstrap/
+$(eval $(call debootstrap-rootfs,x86_64,debian,oldoldstable))
+$(eval $(call debootstrap-rootfs,x86_64,debian,oldstable))
+$(eval $(call debootstrap-rootfs,x86_64,debian,stable))
+$(eval $(call debootstrap-rootfs,x86_64,debian,testing))
+$(eval $(call debootstrap-rootfs,x86_64,debian,unstable))
 
 $(eval $(call run,x86_64,debian-oldoldstable))
 $(eval $(call run,x86_64,debian-oldstable))
@@ -543,34 +546,23 @@ x86_64-ubuntu-rootfs: x86_64-ubuntu-focal-rootfs
 x86_64-ubuntu-rootfs: x86_64-ubuntu-jammy-rootfs
 x86_64-ubuntu-rootfs: x86_64-ubuntu-kinetic-rootfs
 
-x86_64-ubuntu-trusty-rootfs: | x86_64-ubuntu-trusty-rootfs/etc/machine-id
-x86_64-ubuntu-xenial-rootfs: | x86_64-ubuntu-xenial-rootfs/etc/machine-id
-x86_64-ubuntu-bionic-rootfs: | x86_64-ubuntu-bionic-rootfs/etc/machine-id
-x86_64-ubuntu-focal-rootfs: | x86_64-ubuntu-focal-rootfs/etc/machine-id
-x86_64-ubuntu-jammy-rootfs: | x86_64-ubuntu-jammy-rootfs/etc/machine-id
-x86_64-ubuntu-kinetic-rootfs: | x86_64-ubuntu-kinetic-rootfs/etc/machine-id
-
+x86_64-ubuntu-trusty-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
+x86_64-ubuntu-xenial-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
+x86_64-ubuntu-bionic-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
+x86_64-ubuntu-focal-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
+x86_64-ubuntu-jammy-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
+x86_64-ubuntu-kinetic-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
+$(eval $(call debootstrap-rootfs,x86_64,ubuntu,trusty))
+$(eval $(call debootstrap-rootfs,x86_64,ubuntu,xenial))
+$(eval $(call debootstrap-rootfs,x86_64,ubuntu,bionic))
+$(eval $(call debootstrap-rootfs,x86_64,ubuntu,focal))
+$(eval $(call debootstrap-rootfs,x86_64,ubuntu,jammy))
+$(eval $(call debootstrap-rootfs,x86_64,ubuntu,kinetic))
 x86_64-ubuntu-trusty-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
 x86_64-ubuntu-trusty-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|/var/lib/dpkg/info/(initscripts|initramfs-tools).postinst
-x86_64-ubuntu-trusty-rootfs/etc/machine-id:
-
 x86_64-ubuntu-xenial-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
-# chfn: PAM: Critical error - immediate abort
-# adduser: `/usr/bin/chfn -f systemd Time Synchronization systemd-timesync' returned error code 1. Exiting.
 x86_64-ubuntu-xenial-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/initramfs-tools.postinst
-x86_64-ubuntu-xenial-rootfs/etc/machine-id:
-
-# chfn: PAM: Critical error - immediate abort
-# adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
 x86_64-ubuntu-bionic-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/initramfs-tools.postinst
-x86_64-ubuntu-bionic-rootfs/etc/machine-id:
-
-x86_64-ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
-x86_64-ubuntu-%-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-# chfn: PAM: Critical error - immediate abort
-# adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
-x86_64-ubuntu-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn
-x86_64-ubuntu-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
 # Processing triggers for libc-bin ...
 # dpkg: cycle found while processing triggers:
 #  chain of packages whose triggers are or may be responsible:
@@ -581,20 +573,12 @@ x86_64-ubuntu-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^
 #  triggers looping, abandoned
 # Errors were encountered while processing:
 #  libc-bin
-x86_64-ubuntu-%-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
-# System has not been booted with systemd as init system (PID 1). Can't operate.
-# Failed to connect to bus: Host is down
-# invoke-rc.d: could not determine current runlevel
-x86_64-ubuntu-%-rootfs/etc/machine-id: export SYSTEMD_OFFLINE = 1
-# debconf: PERL_DL_NONLAZY is not set, if debconf is running from a preinst script, this is not safe
-x86_64-ubuntu-%-rootfs/etc/machine-id: export PERL_DL_NONLAZY = 1
-x86_64-ubuntu-%-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
-x86_64-ubuntu-%-rootfs/etc/machine-id: export DEBOOTSTRAPFLAGS ?= --merged-usr --no-check-gpg
-x86_64-ubuntu-%-rootfs/etc/machine-id: | $(subst $(CURDIR)/,,$(IAMROOT_LIB))
-	mkdir -p x86_64-ubuntu-$*-rootfs
-	bash iamroot-shell -c "debootstrap --keep-debootstrap-dir $(DEBOOTSTRAPFLAGS) $* x86_64-ubuntu-$*-rootfs $(DEBOOTSTRAP_MIRROR)"
-	cat x86_64-ubuntu-$*-rootfs/debootstrap/debootstrap.log
-	rm -Rf x86_64-ubuntu-$*-rootfs/debootstrap/
+x86_64-ubuntu-trusty-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
+x86_64-ubuntu-xenial-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
+x86_64-ubuntu-bionic-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
+x86_64-ubuntu-focal-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
+x86_64-ubuntu-jammy-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
+x86_64-ubuntu-kinetic-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
 
 $(eval $(call run,x86_64,ubuntu-trusty))
 $(eval $(call run,x86_64,ubuntu-xenial))

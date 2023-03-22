@@ -955,32 +955,32 @@ x86_64/libiamroot-musl-x86_64.so.1: | gcompat/libgcompat.so.0
 endif
 
 ifneq ($(shell command -v i386-musl-gcc 2>/dev/null),)
-i686-alpine-3.14-chroot:
-i686-alpine-3.15-chroot:
-i686-alpine-3.16-chroot:
-i686-alpine-3.17-chroot:
-i686-alpine-edge-chroot:
-i686-alpine-%-chroot: | i686-alpine-%-rootfs
-	bash iamroot-shell -c "chroot i686-alpine-$*-rootfs /bin/ash"
+x86-alpine-3.14-chroot:
+x86-alpine-3.15-chroot:
+x86-alpine-3.16-chroot:
+x86-alpine-3.17-chroot:
+x86-alpine-edge-chroot:
+x86-alpine-%-chroot: | i686-alpine-%-rootfs
+	bash iamroot-shell -c "chroot x86-alpine-$*-rootfs /bin/ash"
 
-i686-rootfs: i686-alpine-rootfs
+i686-rootfs: x86-alpine-rootfs
 
-.PHONY: i686-alpine-rootfs
-i686-alpine-rootfs: i686-alpine-3.14-rootfs
-i686-alpine-rootfs: i686-alpine-3.15-rootfs
-i686-alpine-rootfs: i686-alpine-3.16-rootfs
-i686-alpine-rootfs: i686-alpine-3.17-rootfs
-i686-alpine-rootfs: i686-alpine-edge-rootfs
+.PHONY: x86-alpine-rootfs
+x86-alpine-rootfs: x86-alpine-3.14-rootfs
+x86-alpine-rootfs: x86-alpine-3.15-rootfs
+x86-alpine-rootfs: x86-alpine-3.16-rootfs
+x86-alpine-rootfs: x86-alpine-3.17-rootfs
+x86-alpine-rootfs: x86-alpine-edge-rootfs
 
-i686-alpine-3.14-rootfs: | i686-alpine-3.14-rootfs/bin/busybox
-i686-alpine-3.15-rootfs: | i686-alpine-3.15-rootfs/bin/busybox
-i686-alpine-3.16-rootfs: | i686-alpine-3.16-rootfs/bin/busybox
-i686-alpine-3.17-rootfs: | i686-alpine-3.17-rootfs/bin/busybox
-i686-alpine-edge-rootfs: | i686-alpine-edge-rootfs/bin/busybox
+x86-alpine-3.14-rootfs: | x86-alpine-3.14-rootfs/bin/busybox
+x86-alpine-3.15-rootfs: | x86-alpine-3.15-rootfs/bin/busybox
+x86-alpine-3.16-rootfs: | x86-alpine-3.16-rootfs/bin/busybox
+x86-alpine-3.17-rootfs: | x86-alpine-3.17-rootfs/bin/busybox
+x86-alpine-edge-rootfs: | x86-alpine-edge-rootfs/bin/busybox
 
-i686-alpine-%-rootfs/bin/busybox: export APK_OPTS = --arch x86 --no-progress
-i686-alpine-%-rootfs/bin/busybox: | i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2
-	bash iamroot-shell -c "alpine-make-rootfs i686-alpine-$*-rootfs --keys-dir /usr/share/apk/keys/x86 --mirror-uri http://dl-cdn.alpinelinux.org/alpine --branch $*"
+x86-alpine-%-rootfs/bin/busybox: export APK_OPTS = --arch x86 --no-progress
+x86-alpine-%-rootfs/bin/busybox: | i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2
+	bash iamroot-shell -c "alpine-make-rootfs x86-alpine-$*-rootfs --keys-dir /usr/share/apk/keys/x86 --mirror-uri http://dl-cdn.alpinelinux.org/alpine --branch $*"
 endif
 endif
 endif

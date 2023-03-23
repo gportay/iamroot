@@ -129,6 +129,11 @@ $(1)-$(2)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "pacstrap -GMC support/$(1)-$(2)-pacman.conf $(1)-$(2)-rootfs $(3)"
 
 $(eval $(call log,pacstrap,$(1)-$(2)-rootfs))
+
+$(if $(findstring $(1),x86_64), \
+	$(eval $(call run,$(1),$(2))) \
+	$(eval $(call pacstrap-postrootfs,$(1),$(2))) \
+)
 endef
 
 define debootstrap-rootfs
@@ -156,6 +161,13 @@ $(1)-$(2)-$(3)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	rm -Rf $(1)-$(2)-$(3)-rootfs/debootstrap/
 
 $(eval $(call log,debootstrap,$(1)-$(2)-$(3)-rootfs))
+
+$(if $(findstring $(1),x86_64), \
+	$(eval $(call run,$(1),$(2)-$(3))) \
+	$(if $(findstring $(3),oldoldstable),, \
+		$(eval $(call debootstrap-postrootfs,$(1),$(2)-$(3))) \
+	) \
+)
 endef
 
 define dnf-rootfs
@@ -173,6 +185,11 @@ $(1)-$(2)-$(3)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	rm -f $(1)-$(2)-$(3)-rootfs/etc/distro.repos.d/fedora.repo
 
 $(eval $(call log,dnf,$(1)-$(2)-$(3)-rootfs))
+
+$(if $(findstring $(1),x86_64), \
+	$(eval $(call run,$(1),$(2)-$(3))) \
+	$(eval $(call dnf-postrootfs,$(1),$(2)-$(3))) \
+)
 endef
 
 define zypper-rootfs
@@ -187,6 +204,11 @@ $(1)-$(2)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "zypper --root $(CURDIR)/$(1)-$(2)-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd"
 
 $(eval $(call log,zypper,$(1)-$(2)-rootfs))
+
+$(if $(findstring $(1),x86_64), \
+	$(eval $(call run,$(1),$(2))) \
+	$(eval $(call zypper-postrootfs,$(1),$(2))) \
+)
 endef
 
 define alpine-make-rootfs-rootfs
@@ -500,20 +522,12 @@ i686-arch-rootfs: | i686-arch-rootfs/etc/machine-id
 $(eval $(call pacstrap-rootfs,i686,arch,base))
 i686-arch-rootfs/etc/machine-id: | i686/libiamroot-linux.so.2 x86_64/libiamroot-linux-x86-64.so.2
 
-$(eval $(call run,x86_64,arch))
-
-$(eval $(call pacstrap-postrootfs,x86_64,arch))
-
 extra-rootfs: x86_64-manjaro-stable-rootfs
 
 .PHONY: x86_64-manjaro-stable-rootfs
 x86_64-manjaro-stable-rootfs: | x86_64-manjaro-stable-rootfs/etc/machine-id
 
 $(eval $(call pacstrap-rootfs,x86_64,manjaro-stable,base))
-
-$(eval $(call run,x86_64,manjaro-stable))
-
-$(eval $(call pacstrap-postrootfs,x86_64,manjaro-stable))
 endif
 
 ifneq ($(shell command -v debootstrap 2>/dev/null),)
@@ -543,18 +557,6 @@ $(eval $(call debootstrap-rootfs,x86_64,debian,stable))
 $(eval $(call debootstrap-rootfs,x86_64,debian,testing))
 $(eval $(call debootstrap-rootfs,x86_64,debian,unstable))
 
-$(eval $(call run,x86_64,debian-oldoldstable))
-$(eval $(call run,x86_64,debian-oldstable))
-$(eval $(call run,x86_64,debian-stable))
-$(eval $(call run,x86_64,debian-testing))
-$(eval $(call run,x86_64,debian-unstable))
-
-qemu-system-x86_64-debian-oldoldstable: override CMDLINE += rw
-qemu-system-x86_64-debian-oldstable: override CMDLINE += rw
-qemu-system-x86_64-debian-stable: override CMDLINE += rw
-qemu-system-x86_64-debian-testing: override CMDLINE += rw
-qemu-system-x86_64-debian-unstable: override CMDLINE += rw
-
 x86_64-debian-oldoldstable-postrootfs: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
 x86_64-debian-oldoldstable-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
 x86_64-debian-oldoldstable-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
@@ -565,11 +567,6 @@ x86_64-debian-oldoldstable-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	rm -f x86_64-debian-oldoldstable-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
 	bash iamroot-shell -c "chroot x86_64-debian-oldoldstable-rootfs systemctl enable getty@tty0.service"
 	bash iamroot-shell -c "chroot x86_64-debian-oldoldstable-rootfs pam-auth-update"
-
-$(eval $(call debootstrap-postrootfs,x86_64,debian-oldstable))
-$(eval $(call debootstrap-postrootfs,x86_64,debian-stable))
-$(eval $(call debootstrap-postrootfs,x86_64,debian-testing))
-$(eval $(call debootstrap-postrootfs,x86_64,debian-unstable))
 
 x86_64-ubuntu-trusty-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
 x86_64-ubuntu-trusty-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
@@ -625,27 +622,6 @@ x86_64-ubuntu-bionic-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
 x86_64-ubuntu-focal-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
 x86_64-ubuntu-jammy-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
 x86_64-ubuntu-kinetic-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
-
-$(eval $(call run,x86_64,ubuntu-trusty))
-$(eval $(call run,x86_64,ubuntu-xenial))
-$(eval $(call run,x86_64,ubuntu-bionic))
-$(eval $(call run,x86_64,ubuntu-focal))
-$(eval $(call run,x86_64,ubuntu-jammy))
-$(eval $(call run,x86_64,ubuntu-kinetic))
-
-qemu-system-x86_64-ubuntu-trusty: override CMDLINE += rw
-qemu-system-x86_64-ubuntu-xenial: override CMDLINE += rw
-qemu-system-x86_64-ubuntu-bionic: override CMDLINE += rw
-qemu-system-x86_64-ubuntu-focal: override CMDLINE += rw
-qemu-system-x86_64-ubuntu-jammy: override CMDLINE += rw
-qemu-system-x86_64-ubuntu-kinetic: override CMDLINE += rw
-
-$(eval $(call debootstrap-postrootfs,x86_64,ubuntu-trusty))
-$(eval $(call debootstrap-postrootfs,x86_64,ubuntu-xenial))
-$(eval $(call debootstrap-postrootfs,x86_64,ubuntu-bionic))
-$(eval $(call debootstrap-postrootfs,x86_64,ubuntu-focal))
-$(eval $(call debootstrap-postrootfs,x86_64,ubuntu-jammy))
-$(eval $(call debootstrap-postrootfs,x86_64,ubuntu-kinetic))
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)
@@ -673,24 +649,6 @@ $(eval $(call dnf-rootfs,x86_64,fedora,36))
 $(eval $(call dnf-rootfs,x86_64,fedora,37))
 x86_64-fedora-33-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib64/ldb/modules/ldb/tdb.so:/usr/lib64/ldb/modules/ldb/mdb.so:/usr/lib64/ldb/modules/ldb/ldb.so
 x86_64-fedora-34-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib64/ldb/modules/ldb/tdb.so:/usr/lib64/ldb/modules/ldb/mdb.so:/usr/lib64/ldb/modules/ldb/ldb.so
-
-$(eval $(call run,x86_64,fedora-33))
-$(eval $(call run,x86_64,fedora-34))
-$(eval $(call run,x86_64,fedora-35))
-$(eval $(call run,x86_64,fedora-36))
-$(eval $(call run,x86_64,fedora-37))
-
-qemu-system-x86_64-fedora-33: override CMDLINE += rw
-qemu-system-x86_64-fedora-34: override CMDLINE += rw
-qemu-system-x86_64-fedora-35: override CMDLINE += rw
-qemu-system-x86_64-fedora-36: override CMDLINE += rw
-qemu-system-x86_64-fedora-37: override CMDLINE += rw
-
-$(eval $(call dnf-postrootfs,x86_64,fedora-33))
-$(eval $(call dnf-postrootfs,x86_64,fedora-34))
-$(eval $(call dnf-postrootfs,x86_64,fedora-35))
-$(eval $(call dnf-postrootfs,x86_64,fedora-36))
-$(eval $(call dnf-postrootfs,x86_64,fedora-37))
 endif
 
 ifneq ($(shell command -v zypper 2>/dev/null),)
@@ -711,14 +669,7 @@ $(eval $(call zypper-rootfs,x86_64,opensuse-tumbleweed))
 x86_64-opensuse-leap-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
 x86_64-opensuse-leap-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|/usr/bin/chkstat|/usr/sbin/update-ca-certificates
 
-$(eval $(call run,x86_64,opensuse-leap))
-$(eval $(call run,x86_64,opensuse-tumbleweed))
-
 qemu-system-x86_64-opensuse-leap: override CMDLINE += rw init=/usr/lib/systemd/systemd
-qemu-system-x86_64-opensuse-tumbleweed: override CMDLINE += rw
-
-$(eval $(call zypper-postrootfs,x86_64,opensuse-leap))
-$(eval $(call zypper-postrootfs,x86_64,opensuse-tumbleweed))
 x86_64-opensuse-leap-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
 endif
 
@@ -812,18 +763,6 @@ x86_64-alpine-3.15-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_
 x86_64-alpine-3.16-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 x86_64-alpine-3.17-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 x86_64-alpine-edge-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
-
-$(eval $(call run,x86_64,alpine-3.14))
-$(eval $(call run,x86_64,alpine-3.15))
-$(eval $(call run,x86_64,alpine-3.16))
-$(eval $(call run,x86_64,alpine-3.17))
-$(eval $(call run,x86_64,alpine-edge))
-
-$(eval $(call alpine-postrootfs,x86_64,alpine-3.14))
-$(eval $(call alpine-postrootfs,x86_64,alpine-3.15))
-$(eval $(call alpine-postrootfs,x86_64,alpine-3.16))
-$(eval $(call alpine-postrootfs,x86_64,alpine-3.17))
-$(eval $(call alpine-postrootfs,x86_64,alpine-edge))
 
 chroot-alpine-%: PATH = /usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin
 chroot-alpine-%: SHELL = /bin/sh

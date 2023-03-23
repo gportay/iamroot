@@ -734,7 +734,7 @@ x86_64-opensuse-%-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib64:/u
 x86_64-opensuse-%-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|/usr/bin/chkstat
 x86_64-opensuse-%-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
 x86_64-opensuse-%-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
-	bash iamroot-shell -c "zypper --root $(CURDIR)/x86_64-opensuse-$*-rootfs addrepo --no-gpgcheck support/$*-repo-oss.repo"
+	bash iamroot-shell -c "zypper --root $(CURDIR)/x86_64-opensuse-$*-rootfs addrepo --no-gpgcheck support/opensuse-$*-repo-oss.repo"
 	bash iamroot-shell -c "zypper --root $(CURDIR)/x86_64-opensuse-$*-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd"
 
 qemu-system-x86_64-opensuse-leap:

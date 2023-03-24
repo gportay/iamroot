@@ -1659,7 +1659,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 		/* Add path to binary (in chroot, first positional argument) */
 		interparg[i] = (char *)path;
 		i += j;
-		interparg[i] = NULL; /* enusre NULL-terminated */
+		interparg[i] = NULL; /* ensure NULL-terminated */
 
 		return i;
 	} else {

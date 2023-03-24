@@ -936,33 +936,17 @@ void __verbose_exec(const char *path, char * const argv[], char * const envp[])
 		dprintf(fd, "\033[0m");
 
 	if (debug < 4) {
-		char *ld_library_path;
-		char *ld_preload;
 		char * const *p;
-		char *argv0;
-		char *root;
 
 		dprintf(fd, "running");
 
-		root = __getroot();
-		if (root)
-			dprintf(fd, " IAMROOT_ROOT=%s", root);
-
-		ld_preload = getenv("LD_PRELOAD");
-		if (ld_preload)
-			dprintf(fd, " LD_PRELOAD=%s", ld_preload);
-
-		ld_library_path = getenv("LD_LIBRARY_PATH");
-		if (ld_library_path)
-			dprintf(fd, " LD_LIBRARY_PATH=%s", ld_library_path);
-
-		argv0 = getenv("argv0");
-		if (argv0)
-			dprintf(fd, " argv0=%s", argv0);
+		p = envp;
+		while (*p)
+			dprintf(fd, " \"%s\"", *p++);
 
 		p = argv;
 		while (*p)
-			dprintf(fd, " %s", *p++);
+			dprintf(fd, " \"%s\"", *p++);
 		dprintf(fd, "\n");
 	} else {
 		char * const *p;

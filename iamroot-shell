@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2020-2022 Gaël PORTAY
+# Copyright 2020-2023 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -32,6 +32,7 @@ iamroot specific options:
                                 in.
       --profile-file FILE       Execute initialization file from FILE.
       --rc-file FILE            Execute commands from FILE.
+      --preserve-env ENV        Preserve environment variables.
       --path PATH               PATH to use in chroot.
       --library-path PATH       LD_LIBRARY_PATH to use in chroot.
       --exec FILE               Absolute path to the iamroot exec script to
@@ -72,6 +73,9 @@ Environment variables:
 
       IAMROOT_RC_FILE           Set path to command file.
                                 Equivalent to --rc-file FILE.
+
+      IAMROOT_PRESERVE_ENV      Set environment to preserve.
+                                Equivalent to --preserve-env ENV.
 
       IAMROOT_PATH              Set PATH to use in chroot.
                                 Equivalent to --path PATH.
@@ -184,6 +188,11 @@ do
 		shift
 		IAMROOT_EXEC="$1"
 		export IAMROOT_EXEC
+	elif [[ "$1" == "--preserve-env" ]]
+	then
+		shift
+		IAMROOT_PRESERVE_ENV="$1"
+		export IAMROOT_PRESERVE_ENV
 	elif [[ "$1" == "--rc-file" ]]
 	then
 		shift
@@ -242,6 +251,16 @@ then
 else
 	IAMROOT_LIB="$IAMROOT_LIB:libdl.so"
 fi
+
+mapfile -t envs < <(env)
+for env in "${envs[@]}"
+do
+	var="${env%=*}"
+	if [[ ! "$var" =~ ^(IAMROOT_.*|LD_.*|PATH|HOME|${IAMROOT_PRESERVE_ENV//:/|})$ ]]
+	then
+		unset "$var"
+	fi
+done
 
 IAMROOTLVL="$((IAMROOTLVL+1))" \
 LD_PRELOAD="$IAMROOT_LIB${LD_PRELOAD+:$LD_PRELOAD}" \

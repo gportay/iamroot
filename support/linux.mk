@@ -171,6 +171,7 @@ $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id:
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
 # debconf: PERL_DL_NONLAZY is not set, if debconf is running from a preinst script, this is not safe
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_PRESERVE_ENV = PERL_DL_NONLAZY
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export PERL_DL_NONLAZY = 1
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://deb.debian.org/debian
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export DEBOOTSTRAPFLAGS ?= --merged-usr --no-check-gpg
@@ -662,11 +663,17 @@ x86_64-ubuntu-bionic-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mou
 #  triggers looping, abandoned
 # Errors were encountered while processing:
 #  libc-bin
+x86_64-ubuntu-trusty-rootfs/etc/machine-id: export IAMROOT_PRESERVE_ENV := $(IAMROOT_PRESERVE_ENV):LDCONFIG_NOTRIGGER
 x86_64-ubuntu-trusty-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
+x86_64-ubuntu-xenial-rootfs/etc/machine-id: export IAMROOT_PRESERVE_ENV := $(IAMROOT_PRESERVE_ENV):LDCONFIG_NOTRIGGER
 x86_64-ubuntu-xenial-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
+x86_64-ubuntu-bionic-rootfs/etc/machine-id: export IAMROOT_PRESERVE_ENV := $(IAMROOT_PRESERVE_ENV):LDCONFIG_NOTRIGGER
 x86_64-ubuntu-bionic-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
+x86_64-ubuntu-focal-rootfs/etc/machine-id: export IAMROOT_PRESERVE_ENV := $(IAMROOT_PRESERVE_ENV):LDCONFIG_NOTRIGGER
 x86_64-ubuntu-focal-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
+x86_64-ubuntu-jammy-rootfs/etc/machine-id: export IAMROOT_PRESERVE_ENV := $(IAMROOT_PRESERVE_ENV):LDCONFIG_NOTRIGGER
 x86_64-ubuntu-jammy-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
+x86_64-ubuntu-kinetic-rootfs/etc/machine-id: export IAMROOT_PRESERVE_ENV := $(IAMROOT_PRESERVE_ENV):LDCONFIG_NOTRIGGER
 x86_64-ubuntu-kinetic-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
 endif
 

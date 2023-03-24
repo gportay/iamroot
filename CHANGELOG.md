@@ -15,6 +15,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - The internal function `path_resolution()` resolves `/proc/1/exe` symlink
   to `/`
 - Remove function `running_in_chroot()`
+- Add the `iamroot-shell`'s option `--preserve-env` and its environment
+  variable `IAMROOT_PRESERVE_ENV` to preserve the given user environment
+  variables in the shell
 
 ### Changed
 
@@ -36,6 +39,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `unlinkat()` and `utimensat()`,
 - Output the fd for the functions `__fxstat()`, `__fxstat64()`, `fchmod()`,
   `fchown()`, `fexecve()`, `fstat()` and `fstat64()`
+- Start the `iamroot-shell` with a clean environment (`IAMROOT_`-env, `LD_`-env
+  `PATH` and `HOME`)
 
 ### Fixed
 

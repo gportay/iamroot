@@ -646,8 +646,27 @@ $(eval $(call debootstrap-rootfs,x86_64,ubuntu,bionic))
 $(eval $(call debootstrap-rootfs,x86_64,ubuntu,focal))
 $(eval $(call debootstrap-rootfs,x86_64,ubuntu,jammy))
 $(eval $(call debootstrap-rootfs,x86_64,ubuntu,kinetic))
-x86_64-ubuntu-trusty-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|/var/lib/dpkg/info/(initscripts|initramfs-tools).postinst
-x86_64-ubuntu-xenial-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/initramfs-tools.postinst
+# mknod: 'null-': Permission denied
+# makedev null c 1 3 root root 0666: failed
+# mknod: 'zero-': Permission denied
+# makedev zero c 1 5 root root 0666: failed
+# mknod: 'full-': Permission denied
+# makedev full c 1 7 root root 0666: failed
+# mknod: 'random-': Permission denied
+# makedev random c 1 8 root root 0666: failed
+# mknod: 'urandom-': Permission denied
+# makedev urandom c 1 9 root root 0666: failed
+# mknod: 'tty-': Permission denied
+# makedev tty c 5 0 root tty 0666: failed
+# mknod: 'tty0-': Permission denied
+# makedev tty0 c 4 0 root tty 0600: failed
+# mknod: 'console-': Permission denied
+# makedev console c 5 1 root tty 0600: failed
+# chmod: cannot access '/dev/tty[0-9]*': No such file or directory
+# dpkg: error processing package makedev (--configure):
+#  subprocess installed post-installation script returned error exit status 1
+x86_64-ubuntu-trusty-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|/var/lib/dpkg/info/(initscripts|initramfs-tools|makedev).postinst
+x86_64-ubuntu-xenial-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/(initramfs-tools|makedev).postinst
 x86_64-ubuntu-bionic-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/initramfs-tools.postinst
 # Processing triggers for libc-bin ...
 # dpkg: cycle found while processing triggers:

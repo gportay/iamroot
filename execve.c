@@ -1831,6 +1831,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 
 	/* Do not proceed to any hack if not in chroot */
 	if (!__inchroot()) {
+		__execfd();
 		__verbose_exec(path, argv, envp);
 		return next_execve(path, argv, envp);
 	}
@@ -1863,6 +1864,7 @@ loader:
 	 */
 	if (__strneq(path, "/usr/bin/ld.so") || __strneq(path, "/lib/ld") ||
 	    __strneq(path, "/lib64/ld")) {
+		__execfd();
 		__verbose_exec(buf, argv, envp);
 		return next_execve(buf, argv, envp);
 	}
@@ -1904,6 +1906,7 @@ execve:
 			*narg++ = *arg++;
 		*narg++ = NULL; /* ensure NULL-terminated */
 
+		__execfd();
 		__verbose_exec(*nargv, nargv, __environ);
 		return next_execve(*nargv, nargv, __environ);
 	}

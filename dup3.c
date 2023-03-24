@@ -41,8 +41,7 @@ int dup3(int oldfd, int newfd, int oflags)
 	ret = next_dup3(oldfd, newfd, oflags);
 
 	if (ret >= 0)
-		__notice("%s: %i -> '%s' -> %i -> '%s'\n", __func__, oldfd,
-			 __fpath(oldfd), newfd, __fpath2(newfd));
+		__setfd(newfd, __fpath(oldfd));
 
 	return ret;
 }

@@ -53,7 +53,7 @@ int __open_2(const char *path, int oflags)
 	ret = next___open_2(buf, oflags);
 
 	if (ret >= 0)
-		__notice("%s: %i -> '%s'\n", __func__, ret, __fpath(ret));
+		__setfd(ret, buf);
 
 	return ret;
 }

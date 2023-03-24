@@ -40,8 +40,7 @@ int dup2(int oldfd, int newfd)
 	ret = next_dup2(oldfd, newfd);
 
 	if (ret >= 0)
-		__notice("%s: %i -> '%s' -> %i -> '%s'\n", __func__, oldfd,
-			 __fpath(oldfd), newfd, __fpath2(newfd));
+		__setfd(newfd, __fpath(oldfd));
 
 	return ret;
 }

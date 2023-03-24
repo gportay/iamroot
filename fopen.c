@@ -36,6 +36,7 @@ FILE *fopen(const char *path, const char *mode)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
+	FILE *ret;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
@@ -44,7 +45,12 @@ FILE *fopen(const char *path, const char *mode)
 	__debug("%s(path: '%s' -> '%s', mode: '%s')\n", __func__, path, buf,
 		mode);
 
-	return next_fopen(buf, mode);
+	ret = next_fopen(buf, mode);
+
+	if (ret)
+		__setfd(fileno(ret), buf);
+
+	return ret;
 }
 
 #ifdef _LARGEFILE64_SOURCE

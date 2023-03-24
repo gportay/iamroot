@@ -39,8 +39,7 @@ int dup(int fd)
 	ret = next_dup(fd);
 
 	if (ret >= 0)
-		__notice("%s: %i -> '%s' -> %i\n", __func__, fd, __fpath(ret),
-			 ret);
+		__setfd(ret, __fpath(fd));
 
 	return ret;
 }

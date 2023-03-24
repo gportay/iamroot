@@ -8,6 +8,7 @@ SHELL = bash
 .SHELLFLAGS = -ec -o pipefail
 
 ARCH ?= $(shell uname -m 2>/dev/null)
+KVER ?= $(shell uname -r 2>/dev/null)
 OS ?= $(shell uname -o 2>/dev/null || uname -s 2>/dev/null)
 
 override CPPFLAGS += -D_GNU_SOURCE
@@ -204,7 +205,12 @@ test: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/lib/libc.so.7:$(CURDIR)/roo
 endif
 ifeq ($(OS),OpenBSD)
 test: export IAMROOT_LIBRARY_PATH := /usr/lib:/usr/local/lib
+ifeq ($(KVER),7.2)
+test: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/usr/lib/libc.so.96.2:$(CURDIR)/rootfs/usr/lib/libpthread.so.26.2
+endif
+ifeq ($(KVER),7.3)
 test: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/usr/lib/libc.so.97.0:$(CURDIR)/rootfs/usr/lib/libpthread.so.27.0
+endif
 endif
 ifeq ($(OS),GNU/Linux)
 test: export IAMROOT_LIBRARY_PATH := /lib64:/usr/lib64
@@ -579,7 +585,12 @@ ifeq ($(OS),FreeBSD)
 endif
 ifeq ($(OS),OpenBSD)
 	install -d -m755 $(DESTDIR)/usr/libexec $(DESTDIR)/usr/lib $(DESTDIR)/usr/local/lib
+ifeq ($(KVER),7.2)
+	install -m444 /usr/lib/libc.so.96.2 /usr/lib/libpthread.so.26.2 $(DESTDIR)/usr/lib
+endif
+ifeq ($(KVER),7.3)
 	install -m444 /usr/lib/libc.so.97.0 /usr/lib/libpthread.so.27.0 $(DESTDIR)/usr/lib
+endif
 	install -m444 /usr/libexec/ld.so $(DESTDIR)/usr/libexec
 	install -m444 libiamnotroot.so $(DESTDIR)/usr/local/lib
 endif

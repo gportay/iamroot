@@ -94,6 +94,7 @@ int execveat(int dfd, const char *path, char * const argv[],
 
 	/* Do not proceed to any hack if not in chroot */
 	if (!__inchroot()) {
+		__execfd();
 		__verbose_exec(path, argv, envp);
 		return next_execveat(dfd, path, argv, envp, atflags);
 	}
@@ -126,6 +127,7 @@ loader:
 	 */
 	if (__strneq(path, "/usr/bin/ld.so") || __strneq(path, "/lib/ld") ||
 	    __strneq(path, "/lib64/ld")) {
+		__execfd();
 		__verbose_exec(buf, argv, envp);
 		return next_execveat(dfd, buf, argv, envp, atflags);
 	}
@@ -167,6 +169,7 @@ execveat:
 			*narg++ = *arg++;
 		*narg++ = NULL; /* ensure NULL-terminated */
 
+		__execfd();
 		__verbose_exec(*nargv, nargv, __environ);
 		return next_execveat(dfd, *nargv, nargv, __environ, atflags);
 	}

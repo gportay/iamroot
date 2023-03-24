@@ -51,7 +51,7 @@ int __openat_2(int dfd, const char *path, int oflags)
 	ret = next___openat_2(dfd, buf, oflags);
 
 	if (ret >= 0)
-		__notice("%s: %i -> '%s'\n", __func__, ret, __fpath(ret));
+		__setfd(ret, buf);
 
 	return ret;
 }

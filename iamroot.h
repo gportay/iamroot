@@ -170,6 +170,9 @@ char *__getroot();
 const char *__getexe();
 #endif
 
+const char *__getfd(int);
+int __setfd(int, const char *);
+int __execfd();
 const char *__getrootdir();
 int __chrootdir(const char *);
 int __inchroot();

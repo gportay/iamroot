@@ -32,9 +32,14 @@ int next_close(int fd)
 
 int close(int fd)
 {
+	int ret;
+
 	__debug("%s(fd: %i <-> '%s')\n", __func__, fd, __fpath(fd));
 
-	__notice("%s: %i -> '%s'\n", __func__, fd, __fpath(fd));
+	ret = next_close(fd);
 
-	return next_close(fd);
+	if (ret != -1)
+		__setfd(fd, NULL);
+
+	return ret;
 }

@@ -45,6 +45,83 @@ static int __getpath_resolution_workaround()
 		      NULL, 0);
 }
 
+__attribute__((visibility("hidden")))
+const char *__getfd(int fd)
+{
+#ifdef __OpenBSD__
+	char buf[NAME_MAX];
+	char *ret;
+	int n;
+
+	n = _snprintf(buf, sizeof(buf), "IAMROOT_FD_%i", fd);
+	if (n == -1)
+		return NULL;
+
+	ret = getenv(buf);
+	if (!ret)
+		return __set_errno(ENOENT, NULL);
+
+	__notice("%i: %s='%s'\n", fd, buf, ret);
+
+	return ret;
+#else
+	(void)fd;
+
+	return NULL;
+#endif
+}
+
+__attribute__((visibility("hidden")))
+int __setfd(int fd, const char *path)
+{
+#ifdef __OpenBSD__
+	char buf[NAME_MAX];
+	int n;
+
+	n = _snprintf(buf, sizeof(buf), "IAMROOT_FD_%i", fd);
+	if (n == -1)
+		return -1;
+
+	__notice("%i: %s='%s' -> '%s'\n", fd, buf, getenv(buf), path);
+
+	if (!path)
+		return unsetenv(buf);
+
+	return setenv(buf, path, 1);
+#else
+	(void)fd;
+	(void)path;
+
+	return 0;
+#endif
+}
+
+__attribute__((visibility("hidden")))
+int __execfd()
+{
+#ifdef __OpenBSD__
+	char buf[NAME_MAX];
+	char * const *p;
+
+	for (p = environ; *p; p++) {
+		char path[PATH_MAX];
+		int n, err, fd;
+
+		n = sscanf(*p, "IAMROOT_FD_%i=%" __xstr(PATH_MAX) "s", &fd, path);
+		if (n != 2)
+			continue;
+
+		err = __setfd(fd, NULL);
+		if (err == -1)
+			__warning("%i: cannot unset fd!\n", fd);
+	}
+
+	return 0;
+#else
+	return 0;
+#endif
+}
+
 #ifdef __OpenBSD__
 /*
  * Stolen from musl (src/string/strchrnul.c)
@@ -84,11 +161,18 @@ char *__strchrnul(const char *s, int c)
 
 static ssize_t __fgetpath(int fd, char *buf, size_t bufsize)
 {
-	(void)fd;
-	(void)buf;
-	(void)bufsize;
+	const char *path;
 
-	return __set_errno(ENOSYS, -1);
+	path = __getfd(fd);
+	if (path) {
+		size_t siz;
+
+		siz = __strlen(path);
+		_strncpy(buf, path, bufsize);
+		return siz;
+	}
+
+	return __set_errno(ENOENT, -1);
 }
 #endif
 

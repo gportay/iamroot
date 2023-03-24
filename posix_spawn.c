@@ -98,6 +98,7 @@ int posix_spawn(pid_t *pid, const char *path,
 
 	/* Do not proceed to any hack if not in chroot */
 	if (!__inchroot()) {
+		__execfd();
 		__verbose_exec(path, argv, envp);
 		return next_posix_spawn(pid, path, file_actions, attrp, argv,
 					envp);
@@ -131,6 +132,7 @@ loader:
 	 */
 	if (__strneq(path, "/usr/bin/ld.so") || __strneq(path, "/lib/ld") ||
 	    __strneq(path, "/lib64/ld")) {
+		__execfd();
 		__verbose_exec(buf, argv, envp);
 		return next_posix_spawn(pid, buf, file_actions, attrp, argv,
 					envp);
@@ -173,6 +175,7 @@ posix_spawn:
 			*narg++ = *arg++;
 		*narg++ = NULL; /* ensure NULL-terminated */
 
+		__execfd();
 		__verbose_exec(*nargv, nargv, __environ);
 		return next_posix_spawn(pid, *nargv, file_actions, attrp,
 					nargv, __environ);

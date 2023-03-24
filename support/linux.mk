@@ -164,9 +164,7 @@ $(eval $(call log,debootstrap,$(1)-$(2)-$(3)-rootfs))
 
 $(if $(findstring $(1),x86_64), \
 	$(eval $(call run,$(1),$(2)-$(3))) \
-	$(if $(findstring $(3),oldoldstable),, \
-		$(eval $(call debootstrap-postrootfs,$(1),$(2)-$(3))) \
-	) \
+	$(eval $(call debootstrap-postrootfs,$(1),$(2)-$(3))) \
 )
 endef
 
@@ -556,17 +554,8 @@ $(eval $(call debootstrap-rootfs,x86_64,debian,oldstable))
 $(eval $(call debootstrap-rootfs,x86_64,debian,stable))
 $(eval $(call debootstrap-rootfs,x86_64,debian,testing))
 $(eval $(call debootstrap-rootfs,x86_64,debian,unstable))
-
-x86_64-debian-oldoldstable-postrootfs: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
-x86_64-debian-oldoldstable-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
-x86_64-debian-oldoldstable-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
-	sed -e '/^root:x:/s,^root:x:,root::,' \
-	    -i x86_64-debian-oldoldstable-rootfs/etc/passwd
-	sed -e '/^root::/s,^root::,root:x:,' \
-	    -i x86_64-debian-oldoldstable-rootfs/etc/shadow
-	rm -f x86_64-debian-oldoldstable-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
-	bash iamroot-shell -c "chroot x86_64-debian-oldoldstable-rootfs systemctl enable getty@tty0.service"
-	bash iamroot-shell -c "chroot x86_64-debian-oldoldstable-rootfs pam-auth-update"
+x86_64-debian-oldoldstable-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+x86_64-debian-oldoldstable-rootfs/etc/machine-id: export DEBOOTSTRAPFLAGS += --include ssh
 
 x86_64-ubuntu-trusty-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
 x86_64-ubuntu-trusty-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0

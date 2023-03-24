@@ -115,6 +115,8 @@ $(1)-$(2)-chroot: | $(1)-$(2)-rootfs
 endef
 
 define pacstrap-rootfs
+$(eval $(call chroot,$(1),$(2),/bin/bash))
+
 $(1)-$(2)-rootfs: | $(1)-$(2)-rootfs/etc/machine-id
 $(1)-$(2)-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/$(1)-$(2)-rootfs
 $(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
@@ -130,6 +132,8 @@ $(eval $(call log,pacstrap,$(1)-$(2)-rootfs))
 endef
 
 define debootstrap-rootfs
+$(eval $(call chroot,$(1),$(2)-$(3),/bin/bash))
+
 $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/etc/machine-id
 $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib/$(1)-linux-gnu:/lib:/usr/lib/$(1)-linux-gnu:/usr/lib
 $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/$(1)-linux-gnu/libc.so.6:/lib/$(1)-linux-gnu/libdl.so.2:/lib/$(1)-linux-gnu/libpthread.so.0
@@ -155,6 +159,8 @@ $(eval $(call log,debootstrap,$(1)-$(2)-$(3)-rootfs))
 endef
 
 define dnf-rootfs
+$(eval $(call chroot,$(1),$(2)-$(3),/bin/bash))
+
 $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/etc/machine-id
 $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib64/ldb:/lib64:/usr/lib64
 $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /usr/lib64/libc.so.6:/usr/lib64/libdl.so.2
@@ -170,6 +176,8 @@ $(eval $(call log,dnf,$(1)-$(2)-$(3)-rootfs))
 endef
 
 define zypper-rootfs
+$(eval $(call chroot,$(1),$(2),/bin/bash))
+
 $(1)-$(2)-rootfs: | $(1)-$(2)-rootfs/etc/machine-id
 $(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
 $(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|/usr/bin/chkstat
@@ -182,6 +190,8 @@ $(eval $(call log,zypper,$(1)-$(2)-rootfs))
 endef
 
 define alpine-make-rootfs-rootfs
+$(eval $(call chroot,$(1),$(2)-$(3),/bin/ash))
+
 $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/busybox
 $(1)-$(2)-$(3)-rootfs/bin/busybox: export APK_OPTS = --arch $(1) --no-progress
 $(1)-$(2)-$(3)-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
@@ -477,15 +487,11 @@ arch-test: $(subst $(CURDIR)/,,$(IAMROOT_LIB)) | x86_64-arch-rootfs
 x86_64-arch-rootfs/usr/bin/%: support/% | x86_64-arch-rootfs
 	cp $< $@
 
-$(eval $(call chroot,x86_64,arch,/bin/bash))
-
 rootfs: x86_64-arch-rootfs
 
 $(eval $(call pacstrap-rootfs,x86_64,arch,base))
 
 i686-rootfs: i686-arch-rootfs
-
-$(eval $(call chroot,i686,arch,/bin/bash))
 
 .PHONY: i686-arch-rootfs
 i686-arch-rootfs: export QEMU_LD_PREFIX = $(CURDIR)/i686-arch-rootfs
@@ -497,8 +503,6 @@ i686-arch-rootfs/etc/machine-id: | i686/libiamroot-linux.so.2 x86_64/libiamroot-
 $(eval $(call run,x86_64,arch))
 
 $(eval $(call pacstrap-postrootfs,x86_64,arch))
-
-$(eval $(call chroot,x86_64,manjaro-stable,/bin/bash))
 
 extra-rootfs: x86_64-manjaro-stable-rootfs
 
@@ -513,11 +517,6 @@ $(eval $(call pacstrap-postrootfs,x86_64,manjaro-stable))
 endif
 
 ifneq ($(shell command -v debootstrap 2>/dev/null),)
-$(eval $(call chroot,x86_64,debian-oldoldstable,/bin/bash))
-$(eval $(call chroot,x86_64,debian-oldstable,/bin/bash))
-$(eval $(call chroot,x86_64,debian-stable,/bin/bash))
-$(eval $(call chroot,x86_64,debian-testing,/bin/bash))
-$(eval $(call chroot,x86_64,debian-unstable,/bin/bash))
 x86_64-debian-oldoldstable-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
 x86_64-debian-oldoldstable-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
 x86_64-debian-oldstable-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
@@ -572,12 +571,6 @@ $(eval $(call debootstrap-postrootfs,x86_64,debian-stable))
 $(eval $(call debootstrap-postrootfs,x86_64,debian-testing))
 $(eval $(call debootstrap-postrootfs,x86_64,debian-unstable))
 
-$(eval $(call chroot,x86_64,ubuntu-trusty,/bin/bash))
-$(eval $(call chroot,x86_64,ubuntu-xenial,/bin/bash))
-$(eval $(call chroot,x86_64,ubuntu-bionic,/bin/bash))
-$(eval $(call chroot,x86_64,ubuntu-focal,/bin/bash))
-$(eval $(call chroot,x86_64,ubuntu-jammy,/bin/bash))
-$(eval $(call chroot,x86_64,ubuntu-kinetic,/bin/bash))
 x86_64-ubuntu-trusty-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
 x86_64-ubuntu-trusty-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
 x86_64-ubuntu-xenial-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
@@ -656,11 +649,6 @@ $(eval $(call debootstrap-postrootfs,x86_64,ubuntu-kinetic))
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)
-$(eval $(call chroot,x86_64,fedora-33,/bin/bash))
-$(eval $(call chroot,x86_64,fedora-34,/bin/bash))
-$(eval $(call chroot,x86_64,fedora-35,/bin/bash))
-$(eval $(call chroot,x86_64,fedora-36,/bin/bash))
-$(eval $(call chroot,x86_64,fedora-37,/bin/bash))
 x86_64-fedora-33-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
 x86_64-fedora-34-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
 x86_64-fedora-35-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
@@ -706,8 +694,6 @@ $(eval $(call dnf-postrootfs,x86_64,fedora-37))
 endif
 
 ifneq ($(shell command -v zypper 2>/dev/null),)
-$(eval $(call chroot,x86_64,opensuse-leap,/bin/bash))
-$(eval $(call chroot,x86_64,opensuse-tumbleweed,/bin/bash))
 x86_64-opensuse-leap-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
 x86_64-opensuse-leap-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
 x86_64-opensuse-tumbleweed-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
@@ -809,12 +795,6 @@ alpine-minirootfs-%-armhf.tar.gz:
 endif
 
 ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
-$(eval $(call chroot,x86_64,alpine-3.14,/bin/ash))
-$(eval $(call chroot,x86_64,alpine-3.15,/bin/ash))
-$(eval $(call chroot,x86_64,alpine-3.16,/bin/ash))
-$(eval $(call chroot,x86_64,alpine-3.17,/bin/ash))
-$(eval $(call chroot,x86_64,alpine-edge,/bin/ash))
-
 .PHONY: alpine-rootfs
 alpine-rootfs: x86_64-alpine-3.14-rootfs
 alpine-rootfs: x86_64-alpine-3.15-rootfs
@@ -878,12 +858,6 @@ x86_64/libiamroot-musl-x86_64.so.1: | gcompat/libgcompat.so.0
 endif
 
 ifneq ($(shell command -v i386-musl-gcc 2>/dev/null),)
-$(eval $(call chroot,x86,alpine-3.14,/bin/ash))
-$(eval $(call chroot,x86,alpine-3.15,/bin/ash))
-$(eval $(call chroot,x86,alpine-3.16,/bin/ash))
-$(eval $(call chroot,x86,alpine-3.17,/bin/ash))
-$(eval $(call chroot,x86,alpine-edge,/bin/ash))
-
 i686-rootfs: x86-alpine-rootfs
 
 .PHONY: x86-alpine-rootfs
@@ -915,8 +889,6 @@ endif
 
 ifneq ($(shell command -v pacstrap 2>/dev/null),)
 ifneq ($(shell command -v aarch64-linux-gnu-gcc 2>/dev/null),)
-$(eval $(call chroot,aarch64,arch,/bin/bash))
-
 aarch64-rootfs: aarch64-arch-rootfs
 
 .PHONY: aarch64-arch-rootfs
@@ -928,8 +900,6 @@ aarch64-arch-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_
 endif
 
 ifneq ($(shell command -v arm-linux-gnueabihf-gcc 2>/dev/null),)
-$(eval $(call chroot,armv7h,arch,/bin/bash))
-
 arm-rootfs: armv7h-arch-rootfs
 
 .PHONY: armv7h-arch-rootfs
@@ -943,11 +913,6 @@ endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)
 ifneq ($(shell command -v aarch64-linux-gnu-gcc 2>/dev/null),)
-$(eval $(call chroot,aarch64,fedora-33,/bin/bash))
-$(eval $(call chroot,aarch64,fedora-34,/bin/bash))
-$(eval $(call chroot,aarch64,fedora-35,/bin/bash))
-$(eval $(call chroot,aarch64,fedora-36,/bin/bash))
-$(eval $(call chroot,aarch64,fedora-37,/bin/bash))
 aarch64-fedora-33-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
 aarch64-fedora-34-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
 aarch64-fedora-35-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
@@ -986,12 +951,6 @@ aarch64-fedora-37-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1
 endif
 
 ifneq ($(shell command -v arm-linux-gnueabihf-gcc 2>/dev/null),)
-$(eval $(call chroot,armv7hl,fedora-33,/bin/bash))
-$(eval $(call chroot,armv7hl,fedora-34,/bin/bash))
-$(eval $(call chroot,armv7hl,fedora-35,/bin/bash))
-$(eval $(call chroot,armv7hl,fedora-36,/bin/bash))
-$(eval $(call chroot,armv7hl,fedora-37,/bin/bash))
-
 arm-rootfs: armv7hl-fedora-rootfs
 
 .PHONY: armv7hl-fedora-rootfs
@@ -1045,12 +1004,6 @@ alpine-minirootfs-%-aarch64.tar.gz:
 	wget http://dl-cdn.alpinelinux.org/alpine/v$(basename $*)/releases/aarch64/alpine-minirootfs-$*-aarch64.tar.gz
 
 ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
-$(eval $(call chroot,aarch64,alpine-3.14,/bin/ash))
-$(eval $(call chroot,aarch64,alpine-3.15,/bin/ash))
-$(eval $(call chroot,aarch64,alpine-3.16,/bin/ash))
-$(eval $(call chroot,aarch64,alpine-3.17,/bin/ash))
-$(eval $(call chroot,aarch64,alpine-edge,/bin/ash))
-
 .PHONY: aarch64-alpine-rootfs
 aarch64-alpine-rootfs: aarch64-alpine-3.14-rootfs
 aarch64-alpine-rootfs: aarch64-alpine-3.15-rootfs

@@ -112,6 +112,11 @@ $(1)-$(2)-rootfs/etc/machine-id: export EUID = 0
 $(1)-$(2)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	mkdir $(1)-$(2)-rootfs
 	bash iamroot-shell -c "pacstrap -GMC support/$(1)-$(2)-pacman.conf $(1)-$(2)-rootfs $(3)"
+
+.PRECIOUS: support/$(1)-$(2)-rootfs.txt
+support/$(1)-$(2)-rootfs.txt: $(1)-$(2)-rootfs.log
+	support/pacstrap.sed -e 's,$(CURDIR),,g' $$< >$$@.tmp
+	mv $$@.tmp $$@
 endef
 
 define debootstrap-rootfs
@@ -135,6 +140,11 @@ $(1)-$(2)-$(3)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "debootstrap --keep-debootstrap-dir $$(DEBOOTSTRAPFLAGS) $(3) $(1)-$(2)-$(3)-rootfs $$(DEBOOTSTRAP_MIRROR)"
 	cat $(1)-$(2)-$(3)-rootfs/debootstrap/debootstrap.log
 	rm -Rf $(1)-$(2)-$(3)-rootfs/debootstrap/
+
+.PRECIOUS: support/$(1)-$(2)-$(3)-rootfs.txt
+support/$(1)-$(2)-$(3)-rootfs.txt: $(1)-$(2)-$(3)-rootfs.log
+	support/debootstrap.sed -e 's,$(CURDIR),,g' $$< >$$@.tmp
+	mv $$@.tmp $$@
 endef
 
 define dnf-rootfs
@@ -148,6 +158,11 @@ $(1)-$(2)-$(3)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	install -D -m644 $$(FEDORA_REPO) $(1)-$(2)-$(3)-rootfs/etc/distro.repos.d/fedora.repo
 	bash iamroot-shell -c "dnf --forcearch $(1) --releasever $(3) --assumeyes --installroot $(CURDIR)/$(1)-$(2)-$(3)-rootfs group install minimal-environment"
 	rm -f $(1)-$(2)-$(3)-rootfs/etc/distro.repos.d/fedora.repo
+
+.PRECIOUS: support/$(1)-$(2)-$(3)-rootfs.txt
+support/$(1)-$(2)-$(3)-rootfs.txt: $(1)-$(2)-$(3)-rootfs.log
+	support/dnf.sed -e 's,$(CURDIR),,g' $$< >$$@.tmp
+	mv $$@.tmp $$@
 endef
 
 define zypper-rootfs
@@ -158,6 +173,11 @@ $(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc
 $(1)-$(2)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "zypper --root $(CURDIR)/$(1)-$(2)-rootfs addrepo --no-gpgcheck support/$(2)-repo-oss.repo"
 	bash iamroot-shell -c "zypper --root $(CURDIR)/$(1)-$(2)-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd"
+
+.PRECIOUS: support/$(1)-$(2)-rootfs.txt
+support/$(1)-$(2)-rootfs.txt: $(1)-$(2)-rootfs.log
+	support/zypper.sed -e 's,$(CURDIR),,g' $$< >$$@.tmp
+	mv $$@.tmp $$@
 endef
 
 define alpine-make-rootfs-rootfs
@@ -165,6 +185,11 @@ $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/busybox
 $(1)-$(2)-$(3)-rootfs/bin/busybox: export APK_OPTS = --arch $(1) --no-progress
 $(1)-$(2)-$(3)-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --mirror-uri http://dl-cdn.alpinelinux.org/alpine --branch $(3)"
+
+.PRECIOUS: support/$(1)-$(2)-rootfs.txt
+support/$(1)-$(2)-$(3)-rootfs.txt: $(1)-$(2)-$(3)-rootfs.log
+	support/alpine-make-rootfs.sed -e 's,$(CURDIR),,g' $$< >$$@.tmp
+	mv $$@.tmp $$@
 endef
 
 define run
@@ -1180,21 +1205,6 @@ extra-support: manjaro-support
 .PHONY: manjaro-support
 manjaro-support: support/x86_64-manjaro-stable-rootfs.txt
 
-.PRECIOUS: support/x86_64-arch-rootfs.txt
-support/x86_64-arch-rootfs.txt: x86_64-arch-rootfs.log
-	support/pacstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
-
-.PRECIOUS: support/i686-arch-rootfs.txt
-support/i686-arch-rootfs.txt: i686-arch-rootfs.log
-	support/pacstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
-
-.PRECIOUS: support/x86_64-manjaro-stable-rootfs.txt
-support/x86_64-manjaro-stable-rootfs.txt: x86_64-manjaro-stable-rootfs.log
-	support/pacstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
-
 log: arch-log
 
 .PHONY: arch-log
@@ -1222,31 +1232,6 @@ debian-support: support/x86_64-debian-stable-rootfs.txt
 debian-support: support/x86_64-debian-testing-rootfs.txt
 debian-support: support/x86_64-debian-unstable-rootfs.txt
 
-.PRECIOUS: support/x86_64-debian-oldoldstable-rootfs.txt
-support/x86_64-debian-oldoldstable-rootfs.txt: x86_64-debian-oldoldstable-rootfs.log
-	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
-
-.PRECIOUS: support/x86_64-debian-oldstable-rootfs.txt
-support/x86_64-debian-oldstable-rootfs.txt: x86_64-debian-oldstable-rootfs.log
-	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
-
-.PRECIOUS: support/x86_64-debian-stable-rootfs.txt
-support/x86_64-debian-stable-rootfs.txt: x86_64-debian-stable-rootfs.log
-	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
-
-.PRECIOUS: support/x86_64-debian-testing-rootfs.txt
-support/x86_64-debian-testing-rootfs.txt: x86_64-debian-testing-rootfs.log
-	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
-
-.PRECIOUS: support/x86_64-debian-unstable-rootfs.txt
-support/x86_64-debian-unstable-rootfs.txt: x86_64-debian-unstable-rootfs.log
-	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
-
 log: debian-log
 
 .PHONY: debian-log
@@ -1271,36 +1256,6 @@ ubuntu-support: support/x86_64-ubuntu-bionic-rootfs.txt
 ubuntu-support: support/x86_64-ubuntu-focal-rootfs.txt
 ubuntu-support: support/x86_64-ubuntu-jammy-rootfs.txt
 ubuntu-support: support/x86_64-ubuntu-kinetic-rootfs.txt
-
-.PRECIOUS: support/x86_64-ubuntu-trusty-rootfs.txt
-support/x86_64-ubuntu-trusty-rootfs.txt: x86_64-ubuntu-trusty-rootfs.log
-	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
-
-.PRECIOUS: support/x86_64-ubuntu-xenial-rootfs.txt
-support/x86_64-ubuntu-xenial-rootfs.txt: x86_64-ubuntu-xenial-rootfs.log
-	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
-
-.PRECIOUS: support/x86_64-ubuntu-bionic-rootfs.txt
-support/x86_64-ubuntu-bionic-rootfs.txt: x86_64-ubuntu-bionic-rootfs.log
-	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
-
-.PRECIOUS: support/x86_64-ubuntu-focal-rootfs.txt
-support/x86_64-ubuntu-focal-rootfs.txt: x86_64-ubuntu-focal-rootfs.log
-	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
-
-.PRECIOUS: support/x86_64-ubuntu-jammy-rootfs.txt
-support/x86_64-ubuntu-jammy-rootfs.txt: x86_64-ubuntu-jammy-rootfs.log
-	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
-
-.PRECIOUS: support/x86_64-ubuntu-kinetic-rootfs.txt
-support/x86_64-ubuntu-kinetic-rootfs.txt: x86_64-ubuntu-kinetic-rootfs.log
-	support/debootstrap.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
 
 log: ubuntu-log
 
@@ -1330,31 +1285,6 @@ fedora-support: support/x86_64-fedora-35-rootfs.txt
 fedora-support: support/x86_64-fedora-36-rootfs.txt
 fedora-support: support/x86_64-fedora-37-rootfs.txt
 
-.PRECIOUS: support/x86_64-fedora-33-rootfs.txt
-support/x86_64-fedora-33-rootfs.txt: x86_64-fedora-33-rootfs.log
-	support/dnf.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
-
-.PRECIOUS: support/x86_64-fedora-34-rootfs.txt
-support/x86_64-fedora-34-rootfs.txt: x86_64-fedora-34-rootfs.log
-	support/dnf.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
-
-.PRECIOUS: support/x86_64-fedora-35-rootfs.txt
-support/x86_64-fedora-35-rootfs.txt: x86_64-fedora-35-rootfs.log
-	support/dnf.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
-
-.PRECIOUS: support/x86_64-fedora-36-rootfs.txt
-support/x86_64-fedora-36-rootfs.txt: x86_64-fedora-36-rootfs.log
-	support/dnf.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
-
-.PRECIOUS: support/x86_64-fedora-37-rootfs.txt
-support/x86_64-fedora-37-rootfs.txt: x86_64-fedora-37-rootfs.log
-	support/dnf.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
-
 log: fedora-log
 
 .PHONY: fedora-log
@@ -1377,16 +1307,6 @@ extra-support: opensuse-support
 fixme-support: support/x86_64-opensuse-leap-rootfs.txt
 opensuse-support: support/x86_64-opensuse-tumbleweed-rootfs.txt
 
-.PRECIOUS: support/x86_64-opensuse-leap-rootfs.txt
-support/x86_64-opensuse-leap-rootfs.txt: x86_64-opensuse-leap-rootfs.log
-	support/zypper.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
-
-.PRECIOUS: support/x86_64-opensuse-tumbleweed-rootfs.txt
-support/x86_64-opensuse-tumbleweed-rootfs.txt: x86_64-opensuse-tumbleweed-rootfs.log
-	support/zypper.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
-
 extra-log: opensuse-log
 
 .PHONY: opensuse-log
@@ -1406,31 +1326,6 @@ alpine-support: support/x86_64-alpine-3.15-rootfs.txt
 alpine-support: support/x86_64-alpine-3.16-rootfs.txt
 alpine-support: support/x86_64-alpine-3.17-rootfs.txt
 alpine-support: support/x86_64-alpine-edge-rootfs.txt
-
-.PRECIOUS: support/x86_64-alpine-3.14-rootfs.txt
-support/x86_64-alpine-3.14-rootfs.txt: x86_64-alpine-3.14-rootfs.log
-	support/alpine-make-rootfs.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
-
-.PRECIOUS: support/x86_64-alpine-3.15-rootfs.txt
-support/x86_64-alpine-3.15-rootfs.txt: x86_64-alpine-3.15-rootfs.log
-	support/alpine-make-rootfs.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
-
-.PRECIOUS: support/x86_64-alpine-3.16-rootfs.txt
-support/x86_64-alpine-3.16-rootfs.txt: x86_64-alpine-3.16-rootfs.log
-	support/alpine-make-rootfs.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
-
-.PRECIOUS: support/x86_64-alpine-3.17-rootfs.txt
-support/x86_64-alpine-3.17-rootfs.txt: x86_64-alpine-3.17-rootfs.log
-	support/alpine-make-rootfs.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
-
-.PRECIOUS: support/x86_64-alpine-edge-rootfs.txt
-support/x86_64-alpine-edge-rootfs.txt: x86_64-alpine-edge-rootfs.log
-	support/alpine-make-rootfs.sed -e 's,$(CURDIR),,g' $< >$@.tmp
-	mv $@.tmp $@
 
 log: alpine-log
 

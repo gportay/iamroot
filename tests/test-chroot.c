@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -120,7 +120,7 @@ int main(int argc, char * const argv[])
 		arg[0] = argv[2];
 		for (i = 0; i < argc-1; i++)
 			arg[i+1] = argv[i+2];
-		arg[argc-1] = NULL;
+		arg[argc-1] = NULL; /* NULL-terminated */
 
 		ret = exec(arg[0], &arg[1]);
 		if (ret == -1) {

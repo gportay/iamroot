@@ -54,7 +54,7 @@ ssize_t listxattr(const char *path, char *list, size_t size)
 
 	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
 
-	xsize = next_listxattr(buf, xbuf, sizeof(xbuf)-1); /* NUL-terminated */
+	xsize = next_listxattr(buf, xbuf, sizeof(xbuf)-1); /* NULL-terminated */
 	if (xsize == -1)
 		return -1;
 
@@ -77,7 +77,7 @@ ssize_t listxattr(const char *path, char *list, size_t size)
 
 		i += len + 1; /* NULL-terminated */
 		if (len != off)
-			ret += len + 1 - off; /* NUL-terminated */
+			ret += len + 1 - off; /* NULL-terminated */
 	} while (i < xsize);
 
 	return ret;

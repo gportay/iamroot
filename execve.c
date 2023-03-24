@@ -146,7 +146,7 @@ int pathsetenv(const char *root, const char *name, const char *value,
 
 		newlen = vallen;
 		newlen += rootlen;
-		newlen++; /* NUL */
+		newlen++; /* NULL */
 
 		__strncpy(val, value);
 		token = strtok_r(val, ":", &saveptr);

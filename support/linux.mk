@@ -91,6 +91,19 @@ clean-$(1)-$(2).$(3):
 	rm -Rf $(1)/
 endef
 
+define log
+.PRECIOUS: support/$(2).txt
+support/$(2).txt: $(2).log
+	support/$(1).sed -e 's,$(CURDIR),,g' $$< >$$@.tmp
+	mv $$@.tmp $$@
+
+.PRECIOUS: $(2).log
+$(2).log: SHELL = /bin/bash -o pipefail
+$(2).log:
+	$(MAKE) --silent $(2) 2>&1 | tee $$@.tmp
+	mv $$@.tmp $$@
+endef
+
 define chroot
 .PHONY: $(1)-$(2)-chroot
 $(1)-$(2)-chroot: export QEMU_LD_PREFIX = $(CURDIR)/$(1)-$(2)-rootfs
@@ -113,10 +126,7 @@ $(1)-$(2)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	mkdir $(1)-$(2)-rootfs
 	bash iamroot-shell -c "pacstrap -GMC support/$(1)-$(2)-pacman.conf $(1)-$(2)-rootfs $(3)"
 
-.PRECIOUS: support/$(1)-$(2)-rootfs.txt
-support/$(1)-$(2)-rootfs.txt: $(1)-$(2)-rootfs.log
-	support/pacstrap.sed -e 's,$(CURDIR),,g' $$< >$$@.tmp
-	mv $$@.tmp $$@
+$(eval $(call log,pacstrap,$(1)-$(2)-rootfs))
 endef
 
 define debootstrap-rootfs
@@ -141,10 +151,7 @@ $(1)-$(2)-$(3)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	cat $(1)-$(2)-$(3)-rootfs/debootstrap/debootstrap.log
 	rm -Rf $(1)-$(2)-$(3)-rootfs/debootstrap/
 
-.PRECIOUS: support/$(1)-$(2)-$(3)-rootfs.txt
-support/$(1)-$(2)-$(3)-rootfs.txt: $(1)-$(2)-$(3)-rootfs.log
-	support/debootstrap.sed -e 's,$(CURDIR),,g' $$< >$$@.tmp
-	mv $$@.tmp $$@
+$(eval $(call log,debootstrap,$(1)-$(2)-$(3)-rootfs))
 endef
 
 define dnf-rootfs
@@ -159,10 +166,7 @@ $(1)-$(2)-$(3)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "dnf --forcearch $(1) --releasever $(3) --assumeyes --installroot $(CURDIR)/$(1)-$(2)-$(3)-rootfs group install minimal-environment"
 	rm -f $(1)-$(2)-$(3)-rootfs/etc/distro.repos.d/fedora.repo
 
-.PRECIOUS: support/$(1)-$(2)-$(3)-rootfs.txt
-support/$(1)-$(2)-$(3)-rootfs.txt: $(1)-$(2)-$(3)-rootfs.log
-	support/dnf.sed -e 's,$(CURDIR),,g' $$< >$$@.tmp
-	mv $$@.tmp $$@
+$(eval $(call log,dnf,$(1)-$(2)-$(3)-rootfs))
 endef
 
 define zypper-rootfs
@@ -174,10 +178,7 @@ $(1)-$(2)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "zypper --root $(CURDIR)/$(1)-$(2)-rootfs addrepo --no-gpgcheck support/$(2)-repo-oss.repo"
 	bash iamroot-shell -c "zypper --root $(CURDIR)/$(1)-$(2)-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd"
 
-.PRECIOUS: support/$(1)-$(2)-rootfs.txt
-support/$(1)-$(2)-rootfs.txt: $(1)-$(2)-rootfs.log
-	support/zypper.sed -e 's,$(CURDIR),,g' $$< >$$@.tmp
-	mv $$@.tmp $$@
+$(eval $(call log,zypper,$(1)-$(2)-rootfs))
 endef
 
 define alpine-make-rootfs-rootfs
@@ -186,10 +187,7 @@ $(1)-$(2)-$(3)-rootfs/bin/busybox: export APK_OPTS = --arch $(1) --no-progress
 $(1)-$(2)-$(3)-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 	bash iamroot-shell -c "alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --mirror-uri http://dl-cdn.alpinelinux.org/alpine --branch $(3)"
 
-.PRECIOUS: support/$(1)-$(2)-rootfs.txt
-support/$(1)-$(2)-$(3)-rootfs.txt: $(1)-$(2)-$(3)-rootfs.log
-	support/alpine-make-rootfs.sed -e 's,$(CURDIR),,g' $$< >$$@.tmp
-	mv $$@.tmp $$@
+$(eval $(call log,alpine-make-rootfs,$(1)-$(2)-$(3)-rootfs))
 endef
 
 define run
@@ -1215,11 +1213,6 @@ extra-log: manjaro-log
 
 .PHONY: manjaro-log
 manjaro-log: x86_64-manjaro-stable-rootfs.log
-
-x86_64-arch-rootfs.log:
-i686-arch-rootfs.log:
-
-x86_64-manjaro-stable-rootfs.log:
 endif
 
 ifneq ($(shell command -v debootstrap 2>/dev/null),)
@@ -1241,12 +1234,6 @@ debian-log: x86_64-debian-stable-rootfs.log
 debian-log: x86_64-debian-testing-rootfs.log
 debian-log: x86_64-debian-unstable-rootfs.log
 
-x86_64-debian-oldoldstable-rootfs.log:
-x86_64-debian-oldstable-rootfs.log:
-x86_64-debian-stable-rootfs.log:
-x86_64-debian-testing-rootfs.log:
-x86_64-debian-unstable-rootfs.log:
-
 support: ubuntu-support
 
 .PHONY: ubuntu-support
@@ -1266,13 +1253,6 @@ ubuntu-log: x86_64-ubuntu-bionic-rootfs.log
 ubuntu-log: x86_64-ubuntu-focal-rootfs.log
 ubuntu-log: x86_64-ubuntu-jammy-rootfs.log
 ubuntu-log: x86_64-ubuntu-kinetic-rootfs.log
-
-x86_64-ubuntu-trusty-rootfs.log:
-x86_64-ubuntu-xenial-rootfs.log:
-x86_64-ubuntu-bionic-rootfs.log:
-x86_64-ubuntu-focal-rootfs.log:
-x86_64-ubuntu-jammy-rootfs.log:
-x86_64-ubuntu-kinetic-rootfs.log:
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)
@@ -1292,12 +1272,6 @@ fedora-log: x86_64-fedora-33-rootfs.log
 fedora-log: x86_64-fedora-34-rootfs.log
 fedora-log: x86_64-fedora-35-rootfs.log
 fedora-log: x86_64-fedora-36-rootfs.log
-
-x86_64-fedora-33-rootfs.log:
-x86_64-fedora-34-rootfs.log:
-x86_64-fedora-35-rootfs.log:
-x86_64-fedora-36-rootfs.log:
-x86_64-fedora-37-rootfs.log:
 endif
 
 ifneq ($(shell command -v zypper 2>/dev/null),)
@@ -1312,9 +1286,6 @@ extra-log: opensuse-log
 .PHONY: opensuse-log
 fixme-log: x86_64-opensuse-leap-rootfs.log
 opensuse-log: x86_64-opensuse-tumbleweed-rootfs.log
-
-opensuse-leap-rootfs.log:
-opensuse-tumbleweed-rootfs.log:
 endif
 
 ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
@@ -1335,20 +1306,7 @@ alpine-log: x86_64-alpine-3.15-rootfs.log
 alpine-log: x86_64-alpine-3.16-rootfs.log
 alpine-log: x86_64-alpine-3.17-rootfs.log
 alpine-log: x86_64-alpine-edge-rootfs.log
-
-x86_64-alpine-3.14-rootfs.log:
-x86_64-alpine-3.15-rootfs.log:
-x86_64-alpine-3.16-rootfs.log:
-x86_64-alpine-3.17-rootfs.log:
-x86_64-alpine-edge-rootfs.log:
 endif
-
-.PHONY: %.log
-.PRECIOUS: %.log
-%.log: SHELL = /bin/bash -o pipefail
-%.log:
-	$(MAKE) --silent $* 2>&1 | tee $@.tmp
-	mv $@.tmp $@
 endif
 
 %:

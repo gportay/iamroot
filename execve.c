@@ -146,7 +146,7 @@ int pathsetenv(const char *root, const char *name, const char *value,
 
 		newlen = vallen;
 		newlen += rootlen;
-		newlen++; /* NULL */
+		newlen++; /* ensure NULL-terminated */
 
 		__strncpy(val, value);
 		token = strtok_r(val, ":", &saveptr);
@@ -1929,7 +1929,7 @@ execve:
 		arg = argv+1; /* skip original-argv0 */
 		while (*arg)
 			*narg++ = *arg++;
-		*narg++ = NULL;
+		*narg++ = NULL; /* ensure NULL-terminated */
 
 		verbose_exec(*nargv, nargv, __environ);
 		return next_execve(*nargv, nargv, __environ);

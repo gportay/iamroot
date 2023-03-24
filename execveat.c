@@ -170,7 +170,7 @@ execveat:
 		arg = argv+1; /* skip original-argv0 */
 		while (*arg)
 			*narg++ = *arg++;
-		*narg++ = NULL;
+		*narg++ = NULL; /* ensure NULL-terminated */
 
 		verbose_exec(*nargv, nargv, __environ);
 		__remove_at_empty_path_if_needed(*nargv, atflags);

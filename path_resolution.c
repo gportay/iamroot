@@ -518,6 +518,11 @@ ssize_t fpath(int fd, char *buf, size_t bufsiz)
 {
 	ssize_t siz;
 
+	if (fd < 0) {
+		errno = EINVAL;
+		return -1;
+	}
+
 	siz = __procfdreadlink(fd, buf, bufsiz);
 	if (siz == -1)
 		return -1;

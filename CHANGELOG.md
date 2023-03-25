@@ -28,6 +28,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the missing stripping of the chroot directory in the function
   `canonicalize_file_name()`
 
+### Security
+
+- Fix an overflowing if giving a fd superior to 999 (or any negative fd such as
+  the special `AT_FDCWD`) to the function `__procfdname()`
+
 ## [v8] - 2022-09-20
 
 ### Added

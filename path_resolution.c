@@ -160,7 +160,7 @@ void __procfdname(char *buf, unsigned fd)
 __attribute__((visibility("hidden")))
 ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
 {
-	char tmp[sizeof("/proc/self/fd/") + 4];
+	char tmp[sizeof("/proc/self/fd/") + 3*sizeof(int) + 2]; /* sign + NULL-terminated */
 	int errno_save = errno;
 	ssize_t ret;
 	__procfdname(tmp, fd);

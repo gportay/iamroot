@@ -1194,12 +1194,24 @@ static char *__getld_library_path(const char *ldso, int abi)
 	__sanitize(buf, 1);
 
 	ret = getenv(buf);
-	if (!ret)
-		ret = getenv("IAMROOT_LIBRARY_PATH");
-	if (!ret)
-		return "/lib:/usr/local/lib:/usr/lib";
+	if (ret)
+		return ret;
 
-	return ret;
+	ret = getenv("IAMROOT_LIBRARY_PATH");
+	if (ret)
+		return ret;
+
+#ifdef __linux__
+	/* IAMROOT_LIBRARY_PATH_LINUX_X86_64_2 */
+	if (__streq(ldso, "linux-x86-64") && abi == 2)
+		return "/lib64:/usr/local/lib64:/usr/lib64";
+
+	/* IAMROOT_LIBRARY_PATH_LINUX_AARCH64_1 */
+	if (__streq(ldso, "linux-aarch64") && abi == 1)
+		return "/lib64:/usr/local/lib64:/usr/lib64";
+#endif
+
+	return "/lib:/usr/local/lib:/usr/lib";
 }
 
 __attribute__((visibility("hidden")))

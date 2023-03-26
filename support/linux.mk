@@ -196,7 +196,6 @@ endef
 
 define dnf-rootfs
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib64/ldb:/lib64:/usr/lib64
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /usr/lib64/libc.so.6:/usr/lib64/libdl.so.2
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda|^$(CURDIR)/$(1)-$(2)-$(3)-rootfs/var/log/dnf.rpm.log
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora.repo
 
@@ -347,7 +346,6 @@ $(1)-$(2)-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 endef
 
 define dnf-postrootfs
-$(1)-$(2)-postrootfs: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
 $(1)-$(2)-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i $(1)-$(2)-rootfs/etc/passwd
@@ -362,7 +360,6 @@ $(1)-$(2)-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 endef
 
 define zypper-postrootfs
-$(1)-$(2)-postrootfs: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
 $(1)-$(2)-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i $(1)-$(2)-rootfs/etc/passwd
@@ -645,12 +642,6 @@ x86_64-ubuntu-kinetic-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)
-x86_64-fedora-33-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
-x86_64-fedora-34-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
-x86_64-fedora-35-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
-x86_64-fedora-36-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
-x86_64-fedora-37-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
-
 rootfs: x86_64-fedora-rootfs
 
 .PHONY: x86_64-fedora-rootfs
@@ -673,8 +664,6 @@ endif
 
 ifneq ($(shell command -v zypper 2>/dev/null),)
 x86_64-opensuse-leap-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
-x86_64-opensuse-leap-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
-x86_64-opensuse-tumbleweed-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
 
 extra-rootfs: opensuse-rootfs
 
@@ -851,6 +840,8 @@ aarch64-rootfs: aarch64-arch-rootfs
 aarch64-arch-rootfs: | aarch64-arch-rootfs/etc/machine-id
 
 $(eval $(call pacstrap-rootfs,aarch64,arch,base))
+aarch64-arch-chroot aarch64-arch-shell aarch64-arch-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib:/usr/lib
+aarch64-arch-chroot aarch64-arch-shell aarch64-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
 aarch64-arch-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 endif
 
@@ -867,12 +858,6 @@ endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)
 ifneq ($(shell command -v aarch64-linux-gnu-gcc 2>/dev/null),)
-aarch64-fedora-33-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
-aarch64-fedora-34-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
-aarch64-fedora-35-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
-aarch64-fedora-36-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
-aarch64-fedora-37-chroot: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
-
 aarch64-rootfs: aarch64-fedora-rootfs
 
 .PHONY: aarch64-fedora-rootfs

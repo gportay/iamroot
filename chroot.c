@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2022 Gaël PORTAY
+ * Copyright 2020-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -253,21 +253,12 @@ int chroot(const char *path)
 
 	/* Prepend chroot and current working directory for relative paths */
 	if (path[0] != '/') {
-		size_t len, rootlen;
-		const char *root;
+		size_t len;
 		char *cwd;
 
-		cwd = buf;
-		root = getrootdir();
-		rootlen = __strlen(root);
-		if (!__streq(root, "/")) {
-			__strncpy(buf, root);
-			cwd += rootlen;
-		}
-
-		cwd = getcwd(cwd, sizeof(buf)-rootlen);
+		cwd = next_getcwd(buf, sizeof(buf));
 		len = __strlen(cwd);
-		if (rootlen + len + 1 + __strlen(path) + 1 > sizeof(buf)) {
+		if (len + 1 + __strlen(path) + 1 > sizeof(buf)) {
 			errno = ENAMETOOLONG;
 			return -1;
 		}

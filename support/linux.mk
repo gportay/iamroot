@@ -245,9 +245,14 @@ $(1)-$(2)-$(3)-shell: | x86_64/libiamroot-linux-x86-64.so.2
 
 $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/busybox
 $(1)-$(2)-$(3)-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
-	bash iamroot-shell -c "alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --mirror-uri http://dl-cdn.alpinelinux.org/alpine --branch $(3)"
+	bash iamroot-shell -c "alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --mirror-uri http://dl-cdn.alpinelinux.org/alpine --branch $(3) $$(ALPINE_MAKE_ROOTFSFLAGS)"
 
 $(eval $(call log,alpine-make-rootfs,$(1)-$(2)-$(3)-rootfs))
+
+$(if $(findstring x86_64,$(1)), \
+	$(eval $(call run,$(1),$(2)-$(3))) \
+	$(eval $(call alpine-postrootfs,$(1),$(2)-$(3))) \
+)
 endef
 
 define run
@@ -377,8 +382,12 @@ define alpine-postrootfs
 $(1)-$(2)-postrootfs:
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i $(1)-$(2)-rootfs/etc/passwd
+	sed -e '/^root::/s,^root::,root:x:,' \
+	    -i $(1)-$(2)-rootfs/etc/shadow
 	sed -e '/^UNKNOWN$$:/d' \
+	    -e '/^tty0$$:/d' \
 	    -e '1iUNKNOWN' \
+	    -e '1itty0' \
 	    -i $(1)-$(2)-rootfs/etc/securetty
 	sed -e '/^tty1:/itty0::respawn:/sbin/getty 38400 tty0' \
 	    -e '/^tty[1-9]:/s,^,#,' \
@@ -762,6 +771,7 @@ alpine-rootfs: x86_64-alpine-3.16-rootfs
 alpine-rootfs: x86_64-alpine-3.17-rootfs
 alpine-rootfs: x86_64-alpine-edge-rootfs
 
+x86_64-alpine-edge-rootfs/bin/busybox: ALPINE_MAKE_ROOTFSFLAGS = --packages apk-tools --packages openrc
 $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpine,3.14))
 $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpine,3.15))
 $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpine,3.16))

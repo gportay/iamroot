@@ -249,37 +249,14 @@ char *__striprootdir(char *path)
 int chroot(const char *path)
 {
 	char buf[PATH_MAX];
+	ssize_t siz;
 	int ret;
 
-	/* Prepend chroot and current working directory for relative paths */
-	if (path[0] != '/') {
-		size_t len;
-		char *cwd;
-
-		cwd = next_getcwd(buf, sizeof(buf));
-		len = __strlen(cwd);
-		if (len + 1 + __strlen(path) + 1 > sizeof(buf)) {
-			errno = ENAMETOOLONG;
-			return -1;
-		}
-
-		cwd[len++] = '/';
-		cwd[len] = 0;
-
-		cwd = _strncat(cwd, path, sizeof(buf)-len);
-		buf[sizeof(buf)-1] = 0; /* NULL-terminated */
-	} else {
-		ssize_t siz;
-
-		siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
-				      AT_SYMLINK_NOFOLLOW);
-		if (siz == -1) {
-			__pathperror(path, __func__);
-			return -1;
-		}
+	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
+	if (siz == -1) {
+		__pathperror(path, __func__);
+		return -1;
 	}
-
-	__path_sanitize(buf, sizeof(buf));
 
 	ret = setenv("PATH", getenv("IAMROOT_PATH") ?: _PATH_STDPATH, 1);
 	if (ret == -1) {

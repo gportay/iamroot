@@ -142,9 +142,6 @@ endef
 
 define pacstrap-rootfs
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
-$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_2 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
-$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
-$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/etc/machine-id: export EUID = 0
 
 $(eval $(call chroot_shell,$(1),$(2),/bin/bash,pacstrap -GMC support/$(1)-$(2)-pacman.conf $(1)-$(2)-rootfs $(3)))

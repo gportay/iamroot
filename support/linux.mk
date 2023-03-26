@@ -141,7 +141,6 @@ $(1)-$(2)-shell:
 endef
 
 define pacstrap-rootfs
-$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/$(1)-$(2)-rootfs
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_2 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
@@ -165,7 +164,6 @@ $(if $(findstring $(1),x86_64), \
 endef
 
 define debootstrap-rootfs
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/$(1)-$(2)-$(3)-rootfs
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib/$(1)-linux-gnu:/lib:/usr/lib/$(1)-linux-gnu:/usr/lib
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/$(1)-linux-gnu/libc.so.6:/lib/$(1)-linux-gnu/libdl.so.2:/lib/$(1)-linux-gnu/libpthread.so.0
 # chfn: PAM: Critical error - immediate abort
@@ -200,7 +198,6 @@ $(if $(findstring $(1),x86_64), \
 endef
 
 define dnf-rootfs
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/$(1)-$(2)-$(3)-rootfs
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib64/ldb:/lib64:/usr/lib64
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /usr/lib64/libc.so.6:/usr/lib64/libdl.so.2
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2:/usr/lib/libpthread.so.0:/usr/lib/librt.so.1
@@ -225,7 +222,6 @@ $(if $(findstring $(1),x86_64), \
 endef
 
 define zypper-rootfs
-$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/etc/machine-id: export QEMU_LD_PREFIX = $(CURDIR)/$(1)-$(2)-rootfs
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|/usr/bin/chkstat
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
@@ -247,7 +243,6 @@ $(if $(findstring $(1),x86_64), \
 endef
 
 define alpine-make-rootfs-rootfs
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export QEMU_LD_PREFIX = $(CURDIR)/$(1)-$(2)-$(3)-rootfs
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export APK_OPTS = --arch $(1) --no-progress
 
 $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/ash,alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --mirror-uri http://dl-cdn.alpinelinux.org/alpine --branch $(3)))
@@ -554,7 +549,6 @@ $(eval $(call pacstrap-rootfs,x86_64,arch,base))
 i686-rootfs: i686-arch-rootfs
 
 .PHONY: i686-arch-rootfs
-i686-arch-rootfs: export QEMU_LD_PREFIX = $(CURDIR)/i686-arch-rootfs
 i686-arch-rootfs: | i686-arch-rootfs/etc/machine-id
 
 $(eval $(call pacstrap-rootfs,i686,arch,base))
@@ -738,12 +732,10 @@ alpine-minirootfs-%-x86_64.tar.gz:
 	wget http://dl-cdn.alpinelinux.org/alpine/v$(basename $*)/releases/x86_64/alpine-minirootfs-$*-x86_64.tar.gz
 
 .PHONY: mini-chroot-i686
-x86-mini-chroot: export QEMU_LD_PREFIX = $(CURDIR)/x86-alpine-minirootfs
 x86-mini-chroot: i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2 | x86-alpine-minirootfs
 	bash iamroot-shell -c "chroot x86-alpine-minirootfs /bin/sh"
 
 .PHONY: x86-alpine-minirootfs
-x86-alpine-minirootfs: export QEMU_LD_PREFIX = $(CURDIR)/x86-alpine-minirootfs
 x86-alpine-minirootfs: | x86-alpine-minirootfs/bin/busybox
 
 x86-alpine-minirootfs/bin/busybox: | alpine-minirootfs-3.17.0-x86.tar.gz
@@ -758,7 +750,6 @@ ifneq ($(shell command -v arm-linux-musleabihf-gcc 2>/dev/null),)
 arm-rootfs: armhf-alpine-rootfs
 
 .PHONY: mini-chroot
-armhf-arch-chroot: export QEMU_LD_PREFIX = $(CURDIR)/armhf-alpine-minirootfs
 armhf-mini-chroot: armhf/libiamroot-musl-armhf.so.1 x86_64/libiamroot-linux-x86-64.so.2 | armhf-alpine-minirootfs
 	bash iamroot-shell -c "chroot armhf-alpine-minirootfs /bin/sh"
 
@@ -860,7 +851,6 @@ ifneq ($(shell command -v aarch64-linux-gnu-gcc 2>/dev/null),)
 aarch64-rootfs: aarch64-arch-rootfs
 
 .PHONY: aarch64-arch-rootfs
-aarch64-arch-rootfs: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-arch-rootfs
 aarch64-arch-rootfs: | aarch64-arch-rootfs/etc/machine-id
 
 $(eval $(call pacstrap-rootfs,aarch64,arch,base))
@@ -871,7 +861,6 @@ ifneq ($(shell command -v arm-linux-gnueabihf-gcc 2>/dev/null),)
 arm-rootfs: armv7h-arch-rootfs
 
 .PHONY: armv7h-arch-rootfs
-armv7h-arch-rootfs: export QEMU_LD_PREFIX = $(CURDIR)/armv7h-arch-rootfs
 armv7h-arch-rootfs: | armv7h-arch-rootfs/etc/machine-id
 
 $(eval $(call pacstrap-rootfs,armv7h,arch,base))
@@ -955,12 +944,10 @@ ifneq ($(shell command -v aarch64-linux-musl-gcc 2>/dev/null),)
 aarch64-rootfs: aarch64-alpine-rootfs
 
 .PHONY: aarch64-mini-chroot
-aarch64-mini-chroot: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-mini-rootfs
 aarch64-mini-chroot: | aarch64/libiamroot-musl-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2 aarch64-alpine-minirootfs
 	bash iamroot-shell -c "chroot aarch64-alpine-minirootfs /bin/sh"
 
 .PHONY: aarch64-alpine-minirootfs
-aarch64-alpine-minirootfs: export QEMU_LD_PREFIX = $(CURDIR)/aarch64-alpine-minirootfs
 aarch64-alpine-minirootfs: | aarch64-alpine-minirootfs/bin/busybox
 
 aarch64-alpine-minirootfs/bin/busybox: | alpine-minirootfs-3.17.0-aarch64.tar.gz

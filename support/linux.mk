@@ -149,7 +149,7 @@ $(1)-$(2)-shell: | x86_64/libiamroot-linux-x86-64.so.2
 
 $(1)-$(2)-rootfs: | $(1)-$(2)-rootfs/etc/machine-id
 $(1)-$(2)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
-	mkdir $(1)-$(2)-rootfs
+	mkdir -p $(1)-$(2)-rootfs
 	bash iamroot-shell -c "pacstrap -GMC support/$(1)-$(2)-pacman.conf $(1)-$(2)-rootfs $(3)"
 
 $(eval $(call log,pacstrap,$(1)-$(2)-rootfs))
@@ -476,7 +476,7 @@ output-%/libiamroot.so: $(wildcard *.c) | output-%
 
 .PRECIOUS: output-%
 output-%:
-	mkdir $@
+	mkdir -p $@
 
 .PHONY: fixme-rootfs
 fixme-rootfs:

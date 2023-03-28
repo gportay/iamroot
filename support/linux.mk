@@ -478,14 +478,14 @@ output-%/libiamroot.so: $(wildcard *.c) | output-%
 output-%:
 	mkdir -p $@
 
-.PHONY: fixme-rootfs
-fixme-rootfs:
-
 .PHONY: rootfs
 rootfs: i686-rootfs
 
 .PHONY: extra-rootfs
 extra-rootfs:
+
+.PHONY: fixme-rootfs
+fixme-rootfs:
 
 .PHONY: i686-rootfs
 i686-rootfs:

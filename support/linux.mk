@@ -481,6 +481,9 @@ rootfs: i686-rootfs
 .PHONY: extra-rootfs
 extra-rootfs:
 
+.PHONY: broken-rootfs
+broken-rootfs:
+
 .PHONY: fixme-rootfs
 fixme-rootfs:
 
@@ -1069,6 +1072,9 @@ support: all
 .PHONY: extra-support
 extra-support: all
 
+.PHONY: broken-support
+broken-support: all
+
 .PHONY: fixme-support
 fixme-support: all
 
@@ -1077,6 +1083,9 @@ log: all
 
 .PHONY: extra-log
 extra-log: all
+
+.PHONY: broken-log
+broken-log: all
 
 .PHONY: fixme-log
 fixme-log: all
@@ -1168,13 +1177,13 @@ ifneq ($(shell command -v zypper 2>/dev/null),)
 extra-support: opensuse-support
 
 .PHONY: opensuse-support
-fixme-support: support/x86_64-opensuse-leap-rootfs.txt
+broken-support: support/x86_64-opensuse-leap-rootfs.txt
 opensuse-support: support/x86_64-opensuse-tumbleweed-rootfs.txt
 
 extra-log: opensuse-log
 
 .PHONY: opensuse-log
-fixme-log: x86_64-opensuse-leap-rootfs.log
+broken-log: x86_64-opensuse-leap-rootfs.log
 opensuse-log: x86_64-opensuse-tumbleweed-rootfs.log
 endif
 

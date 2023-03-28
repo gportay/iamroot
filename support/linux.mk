@@ -767,11 +767,6 @@ $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpine,3.15))
 $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpine,3.16))
 $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpine,3.17))
 $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpine,edge))
-x86_64-alpine-3.14-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
-x86_64-alpine-3.15-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
-x86_64-alpine-3.16-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
-x86_64-alpine-3.17-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
-x86_64-alpine-edge-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 
 chroot-alpine-%: PATH = /usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin
 chroot-alpine-%: SHELL = /bin/sh

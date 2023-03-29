@@ -154,7 +154,7 @@ $(1)-$(2)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 
 $(eval $(call log,pacstrap,$(1)-$(2)-rootfs))
 
-$(if $(findstring $(1),x86_64), \
+$(if $(findstring x86_64,$(1)), \
 	$(eval $(call run,$(1),$(2))) \
 	$(eval $(call pacstrap-postrootfs,$(1),$(2))) \
 )
@@ -188,7 +188,7 @@ $(1)-$(2)-$(3)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 
 $(eval $(call log,debootstrap,$(1)-$(2)-$(3)-rootfs))
 
-$(if $(findstring $(1),x86_64), \
+$(if $(findstring x86_64,$(1)), \
 	$(eval $(call run,$(1),$(2)-$(3))) \
 	$(eval $(call debootstrap-postrootfs,$(1),$(2)-$(3))) \
 )
@@ -210,7 +210,7 @@ $(1)-$(2)-$(3)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 
 $(eval $(call log,dnf,$(1)-$(2)-$(3)-rootfs))
 
-$(if $(findstring $(1),x86_64), \
+$(if $(findstring x86_64,$(1)), \
 	$(eval $(call run,$(1),$(2)-$(3))) \
 	$(eval $(call dnf-postrootfs,$(1),$(2)-$(3))) \
 )
@@ -231,7 +231,7 @@ $(1)-$(2)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 
 $(eval $(call log,zypper,$(1)-$(2)-rootfs))
 
-$(if $(findstring $(1),x86_64), \
+$(if $(findstring x86_64,$(1)), \
 	$(eval $(call run,$(1),$(2))) \
 	$(eval $(call zypper-postrootfs,$(1),$(2))) \
 )

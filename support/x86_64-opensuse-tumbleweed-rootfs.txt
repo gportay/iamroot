@@ -1085,7 +1085,7 @@ Retrieving: ca-certificates [done]
 warning: /x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/ca-certificates: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-/sbin/update-ca-certificates: line 110: /dev/fd/63: No such file or directory
+/sbin/update-ca-certificates: line X: /dev/fd/X: No such file or directory
 
 Retrieving package ca-certificates-mozilla (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: ca-certificates-mozilla [done]
@@ -1093,7 +1093,7 @@ Retrieving: ca-certificates-mozilla [done]
 warning: /x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/ca-certificates-mozilla: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-/sbin/update-ca-certificates: line 110: /dev/fd/63: No such file or directory
+/sbin/update-ca-certificates: line X: /dev/fd/X: No such file or directory
 
 Retrieving package systemd-presets-branding-openSUSE (XXX/XXX), XXX.X KiB ( XXX.X   B unpacked)
 Retrieving: systemd-presets-branding-openSUSE [done]
@@ -1589,5 +1589,5 @@ Created symlink /etc/systemd/user/timers.target.wants/systemd-tmpfiles-clean.tim
 Created symlink /etc/systemd/user/basic.target.wants/systemd-tmpfiles-setup.service -> /usr/lib/systemd/user/systemd-tmpfiles-setup.service.
 
 rmdir: failed to remove 'var/lib/rpm': Directory not empty
-/usr/sbin/update-ca-certificates: line 110: /dev/fd/63: No such file or directory
+/usr/sbin/update-ca-certificates: line 112: /dev/fd/63: No such file or directory
 

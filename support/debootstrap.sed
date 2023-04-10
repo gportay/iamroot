@@ -54,7 +54,7 @@
 	#   Package libgcc-s1 is not installed.
 	/^dpkg: /,/^$/{
 		s,\([[:lower:][:digit:]+.-]\+\)_\([[:digit:]]\+:[[:alnum:].+~%-]\+\|[[:alnum:].+~%-]\+\)_\([[:lower:][:digit:]-]\+\)\.deb,\1,
-		s,\([[:lower:][:digit:]+.-]\+\)\s(>=\s\([[:digit:]]\+:[[:alnum:].+~%-]\+\|[[:alnum:].+~%-]\+\)),\1,
+		s,\([[:lower:][:digit:]+.-]\+\)\s(>\?=\s\([[:digit:]]\+:[[:alnum:].+~%-]\+\|[[:alnum:].+~%-]\+\)),\1,
 		s,\([[:lower:][:digit:]+.-]\+\):\([[:lower:][:digit:]]\+\),\1,
 	}
 

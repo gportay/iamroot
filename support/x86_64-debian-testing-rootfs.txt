@@ -930,7 +930,7 @@ dpkg: regarding .../e2fsprogs containing e2fsprogs, pre-dependency problem:
 
 dpkg: warning: ignoring pre-dependency problem!
 dpkg: regarding .../e2fsprogs containing e2fsprogs, pre-dependency problem:
- e2fsprogs pre-depends on libext2fs2 (= 1.46.6-1)
+ e2fsprogs pre-depends on libext2fs2
   libext2fs2 is not installed.
 
 dpkg: warning: ignoring pre-dependency problem!
@@ -1093,7 +1093,7 @@ dpkg: regarding .../libpam-modules containing libpam-modules, pre-dependency pro
 
 dpkg: warning: ignoring pre-dependency problem!
 dpkg: regarding .../libpam-modules containing libpam-modules, pre-dependency problem:
- libpam-modules pre-depends on libpam-modules-bin (= 1.5.2-6)
+ libpam-modules pre-depends on libpam-modules-bin
   libpam-modules-bin is not installed.
 
 dpkg: warning: ignoring pre-dependency problem!

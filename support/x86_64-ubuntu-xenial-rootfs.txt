@@ -1024,7 +1024,7 @@ Preparing to unpack .../e2fslibs ...
 Unpacking e2fslibs ...
 Selecting previously unselected package e2fsprogs.
 dpkg: regarding .../e2fsprogs containing e2fsprogs, pre-dependency problem:
- e2fsprogs pre-depends on e2fslibs (= 1.42.13-1ubuntu1)
+ e2fsprogs pre-depends on e2fslibs
   e2fslibs is unpacked, but has never been configured.
 
 dpkg: warning: ignoring pre-dependency problem!
@@ -1209,7 +1209,7 @@ dpkg: regarding .../libpam-modules containing libpam-modules, pre-dependency pro
 
 dpkg: warning: ignoring pre-dependency problem!
 dpkg: regarding .../libpam-modules containing libpam-modules, pre-dependency problem:
- libpam-modules pre-depends on libpam-modules-bin (= 1.1.8-3.2ubuntu2)
+ libpam-modules pre-depends on libpam-modules-bin
   libpam-modules-bin is not installed.
 
 dpkg: warning: ignoring pre-dependency problem!

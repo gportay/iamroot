@@ -1129,6 +1129,7 @@ Retrieving: pam.rpm [done]
 warning: /x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/pam.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
 FIXME: not-running /usr/bin/chkstat -n --set --system /usr/sbin/unix_chkpwd
 FIXME: not-running /usr/bin/chkstat -n --set --system /usr/sbin/unix2_chkpwd
 
@@ -1454,6 +1455,7 @@ warning: /x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86
 
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 warning: group systemd-journal does not exist - using root
+
 Creating group 'systemd-journal' with GID XXX.
 Creating group 'systemd-timesync' with GID XXX.
 Creating user 'systemd-timesync' (systemd Time Synchronization) with UID XXX and GID XXX.
@@ -1506,6 +1508,7 @@ Retrieving: util-linux.rpm [done]
 warning: /x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/util-linux.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+
 FIXME: not-running /usr/bin/chkstat -n --set --system /usr/bin/mount /usr/bin/umount
 FIXME: not-running /usr/bin/chkstat -n --set --system /usr/bin/su
 

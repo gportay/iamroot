@@ -279,7 +279,7 @@ int chroot(const char *path)
 		}
 	}
 
-	sanitize(buf, sizeof(buf));
+	path_sanitize(buf, sizeof(buf));
 
 	ret = setenv("PATH", getenv("IAMROOT_PATH") ?: _PATH_STDPATH, 1);
 	if (ret == -1) {

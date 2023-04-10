@@ -483,7 +483,7 @@ static int ignore(const char *path)
 	return !ret;
 }
 
-char *sanitize(char *path, size_t bufsize)
+char *path_sanitize(char *path, size_t bufsize)
 {
 	ssize_t len;
 
@@ -624,7 +624,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		_strncpy(buf, path, bufsize);
 	}
 
-	sanitize(buf, bufsize);
+	path_sanitize(buf, bufsize);
 
 	len = __strlen(root);
 	if (ignore(buf+len)) {

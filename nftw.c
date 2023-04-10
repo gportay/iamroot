@@ -27,8 +27,7 @@ int next_nftw(const char *path,
 	sym = dlsym(RTLD_NEXT, "nftw");
 	if (!sym) {
 		__dlperror(__func__);
-		errno = ENOSYS;
-		return -1;
+		return __set_errno(ENOSYS, -1);
 	}
 
 	ret = sym(path, fn, nopenfd, flags);

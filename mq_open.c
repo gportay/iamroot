@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Gaël PORTAY
+ * Copyright 2022-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -26,8 +26,7 @@ mqd_t next_mq_open(const char *path, int oflags, mode_t mode,
 	sym = dlsym(RTLD_NEXT, "mq_open");
 	if (!sym) {
 		__dlperror(__func__);
-		errno = ENOSYS;
-		return (mqd_t)-1;
+		return __set_errno(ENOSYS, (mqd_t)-1);
 	}
 
 	ret = sym(path, oflags, mode, attr);

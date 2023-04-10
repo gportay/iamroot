@@ -23,8 +23,7 @@ char *next_getcwd(char *buf, size_t size)
 	sym = dlsym(RTLD_NEXT, "getcwd");
 	if (!sym) {
 		__dlperror(__func__);
-		errno = ENOSYS;
-		return NULL;
+		return __set_errno(ENOSYS, NULL);
 	}
 
 	ret = sym(buf, size);

@@ -26,8 +26,7 @@ int __pathsetenv(const char *root, const char *name, const char *value,
 	(void)value;
 	(void)overwrite;
 
-	errno = ENOSYS;
-	return -1;
+	return __set_errno(ENOSYS, -1);
 }
 
 ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
@@ -39,6 +38,5 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 	(void)bufsize;
 	(void)atflags;
 
-	errno = ENOSYS;
-	return -1;
+	return __set_errno(ENOSYS, -1);
 }

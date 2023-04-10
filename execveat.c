@@ -27,8 +27,7 @@ int next_execveat(int dfd, const char *path, char * const argv[],
 	sym = dlsym(RTLD_NEXT, "execveat");
 	if (!sym) {
 		__dlperror(__func__);
-		errno = ENOSYS;
-		return -1;
+		return __set_errno(ENOSYS, -1);
 	}
 
 	ret = sym(dfd, path, argv, envp, atflags);
@@ -178,6 +177,5 @@ execveat:
 		return next_execveat(dfd, *nargv, nargv, __environ, atflags);
 	}
 
-	errno = EINVAL;
-	return -1;
+	return __set_errno(EINVAL, -1);
 }

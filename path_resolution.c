@@ -524,10 +524,8 @@ ssize_t fpath(int fd, char *buf, size_t bufsiz)
 {
 	ssize_t siz;
 
-	if (fd < 0) {
-		errno = EINVAL;
-		return -1;
-	}
+	if (fd < 0)
+		return __set_errno(EINVAL, -1);
 
 	siz = __procfdreadlink(fd, buf, bufsiz);
 	if (siz == -1)
@@ -546,10 +544,8 @@ char *__fpath(int fd)
 
 	*buf = 0;
 	siz = fpath(fd, buf, sizeof(buf));
-	if (siz == -1) {
-		errno = save_errno;
-		return NULL;
-	}
+	if (siz == -1)
+		return __set_errno(save_errno, NULL);
 
 	return buf;
 }
@@ -563,10 +559,8 @@ char *__fpath2(int fd)
 
 	*buf = 0;
 	siz = fpath(fd, buf, sizeof(buf));
-	if (siz == -1) {
-		errno = save_errno;
-		return NULL;
-	}
+	if (siz == -1)
+		return __set_errno(save_errno, NULL);
 
 	return buf;
 }
@@ -594,10 +588,8 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 	const char *root;
 	size_t len;
 
-	if (!path) {
-		errno = EINVAL;
-		return -1;
-	}
+	if (!path)
+		return __set_errno(EINVAL, -1);
 
 	/*
 	 * The files /proc/1/{cwd,root,exe} are readable by root only.

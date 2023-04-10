@@ -44,10 +44,8 @@ int __getcolor()
 {
 	const int save_errno = errno;
 
-	if (!isatty(__getdebug_fd())) {
-		errno = save_errno;
-		return 0;
-	}
+	if (!isatty(__getdebug_fd()))
+		return __set_errno(save_errno, 0);
 
 	return __getno_color() == 0;
 }

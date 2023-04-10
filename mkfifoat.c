@@ -29,8 +29,7 @@ int next_mkfifoat(int dfd, const char *path, mode_t mode)
 	sym = dlsym(RTLD_NEXT, "mkfifoat");
 	if (!sym) {
 		__dlperror(__func__);
-		errno = ENOSYS;
-		return -1;
+		return __set_errno(ENOSYS, -1);
 	}
 
 	ret = sym(dfd, path, mode);

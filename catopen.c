@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Gaël PORTAY
+ * Copyright 2022-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -24,8 +24,7 @@ nl_catd next_catopen(const char *path, int flag)
 	sym = dlsym(RTLD_NEXT, "catopen");
 	if (!sym) {
 		__dlperror(__func__);
-		errno = ENOSYS;
-		return (nl_catd)-1;
+		return __set_errno(ENOSYS, (nl_catd)-1);
 	}
 
 	ret = sym(path, flag);

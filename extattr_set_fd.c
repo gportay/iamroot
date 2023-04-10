@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Gaël PORTAY
+ * Copyright 2022-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -27,8 +27,7 @@ ssize_t next_extattr_set_fd(int fd, int attrnamespace, const char *attrname,
 	sym = dlsym(RTLD_NEXT, "extattr_set_fd");
 	if (!sym) {
 		__dlperror(__func__);
-		errno = ENOSYS;
-		return -1;
+		return __set_errno(ENOSYS, -1);
 	}
 
 	ret = sym(fd, attrnamespace, attrname, data, nbytes);

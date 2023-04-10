@@ -39,8 +39,7 @@ int _snprintf(char *buf, size_t bufsize, const char *fmt, ...)
 	if ((size_t)ret < bufsize)
 		return ret;
 
-	errno = ENOSPC;
-	return -1;
+	return __set_errno(ENOSPC, -1);
 }
 
 __attribute__((visibility("hidden")))
@@ -227,10 +226,8 @@ char *__striprootdir(char *path)
 	size_t len, size;
 	char *ret;
 
-	if (!path || !*path) {
-		errno = EINVAL;
-		return NULL;
-	}
+	if (!path || !*path)
+		return __set_errno(EINVAL, NULL);
 
 	root = __getrootdir();
 	if (__streq(root, "/"))

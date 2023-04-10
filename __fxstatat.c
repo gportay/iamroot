@@ -31,8 +31,7 @@ int next___fxstatat(int ver, int dfd, const char *path, struct stat *statbuf,
 	sym = dlsym(RTLD_NEXT, "__fxstatat");
 	if (!sym) {
 		__dlperror(__func__);
-		errno = ENOSYS;
-		return -1;
+		return __set_errno(ENOSYS, -1);
 	}
 
 	ret = sym(ver, dfd, path, statbuf, atflags);

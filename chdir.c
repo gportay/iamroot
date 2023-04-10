@@ -23,8 +23,7 @@ int next_chdir(const char *path)
 	sym = dlsym(RTLD_NEXT, "chdir");
 	if (!sym) {
 		__dlperror(__func__);
-		errno = ENOSYS;
-		return -1;
+		return __set_errno(ENOSYS, -1);
 	}
 
 	ret = sym(path);

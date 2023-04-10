@@ -32,8 +32,7 @@ int next_statx(int dfd, const char *path, int atflags, unsigned int mask,
 	sym = dlsym(RTLD_NEXT, "statx");
 	if (!sym) {
 		__dlperror(__func__);
-		errno = ENOSYS;
-		return -1;
+		return __set_errno(ENOSYS, -1);
 	}
 
 	ret = sym(dfd, path, atflags, mask, statxbuf);

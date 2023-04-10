@@ -37,8 +37,7 @@ int next_fanotify_mark(int fanotify_fd, unsigned int flags, unsigned long mask,
 	sym = dlsym(RTLD_NEXT, "fanotify_mark");
 	if (!sym) {
 		__dlperror(__func__);
-		errno = ENOSYS;
-		return -1;
+		return __set_errno(ENOSYS, -1);
 	}
 
 	ret = sym(fanotify_fd, flags, mask, dfd, path);

@@ -82,10 +82,8 @@ int __pathprependenv(const char *name, const char *value, int overwrite)
 	char *newval, *oldval;
 	char buf[PATH_MAX];
 
-	if (!name || !value) {
-		errno = EINVAL;
-		return -1;
-	}
+	if (!name || !value)
+		return __set_errno(EINVAL, -1);
 
 	newval = __strncpy(buf, value);
 	oldval = getenv(name);
@@ -104,10 +102,8 @@ int __pathappendenv(const char *name, const char *value, int overwrite)
 	char *newval, *oldval;
 	char buf[PATH_MAX];
 
-	if (!name || !value) {
-		errno = EINVAL;
-		return -1;
-	}
+	if (!name || !value)
+		return __set_errno(EINVAL, -1);
 
 	oldval = getenv(name);
 	if (!oldval)
@@ -128,10 +124,8 @@ int __pathsetenv(const char *root, const char *name, const char *value,
 {
 	size_t rootlen, vallen, newlen;
 
-	if (!name || !value) {
-		errno = EINVAL;
-		return -1;
-	}
+	if (!name || !value)
+		return __set_errno(EINVAL, -1);
 
 	if (!root)
 		goto setenv;
@@ -166,10 +160,8 @@ int __pathsetenv(const char *root, const char *name, const char *value,
 			int n;
 
 			n = _snprintf(str, newlen, "%s%s", root, token);
-			if ((n == -1) || (newlen < (size_t)n)) {
-				errno = EOVERFLOW;
-				return -1;
-			}
+			if ((n == -1) || (newlen < (size_t)n))
+				return __set_errno(EOVERFLOW, -1);
 			str += n;
 			newlen -= n;
 			while ((token = strtok_r(NULL, ":", &saveptr))) {
@@ -223,10 +215,8 @@ static int __strtok(const char *str, const char *delim,
 {
 	size_t len;
 
-	if (!str || !callback) {
-		errno = EINVAL;
-		return -1;
-	}
+	if (!str || !callback)
+		return __set_errno(EINVAL, -1);
 
 	len = __strlen(str);
 	if (len > 0) {
@@ -346,10 +336,8 @@ static int __ld_linux_version(const char *path, int *major, int *minor)
 
 	basename = __basename(buf);
 	ret = sscanf(basename, "ld-%i.%i.so", major, minor);
-	if (ret < 2) {
-		errno = ENOTSUP;
-		return -1;
-	}
+	if (ret < 2)
+		return __set_errno(ENOTSUP, -1);
 
 	return 0;
 }
@@ -435,8 +423,7 @@ static ssize_t __getinterp32(int fd, Elf32_Ehdr *ehdr, char *buf,
 		if (ret == -1) {
 			goto exit;
 		} else if ((size_t)ret < sizeof(phdr)) {
-			errno = EIO;
-			ret = -1;
+			ret = __set_errno(EIO, -1);
 			goto exit;
 		}
 
@@ -447,8 +434,7 @@ static ssize_t __getinterp32(int fd, Elf32_Ehdr *ehdr, char *buf,
 			continue;
 
 		if (bufsize < phdr.p_filesz) {
-			errno = EIO;
-			ret = -1;
+			ret = __set_errno(EIO, -1);
 			goto exit;
 		}
 
@@ -457,8 +443,7 @@ static ssize_t __getinterp32(int fd, Elf32_Ehdr *ehdr, char *buf,
 		if (ret == -1) {
 			goto exit;
 		} else if ((size_t)ret < phdr.p_filesz) {
-			errno = EIO;
-			ret = -1;
+			ret = __set_errno(EIO, -1);
 			goto exit;
 		}
 
@@ -466,8 +451,7 @@ static ssize_t __getinterp32(int fd, Elf32_Ehdr *ehdr, char *buf,
 		goto exit;
 	}
 
-	errno = ENOEXEC;
-	ret = -1;
+	ret = __set_errno(ENOEXEC, -1);
 
 exit:
 	return ret;
@@ -490,8 +474,7 @@ static ssize_t __getinterp64(int fd, Elf64_Ehdr *ehdr, char *buf,
 		if (ret == -1) {
 			goto exit;
 		} else if ((size_t)ret < sizeof(phdr)) {
-			errno = EIO;
-			ret = -1;
+			ret = __set_errno(EIO, -1);
 			goto exit;
 		}
 
@@ -502,8 +485,7 @@ static ssize_t __getinterp64(int fd, Elf64_Ehdr *ehdr, char *buf,
 			continue;
 
 		if (bufsize < phdr.p_filesz) {
-			errno = EIO;
-			ret = -1;
+			ret = __set_errno(EIO, -1);
 			goto exit;
 		}
 
@@ -512,8 +494,7 @@ static ssize_t __getinterp64(int fd, Elf64_Ehdr *ehdr, char *buf,
 		if (ret == -1) {
 			goto exit;
 		} else if ((size_t)ret < phdr.p_filesz) {
-			errno = EIO;
-			ret = -1;
+			ret = __set_errno(EIO, -1);
 			goto exit;
 		}
 
@@ -521,8 +502,7 @@ static ssize_t __getinterp64(int fd, Elf64_Ehdr *ehdr, char *buf,
 		goto exit;
 	}
 
-	errno = ENOEXEC;
-	ret = -1;
+	ret = __set_errno(ENOEXEC, -1);
 
 exit:
 	return ret;
@@ -539,10 +519,8 @@ static int __dl_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
 	int i, num;
 	off_t off;
 
-	if (!callback) {
-		errno = EINVAL;
-		return -1;
-	}
+	if (!callback)
+		ret = __set_errno(EINVAL, -1);
 
 	/* Look for the .shstrtab section */
 	off = ehdr->e_shoff;
@@ -554,7 +532,7 @@ static int __dl_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
 		if (siz == -1) {
 			goto exit;
 		} else if ((size_t)siz < sizeof(shdr)) {
-			errno = EIO;
+			__set_errno(EIO, -1);
 			goto exit;
 		}
 
@@ -586,7 +564,7 @@ static int __dl_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
 		if (siz == -1) {
 			goto exit;
 		} else if ((size_t)siz < sizeof(phdr)) {
-			errno = EIO;
+			__set_errno(EIO, -1);
 			goto exit;
 		}
 
@@ -597,7 +575,7 @@ static int __dl_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
 			continue;
 
 		if (sizeof(dyn) < phdr.p_filesz) {
-			errno = EIO;
+			__set_errno(EIO, -1);
 			goto exit;
 		}
 
@@ -606,7 +584,7 @@ static int __dl_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
 		if (siz == -1) {
 			goto exit;
 		} else if ((size_t)siz < phdr.p_filesz) {
-			errno = EIO;
+			__set_errno(EIO, -1);
 			goto exit;
 		}
 
@@ -629,7 +607,7 @@ static int __dl_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
 			if (siz == -1) {
 				goto exit;
 			} else if ((size_t)siz < size) {
-				errno = EIO;
+				__set_errno(EIO, -1);
 				goto exit;
 			}
 
@@ -656,10 +634,8 @@ static int __dl_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
 	int i, num;
 	off_t off;
 
-	if (!callback) {
-		errno = EINVAL;
-		return -1;
-	}
+	if (!callback)
+		ret = __set_errno(EINVAL, -1);
 
 	/* Look for the .shstrtab section */
 	off = ehdr->e_shoff;
@@ -671,7 +647,7 @@ static int __dl_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
 		if (siz == -1) {
 			goto exit;
 		} else if ((size_t)siz < sizeof(shdr)) {
-			errno = EIO;
+			__set_errno(EIO, -1);
 			goto exit;
 		}
 
@@ -703,7 +679,7 @@ static int __dl_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
 		if (siz == -1) {
 			goto exit;
 		} else if ((size_t)siz < sizeof(phdr)) {
-			errno = EIO;
+			__set_errno(EIO, -1);
 			goto exit;
 		}
 
@@ -714,7 +690,7 @@ static int __dl_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
 			continue;
 
 		if (sizeof(dyn) < phdr.p_filesz) {
-			errno = EIO;
+			__set_errno(EIO, -1);
 			goto exit;
 		}
 
@@ -723,7 +699,7 @@ static int __dl_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
 		if (siz == -1) {
 			goto exit;
 		} else if ((size_t)siz < phdr.p_filesz) {
-			errno = EIO;
+			__set_errno(EIO, -1);
 			goto exit;
 		}
 
@@ -746,7 +722,7 @@ static int __dl_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
 			if (siz == -1) {
 				goto exit;
 			} else if ((size_t)siz < size) {
-				errno = EIO;
+				__set_errno(EIO, -1);
 				goto exit;
 			}
 
@@ -777,19 +753,19 @@ static int __dl_iterate_shared_object(const char *path, int dt_tag,
 	if (siz == -1) {
 		goto close;
 	} else if ((size_t)siz < sizeof(ehdr)) {
-		errno = EIO;
+		__set_errno(EIO, -1);
 		goto close;
 	}
 
 	/* Not an ELF */
 	if (memcmp(ehdr.e_ident, ELFMAG, 4) != 0) {
-		errno = ENOEXEC;
+		__set_errno(ENOEXEC, -1);
 		goto close;
 	}
 
 	/* Not a linked program or shared object */
 	if ((ehdr.e_type != ET_EXEC) && (ehdr.e_type != ET_DYN)) {
-		errno = ENOEXEC;
+		__set_errno(ENOEXEC, -1);
 		goto close;
 	}
 
@@ -803,7 +779,7 @@ static int __dl_iterate_shared_object(const char *path, int dt_tag,
 					  callback, data);
 	/* It is an invalid ELF */
 	else
-		errno = ENOEXEC;
+		__set_errno(ENOEXEC, -1);
 
 close:
 	__close(fd);
@@ -826,19 +802,19 @@ ssize_t __getinterp(const char *path, char *buf, size_t bufsize)
 	if (siz == -1) {
 		goto close;
 	} else if ((size_t)siz < sizeof(ehdr)) {
-		errno = EIO;
+		__set_errno(EIO, -1);
 		goto close;
 	}
 
 	/* Not an ELF */
 	if (memcmp(ehdr.e_ident, ELFMAG, 4) != 0) {
-		errno = ENOEXEC;
+		__set_errno(ENOEXEC, -1);
 		goto close;
 	}
 
 	/* Not a linked program or shared object */
 	if ((ehdr.e_type != ET_EXEC) && (ehdr.e_type != ET_DYN)) {
-		errno = ENOEXEC;
+		__set_errno(ENOEXEC, -1);
 		goto close;
 	}
 
@@ -850,7 +826,7 @@ ssize_t __getinterp(const char *path, char *buf, size_t bufsize)
 		ret = __getinterp64(fd, (Elf64_Ehdr *)&ehdr, buf, bufsize);
 	/* It is an invalid ELF */
 	else
-		errno = ENOEXEC;
+		__set_errno(ENOEXEC, -1);
 
 close:
 	__close(fd);
@@ -877,8 +853,7 @@ ssize_t __gethashbang(const char *path, char *buf, size_t bufsize)
 
 	/* Not an hashbang interpreter directive */
 	if ((ret < 2) || (buf[0] != '#') || (buf[1] != '!')) {
-		errno = ENOEXEC;
-		ret = -1;
+		ret = __set_errno(ENOEXEC, -1);
 		goto close;
 	}
 
@@ -1007,8 +982,7 @@ int next_execve(const char *path, char * const argv[], char * const envp[])
 	sym = dlsym(RTLD_NEXT, "execve");
 	if (!sym) {
 		__dlperror(__func__);
-		errno = ENOSYS;
-		return -1;
+		ret = __set_errno(ENOSYS, -1);
 	}
 
 	ret = sym(path, argv, envp);
@@ -1313,15 +1287,11 @@ static int __path_callback(const void *data, size_t size, void *user)
 	char *needed = (char *)user;
 	(void)size;
 
-	if (!path) {
-		errno = EINVAL;
-		return -1;
-	}
+	if (!path)
+		return __set_errno(EINVAL, -1);
 
-	if (!user) {
-		errno = EINVAL;
-		return -1;
-	}
+	if (!user)
+		return __set_errno(EINVAL, -1);
 
 	if (*needed)
 		_strncat(needed, ":", PATH_MAX);
@@ -1505,10 +1475,8 @@ int __loader(const char *path, char * const argv[], char *interp,
 		basename = __basename(buf);
 		ret = sscanf(basename, "ld-%" __xstr(NAME_MAX) "[^.].so.%i",
 			     ldso, &abi);
-		if (ret < 2) {
-			errno = ENOTSUP;
-			return -1;
-		}
+		if (ret < 2)
+			return __set_errno(ENOTSUP, -1);
 
 		/*
 		 * the glibc world supports --argv0 since 2.33, --preload since
@@ -1679,10 +1647,8 @@ int __loader(const char *path, char * const argv[], char *interp,
 		basename = __basename(buf);
 		ret = sscanf(basename, "ld-%" __xstr(NAME_MAX) "[^.].so.%i",
 			     ldso, &abi);
-		if (ret < 2) {
-			errno = ENOTSUP;
-			return -1;
-		}
+		if (ret < 2)
+			return __set_errno(ENOTSUP, -1);
 
 		siz = path_resolution(AT_FDCWD, buf, interp, interpsiz, 0);
 		if (siz == -1)
@@ -1940,6 +1906,5 @@ execve:
 		return next_execve(*nargv, nargv, __environ);
 	}
 
-	errno = EINVAL;
-	return -1;
+	return __set_errno(EINVAL, -1);
 }

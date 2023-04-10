@@ -26,8 +26,7 @@ void *next_dlmopen(Lmid_t lmid, const char *path, int flags)
 	sym = dlsym(RTLD_NEXT, "dlmopen");
 	if (!sym) {
 		__dlperror(__func__);
-		errno = ENOSYS;
-		return NULL;
+		return __set_errno(ENOSYS, NULL);
 	}
 
 	ret = sym(lmid, path, flags);

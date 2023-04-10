@@ -29,8 +29,7 @@ int next_fchmodat(int dfd, const char *path, mode_t mode, int atflags)
 	sym = dlsym(RTLD_NEXT, "fchmodat");
 	if (!sym) {
 		__dlperror(__func__);
-		errno = ENOSYS;
-		return -1;
+		return __set_errno(ENOSYS, -1);
 	}
 
 	ret = sym(dfd, path, mode, atflags);
@@ -62,10 +61,8 @@ int fchmodat(int dfd, const char *path, mode_t mode, int atflags)
 	ret = next_fchmodat(dfd, buf, mode, atflags);
 	__ignore_error_and_warn(ret, dfd, path, atflags);
 	/* Force ignoring EPERM error if not chroot'ed */
-	if ((ret == -1) && (errno == EPERM)) {
-		ret = 0;
-		errno = 0;
-	}
+	if ((ret == -1) && (errno == EPERM))
+		ret = __set_errno(0, 0);
 	__set_mode(buf, oldmode, mode);
 
 	return ret;

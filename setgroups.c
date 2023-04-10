@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Gaël PORTAY
+ * Copyright 2022-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -24,8 +24,7 @@ int next_setgroups(size_t listsize, gid_t list[])
 	sym = dlsym(RTLD_NEXT, "next_setgroups");
 	if (!sym) {
 		__dlperror(__func__);
-		errno = ENOSYS;
-		return -1;
+		return __set_errno(ENOSYS, -1);
 	}
 
 	ret = sym(listsize, list);
@@ -47,10 +46,8 @@ int setgroups(size_t listsize, const gid_t *list)
 	if (listsize == 0)
 		return unsetenv("IAMROOT_GROUPS");
 
-	if (listsize > NGROUPS_MAX || !list) {
-		errno = EINVAL;
-		return -1;
-	}
+	if (listsize > NGROUPS_MAX || !list)
+		return __set_errno(EINVAL, -1);
 
 	size = 0;
 	for (i = 0; i < listsize; i++) {

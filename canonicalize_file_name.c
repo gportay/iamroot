@@ -23,8 +23,7 @@ char *next_canonicalize_file_name(const char *path)
 	sym = dlsym(RTLD_NEXT, "canonicalize_file_name");
 	if (!sym) {
 		__dlperror(__func__);
-		errno = ENOSYS;
-		return NULL;
+		return __set_errno(ENOSYS, NULL);
 	}
 
 	ret = sym(path);

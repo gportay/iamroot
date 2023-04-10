@@ -23,8 +23,7 @@ ssize_t next_readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 	sym = dlsym(RTLD_NEXT, "readlinkat");
 	if (!sym) {
 		__dlperror(__func__);
-		errno = ENOSYS;
-		return -1;
+		return __set_errno(ENOSYS, -1);
 	}
 
 	ret = sym(dfd, path, buf, bufsize);

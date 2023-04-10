@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -11,6 +11,8 @@
 #include <getopt.h>
 
 #include <sys/mount.h>
+
+#include "iamroot.h"
 
 #ifdef __linux__
 struct options {
@@ -46,8 +48,7 @@ static int getoptions(struct options *opts, int argc, char * const argv[])
 			break;
 
 		default:
-			errno = EINVAL;
-			return -1;
+			return __set_errno(EINVAL, -1);
 		}
 	}
 

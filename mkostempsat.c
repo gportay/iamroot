@@ -25,8 +25,7 @@ int next_mkostempsat(int dfd, char *path, int suffixlen, int oflags)
 	sym = dlsym(RTLD_NEXT, "mkostempsat");
 	if (!sym) {
 		__dlperror(__func__);
-		errno = ENOSYS;
-		return -1;
+		return __set_errno(ENOSYS, -1);
 	}
 
 	ret = sym(dfd, path, suffixlen, oflags);

@@ -30,10 +30,8 @@ static int __id_callback(const char *id, void *user)
 	if (errno)
 		return -1;
 
-	if (groups->listsize > 0 && !(groups->size < groups->listsize)) {
-		errno = EINVAL;
-		return -1;
-	}
+	if (groups->listsize > 0 && !(groups->size < groups->listsize))
+		return __set_errno(EINVAL, -1);
 
 	if (groups->list && groups->size < groups->listsize)
 		groups->list[groups->size] = ul;
@@ -51,8 +49,7 @@ int next_getgroups(int listsize, gid_t list[])
 	sym = dlsym(RTLD_NEXT, "next_getgroups");
 	if (!sym) {
 		__dlperror(__func__);
-		errno = ENOSYS;
-		return -1;
+		return __set_errno(ENOSYS, -1);
 	}
 
 	ret = sym(listsize, list);
@@ -72,10 +69,8 @@ int getgroups(int listsize, gid_t list[])
 	const char *val;
 	int ret;
 
-	if (listsize && !list) {
-		errno = EINVAL;
-		return -1;
-	}
+	if (listsize && !list)
+		return __set_errno(EINVAL, -1);
 
 	val = getenv("IAMROOT_GROUPS") ?: "0";
 	ret = __path_iterate(val, __id_callback, &groups);

@@ -24,8 +24,7 @@ int next_fchownat(int dfd, const char *path, uid_t owner, gid_t group,
 	sym = dlsym(RTLD_NEXT, "fchownat");
 	if (!sym) {
 		__dlperror(__func__);
-		errno = ENOSYS;
-		return -1;
+		return __set_errno(ENOSYS, -1);
 	}
 
 	ret = sym(dfd, path, owner, group, atflags);
@@ -59,10 +58,8 @@ int fchownat(int dfd, const char *path, uid_t owner, gid_t group, int atflags)
 	ret = next_fchownat(dfd, buf, owner, group, atflags);
 	__ignore_error_and_warn(ret, dfd, path, atflags);
 	/* Force ignoring EPERM error if not chroot'ed */
-	if ((ret == -1) && (errno == EPERM)) {
-		ret = 0;
-		errno = 0;
-	}
+	if ((ret == -1) && (errno == EPERM))
+		ret = __set_errno(0, 0);
 	__set_uid(buf, oldowner, owner);
 	__set_gid(buf, oldgroup, group);
 

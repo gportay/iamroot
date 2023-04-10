@@ -173,9 +173,12 @@ char *__getroot()
 
 static inline int __setrootdir(const char *path)
 {
-	if (!path)
+	if (!path) {
+		__info("Exiting chroot: '%s'\n", __getrootdir());
 		return unsetenv("IAMROOT_ROOT");
+	}
 
+	__info("Enterring chroot: '%s'\n", path);
 	return setenv("IAMROOT_ROOT", path, 1);
 }
 
@@ -204,10 +207,8 @@ int __chrootdir(const char *cwd)
 		return -1;
 
 	root = __getrootdir();
-	if (__strlcmp(cwd, root) != 0) {
-		__info("Exiting chroot: '%s'\n", root);
-		return unsetenv("IAMROOT_ROOT");
-	}
+	if (__strlcmp(cwd, root) != 0)
+		return __setrootdir(NULL);
 
 	return 0;
 }
@@ -270,7 +271,6 @@ int chroot(const char *path)
 		return -1;
 	}
 
-	__info("Enterring chroot: '%s'\n", buf);
 	__debug("%s(path: '%s' -> '%s')\n", __func__, path, buf);
 
 	return 0;

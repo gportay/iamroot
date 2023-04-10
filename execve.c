@@ -1018,7 +1018,7 @@ int next_execve(const char *path, char * const argv[], char * const envp[])
 	return ret;
 }
 
-static void __sanitize(char *name, int upper)
+static void __env_sanitize(char *name, int upper)
 {
 	char *c;
 
@@ -1043,7 +1043,7 @@ static char *__getlibiamroot(const char *ldso, int abi)
 	n = _snprintf(buf, sizeof(buf), "IAMROOT_LIB_%s_%i", ldso, abi);
 	if (n == -1)
 		return NULL;
-	__sanitize(buf, 1);
+	__env_sanitize(buf, 1);
 
 	ret = getenv(buf);
 	if (ret)
@@ -1144,7 +1144,7 @@ static char *__getld_preload(const char *ldso, int abi)
 	n = _snprintf(buf, sizeof(buf), "IAMROOT_LD_PRELOAD_%s_%i", ldso, abi);
 	if (n == -1)
 		return NULL;
-	__sanitize(buf, 1);
+	__env_sanitize(buf, 1);
 
 	ret = getenv(buf);
 	if (ret)
@@ -1191,7 +1191,7 @@ static char *__getld_library_path(const char *ldso, int abi)
 		      abi);
 	if (n == -1)
 		return NULL;
-	__sanitize(buf, 1);
+	__env_sanitize(buf, 1);
 
 	ret = getenv(buf);
 	if (ret)

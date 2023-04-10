@@ -639,6 +639,8 @@ static int __dl_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
 		}
 	}
 
+	ret = 0;
+
 exit:
 	return ret;
 }
@@ -753,6 +755,8 @@ static int __dl_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
 				break;
 		}
 	}
+
+	ret = 0;
 
 exit:
 	return ret;

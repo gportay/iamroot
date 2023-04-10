@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Gaël PORTAY
+ * Copyright 2022-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -43,7 +43,7 @@ static int __dl_iterate_phdr_callback(struct dl_phdr_info *info, size_t size,
 	char buf[PATH_MAX];
 
 	__strncpy(buf, info->dlpi_name);
-	striprootdir(buf);
+	__striprootdir(buf);
 
 	__debug("%s(info: %p { .info->dlpi_name: '%s' -> '%s'}, ...)\n",
 		__func__, info, info->dlpi_name, buf);

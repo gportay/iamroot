@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021,2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -35,7 +35,7 @@ int running_in_chroot(void)
 {
 	__debug("%s()\n", __func__);
 
-	if (inchroot())
+	if (__inchroot())
 		return 1;
 
 	return next_running_in_chroot();

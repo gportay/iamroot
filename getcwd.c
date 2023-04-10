@@ -44,7 +44,7 @@ char *getcwd(char *buf, size_t size)
 		return NULL;
 	}
 
-	ret = striprootdir(ret);
+	ret = __striprootdir(ret);
 	if (!ret) {
 		__pathperror(buf, __func__);
 		return NULL;

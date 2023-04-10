@@ -143,26 +143,26 @@ static inline const char *__arch()
 #endif
 }
 
-int fissymlinkat(int, const char *, int);
-int fissymlink(int);
-int issymlink(const char *);
-int fisdirectoryat(int, const char *, int);
-int fisdirectory(int);
-int isdirectory(const char *);
-int fisfileat(int, const char *, int);
-int fisfile(int);
-int isfile(const char *);
-int pathprependenv(const char *, const char *, int);
-int pathsetenv(const char *, const char *, const char *, int);
+int __fissymlinkat(int, const char *, int);
+int __fissymlink(int);
+int __issymlink(const char *);
+int __fisdirectoryat(int, const char *, int);
+int __fisdirectory(int);
+int __isdirectory(const char *);
+int __fisfileat(int, const char *, int);
+int __fisfile(int);
+int __isfile(const char *);
+int __pathprependenv(const char *, const char *, int);
+int __pathsetenv(const char *, const char *, const char *, int);
 
 int __execve(const char *, char * const [], char * const []);
-int exec_ignored(const char *);
+int __exec_ignored(const char *);
 int __ld_linux_has_inhibit_cache_option(const char *);
 int __ld_linux_has_argv0_option(const char *);
 int __ld_linux_has_preload_option(const char *);
-int issuid(const char *);
-ssize_t getinterp(const char *, char *, size_t);
-ssize_t gethashbang(const char *, char *, size_t);
+int __issuid(const char *);
+ssize_t __getinterp(const char *, char *, size_t);
+ssize_t __gethashbang(const char *, char *, size_t);
 char *__ld_preload(const char *, int);
 char *__ld_library_path(const char *, int);
 char *__rpath(const char *);
@@ -174,13 +174,13 @@ int __exec_sh(const char *, char * const *, char **, char *, size_t);
 int __hashbang(const char *, char * const [], char *, size_t, char *[]);
 
 char *__basename(char *);
-char *path_sanitize(char *, size_t);
+char *__path_sanitize(char *, size_t);
 ssize_t fpath(int, char *, size_t);
-int path_ignored(int, const char *);
+int __path_ignored(int, const char *);
 ssize_t path_resolution(int, const char *, char *, size_t, int);
 char *__getpath(int, const char *, int);
-ssize_t path_access(const char *, int, const char *, char *, size_t);
-int path_iterate(const char *, int (*)(const char *, void *), void *);
+ssize_t __path_access(const char *, int, const char *, char *, size_t);
+int __path_iterate(const char *, int (*)(const char *, void *), void *);
 
 void __procfdname(char *, unsigned);
 ssize_t __procfdreadlink(int, char *, size_t);
@@ -188,10 +188,10 @@ ssize_t __procfdreadlink(int, char *, size_t);
 char *__getroot();
 const char *__getexe();
 
-const char *getrootdir();
-int chrootdir(const char *);
-int inchroot();
-char *striprootdir(char *);
+const char *__getrootdir();
+int __chrootdir(const char *);
+int __inchroot();
+char *__striprootdir(char *);
 
 int __getcolor();
 
@@ -208,13 +208,13 @@ int __verbosef(int, const char *, const char *, ...) __attribute__((format(print
 #define __info(fmt, ...) __verbosef(2, __func__, fmt, __VA_ARGS__)
 #define __notice(fmt, ...) __verbosef(1, __func__, fmt, __VA_ARGS__)
 #define __warning(fmt, ...) __verbosef(0, __func__, fmt, __VA_ARGS__)
-void verbose_exec(const char *, char * const[], char * const[]);
+void __verbose_exec(const char *, char * const[], char * const[]);
 #else
 #define __debug(fmt, ...)
 #define __info(fmt, ...)
 #define __notice(fmt, ...)
 #define __warning(fmt, ...)
-#define verbose_exec(fmt, ...)
+#define __verbose_exec(fmt, ...)
 #endif
 
 #define __remove_at_empty_path_if_needed(path, flags) \
@@ -237,7 +237,7 @@ void verbose_exec(const char *, char * const[], char * const[]);
 	   } })
 
 #define __fwarn_if_insuffisant_user_modeat(fd, path, mode, flags) \
-	({ if (fisdirectoryat(fd, path, flags) > 0) { \
+	({ if (__fisdirectoryat(fd, path, flags) > 0) { \
 	     __fwarn_and_set_user_modeat(fd, path, mode, flags, 0700); \
 	   } else { \
 	     __fwarn_and_set_user_modeat(fd, path, mode, flags, 0600); \
@@ -258,7 +258,7 @@ void verbose_exec(const char *, char * const[], char * const[]);
 	   } })
 
 #define __warn_if_insuffisant_user_mode(path, mode) \
-	({ if (isdirectory(path) > 0) { \
+	({ if (__isdirectory(path) > 0) { \
 	     __warn_and_set_user_mode(path, mode, 0700); \
 	   } else { \
 	     __warn_and_set_user_mode(path, mode, 0600); \
@@ -467,7 +467,7 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 #define __ignored_error(rc) ((rc == -1) && (errno == EPERM))
 
 #define __ignore_error_and_warn(rc, fd, path, flags) \
-	({ if (__ignored_error(rc) && (path_ignored(fd, path) > 0)) { \
+	({ if (__ignored_error(rc) && (__path_ignored(fd, path) > 0)) { \
 	     __warning("%s: %s: Ignoring error '%m'!\n", __func__, __getpath(fd, path, flags)); \
 	     rc = 0; \
 	     errno = 0; \

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -74,7 +74,7 @@ int posix_spawn(pid_t *pid, const char *path,
 	ssize_t siz;
 
 	/* Run exec.sh script */
-	if (exec_ignored(path))
+	if (__exec_ignored(path))
 		goto exec_sh;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
@@ -95,15 +95,15 @@ int posix_spawn(pid_t *pid, const char *path,
 	 * standard search directories and only if they have set-user-ID mode
 	 * bit enabled (which is not typical).
 	 */
-	ret = issuid(buf);
+	ret = __issuid(buf);
 	if (ret == -1)
 		return -1;
 	else if (ret)
 		goto exec_sh;
 
 	/* Do not proceed to any hack if not in chroot */
-	if (!inchroot()) {
-		verbose_exec(path, argv, envp);
+	if (!__inchroot()) {
+		__verbose_exec(path, argv, envp);
 		return next_posix_spawn(pid, path, file_actions, attrp, argv,
 					envp);
 	}
@@ -137,7 +137,7 @@ loader:
 	if ((__strncmp(path, "/usr/bin/ld.so") == 0) ||
 	    (__strncmp(path, "/lib/ld") == 0) ||
 	    (__strncmp(path, "/lib64/ld") == 0)) {
-		verbose_exec(buf, argv, envp);
+		__verbose_exec(buf, argv, envp);
 		return next_posix_spawn(pid, buf, file_actions, attrp, argv,
 					envp);
 	}
@@ -179,7 +179,7 @@ posix_spawn:
 			*narg++ = *arg++;
 		*narg++ = NULL; /* NULL-terminated */
 
-		verbose_exec(*nargv, nargv, __environ);
+		__verbose_exec(*nargv, nargv, __environ);
 		return next_posix_spawn(pid, *nargv, file_actions, attrp,
 					nargv, __environ);
 	}

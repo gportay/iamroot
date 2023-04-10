@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -45,7 +45,7 @@ char *getwd(char *buf)
 		return NULL;
 	}
 
-	ret = striprootdir(ret);
+	ret = __striprootdir(ret);
 	if (!ret) {
 		__pathperror(buf, __func__);
 		return NULL;

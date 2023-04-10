@@ -41,7 +41,7 @@ ssize_t readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 	ssize_t ret, siz;
 	size_t len;
 
-	root = getrootdir();
+	root = __getrootdir();
 	len = __strlen(root);
 
 	if (__streq(path, "/proc/self/root")) {
@@ -84,7 +84,7 @@ ssize_t readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 	if (strncmp(root, "/", ret) == 0)
 		goto exit;
 
-	if (__strlcmp(buf, getrootdir()) != 0)
+	if (__strlcmp(buf, __getrootdir()) != 0)
 		goto exit;
 
 	memmove(buf, buf+len, strnlen(buf, bufsize)-len+1); /* NULL-terminated */

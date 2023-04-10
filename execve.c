@@ -77,7 +77,7 @@ char *__basename(char *path)
 }
 
 __attribute__((visibility("hidden")))
-int pathprependenv(const char *name, const char *value, int overwrite)
+int __pathprependenv(const char *name, const char *value, int overwrite)
 {
 	char *newval, *oldval;
 	char buf[PATH_MAX];
@@ -99,7 +99,7 @@ int pathprependenv(const char *name, const char *value, int overwrite)
 }
 
 __attribute__((visibility("hidden")))
-int pathappendenv(const char *name, const char *value, int overwrite)
+int __pathappendenv(const char *name, const char *value, int overwrite)
 {
 	char *newval, *oldval;
 	char buf[PATH_MAX];
@@ -123,8 +123,8 @@ int pathappendenv(const char *name, const char *value, int overwrite)
 	return setenv(name, newval, overwrite);
 }
 
-int pathsetenv(const char *root, const char *name, const char *value,
-	       int overwrite)
+int __pathsetenv(const char *root, const char *name, const char *value,
+		 int overwrite)
 {
 	size_t rootlen, vallen, newlen;
 
@@ -201,8 +201,8 @@ static int __librarypath_callback(const char *library, void *user)
 		return 0;
 
 	if (*library != '/') {
-		siz = path_access(library, F_OK, library_path, buf,
-				  sizeof(buf));
+		siz = __path_access(library, F_OK, library_path, buf,
+				    sizeof(buf));
 		if (siz == -1)
 			__warning("%s: library not found in library-path %s\n",
 				  library, library_path);
@@ -215,7 +215,7 @@ static int __librarypath_callback(const char *library, void *user)
 		return -1;
 
 exit:
-	return pathappendenv("ld_preload", buf, 1);
+	return __pathappendenv("ld_preload", buf, 1);
 }
 
 static int __strtok(const char *str, const char *delim,
@@ -251,7 +251,7 @@ static int __strtok(const char *str, const char *delim,
 }
 
 __attribute__((visibility("hidden")))
-int path_iterate(const char *path, int (*callback)(const char *, void *),
+int __path_iterate(const char *path, int (*callback)(const char *, void *),
 		 void *user)
 {
 	return __strtok(path, ":", callback, user);
@@ -327,7 +327,7 @@ static int ignore(const char *path)
 }
 
 __attribute__((visibility("hidden")))
-int exec_ignored(const char *path)
+int __exec_ignored(const char *path)
 {
 	return ignore(path);
 }
@@ -406,7 +406,7 @@ int __ld_linux_has_preload_option(const char *path)
 }
 
 __attribute__((visibility("hidden")))
-int issuid(const char *path)
+int __issuid(const char *path)
 {
 	struct stat statbuf;
 	int ret = -1;
@@ -418,7 +418,8 @@ int issuid(const char *path)
 	return (statbuf.st_mode & S_ISUID) != 0;
 }
 
-static ssize_t getinterp32(int fd, Elf32_Ehdr *ehdr, char *buf, size_t bufsize)
+static ssize_t __getinterp32(int fd, Elf32_Ehdr *ehdr, char *buf,
+			     size_t bufsize)
 {
 	ssize_t ret = -1;
 	int i, num;
@@ -472,7 +473,8 @@ exit:
 	return ret;
 }
 
-static ssize_t getinterp64(int fd, Elf64_Ehdr *ehdr, char *buf, size_t bufsize)
+static ssize_t __getinterp64(int fd, Elf64_Ehdr *ehdr, char *buf,
+			     size_t bufsize)
 {
 	ssize_t ret = -1;
 	int i, num;
@@ -796,7 +798,7 @@ close:
 }
 
 __attribute__((visibility("hidden")))
-ssize_t getinterp(const char *path, char *buf, size_t bufsize)
+ssize_t __getinterp(const char *path, char *buf, size_t bufsize)
 {
 	ssize_t siz, ret = -1;
 	Elf64_Ehdr ehdr;
@@ -828,10 +830,10 @@ ssize_t getinterp(const char *path, char *buf, size_t bufsize)
 
 	/* It is a 32-bits ELF */
 	if (ehdr.e_ident[EI_CLASS] == ELFCLASS32)
-		ret = getinterp32(fd, (Elf32_Ehdr *)&ehdr, buf, bufsize);
+		ret = __getinterp32(fd, (Elf32_Ehdr *)&ehdr, buf, bufsize);
 	/* It is a 64-bits ELF */
 	else if (ehdr.e_ident[EI_CLASS] == ELFCLASS64)
-		ret = getinterp64(fd, (Elf64_Ehdr *)&ehdr, buf, bufsize);
+		ret = __getinterp64(fd, (Elf64_Ehdr *)&ehdr, buf, bufsize);
 	/* It is invalid ELF */
 	else
 		errno = ENOEXEC;
@@ -843,7 +845,7 @@ close:
 }
 
 __attribute__((visibility("hidden")))
-ssize_t gethashbang(const char *path, char *buf, size_t bufsize)
+ssize_t __gethashbang(const char *path, char *buf, size_t bufsize)
 {
 	ssize_t ret;
 	char *d, *s;
@@ -898,7 +900,7 @@ close:
 
 #if !defined(NVERBOSE)
 __attribute__((visibility("hidden")))
-void verbose_exec(const char *path, char * const argv[], char * const envp[])
+void __verbose_exec(const char *path, char * const argv[], char * const envp[])
 {
 	int color, fd, debug;
 
@@ -973,7 +975,7 @@ void verbose_exec(const char *path, char * const argv[], char * const envp[])
 	}
 }
 #else
-#define verbose_exec(path, argv, envp)
+#define __verbose_exec(path, argv, envp)
 #endif
 
 __attribute__((visibility("hidden")))
@@ -1253,12 +1255,12 @@ char *__ld_preload(const char *ldso, int abi)
 	if (ret)
 		return NULL;
 
-	ret = path_iterate(val, __librarypath_callback, path);
+	ret = __path_iterate(val, __librarypath_callback, path);
 	if (ret == -1)
 		return NULL;
 
 	__strncpy(val, __getlibiamroot(ldso, abi));
-	ret = pathprependenv("ld_preload", val, 1);
+	ret = __pathprependenv("ld_preload", val, 1);
 	if (ret)
 		return NULL;
 
@@ -1274,19 +1276,19 @@ char *__ld_library_path(const char *ldso, int abi)
 	int ret;
 
 	__strncpy(val, __getld_library_path(ldso, abi));
-	ret = pathsetenv(getrootdir(), "ld_library_path", val, 1);
+	ret = __pathsetenv(__getrootdir(), "ld_library_path", val, 1);
 	if (ret)
 		return NULL;
 
 	rpath = getenv("rpath");
 	if (rpath) {
 		__strncpy(val, rpath);
-		ret = pathsetenv(getrootdir(), "iamroot_rpath", val, 1);
+		ret = __pathsetenv(__getrootdir(), "iamroot_rpath", val, 1);
 		if (ret)
 			return NULL;
 
 		__strncpy(val, getenv("iamroot_rpath"));
-		ret = pathprependenv("ld_library_path", val, 1);
+		ret = __pathprependenv("ld_library_path", val, 1);
 		if (ret)
 			return NULL;
 	}
@@ -1294,12 +1296,12 @@ char *__ld_library_path(const char *ldso, int abi)
 	runpath = getenv("runpath");
 	if (runpath) {
 		__strncpy(val, runpath);
-		ret = pathsetenv(getrootdir(), "iamroot_runpath", val, 1);
+		ret = __pathsetenv(__getrootdir(), "iamroot_runpath", val, 1);
 		if (ret)
 			return NULL;
 
 		__strncpy(val, getenv("iamroot_runpath"));
-		ret = pathprependenv("ld_library_path", val, 1);
+		ret = __pathprependenv("ld_library_path", val, 1);
 		if (ret)
 			return NULL;
 	}
@@ -1391,7 +1393,7 @@ char *__inhibit_rpath()
 	inhibit_rpath = getenv("IAMROOT_INHIBIT_RPATH");
 	if (inhibit_rpath) {
 		__strncpy(val, inhibit_rpath);
-		ret = pathsetenv(getrootdir(), "inhibit_rpath", val, 1);
+		ret = __pathsetenv(__getrootdir(), "inhibit_rpath", val, 1);
 		if (ret)
 			return NULL;
 	}
@@ -1422,7 +1424,7 @@ int __execve(const char *path, char * const argv[], char * const envp[])
 	const char *root;
 	ssize_t len;
 
-	root = getrootdir();
+	root = __getrootdir();
 	if (__streq(root, "/"))
 		goto exit;
 
@@ -1445,7 +1447,7 @@ int __hashbang(const char *path, char * const argv[], char *interp,
 	(void)argv;
 
 	/* Get the interpeter directive stored after the hashbang */
-	siz = gethashbang(path, interp, interpsiz);
+	siz = __gethashbang(path, interp, interpsiz);
 	if (siz < 1)
 		return siz;
 
@@ -1479,7 +1481,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 	 * Get the dynamic linker stored in the .interp section of the ELF
 	 * linked program.
 	 */
-	siz = getinterp(path, buf, sizeof(buf));
+	siz = __getinterp(path, buf, sizeof(buf));
 	if (siz < 1)
 		return siz;
 
@@ -1828,7 +1830,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	ssize_t siz;
 
 	/* Run exec.sh script */
-	if (exec_ignored(path))
+	if (__exec_ignored(path))
 		goto exec_sh;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
@@ -1849,15 +1851,15 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	 * standard search directories and only if they have set-user-ID mode
 	 * bit enabled (which is not typical).
 	 */
-	ret = issuid(buf);
+	ret = __issuid(buf);
 	if (ret == -1)
 		return -1;
 	else if (ret)
 		goto exec_sh;
 
 	/* Do not proceed to any hack if not in chroot */
-	if (!inchroot()) {
-		verbose_exec(path, argv, envp);
+	if (!__inchroot()) {
+		__verbose_exec(path, argv, envp);
 		return next_execve(path, argv, envp);
 	}
 
@@ -1890,7 +1892,7 @@ loader:
 	if ((__strncmp(path, "/usr/bin/ld.so") == 0) ||
 	    (__strncmp(path, "/lib/ld") == 0) ||
 	    (__strncmp(path, "/lib64/ld") == 0)) {
-		verbose_exec(buf, argv, envp);
+		__verbose_exec(buf, argv, envp);
 		return next_execve(buf, argv, envp);
 	}
 
@@ -1931,7 +1933,7 @@ execve:
 			*narg++ = *arg++;
 		*narg++ = NULL; /* ensure NULL-terminated */
 
-		verbose_exec(*nargv, nargv, __environ);
+		__verbose_exec(*nargv, nargv, __environ);
 		return next_execve(*nargv, nargv, __environ);
 	}
 

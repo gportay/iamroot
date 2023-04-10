@@ -311,8 +311,8 @@ skip_readlink:
 
 		/* If link is an absolute path, prepend root to resolve
 		 * in chroot path. */
-		if (*stack == '/' && inchroot()) {
-			const char *r = getrootdir();
+		if (*stack == '/' && __inchroot()) {
+			const char *r = __getrootdir();
 			ssize_t lr = __strlen(r);
 			memmove(stack+lr, stack, k);
 			memcpy(stack, r, lr);
@@ -483,7 +483,7 @@ static int ignore(const char *path)
 	return !ret;
 }
 
-char *path_sanitize(char *path, size_t bufsize)
+char *__path_sanitize(char *path, size_t bufsize)
 {
 	ssize_t len;
 
@@ -545,7 +545,7 @@ static char *__fpath(int fd)
 }
 
 __attribute__((visibility("hidden")))
-int path_ignored(int dfd, const char *path)
+int __path_ignored(int dfd, const char *path)
 {
 	if (dfd != AT_FDCWD) {
 		char buf[PATH_MAX];
@@ -580,7 +580,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		return 0;
 	}
 
-	root = getrootdir();
+	root = __getrootdir();
 	if (__streq(root, "/"))
 		root = "";
 
@@ -624,7 +624,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		_strncpy(buf, path, bufsize);
 	}
 
-	path_sanitize(buf, bufsize);
+	__path_sanitize(buf, bufsize);
 
 	len = __strlen(root);
 	if (ignore(buf+len)) {
@@ -654,7 +654,7 @@ char *__getpath(int dfd, const char *path, int atflags)
 	ssize_t siz;
 
 	*buf = 0;
-	if (path_ignored(dfd, path) > 0) {
+	if (__path_ignored(dfd, path) > 0) {
 		if (!*path)
 			path = __fpath(dfd);
 
@@ -679,8 +679,8 @@ char *__getpath(int dfd, const char *path, int atflags)
  * SPDX-License-Identifier: MIT
  */
 __attribute__((visibility("hidden")))
-ssize_t path_access(const char *file, int mode, const char *path, char *buf,
-		    size_t bufsiz)
+ssize_t __path_access(const char *file, int mode, const char *path, char *buf,
+		      size_t bufsiz)
 {
 	const char *p, *z;
 	size_t l, k;

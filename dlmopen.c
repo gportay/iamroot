@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -42,12 +42,12 @@ void *dlmopen(Lmid_t lmid, const char *path, int flags)
 	char buf[PATH_MAX];
 	ssize_t siz;
 
-	if (!path || !inchroot())
+	if (!path || !__inchroot())
 		return next_dlmopen(lmid, path, flags);
 
 	if (!strchr(path, '/')) {
-		siz = path_access(path, F_OK, getenv("IAMROOT_LIBRARY_PATH"),
-				  buf, sizeof(buf));
+		siz = __path_access(path, F_OK, getenv("IAMROOT_LIBRARY_PATH"),
+				    buf, sizeof(buf));
 		if (siz != -1)
 			goto next;
 	}

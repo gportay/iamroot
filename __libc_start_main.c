@@ -98,7 +98,7 @@ int __libc_start_main(int (*main)(int, char **, char **), int argc,
 	if (argv0)
 		argv[0] = argv0;
 
-	root = getrootdir();
+	root = __getrootdir();
 	if (!__streq(root, "/"))
 		next_dl_iterate_phdr(__dl_iterate_phdr_callback, (void *)root);
 

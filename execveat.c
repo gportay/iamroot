@@ -69,7 +69,7 @@ int execveat(int dfd, const char *path, char * const argv[],
 	ssize_t siz;
 
 	/* Run exec.sh script */
-	if (exec_ignored(path))
+	if (__exec_ignored(path))
 		goto exec_sh;
 
 	siz = path_resolution(dfd, path, buf, sizeof(buf), atflags);
@@ -90,15 +90,15 @@ int execveat(int dfd, const char *path, char * const argv[],
 	 * standard search directories and only if they have set-user-ID mode
 	 * bit enabled (which is not typical).
 	 */
-	ret = issuid(buf);
+	ret = __issuid(buf);
 	if (ret == -1)
 		return -1;
 	else if (ret)
 		goto exec_sh;
 
 	/* Do not proceed to any hack if not in chroot */
-	if (!inchroot()) {
-		verbose_exec(path, argv, envp);
+	if (!__inchroot()) {
+		__verbose_exec(path, argv, envp);
 		return next_execveat(dfd, path, argv, envp, atflags);
 	}
 
@@ -131,7 +131,7 @@ loader:
 	if ((__strncmp(path, "/usr/bin/ld.so") == 0) ||
 	    (__strncmp(path, "/lib/ld") == 0) ||
 	    (__strncmp(path, "/lib64/ld") == 0)) {
-		verbose_exec(buf, argv, envp);
+		__verbose_exec(buf, argv, envp);
 		return next_execveat(dfd, buf, argv, envp, atflags);
 	}
 
@@ -172,7 +172,7 @@ execveat:
 			*narg++ = *arg++;
 		*narg++ = NULL; /* ensure NULL-terminated */
 
-		verbose_exec(*nargv, nargv, __environ);
+		__verbose_exec(*nargv, nargv, __environ);
 		__remove_at_empty_path_if_needed(*nargv, atflags);
 		return next_execveat(dfd, *nargv, nargv, __environ, atflags);
 	}

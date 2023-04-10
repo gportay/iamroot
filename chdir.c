@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -54,5 +54,5 @@ int chdir(const char *path)
 
 	__debug("%s(path: '%s' -> '%s')\n", __func__, path, buf);
 
-	return chrootdir(NULL);
+	return __chrootdir(NULL);
 }

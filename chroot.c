@@ -43,7 +43,7 @@ int _snprintf(char *buf, size_t bufsize, const char *fmt, ...)
 }
 
 __attribute__((visibility("hidden")))
-int fissymlinkat(int dfd, const char *path, int atflags)
+int __fissymlinkat(int dfd, const char *path, int atflags)
 {
 	struct stat statbuf;
 	int ret;
@@ -56,7 +56,7 @@ int fissymlinkat(int dfd, const char *path, int atflags)
 }
 
 __attribute__((visibility("hidden")))
-int fissymlink(int fd)
+int __fissymlink(int fd)
 {
 	struct stat statbuf;
 	int ret;
@@ -69,7 +69,7 @@ int fissymlink(int fd)
 }
 
 __attribute__((visibility("hidden")))
-int issymlink(const char *path)
+int __issymlink(const char *path)
 {
 	struct stat statbuf;
 	int ret;
@@ -82,7 +82,7 @@ int issymlink(const char *path)
 }
 
 __attribute__((visibility("hidden")))
-int fisdirectoryat(int dfd, const char *path, int atflags)
+int __fisdirectoryat(int dfd, const char *path, int atflags)
 {
 	struct stat statbuf;
 	int ret;
@@ -95,7 +95,7 @@ int fisdirectoryat(int dfd, const char *path, int atflags)
 }
 
 __attribute__((visibility("hidden")))
-int isdirectory(const char *path)
+int __isdirectory(const char *path)
 {
 	struct stat statbuf;
 	int ret;
@@ -108,7 +108,7 @@ int isdirectory(const char *path)
 }
 
 __attribute__((visibility("hidden")))
-int fisdirectory(int fd)
+int __fisdirectory(int fd)
 {
 	struct stat statbuf;
 	int ret;
@@ -121,7 +121,7 @@ int fisdirectory(int fd)
 }
 
 __attribute__((visibility("hidden")))
-int fisfileat(int dfd, const char *path, int atflags)
+int __fisfileat(int dfd, const char *path, int atflags)
 {
 	struct stat statbuf;
 	int ret;
@@ -134,7 +134,7 @@ int fisfileat(int dfd, const char *path, int atflags)
 }
 
 __attribute__((visibility("hidden")))
-int fisfile(int fd)
+int __fisfile(int fd)
 {
 	struct stat statbuf;
 	int ret;
@@ -147,7 +147,7 @@ int fisfile(int fd)
 }
 
 __attribute__((visibility("hidden")))
-int isfile(const char *path)
+int __isfile(const char *path)
 {
 	struct stat statbuf;
 	int ret;
@@ -171,7 +171,7 @@ char *__getroot()
 	return getenv("IAMROOT_ROOT");
 }
 
-static inline int setrootdir(const char *path)
+static inline int __setrootdir(const char *path)
 {
 	if (!path)
 		return unsetenv("IAMROOT_ROOT");
@@ -180,7 +180,7 @@ static inline int setrootdir(const char *path)
 }
 
 __attribute__((visibility("hidden")))
-const char *getrootdir()
+const char *__getrootdir()
 {
 	char *root;
 
@@ -192,7 +192,7 @@ const char *getrootdir()
 }
 
 __attribute__((visibility("hidden")))
-int chrootdir(const char *cwd)
+int __chrootdir(const char *cwd)
 {
 	char buf[PATH_MAX];
 	const char *root;
@@ -203,7 +203,7 @@ int chrootdir(const char *cwd)
 	if (cwd == NULL)
 		return -1;
 
-	root = getrootdir();
+	root = __getrootdir();
 	if (__strlcmp(cwd, root) != 0) {
 		__info("Exiting chroot: '%s'\n", root);
 		return unsetenv("IAMROOT_ROOT");
@@ -213,13 +213,13 @@ int chrootdir(const char *cwd)
 }
 
 __attribute__((visibility("hidden")))
-int inchroot()
+int __inchroot()
 {
-	return !__streq(getrootdir(), "/");
+	return !__streq(__getrootdir(), "/");
 }
 
 __attribute__((visibility("hidden")))
-char *striprootdir(char *path)
+char *__striprootdir(char *path)
 {
 	const char *root;
 	size_t len, size;
@@ -230,7 +230,7 @@ char *striprootdir(char *path)
 		return NULL;
 	}
 
-	root = getrootdir();
+	root = __getrootdir();
 	if (__streq(root, "/"))
 		return path;
 
@@ -279,7 +279,7 @@ int chroot(const char *path)
 		}
 	}
 
-	path_sanitize(buf, sizeof(buf));
+	__path_sanitize(buf, sizeof(buf));
 
 	ret = setenv("PATH", getenv("IAMROOT_PATH") ?: _PATH_STDPATH, 1);
 	if (ret == -1) {
@@ -287,9 +287,9 @@ int chroot(const char *path)
 		return -1;
 	}
 
-	ret = setrootdir(buf);
+	ret = __setrootdir(buf);
 	if (ret == -1) {
-		__pathperror(buf, "setrootdir");
+		__pathperror(buf, "__setrootdir");
 		return -1;
 	}
 

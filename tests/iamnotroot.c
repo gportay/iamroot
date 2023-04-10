@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -18,8 +18,8 @@ int __getdebug_fd()
 	return STDERR_FILENO;
 }
 
-int pathsetenv(const char *root, const char *name, const char *value,
-	       int overwrite)
+int __pathsetenv(const char *root, const char *name, const char *value,
+		 int overwrite)
 {
 	(void)root;
 	(void)name;

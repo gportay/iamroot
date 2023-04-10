@@ -52,7 +52,7 @@ char *canonicalize_file_name(const char *path)
 	if (!ret)
 		return NULL;
 
-	ret = striprootdir(ret);
+	ret = __striprootdir(ret);
 	if (!ret) {
 		__pathperror(buf, __func__);
 		free(ret);

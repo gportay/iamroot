@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021,2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -20,9 +20,9 @@ int main(int argc, char * const argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	if (pathsetenv(getenv(argc > 3 ? argv[3] : "IAMROOT_ROOT"), argv[1],
-		       argv[2], 1) == -1) {
-		perror("pathsetenv");
+	if (__pathsetenv(getenv(argc > 3 ? argv[3] : "IAMROOT_ROOT"), argv[1],
+			 argv[2], 1) == -1) {
+		perror("__pathsetenv");
 		return EXIT_FAILURE;
 	}
 

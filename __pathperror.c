@@ -16,16 +16,16 @@ void __pathperror(const char *path, const char *s)
 
 	if (__ignored_errno(errno)) {
 #ifdef __FreeBSD__
-		__info("%s: %s: %s: %i\n", getrootdir(), p, s, errno);
+		__info("%s: %s: %s: %i\n", __getrootdir(), p, s, errno);
 #else
-		__info("%s: %s: %s: %m\n", getrootdir(), p, s);
+		__info("%s: %s: %s: %m\n", __getrootdir(), p, s);
 #endif
 		return;
 	}
 
 #ifdef __FreeBSD__
-	__note_or_fatal("%s: %s: %s: %i\n", getrootdir(), p, s, errno);
+	__note_or_fatal("%s: %s: %s: %i\n", __getrootdir(), p, s, errno);
 #else
-	__note_or_fatal("%s: %s: %s: %m\n", getrootdir(), p, s);
+	__note_or_fatal("%s: %s: %s: %m\n", __getrootdir(), p, s);
 #endif
 }

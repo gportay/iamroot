@@ -711,8 +711,8 @@ alpine-test: x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.s
 
 rootfs: alpine-rootfs
 
-.PHONY: x86_64-mini-chroot
-x86_64-mini-chroot: x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2 | x86_64-alpine-minirootfs
+.PHONY: x86_64-alpine-mini-chroot
+x86_64-alpine-mini-chroot: x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2 | x86_64-alpine-minirootfs
 	bash iamroot-shell -c "chroot x86_64-alpine-minirootfs /bin/sh"
 
 x86_64-alpine-minirootfs/usr/bin/%: support/% | x86_64-alpine-minirootfs
@@ -729,8 +729,8 @@ alpine-minirootfs-3.17.0-x86_64.tar.gz:
 alpine-minirootfs-%-x86_64.tar.gz:
 	wget http://dl-cdn.alpinelinux.org/alpine/v$(basename $*)/releases/x86_64/alpine-minirootfs-$*-x86_64.tar.gz
 
-.PHONY: x86-mini-chroot
-x86-mini-chroot: i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2 | x86-alpine-minirootfs
+.PHONY: x86-alpine-mini-chroot
+x86-alpine-mini-chroot: i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2 | x86-alpine-minirootfs
 	bash iamroot-shell -c "chroot x86-alpine-minirootfs /bin/sh"
 
 .PHONY: x86-alpine-minirootfs
@@ -747,8 +747,8 @@ alpine-minirootfs-%-x86.tar.gz:
 ifneq ($(shell command -v arm-linux-musleabihf-gcc 2>/dev/null),)
 arm-rootfs: armhf-alpine-rootfs
 
-.PHONY: armhf-mini-chroot
-armhf-mini-chroot: armhf/libiamroot-musl-armhf.so.1 x86_64/libiamroot-linux-x86-64.so.2 | armhf-alpine-minirootfs
+.PHONY: armhf-alpine-mini-chroot
+armhf-alpine-mini-chroot: armhf/libiamroot-musl-armhf.so.1 x86_64/libiamroot-linux-x86-64.so.2 | armhf-alpine-minirootfs
 	bash iamroot-shell -c "chroot armhf-alpine-minirootfs /bin/sh"
 
 .PHONY: armhf-alpine-minirootfs
@@ -946,8 +946,8 @@ endif
 ifneq ($(shell command -v aarch64-linux-musl-gcc 2>/dev/null),)
 aarch64-rootfs: aarch64-alpine-rootfs
 
-.PHONY: aarch64-mini-chroot
-aarch64-mini-chroot: | aarch64/libiamroot-musl-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2 aarch64-alpine-minirootfs
+.PHONY: aarch64-alpine-mini-chroot
+aarch64-alpine-mini-chroot: | aarch64/libiamroot-musl-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2 aarch64-alpine-minirootfs
 	bash iamroot-shell -c "chroot aarch64-alpine-minirootfs /bin/sh"
 
 .PHONY: aarch64-alpine-minirootfs

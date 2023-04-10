@@ -720,7 +720,7 @@ alpine-minirootfs-3.17.0-x86_64.tar.gz:
 alpine-minirootfs-%-x86_64.tar.gz:
 	wget http://dl-cdn.alpinelinux.org/alpine/v$(basename $*)/releases/x86_64/alpine-minirootfs-$*-x86_64.tar.gz
 
-.PHONY: mini-chroot-i686
+.PHONY: x86-mini-chroot
 x86-mini-chroot: i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2 | x86-alpine-minirootfs
 	bash iamroot-shell -c "chroot x86-alpine-minirootfs /bin/sh"
 
@@ -738,7 +738,7 @@ alpine-minirootfs-%-x86.tar.gz:
 ifneq ($(shell command -v arm-linux-musleabihf-gcc 2>/dev/null),)
 arm-rootfs: armhf-alpine-rootfs
 
-.PHONY: mini-chroot
+.PHONY: armhf-mini-chroot
 armhf-mini-chroot: armhf/libiamroot-musl-armhf.so.1 x86_64/libiamroot-linux-x86-64.so.2 | armhf-alpine-minirootfs
 	bash iamroot-shell -c "chroot armhf-alpine-minirootfs /bin/sh"
 

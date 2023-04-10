@@ -696,34 +696,34 @@ endif
 
 ifneq ($(shell command -v musl-gcc 2>/dev/null),)
 .PHONY: alpine-test
-alpine-test: | alpine-minirootfs/usr/bin/shebang.sh
-alpine-test: | alpine-minirootfs/usr/bin/shebang-arg.sh
-alpine-test: | alpine-minirootfs/usr/bin/shebang-busybox.sh
-alpine-test: x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2 | alpine-minirootfs
-	bash iamroot-shell -c "chroot alpine-minirootfs pwd" | tee /dev/stderr | grep -q "^/\$$"
-	bash iamroot-shell -c "chroot alpine-minirootfs cat /etc/os-release" | tee /dev/stderr | grep 'NAME="Alpine Linux"'
-	bash iamroot-shell -c "chroot alpine-minirootfs chroot . cat /etc/os-release" | tee /dev/stderr | grep 'NAME="Alpine Linux"'
-	bash iamroot-shell -c "chroot alpine-minirootfs /bin/busybox"
-	bash iamroot-shell -c "chroot alpine-minirootfs shebang.sh one two three"
-	bash iamroot-shell -c "chroot alpine-minirootfs shebang-arg.sh one two three"
-	bash iamroot-shell -c "chroot alpine-minirootfs shebang-busybox.sh one two three"
-	bash iamroot-shell -c "chroot alpine-minirootfs /lib/ld-musl-x86_64.so.1 --preload "$$PWD/x86_64/libiamroot-musl-x86_64.so.1" bin/busybox"
+alpine-test: | x86_64-alpine-minirootfs/usr/bin/shebang.sh
+alpine-test: | x86_64-alpine-minirootfs/usr/bin/shebang-arg.sh
+alpine-test: | x86_64-alpine-minirootfs/usr/bin/shebang-busybox.sh
+alpine-test: x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2 | x86_64-alpine-minirootfs
+	bash iamroot-shell -c "chroot x86_64-alpine-minirootfs pwd" | tee /dev/stderr | grep -q "^/\$$"
+	bash iamroot-shell -c "chroot x86_64-alpine-minirootfs cat /etc/os-release" | tee /dev/stderr | grep 'NAME="Alpine Linux"'
+	bash iamroot-shell -c "chroot x86_64-alpine-minirootfs chroot . cat /etc/os-release" | tee /dev/stderr | grep 'NAME="Alpine Linux"'
+	bash iamroot-shell -c "chroot x86_64-alpine-minirootfs /bin/busybox"
+	bash iamroot-shell -c "chroot x86_64-alpine-minirootfs shebang.sh one two three"
+	bash iamroot-shell -c "chroot x86_64-alpine-minirootfs shebang-arg.sh one two three"
+	bash iamroot-shell -c "chroot x86_64-alpine-minirootfs shebang-busybox.sh one two three"
+	bash iamroot-shell -c "chroot x86_64-alpine-minirootfs /lib/ld-musl-x86_64.so.1 --preload "$$PWD/x86_64/libiamroot-musl-x86_64.so.1" bin/busybox"
 
 rootfs: alpine-rootfs
 
-.PHONY: mini-chroot
-mini-chroot: x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2 | alpine-minirootfs
-	bash iamroot-shell -c "chroot alpine-minirootfs /bin/sh"
+.PHONY: x86_64-mini-chroot
+x86_64-mini-chroot: x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2 | x86_64-alpine-minirootfs
+	bash iamroot-shell -c "chroot x86_64-alpine-minirootfs /bin/sh"
 
-alpine-minirootfs/usr/bin/%: support/% | alpine-minirootfs
+x86_64-alpine-minirootfs/usr/bin/%: support/% | x86_64-alpine-minirootfs
 	cp $< $@
 
-.PHONY: alpine-minirootfs
-alpine-minirootfs: | alpine-minirootfs/bin/busybox
+.PHONY: x86_64-alpine-minirootfs
+x86_64-alpine-minirootfs: | x86_64-alpine-minirootfs/bin/busybox
 
-alpine-minirootfs/bin/busybox: | alpine-minirootfs-3.17.0-x86_64.tar.gz
-	mkdir -p alpine-minirootfs
-	tar xf alpine-minirootfs-3.17.0-x86_64.tar.gz -C alpine-minirootfs
+x86_64-alpine-minirootfs/bin/busybox: | alpine-minirootfs-3.17.0-x86_64.tar.gz
+	mkdir -p x86_64-alpine-minirootfs
+	tar xf alpine-minirootfs-3.17.0-x86_64.tar.gz -C x86_64-alpine-minirootfs
 
 alpine-minirootfs-3.17.0-x86_64.tar.gz:
 alpine-minirootfs-%-x86_64.tar.gz:
@@ -802,8 +802,8 @@ clean-gcompat:
 	rm -f gcompat/ld-*.so*
 
 ifdef COVERAGE
-mini-chroot: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-alpine-minirootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-mini-chroot: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpine-minirootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-alpine-3.14-shell: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-alpine-3.14-chroot: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-alpine-3.14-rootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0

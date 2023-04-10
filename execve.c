@@ -539,6 +539,11 @@ static int __dl_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
 	int i, num;
 	off_t off;
 
+	if (!callback) {
+		errno = EINVAL;
+		return -1;
+	}
+
 	/* Look for the .shstrtab section */
 	off = ehdr->e_shoff;
 	num = ehdr->e_shnum;
@@ -648,6 +653,11 @@ static int __dl_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
 	int ret = -1;
 	int i, num;
 	off_t off;
+
+	if (!callback) {
+		errno = EINVAL;
+		return -1;
+	}
 
 	/* Look for the .shstrtab section */
 	off = ehdr->e_shoff;
@@ -1314,6 +1324,11 @@ static int __path_callback(const void *data, size_t size, void *user)
 	const char *path = (const char *)data;
 	char *needed = (char *)user;
 	(void)size;
+
+	if (!path) {
+		errno = EINVAL;
+		return -1;
+	}
 
 	if (!user) {
 		errno = EINVAL;

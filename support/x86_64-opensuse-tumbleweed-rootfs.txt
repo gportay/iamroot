@@ -2,7 +2,7 @@ Adding repository 'openSUSE-Tumbleweed-Oss' [done]
 Warning: GPG checking is disabled in configuration of repository 'openSUSE-Tumbleweed-Oss'. Integrity and origin of packages cannot be verified.
 Repository 'openSUSE-Tumbleweed-Oss' successfully added
 
-URI         : http://download.opensuse.org/tumbleweed/repo/oss/
+URI         : http://mirrors.kernel.org/opensuse/tumbleweed/repo/oss/
 Enabled     : Yes
 GPG Check   : No
 Autorefresh : Yes

@@ -801,7 +801,7 @@ static int __dl_iterate_shared_object(const char *path, int dt_tag,
 	else if (ehdr.e_ident[EI_CLASS] == ELFCLASS64)
 		ret = __dl_iterate_ehdr64(fd, (Elf64_Ehdr *)&ehdr, dt_tag,
 					  callback, data);
-	/* It is invalid ELF */
+	/* It is an invalid ELF */
 	else
 		errno = ENOEXEC;
 

@@ -396,6 +396,22 @@ $(1)-$(2)-postrootfs:
 	chmod +r $(1)-$(2)-rootfs/bin/bbsuid
 endef
 
+define alpine-mini-rootfs
+$(eval $(call chroot_shell,$(1),alpine-mini,/bin/ash,tar xf alpine-minirootfs-3.17.0-$(1).tar.gz -C $(1)-alpine-minirootfs))
+$(1)-$(2)-shell: | x86_64/libiamroot-linux-x86-64.so.2
+
+$(1)-alpine-mini-rootfs: | $(1)-alpine-mini-rootfs/bin/busybox
+$(1)-alpine-mini-rootfs/bin/busybox: | x86_64/libiamroot-linux-x86-64.so.2 alpine-minirootfs-3.17.0-$(1).tar.gz
+	mkdir -p $(1)-alpine-mini-rootfs
+	tar xf alpine-minirootfs-3.17.0-$(1).tar.gz -C $(1)-alpine-mini-rootfs
+
+alpine-minirootfs-3.17.0-$(1).tar.gz:
+	wget http://dl-cdn.alpinelinux.org/alpine/v3.17/releases/$(1)/alpine-minirootfs-3.17.0-$(1).tar.gz
+
+$(1)-alpine-minirootfs/usr/bin/%: support/% | $(1)-alpine-minirootfs
+	cp $< $@
+endef
+
 export CC
 export CFLAGS
 
@@ -711,56 +727,17 @@ alpine-test: x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.s
 
 rootfs: alpine-rootfs
 
-.PHONY: x86_64-alpine-mini-chroot
-x86_64-alpine-mini-chroot: x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2 | x86_64-alpine-minirootfs
-	bash iamroot-shell -c "chroot x86_64-alpine-minirootfs /bin/sh"
+$(eval $(call alpine-mini-rootfs,x86_64))
+x86_64-alpine-mini-chroot: x86_64/libiamroot-musl-x86_64.so.1
 
-x86_64-alpine-minirootfs/usr/bin/%: support/% | x86_64-alpine-minirootfs
-	cp $< $@
-
-.PHONY: x86_64-alpine-minirootfs
-x86_64-alpine-minirootfs: | x86_64-alpine-minirootfs/bin/busybox
-
-x86_64-alpine-minirootfs/bin/busybox: | alpine-minirootfs-3.17.0-x86_64.tar.gz
-	mkdir -p x86_64-alpine-minirootfs
-	tar xf alpine-minirootfs-3.17.0-x86_64.tar.gz -C x86_64-alpine-minirootfs
-
-alpine-minirootfs-3.17.0-x86_64.tar.gz:
-alpine-minirootfs-%-x86_64.tar.gz:
-	wget http://dl-cdn.alpinelinux.org/alpine/v$(basename $*)/releases/x86_64/alpine-minirootfs-$*-x86_64.tar.gz
-
-.PHONY: x86-alpine-mini-chroot
-x86-alpine-mini-chroot: i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2 | x86-alpine-minirootfs
-	bash iamroot-shell -c "chroot x86-alpine-minirootfs /bin/sh"
-
-.PHONY: x86-alpine-minirootfs
-x86-alpine-minirootfs: | x86-alpine-minirootfs/bin/busybox
-
-x86-alpine-minirootfs/bin/busybox: | alpine-minirootfs-3.17.0-x86.tar.gz
-	mkdir -p x86-alpine-minirootfs
-	tar xf alpine-minirootfs-3.17.0-x86.tar.gz -C x86-alpine-minirootfs
-
-alpine-minirootfs-3.17.0-x86.tar.gz:
-alpine-minirootfs-%-x86.tar.gz:
-	wget http://dl-cdn.alpinelinux.org/alpine/v$(basename $*)/releases/x86/alpine-minirootfs-$*-x86.tar.gz
+$(eval $(call alpine-mini-rootfs,x86))
+x86-alpine-mini-chroot: i686/libiamroot-musl-i386.so.1
 
 ifneq ($(shell command -v arm-linux-musleabihf-gcc 2>/dev/null),)
 arm-rootfs: armhf-alpine-rootfs
 
-.PHONY: armhf-alpine-mini-chroot
-armhf-alpine-mini-chroot: armhf/libiamroot-musl-armhf.so.1 x86_64/libiamroot-linux-x86-64.so.2 | armhf-alpine-minirootfs
-	bash iamroot-shell -c "chroot armhf-alpine-minirootfs /bin/sh"
-
-.PHONY: armhf-alpine-minirootfs
-armhf-alpine-minirootfs: | armhf-alpine-minirootfs/bin/busybox
-
-armhf-alpine-minirootfs/bin/busybox: | alpine-minirootfs-3.17.0-armhf.tar.gz
-	mkdir -p armhf-alpine-minirootfs
-	tar xf alpine-minirootfs-3.17.0-armhf.tar.gz -C armhf-alpine-minirootfs
-
-alpine-minirootfs-3.17.0-armhf.tar.gz:
-alpine-minirootfs-%-armhf.tar.gz:
-	wget http://dl-cdn.alpinelinux.org/alpine/v$(basename $*)/releases/armhf/alpine-minirootfs-$*-armhf.tar.gz
+$(eval $(call alpine-mini-rootfs,armhf))
+armhf-alpine-mini-chroot: armhf/libiamroot-musl-armhf.so.1
 endif
 
 ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
@@ -802,8 +779,9 @@ clean-gcompat:
 	rm -f gcompat/ld-*.so*
 
 ifdef COVERAGE
-x86_64-mini-chroot: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpine-minirootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpine-mini-shell: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpine-mini-chroot: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpine-mini-rootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-alpine-3.14-shell: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-alpine-3.14-chroot: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-alpine-3.14-rootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
@@ -946,20 +924,8 @@ endif
 ifneq ($(shell command -v aarch64-linux-musl-gcc 2>/dev/null),)
 aarch64-rootfs: aarch64-alpine-rootfs
 
-.PHONY: aarch64-alpine-mini-chroot
-aarch64-alpine-mini-chroot: | aarch64/libiamroot-musl-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2 aarch64-alpine-minirootfs
-	bash iamroot-shell -c "chroot aarch64-alpine-minirootfs /bin/sh"
-
-.PHONY: aarch64-alpine-minirootfs
-aarch64-alpine-minirootfs: | aarch64-alpine-minirootfs/bin/busybox
-
-aarch64-alpine-minirootfs/bin/busybox: | alpine-minirootfs-3.17.0-aarch64.tar.gz
-	mkdir -p aarch64-alpine-minirootfs
-	tar xf alpine-minirootfs-3.17.0-aarch64.tar.gz -C aarch64-alpine-minirootfs
-
-alpine-minirootfs-3.13.0-aarch64.tar.gz:
-alpine-minirootfs-%-aarch64.tar.gz:
-	wget http://dl-cdn.alpinelinux.org/alpine/v$(basename $*)/releases/aarch64/alpine-minirootfs-$*-aarch64.tar.gz
+$(eval $(call alpine-mini-rootfs,aarch64))
+aarch64-alpine-mini-chroot: aarch64/libiamroot-musl-aarch64.so.1
 
 ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
 .PHONY: aarch64-alpine-rootfs

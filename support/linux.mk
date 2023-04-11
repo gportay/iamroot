@@ -119,7 +119,7 @@ endef
 define log
 .PRECIOUS: support/$(2).txt
 support/$(2).txt: $(2).log
-	support/$(1).sed -e 's,$(CURDIR),,g' $$< >$$@.tmp
+	support/$(1).sed -e 's,$(CURDIR),\$$$$ROOT,g' $$< >$$@.tmp
 	mv $$@.tmp $$@
 
 .PRECIOUS: $(2).log

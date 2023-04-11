@@ -607,11 +607,8 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 			return -1;
 		}
 
-		if (*dirbuf != '/') {
-			__warning("%i: ignore relative path '%s'\n", dfd,
-				  dirbuf);
+		if (*dirbuf != '/')
 			goto ignore;
-		}
 
 		if (*root && __strlcmp(dirbuf, root) != 0 && !ignore(dirbuf))
 			__warn_or_fatal("%i <-> '%s': does not contains root directory '%s'\n",

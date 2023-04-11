@@ -19,6 +19,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use `/lib64:/usr/local/lib64:/usr/lib64` library path for both glibc
   architectures x86_64 and aarch64
 - Output the full command from level 1 to 4
+- Remove the relative path warning as the `proc` file-system may return also
+  pipe or socket for the given fd
 
 ### Fixed
 

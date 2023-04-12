@@ -533,13 +533,16 @@ ssize_t fpath(int fd, char *buf, size_t bufsiz)
 
 static char *__fpath(int fd)
 {
+	const int save_errno = errno;
 	static char buf[PATH_MAX];
 	ssize_t siz;
 
 	*buf = 0;
 	siz = fpath(fd, buf, sizeof(buf));
-	if (siz == -1)
+	if (siz == -1) {
+		errno = save_errno;
 		return NULL;
+	}
 
 	return buf;
 }

@@ -848,7 +848,7 @@ ssize_t __getinterp(const char *path, char *buf, size_t bufsize)
 	/* It is a 64-bits ELF */
 	else if (ehdr.e_ident[EI_CLASS] == ELFCLASS64)
 		ret = __getinterp64(fd, (Elf64_Ehdr *)&ehdr, buf, bufsize);
-	/* It is invalid ELF */
+	/* It is an invalid ELF */
 	else
 		errno = ENOEXEC;
 

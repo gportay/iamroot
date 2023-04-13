@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -20,8 +20,8 @@ int next_nftw(const char *path,
               int nopenfd, int flags)
 {
 	int (*sym)(const char *,
-	          int (*)(const char *, const struct stat *, int, struct FTW *),
-		  int, int);
+		   int (*)(const char *, const struct stat *, int, struct FTW *),
+		   int, int);
 	int ret;
 
 	sym = dlsym(RTLD_NEXT, "nftw");

@@ -599,6 +599,32 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		return -1;
 	}
 
+	/*
+	 * The files /proc/1/{cwd,root,exe} are readable by root only.
+	 *
+	 * The file /proc/1/root is often use to check if the process is in
+	 * chroot.
+	 *
+	 * Assume the readlink is Resolve it manually.
+	 *
+	 *	root@archlinux:~$ stat /proc/1/root
+	 *	  File: /proc/1/rootstat: cannot read symbolic link '/proc/1/root': Permission denied
+	 *
+	 *	  Size: 0         	Blocks: 0          IO Block: 1024   symbolic link
+	 *	Device: 13h/19d	Inode: 2429        Links: 1
+	 *	Access: (0777/lrwxrwxrwx)  Uid: (    0/    root)   Gid: (    0/    root)
+	 *	Access: 2023-04-14 07:35:50.903331217 +0200
+	 *	Modify: 2023-04-13 06:37:34.723333328 +0200
+	 *	Change: 2023-04-13 06:37:34.723333328 +0200
+	 *	 Birth: -
+	 */
+	if (__streq(path, "/proc/1/root")) {
+		__notice("%s: ignoring path resolution '%s'\n", __func__,
+			 path);
+		_strncpy(buf, "/", bufsize);
+		return 1;
+	}
+
 	if (ignore(path))
 		goto ignore;
 

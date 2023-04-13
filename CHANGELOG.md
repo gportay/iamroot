@@ -10,6 +10,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Create weak aliases for the [glibc] functions `__openat_2()` and
   `__openat64_2()`
+- Add the environment variable `IAMROOT_PATH_RESOLUTION_WORKAROUND` to disable
+  the prepend of the root directory if the path to resolve contains it already
 
 ### Changed
 

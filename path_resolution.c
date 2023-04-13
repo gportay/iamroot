@@ -34,6 +34,12 @@ extern char *next_realpath(const char *, char *);
 extern ssize_t next_readlinkat(int, const char *, char *, size_t);
 extern int next_lstat(const char *, struct stat *);
 
+static int __getpath_resolution_workaround()
+{
+	return strtol(getenv("IAMROOT_PATH_RESOLUTION_WORKAROUND") ?: "0",
+		      NULL, 0);
+}
+
 #ifdef __FreeBSD__
 /*
  * Stolen from FreeBSD (lib/libutil/kinfo_getfile.c)
@@ -606,7 +612,8 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		root = "";
 
 	if (*path == '/') {
-		if (*root && __strlcmp(path, root) == 0) {
+		if (*root && __strlcmp(path, root) == 0 &&
+		    __getpath_resolution_workaround()) {
 			__warn_or_fatal("%s: contains root directory '%s'\n",
 					path, root);
 			_strncpy(buf, path, bufsize);

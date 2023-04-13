@@ -2,5 +2,5 @@
 name=openSUSE-Tumbleweed-Oss
 enabled=1
 autorefresh=1
-baseurl=http://mirrors.kernel.org/opensuse/tumbleweed/repo/oss/
+baseurl=http://download.opensuse.org/tumbleweed/repo/oss/
 gpgcheck=0

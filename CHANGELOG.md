@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   the prepend of the root directory if the path to resolve contains it already
 - The internal function `path_resolution()` resolves `/proc/1/exe` symlink
   to `/`
+- Remove function `running_in_chroot()`
 
 ### Changed
 

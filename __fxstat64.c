@@ -18,7 +18,7 @@ extern int __fxstatat64(int, int, const char *, struct stat64 *, int);
 
 int __fxstat64(int ver, int fd, struct stat64 *statbuf)
 {
-	__debug("%s(fd: %i, ...)\n", __func__, fd);
+	__debug("%s(fd: %i <-> '%s', ...)\n", __func__, fd, __fpath(fd));
 
 	return __fxstatat64(ver, fd, "", statbuf, AT_EMPTY_PATH);
 }

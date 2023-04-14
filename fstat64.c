@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -16,7 +16,7 @@
 #ifdef _LARGEFILE64_SOURCE
 int fstat64(int fd, struct stat64 *statbuf)
 {
-	__debug("%s(fd: %i, ...)\n", __func__, fd);
+	__debug("%s(fd: %i <-> '%s', ...)\n", __func__, fd, __fpath(fd));
 
 	return fstatat64(fd, "", statbuf, AT_EMPTY_PATH);
 }

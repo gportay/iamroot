@@ -34,6 +34,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `name_to_handle_at()`, `openat()`, `path_resolution()`, `readlinkat()`,
   `renameat()`, `renameat2()`, `scandirat()`, `statx()`, `symlinkat()`,
   `unlinkat()` and `utimensat()`,
+- Output the fd for the functions `__fxstat()`, `__fxstat64()`, `fchmod()`,
+  `fchown()`, `fexecve()`, `fstat()` and `fstat64()`
 
 ### Fixed
 

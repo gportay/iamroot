@@ -284,7 +284,7 @@ extern int next_lremovexattr(const char *, const char *);
 #define __get_mode(path) \
 	({ int save_errno = errno; \
 	   mode_t m; \
-	   if (next_lgetxattr(buf, IAMROOT_XATTRS_MODE, &m, sizeof(m)) != sizeof(m)) \
+	   if (next_lgetxattr((path), IAMROOT_XATTRS_MODE, &m, sizeof(m)) != sizeof(m)) \
 		m = (mode_t)-1; \
 	   errno = save_errno; \
 	   m; \
@@ -305,7 +305,7 @@ extern int next_lremovexattr(const char *, const char *);
 #define __get_uid(path) \
 	({ int save_errno = errno; \
 	   uid_t u; \
-	   if (next_lgetxattr(buf, IAMROOT_XATTRS_UID, &u, sizeof(u)) != sizeof(u)) \
+	   if (next_lgetxattr((path), IAMROOT_XATTRS_UID, &u, sizeof(u)) != sizeof(u)) \
 		u = (uid_t)-1; \
 	   errno = save_errno; \
 	   u; \
@@ -326,7 +326,7 @@ extern int next_lremovexattr(const char *, const char *);
 #define __get_gid(path) \
 	({ int save_errno = errno; \
 	   gid_t g; \
-	   if (next_lgetxattr(buf, IAMROOT_XATTRS_GID, &g, sizeof(g)) != sizeof(g)) \
+	   if (next_lgetxattr((path), IAMROOT_XATTRS_GID, &g, sizeof(g)) != sizeof(g)) \
 		g = (gid_t)-1; \
 	   errno = save_errno; \
 	   g; \
@@ -355,7 +355,7 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 #define __get_mode(path) \
 	({ int save_errno = errno; \
 	   mode_t m; \
-	   if (next_extattr_get_link(buf, EXTATTR_NAMESPACE_USER, \
+	   if (next_extattr_get_link((path), EXTATTR_NAMESPACE_USER, \
 				     IAMROOT_EXTATTR_MODE, &m, sizeof(m)) \
 				     != sizeof(m)) \
 		m = (mode_t)-1; \
@@ -380,7 +380,7 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 #define __get_uid(path) \
 	({ int save_errno = errno; \
 	   uid_t u; \
-	   if (next_extattr_get_link(buf, EXTATTR_NAMESPACE_USER, \
+	   if (next_extattr_get_link((path), EXTATTR_NAMESPACE_USER, \
 				     IAMROOT_EXTATTR_UID, &u, sizeof(u)) \
 				     != sizeof(u)) \
 		u = (uid_t)-1; \
@@ -405,7 +405,7 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 #define __get_gid(path) \
 	({ int save_errno = errno; \
 	   gid_t g; \
-	   if (next_extattr_get_link(buf, EXTATTR_NAMESPACE_USER, \
+	   if (next_extattr_get_link((path), EXTATTR_NAMESPACE_USER, \
 				     IAMROOT_EXTATTR_MODE, &g, sizeof(g)) \
 				     != sizeof(g)) \
 		g = (gid_t)-1; \

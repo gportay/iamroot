@@ -674,17 +674,17 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 
 	__path_sanitize(buf, bufsize);
 
-	len = __strlen(root);
-	if (ignore(buf+len)) {
-		memcpy(buf, buf+len, __strlen(buf+len)+1);
-		goto exit;
-	}
-
 	if (follow_symlink(atflags)) {
 		char tmp[PATH_MAX];
 
 		_strncpy(tmp, buf, bufsize);
 		__realpath(tmp, buf);
+	}
+
+	len = __strlen(root);
+	if (ignore(buf+len)) {
+		memcpy(buf, buf+len, __strlen(buf+len)+1);
+		goto exit;
 	}
 
 exit:

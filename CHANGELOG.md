@@ -18,6 +18,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Add the `iamroot-shell`'s option `--preserve-env` and its environment
   variable `IAMROOT_PRESERVE_ENV` to preserve the given user environment
   variables in the shell
+- The internal function `path_resolution()` ignores the resolved path after the
+  symlinks are followed and expanded
 
 ### Changed
 

@@ -27,11 +27,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Remove the relative path warning as the `proc` file-system may return also
   pipe or socket for the given fd
 - Output the path of directory fd for the functions `__fxstat()`,
-  `__fxstatat()`, `__xmknodat()`, `faccessat()`, `fchmodat()`, `fchownat()`,
-  `fstatat()`, `fstatat64()`, `futimesat()`, `getfhat()`, `linkat()`,
-  `mkdirat()`, `mkfifoat()`, `mknodat()`, `mkostempsat()`,
+  `__fxstatat()`, `__fxstatat64()`, `__xmknodat()`, `chflagsat()`,
+  `execveat()`, `faccessat()`, `fanotify_mark()`, `fchmodat()`, `fchownat()`,
+   `fstatat()`, `fstatat64()`, `futimesat()`, `getfhat()`, `linkat()`,
+   `mkdirat()`, `mkfifoat()`, `mknodat()`, `mkostempsat()`,
   `name_to_handle_at()`, `openat()`, `path_resolution()`, `readlinkat()`,
-  `renameat()`, `symlinkat()`, `unlinkat()` and `utimensat()`
+  `renameat()`, `renameat2()`, `scandirat()`, `statx()`, `symlinkat()`,
+  `unlinkat()` and `utimensat()`,
 
 ### Fixed
 

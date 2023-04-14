@@ -78,8 +78,9 @@ int execveat(int dfd, const char *path, char * const argv[],
 		return -1;
 	}
 
-	__debug("%s(dfd: %i, path: '%s' -> '%s', argv: { '%s', '%s', ... }, envp: %p, atflags: 0x%x)\n",
-		__func__, dfd, path, buf, argv[0], argv[1], envp, atflags);
+	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', argv: { '%s', '%s', ... }, envp: %p, atflags: 0x%x)\n",
+		__func__, dfd, __fpath(dfd), path, buf, argv[0], argv[1], envp,
+		atflags);
 
 	interparg[0] = *argv; /* original argv0 as argv0 */
 	program = buf;

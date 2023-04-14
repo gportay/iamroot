@@ -51,7 +51,8 @@ int scandirat(int dfd, const char *path, struct dirent ***namelist,
 		return -1;
 	}
 
-	__debug("%s(dfd: %i, path: '%s' -> '%s')\n", __func__, dfd, path, buf);
+	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s')\n", __func__, dfd,
+		__fpath(dfd), path, buf);
 
 	return next_scandirat(dfd, buf, namelist, filter, compar);
 }

@@ -47,8 +47,8 @@ int chflagsat(int dfd, const char *path, unsigned long flags, int atflag)
 		return -1;
 	}
 
-	__debug("%s(dfd: %i, path: '%s', ..., flags: 0x%x)\n", __func__, dfd,
-		path, atflag);
+	__debug("%s(dfd: %i <-> '%s', path: '%s', ..., flags: 0x%x)\n", __func__,
+		dfd, __fpath(dfd), path, atflag);
 
 	return next_chflagsat(dfd, path, flags, atflag);
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Gaël PORTAY
+ * Copyright 2022-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -65,7 +65,8 @@ int fanotify_mark(int fanotify_fd, unsigned int flags, unsigned long long mask,
 		return -1;
 	}
 
-	__debug("%s(..., dfd: %i, path: '%s')\n", __func__, dfd, path);
+	__debug("%s(..., dfd: %i <-> '%s', path: '%s')\n", __func__, dfd,
+		__fpath(dfd), path);
 
 	return next_fanotify_mark(fanotify_fd, flags, mask, dfd, path);
 }

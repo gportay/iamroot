@@ -645,9 +645,11 @@ $(eval $(call debootstrap-rootfs,x86_64,ubuntu,bionic))
 $(eval $(call debootstrap-rootfs,x86_64,ubuntu,focal))
 $(eval $(call debootstrap-rootfs,x86_64,ubuntu,jammy))
 $(eval $(call debootstrap-rootfs,x86_64,ubuntu,kinetic))
-x86_64-ubuntu-trusty-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
+# Fatal Python error: Failed to read bytes from /dev/urandom
+x86_64-ubuntu-trusty-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^/dev/urandom$$|^$(CURDIR)/.*\.gcda
 x86_64-ubuntu-trusty-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|/var/lib/dpkg/info/(initscripts|initramfs-tools).postinst
-x86_64-ubuntu-xenial-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
+# Fatal Python error: Failed to read bytes from /dev/urandom
+x86_64-ubuntu-xenial-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^/dev/urandom$$|^$(CURDIR)/.*\.gcda
 x86_64-ubuntu-xenial-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/initramfs-tools.postinst
 x86_64-ubuntu-bionic-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/initramfs-tools.postinst
 # Processing triggers for libc-bin ...

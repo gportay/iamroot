@@ -1185,7 +1185,6 @@ warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 
 Updating /etc/sysconfig/services ...
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 
 Retrieving package issue-generator (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: issue-generator [done]
@@ -1600,35 +1599,23 @@ warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 warning: group systemd-journal does not exist - using root
 
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Creating group systemd-journal with gid 498.
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Creating group systemd-network with gid 497.
 Creating user systemd-network (systemd Network Management) with uid 497 and gid 497.
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Creating group systemd-timesync with gid 496.
 Creating user systemd-timesync (systemd Time Synchronization) with uid 496 and gid 496.
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Failed to open /dev/urandom: No such file or directory
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Running in chroot, ignoring command 'daemon-reexec'
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 /usr/lib/tmpfiles.d/journal-nocow.conf:26: Failed to resolve specifier: uninitialized /etc detected, skipping
 All rules containing unresolvable specifiers will be skipped.
 /usr/lib/tmpfiles.d/suse.conf:10: Failed to resolve group 'lock'.
 /usr/lib/tmpfiles.d/suse.conf:17: Failed to resolve group 'utmp'.
 /usr/lib/tmpfiles.d/suse.conf:18: Failed to resolve group 'utmp'.
 /usr/lib/tmpfiles.d/suse.conf:19: Failed to resolve group 'utmp'.
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Running in chroot, ignoring command 'daemon-reload'
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Running in chroot, ignoring command 'daemon-reload'
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Running in chroot, ignoring command 'daemon-reload'
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Running in chroot, ignoring command 'daemon-reload'
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Running in chroot, ignoring command 'daemon-reload'
 
 Retrieving package sysuser-shadow (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
@@ -1711,10 +1698,7 @@ Retrieving: util-linux-systemd.rpm [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/util-linux-systemd.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
 
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Running in chroot, ignoring command 'daemon-reload'
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Created symlink /etc/systemd/system/timers.target.wants/fstrim.timer -> /usr/lib/systemd/system/fstrim.timer.
 
 Retrieving package util-linux-lang (XXX/XXX), XXX.X MiB ( XXX.X MiB unpacked)
@@ -1782,9 +1766,7 @@ Retrieving: suse-module-tools.rpm [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/suse-module-tools.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
 
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Running in chroot, ignoring command 'daemon-reload'
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 
 Retrieving package kmod (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: kmod.rpm [done]
@@ -1799,7 +1781,6 @@ Retrieving: udev.rpm [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/udev.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
 
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 
 Retrieving package openSUSE-build-key (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: openSUSE-build-key [done]
@@ -1836,16 +1817,9 @@ warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_
 
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 Updating /etc/sysconfig/backup ...
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Running in chroot, ignoring command 'daemon-reload'
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Created symlink /etc/systemd/system/timers.target.wants/backup-rpmdb.timer -> /usr/lib/systemd/system/backup-rpmdb.timer.
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Created symlink /etc/systemd/system/timers.target.wants/backup-sysconfig.timer -> /usr/lib/systemd/system/backup-sysconfig.timer.
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Created symlink /etc/systemd/system/timers.target.wants/check-battery.timer -> /usr/lib/systemd/system/check-battery.timer.
 
 Retrieving package patterns-base-minimal_base (XXX/XXX), XXX.X KiB ( XXX.X   B unpacked)
@@ -1890,13 +1864,9 @@ warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noar
 
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 Updating /etc/sysconfig/lifecycle-report ...
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Running in chroot, ignoring command 'daemon-reload'
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 
 Executing %posttrans script 'login_defs-4.8.1-150400.8.57.noarch.rpm' [done]
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Created symlink /etc/systemd/system/default.target.wants/issue-generator.path -> /usr/lib/systemd/system/issue-generator.path.
 Created symlink /etc/systemd/system/default.target.wants/issue-generator.service -> /usr/lib/systemd/system/issue-generator.service.
 Created symlink /etc/systemd/system/default.target.wants/ca-certificates.path -> /usr/lib/systemd/system/ca-certificates.path.
@@ -1904,16 +1874,12 @@ Created symlink /etc/systemd/system/multi-user.target.wants/kbdsettings.service 
 Created symlink /etc/systemd/system/timers.target.wants/logrotate.timer -> /usr/lib/systemd/system/logrotate.timer.
 Created symlink /etc/systemd/system/getty.target.wants/getty@tty1.service -> /usr/lib/systemd/system/getty@.service.
 Created symlink /etc/systemd/system/multi-user.target.wants/remote-fs.target -> /usr/lib/systemd/system/remote-fs.target.
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Created symlink /etc/systemd/user/timers.target.wants/systemd-tmpfiles-clean.timer -> /usr/lib/systemd/user/systemd-tmpfiles-clean.timer.
 Created symlink /etc/systemd/user/basic.target.wants/systemd-tmpfiles-setup.service -> /usr/lib/systemd/user/systemd-tmpfiles-setup.service.
 
 /bin/sh: failed to remove 'var/lib/rpm': Directory not empty
 warning: %posttrans(rpm.rpm) scriptlet failed, exit status 1
 FIXME: not-running /bin/sh
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 
-Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Please run "/usr/bin/dracut -f --regenerate-all" as soon as your system is complete.
 
-make[1]: *** [makefile:705: x86_64-opensuse-leap-rootfs/etc/machine-id] Error 107

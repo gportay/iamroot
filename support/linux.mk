@@ -15,6 +15,9 @@ export IAMROOT_EXEC
 IAMROOT_EXEC_IGNORE = ldd|mountpoint
 export IAMROOT_EXEC_IGNORE
 
+IAMROOT_PATH_RESOLUTION_WORKAROUND ?= 1
+export IAMROOT_PATH_RESOLUTION_WORKAROUND
+
 ifeq ($(ARCH),x86_64)
 IAMROOT_LIB = $(IAMROOT_LIB_LINUX_X86_64_2)
 export IAMROOT_LIB
@@ -199,6 +202,7 @@ $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/bash,dnf --forcearch $(1) --relea
 $(1)-$(2)-$(3)-shell: | x86_64/libiamroot-linux-x86-64.so.2
 
 $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/etc/machine-id
+$(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_WORKAROUND = 0
 $(1)-$(2)-$(3)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
 	install -D -m644 $$(FEDORA_REPO) $(1)-$(2)-$(3)-rootfs/etc/distro.repos.d/fedora.repo
 	bash iamroot-shell -c "dnf --forcearch $(1) --releasever $(3) --assumeyes --installroot $(CURDIR)/$(1)-$(2)-$(3)-rootfs group install minimal-environment"
@@ -685,6 +689,7 @@ endif
 
 ifneq ($(shell command -v zypper 2>/dev/null),)
 x86_64-opensuse-leap-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
+x86_64-opensuse-leap-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_WORKAROUND = 0
 
 extra-rootfs: opensuse-rootfs
 

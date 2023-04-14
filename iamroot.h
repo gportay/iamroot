@@ -220,60 +220,60 @@ void __verbose_exec(const char *, char * const[], char * const[]);
 #endif
 
 #define __remove_at_empty_path_if_needed(path, flags) \
-	({ if ((*path) && (flags & AT_EMPTY_PATH)) { \
-	     flags &= ~AT_EMPTY_PATH; \
+	({ if ((*(path)) && ((flags) & AT_EMPTY_PATH)) { \
+	     (flags) &= ~AT_EMPTY_PATH; \
 	   } })
 
 #define __fwarn_and_set_user_modeat(fd, path, mode, flags, user_mode) \
-	({ if ((mode & user_mode) != user_mode) { \
-	     __info("%s: %i/%s: Insuffisant user mode 0%03o!\n", __func__, fd, path, mode); \
-	     mode |= user_mode; \
+	({ if (((mode) & (user_mode)) != (user_mode)) { \
+	     __info("%s: %i/%s: Insuffisant user mode 0%03o!\n", __func__, (fd), (path), (mode)); \
+	     (mode) |= (user_mode); \
 	   } \
-	   if (mode & S_ISUID) { \
-	     __info("%s: %i/%s: SUID bit 0%04o!\n", __func__, fd, path, mode); \
-	     mode &= ~S_ISUID; \
+	   if ((mode) & S_ISUID) { \
+	     __info("%s: %i/%s: SUID bit 0%04o!\n", __func__, (fd), (path), (mode)); \
+	     (mode) &= ~S_ISUID; \
 	   } \
-	   if (mode & S_ISGID) { \
-	     __info("%s: %i/%s: SGID bit 0%04o!\n", __func__, fd, path, mode); \
-	     mode &= ~S_ISGID; \
+	   if ((mode)& S_ISGID) { \
+	     __info("%s: %i/%s: SGID bit 0%04o!\n", __func__, (fd), (path), (mode)); \
+	     (mode) &= ~S_ISGID; \
 	   } })
 
 #define __fwarn_if_insuffisant_user_modeat(fd, path, mode, flags) \
-	({ if (__fisdirectoryat(fd, path, flags) > 0) { \
-	     __fwarn_and_set_user_modeat(fd, path, mode, flags, 0700); \
+	({ if (__fisdirectoryat((fd), (path), (flags)) > 0) { \
+	     __fwarn_and_set_user_modeat((fd), (path), (mode), (flags), 0700); \
 	   } else { \
-	     __fwarn_and_set_user_modeat(fd, path, mode, flags, 0600); \
+	     __fwarn_and_set_user_modeat((fd), (path), (mode), (flags), 0600); \
 	   } })
 
 #define __warn_and_set_user_mode(path, mode, user_mode) \
-	({ if ((mode & user_mode) != user_mode) { \
-	     __info("%s: %s: Insuffisant user mode 0%03o!\n", __func__, path, mode); \
-	     mode |= user_mode; \
+	({ if (((mode) & (user_mode)) != (user_mode)) { \
+	     __info("%s: %s: Insuffisant user mode 0%03o!\n", __func__, (path), (mode)); \
+	     (mode) |= (user_mode); \
 	   } \
-	   if (mode & S_ISUID) { \
-	     __info("%s: %s: SUID bit 0%04o!\n", __func__, path, mode); \
-	     mode &= ~S_ISUID; \
+	   if ((mode) & S_ISUID) { \
+	     __info("%s: %s: SUID bit 0%04o!\n", __func__, (path), (mode)); \
+	     (mode) &= ~S_ISUID; \
 	   } \
-	   if (mode & S_ISGID) { \
-	     __info("%s: %s: SGID bit 0%04o!\n", __func__, path, mode); \
-	     mode &= ~S_ISGID; \
+	   if ((mode) & S_ISGID) { \
+	     __info("%s: %s: SGID bit 0%04o!\n", __func__, (path), (mode)); \
+	     (mode) &= ~S_ISGID; \
 	   } })
 
 #define __warn_if_insuffisant_user_mode(path, mode) \
-	({ if (__isdirectory(path) > 0) { \
-	     __warn_and_set_user_mode(path, mode, 0700); \
+	({ if (__isdirectory((path)) > 0) { \
+	     __warn_and_set_user_mode((path), (mode), 0700); \
 	   } else { \
-	     __warn_and_set_user_mode(path, mode, 0600); \
+	     __warn_and_set_user_mode((path), (mode), 0600); \
 	   } })
 
 #define __warn_and_set_umask(mask, user_mask) \
-	({ if (mask & user_mask) { \
-	     __info("%s: Too restrictive umask 0%03o!\n", __func__, mask); \
-	     mask &= ~(user_mask); \
+	({ if ((mask) & (user_mask)) { \
+	     __info("%s: Too restrictive umask 0%03o!\n", __func__, (mask)); \
+	     (mask) &= ~(user_mask); \
 	   } })
 
 #define __warn_if_too_restrictive_umask(mask) \
-	({ __warn_and_set_umask(mask, 0400); })
+	({ __warn_and_set_umask((mask), 0400); })
 
 #ifdef __linux__
 extern ssize_t next_lgetxattr(const char *, const char *, void *, size_t);
@@ -429,37 +429,37 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 #endif
 
 #define __st_mode(path, statbuf) \
-	({ mode_t m = __get_mode(path); \
+	({ mode_t m = __get_mode((path)); \
 	   if (m != (mode_t)-1) { \
 	     statbuf->st_mode = (statbuf->st_mode & S_IFMT) | m; \
 	   } })
 
 #define __stx_mode(path, statxbuf) \
-	({ mode_t m = __get_mode(path); \
+	({ mode_t m = __get_mode((path)); \
 	   if (m != (mode_t)-1) { \
 	     statxbuf->stx_mode = (statxbuf->stx_mode & S_IFMT) | m; \
 	   } })
 
 #define __st_uid(path, statbuf) \
-	({ uid_t u = __get_uid(path); \
+	({ uid_t u = __get_uid((path)); \
 	   if (u != (uid_t)-1) { \
 	     statbuf->st_uid = u; \
 	   } })
 
 #define __stx_uid(path, statxbuf) \
-	({ uid_t u = __get_uid(path); \
+	({ uid_t u = __get_uid((path)); \
 	   if (u != (uid_t)-1) { \
 	     statxbuf->stx_uid = u; \
 	   } })
 
 #define __st_gid(path, statbuf) \
-	({ gid_t g = __get_gid(path); \
+	({ gid_t g = __get_gid((path)); \
 	   if (g != (gid_t)-1) { \
 	     statbuf->st_gid = g; \
 	   } })
 
 #define __stx_gid(path, statxbuf) \
-	({ gid_t g = __get_gid(path); \
+	({ gid_t g = __get_gid((path)); \
 	   if (g != (gid_t)-1) { \
 	     statxbuf->stx_gid = g; \
 	   } })
@@ -469,8 +469,8 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 #define __ignored_error(rc) ((rc == -1) && (errno == EPERM))
 
 #define __ignore_error_and_warn(rc, fd, path, flags) \
-	({ if (__ignored_error(rc) && (__path_ignored(fd, path) > 0)) { \
-	     __warning("%s: %s: Ignoring error '%m'!\n", __func__, __getpath(fd, path, flags)); \
+	({ if (__ignored_error(rc) && (__path_ignored((fd), (path)) > 0)) { \
+	     __warning("%s: %s: Ignoring error '%m'!\n", __func__, __getpath((fd), (path), (flags))); \
 	     rc = 0; \
 	     errno = 0; \
 	   } })

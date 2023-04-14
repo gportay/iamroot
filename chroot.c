@@ -61,7 +61,8 @@ int __fissymlink(int fd)
 	struct stat statbuf;
 	int ret;
 
-	ret = next_fstatat(fd, "", &statbuf, AT_EMPTY_PATH);
+	ret = next_fstatat(fd, "", &statbuf,
+			   AT_EMPTY_PATH | AT_SYMLINK_NOFOLLOW);
 	if (ret == -1)
 		return ret;
 
@@ -113,7 +114,8 @@ int __fisdirectory(int fd)
 	struct stat statbuf;
 	int ret;
 
-	ret = next_fstatat(fd, "", &statbuf, AT_EMPTY_PATH);
+	ret = next_fstatat(fd, "", &statbuf,
+			   AT_EMPTY_PATH | AT_SYMLINK_NOFOLLOW);
 	if (ret == -1)
 		return ret;
 
@@ -139,7 +141,8 @@ int __fisfile(int fd)
 	struct stat statbuf;
 	int ret;
 
-	ret = next_fstatat(fd, "", &statbuf, AT_EMPTY_PATH);
+	ret = next_fstatat(fd, "", &statbuf,
+			   AT_EMPTY_PATH | AT_SYMLINK_NOFOLLOW);
 	if (ret == -1)
 		return ret;
 

@@ -40,6 +40,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `fchown()`, `fexecve()`, `fstat()` and `fstat64()`
 - Start the `iamroot-shell` with a clean environment (`IAMROOT_`-env, `LD_`-env
   `PATH` and `HOME`)
+- The functions `__fxstat()`, `__fxstat64()`, `fstat()` and `fstat64()` do not
+  follow symlinks
 
 ### Fixed
 

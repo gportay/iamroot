@@ -16,7 +16,7 @@ int fstat(int fd, struct stat *statbuf)
 {
 	__debug("%s(fd: %i <-> '%s', ...)\n", __func__, fd, __fpath(fd));
 
-	return fstatat(fd, "", statbuf, AT_EMPTY_PATH);
+	return fstatat(fd, "", statbuf, AT_EMPTY_PATH | AT_SYMLINK_NOFOLLOW);
 }
 
 #ifdef __GLIBC__

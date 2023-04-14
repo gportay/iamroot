@@ -18,7 +18,7 @@ int fstat64(int fd, struct stat64 *statbuf)
 {
 	__debug("%s(fd: %i <-> '%s', ...)\n", __func__, fd, __fpath(fd));
 
-	return fstatat64(fd, "", statbuf, AT_EMPTY_PATH);
+	return fstatat64(fd, "", statbuf, AT_EMPTY_PATH | AT_SYMLINK_NOFOLLOW);
 }
 
 weak_alias(fstat64, __fstat64);

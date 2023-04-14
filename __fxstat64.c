@@ -20,7 +20,8 @@ int __fxstat64(int ver, int fd, struct stat64 *statbuf)
 {
 	__debug("%s(fd: %i <-> '%s', ...)\n", __func__, fd, __fpath(fd));
 
-	return __fxstatat64(ver, fd, "", statbuf, AT_EMPTY_PATH);
+	return __fxstatat64(ver, fd, "", statbuf,
+			    AT_EMPTY_PATH | AT_SYMLINK_NOFOLLOW);
 }
 #endif
 #endif

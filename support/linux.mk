@@ -681,8 +681,6 @@ $(eval $(call dnf-rootfs,x86_64,fedora,34))
 $(eval $(call dnf-rootfs,x86_64,fedora,35))
 $(eval $(call dnf-rootfs,x86_64,fedora,36))
 $(eval $(call dnf-rootfs,x86_64,fedora,37))
-x86_64-fedora-33-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib64/ldb/modules/ldb/tdb.so:/usr/lib64/ldb/modules/ldb/mdb.so:/usr/lib64/ldb/modules/ldb/ldb.so
-x86_64-fedora-34-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib64/ldb/modules/ldb/tdb.so:/usr/lib64/ldb/modules/ldb/mdb.so:/usr/lib64/ldb/modules/ldb/ldb.so
 endif
 
 ifneq ($(shell command -v zypper 2>/dev/null),)
@@ -874,8 +872,6 @@ $(eval $(call dnf-rootfs,aarch64,fedora,34))
 $(eval $(call dnf-rootfs,aarch64,fedora,35))
 $(eval $(call dnf-rootfs,aarch64,fedora,36))
 $(eval $(call dnf-rootfs,aarch64,fedora,37))
-aarch64-fedora-33-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib64/ldb/modules/ldb/tdb.so:/usr/lib64/ldb/modules/ldb/mdb.so:/usr/lib64/ldb/modules/ldb/ldb.so
-aarch64-fedora-34-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib64/ldb/modules/ldb/tdb.so:/usr/lib64/ldb/modules/ldb/mdb.so:/usr/lib64/ldb/modules/ldb/ldb.so
 aarch64-fedora-33-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 aarch64-fedora-34-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 aarch64-fedora-35-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
@@ -903,8 +899,6 @@ $(eval $(call dnf-rootfs,armv7hl,fedora,33))
 $(eval $(call dnf-rootfs,armv7hl,fedora,34))
 $(eval $(call dnf-rootfs,armv7hl,fedora,35))
 $(eval $(call dnf-rootfs,armv7hl,fedora,36))
-armv7hl-fedora-33-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib/ldb/modules/ldb/tdb.so:/usr/lib/ldb/modules/ldb/mdb.so:/usr/lib/ldb/modules/ldb/ldb.so
-armv7hl-fedora-34-rootfs/etc/machine-id: export IAMROOT_INHIBIT_RPATH = /usr/lib/ldb/modules/ldb/tdb.so:/usr/lib/ldb/modules/ldb/mdb.so:/usr/lib/ldb/modules/ldb/ldb.so
 armv7hl-fedora-33-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib/ldb:/lib:/usr/lib
 armv7hl-fedora-34-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib/ldb:/lib:/usr/lib
 armv7hl-fedora-35-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib/ldb:/lib:/usr/lib

@@ -20,6 +20,7 @@
 #include "iamroot.h"
 
 extern char *next_getcwd(char *, size_t);
+extern int next_fstat(int, struct stat *);
 extern int next_fstatat(int, const char *, struct stat *, int);
 
 __attribute__((visibility("hidden")))
@@ -61,8 +62,7 @@ int __fissymlink(int fd)
 	struct stat statbuf;
 	int ret;
 
-	ret = next_fstatat(fd, "", &statbuf,
-			   AT_EMPTY_PATH | AT_SYMLINK_NOFOLLOW);
+	ret = next_fstat(fd, &statbuf);
 	if (ret == -1)
 		return ret;
 
@@ -114,8 +114,7 @@ int __fisdirectory(int fd)
 	struct stat statbuf;
 	int ret;
 
-	ret = next_fstatat(fd, "", &statbuf,
-			   AT_EMPTY_PATH | AT_SYMLINK_NOFOLLOW);
+	ret = next_fstat(fd, &statbuf);
 	if (ret == -1)
 		return ret;
 
@@ -141,8 +140,7 @@ int __fisfile(int fd)
 	struct stat statbuf;
 	int ret;
 
-	ret = next_fstatat(fd, "", &statbuf,
-			   AT_EMPTY_PATH | AT_SYMLINK_NOFOLLOW);
+	ret = next_fstat(fd, &statbuf);
 	if (ret == -1)
 		return ret;
 

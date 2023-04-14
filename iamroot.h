@@ -276,6 +276,9 @@ void __verbose_exec(const char *, char * const[], char * const[]);
 	({ __warn_and_set_umask((mask), 0400); })
 
 #ifdef __linux__
+extern ssize_t next_fgetxattr(int, const char *, void *, size_t);
+extern int next_fsetxattr(int, const char *, const void *, size_t, int);
+extern int next_fremovexattr(int, const char *);
 extern ssize_t next_lgetxattr(const char *, const char *, void *, size_t);
 extern int next_lsetxattr(const char *, const char *, const void *, size_t,
 			  int);
@@ -296,6 +299,27 @@ extern int next_lremovexattr(const char *, const char *);
 	     next_lremovexattr((path), IAMROOT_XATTRS_MODE); \
 	   } else { \
 	     next_lsetxattr((path), IAMROOT_XATTRS_MODE, &(oldmode), \
+			    sizeof((oldmode)), 0); \
+	   } \
+	   errno = save_errno; \
+	   0; \
+	})
+
+#define __fget_mode(fd) \
+	({ int save_errno = errno; \
+	   mode_t m; \
+	   if (next_fgetxattr((fd), IAMROOT_XATTRS_MODE, &m, sizeof(m)) != sizeof(m)) \
+		m = (mode_t)-1; \
+	   errno = save_errno; \
+	   m; \
+	})
+
+#define __fset_mode(fd, oldmode, mode) \
+	({ int save_errno = errno; \
+	   if ((oldmode) == (mode)) { \
+	     next_fremovexattr((fd), IAMROOT_XATTRS_MODE); \
+	   } else { \
+	     next_fsetxattr((fd), IAMROOT_XATTRS_MODE, &(oldmode), \
 			    sizeof((oldmode)), 0); \
 	   } \
 	   errno = save_errno; \
@@ -323,6 +347,27 @@ extern int next_lremovexattr(const char *, const char *);
 	   0; \
 	})
 
+#define __fget_uid(fd) \
+	({ int save_errno = errno; \
+	   uid_t u; \
+	   if (next_fgetxattr((fd), IAMROOT_XATTRS_UID, &u, sizeof(u)) != sizeof(u)) \
+		u = (uid_t)-1; \
+	   errno = save_errno; \
+	   u; \
+	})
+
+#define __fset_uid(fd, olduid, uid) \
+	({ int save_errno = errno; \
+	   if ((olduid) == (uid)) { \
+	     next_fremovexattr((fd), IAMROOT_XATTRS_UID); \
+	   } else { \
+	     next_fsetxattr((fd), IAMROOT_XATTRS_UID, &(olduid), \
+			    sizeof((olduid)), 0); \
+	   } \
+	   errno = save_errno; \
+	   0; \
+	})
+
 #define __get_gid(path) \
 	({ int save_errno = errno; \
 	   gid_t g; \
@@ -343,9 +388,34 @@ extern int next_lremovexattr(const char *, const char *);
 	   errno = save_errno; \
 	   0; \
 	})
+
+#define __fget_gid(fd) \
+	({ int save_errno = errno; \
+	   gid_t g; \
+	   if (next_fgetxattr((fd), IAMROOT_XATTRS_GID, &g, sizeof(g)) != sizeof(g)) \
+		g = (gid_t)-1; \
+	   errno = save_errno; \
+	   g; \
+	})
+
+#define __fset_gid(fd, oldgid, gid) \
+	({ int save_errno = errno; \
+	   if ((oldgid) == (gid)) { \
+	     next_fremovexattr((fd), IAMROOT_XATTRS_GID); \
+	   } else { \
+	     next_fsetxattr((fd), IAMROOT_XATTRS_GID, &(oldgid), \
+			    sizeof((oldgid)), 0); \
+	   } \
+	   errno = save_errno; \
+	   0; \
+	})
 #endif
 
 #ifdef __FreeBSD__
+extern ssize_t next_extattr_get_fd(int, int, const char *, void *, size_t);
+extern ssize_t next_extattr_set_fd(int, int, const char *, const void *,
+				   size_t);
+extern int next_extattr_delete_fd(int, int, const char *);
 extern ssize_t next_extattr_get_link(const char *, int, const char *, void *,
 				     size_t);
 extern ssize_t next_extattr_set_link(const char *, int, const char *, const void *,
@@ -402,6 +472,31 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 	   0; \
 	})
 
+#define __fget_uid(fd) \
+	({ int save_errno = errno; \
+	   uid_t u; \
+	   if (next_extattr_get_fd((fd), EXTATTR_NAMESPACE_USER, \
+				   IAMROOT_EXTATTR_UID, &u, sizeof(u)) \
+				   != sizeof(u)) \
+		u = (uid_t)-1; \
+	   errno = save_errno; \
+	   u; \
+	})
+
+#define __fset_uid(fd, olduid, uid) \
+	({ int save_errno = errno; \
+	   if ((olduid) == (uid)) { \
+	     next_extattr_delete_fd((fd), EXTATTR_NAMESPACE_USER, \
+				    IAMROOT_EXTATTR_UID); \
+	   } else { \
+	     next_extattr_set_fd((fd), EXTATTR_NAMESPACE_USER, \
+				 IAMROOT_EXTATTR_UID, &(olduid), \
+				 sizeof((olduid))); \
+	   } \
+	   errno = save_errno; \
+	   0; \
+	})
+
 #define __get_gid(path) \
 	({ int save_errno = errno; \
 	   gid_t g; \
@@ -426,10 +521,41 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 	   errno = save_errno; \
 	   0; \
 	})
+
+#define __fget_gid(fd) \
+	({ int save_errno = errno; \
+	   gid_t g; \
+	   if (next_extattr_get_link((fd), EXTATTR_NAMESPACE_USER, \
+				     IAMROOT_EXTATTR_MODE, &g, sizeof(g)) \
+				     != sizeof(g)) \
+		g = (gid_t)-1; \
+	   errno = save_errno; \
+	   g; \
+	})
+
+#define __fset_gid(fd, oldgid, gid) \
+	({ int save_errno = errno; \
+	   if ((oldgid) == (gid)) { \
+	     next_extattr_delete_fd((fd), EXTATTR_NAMESPACE_USER, \
+				    IAMROOT_EXTATTR_GID); \
+	   } else { \
+	     next_extattr_set_fd((fd), EXTATTR_NAMESPACE_USER, \
+				 IAMROOT_EXTATTR_GID, &(oldgid), \
+				 sizeof((oldgid))); \
+	   } \
+	   errno = save_errno; \
+	   0; \
+	})
 #endif
 
 #define __st_mode(path, statbuf) \
 	({ mode_t m = __get_mode((path)); \
+	   if (m != (mode_t)-1) { \
+	     statbuf->st_mode = (statbuf->st_mode & S_IFMT) | m; \
+	   } })
+
+#define __fst_mode(fd, statbuf) \
+	({ mode_t m = __fget_mode((fd)); \
 	   if (m != (mode_t)-1) { \
 	     statbuf->st_mode = (statbuf->st_mode & S_IFMT) | m; \
 	   } })
@@ -446,6 +572,12 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 	     statbuf->st_uid = u; \
 	   } })
 
+#define __fst_uid(fd, statbuf) \
+	({ uid_t u = __fget_uid((fd)); \
+	   if (u != (uid_t)-1) { \
+	     statbuf->st_uid = u; \
+	   } })
+
 #define __stx_uid(path, statxbuf) \
 	({ uid_t u = __get_uid((path)); \
 	   if (u != (uid_t)-1) { \
@@ -454,6 +586,12 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 
 #define __st_gid(path, statbuf) \
 	({ gid_t g = __get_gid((path)); \
+	   if (g != (gid_t)-1) { \
+	     statbuf->st_gid = g; \
+	   } })
+
+#define __fst_gid(fd, statbuf) \
+	({ gid_t g = __fget_gid((fd)); \
 	   if (g != (gid_t)-1) { \
 	     statbuf->st_gid = g; \
 	   } })

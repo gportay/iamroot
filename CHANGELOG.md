@@ -41,7 +41,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Start the `iamroot-shell` with a clean environment (`IAMROOT_`-env, `LD_`-env
   `PATH` and `HOME`)
 - The functions `__fxstat()`, `__fxstat64()`, `fstat()` and `fstat64()` do not
-  follow symlinks
+  call the AT-functions `__fxstatat()`, `__fxstatat64()`, `fstatat()` and
+  `fstatat64()` anymore
 
 ### Fixed
 

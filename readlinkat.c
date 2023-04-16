@@ -36,6 +36,7 @@ ssize_t next_readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 
 ssize_t readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 {
+	char tmp2[PATH_MAX+1]; /* NULL-terminated */
 	char tmp[PATH_MAX];
 	const char *root;
 	ssize_t ret, siz;
@@ -50,7 +51,7 @@ ssize_t readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 		ret = len;
 		if ((size_t)ret > bufsize)
 			ret = bufsize;
-		memcpy(buf, root, ret);
+		memcpy(tmp2, root, ret);
 		return ret;
 	}
 
@@ -69,7 +70,7 @@ ssize_t readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 			ret = __strlen(exe);
 			if ((size_t)ret > bufsize)
 				ret = bufsize;
-			memcpy(buf, exe, ret);
+			memcpy(tmp2, exe, ret);
 
 			__notice("%s: resolving to '%s'\n", path, exe);
 
@@ -77,25 +78,33 @@ ssize_t readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 		}
 	}
 
-	ret = next_readlinkat(dfd, tmp, buf, bufsize);
+	ret = next_readlinkat(dfd, tmp, tmp2, sizeof(tmp2)-1); /* NULL-terminated */
 	if (ret == -1)
 		goto exit;
+	tmp2[ret] = 0; /* ensure NULL-terminated */
 
 	if (strncmp(root, "/", ret) == 0)
 		goto exit;
 
-	if (__strlcmp(buf, __getrootdir()) != 0)
+	if (__strlcmp(tmp2, __getrootdir()) != 0)
 		goto exit;
 
-	memmove(buf, buf+len, strnlen(buf, bufsize)-len+1); /* NULL-terminated */
+	memmove(tmp2, tmp2+len, __strlen(tmp2)-len+1); /* NULL-terminated */
 	ret -= len;
 
 	if (ret == 0)
-		buf[ret++] = '/';
+		tmp2[ret++] = '/';
 
 exit:
 	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', ...)\n", __func__,
 		dfd, __fpath(dfd), path, tmp);
+
+	if (buf && ret >= 0) {
+		if ((size_t)ret > bufsize)
+			ret = bufsize;
+
+		memcpy(buf, tmp2, ret);
+	}
 
 	return ret;
 }

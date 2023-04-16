@@ -45,6 +45,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   resolved paths in the function `fchownat()`
 - Fix the missing stripping of the chroot directory in the function
   `canonicalize_file_name()`
+- Fix the trancating of symlinks read from a chroot directory if the buffer is
+  too small to contain the whole symlink
 
 ### Security
 

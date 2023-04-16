@@ -61,6 +61,11 @@ int fchmodat(int dfd, const char *path, mode_t mode, int atflags)
 	__remove_at_empty_path_if_needed(buf, atflags);
 	ret = next_fchmodat(dfd, buf, mode, atflags);
 	__ignore_error_and_warn(ret, dfd, path, atflags);
+	/* Force ignoring EPERM error if not chroot'ed */
+	if ((ret == -1) && (errno == EPERM)) {
+		ret = 0;
+		errno = 0;
+	}
 	__set_mode(buf, oldmode, mode);
 
 	return ret;

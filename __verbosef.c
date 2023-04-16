@@ -42,9 +42,8 @@ int __getno_color()
 __attribute__((visibility("hidden")))
 int __getcolor()
 {
-	int save_errno;
+	const int save_errno = errno;
 
-	save_errno = errno;
 	if (!isatty(__getdebug_fd())) {
 		errno = save_errno;
 		return 0;

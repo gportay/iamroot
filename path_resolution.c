@@ -605,7 +605,8 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 	 * The file /proc/1/root is often use to check if the process is in
 	 * chroot.
 	 *
-	 * Assume the readlink is Resolve it manually.
+	 * Assumes /proc/1/root is a symbolic link to / and resolves it
+	 * manually.
 	 *
 	 *	root@archlinux:~$ stat /proc/1/root
 	 *	  File: /proc/1/rootstat: cannot read symbolic link '/proc/1/root': Permission denied

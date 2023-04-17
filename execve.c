@@ -532,7 +532,7 @@ static int __dl_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
 		if (siz == -1) {
 			goto exit;
 		} else if ((size_t)siz < sizeof(shdr)) {
-			__set_errno(EIO, -1);
+			ret = __set_errno(EIO, -1);
 			goto exit;
 		}
 
@@ -564,7 +564,7 @@ static int __dl_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
 		if (siz == -1) {
 			goto exit;
 		} else if ((size_t)siz < sizeof(phdr)) {
-			__set_errno(EIO, -1);
+			ret = __set_errno(EIO, -1);
 			goto exit;
 		}
 
@@ -575,7 +575,7 @@ static int __dl_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
 			continue;
 
 		if (sizeof(dyn) < phdr.p_filesz) {
-			__set_errno(EIO, -1);
+			ret = __set_errno(EIO, -1);
 			goto exit;
 		}
 
@@ -584,7 +584,7 @@ static int __dl_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
 		if (siz == -1) {
 			goto exit;
 		} else if ((size_t)siz < phdr.p_filesz) {
-			__set_errno(EIO, -1);
+			ret = __set_errno(EIO, -1);
 			goto exit;
 		}
 
@@ -607,7 +607,7 @@ static int __dl_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
 			if (siz == -1) {
 				goto exit;
 			} else if ((size_t)siz < size) {
-				__set_errno(EIO, -1);
+				ret = __set_errno(EIO, -1);
 				goto exit;
 			}
 
@@ -647,7 +647,7 @@ static int __dl_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
 		if (siz == -1) {
 			goto exit;
 		} else if ((size_t)siz < sizeof(shdr)) {
-			__set_errno(EIO, -1);
+			ret = __set_errno(EIO, -1);
 			goto exit;
 		}
 
@@ -679,7 +679,7 @@ static int __dl_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
 		if (siz == -1) {
 			goto exit;
 		} else if ((size_t)siz < sizeof(phdr)) {
-			__set_errno(EIO, -1);
+			ret = __set_errno(EIO, -1);
 			goto exit;
 		}
 
@@ -690,7 +690,7 @@ static int __dl_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
 			continue;
 
 		if (sizeof(dyn) < phdr.p_filesz) {
-			__set_errno(EIO, -1);
+			ret = __set_errno(EIO, -1);
 			goto exit;
 		}
 
@@ -699,7 +699,7 @@ static int __dl_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
 		if (siz == -1) {
 			goto exit;
 		} else if ((size_t)siz < phdr.p_filesz) {
-			__set_errno(EIO, -1);
+			ret = __set_errno(EIO, -1);
 			goto exit;
 		}
 
@@ -722,7 +722,7 @@ static int __dl_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
 			if (siz == -1) {
 				goto exit;
 			} else if ((size_t)siz < size) {
-				__set_errno(EIO, -1);
+				ret = __set_errno(EIO, -1);
 				goto exit;
 			}
 
@@ -753,13 +753,13 @@ static int __dl_iterate_shared_object(const char *path, int dt_tag,
 	if (siz == -1) {
 		goto close;
 	} else if ((size_t)siz < sizeof(ehdr)) {
-		__set_errno(EIO, -1);
+		ret = __set_errno(EIO, -1);
 		goto close;
 	}
 
 	/* Not an ELF */
 	if (memcmp(ehdr.e_ident, ELFMAG, 4) != 0) {
-		__set_errno(ENOEXEC, -1);
+		ret = __set_errno(ENOEXEC, -1);
 		goto close;
 	}
 
@@ -779,7 +779,7 @@ static int __dl_iterate_shared_object(const char *path, int dt_tag,
 					  callback, data);
 	/* It is an invalid ELF */
 	else
-		__set_errno(ENOEXEC, -1);
+		ret = __set_errno(ENOEXEC, -1);
 
 close:
 	__close(fd);
@@ -802,19 +802,19 @@ ssize_t __getinterp(const char *path, char *buf, size_t bufsize)
 	if (siz == -1) {
 		goto close;
 	} else if ((size_t)siz < sizeof(ehdr)) {
-		__set_errno(EIO, -1);
+		ret = __set_errno(EIO, -1);
 		goto close;
 	}
 
 	/* Not an ELF */
 	if (memcmp(ehdr.e_ident, ELFMAG, 4) != 0) {
-		__set_errno(ENOEXEC, -1);
+		ret = __set_errno(ENOEXEC, -1);
 		goto close;
 	}
 
 	/* Not a linked program or shared object */
 	if ((ehdr.e_type != ET_EXEC) && (ehdr.e_type != ET_DYN)) {
-		__set_errno(ENOEXEC, -1);
+		ret = __set_errno(ENOEXEC, -1);
 		goto close;
 	}
 
@@ -826,7 +826,7 @@ ssize_t __getinterp(const char *path, char *buf, size_t bufsize)
 		ret = __getinterp64(fd, (Elf64_Ehdr *)&ehdr, buf, bufsize);
 	/* It is an invalid ELF */
 	else
-		__set_errno(ENOEXEC, -1);
+		ret = __set_errno(ENOEXEC, -1);
 
 close:
 	__close(fd);

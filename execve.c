@@ -1053,7 +1053,7 @@ static char *__getlibiamroot(const char *ldso, int abi)
 	}
 
 	/* IAMROOT_LIB_MUSL_I386_1 */
-	if ((strcmp(ldso, "musl-i386") == 0) && abi == 1) {
+	if (__streq(ldso, "musl-i386") && abi == 1) {
 		ret = "/usr/lib/iamroot/i686/libiamroot-musl-i386.so.1";
 		goto exit;
 	}
@@ -1065,7 +1065,7 @@ static char *__getlibiamroot(const char *ldso, int abi)
 	}
 
 	/* IAMROOT_LIB_MUSL_ARMHF_1 */
-	if ((strcmp(ldso, "musl-armhf") == 0) && abi == 1) {
+	if (__streq(ldso, "musl-armhf") && abi == 1) {
 		ret = "/usr/lib/iamroot/armhf/libiamroot-musl-armhf.so.1";
 		goto exit;
 	}

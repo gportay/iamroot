@@ -52,7 +52,7 @@ static int __dl_iterate_phdr_callback(struct dl_phdr_info *info, size_t size,
 		info, info->dlpi_name);
 
 	/* in chroot? */
-	if ((*path != '/') || (__strlcmp(path, root) == 0))
+	if ((*path != '/') || __strleq(path, root))
 		return 0;
 
 	/* is an host interpreter? */
@@ -67,11 +67,11 @@ static int __dl_iterate_phdr_callback(struct dl_phdr_info *info, size_t size,
 	val = __strncpy(buf, val);
 	token = strtok_r(val, ":", &saveptr);
 	if (!token) {
-		if (__strlcmp(val, info->dlpi_name) == 0)
+		if (__strleq(val, info->dlpi_name))
 			return 0;
 	} else if (*token) {
 		do {
-			if (__strlcmp(token, info->dlpi_name) == 0)
+			if (__strleq(token, info->dlpi_name))
 				return 0;
 		} while ((token = strtok_r(NULL, ":", &saveptr)));
 	}

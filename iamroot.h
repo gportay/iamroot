@@ -96,6 +96,7 @@ extern "C" {
 	   strncat((s1), (s2), l); \
 	   (s1)[l] = 0; \
 	   (char *)(s1); })
+#define __strleq(s1, s2) (__strlcmp((s1), (s2)) == 0)
 
 /* See https://www.in-ulm.de/~mascheck/various/shebang/#results */
 #define HASHBANG_MAX NAME_MAX

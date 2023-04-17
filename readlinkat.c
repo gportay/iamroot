@@ -83,7 +83,7 @@ ssize_t readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 	if (strneq(root, "/", ret))
 		goto exit;
 
-	if (__strlcmp(tmp2, __getrootdir()) != 0)
+	if (!__strleq(tmp2, __getrootdir()))
 		goto exit;
 
 	memmove(tmp2, tmp2+len, __strlen(tmp2)-len+1); /* NULL-terminated */

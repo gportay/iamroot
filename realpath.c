@@ -222,7 +222,7 @@ char *realpath(const char *path, char *resolved_path)
 	if (streq(root, "/"))
 		goto exit;
 
-	if (__strlcmp(ret, __getrootdir()) != 0)
+	if (!__strleq(ret, __getrootdir()))
 		goto exit;
 
 	if (!resolved_path) {

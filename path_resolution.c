@@ -631,7 +631,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		root = "";
 
 	if (*path == '/') {
-		if (*root && __strlcmp(path, root) == 0 &&
+		if (*root && __strleq(path, root) &&
 		    __getpath_resolution_workaround()) {
 			__warn_or_fatal("%s: contains root directory '%s'\n",
 					path, root);

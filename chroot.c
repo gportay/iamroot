@@ -207,7 +207,7 @@ int __chrootdir(const char *cwd)
 		return -1;
 
 	root = __getrootdir();
-	if (__strlcmp(cwd, root) != 0)
+	if (!__strleq(cwd, root))
 		return __setrootdir(NULL);
 
 	return 0;

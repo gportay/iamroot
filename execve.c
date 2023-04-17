@@ -1397,7 +1397,7 @@ int __execve(const char *path, char * const argv[], char * const envp[])
 		goto exit;
 
 	len = __strlen(root);
-	if (strncmp(path, root, len) == 0)
+	if (strneq(path, root, len))
 		path += len;
 
 exit:

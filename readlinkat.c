@@ -80,7 +80,7 @@ ssize_t readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 		goto exit;
 	tmp2[ret] = 0; /* ensure NULL-terminated */
 
-	if (strncmp(root, "/", ret) == 0)
+	if (strneq(root, "/", ret))
 		goto exit;
 
 	if (__strlcmp(tmp2, __getrootdir()) != 0)

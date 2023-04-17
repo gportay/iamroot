@@ -26,10 +26,8 @@ int next_lsetxattr(const char *path, const char *name, const void *value,
 	int ret;
 
 	sym = dlsym(RTLD_NEXT, "lsetxattr");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym(path, name, value, size, flags);
 	if (ret == -1)

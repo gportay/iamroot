@@ -23,10 +23,8 @@ int next_truncate64(const char *path, off64_t length)
 	int ret;
 
 	sym = dlsym(RTLD_NEXT, "truncate64");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym(path, length);
 	if (ret == -1)

@@ -24,10 +24,8 @@ ssize_t next_fgetxattr(int fd, const char *name, void *value, size_t size)
 	ssize_t ret;
 
 	sym = dlsym(RTLD_NEXT, "fgetxattr");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym(fd, name, value, size);
 	if (ret == -1)

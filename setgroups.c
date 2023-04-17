@@ -22,10 +22,8 @@ int next_setgroups(size_t listsize, gid_t list[])
 	int ret;
 
 	sym = dlsym(RTLD_NEXT, "next_setgroups");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym(listsize, list);
 	if (ret == -1)

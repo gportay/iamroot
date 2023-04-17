@@ -24,10 +24,8 @@ int next_fremovexattr(int fd, const char *name)
 	int ret;
 
 	sym = dlsym(RTLD_NEXT, "fremovexattr");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym(fd, name);
 	if (ret == -1)

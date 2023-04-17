@@ -22,10 +22,8 @@ nl_catd next_catopen(const char *path, int flag)
 	nl_catd ret;
 
 	sym = dlsym(RTLD_NEXT, "catopen");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, (nl_catd)-1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, (nl_catd)-1);
 
 	ret = sym(path, flag);
 	if (ret == (nl_catd)-1)

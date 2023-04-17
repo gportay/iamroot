@@ -23,10 +23,8 @@ int next_chflagsat(int dfd, const char *path, unsigned long flags, int atflag)
 	int ret;
 
 	sym = dlsym(RTLD_NEXT, "chflagsat");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym(dfd, path, flags, atflag);
 	if (ret == -1)

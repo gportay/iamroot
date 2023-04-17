@@ -20,10 +20,8 @@ gid_t next_getegid()
 	gid_t ret;
 
 	sym = dlsym(RTLD_NEXT, "getegid");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym();
 	if (ret == (gid_t)-1)

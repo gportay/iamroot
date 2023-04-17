@@ -22,10 +22,8 @@ char *next_mktemp(char *path)
 	char *ret;
 
 	sym = dlsym(RTLD_NEXT, "mktemp");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, NULL);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, NULL);
 
 	ret = sym(path);
 	if (!ret)

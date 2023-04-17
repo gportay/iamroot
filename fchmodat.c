@@ -27,10 +27,8 @@ int next_fchmodat(int dfd, const char *path, mode_t mode, int atflags)
 	int ret;
 
 	sym = dlsym(RTLD_NEXT, "fchmodat");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym(dfd, path, mode, atflags);
 	if (ret == -1)

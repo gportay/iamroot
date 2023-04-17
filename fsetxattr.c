@@ -25,10 +25,8 @@ int next_fsetxattr(int fd, const char *name, const void *value, size_t size,
 	int ret;
 
 	sym = dlsym(RTLD_NEXT, "fsetxattr");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym(fd, name, value, size, flags);
 	if (ret == -1)

@@ -21,10 +21,8 @@ int next_unlinkat(int dfd, const char *path, int atflags)
 	int ret;
 
 	sym = dlsym(RTLD_NEXT, "unlinkat");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym(dfd, path, atflags);
 	if (ret == -1)

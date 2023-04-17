@@ -22,10 +22,8 @@ int next_dl_iterate_phdr(int (*callback)(struct dl_phdr_info *, size_t, void *),
 	int (*sym)(int (*)(struct dl_phdr_info *, size_t, void *), void *);
 
 	sym = dlsym(RTLD_NEXT, "dl_iterate_phdr");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	return sym(callback, data);
 }

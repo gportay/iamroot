@@ -615,6 +615,10 @@ extern void __envperror(const char *, const char *);
 extern void __pathdlperror(const char *, const char *);
 #define __dlperror(s) __info("%s: %s\n", s, dlerror())
 
+#define __dl_set_errno(ENOSYS, r) \
+	({ __dlperror(__func__); \
+	   __set_errno(ENOSYS, r); })
+
 int close(int);
 static inline void __close(int fd)
 {

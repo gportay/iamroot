@@ -20,10 +20,8 @@ int next_setgid(gid_t gid)
 	int ret;
 
 	sym = dlsym(RTLD_NEXT, "setgid");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym(gid);
 	if (ret == -1)

@@ -23,10 +23,8 @@ int next_chflags(const char *path, unsigned long flags)
 	int ret;
 
 	sym = dlsym(RTLD_NEXT, "chflags");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym(path, flags);
 	if (ret == -1)

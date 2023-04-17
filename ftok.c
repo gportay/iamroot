@@ -21,10 +21,8 @@ key_t next_ftok(const char *path, int proj_id)
 	int ret;
 
 	sym = dlsym(RTLD_NEXT, "ftok");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym(path, proj_id);
 	if (ret == -1)

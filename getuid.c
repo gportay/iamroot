@@ -20,10 +20,8 @@ uid_t next_getuid()
 	uid_t ret;
 
 	sym = dlsym(RTLD_NEXT, "geteuid");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym();
 	if (ret == (uid_t)-1)

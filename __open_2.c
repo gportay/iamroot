@@ -23,10 +23,8 @@ int next___open_2(const char *path, int oflags)
 	int ret;
 
 	sym = dlsym(RTLD_NEXT, "__open_2");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym(path, oflags);
 	if (ret == -1)

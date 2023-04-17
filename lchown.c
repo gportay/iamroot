@@ -24,10 +24,8 @@ int next_lchown(const char *path, uid_t owner, gid_t group)
 	int ret;
 
 	sym = dlsym(RTLD_NEXT, "lchown");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym(path, owner, group);
 	if (ret == -1)

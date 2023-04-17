@@ -20,10 +20,8 @@ int next_fchdir(int fd)
 	int ret;
 
 	sym = dlsym(RTLD_NEXT, "fchdir");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym(fd);
 	if (ret == -1)

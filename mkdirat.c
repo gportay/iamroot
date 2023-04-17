@@ -27,10 +27,8 @@ int next_mkdirat(int dfd, const char *path, mode_t mode)
 	int ret;
 
 	sym = dlsym(RTLD_NEXT, "mkdirat");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym(dfd, path, mode);
 	if (ret == -1)

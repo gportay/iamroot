@@ -24,10 +24,8 @@ int next_getfh(const char *path, fhandle_t *fhp)
 	int ret;
 
 	sym = dlsym(RTLD_NEXT, "getfh");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym(path, fhp);
 	if (ret == -1)

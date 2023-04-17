@@ -25,10 +25,8 @@ ssize_t next_flistxattr(int fd, char *list, size_t size)
 	ssize_t ret;
 
 	sym = dlsym(RTLD_NEXT, "flistxattr");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym(fd, list, size);
 	if (ret == -1)

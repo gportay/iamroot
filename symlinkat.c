@@ -21,10 +21,8 @@ int next_symlinkat(const char *string, int dfd, const char *path)
 	int ret;
 
 	sym = dlsym(RTLD_NEXT, "symlinkat");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym(string, dfd, path);
 	if (ret == -1)

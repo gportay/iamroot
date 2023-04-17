@@ -28,10 +28,8 @@ int next_posix_spawn(pid_t *pid, const char *path,
 	int ret;
 
 	sym = dlsym(RTLD_NEXT, "posix_spawn");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym(pid, path, file_actions, attrp, argv, envp);
 	if (ret == -1)

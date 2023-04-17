@@ -22,10 +22,8 @@ int next_mkostemps(char *path, int suffixlen, int oflags)
 	int ret;
 
 	sym = dlsym(RTLD_NEXT, "mkostemps");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym(path, suffixlen, oflags);
 	if (ret == -1)

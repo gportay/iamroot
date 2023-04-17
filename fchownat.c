@@ -22,10 +22,8 @@ int next_fchownat(int dfd, const char *path, uid_t owner, gid_t group,
 	int ret;
 
 	sym = dlsym(RTLD_NEXT, "fchownat");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym(dfd, path, owner, group, atflags);
 	if (ret == -1)

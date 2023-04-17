@@ -29,10 +29,8 @@ int next_open(const char *path, int oflags, mode_t mode)
 	int ret;
 
 	sym = dlsym(RTLD_NEXT, "open");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym(path, oflags, mode);
 	if (ret == -1)

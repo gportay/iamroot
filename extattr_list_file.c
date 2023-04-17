@@ -25,10 +25,8 @@ ssize_t next_extattr_list_file(const char *path, int attrnamespace, void *data,
 	ssize_t ret;
 
 	sym = dlsym(RTLD_NEXT, "extattr_list_file");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym(path, attrnamespace, data, nbytes);
 	if (ret == -1)

@@ -24,10 +24,8 @@ mqd_t next_mq_open(const char *path, int oflags, mode_t mode,
 	mqd_t ret;
 
 	sym = dlsym(RTLD_NEXT, "mq_open");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, (mqd_t)-1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, (mqd_t)-1);
 
 	ret = sym(path, oflags, mode, attr);
 	if (ret == (mqd_t)-1)

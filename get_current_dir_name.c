@@ -22,10 +22,8 @@ char *next_get_current_dir_name()
 	char *ret;
 
 	sym = dlsym(RTLD_NEXT, "get_current_dir_name");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, NULL);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, NULL);
 
 	ret = sym();
 	if (!ret)

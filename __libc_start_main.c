@@ -29,10 +29,8 @@ int next___libc_start_main(int (*main)(int, char **, char **), int argc,
 	int ret;
 
 	sym = dlsym(RTLD_NEXT, "__libc_start_main");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym(main, argc, argv, init, fini, rtld_fini, stack_end);
 	if (!ret)

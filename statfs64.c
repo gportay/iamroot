@@ -29,10 +29,8 @@ int next_statfs64(const char *path, struct statfs64 *statfsbuf)
 	int ret;
 
 	sym = dlsym(RTLD_NEXT, "statfs64");
-	if (!sym) {
-		__dlperror(__func__);
-		return __set_errno(ENOSYS, -1);
-	}
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
 
 	ret = sym(path, statfsbuf);
 	if (ret == -1)

@@ -205,6 +205,12 @@ do
 	shift
 done
 
+if [[ "$USER" == "root" ]] && [[ "$SUDO_USER" ]]
+then
+	exec "${SHELL:-/bin/sh}" "$@"
+	exit 127
+fi
+
 if [[ "${IAMROOT_DEBUG_FD:-}" ]] && [[ ! -e "/proc/$$/fd/$IAMROOT_DEBUG_FD" ]]
 then
 	eval "exec $IAMROOT_DEBUG_FD>&2"

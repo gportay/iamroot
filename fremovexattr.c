@@ -46,7 +46,7 @@ int fremovexattr(int fd, const char *name)
 		return -1;
 	}
 
-	if (__strncmp(name, IAMROOT_XATTRS_PREFIX) != 0) {
+	if (!__strneq(name, IAMROOT_XATTRS_PREFIX)) {
 		int ret;
 
 		ret = _snprintf(xbuf, sizeof(xbuf), "%s%s",

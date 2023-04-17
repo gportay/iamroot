@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -36,7 +36,7 @@ int main(int argc, char * const argv[])
 	mode = strtoul(argv[3], NULL, 0);
 	dev = makedev(strtoul(argv[4], NULL, 0), strtoul(argv[5], NULL, 0));
 
-	if (__strncmp(argv[1], "-") != 0) {
+	if (!__strneq(argv[1], "-")) {
 		dfd = open(".", O_DIRECTORY);
 		if (dfd == -1) {
 			perror("open");

@@ -74,7 +74,7 @@ ssize_t extattr_list_link(const char *path, int attrnamespace, void *data,
 			break;
 
 		if ((oldattrnamespace == EXTATTR_NAMESPACE_SYSTEM) &&
-		    (__strncmp(&extbuf[i+1], IAMROOT_EXTATTR_PREFIX) == 0)) /* len */
+		    __strneq(&extbuf[i+1], IAMROOT_EXTATTR_PREFIX)) /* len */
 			off += sizeof(IAMROOT_EXTATTR_PREFIX)-1;
 
 		if (pdata) {

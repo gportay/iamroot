@@ -41,7 +41,7 @@ int main(int argc, char * const argv[])
 	mode = strtoul(argv[4], NULL, 0);
 	dev = makedev(strtoul(argv[5], NULL, 0), strtoul(argv[6], NULL, 0));
 
-	if (__strncmp(argv[2], "-") != 0) {
+	if (!__strneq(argv[2], "-")) {
 		fd = open(".", O_DIRECTORY);
 		if (fd == -1) {
 			perror("open");

@@ -49,7 +49,7 @@ int setxattr(const char *path, const char *name, const void *value,
 		return -1;
 	}
 
-	if (__strncmp(name, IAMROOT_XATTRS_PREFIX) != 0) {
+	if (!__strneq(name, IAMROOT_XATTRS_PREFIX)) {
 		int ret;
 
 		ret = _snprintf(xbuf, sizeof(xbuf), "%s%s",

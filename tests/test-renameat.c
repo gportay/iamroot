@@ -26,7 +26,7 @@ int main(int argc, char * const argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	if (__strncmp(argv[1], "-") != 0) {
+	if (!__strneq(argv[1], "-")) {
 		olddfd = open(".", O_DIRECTORY);
 		if (olddfd == -1) {
 			perror("open");
@@ -34,7 +34,7 @@ int main(int argc, char * const argv[])
 		}
 	}
 
-	if (__strncmp(argv[3], "-") != 0) {
+	if (!__strneq(argv[3], "-")) {
 		newdfd = open(".", O_DIRECTORY);
 		if (newdfd == -1) {
 			perror("open");

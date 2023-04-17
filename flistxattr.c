@@ -66,7 +66,7 @@ ssize_t flistxattr(int fd, char *list, size_t size)
 		if (!len)
 			break;
 
-		if (__strncmp(&xbuf[i], IAMROOT_XATTRS_PREFIX) == 0)
+		if (__strneq(&xbuf[i], IAMROOT_XATTRS_PREFIX))
 			off += sizeof(IAMROOT_XATTRS_PREFIX)-1; /* NULL-terminated */
 
 		if (list)

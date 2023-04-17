@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -29,7 +29,7 @@ int main(int argc, char * const argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	if (__strncmp(argv[1], "-") != 0) {
+	if (!__strneq(argv[1], "-")) {
 		fd = open(".", O_DIRECTORY);
 		if (fd == -1) {
 			perror("open");

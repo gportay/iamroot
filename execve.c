@@ -189,7 +189,7 @@ static int __librarypath_callback(const char *library, void *user)
 	ssize_t siz;
 
 	/* ignore dynamic loaders */
-	if (__strncmp(library, "ld-") == 0)
+	if (__strneq(library, "ld-"))
 		return 0;
 
 	if (*library != '/') {
@@ -1456,8 +1456,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 	/*
 	 * The interpreter has to preload its libiamroot.so library.
 	 */
-	if ((__strncmp(buf, "/lib/ld") == 0) ||
-	    (__strncmp(buf, "/lib64/ld") == 0)) {
+	if (__strneq(buf, "/lib/ld") || __strneq(buf, "/lib64/ld")) {
 		char *argv0, *xargv1, *needed, *rpath, *runpath,
 		     *inhibit_rpath, *ld_library_path, *ld_preload;
 		int has_argv0 = 1, has_preload = 1, has_inhibit_rpath = 0,
@@ -1478,7 +1477,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 		 * 2.30, --inhibit-cache since 2.16, and --inhibit-rpath since
 		 * 2.0.94
 		 */
-		if (__strncmp(ldso, "linux") == 0) {
+		if (__strneq(ldso, "linux")) {
 			has_inhibit_rpath = 1;
 
 			has_inhibit_cache =
@@ -1853,9 +1852,8 @@ loader:
 	/*
 	 * Run the dynamic linker directly
 	 */
-	if ((__strncmp(path, "/usr/bin/ld.so") == 0) ||
-	    (__strncmp(path, "/lib/ld") == 0) ||
-	    (__strncmp(path, "/lib64/ld") == 0)) {
+	if (__strneq(path, "/usr/bin/ld.so") || __strneq(path, "/lib/ld") ||
+	    __strneq(path, "/lib64/ld")) {
 		__verbose_exec(buf, argv, envp);
 		return next_execve(buf, argv, envp);
 	}

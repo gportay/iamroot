@@ -56,8 +56,8 @@ static int __dl_iterate_phdr_callback(struct dl_phdr_info *info, size_t size,
 		return 0;
 
 	/* is an host interpreter? */
-	if ((__strncmp(info->dlpi_name, "/lib/ld") == 0) ||
-	    (__strncmp(info->dlpi_name, "/lib64/ld") == 0))
+	if (__strneq(info->dlpi_name, "/lib/ld") ||
+	    __strneq(info->dlpi_name, "/lib64/ld"))
 		return 0;
 
 	/* is an IAMROOT_LIB? */

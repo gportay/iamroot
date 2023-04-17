@@ -497,13 +497,13 @@ char *__path_sanitize(char *path, size_t bufsize)
 		return path;
 
 	len = strnlen(path, bufsize);
-	while ((len > 3) && (__strncmp(path, "./") == 0) && path[2] != '/') {
+	while ((len > 3) && __strneq(path, "./") && path[2] != '/') {
 		char *s;
 		for (s = path; *s; s++)
 			*s = *(s+2);
 		len -= 2;
 	}
-	while ((len > 2) && (__strncmp(&path[len-2], "/.") == 0)) {
+	while ((len > 2) && __strneq(&path[len-2], "/.")) {
 		path[len-2] = 0;
 		len -= 2;
 	}

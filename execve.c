@@ -1285,10 +1285,7 @@ static int __path_callback(const void *data, size_t size, void *user)
 	char *needed = (char *)user;
 	(void)size;
 
-	if (!path)
-		return __set_errno(EINVAL, -1);
-
-	if (!user)
+	if (!path || !user)
 		return __set_errno(EINVAL, -1);
 
 	if (*needed)

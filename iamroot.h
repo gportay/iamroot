@@ -42,7 +42,7 @@ static inline long __syscall_ret(unsigned long r)
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
-#define __streq(a,b) (strcmp((a),(b)) == 0)
+#define streq(a,b) (strcmp((a),(b)) == 0)
 
 #ifdef __cplusplus
 extern "C" {

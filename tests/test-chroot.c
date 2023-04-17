@@ -141,7 +141,7 @@ int main(int argc, char * const argv[])
 	if (siz == -1)
 		goto exit;
 
-	if (!__streq(cwd, buf))
+	if (!streq(cwd, buf))
 		goto exit;
 
 	ret = EXIT_SUCCESS;

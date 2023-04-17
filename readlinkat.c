@@ -42,7 +42,7 @@ ssize_t readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 	root = __getrootdir();
 	len = __strlen(root);
 
-	if (__streq(path, "/proc/self/root")) {
+	if (streq(path, "/proc/self/root")) {
 		__notice("%s: ignoring path resolution '%s'\n", __func__,
 			 path);
 		ret = len;
@@ -59,7 +59,7 @@ ssize_t readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 		return -1;
 	}
 
-	if (__streq(tmp, "/proc/self/exe")) {
+	if (streq(tmp, "/proc/self/exe")) {
 		const char *exe;
 
 		exe = __getexe();

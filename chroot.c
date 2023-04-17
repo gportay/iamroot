@@ -216,7 +216,7 @@ int __chrootdir(const char *cwd)
 __attribute__((visibility("hidden")))
 int __inchroot()
 {
-	return !__streq(__getrootdir(), "/");
+	return !streq(__getrootdir(), "/");
 }
 
 __attribute__((visibility("hidden")))
@@ -230,7 +230,7 @@ char *__striprootdir(char *path)
 		return __set_errno(EINVAL, NULL);
 
 	root = __getrootdir();
-	if (__streq(root, "/"))
+	if (streq(root, "/"))
 		return path;
 
 	ret = path;

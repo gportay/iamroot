@@ -1023,55 +1023,55 @@ static char *__getlibiamroot(const char *ldso, int abi)
 
 #ifdef __linux__
 	/* IAMROOT_LIB_LINUX_2 */
-	if (__streq(ldso, "linux") && abi == 2) {
+	if (streq(ldso, "linux") && abi == 2) {
 		ret = "/usr/lib/iamroot/i686/libiamroot-linux.so.2";
 		goto exit;
 	}
 
 	/* IAMROOT_LIB_LINUX_X86_64_2 */
-	if (__streq(ldso, "linux-x86-64") && abi == 2) {
+	if (streq(ldso, "linux-x86-64") && abi == 2) {
 		ret = "/usr/lib/iamroot/x86_64/libiamroot-linux-x86-64.so.2";
 		goto exit;
 	}
 
 	/* IAMROOT_LIB_LINUX_3 */
-	if (__streq(ldso, "linux") && abi == 3) {
+	if (streq(ldso, "linux") && abi == 3) {
 		ret = "/usr/lib/iamroot/arm/libiamroot-linux.so.3";
 		goto exit;
 	}
 
 	/* IAMROOT_LIB_LINUX_ARMHF_3 */
-	if (__streq(ldso, "linux-armhf") && abi == 3) {
+	if (streq(ldso, "linux-armhf") && abi == 3) {
 		ret = "/usr/lib/iamroot/armhf/libiamroot-linux-armhf.so.3";
 		goto exit;
 	}
 
 	/* IAMROOT_LIB_LINUX_AARCH64_1 */
-	if (__streq(ldso, "linux-aarch64") && abi == 1) {
+	if (streq(ldso, "linux-aarch64") && abi == 1) {
 		ret = "/usr/lib/iamroot/aarch64/libiamroot-linux-aarch64.so.1";
 		goto exit;
 	}
 
 	/* IAMROOT_LIB_MUSL_I386_1 */
-	if (__streq(ldso, "musl-i386") && abi == 1) {
+	if (streq(ldso, "musl-i386") && abi == 1) {
 		ret = "/usr/lib/iamroot/i686/libiamroot-musl-i386.so.1";
 		goto exit;
 	}
 
 	/* IAMROOT_LIB_MUSL_X86_64_1 */
-	if (__streq(ldso, "musl-x86_64") && abi == 1) {
+	if (streq(ldso, "musl-x86_64") && abi == 1) {
 		ret = "/usr/lib/iamroot/x86_64/libiamroot-musl-x86_64.so.1";
 		goto exit;
 	}
 
 	/* IAMROOT_LIB_MUSL_ARMHF_1 */
-	if (__streq(ldso, "musl-armhf") && abi == 1) {
+	if (streq(ldso, "musl-armhf") && abi == 1) {
 		ret = "/usr/lib/iamroot/armhf/libiamroot-musl-armhf.so.1";
 		goto exit;
 	}
 
 	/* IAMROOT_LIB_MUSL_AARCH64_1 */
-	if (__streq(ldso, "musl-aarch64") && abi == 1) {
+	if (streq(ldso, "musl-aarch64") && abi == 1) {
 		ret = "/usr/lib/iamroot/aarch64/libiamroot-musl-aarch64.so.1";
 		goto exit;
 	}
@@ -1079,7 +1079,7 @@ static char *__getlibiamroot(const char *ldso, int abi)
 
 #ifdef __FreeBSD__
 	/* IAMROOT_LIB_ELF_1 */
-	if (__streq(ldso, "elf") && abi == 1) {
+	if (streq(ldso, "elf") && abi == 1) {
 #if defined(__x86_64__)
 		ret = "/usr/local/lib/iamroot/amd64/libiamroot-elf.so.1";
 #elif defined(__aarch64__)
@@ -1124,29 +1124,29 @@ static char *__getld_preload(const char *ldso, int abi)
 
 #ifdef __linux__
 	/* IAMROOT_LD_PRELOAD_LINUX_2 */
-	if (__streq(ldso, "linux") && abi == 2)
+	if (streq(ldso, "linux") && abi == 2)
 		return "/usr/lib/libc.so.6:/usr/lib/libdl.so.2";
 
 	/* IAMROOT_LD_PRELOAD_LINUX_X86_64_2 */
-	if (__streq(ldso, "linux-x86-64") && abi == 2)
+	if (streq(ldso, "linux-x86-64") && abi == 2)
 		return "/usr/lib64/libc.so.6:/usr/lib64/libdl.so.2";
 
 	/* IAMROOT_LD_PRELOAD_LINUX_3 */
-	if (__streq(ldso, "linux") && abi == 3)
+	if (streq(ldso, "linux") && abi == 3)
 		return "/usr/lib/libc.so.6:/usr/lib/libdl.so.2";
 
 	/* IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 */
-	if (__streq(ldso, "linux-armhf") && abi == 3)
+	if (streq(ldso, "linux-armhf") && abi == 3)
 		return "/usr/lib/libc.so.6:/usr/lib/libdl.so.2";
 
 	/* IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 */
-	if (__streq(ldso, "linux-aarch64") && abi == 1)
+	if (streq(ldso, "linux-aarch64") && abi == 1)
 		return "/usr/lib64/libc.so.6:/usr/lib64/libdl.so.2";
 #endif
 
 #ifdef __FreeBSD__
 	/* IAMROOT_LD_PRELOAD_ELF_1 */
-	if (__streq(ldso, "elf") && abi == 1)
+	if (streq(ldso, "elf") && abi == 1)
 		return "/lib/libc.so.7:/usr/lib/libdl.so.1";
 #endif
 
@@ -1175,11 +1175,11 @@ static char *__getld_library_path(const char *ldso, int abi)
 
 #ifdef __linux__
 	/* IAMROOT_LIBRARY_PATH_LINUX_X86_64_2 */
-	if (__streq(ldso, "linux-x86-64") && abi == 2)
+	if (streq(ldso, "linux-x86-64") && abi == 2)
 		return "/lib64:/usr/local/lib64:/usr/lib64";
 
 	/* IAMROOT_LIBRARY_PATH_LINUX_AARCH64_1 */
-	if (__streq(ldso, "linux-aarch64") && abi == 1)
+	if (streq(ldso, "linux-aarch64") && abi == 1)
 		return "/lib64:/usr/local/lib64:/usr/lib64";
 #endif
 
@@ -1393,7 +1393,7 @@ int __execve(const char *path, char * const argv[], char * const envp[])
 	ssize_t len;
 
 	root = __getrootdir();
-	if (__streq(root, "/"))
+	if (streq(root, "/"))
 		goto exit;
 
 	len = __strlen(root);

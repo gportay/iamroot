@@ -611,7 +611,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 	 *	Change: 2023-04-13 06:37:34.723333328 +0200
 	 *	 Birth: -
 	 */
-	if (__streq(path, "/proc/1/root")) {
+	if (streq(path, "/proc/1/root")) {
 		__notice("%s: ignoring path resolution '%s'\n", __func__,
 			 path);
 		_strncpy(buf, "/", bufsize);
@@ -627,7 +627,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 	}
 
 	root = __getrootdir();
-	if (__streq(root, "/"))
+	if (streq(root, "/"))
 		root = "";
 
 	if (*path == '/') {

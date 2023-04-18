@@ -204,6 +204,10 @@ libiamroot.so: setegid.o
 libiamroot.so: seteuid.o
 libiamroot.so: setgid.o
 libiamroot.so: setgroups.o
+libiamroot.so: setregid.o
+libiamroot.so: setresgid.o
+libiamroot.so: setresuid.o
+libiamroot.so: setreuid.o
 libiamroot.so: setuid.o
 libiamroot.so: setxattr.o
 libiamroot.so: shadow.o

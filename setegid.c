@@ -35,11 +35,14 @@ int setegid(gid_t gid)
 	char buf[BUFSIZ];
 	int ret;
 
+	__debug("%s(gid: %u)\n", __func__, gid);
+
+	if (gid == (gid_t)-1)
+		return __set_errno(EINVAL, -1);
+
 	ret = _snprintf(buf, sizeof(buf), "%u", gid);
 	if (ret == -1)
 		return -1;
 
-	__debug("%s(uid: %u)\n", __func__, gid);
-
-	return setenv("IAMROOT_EGID", buf, 1);
+	return __setenv("EGID", buf, 1);
 }

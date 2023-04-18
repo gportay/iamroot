@@ -43,6 +43,32 @@ int _snprintf(char *buf, size_t bufsize, const char *fmt, ...)
 }
 
 __attribute__((visibility("hidden")))
+char *__getenv(const char *name)
+{
+	char buf[BUFSIZ];
+	int ret;
+
+	ret = _snprintf(buf, sizeof(buf), "IAMROOT_%s", name);
+	if (ret == -1)
+		return NULL;
+
+	return getenv(buf);
+}
+
+__attribute__((visibility("hidden")))
+int __setenv(const char *name, const char *value, int overwrite)
+{
+	char buf[BUFSIZ];
+	int ret;
+
+	ret = _snprintf(buf, sizeof(buf), "IAMROOT_%s", name);
+	if (ret == -1)
+		return -1;
+
+	return setenv(buf, value, overwrite);
+}
+
+__attribute__((visibility("hidden")))
 int __fissymlinkat(int dfd, const char *path, int atflags)
 {
 	struct stat statbuf;

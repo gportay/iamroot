@@ -35,11 +35,11 @@ gid_t getgid()
 	unsigned long ul;
 
 	errno = 0;
-	ul = strtoul(getenv("IAMROOT_GID") ?: "0", NULL, 0);
+	ul = strtoul(__getenv("GID") ?: "0", NULL, 0);
 	if (errno)
 		ul = 0;
 
-	__debug("%s(): IAMROOT_GID: %lu\n", __func__, ul);
+	__debug("%s(): %lu\n", __func__, ul);
 
 	return ul;
 }

@@ -35,11 +35,11 @@ uid_t getuid()
 	unsigned long ul;
 
 	errno = 0;
-	ul = strtoul(getenv("IAMROOT_UID") ?: "0", NULL, 0);
+	ul = strtoul(__getenv("UID") ?: "0", NULL, 0);
 	if (errno)
 		ul = 0;
 
-	__debug("%s(): IAMROOT_UID: %lu\n", __func__, ul);
+	__debug("%s(): %lu\n", __func__, ul);
 
 	return ul;
 }

@@ -159,6 +159,8 @@ int __isdirectory(const char *);
 int __fisfileat(int, const char *, int);
 int __fisfile(int);
 int __isfile(const char *);
+char *__getenv(const char *);
+int __setenv(const char *, const char *, int);
 int __pathprependenv(const char *, const char *, int);
 int __pathsetenv(const char *, const char *, const char *, int);
 

@@ -32,6 +32,7 @@ gid_t next_getgid()
 
 gid_t getgid()
 {
+	const int save_errno = errno;
 	unsigned long ul;
 
 	errno = 0;
@@ -41,5 +42,6 @@ gid_t getgid()
 
 	__debug("%s(): %lu\n", __func__, ul);
 
+	errno = save_errno;
 	return ul;
 }

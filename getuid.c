@@ -32,6 +32,7 @@ uid_t next_getuid()
 
 uid_t getuid()
 {
+	const int save_errno = errno;
 	unsigned long ul;
 
 	errno = 0;
@@ -41,5 +42,6 @@ uid_t getuid()
 
 	__debug("%s(): %lu\n", __func__, ul);
 
+	errno = save_errno;
 	return ul;
 }

@@ -215,7 +215,7 @@ struct spwd *fgetspent(FILE *f)
 	int cs;
 	pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &cs);
 	if (getline(&line, &size, f) >= 0 && __parsespent(line, &sp) >= 0) res = &sp;
-	else errno = ENOENT;
+	if (!res && !errno) errno = ENOENT;
 	pthread_setcancelstate(cs, 0);
 	return res;
 }

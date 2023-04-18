@@ -59,11 +59,15 @@ all: test-getcwd
 all: test-getegid
 all: test-geteuid
 all: test-getgid
+all: test-getgrent
 all: test-getgrgid
 all: test-getgrgid_r
 all: test-getgrnam
 all: test-getgrnam_r
+all: test-getgrouplist
 all: test-getgroups
+all: test-getgroups
+all: test-getpwent
 all: test-getpwnam
 all: test-getpwnam_r
 all: test-getpwuid
@@ -335,6 +339,7 @@ endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-getpwuid 0                                                                       | tee /dev/stderr | grep -q '^root:.*:0:0:.*:.*:.*$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-getpwuid_r 0                                                                     | tee /dev/stderr | grep -q '^root:.*:0:0:.*:.*:.*$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-fgetpwent <passwd
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-getpwent
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-setpwent
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-putpwent iamroot x 1000 1000 "iamroot user" /home/iamroot /usr/bin/iamroot-shell | tee /dev/stderr | grep -q '^iamroot:x:1000:1000:iamroot user:/home/iamroot:/usr/bin/iamroot-shell$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-endpwent
@@ -343,6 +348,7 @@ endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-getgrgid 0                                                                       | tee /dev/stderr | grep -q '^root:.*:0:.*$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-getgrgid_r 0                                                                     | tee /dev/stderr | grep -q '^root:.*:0:.*$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-fgetgrent <group
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-getgrent
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-setgrent
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-putgrent iamroot x 1000                                                          | tee /dev/stderr | grep -q '^iamroot:x:1000:$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-putgrent iamroot x 1000 iamroot                                                  | tee /dev/stderr | grep -q '^iamroot:x:1000:iamroot$$'
@@ -351,6 +357,8 @@ endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-getgroups                                                                        | tee /dev/stderr | grep -q '^1 0$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin   IAMROOT_GROUPS=0:100:1000 test-getgroups                                                                        | tee /dev/stderr | grep -q '^3 0 100 1000$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin   IAMROOT_GROUPS=0:100:1000 test-getgroups 3                                                                      | tee /dev/stderr | grep -q '^3 0 100 1000$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-getgrouplist "$$USER" "$$GROUPS"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-getgrouplist "$$USER" "$$GROUPS" 0
 	! env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_GROUPS=0:100:1000 test-getgroups 2
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin   IAMROOT_GROUPS=0:100:1000 test-setgroups                                                                        | tee /dev/stderr | grep -q '^$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-setgroups 0 100 1000                                                             | tee /dev/stderr | grep -q '^0:100:1000$$'

@@ -66,7 +66,7 @@ int __getgrent_a(FILE *f, struct group *gr, char **line, size_t *size, char ***m
 	pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &cs);
 	for (;;) {
 		if ((l=getline(line, size, f)) < 0) {
-			rv = ferror(f) ? errno : ENOENT;
+			rv = ferror(f) ? errno : 0;
 			free(*line);
 			*line = 0;
 			gr = 0;
@@ -213,7 +213,7 @@ int getgrgid_r(gid_t gid, struct group *gr, char *buf, size_t size, struct group
 }
 
 /*
- * Stolen from musl (src/passwd/fgetgrent.c)
+ * Stolen and hacked from musl (src/passwd/fgetgrent.c)
  *
  * SPDX-FileCopyrightText: The musl Contributors
  *
@@ -226,6 +226,7 @@ struct group *fgetgrent(FILE *f)
 	struct group *res;
 	size_t size=0, nmem=0;
 	__getgrent_a(f, &gr, &line, &size, &mem, &nmem, &res);
+	if (!res && !errno) errno = ENOENT;
 	return res;
 }
 

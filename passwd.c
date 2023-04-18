@@ -65,7 +65,7 @@ int __getpwent_a(FILE *f, struct passwd *pw, char **line, size_t *size, struct p
 	pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &cs);
 	for (;;) {
 		if ((l=getline(line, size, f)) < 0) {
-			rv = ferror(f) ? errno : ENOENT;
+			rv = ferror(f) ? errno : 0;
 			free(*line);
 			*line = 0;
 			pw = 0;
@@ -192,7 +192,7 @@ int getpwuid_r(uid_t uid, struct passwd *pw, char *buf, size_t size, struct pass
 }
 
 /*
- * Stolen from musl (src/passwd/fgetpwent.c)
+ * Stolen and hacked from musl (src/passwd/fgetpwent.c)
  *
  * SPDX-FileCopyrightText: The musl Contributors
  *
@@ -205,6 +205,7 @@ struct passwd *fgetpwent(FILE *f)
 	size_t size=0;
 	struct passwd *res;
 	__getpwent_a(f, &pw, &line, &size, &res);
+	if (!res && !errno) errno = ENOENT;
 	return res;
 }
 

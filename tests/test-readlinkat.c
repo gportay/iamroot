@@ -46,6 +46,8 @@ int main(int argc, char * const argv[])
 
 	printf("%s\n", buf);
 
+	ret = EXIT_SUCCESS;
+
 exit:
 	if (dfd != AT_FDCWD)
 		if (close(dfd))

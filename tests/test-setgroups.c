@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Gaël PORTAY
+ * Copyright 2022-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -42,5 +42,5 @@ int main(int argc, char * const argv[])
 
 	printf("%s\n", getenv("IAMROOT_GROUPS") ?: "");
 
-	return EXIT_FAILURE;
+	return EXIT_SUCCESS;
 }

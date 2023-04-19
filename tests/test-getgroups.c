@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Gaël PORTAY
+ * Copyright 2022-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -49,7 +49,7 @@ int main(int argc, char * const argv[])
 			printf(" %u", list[i]);
 		printf("\n");
 
-		return EXIT_FAILURE;
+		return EXIT_SUCCESS;
 	}
 
 	return EXIT_FAILURE;

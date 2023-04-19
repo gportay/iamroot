@@ -17,13 +17,13 @@ int setreuid(uid_t ruid, uid_t euid)
 
 	__debug("%s(ruid: %u, euid: %u)\n", __func__, ruid, euid);
 
-	if (ruid != (uid_t)-1) {
+	if (euid != (uid_t)-1) {
 		ret = seteuid(euid);
 		if (ret == -1)
 			return -1;
 	}
 
-	if (euid != (uid_t)-1) {
+	if (ruid != (uid_t)-1) {
 		ret = setuid(ruid);
 		if (ret == -1)
 			return -1;

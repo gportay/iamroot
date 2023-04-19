@@ -29,5 +29,7 @@ int main(int argc, char * const argv[])
 		return EXIT_FAILURE;
 	}
 
+	printf("%s\n", getenv("IAMROOT_EGID") ?: "");
+
 	return EXIT_SUCCESS;
 }

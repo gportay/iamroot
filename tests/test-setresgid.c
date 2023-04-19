@@ -31,5 +31,9 @@ int main(int argc, char * const argv[])
 		return EXIT_FAILURE;
 	}
 
+	printf("%s:%s:%s\n", getenv("IAMROOT_GID") ?: "",
+			     getenv("IAMROOT_EGID") ?: "",
+			     getenv("IAMROOT_SGID") ?: "");
+
 	return EXIT_SUCCESS;
 }

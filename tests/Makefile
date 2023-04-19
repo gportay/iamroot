@@ -320,20 +320,30 @@ endif
 	cd rootfs/ && ! env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-dl_iterate_phdr | grep '$(CURDIR)/rootfs'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                   test-getgid  | grep '^0$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin IAMROOT_GID=1000  test-getgid  | grep '^1000$$'
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-setgid 0
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                   test-getegid | grep '^0$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin IAMROOT_EGID=1000 test-getegid | grep '^1000$$'
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-setegid 0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-setregid 0 0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-setresgid 0 0 0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-setgid     0              | tee /dev/stderr | grep '^0$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-setegid    0              | tee /dev/stderr | grep '^0$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-setregid   0  0           | tee /dev/stderr | grep '^0:0$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-setregid   0 -1           | tee /dev/stderr | grep '^0:$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-setregid  -1  0           | tee /dev/stderr | grep '^:0$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-setresgid  0  0  0        | tee /dev/stderr | grep '^0:0:0$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-setresgid  0  0 -1        | tee /dev/stderr | grep '^0:0:$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-setresgid  0 -1  0        | tee /dev/stderr | grep '^0::0$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-setresgid -1  0  0        | tee /dev/stderr | grep '^:0:0$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                   test-getuid  | grep '^0$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin IAMROOT_UID=1000  test-getuid  | grep '^1000$$'
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-setuid 0
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                   test-geteuid | grep '^0$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin IAMROOT_EUID=1000 test-geteuid | grep '^1000$$'
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-seteuid 0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-setreuid 0 0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-setresuid 0 0 0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-setuid     0              | tee /dev/stderr | grep '^0$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-seteuid    0              | tee /dev/stderr | grep '^0$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-setreuid   0  0           | tee /dev/stderr | grep '^0:0$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-setreuid   0 -1           | tee /dev/stderr | grep '^0:$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-setreuid  -1 -1           | tee /dev/stderr | grep '^:$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-setresuid  0  0  0        | tee /dev/stderr | grep '^0:0:0$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-setresuid  0  0 -1        | tee /dev/stderr | grep '^0:0:$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-setresuid  0 -1  0        | tee /dev/stderr | grep '^0::0$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-setresuid -1  0  0        | tee /dev/stderr | grep '^:0:0$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-execl    | grep '^one two three$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-execle   | grep '^one two three$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin test-execlp   | grep '^one two three$$'

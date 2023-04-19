@@ -17,13 +17,13 @@ int setregid(gid_t rgid, gid_t egid)
 
 	__debug("%s(rgid: %u, egid: %u)\n", __func__, rgid, egid);
 
-	if (rgid != (gid_t)-1) {
+	if (egid != (gid_t)-1) {
 		ret = setegid(egid);
 		if (ret == -1)
 			return -1;
 	}
 
-	if (egid != (gid_t)-1) {
+	if (rgid != (gid_t)-1) {
 		ret = setgid(rgid);
 		if (ret == -1)
 			return -1;

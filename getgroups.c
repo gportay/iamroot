@@ -46,7 +46,7 @@ int next_getgroups(int listsize, gid_t list[])
 	int (*sym)(int, gid_t[]);
 	int ret;
 
-	sym = dlsym(RTLD_NEXT, "next_getgroups");
+	sym = dlsym(RTLD_NEXT, "getgroups");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 

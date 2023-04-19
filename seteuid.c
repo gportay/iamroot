@@ -7,28 +7,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
-#include <dlfcn.h>
 
 #include <unistd.h>
 
 #include "iamroot.h"
-
-__attribute__((visibility("hidden")))
-int next_seteuid(uid_t uid)
-{
-	int (*sym)(uid_t);
-	int ret;
-
-	sym = dlsym(RTLD_NEXT, "seteuid");
-	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
-
-	ret = sym(uid);
-	if (ret == -1)
-		__pathperror(NULL, __func__);
-
-	return ret;
-}
 
 int seteuid(uid_t uid)
 {

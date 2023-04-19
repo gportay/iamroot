@@ -9,28 +9,10 @@
 #include <string.h>
 #include <errno.h>
 #include <limits.h>
-#include <dlfcn.h>
 
 #include <grp.h>
 
 #include "iamroot.h"
-
-__attribute__((visibility("hidden")))
-int next_setgroups(size_t listsize, gid_t list[])
-{
-	int (*sym)(int, gid_t[]);
-	int ret;
-
-	sym = dlsym(RTLD_NEXT, "next_setgroups");
-	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
-
-	ret = sym(listsize, list);
-	if (ret == -1)
-		__pathperror(NULL, __func__);
-
-	return ret;
-}
 
 int setgroups(size_t listsize, const gid_t *list)
 {

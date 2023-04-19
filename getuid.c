@@ -13,23 +13,6 @@
 
 #include "iamroot.h"
 
-__attribute__((visibility("hidden")))
-uid_t next_getuid()
-{
-	uid_t (*sym)();
-	uid_t ret;
-
-	sym = dlsym(RTLD_NEXT, "geteuid");
-	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
-
-	ret = sym();
-	if (ret == (uid_t)-1)
-		__pathperror(NULL, __func__);
-
-	return ret;
-}
-
 uid_t getuid()
 {
 	const int save_errno = errno;

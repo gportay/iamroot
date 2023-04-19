@@ -8,7 +8,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
-#include <dlfcn.h>
 
 #include <unistd.h>
 
@@ -38,23 +37,6 @@ static int __id_callback(const char *id, void *user)
 	groups->size++;
 
 	return 0;
-}
-
-__attribute__((visibility("hidden")))
-int next_getgroups(int listsize, gid_t list[])
-{
-	int (*sym)(int, gid_t[]);
-	int ret;
-
-	sym = dlsym(RTLD_NEXT, "getgroups");
-	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
-
-	ret = sym(listsize, list);
-	if (ret == -1)
-		__pathperror(NULL, __func__);
-
-	return ret;
 }
 
 int getgroups(int listsize, gid_t list[])

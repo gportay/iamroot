@@ -685,6 +685,7 @@ fedora-rootfs: x86_64-fedora-34-rootfs
 fedora-rootfs: x86_64-fedora-35-rootfs
 fedora-rootfs: x86_64-fedora-36-rootfs
 fedora-rootfs: x86_64-fedora-37-rootfs
+fedora-rootfs: x86_64-fedora-38-rootfs
 
 x86_64-fedora-33-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora-archive.repo
 x86_64-fedora-35-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora-archive.repo
@@ -693,6 +694,7 @@ $(eval $(call dnf-rootfs,x86_64,fedora,34))
 $(eval $(call dnf-rootfs,x86_64,fedora,35))
 $(eval $(call dnf-rootfs,x86_64,fedora,36))
 $(eval $(call dnf-rootfs,x86_64,fedora,37))
+$(eval $(call dnf-rootfs,x86_64,fedora,38))
 endif
 
 ifneq ($(shell command -v zypper 2>/dev/null),)
@@ -871,12 +873,14 @@ aarch64-fedora-rootfs: aarch64-fedora-34-rootfs
 aarch64-fedora-rootfs: aarch64-fedora-35-rootfs
 aarch64-fedora-rootfs: aarch64-fedora-36-rootfs
 aarch64-fedora-rootfs: aarch64-fedora-37-rootfs
+aarch64-fedora-rootfs: aarch64-fedora-38-rootfs
 
 aarch64-fedora-33-rootfs: | aarch64-fedora-33-rootfs/etc/machine-id
 aarch64-fedora-34-rootfs: | aarch64-fedora-34-rootfs/etc/machine-id
 aarch64-fedora-35-rootfs: | aarch64-fedora-35-rootfs/etc/machine-id
 aarch64-fedora-36-rootfs: | aarch64-fedora-36-rootfs/etc/machine-id
 aarch64-fedora-37-rootfs: | aarch64-fedora-37-rootfs/etc/machine-id
+aarch64-fedora-38-rootfs: | aarch64-fedora-38-rootfs/etc/machine-id
 
 aarch64-fedora-33-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora-archive.repo
 aarch64-fedora-35-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora-archive.repo
@@ -885,11 +889,13 @@ $(eval $(call dnf-rootfs,aarch64,fedora,34))
 $(eval $(call dnf-rootfs,aarch64,fedora,35))
 $(eval $(call dnf-rootfs,aarch64,fedora,36))
 $(eval $(call dnf-rootfs,aarch64,fedora,37))
+$(eval $(call dnf-rootfs,aarch64,fedora,38))
 aarch64-fedora-33-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 aarch64-fedora-34-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 aarch64-fedora-35-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 aarch64-fedora-36-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 aarch64-fedora-37-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
+aarch64-fedora-38-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 endif
 
 ifneq ($(shell command -v arm-linux-gnueabihf-gcc 2>/dev/null),)
@@ -1149,6 +1155,7 @@ fedora-support: support/x86_64-fedora-34-rootfs.txt
 fedora-support: support/x86_64-fedora-35-rootfs.txt
 fedora-support: support/x86_64-fedora-36-rootfs.txt
 fedora-support: support/x86_64-fedora-37-rootfs.txt
+fedora-support: support/x86_64-fedora-38-rootfs.txt
 
 log: fedora-log
 

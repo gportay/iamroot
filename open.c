@@ -51,10 +51,8 @@ int open(const char *path, int oflags, ...)
 		atflags = AT_SYMLINK_NOFOLLOW;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), atflags);
-	if (siz == -1) {
-		__pathperror(path, __func__);
-		return -1;
-	}
+	if (siz == -1)
+		return __path_resolution_perror(path, -1);
 
 #ifdef __linux__
 	if ((oflags & O_CREAT) || (oflags & O_TMPFILE) == O_TMPFILE) {

@@ -278,10 +278,8 @@ int chroot(const char *path)
 	int ret;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
-	if (siz == -1) {
-		__pathperror(path, __func__);
-		return -1;
-	}
+	if (siz == -1)
+		return __path_resolution_perror(path, -1);
 
 	ret = setenv("PATH", getenv("IAMROOT_PATH") ?: _PATH_STDPATH, 1);
 	if (ret == -1) {

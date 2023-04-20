@@ -41,10 +41,8 @@ int ftw(const char *path, int (*fn)(const char *, const struct stat *, int),
 	ssize_t siz;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
-	if (siz == -1) {
-		__pathperror(path, __func__);
-		return -1;
-	}
+	if (siz == -1)
+		return __path_resolution_perror(path, -1);
 
 	__debug("%s(path: '%s' -> '%s')\n", __func__, path, buf);
 

@@ -40,10 +40,8 @@ nl_catd __catopen(const char *path, int flag)
 	ssize_t siz;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
-	if (siz == -1) {
-		__pathperror(path, __func__);
-		return (nl_catd)-1;
-	}
+	if (siz == -1)
+		return __path_resolution_perror(path, (nl_catd)-1);
 
 	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
 

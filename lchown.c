@@ -42,10 +42,8 @@ int lchown(const char *path, uid_t owner, gid_t group)
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
 			      AT_SYMLINK_NOFOLLOW);
-	if (siz == -1) {
-		__pathperror(path, __func__);
-		return -1;
-	}
+	if (siz == -1)
+		return __path_resolution_perror(path, -1);
 
 	owner = next_geteuid();
 	group = next_getegid();

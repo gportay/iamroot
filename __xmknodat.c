@@ -28,10 +28,8 @@ int __xmknodat(int ver, int dfd, const char *path, mode_t mode, dev_t *dev)
 	(void)dev;
 
 	siz = path_resolution(dfd, path, buf, sizeof(buf), 0);
-	if (siz == -1) {
-		__pathperror(path, __func__);
-		return -1;
-	}
+	if (siz == -1)
+		return __path_resolution_perror(path, -1);
 
 	__warn_if_insuffisant_user_mode(buf, mode);
 	__debug("%s(dfd %i <-> '%s', path: '%s' -> '%s', mode: 0%03o -> 0%03o)\n",

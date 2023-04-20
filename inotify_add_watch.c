@@ -38,10 +38,8 @@ int inotify_add_watch(int fd, const char *path, uint32_t mask)
 	ssize_t siz;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
-	if (siz == -1) {
-		__pathperror(path, __func__);
-		return -1;
-	}
+	if (siz == -1)
+		return __path_resolution_perror(path, -1);
 
 	__debug("%s(fd: %i, path: '%s', mask: 0x%0x)\n", __func__, fd, path,
 		mask);

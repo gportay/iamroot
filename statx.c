@@ -50,10 +50,8 @@ int statx(int dfd, const char *path, int atflags, unsigned int mask,
 	int ret;
 
 	siz = path_resolution(dfd, path, buf, sizeof(buf), atflags);
-	if (siz == -1) {
-		__pathperror(path, __func__);
-		return -1;
-	}
+	if (siz == -1)
+		return __path_resolution_perror(path, -1);
 
 	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', atflags: 0x%x...)\n",
 		__func__, dfd, __fpath(dfd), path, buf, atflags);

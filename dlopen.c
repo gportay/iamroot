@@ -50,10 +50,8 @@ void *dlopen(const char *path, int flags)
 	}
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
-	if (siz == -1) {
-		__pathperror(path, __func__);
-		return NULL;
-	}
+	if (siz == -1)
+		return __path_resolution_perror(path, NULL);
 
 next:
 	__debug("%s(path: '%s' -> '%s', flags: 0x%x)\n", __func__, path, buf,

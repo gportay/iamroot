@@ -75,10 +75,8 @@ int posix_spawn(pid_t *pid, const char *path,
 		goto exec_sh;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
-	if (siz == -1) {
-		__pathperror(path, __func__);
-		return -1;
-	}
+	if (siz == -1)
+		return __path_resolution_perror(path, -1);
 
 	__debug("%s(path: '%s' -> '%s', ..., argv: { '%s', '%s', ... }, envp: %p)\n",
 		__func__, path, buf, argv[0], argv[1], envp);

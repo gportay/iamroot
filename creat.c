@@ -45,10 +45,8 @@ int creat(const char *path, mode_t mode)
 	int ret;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
-	if (siz == -1) {
-		__pathperror(path, __func__);
-		return -1;
-	}
+	if (siz == -1)
+		return __path_resolution_perror(path, -1);
 
 	__warn_if_insuffisant_user_mode(buf, mode);
 	__debug("%s(path: '%s' -> '%s', mode: 0%03o -> 0%03o)\n", __func__,

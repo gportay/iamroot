@@ -41,10 +41,8 @@ int mkostempsat(int dfd, char *path, int suffixlen, int oflags)
 	int ret;
 
 	siz = path_resolution(dfd, path, buf, sizeof(buf), 0);
-	if (siz == -1) {
-		__pathperror(path, __func__);
-		return -1;
-	}
+	if (siz == -1)
+		return __path_resolution_perror(path, -1);
 
 	ret = next_mkostempsat(dfd, buf, suffixlen, oflags);
 	if (ret == -1)

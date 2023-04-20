@@ -38,17 +38,13 @@ int renameat(int olddfd, const char *oldpath, int newdfd, const char *newpath)
 
 	siz = path_resolution(olddfd, oldpath, oldbuf, sizeof(oldbuf),
 			      AT_SYMLINK_NOFOLLOW);
-	if (siz == -1) {
-		__pathperror(oldpath, __func__);
-		return -1;
-	}
+	if (siz == -1)
+		return __path_resolution_perror(oldpath, -1);
 
 	siz = path_resolution(newdfd, newpath, newbuf, sizeof(newbuf),
 			      AT_SYMLINK_NOFOLLOW);
-	if (siz == -1) {
-		__pathperror(newpath, __func__);
-		return -1;
-	}
+	if (siz == -1)
+		return __path_resolution_perror(newpath, -1);
 
 	__debug("%s(olddfd: %i <-> '%s', oldpath: '%s' -> '%s', newdfd: %i <-> '%s', newpath: '%s' -> '%s')\n",
 		__func__, olddfd, __fpath(olddfd), oldpath, oldbuf, newdfd,

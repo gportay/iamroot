@@ -41,10 +41,8 @@ int utimensat(int dfd, const char *path, const struct timespec times[2],
 
 	siz = path_resolution(dfd, path, buf, sizeof(buf),
 			      AT_SYMLINK_NOFOLLOW);
-	if (siz == -1) {
-		__pathperror(path, __func__);
-		return -1;
-	}
+	if (siz == -1)
+		return __path_resolution_perror(path, -1);
 
 	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', ..., atflags: 0x%x)\n",
 		__func__, dfd, __fpath(dfd), path, buf, atflags);

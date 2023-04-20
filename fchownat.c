@@ -41,10 +41,8 @@ int fchownat(int dfd, const char *path, uid_t owner, gid_t group, int atflags)
 	int ret;
 
 	siz = path_resolution(dfd, path, buf, sizeof(buf), atflags);
-	if (siz == -1) {
-		__pathperror(path, __func__);
-		return -1;
-	}
+	if (siz == -1)
+		return __path_resolution_perror(path, -1);
 
 	owner = __get_uid(buf);
 	group = __get_gid(buf);

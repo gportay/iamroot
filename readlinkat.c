@@ -54,10 +54,8 @@ ssize_t readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 
 	siz = path_resolution(dfd, path, tmp, sizeof(tmp),
 			      AT_SYMLINK_NOFOLLOW);
-	if (siz == -1) {
-		__pathperror(path, __func__);
-		return -1;
-	}
+	if (siz == -1)
+		return __path_resolution_perror(path, -1);
 
 	if (streq(tmp, "/proc/self/exe")) {
 		const char *exe;

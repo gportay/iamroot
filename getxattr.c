@@ -43,10 +43,8 @@ ssize_t getxattr(const char *path, const char *name, void *value, size_t size)
 	ssize_t siz;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
-	if (siz == -1) {
-		__pathperror(path, __func__);
-		return -1;
-	}
+	if (siz == -1)
+		return __path_resolution_perror(path, -1);
 
 	if (!__strneq(name, IAMROOT_XATTRS_PREFIX)) {
 		int ret;

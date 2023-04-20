@@ -207,10 +207,8 @@ char *realpath(const char *path, char *resolved_path)
 	char *ret;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
-	if (siz == -1) {
-		__pathperror(path, __func__);
-		return NULL;
-	}
+	if (siz == -1)
+		return __path_resolution_perror(path, NULL);
 
 	ret = next_realpath(buf, resolved_path);
 	if (!ret)

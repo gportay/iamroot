@@ -44,10 +44,8 @@ ssize_t lgetxattr(const char *path, const char *name, void *value, size_t size)
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
 			      AT_SYMLINK_NOFOLLOW);
-	if (siz == -1) {
-		__pathperror(path, __func__);
-		return -1;
-	}
+	if (siz == -1)
+		return __path_resolution_perror(path, -1);
 
 	if (!__strneq(name, IAMROOT_XATTRS_PREFIX)) {
 		int ret;

@@ -68,6 +68,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the handling for empty path if dfd is not `AT_FDCWD`
 - Fix the calling to the next symbol with the resolved path for the function
   `ftok()`
+- Fix the handling for path argument without slash in the function `catopen()`
+  by opening the catalog files from the real symbole
 
 ### Security
 

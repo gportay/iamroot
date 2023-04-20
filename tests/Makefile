@@ -13,6 +13,9 @@ OS ?= $(shell uname -o)
 override CPPFLAGS += -D_GNU_SOURCE
 override CFLAGS += -fPIC -Wall -Wextra
 
+LANG ?= en_US.UTF-8
+export LANG
+
 IAMROOT_LIB ?= $(CURDIR)/libiamroot.so
 export IAMROOT_LIB
 
@@ -28,6 +31,7 @@ all: test-__xmknod
 all: test-__xmknodat
 all: test-access
 all: test-acct
+all: test-catopen
 all: test-chmod
 all: test-chown
 all: test-chroot
@@ -172,6 +176,7 @@ test: export IAMROOT_LIBRARY_PATH := /lib64:/usr/lib64
 test: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/usr/lib64/libc.so.6:$(CURDIR)/rootfs/usr/lib64/libdl.so.2
 endif
 test: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|.*\.gcda
+test: export NLSPATH = $(CURDIR)/rootfs/usr/lib/nls/msg/%L/%N
 test: | rootfs
 	rm -Rf rootfs/tmp/* rootfs/dev/*
 	touch rootfs/tmp/file0
@@ -281,6 +286,10 @@ endif
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-fopen /etc/passwd r
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-freopen rootfs/etc/group r
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-freopen /etc/group r
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-catopen "rootfs/usr/lib/nls/msg/$$LANG/null.cat" 0
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-catopen "/usr/lib/nls/msg/$$LANG/null.cat" 0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-catopen null.cat 0
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-catopen null.cat 0
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-rename rootfs/tmp/file0 rootfs/tmp/file1
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-renameat - rootfs/tmp/file1 - rootfs/tmp/file2
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-renameat - /tmp/file2 - /tmp/file3
@@ -415,6 +424,8 @@ rootfs:
 	install -m644 passwd $(DESTDIR)/etc/
 	install -m644 group  $(DESTDIR)/etc/
 	install -m600 shadow $(DESTDIR)/etc/
+	install -d -m755 $(DESTDIR)/usr/lib/nls/msg/$$LANG/
+	gencat $(DESTDIR)/usr/lib/nls/msg/$$LANG/null.cat /dev/null
 	install -d -m755 $(DESTDIR)/usr/bin
 	for i in *.c; do \
 		test -e $${i%.c} || continue; \

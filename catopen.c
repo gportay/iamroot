@@ -6,6 +6,7 @@
 
 #include <stdarg.h>
 #include <stdio.h>
+#include <string.h>
 #include <errno.h>
 #include <limits.h>
 #include <fcntl.h>
@@ -36,6 +37,9 @@ nl_catd catopen(const char *path, int flag)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
+
+	if (!strchr(path, '/'))
+		return next_catopen(path, flag);
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1) {

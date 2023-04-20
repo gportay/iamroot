@@ -44,5 +44,5 @@ key_t ftok(const char *path, int proj_id)
 
 	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
 
-	return next_ftok(path, proj_id);
+	return next_ftok(buf, proj_id);
 }

@@ -1101,8 +1101,8 @@ static char *__getlibiamroot(const char *ldso, int abi)
 #endif
 
 exit:
-	if (setenv("IAMROOT_LIB", ret, 1))
-		return NULL;
+	if (setenv("IAMROOT_LIB", ret, 1) == -1)
+		return __env_perror("IAMROOT_LIB", "setenv", NULL);
 
 	return getenv("IAMROOT_LIB");
 }
@@ -1222,8 +1222,8 @@ char *__ld_preload(const char *ldso, int abi)
 	}
 
 	ret = unsetenv("ld_preload");
-	if (ret)
-		return NULL;
+	if (ret == -1)
+		return __env_perror("ld_preload", "unsetenv", NULL);
 
 	ret = __path_iterate(val, __librarypath_callback, path);
 	if (ret == -1)
@@ -1308,8 +1308,8 @@ char *__needed(const char *path)
 		return NULL;
 
 	ret = setenv("needed", buf, 1);
-	if (ret)
-		return NULL;
+	if (ret == -1)
+		return __env_perror("needed", "setenv", NULL);
 
 	return getenv("needed");
 }
@@ -1326,8 +1326,8 @@ char *__rpath(const char *path)
 		return NULL;
 
 	ret = setenv("rpath", buf, 1);
-	if (ret)
-		return NULL;
+	if (ret == -1)
+		return __env_perror("rpath", "setenv", NULL);
 
 	return getenv("rpath");
 }
@@ -1345,8 +1345,8 @@ char *__runpath(const char *path)
 		return NULL;
 
 	ret = setenv("runpath", buf, 1);
-	if (ret)
-		return NULL;
+	if (ret == -1)
+		return __env_perror("runpath", "setenv", NULL);
 
 	return getenv("runpath");
 }
@@ -1443,6 +1443,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 {
 	char buf[HASHBANG_MAX];
 	ssize_t siz;
+	int ret;
 	(void)argv;
 
 	/*
@@ -1461,7 +1462,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 		     *inhibit_rpath, *ld_library_path, *ld_preload;
 		int has_argv0 = 1, has_preload = 1, has_inhibit_rpath = 0,
 		    has_inhibit_cache = 0;
-		int ret, i, j, shift = 1, abi = 0;
+		int i, j, shift = 1, abi = 0;
 		const char *basename;
 		char ldso[NAME_MAX];
 		char * const *arg;
@@ -1582,14 +1583,14 @@ int __loader(const char *path, char * const argv[], char *interp,
 			interparg[i++] = ld_preload;
 
 			ret = unsetenv("LD_PRELOAD");
-			if (ret) {
-				__envperror("LD_PRELOAD", "unsetenv");
-				return -1;
-			}
+			if (ret == -1)
+				return __env_perror("LD_PRELOAD", "unsetenv",
+						    -1);
 		} else if (ld_preload) {
 			ret = setenv("LD_PRELOAD", ld_preload, 1);
-			if (ret)
-				return -1;
+			if (ret == -1)
+				return __env_perror("LD_PRELOAD", "setenv",
+						    -1);
 		}
 
 		/* Add --library-path (chroot) */
@@ -1619,8 +1620,8 @@ int __loader(const char *path, char * const argv[], char *interp,
 			 * __libc_start_main().
 			 */
 			ret = setenv("argv0", argv0, 1);
-			if (ret)
-				return -1;
+			if (ret == -1)
+				return __env_perror("argv0", "setenv", -1);
 		}
 
 		/* Add path to binary (in chroot, first positional argument) */
@@ -1632,7 +1633,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 	} else {
 		char *argv0, *needed, *rpath, *runpath, *ld_library_path,
 		     *ld_preload;
-		int ret, i, j, shift = 1, abi = 0;
+		int i, j, shift = 1, abi = 0;
 		const char *basename;
 		char ldso[NAME_MAX];
 		char * const *arg;
@@ -1670,8 +1671,8 @@ int __loader(const char *path, char * const argv[], char *interp,
 		j = i;
 
 		ret = setenv("argv0", argv0, 1);
-		if (ret)
-			return -1;
+		if (ret == -1)
+			return __env_perror("argv0", "setenv", -1);
 
 		needed = __needed(path);
 		if (needed)
@@ -1688,23 +1689,27 @@ int __loader(const char *path, char * const argv[], char *interp,
 		ld_library_path = __ld_library_path(ldso, abi);
 		if (ld_library_path) {
 			ret = setenv("LD_LIBRARY_PATH", ld_library_path, 1);
-			if (ret)
-				return -1;
+			if (ret == -1)
+				return __env_perror("LD_LIBRARY_PATH",
+						    "setenv", -1);
 
 			ret = unsetenv("ld_library_path");
-			if (ret)
-				return -1;
+			if (ret == -1)
+				return __env_perror("ld_library_path",
+						    "unsetenv", -1);
 		}
 
 		ld_preload = __ld_preload(ldso, abi);
 		if (ld_preload) {
 			ret = setenv("LD_PRELOAD", ld_preload, 1);
-			if (ret)
-				return -1;
+			if (ret == -1)
+				return __env_perror("LD_PRELOAD", "setenv",
+						    -1);
 
 			ret = unsetenv("ld_preload");
-			if (ret)
-				return -1;
+			if (ret == -1)
+				return __env_perror("ld_preload", "unsetenv",
+						    -1);
 		}
 
 		/* Add path to interpreter (host, argv0) */
@@ -1724,7 +1729,11 @@ int __loader(const char *path, char * const argv[], char *interp,
 	}
 
 	__notice("%s: not handled\n", buf);
-	return setenv("interp", buf, 1);
+	ret = setenv("interp", buf, 1);
+	if (ret == -1)
+		return __env_perror("interp", "setenv", -1);
+
+	return 0;
 }
 
 __attribute__((visibility("hidden")))
@@ -1741,24 +1750,24 @@ int __exec_sh(const char *path, char * const *argv, char **interparg,
 	interparg[i] = NULL; /* ensure NULL-terminated */
 
 	ret = setenv("argv0", *argv, 1);
-	if (ret)
-		return -1;
+	if (ret == -1)
+		return __env_perror("argv0", "setenv", -1);
 
 	ret = setenv("ld_preload", getenv("LD_PRELOAD") ?: "", 1);
-	if (ret)
-		return -1;
+	if (ret == -1)
+		return __env_perror("ld_preload", "setenv", -1);
 
 	ret = setenv("ld_library_path", getenv("LD_LIBRARY_PATH") ?: "", 1);
-	if (ret)
-		return -1;
+	if (ret == -1)
+		return __env_perror("ld_library_path", "setenv", -1);
 
 	ret = unsetenv("LD_PRELOAD");
-	if (ret)
-		return -1;
+	if (ret == -1)
+		return __env_perror("LD_PRELOAD", "unsetenv", -1);
 
 	ret = unsetenv("LD_LIBRARY_PATH");
-	if (ret)
-		return -1;
+	if (ret == -1)
+		return __env_perror("LD_LIBRARY_PATH", "unsetenv", -1);
 
 	return i;
 }
@@ -1869,8 +1878,8 @@ exec_sh:
 
 execve:
 	ret = setenv("IAMROOT_VERSION", __xstr(VERSION), 1);
-	if (ret)
-		return -1;
+	if (ret == -1)
+		return __env_perror("IAMROOT_VERSION", "setenv", -1);
 
 	argc = 1;
 	arg = interparg;

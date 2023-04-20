@@ -143,8 +143,8 @@ exec_sh:
 
 execveat:
 	ret = setenv("IAMROOT_VERSION", __xstr(VERSION), 1);
-	if (ret)
-		return -1;
+	if (ret == -1)
+		return __env_perror("IAMROOT_VERSION", "setenv", -1);
 
 	argc = 1;
 	arg = interparg;

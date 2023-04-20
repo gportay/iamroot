@@ -628,6 +628,10 @@ extern void __pathdlperror(const char *, const char *);
 	({ __pathperror((p), __func__); \
 	   (r); })
 
+#define __env_perror(e, f, r) \
+	({ __envperror((e), f); \
+	   (r); })
+
 int close(int);
 static inline void __close(int fd)
 {

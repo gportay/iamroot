@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -25,6 +25,6 @@ int main(void)
 		_exit(127);
 
 	fexecve(fd, argv, environ);
-	perror("execl");
+	perror("fexecve");
 	_exit(127);
 }

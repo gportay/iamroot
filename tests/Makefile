@@ -57,8 +57,12 @@ all: test-fexecve
 all: test-fgetgrent
 all: test-fgetpwent
 all: test-fgetspent
+all: test-fgetxattr
+all: test-flistxattr
 all: test-fopen
+all: test-fremovexattr
 all: test-freopen
+all: test-fsetxattr
 all: test-fstat
 all: test-fstatat
 all: test-ftok
@@ -85,11 +89,17 @@ all: test-getspnam
 all: test-getspnam_r
 all: test-getuid
 all: test-getwd
+all: test-getxattr
 all: test-initgroups
 all: test-lchown
 all: test-lckpwdf
+all: test-lgetxattr
 all: test-link
 all: test-linkat
+all: test-listxattr
+all: test-llistxattr
+all: test-lremovexattr
+all: test-lsetxattr
 all: test-lstat
 all: test-lutimes
 all: test-mkdir
@@ -118,6 +128,7 @@ all: test-putpwent
 all: test-putspent
 all: test-readlink
 all: test-readlinkat
+all: test-removexattr
 all: test-rename
 all: test-renameat
 all: test-renameat2
@@ -137,6 +148,7 @@ all: test-setresuid
 all: test-setreuid
 all: test-setspent
 all: test-setuid
+all: test-setxattr
 all: test-stat
 all: test-statfs
 all: test-statvfs
@@ -424,6 +436,54 @@ endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-endspent
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-lckpwdf
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-ulckpwdf
+ifeq ($(OS),GNU/Linux)
+	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-fsetxattr    rootfs/etc/os-release user.one   0 0
+	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-fsetxattr    rootfs/etc/os-release user.one   1 0
+	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-fsetxattr    rootfs/etc/os-release user.two   1 1
+	! env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-fsetxattr    rootfs/etc/os-release user.two   2 1
+	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-fsetxattr    rootfs/etc/os-release user.two   2 0
+	! env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-fsetxattr    rootfs/etc/os-release user.three 1 2
+	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-fsetxattr    rootfs/etc/os-release user.three 1 1
+	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-fsetxattr    rootfs/etc/os-release user.three 3 2
+	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-flistxattr   rootfs/etc/os-release                               | tee /dev/stderr | grep -q '^user.three:user.two:user.one:$$'
+	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-fgetxattr    rootfs/etc/os-release user.one                      | tee /dev/stderr | grep -q '^1$$'
+	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-fgetxattr    rootfs/etc/os-release user.two                      | tee /dev/stderr | grep -q '^2$$'
+	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-fgetxattr    rootfs/etc/os-release user.three                    | tee /dev/stderr | grep -q '^3$$'
+	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-fremovexattr rootfs/etc/os-release user.three
+	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-fremovexattr rootfs/etc/os-release user.two
+	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-fremovexattr rootfs/etc/os-release user.one
+	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-setxattr     rootfs/etc/os-release user.one   0 0
+	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-setxattr     rootfs/etc/os-release user.one   1 0
+	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-setxattr     rootfs/etc/os-release user.two   1 1
+	! env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-setxattr     rootfs/etc/os-release user.two   2 1
+	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-setxattr     rootfs/etc/os-release user.two   2 0
+	! env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-setxattr     rootfs/etc/os-release user.three 1 2
+	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-setxattr     rootfs/etc/os-release user.three 1 1
+	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-setxattr     rootfs/etc/os-release user.three 3 2
+	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-listxattr    rootfs/etc/os-release                               | tee /dev/stderr | grep -q '^user.three:user.two:user.one:$$'
+	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-getxattr     rootfs/etc/os-release user.one                      | tee /dev/stderr | grep -q '^1$$'
+	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-getxattr     rootfs/etc/os-release user.two                      | tee /dev/stderr | grep -q '^2$$'
+	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-getxattr     rootfs/etc/os-release user.three                    | tee /dev/stderr | grep -q '^3$$'
+	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-removexattr  rootfs/etc/os-release user.three
+	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-removexattr  rootfs/etc/os-release user.two
+	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-removexattr  rootfs/etc/os-release user.one
+	- env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-lsetxattr    rootfs/etc/os-release user.one   0 0
+	- env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-lsetxattr    rootfs/etc/os-release user.one   1 0
+	- env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-lsetxattr    rootfs/etc/os-release user.two   1 1
+	! env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-lsetxattr    rootfs/etc/os-release user.two   2 1
+	- env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-lsetxattr    rootfs/etc/os-release user.two   2 0
+	! env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-lsetxattr    rootfs/etc/os-release user.three 1 2
+	- env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-lsetxattr    rootfs/etc/os-release user.three 1 1
+	- env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-lsetxattr    rootfs/etc/os-release user.three 3 2
+	- env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-llistxattr   rootfs/etc/os-release                               | tee /dev/stderr | grep -q '^user.three:user.two:user.one:$$'
+	- env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-lgetxattr    rootfs/etc/os-release user.one                      | tee /dev/stderr | grep -q '^1$$'
+	- env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-lgetxattr    rootfs/etc/os-release user.two                      | tee /dev/stderr | grep -q '^2$$'
+	- env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-lgetxattr    rootfs/etc/os-release user.three                    | tee /dev/stderr | grep -q '^3$$'
+	- env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-lremovexattr rootfs/etc/os-release user.three
+	- env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-lremovexattr rootfs/etc/os-release user.two
+	- env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-lremovexattr rootfs/etc/os-release user.one
+endif
+	@echo "Completed!"
 
 rootfs: DESTDIR = $(CURDIR)/rootfs
 rootfs:
@@ -466,6 +526,8 @@ ifeq ($(ARCH),aarch64)
 endif
 	install -D -m755 libiamnotroot.so --target-directory=$(DESTDIR)/usr/lib64
 endif
+	install -m 644 os-release $(DESTDIR)/usr/lib/
+	ln -sf ../usr/lib/os-release $(DESTDIR)/etc/os-release
 	install -d -m755 $(DESTDIR)/proc
 	install -d -m755 $(DESTDIR)/sys
 	install -d -m755 $(DESTDIR)/dev
@@ -474,6 +536,8 @@ endif
 	install -d -m755 $(DESTDIR)/var
 	install -d -m755 $(DESTDIR)/var/log
 ifeq ($(OS),FreeBSD)
+	install -m 644 os-release $(DESTDIR)/usr/lib/
+	ln -sf ../usr/lib/os-release $(DESTDIR)/etc/os-release
 	install -d -m755 $(DESTDIR)/var/run
 endif
 ifeq ($(OS),GNU/Linux)

@@ -23,6 +23,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Intercept the functions `initgroups()`, `setregid()`, `setresgid()`,
   `setresuid()` and `setreuid()`
 
+### Removed
+
+- Remove function `mq_open()`
+
 ### Changed
 
 - Output the directory fd for the functions `name_to_handle_at()` and

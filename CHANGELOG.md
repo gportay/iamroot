@@ -51,6 +51,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - The functions `__fxstat()`, `__fxstat64()`, `fstat()` and `fstat64()` do not
   call the AT-functions `__fxstatat()`, `__fxstatat64()`, `fstatat()` and
   `fstatat64()` anymore
+- Output the resolved path for the function `ftok()`
 
 ### Fixed
 

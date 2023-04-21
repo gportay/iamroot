@@ -43,10 +43,8 @@ int extattr_delete_fd(int fd, int attrnamespace, const char *attrname)
 	ssize_t siz;
 
 	siz = fpath(fd, buf, sizeof(buf));
-	if (siz == -1) {
-		__fpathperror(fd, __func__);
-		return -1;
-	}
+	if (siz == -1)
+		return __fpath_perror(fd, -1);
 
 	if (attrnamespace == EXTATTR_NAMESPACE_SYSTEM) {
 		int ret;

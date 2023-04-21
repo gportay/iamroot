@@ -46,10 +46,8 @@ ssize_t extattr_list_fd(int fd, int attrnamespace, void *data, size_t nbytes)
 	(void)nbytes;
 
 	siz = fpath(fd, buf, sizeof(buf));
-	if (siz == -1) {
-		__fpathperror(fd, __func__);
-		return -1;
-	}
+	if (siz == -1)
+		return __fpath_perror(fd, -1);
 
 	if (attrnamespace == EXTATTR_NAMESPACE_SYSTEM)
 		attrnamespace = EXTATTR_NAMESPACE_USER;

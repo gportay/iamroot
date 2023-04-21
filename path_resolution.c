@@ -649,10 +649,8 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		int n;
 
 		siz = fpath(dfd, dirbuf, sizeof(dirbuf));
-		if (siz == -1) {
-			__fpathperror(dfd, "fpath");
-			return -1;
-		}
+		if (siz == -1)
+			return __fpath_perror(dfd, -1);
 
 		if (*dirbuf != '/')
 			goto ignore;

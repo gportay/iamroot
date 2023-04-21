@@ -37,16 +37,12 @@ int fchdir(int fd)
 	int ret;
 
 	siz = fpath(fd, buf, sizeof(buf));
-	if (siz == -1) {
-		__fpathperror(fd, __func__);
-		return -1;
-	}
+	if (siz == -1)
+		return __fpath_perror(fd, -1);
 
 	ret = next_fchdir(fd);
-	if (ret) {
-		__fpathperror(fd, __func__);
-		return ret;
-	}
+	if (ret == -1)
+		return __fpath_perror(fd, -1);
 
 	__debug("%s(fd: %i <-> '%s')\n", __func__, fd, buf);
 

@@ -44,10 +44,8 @@ ssize_t flistxattr(int fd, char *list, size_t size)
 	(void)size;
 
 	siz = fpath(fd, buf, sizeof(buf));
-	if (siz == -1) {
-		__fpathperror(fd, __func__);
-		return -1;
-	}
+	if (siz == -1)
+		return __fpath_perror(fd, -1);
 
 	__debug("%s(fd: %i <-> '%s', ...)\n", __func__, fd, buf);
 

@@ -41,10 +41,8 @@ ssize_t fgetxattr(int fd, const char *name, void *value, size_t size)
 	ssize_t siz;
 
 	siz = fpath(fd, buf, sizeof(buf));
-	if (siz == -1) {
-		__fpathperror(fd, __func__);
-		return -1;
-	}
+	if (siz == -1)
+		return __fpath_perror(fd, -1);
 
 	if (!__strneq(name, IAMROOT_XATTRS_PREFIX)) {
 		int ret;

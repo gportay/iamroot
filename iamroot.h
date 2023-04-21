@@ -589,7 +589,7 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 	     statxbuf->stx_gid = g; \
 	   } })
 
-#define __ignored_errno(e) (((e) != EPERM) && ((e) != EACCES) && ((e) != ENOSYS))
+#define __ignored_errno(e) (((e) == EPERM) || ((e) == EACCES) || ((e) == ENOSYS))
 
 #define __ignored_error(rc) ((rc == -1) && (errno == EPERM))
 

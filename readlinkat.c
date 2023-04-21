@@ -48,7 +48,7 @@ ssize_t readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 		ret = len;
 		if ((size_t)ret > bufsize)
 			ret = bufsize;
-		memcpy(tmp2, root, ret);
+		memcpy(buf, root, ret);
 		return ret;
 	}
 

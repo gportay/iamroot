@@ -554,27 +554,27 @@ clean:
 
 ifeq ($(ARCH),x86_64)
 ifneq ($(shell command -v pacstrap 2>/dev/null),)
-.PHONY: arch-test
-arch-test: | x86_64-arch-rootfs/usr/bin/shebang.sh
-arch-test: | x86_64-arch-rootfs/usr/bin/shebang-arg.sh
-arch-test: $(subst $(CURDIR)/,,$(IAMROOT_LIB)) | x86_64-arch-rootfs
-	bash iamroot-shell -c "chroot x86_64-arch-rootfs shebang.sh one two three"
-	bash iamroot-shell -c "chroot x86_64-arch-rootfs shebang-arg.sh one two three"
+.PHONY: archlinux-test
+archlinux-test: | x86_64-archlinux-rootfs/usr/bin/shebang.sh
+archlinux-test: | x86_64-archlinux-rootfs/usr/bin/shebang-arg.sh
+archlinux-test: $(subst $(CURDIR)/,,$(IAMROOT_LIB)) | x86_64-archlinux-rootfs
+	bash iamroot-shell -c "chroot x86_64-archlinux-rootfs shebang.sh one two three"
+	bash iamroot-shell -c "chroot x86_64-archlinux-rootfs shebang-arg.sh one two three"
 
-x86_64-arch-rootfs/usr/bin/%: support/% | x86_64-arch-rootfs
+x86_64-archlinux-rootfs/usr/bin/%: support/% | x86_64-archlinux-rootfs
 	cp $< $@
 
-rootfs: x86_64-arch-rootfs
+rootfs: x86_64-archlinux-rootfs
 
-$(eval $(call pacstrap-rootfs,x86_64,arch,base))
+$(eval $(call pacstrap-rootfs,x86_64,archlinux,base))
 
-i686-rootfs: i686-arch-rootfs
+i686-rootfs: i686-archlinux32-rootfs
 
-.PHONY: i686-arch-rootfs
-i686-arch-rootfs: | i686-arch-rootfs/etc/machine-id
+.PHONY: i686-archlinux32-rootfs
+i686-archlinux32-rootfs: | i686-archlinux32-rootfs/etc/machine-id
 
-$(eval $(call pacstrap-rootfs,i686,arch,base))
-i686-arch-rootfs/etc/machine-id: | i686/libiamroot-linux.so.2 x86_64/libiamroot-linux-x86-64.so.2
+$(eval $(call pacstrap-rootfs,i686,archlinux32,base))
+i686-archlinux32-rootfs/etc/machine-id: | i686/libiamroot-linux.so.2 x86_64/libiamroot-linux-x86-64.so.2
 
 extra-rootfs: x86_64-manjaro-stable-rootfs
 
@@ -841,25 +841,25 @@ endif
 
 ifneq ($(shell command -v pacstrap 2>/dev/null),)
 ifneq ($(shell command -v aarch64-linux-gnu-gcc 2>/dev/null),)
-aarch64-rootfs: aarch64-arch-rootfs
+aarch64-rootfs: aarch64-archlinuxarm-rootfs
 
-.PHONY: aarch64-arch-rootfs
-aarch64-arch-rootfs: | aarch64-arch-rootfs/etc/machine-id
+.PHONY: aarch64-archlinuxarm-rootfs
+aarch64-archlinuxarm-rootfs: | aarch64-archlinuxarm-rootfs/etc/machine-id
 
-$(eval $(call pacstrap-rootfs,aarch64,arch,base))
-aarch64-arch-chroot aarch64-arch-shell aarch64-arch-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib:/usr/lib
-aarch64-arch-chroot aarch64-arch-shell aarch64-arch-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
-aarch64-arch-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
+$(eval $(call pacstrap-rootfs,aarch64,archlinuxarm,base))
+aarch64-archlinuxarm-chroot aarch64-archlinuxarm-shell aarch64-archlinuxarm-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib:/usr/lib
+aarch64-archlinuxarm-chroot aarch64-archlinuxarm-shell aarch64-archlinuxarm-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
+aarch64-archlinuxarm-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 endif
 
 ifneq ($(shell command -v arm-linux-gnueabihf-gcc 2>/dev/null),)
-arm-rootfs: armv7h-arch-rootfs
+arm-rootfs: armv7h-archlinuxarm-rootfs
 
-.PHONY: armv7h-arch-rootfs
-armv7h-arch-rootfs: | armv7h-arch-rootfs/etc/machine-id
+.PHONY: armv7h-archlinuxarm-rootfs
+armv7h-archlinuxarm-rootfs: | armv7h-archlinuxarm-rootfs/etc/machine-id
 
-$(eval $(call pacstrap-rootfs,armv7h,arch,base))
-armv7h-arch-rootfs/etc/machine-id: | armhf/libiamroot-linux-armhf.so.3 x86_64/libiamroot-linux-x86-64.so.2
+$(eval $(call pacstrap-rootfs,armv7h,archlinuxarm,base))
+armv7h-archlinuxarm-rootfs/etc/machine-id: | armhf/libiamroot-linux-armhf.so.3 x86_64/libiamroot-linux-x86-64.so.2
 endif
 endif
 
@@ -1083,22 +1083,22 @@ broken-log: all
 fixme-log: all
 
 ifneq ($(shell command -v pacstrap 2>/dev/null),)
-support: arch-support
+support: archlinux-support
 
-.PHONY: arch-support
-arch-support: support/x86_64-arch-rootfs.txt
-arch-support: support/i686-arch-rootfs.txt
+.PHONY: archlinux-support
+archlinux-support: support/x86_64-archlinux-rootfs.txt
+archlinux-support: support/i686-archlinux32-rootfs.txt
 
 extra-support: manjaro-support
 
 .PHONY: manjaro-support
 manjaro-support: support/x86_64-manjaro-stable-rootfs.txt
 
-log: arch-log
+log: archlinux-log
 
-.PHONY: arch-log
-arch-log: x86_64-arch-rootfs.log
-arch-log: i686-arch-rootfs.log
+.PHONY: archlinux-log
+archlinux-log: x86_64-archlinux-rootfs.log
+archlinux-log: i686-archlinux32-rootfs.log
 
 extra-log: manjaro-log
 

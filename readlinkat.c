@@ -39,19 +39,6 @@ ssize_t readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 	ssize_t ret, siz;
 	size_t len;
 
-	root = __getrootdir();
-	len = __strlen(root);
-
-	if (streq(path, "/proc/self/root")) {
-		__notice("%s: ignoring path resolution '%s'\n", __func__,
-			 path);
-		ret = len;
-		if ((size_t)ret > bufsize)
-			ret = bufsize;
-		memcpy(buf, root, ret);
-		return ret;
-	}
-
 	siz = path_resolution(dfd, path, tmp, sizeof(tmp),
 			      AT_SYMLINK_NOFOLLOW);
 	if (siz == -1)
@@ -77,6 +64,9 @@ ssize_t readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 	if (ret == -1)
 		goto exit;
 	tmp2[ret] = 0; /* ensure NULL-terminated */
+
+	root = __getrootdir();
+	len = __strlen(root);
 
 	if (strneq(root, "/", ret))
 		goto exit;

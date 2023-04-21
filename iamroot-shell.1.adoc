@@ -214,7 +214,7 @@ Change root directory via *chroot(1)*
 	/ # ls /proc/self/cwd -l
 	lrwxrwxrwx    1 root     root             0 Mar 24 20:53 /proc/self/cwd -> /
         / # ls -l /proc/self/root
-	lrwxrwxrwx    1 root     root             0 Mar 24 20:53 /proc/self/root -> /home/gportay/alpine-minirootfs
+	lrwxrwxrwx    1 root     root             0 Mar 24 20:53 /proc/self/root -> /
 
 Create a new Arch Linux system installation from scratch via *pacstrap(8)*
 
@@ -314,7 +314,7 @@ Change root directory via *chroot(8)*
 	/ # ls -l /proc/self/cwd
 	lrwxrwxrwx    1 root     root             0 Apr 25 09:54 /proc/self/cwd -> /
 	/ # ls -l /proc/self/root
-	lrwxrwxrwx    1 root     root             0 Apr 25 09:55 /proc/self/root -> /home/gportay/alpine-rootfs
+	lrwxrwxrwx    1 root     root             0 Apr 25 09:55 /proc/self/root -> /
 
 == BUGS
 

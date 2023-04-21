@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 #include <errno.h>
 
 #include "iamroot.h"
@@ -14,7 +15,7 @@ void __pathperror(const char *path, const char *s)
 {
 	const char *p = *path ? path : "(empty)";
 
-	if (__ignored_errno(errno)) {
+	if (__ignored_errno(errno) || __ignored_function(s)) {
 #ifdef __FreeBSD__
 		__debug("%s: %s: %s: %i\n", __getrootdir(), p, s, errno);
 #else

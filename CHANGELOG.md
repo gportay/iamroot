@@ -56,8 +56,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   symlink with the content of the environment variable `$IAMROOT_ROOT`
 - Output the ignored `errno` errors returned by the original symbols on level
   debug
-- Output the `ENODATA` and `EINVAL` `errno` errors returned by the original
-  symbols on level debug
+- Output the errors returned by the symbols `next_extattr_delete_fd()`,
+  `next_extattr_delete_link()`, `next_extattr_get_fd()`,
+  `next_extattr_get_link()`, `next_extattr_set_fd()`,
+  `next_extattr_set_link()`, `next_fgetxattr()`, `next_fremovexattr()`,
+  `next_fsetxattr()`, `next_lgetxattr()`, `next_lremovexattr()`,
+  `next_lsetxattr()` and `next_readlinkat()` on level debug
 
 ### Fixed
 

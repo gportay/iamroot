@@ -30,7 +30,7 @@ void __fpathperror(int fd, const char *s)
 		return;
 	}
 
-	if (__ignored_errno(errno)) {
+	if (__ignored_errno(errno) || __ignored_function(s)) {
 #ifdef __FreeBSD__
 		__debug("%s: %i <-> %s: %s: %i\n", __getrootdir(), fd, buf, s,
 		       errno);

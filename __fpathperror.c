@@ -14,20 +14,19 @@
 __attribute__((visibility("hidden")))
 void __fpathperror(int fd, const char *s)
 {
+	const int save_errno = errno;
 	char buf[PATH_MAX];
 	ssize_t siz;
-	int err;
 
-	err = errno;
 	siz = fpath(fd, buf, sizeof(buf));
 	if (siz == -1) {
 #ifdef __FreeBSD__
-		__notice("%s: %i: %s: %i\n", __getrootdir(), fd, s, err);
+		__notice("%s: %i: %s: %i\n", __getrootdir(), fd, s, save_errno);
 #else
 		__notice("%s: %i: %s: %s\n", __getrootdir(), fd, s,
-			 strerror(err));
+			 strerror(save_errno));
 #endif
-		errno = err;
+		errno = save_errno;
 		return;
 	}
 

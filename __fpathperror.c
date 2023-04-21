@@ -22,7 +22,7 @@ void __fpathperror(int fd, const char *s)
 	siz = fpath(fd, buf, sizeof(buf));
 	if (siz == -1) {
 #ifdef __FreeBSD__
-		__notice("%s: %i: %s: %i\n", __getrootdir(), fd, s, errno);
+		__notice("%s: %i: %s: %i\n", __getrootdir(), fd, s, err);
 #else
 		__notice("%s: %i: %s: %s\n", __getrootdir(), fd, s,
 			 strerror(err));

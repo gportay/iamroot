@@ -16,9 +16,9 @@ void __pathperror(const char *path, const char *s)
 
 	if (__ignored_errno(errno)) {
 #ifdef __FreeBSD__
-		__info("%s: %s: %s: %i\n", __getrootdir(), p, s, errno);
+		__debug("%s: %s: %s: %i\n", __getrootdir(), p, s, errno);
 #else
-		__info("%s: %s: %s: %m\n", __getrootdir(), p, s);
+		__debug("%s: %s: %s: %m\n", __getrootdir(), p, s);
 #endif
 		return;
 	}

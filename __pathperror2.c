@@ -17,10 +17,10 @@ void __pathperror2(const char *oldpath, const char *newpath, const char *s)
 
 	if (__ignored_errno(errno)) {
 #ifdef __FreeBSD__
-		__info("%s: %s: %s: %s: %i\n", __getrootdir(), oldp, newp, s,
+		__debug("%s: %s: %s: %s: %i\n", __getrootdir(), oldp, newp, s,
 		       errno);
 #else
-		__info("%s: %s: %s: %s: %m\n", __getrootdir(), oldp, newp, s);
+		__debug("%s: %s: %s: %s: %m\n", __getrootdir(), oldp, newp, s);
 #endif
 		return;
 	}

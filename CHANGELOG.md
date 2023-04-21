@@ -56,6 +56,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   symlink with the content of the environment variable `$IAMROOT_ROOT`
 - Output the ignored `errno` errors returned by the original symbols on level
   debug
+- Output the `ENODATA` and `EINVAL` `errno` errors returned by the original
+  symbols on level debug
 
 ### Fixed
 

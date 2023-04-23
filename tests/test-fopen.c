@@ -29,5 +29,8 @@ int main(int argc, char * const argv[])
 		return EXIT_FAILURE;
 	}
 
+	if (fclose(f))
+		perror("fclose");
+
 	return EXIT_SUCCESS;
 }

@@ -21,8 +21,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - The internal function `path_resolution()` ignores the resolved path after the
   symlinks are followed and expanded
 - Intercept the functions `close()`, `dup()`, `dup2()`, `dup3()`, `fdopen()`,
-  `fileno()`, `initgroups()`, `setregid()`, `setresgid()`, `setresuid()` and
-  `setreuid()`
+  `fileno()`, `getresgid()`, `getresuid()`, `initgroups()`, `setregid()`,
+  `setresgid()`, `setresuid()` and `setreuid()`
 
 ### Removed
 

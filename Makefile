@@ -148,6 +148,8 @@ libiamroot.so: getfh.o
 libiamroot.so: getfhat.o
 libiamroot.so: getgid.o
 libiamroot.so: getgroups.o
+libiamroot.so: getresgid.o
+libiamroot.so: getresuid.o
 libiamroot.so: getuid.o
 libiamroot.so: getwd.o
 libiamroot.so: getxattr.o

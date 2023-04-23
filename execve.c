@@ -1356,10 +1356,11 @@ char *__inhibit_rpath()
 {
 	char *inhibit_rpath;
 	char val[PATH_MAX];
-	int ret;
 
 	inhibit_rpath = getenv("IAMROOT_INHIBIT_RPATH");
 	if (inhibit_rpath) {
+		int ret;
+
 		__strncpy(val, inhibit_rpath);
 		ret = __pathsetenv(__getrootdir(), "inhibit_rpath", val, 1);
 		if (ret)

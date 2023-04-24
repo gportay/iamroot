@@ -1285,33 +1285,6 @@ static int __secure_execution_mode()
 	gid_t rgid, egid, sgid;
 	int ret;
 
-	/*
-	 * Secure-execution mode
-	 *
-	 * For security reasons, if the dynamic linker determines that a binary
-	 * should be run in secure-execution mode, the effects of some
-	 * environment variables are voided or modified, and furthermore those
-	 * environment variables are stripped from the environment, so that the
-	 * program does not even see the definitions. Some of these environment
-	 * variables affect the operation of the dynamic linker itself, and are
-	 * described below. Other environment variables treated in this way
-	 * include: GCONV_PATH, GETCONF_DIR, HOSTALIASES, LOCALDOMAIN, LOCPATH,
-	 * MALLOC_TRACE, NIS_PATH, NLSPATH, RESOLV_HOST_CONF, RES_OPTIONS,
-	 * TMPDIR, and TZDIR.
-	 *
-	 * A binary is executed in secure-execution mode if the AT_SECURE entry
-	 * in the auxiliary vector (see getauxval(3)) has a nonzero value. This
-	 * entry may have a non‐zero value for various reasons, including:
-	 *
-	 * •  The process's real and effective user IDs differ, or the real and
-	 * effective group IDs differ. This typically occurs as a result of
-	 * executing a set-user-ID or set-group-ID program.
-	 *
-	 * •  A process with a non-root user ID executed a binary that
-	 * conferred capabilities to the process.
-	 *
-	 * •  A nonzero value may have been set by a Linux Security Module.
-	 */
 	ret = getresuid(&ruid, &euid, &suid);
 	if (ret == -1)
 		return -1;
@@ -1873,6 +1846,77 @@ static char *__setenv_inhibit_rpath()
 	return getenv("inhibit_rpath");
 }
 
+static int __set_effective_ids(const char *path)
+{
+	mode_t mode;
+
+	mode = __get_mode(path);
+	if (mode != (mode_t)-1 && mode & S_ISUID) {
+		uid_t ruid, euid, suid, fsuid;
+		int err;
+
+		err = getresuid(&ruid, &euid, &suid);
+		if (err == -1)
+			return -1;
+
+		fsuid = __get_uid(path);
+		if (fsuid != (uid_t)-1 && euid != fsuid) {
+			err = setresuid(ruid, fsuid, suid);
+			if (err == -1)
+				return -1;
+
+			__warning("%s: set-user-ID set! UIDs (%u, %u -> %u, %u)\n",
+				  path, ruid, euid, fsuid, suid);
+		}
+	}
+
+	if (mode != (mode_t)-1 && mode & S_ISGID) {
+		gid_t rgid, egid, sgid, fsgid;
+		int err;
+
+		err = getresgid(&rgid, &egid, &sgid);
+		if (err == -1)
+			return -1;
+
+		fsgid = __get_gid(path);
+		if (fsgid != (gid_t)-1 && egid != fsgid) {
+			err = setresgid(rgid, fsgid, sgid);
+			if (err == -1)
+				return -1;
+
+			__warning("%s: set-group-ID set! GIDs (%u, %u -> %u, %u)\n",
+				  path, rgid, egid, fsgid, sgid);
+		}
+	}
+
+	return 0;
+}
+
+static int __save_effective_ids()
+{
+	uid_t ruid, euid, suid;
+	gid_t rgid, egid, sgid;
+	int err;
+
+	err = getresuid(&ruid, &euid, &suid);
+	if (err == -1)
+		return -1;
+
+	err = setresuid(ruid, euid, euid);
+	if (err == -1)
+		return -1;
+
+	err = getresgid(&rgid, &egid, &sgid);
+	if (err == -1)
+		return -1;
+
+	err = setresgid(rgid, egid, egid);
+	if (err == -1)
+		return -1;
+
+	return 0;
+}
+
 __attribute__((visibility("hidden")))
 int __loader(const char *path, char * const argv[], char *interp,
 	     size_t interpsiz, char *interparg[])
@@ -1883,6 +1927,55 @@ int __loader(const char *path, char * const argv[], char *interp,
 	Elf64_Ehdr ehdr;
 	ssize_t siz;
 	(void)argv;
+
+	/*
+	 * According to ld.so(8):
+	 *
+	 * Secure-execution mode
+	 *
+	 * For security reasons, if the dynamic linker determines that a binary
+	 * should be run in secure-execution mode, the effects of some
+	 * environment variables are voided or modified, and furthermore those
+	 * environment variables are stripped from the environment, so that the
+	 * program does not even see the definitions. Some of these environment
+	 * variables affect the operation of the dynamic linker itself, and are
+	 * described below. Other environment variables treated in this way
+	 * include: GCONV_PATH, GETCONF_DIR, HOSTALIASES, LOCALDOMAIN, LOCPATH,
+	 * MALLOC_TRACE, NIS_PATH, NLSPATH, RESOLV_HOST_CONF, RES_OPTIONS,
+	 * TMPDIR, and TZDIR.
+	 *
+	 * A binary is executed in secure-execution mode if the AT_SECURE entry
+	 * in the auxiliary vector (see getauxval(3)) has a nonzero value. This
+	 * entry may have a non‐zero value for various reasons, including:
+	 *
+	 * •  The process's real and effective user IDs differ, or the real and
+	 * effective group IDs differ. This typically occurs as a result of
+	 * executing a set-user-ID or set-group-ID program.
+	 *
+	 * •  A process with a non-root user ID executed a binary that
+	 * conferred capabilities to the process.
+	 *
+	 * •  A nonzero value may have been set by a Linux Security Module.
+	 */
+	ret = __set_effective_ids(path);
+	if (ret == -1)
+		return -1;
+
+	/*
+	 * According to execve(2):
+	 *
+	 * The effective user ID of the process is copied to the saved
+	 * set‐user‐ID; similarly, the effective group ID is copied to the
+	 * saved set‐group‐ID. This copying takes place after any effective ID
+	 * changes that occur because of the set‐user‐ID and set‐group‐ID mode
+	 * bits.
+	 *
+	 * The process’s real UID and real GID, as well as its supplementary
+	 * group IDs, are unchanged by a call to execve().
+	 */
+	ret = __save_effective_ids();
+	if (ret == -1)
+		return -1;
 
 	/*
 	 * According to execve(2):

@@ -78,6 +78,7 @@ libiamroot.so: __xstat.o
 libiamroot.so: __xstat64.o
 libiamroot.so: access.o
 libiamroot.so: acct.o
+libiamroot.so: bind.o
 libiamroot.so: canonicalize_file_name.o
 libiamroot.so: catopen.o
 libiamroot.so: chdir.o
@@ -87,6 +88,7 @@ libiamroot.so: chmod.o
 libiamroot.so: chown.o
 libiamroot.so: chroot.o
 libiamroot.so: close.o
+libiamroot.so: connect.o
 libiamroot.so: creat.o
 libiamroot.so: dl_iterate_phdr.o
 libiamroot.so: dlmopen.o

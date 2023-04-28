@@ -170,14 +170,14 @@ do
 	then
 		IAMROOT_DEBUG="$((IAMROOT_DEBUG+1))"
 		export IAMROOT_DEBUG
-	elif [[ "$1" == "--no-color" ]]
-	then
-		NO_COLOR=1
-		export NO_COLOR
 	elif [[ "$1" == "--fatal" ]]
 	then
 		IAMROOT_FATAL="1"
 		export IAMROOT_FATAL
+	elif [[ "$1" == "--no-color" ]]
+	then
+		NO_COLOR=1
+		export NO_COLOR
 	elif [[ "$1" == "--library" ]]
 	then
 		shift

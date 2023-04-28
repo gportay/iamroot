@@ -5,6 +5,7 @@
 #
 
 PREFIX ?= /usr/local
+O ?= output
 ARCH ?= $(shell uname -m 2>/dev/null)
 KVER ?= $(shell uname -r 2>/dev/null)
 VMLINUX_KVER ?= $(shell vmlinux --version 2>/dev/null)
@@ -102,10 +103,10 @@ all: $(1)/libiamroot-$(2).so.$(3)
 test: $(1)/libiamroot-$(2).so.$(3)
 
 .PRECIOUS: $(1)/libiamroot-$(2).so.$(3)
-$(1)/libiamroot-$(2).so.$(3): output-$(1)-$(2)/libiamroot.so
+$(1)/libiamroot-$(2).so.$(3): $(O)-$(1)-$(2)/libiamroot.so
 	install -D -m755 $$< $$@
 
-output-$(1)-$(2)/libiamroot.so:
+$(O)-$(1)-$(2)/libiamroot.so:
 
 install: install-exec-$(1)-$(2).$(3)
 
@@ -125,7 +126,7 @@ clean: clean-$(1)-$(2).$(3)
 
 .PHONY: clean-$(1)-$(2).$(3)
 clean-$(1)-$(2).$(3):
-	rm -Rf output-$(1)-$(2)/
+	rm -Rf $(O)-$(1)-$(2)/
 	rm -Rf $(1)/
 endef
 
@@ -426,43 +427,43 @@ libiamroot.so: x86_64/libiamroot-linux-x86-64.so.2
 
 $(eval $(call libiamroot_so,x86_64,linux-x86-64,2))
 
-output-i686-linux/libiamroot.so: override CC += -m32
-output-i686-linux/libiamroot.so: override CFLAGS += -fno-stack-protector
+$(O)-i686-linux/libiamroot.so: override CC += -m32
+$(O)-i686-linux/libiamroot.so: override CFLAGS += -fno-stack-protector
 $(eval $(call libiamroot_so,i686,linux,2))
 
 ifneq ($(shell command -v arm-linux-gnueabi-gcc 2>/dev/null),)
-output-arm-linux/libiamroot.so: CC = arm-linux-gnueabi-gcc
+$(O)-arm-linux/libiamroot.so: CC = arm-linux-gnueabi-gcc
 $(eval $(call libiamroot_so,arm,linux,3))
 endif
 
 ifneq ($(shell command -v arm-linux-gnueabihf-gcc 2>/dev/null),)
-output-armhf-linux-armhf/libiamroot.so: CC = arm-linux-gnueabihf-gcc
+$(O)-armhf-linux-armhf/libiamroot.so: CC = arm-linux-gnueabihf-gcc
 $(eval $(call libiamroot_so,armhf,linux-armhf,3))
 endif
 
 ifneq ($(shell command -v aarch64-linux-gnu-gcc 2>/dev/null),)
-output-aarch64-linux-aarch64/libiamroot.so: CC = aarch64-linux-gnu-gcc
+$(O)-aarch64-linux-aarch64/libiamroot.so: CC = aarch64-linux-gnu-gcc
 $(eval $(call libiamroot_so,aarch64,linux-aarch64,1))
 endif
 
 ifneq ($(shell command -v i386-musl-gcc 2>/dev/null),)
-output-i686-musl-i386/libiamroot.so: CC = i386-musl-gcc
-output-i686-musl-i386/libiamroot.so: override CFLAGS += -fno-stack-protector
+$(O)-i686-musl-i386/libiamroot.so: CC = i386-musl-gcc
+$(O)-i686-musl-i386/libiamroot.so: override CFLAGS += -fno-stack-protector
 $(eval $(call libiamroot_so,i686,musl-i386,1))
 endif
 
 ifneq ($(shell command -v musl-gcc 2>/dev/null),)
-output-x86_64-musl-x86_64/libiamroot.so: CC = musl-gcc
+$(O)-x86_64-musl-x86_64/libiamroot.so: CC = musl-gcc
 $(eval $(call libiamroot_so,x86_64,musl-x86_64,1))
 endif
 
 ifneq ($(shell command -v arm-linux-musleabihf-gcc 2>/dev/null),)
-output-armhf-musl-armhf/libiamroot.so: CC = arm-linux-musleabihf-gcc
+$(O)-armhf-musl-armhf/libiamroot.so: CC = arm-linux-musleabihf-gcc
 $(eval $(call libiamroot_so,armhf,musl-armhf,1))
 endif
 
 ifneq ($(shell command -v aarch64-linux-musl-gcc 2>/dev/null),)
-output-aarch64-musl-aarch64/libiamroot.so: CC = aarch64-linux-musl-gcc
+$(O)-aarch64-musl-aarch64/libiamroot.so: CC = aarch64-linux-musl-gcc
 $(eval $(call libiamroot_so,aarch64,musl-aarch64,1))
 endif
 
@@ -471,9 +472,9 @@ ifneq ($(shell command -v clang 2>/dev/null),)
 all: clang/libiamroot-linux-x86-64.so.2
 
 .PRECIOUS: clang/libiamroot-linux-x86_64.so.2
-clang/libiamroot-linux-x86-64.so.2: output-clang-linux-x86-64/libiamroot.so
+clang/libiamroot-linux-x86-64.so.2: $(O)-clang-linux-x86-64/libiamroot.so
 
-output-clang-linux-x86-64/libiamroot.so:
+$(O)-clang-linux-x86-64/libiamroot.so:
 
 clang/libiamroot-linux-x86-64.so.2:
 clang/libiamroot-linux-x86-64.so.2: export CC = clang
@@ -482,7 +483,7 @@ clean: clean-clang-linux-x86-64.2
 
 .PHONY: clean-clang-linux-x86-64.2
 clean-clang-linux-x86-64.2:
-	rm -Rf output-clang-x86-64/
+	rm -Rf $(O)-clang-x86-64/
 	rm -Rf clang/
 endif
 endif
@@ -495,12 +496,12 @@ libiamroot.so: aarch64/libiamroot-linux-aarch64.so.1
 $(eval $(call libiamroot_so,aarch64,linux-aarch64,1))
 endif
 
-.PRECIOUS: output-%/libiamroot.so
-output-%/libiamroot.so: $(wildcard *.c) | output-%
-	$(MAKE) -f $(CURDIR)/Makefile -C output-$* libiamroot.so VPATH=$(CURDIR)
+.PRECIOUS: $(O)-%/libiamroot.so
+$(O)-%/libiamroot.so: $(wildcard *.c) | $(O)-%
+	$(MAKE) -f $(CURDIR)/Makefile -C $(O)-$* libiamroot.so VPATH=$(CURDIR)
 
-.PRECIOUS: output-%
-output-%:
+.PRECIOUS: $(O)-%
+$(O)-%:
 	mkdir -p $@
 
 .PHONY: rootfs
@@ -538,11 +539,11 @@ coverage: gcov/index.html
 .PHONY: gcov/index.html
 gcov/index.html:
 	mkdir -p $(@D)
-	gcovr --html-details --html-title iamroot -s -v -o $@ output-x86_64-linux-x86-64/ tests/
+	gcovr --html-details --html-title iamroot -s -v -o $@ $(O)-x86_64-linux-x86-64/ tests/
 
 .PHONY: cobertura.xml
 cobertura.xml:
-	gcovr --cobertura -s -v -o $@ output-x86_64-linux-x86-64/ tests/
+	gcovr --cobertura -s -v -o $@ $(O)-x86_64-linux-x86-64/ tests/
 
 .PHONY: codacy
 codacy: cobertura.xml

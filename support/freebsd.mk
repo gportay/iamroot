@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
 
+O ?= output
 ARCH ?= $(shell uname -m 2>/dev/null)
 
 IAMROOT_LIB = $(CURDIR)/$(ARCH)/libiamroot-elf.so.1
@@ -31,16 +32,16 @@ libiamroot.so: $(ARCH)/libiamroot-elf.so.1
 	install -m755 $< $@
 
 .PRECIOUS: $(ARCH)/libiamroot-elf.so.1
-$(ARCH)/libiamroot-elf.so.1: output-$(ARCH)/libiamroot.so
+$(ARCH)/libiamroot-elf.so.1: $(O)-$(ARCH)/libiamroot.so
 	install -d -m755 $(@D)
 	install -m755 $< $@
 
-.PRECIOUS: output-%/libiamroot.so
-output-%/libiamroot.so: $(wildcard *.c) | output-%
-	$(MAKE) -f $(CURDIR)/Makefile -C output-$* libiamroot.so VPATH=$(CURDIR)
+.PRECIOUS: $(O)-%/libiamroot.so
+$(O)-%/libiamroot.so: $(wildcard *.c) | $(O)-%
+	$(MAKE) -f $(CURDIR)/Makefile -C $(O)-$* libiamroot.so VPATH=$(CURDIR)
 
-.PRECIOUS: output-%
-output-%:
+.PRECIOUS: $(O)-%
+$(O)-%:
 	mkdir $@
 
 freebsd-13.1-chroot:
@@ -66,7 +67,7 @@ test ci: libiamroot.so
 clean:
 	$(MAKE) -f Makefile $@
 	rm -Rf freebsd-*-rootfs/
-	rm -Rf output-*/
+	rm -Rf $(O)-*/
 	rm -Rf $(ARCH)/
 
 %:

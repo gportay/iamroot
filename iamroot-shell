@@ -255,7 +255,7 @@ fi
 mapfile -t envs < <(env)
 for env in "${envs[@]}"
 do
-	var="${env%=*}"
+	var="${env%%=*}"
 	if [[ ! "$var" =~ ^(IAMROOT_.*|LD_.*|PATH|HOME|${IAMROOT_PRESERVE_ENV//:/|})$ ]]
 	then
 		unset "$var"

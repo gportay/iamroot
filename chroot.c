@@ -9,7 +9,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
-#include <paths.h>
 #include <limits.h>
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -291,7 +290,7 @@ int chroot(const char *path)
 	if (siz == -1)
 		return __path_resolution_perror(path, -1);
 
-	ret = setenv("PATH", getenv("IAMROOT_PATH") ?: _PATH_STDPATH, 1);
+	ret = setenv("PATH", __path(), 1);
 	if (ret == -1)
 		return __env_perror("PATH", "setenv", -1);
 

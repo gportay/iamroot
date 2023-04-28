@@ -13,6 +13,7 @@
 #include <string.h>
 #include <errno.h>
 #include <spawn.h>
+#include <paths.h>
 #include <limits.h>
 #include <dlfcn.h>
 #include <sys/types.h>
@@ -74,6 +75,18 @@ char *__basename(char *path)
 		return path;
 
 	return s+1; /* trailing-slash */
+}
+
+__attribute__((visibility("hidden")))
+const char *__path()
+{
+	const char *ret;
+
+	ret = getenv("IAMROOT_PATH");
+	if (!ret)
+		ret = _PATH_STDPATH;
+
+	return ret;
 }
 
 __attribute__((visibility("hidden")))

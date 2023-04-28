@@ -666,6 +666,8 @@ static inline void __close(int fd)
 	errno = save_errno;
 }
 
+const char *__path();
+
 const char *__library_path();
 
 #if defined(__GLIBC__) || defined(__aarch64__) || defined(__x86_64__)

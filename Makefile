@@ -76,6 +76,8 @@ libiamroot.so: __xmknod.o
 libiamroot.so: __xmknodat.o
 libiamroot.so: __xstat.o
 libiamroot.so: __xstat64.o
+libiamroot.so: accept.o
+libiamroot.so: accept4.o
 libiamroot.so: access.o
 libiamroot.so: acct.o
 libiamroot.so: bind.o

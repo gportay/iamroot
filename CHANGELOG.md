@@ -20,9 +20,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   variables in the shell
 - The internal function `path_resolution()` ignores the resolved path after the
   symlinks are followed and expanded
-- Intercept the functions `bind()`, `close()`, `connect()`, `dup()`, `dup2()`,
-  `dup3()`, `fdopen()`, `fileno()`, `getresgid()`, `getresuid()`,
-  `initgroups()`, `setregid()`, `setresgid()`, `setresuid()` and `setreuid()`
+- Intercept the functions `accept()`, `accept4()`, `bind()`, `close()`,
+  `connect()`, `dup()`, `dup2()`, `dup3()`, `fdopen()`, `fileno()`,
+  `getresgid()`, `getresuid()`, `initgroups()`, `setregid()`, `setresgid()`,
+  `setresuid()` and `setreuid()`
 
 ### Removed
 

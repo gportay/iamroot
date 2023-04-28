@@ -49,7 +49,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Output the fd for the functions `__fxstat()`, `__fxstat64()`, `fchmod()`,
   `fchown()`, `fexecve()`, `fstat()` and `fstat64()`
 - Start the `iamroot-shell` with a clean environment (`IAMROOT_`-env, `LD_`-env
-  `PATH` and `HOME`)
+  `PATH`, `HOME` and `SHELL`)
 - The functions `__fxstat()`, `__fxstat64()`, `fstat()` and `fstat64()` do not
   call the AT-functions `__fxstatat()`, `__fxstatat64()`, `fstatat()` and
   `fstatat64()` anymore

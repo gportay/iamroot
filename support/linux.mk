@@ -706,13 +706,10 @@ extra-rootfs: opensuse-rootfs
 .PHONY: opensuse-rootfs
 opensuse-rootfs: | x86_64-opensuse-tumbleweed-rootfs
 
-x86_64-opensuse-leap-rootfs: | x86_64-opensuse-leap-rootfs/etc/machine-id
-x86_64-opensuse-tumbleweed-rootfs: | x86_64-opensuse-tumbleweed-rootfs/etc/machine-id
-
 $(eval $(call zypper-rootfs,x86_64,opensuse-leap))
 $(eval $(call zypper-rootfs,x86_64,opensuse-tumbleweed))
-x86_64-opensuse-leap-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
-x86_64-opensuse-leap-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|/usr/bin/chkstat|/usr/sbin/update-ca-certificates
+x86_64-opensuse-leap-chroot x86_64-opensuse-leap-shell x86_64-opensuse-leap-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
+x86_64-opensuse-leap-chroot x86_64-opensuse-leap-shell x86_64-opensuse-leap-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|/usr/bin/chkstat|/usr/sbin/update-ca-certificates
 
 qemu-system-x86_64-opensuse-leap: override CMDLINE += rw init=/usr/lib/systemd/systemd
 x86_64-opensuse-leap-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2

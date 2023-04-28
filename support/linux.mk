@@ -192,7 +192,7 @@ $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export 
 # debconf: PERL_DL_NONLAZY is not set, if debconf is running from a preinst script, this is not safe
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export ISH_PRESERVE_ENV = PERL_DL_NONLAZY
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export PERL_DL_NONLAZY = 1
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://deb.debian.org/debian
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/debian
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= $(3)
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export DEBOOTSTRAPFLAGS ?=
 
@@ -699,17 +699,17 @@ x86_64-ubuntu-rootfs: x86_64-ubuntu-kinetic-rootfs
 x86_64-ubuntu-rootfs: x86_64-ubuntu-lunar-rootfs
 x86_64-ubuntu-rootfs: x86_64-ubuntu-mantic-rootfs
 
-x86_64-ubuntu-trusty-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
-x86_64-ubuntu-xenial-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
-x86_64-ubuntu-bionic-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
-x86_64-ubuntu-focal-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
+x86_64-ubuntu-trusty-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
+x86_64-ubuntu-xenial-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
+x86_64-ubuntu-bionic-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
+x86_64-ubuntu-focal-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
 x86_64-ubuntu-groovy-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://old-releases.ubuntu.com/ubuntu
 x86_64-ubuntu-hirsute-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://old-releases.ubuntu.com/ubuntu
 x86_64-ubuntu-impish-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://old-releases.ubuntu.com/ubuntu
-x86_64-ubuntu-jammy-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
+x86_64-ubuntu-jammy-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
 x86_64-ubuntu-kinetic-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://old-releases.ubuntu.com/ubuntu
-x86_64-ubuntu-lunar-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
-x86_64-ubuntu-mantic-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
+x86_64-ubuntu-lunar-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
+x86_64-ubuntu-mantic-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
 x86_64-ubuntu-mantic-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= gutsy
 $(eval $(call debootstrap-rootfs,x86_64,ubuntu,trusty))
 $(eval $(call debootstrap-rootfs,x86_64,ubuntu,xenial))

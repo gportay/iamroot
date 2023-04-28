@@ -65,6 +65,18 @@ Environment variables:
       IAMROOT_SHELL_LVL         Incremented by one each time an instance of
                                 iamroot-shell is started.
 
+      IAMROOT_SHELL_COMMAND     Set to the command run by iamroot-shell,
+				including any args.
+
+      IAMROOT_SHELL_GID         Set to the group-ID of the user who invoked
+                                iamroot-shell.
+
+      IAMROOT_SHELL_UID         Set to the user-ID of the user who invoked
+                                iamroot-shell.
+
+      IAMROOT_SHELL_USER        Set to the login name of the user who invoked
+                                iamroot-shell.
+
       IAMROOT_ROOT              Set absolute path to root directory to chroot
                                 in. Equivalent to --chroot DIR.
 
@@ -256,12 +268,18 @@ mapfile -t envs < <(env)
 for env in "${envs[@]}"
 do
 	var="${env%%=*}"
-	if [[ ! "$var" =~ ^(IAMROOT_.*|LD_.*|PATH|HOME|SHELL|${IAMROOT_PRESERVE_ENV//:/|})$ ]]
+	if [[ ! "$var" =~ ^(IAMROOT_.*|LD_.*|PATH|HOME|SHELL|USER|${IAMROOT_PRESERVE_ENV//:/|})$ ]]
 	then
 		unset "$var"
 	fi
 done
 
+command=("${SHELL:-/bin/sh}" "${argv[@]}" "$@")
+
+IAMROOT_SHELL_USER="$USER" \
+IAMROOT_SHELL_UID="$UID" \
+IAMROOT_SHELL_GID="${GROUPS[0]}" \
+IAMROOT_SHELL_COMMAND="${command[*]}" \
 IAMROOT_SHELL_LVL="$((IAMROOT_SHELL_LVL+1))" \
 LD_PRELOAD="$IAMROOT_LIB${LD_PRELOAD+:$LD_PRELOAD}" \
-exec "${SHELL:-/bin/sh}" "${argv[@]}" "$@"
+exec "${command[@]}"

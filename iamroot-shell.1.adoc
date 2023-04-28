@@ -115,6 +115,18 @@ shells, please refers to their manuals.
 **IAMROOT_SHELL_LVL**::
 	Incremented by one each time an instance of iamroot-shell is started.
 
+**IAMROOT_SHELL_COMMAND**::
+	Set to the command run by iamroot-shell, including any args.
+
+**IAMROOT_SHELL_GID**::
+	Set to the group-ID of the user who invoked iamroot-shell.
+
+**IAMROOT_SHELL_UID**::
+	Set to the user-ID of the user who invoked iamroot-shell.
+
+**IAMROOT_SHELL_USER**::
+	Set to the login name of the user who invoked iamroot-shell.
+
 **IAMROOT_ROOT**::
 	Set absolute path to root directory to chroot in.
 	Equivalent to --chroot DIR.

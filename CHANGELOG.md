@@ -24,6 +24,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `closefrom()`, `connect()`, `dup()`, `dup2()`, `dup3()`, `fdopen()`,
   `fileno()`, `getpeername()`, `getresgid()`, `getresuid()`, `getsockname()`,
   `initgroups()`, `setregid()`, `setresgid()`, `setresuid()` and `setreuid()`
+- Add the `iamroot-shell(1)`'s environment variables `IAMROOT_SHELL_COMMAND`,
+  `IAMROOT_SHELL_GID`, `IAMROOT_SHELL_UID` and `IAMROOT_SHELL_USER`
 
 ### Removed
 

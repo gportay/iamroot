@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
 
-.SHELL = bash
+SHELL = bash
 .SHELLFLAGS = -ec -o pipefail
 
 ARCH ?= $(shell uname -m)

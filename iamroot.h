@@ -192,6 +192,9 @@ ssize_t path_resolution(int, const char *, char *, size_t, int);
 char *__getpath(int, const char *, int);
 ssize_t __path_access(const char *, int, const char *, char *, size_t);
 int __path_iterate(const char *, int (*)(const char *, void *), void *);
+int __dir_iterate(const char *, int (*)(const char *, const char *, void *),
+		  void *);
+int __strtofd(const char *, char **);
 
 void __procfdname(char *, unsigned);
 ssize_t __procfdreadlink(int, char *, size_t);

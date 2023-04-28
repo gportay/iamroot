@@ -35,6 +35,7 @@ all: test-catopen
 all: test-chmod
 all: test-chown
 all: test-chroot
+all: test-closefrom
 all: test-dl_iterate_phdr
 all: test-dlmopen
 all: test-dlopen
@@ -313,6 +314,12 @@ endif
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-catopen "/usr/lib/nls/msg/$$LANG/null.cat" 0
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-catopen null.cat 0
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-catopen null.cat 0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-closefrom 3                                                        2>&1 | tee /dev/stderr | grep -q '^stdout$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-closefrom 3                                                        2>&1 | tee /dev/stderr | grep -q '^stderr$$' || true
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-closefrom 2                                                        2>&1 | tee /dev/stderr | grep -q '^stdout$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-closefrom 2                                                        2>&1 | tee /dev/stderr | grep -q '^stderr$$' || true
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-closefrom 1                                                        2>&1 | tee /dev/stderr | grep -q '^stderr$$' || true
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-closefrom 1                                                        2>&1 | tee /dev/stderr | grep -q '^stdout$$' || true
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-rename rootfs/tmp/file0 rootfs/tmp/file1
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-renameat - rootfs/tmp/file1 - rootfs/tmp/file2
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-renameat - /tmp/file2 - /tmp/file3

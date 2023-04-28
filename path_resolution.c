@@ -14,6 +14,7 @@
 #include <dlfcn.h>
 #include <sys/param.h>
 #include <sys/stat.h>
+#include <dirent.h>
 #include <regex.h>
 
 #include <fcntl.h>
@@ -32,6 +33,10 @@ typedef struct {
 
 extern char *next_realpath(const char *, char *);
 extern ssize_t next_readlinkat(int, const char *, char *, size_t);
+extern int next_scandir(const char *, struct dirent ***,
+			int (*)(const struct dirent *),
+			int (*)(const struct dirent **,
+			const struct dirent **));
 extern int next_lstat(const char *, struct stat *);
 
 static int __getpath_resolution_workaround()
@@ -175,6 +180,22 @@ ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
 	return ret;
 }
 #endif
+
+__attribute__((visibility("hidden")))
+int __strtofd(const char *nptr, char **endptr)
+{
+	int save_errno;
+	long l;
+
+	save_errno = errno;
+	errno = 0;
+	l = strtol(nptr, endptr, 0);
+	if (errno != 0)
+		return -1;
+
+	errno = save_errno;
+	return l;
+}
 
 #define SYMLOOP_MAX 40
 #define readlink(...) next_readlinkat(AT_FDCWD, __VA_ARGS__)
@@ -763,4 +784,29 @@ ssize_t __path_access(const char *file, int mode, const char *path, char *buf,
 	}
 	if (seen_eacces) errno = EACCES;
 	return -1;
+}
+
+__attribute__((visibility("hidden")))
+int __dir_iterate(const char *path,
+		  int (*callback)(const char *, const char *, void *),
+		  void *user)
+{
+	struct dirent **namelist;
+	int n, ret = 0;
+
+	n = next_scandir(path, &namelist, NULL, alphasort);
+	if (n == -1)
+		return -1;
+
+	while (n-- > 0) {
+		if (strcmp(namelist[n]->d_name, ".") != 0 &&
+		    strcmp(namelist[n]->d_name, "..") != 0 ) {
+			if (callback(path, namelist[n]->d_name, user) == 0)
+				ret++;
+		}
+		free(namelist[n]);
+	}
+	free(namelist);
+
+	return ret;
 }

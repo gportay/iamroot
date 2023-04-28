@@ -90,6 +90,7 @@ libiamroot.so: chmod.o
 libiamroot.so: chown.o
 libiamroot.so: chroot.o
 libiamroot.so: close.o
+libiamroot.so: closefrom.o
 libiamroot.so: connect.o
 libiamroot.so: creat.o
 libiamroot.so: dl_iterate_phdr.o

@@ -14,31 +14,32 @@ _iamroot-shell()
 		__open64_2 __open_2 __openat64_2 __opendir __opendir2 __statfs
 		__xmknod __xmknodat __xstat __xstat64 accept accept4 access
 		acct bind canonicalize_file_name catopen chdir chflags
-		chflagsat chmod chown chroot close connect creat dlmopen dlopen
-		dup dup2 dup3 eaccess euidaccess execl execle execlp exect
-		execv execvP execve execveat execvp execvpe extattr_delete_fd
-		extattr_delete_file extattr_delete_link extattr_get_fd
-		extattr_get_file extattr_get_link extattr_list_fd
-		extattr_list_file extattr_list_link extattr_set_fd
-		extattr_set_file extattr_set_link faccessat fanotify_mark
-		fchdir fchflags fchmod fchmodat fchown fchownat fdopen fexecve
-		fgetxattr fileno flistxattr fopen fremovexattr freopen
-		fsetxattr ftok fstat fstat64 fstatat fstatat64 ftw futimesat
-		get_current_dir_name getcwd getegid geteuid getfh getfhat
-		getgid getgroups getpeername getresgid getresuid getsockname
-		getuid getwd getxattr initgroups inotify_add_watch lchmod
-		lchown lgetxattr link linkat listxattr llistxattr lremovexattr
-		lsetxattr lstat lstat64 lutimes mkdir mkdirat mkdtemp mkfifo
-		mkfifoat mknod mknodat mkostemp mkostemps mkostempsat mkstemp
-		mkstemps mktemp mount name_to_handle_at nftw nftw64 nmount open
-		openat opendir path_resolution posix_spawn posix_spawnp
-		readlink readlinkat realpath remove removexattr rename renameat
-		renameat2 rmdir running_in_chroot scandir scandir64 scandir_b
-		scandirat setegid seteuid setgid setgroups setregid setresgid
-		setresuid setreuid setuid setxattr stat stat64 statfs statfs64
-		statvfs statvfs64 statx swapoff swapon symlink symlinkat
-		tempnam tmpnam tmpnam_r truncate truncate64 umask umount
-		umount2 unlink unlinkat unmount unshare utime utimensat utimes)
+		chflagsat chmod chown chroot close closefrom connect creat
+		dlmopen dlopen dup dup2 dup3 eaccess euidaccess execl execle
+		execlp exect execv execvP execve execveat execvp execvpe
+		extattr_delete_fd extattr_delete_file extattr_delete_link
+		extattr_get_fd extattr_get_file extattr_get_link
+		extattr_list_fd extattr_list_file extattr_list_link
+		extattr_set_fd extattr_set_file extattr_set_link faccessat
+		fanotify_mark fchdir fchflags fchmod fchmodat fchown fchownat
+		fdopen fexecve fgetxattr fileno flistxattr fopen fremovexattr
+		freopen fsetxattr ftok fstat fstat64 fstatat fstatat64 ftw
+		futimesat get_current_dir_name getcwd getegid geteuid getfh
+		getfhat getgid getgroups getpeername getresgid getresuid
+		getsockname getuid getwd getxattr initgroups inotify_add_watch
+		lchmod lchown lgetxattr link linkat listxattr llistxattr
+		lremovexattr lsetxattr lstat lstat64 lutimes mkdir mkdirat
+		mkdtemp mkfifo mkfifoat mknod mknodat mkostemp mkostemps
+		mkostempsat mkstemp mkstemps mktemp mount name_to_handle_at
+		nftw nftw64 nmount open openat opendir path_resolution
+		posix_spawn posix_spawnp readlink readlinkat realpath remove
+		removexattr rename renameat renameat2 rmdir running_in_chroot
+		scandir scandir64 scandir_b scandirat setegid seteuid setgid
+		setgroups setregid setresgid setresuid setreuid setuid setxattr
+		stat stat64 statfs statfs64 statvfs statvfs64 statx swapoff
+		swapon symlink symlinkat tempnam tmpnam tmpnam_r truncate
+		truncate64 umask umount umount2 unlink unlinkat unmount unshare
+		utime utimensat utimes)
 
 	COMMON_PATH=(/bin /sbin /usr/bin /usr/sbin /usr/local/bin
 		/usr/local/sbin)

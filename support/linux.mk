@@ -625,6 +625,8 @@ x86_64-ubuntu-jammy-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:
 x86_64-ubuntu-jammy-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
 x86_64-ubuntu-kinetic-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/lib:/usr/lib
 x86_64-ubuntu-kinetic-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
+x86_64-ubuntu-lunar-chroot: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/lib:/usr/lib
+x86_64-ubuntu-lunar-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
 
 .PHONY: x86_64-ubuntu-rootfs
 x86_64-ubuntu-rootfs: x86_64-ubuntu-trusty-rootfs
@@ -633,6 +635,7 @@ x86_64-ubuntu-rootfs: x86_64-ubuntu-bionic-rootfs
 x86_64-ubuntu-rootfs: x86_64-ubuntu-focal-rootfs
 x86_64-ubuntu-rootfs: x86_64-ubuntu-jammy-rootfs
 x86_64-ubuntu-rootfs: x86_64-ubuntu-kinetic-rootfs
+x86_64-ubuntu-rootfs: x86_64-ubuntu-lunar-rootfs
 
 x86_64-ubuntu-trusty-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
 x86_64-ubuntu-xenial-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
@@ -640,12 +643,14 @@ x86_64-ubuntu-bionic-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://
 x86_64-ubuntu-focal-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
 x86_64-ubuntu-jammy-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
 x86_64-ubuntu-kinetic-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
+x86_64-ubuntu-lunar-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
 $(eval $(call debootstrap-rootfs,x86_64,ubuntu,trusty))
 $(eval $(call debootstrap-rootfs,x86_64,ubuntu,xenial))
 $(eval $(call debootstrap-rootfs,x86_64,ubuntu,bionic))
 $(eval $(call debootstrap-rootfs,x86_64,ubuntu,focal))
 $(eval $(call debootstrap-rootfs,x86_64,ubuntu,jammy))
 $(eval $(call debootstrap-rootfs,x86_64,ubuntu,kinetic))
+$(eval $(call debootstrap-rootfs,x86_64,ubuntu,lunar))
 # chmod: cannot access '/dev/tty[0-9]*': No such file or directory
 # dpkg: error processing package makedev (--configure):
 #  subprocess installed post-installation script returned error exit status 1
@@ -674,6 +679,8 @@ x86_64-ubuntu-jammy-rootfs/etc/machine-id: export IAMROOT_PRESERVE_ENV := $(IAMR
 x86_64-ubuntu-jammy-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
 x86_64-ubuntu-kinetic-rootfs/etc/machine-id: export IAMROOT_PRESERVE_ENV := $(IAMROOT_PRESERVE_ENV):LDCONFIG_NOTRIGGER
 x86_64-ubuntu-kinetic-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
+x86_64-ubuntu-lunar-rootfs/etc/machine-id: export IAMROOT_PRESERVE_ENV := $(IAMROOT_PRESERVE_ENV):LDCONFIG_NOTRIGGER
+x86_64-ubuntu-lunar-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)
@@ -1131,6 +1138,7 @@ ubuntu-support: support/x86_64-ubuntu-bionic-rootfs.txt
 ubuntu-support: support/x86_64-ubuntu-focal-rootfs.txt
 ubuntu-support: support/x86_64-ubuntu-jammy-rootfs.txt
 ubuntu-support: support/x86_64-ubuntu-kinetic-rootfs.txt
+ubuntu-support: support/x86_64-ubuntu-lunar-rootfs.txt
 
 log: ubuntu-log
 
@@ -1141,6 +1149,7 @@ ubuntu-log: x86_64-ubuntu-bionic-rootfs.log
 ubuntu-log: x86_64-ubuntu-focal-rootfs.log
 ubuntu-log: x86_64-ubuntu-jammy-rootfs.log
 ubuntu-log: x86_64-ubuntu-kinetic-rootfs.log
+ubuntu-log: x86_64-ubuntu-lunar-rootfs.log
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)

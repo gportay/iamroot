@@ -29,7 +29,7 @@ POSIX Shell related options:
 
 iamroot specific options:
       --user USER               Login name of the user to usurp the identity.
-      --chroot DIR              Absolute path to the root directory to chroot
+      --root DIR                Absolute path to the root directory to chroot
                                 in.
       --profile-file FILE       Execute initialization file from FILE.
       --rc-file FILE            Execute commands from FILE.
@@ -82,7 +82,7 @@ Environment variables:
                                 Equivalent to --user USER.
 
       IAMROOT_ROOT              Set absolute path to root directory to chroot
-                                in. Equivalent to --chroot DIR.
+                                in. Equivalent to --root DIR.
 
       IAMROOT_PROFILE_FILE      Set path to initialization file.
                                 Equivalent to --profile-file FILE.
@@ -232,7 +232,7 @@ do
 		shift
 		IAMROOT_PROFILE_FILE="$1"
 		export IAMROOT_PROFILE_FILE
-	elif [[ "$1" == "--chroot" ]]
+	elif [[ "$1" == "--root" ]]
 	then
 		shift
 		IAMROOT_ROOT="$1"

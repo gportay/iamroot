@@ -51,7 +51,7 @@ shells, please refers to their manuals.
 **--user USER**::
 	Login name of the user to usurp the identity.
 
-**--chroot DIR**::
+**--root DIR**::
 	Absolute path to the root directory to chroot in.
 
 **--profile-file FILE**::
@@ -136,7 +136,7 @@ shells, please refers to their manuals.
 
 **IAMROOT_ROOT**::
 	Set absolute path to root directory to chroot in.
-	Equivalent to --chroot DIR.
+	Equivalent to --root DIR.
 
 **IAMROOT_PROFILE_FILE**::
 	Set path to initialization file.

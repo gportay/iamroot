@@ -74,6 +74,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Replace the `iamroot-shell(1)` environment variable `IAMROOTLVL` by
   the environment variable `IAMROOT_SHELL_LVL`
+- Replace the `iamroot-shell(1)` option `--chroot` by the option `--root`
 
 ### Fixed
 

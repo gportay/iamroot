@@ -48,6 +48,9 @@ shells, please refers to their manuals.
 
 *iamroot specific options*
 
+**--user USER**::
+	Login name of the user to usurp the identity.
+
 **--chroot DIR**::
 	Absolute path to the root directory to chroot in.
 
@@ -126,6 +129,10 @@ shells, please refers to their manuals.
 
 **IAMROOT_SHELL_USER**::
 	Set to the login name of the user who invoked iamroot-shell.
+
+**IAMROOT_USER**::
+	Set user login name to usurp the identity.
+	Equivalent to --user USER.
 
 **IAMROOT_ROOT**::
 	Set absolute path to root directory to chroot in.

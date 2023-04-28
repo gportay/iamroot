@@ -47,6 +47,10 @@ _iamroot-shell()
 	COMMON_LIBRARY_PATH=(/usr/lib /usr/local/lib /usr/lib)
 
 	case "$prev" in
+	--user)
+		COMPREPLY=($(compgen -u "$cur"))
+		return
+		;;
 	--chroot)
 		_filedir -d
 		return
@@ -181,7 +185,7 @@ _iamroot-shell()
 
 	if [[ "$shell" != 1 ]]
 	then
-		COMPREPLY+=($(compgen -W "--chroot --profile-file --rc-file --preserve-env --path --library-path --exec --library --no-color --fatal --debug --debug-fd --debug-allow --debug-ignore --exec-ignore --path-resolution-ignore --version" -- "$cur"))
+		COMPREPLY+=($(compgen -W "--user --chroot --profile-file --rc-file --preserve-env --path --library-path --exec --library --no-color --fatal --debug --debug-fd --debug-allow --debug-ignore --exec-ignore --path-resolution-ignore --version" -- "$cur"))
 	fi
 } &&
 complete -F _iamroot-shell iamroot-shell

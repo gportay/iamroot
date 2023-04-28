@@ -26,6 +26,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `initgroups()`, `setregid()`, `setresgid()`, `setresuid()` and `setreuid()`
 - Add the `iamroot-shell(1)`'s environment variables `IAMROOT_SHELL_COMMAND`,
   `IAMROOT_SHELL_GID`, `IAMROOT_SHELL_UID` and `IAMROOT_SHELL_USER`
+- Add the `iamroot-shell`'s option `--user` and its environment variable
+  `IAMROOT_USER` to usurp the user identity
 
 ### Removed
 
@@ -66,6 +68,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `next_extattr_set_link()`, `next_fgetxattr()`, `next_fremovexattr()`,
   `next_fsetxattr()`, `next_lgetxattr()`, `next_lremovexattr()`,
   `next_lsetxattr()` and `next_readlinkat()` on level debug
+- The environment variable `USER` is now set to the usurper user login name
 
 ### Deprecated
 

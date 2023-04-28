@@ -28,6 +28,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `IAMROOT_SHELL_GID`, `IAMROOT_SHELL_UID` and `IAMROOT_SHELL_USER`
 - Add the `iamroot-shell`'s option `--user` and its environment variable
   `IAMROOT_USER` to usurp the user identity
+- Add the `iamroot-shell`'s option `--shell` and its environment variable
+  `IAMROOT_SHELL` to set the shell interpreter to use
 
 ### Removed
 

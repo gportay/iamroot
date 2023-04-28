@@ -75,7 +75,7 @@ _iamroot-shell()
 		COMPREPLY=($(compgen -P "$prefix" -W "${wordlist[*]}" -S '\:' -- "$realcur"))
 		return 0
 		;;
-	--exec)
+	--exec|--shell)
 		_filedir
 		return
 		;;
@@ -185,7 +185,7 @@ _iamroot-shell()
 
 	if [[ "$shell" != 1 ]]
 	then
-		COMPREPLY+=($(compgen -W "--user --root --profile-file --rc-file --preserve-env --path --library-path --exec --library --no-color --fatal --debug --debug-fd --debug-allow --debug-ignore --exec-ignore --path-resolution-ignore --version" -- "$cur"))
+		COMPREPLY+=($(compgen -W "--user --root --profile-file --rc-file --preserve-env --path --library-path --exec --library --shell --no-color --fatal --debug --debug-fd --debug-allow --debug-ignore --exec-ignore --path-resolution-ignore --version" -- "$cur"))
 	fi
 } &&
 complete -F _iamroot-shell iamroot-shell

@@ -22,7 +22,6 @@ For a more thorough description of sh(1), bash(1), zsh(1) or any other shells,
 please refers to their manuals.
 
 POSIX Shell related options:
-
       -c                        Read commands from command-line.
       -i                        Set interactive.
       -s                        Read commands from standard-input.
@@ -39,6 +38,8 @@ iamroot specific options:
       --exec FILE               Absolute path to the iamroot exec script to
                                 use.
       --library LIB             Absolute path to the iamroot library to use.
+      --shell SHELL             Set shell interpretor.
+                                Equivalent to set IAMROOT_SHELL=<SHELL>.
       --no-color                Turn off color.
       --fatal                   Abort on error.
       --debug                   Turn on debug mode.
@@ -104,6 +105,9 @@ Environment variables:
 
       IAMROOT_LIB               Set absolute path to library to use.
                                 Equivalent to --library LIB.
+
+      IAMROOT_SHELL             Set shell interpretor to use.
+                                Equivalent to --shell.
 
       IAMROOT_FATAL             Set abort on error.
                                 Equivalent to --fatal.
@@ -197,6 +201,11 @@ do
 	then
 		NO_COLOR=1
 		export NO_COLOR
+	elif [[ "$1" == "--shell" ]]
+	then
+		shift
+		IAMROOT_SHELL="$1"
+		export IAMROOT_SHELL
 	elif [[ "$1" == "--library" ]]
 	then
 		shift

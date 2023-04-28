@@ -75,9 +75,9 @@ all:
 
 .PHONY: vars
 vars:
-	@echo export "IAMROOT_LIB=$(IAMROOT_LIB)"
-	@echo export "IAMROOT_EXEC=$(IAMROOT_EXEC)"
-	@echo export "IAMROOT_EXEC_IGNORE=$(IAMROOT_EXEC_IGNORE)"
+	@echo export "IAMROOT_LIB=\"$(IAMROOT_LIB)\""
+	@echo export "IAMROOT_EXEC=\"$(IAMROOT_EXEC)\""
+	@echo export "IAMROOT_EXEC_IGNORE=\"$(IAMROOT_EXEC_IGNORE)\""
 
 define libiamroot_so =
 iamroot_lib_$(2)_$(3) = $(1)/libiamroot-$(2).so.$(3)
@@ -86,7 +86,7 @@ export IAMROOT_LIB_$(call UPPERCASE,$(2))_$(3)
 
 vars: iamroot_lib_$(2)_$(3)
 iamroot_lib_$(2)_$(3):
-	@echo export "IAMROOT_LIB_$(call UPPERCASE,$(2))_$(3)=$$(IAMROOT_LIB_$(call UPPERCASE,$(2))_$(3))"
+	@echo export "IAMROOT_LIB_$(call UPPERCASE,$(2))_$(3)=\"$$(IAMROOT_LIB_$(call UPPERCASE,$(2))_$(3))\""
 
 all: $(1)/libiamroot-$(2).so.$(3)
 ci: $(1)/libiamroot-$(2).so.$(3)

@@ -666,6 +666,14 @@ static inline void __close(int fd)
 	errno = save_errno;
 }
 
+const char *__library_path();
+
+#if defined(__GLIBC__) || defined(__aarch64__) || defined(__x86_64__)
+#define _PATH_DEFLIBRARY_PATH   "/lib64:/usr/local/lib64:/usr/lib64"
+#else
+#define _PATH_DEFLIBRARY_PATH   "/lib:/usr/local/lib:/usr/lib"
+#endif
+
 /*
  * glibc considers the kernel headers define a wrong value for ARG_MAX and
  * undefines it. Let's redefine it using _POSIX_ARG_MAX.

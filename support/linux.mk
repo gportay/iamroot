@@ -218,7 +218,6 @@ $(if $(findstring x86_64,$(1)), \
 endef
 
 define zypper-rootfs
-$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib64:/usr/lib64
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|/usr/bin/chkstat
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
 

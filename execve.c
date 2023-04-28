@@ -77,6 +77,18 @@ char *__basename(char *path)
 }
 
 __attribute__((visibility("hidden")))
+const char *__library_path()
+{
+	const char *ret;
+
+	ret = getenv("IAMROOT_LIBRARY_PATH");
+	if (!ret)
+		ret = _PATH_DEFLIBRARY_PATH;
+       
+	return ret;
+}
+
+__attribute__((visibility("hidden")))
 int __pathprependenv(const char *name, const char *value, int overwrite)
 {
 	char *newval, *oldval;

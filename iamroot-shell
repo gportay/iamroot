@@ -62,7 +62,7 @@ iamroot specific options:
 Environment variables:
       SHELL                     The shell interpreter to use.
 
-      IAMROOTLVL                Incremented by one each time an instance of
+      IAMROOT_SHELL_LVL         Incremented by one each time an instance of
                                 iamroot-shell is started.
 
       IAMROOT_ROOT              Set absolute path to root directory to chroot
@@ -262,6 +262,6 @@ do
 	fi
 done
 
-IAMROOTLVL="$((IAMROOTLVL+1))" \
+IAMROOT_SHELL_LVL="$((IAMROOT_SHELL_LVL+1))" \
 LD_PRELOAD="$IAMROOT_LIB${LD_PRELOAD+:$LD_PRELOAD}" \
 exec "${SHELL:-/bin/sh}" "${argv[@]}" "$@"

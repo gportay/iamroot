@@ -65,6 +65,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `next_fsetxattr()`, `next_lgetxattr()`, `next_lremovexattr()`,
   `next_lsetxattr()` and `next_readlinkat()` on level debug
 
+### Deprecated
+
+- Replace the `iamroot-shell(1)` environment variable `IAMROOTLVL` by
+  the environment variable `IAMROOT_SHELL_LVL`
+
 ### Fixed
 
 - Fix the output of the open flags for the function `renameat2()`

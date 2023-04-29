@@ -6,6 +6,7 @@
 #
 
 set -e
+set -o pipefail
 
 VERSION=20
 
@@ -227,6 +228,9 @@ do
 	PWD="$OLDPWD" source "${i##*/}"
 	cd "$OLDPWD"
 done
+
+SHELL="$(getent passwd "$IAMROOT_USER" | cut -d: -f 7)"
+export SHELL
 
 if [[ "$IAMROOT_ROOT" ]]
 then

@@ -232,6 +232,9 @@ done
 SHELL="$(getent passwd "$IAMROOT_USER" | cut -d: -f 7)"
 export SHELL
 
+HOME="$(getent passwd "$IAMROOT_USER" | cut -d: -f 6)"
+export HOME
+
 if [[ "$IAMROOT_ROOT" ]]
 then
 	cd "$IAMROOT_ROOT"

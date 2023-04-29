@@ -182,7 +182,6 @@ endef
 
 define debootstrap-rootfs
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib/$(1)-linux-gnu:/lib:/usr/lib/$(1)-linux-gnu:/usr/lib
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/$(1)-linux-gnu/libc.so.6:/lib/$(1)-linux-gnu/libdl.so.2:/lib/$(1)-linux-gnu/libpthread.so.0
 # chfn: PAM: Critical error - immediate abort
 # adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn
@@ -350,7 +349,6 @@ endef
 
 define debootstrap-postrootfs
 $(1)-$(2)-postrootfs: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
-$(1)-$(2)-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2
 $(1)-$(2)-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i $(1)-$(2)-rootfs/etc/passwd
@@ -628,11 +626,6 @@ $(eval $(call pacstrap-rootfs,x86_64,manjaro-stable,base))
 endif
 
 ifneq ($(shell command -v debootstrap 2>/dev/null),)
-x86_64-debian-oldstable-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-x86_64-debian-stable-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-x86_64-debian-testing-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-x86_64-debian-unstable-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-
 rootfs: x86_64-debian-rootfs
 
 .PHONY: x86_64-debian-rootfs
@@ -645,14 +638,6 @@ $(eval $(call debootstrap-rootfs,x86_64,debian,oldstable))
 $(eval $(call debootstrap-rootfs,x86_64,debian,stable))
 $(eval $(call debootstrap-rootfs,x86_64,debian,testing))
 $(eval $(call debootstrap-rootfs,x86_64,debian,unstable))
-
-x86_64-ubuntu-trusty-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-x86_64-ubuntu-xenial-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-x86_64-ubuntu-bionic-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-x86_64-ubuntu-focal-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-x86_64-ubuntu-jammy-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-x86_64-ubuntu-kinetic-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
-x86_64-ubuntu-lunar-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
 
 .PHONY: x86_64-ubuntu-rootfs
 x86_64-ubuntu-rootfs: x86_64-ubuntu-trusty-rootfs
@@ -731,7 +716,6 @@ $(eval $(call dnf-rootfs,x86_64,fedora,38))
 endif
 
 ifneq ($(shell command -v zypper 2>/dev/null),)
-x86_64-opensuse-leap-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
 x86_64-opensuse-leap-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_WORKAROUND = 0
 
 extra-rootfs: opensuse-rootfs
@@ -741,11 +725,9 @@ opensuse-rootfs: | x86_64-opensuse-tumbleweed-rootfs
 
 $(eval $(call zypper-rootfs,x86_64,opensuse-leap))
 $(eval $(call zypper-rootfs,x86_64,opensuse-tumbleweed))
-x86_64-opensuse-leap-chroot x86_64-opensuse-leap-shell x86_64-opensuse-leap-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
 x86_64-opensuse-leap-chroot x86_64-opensuse-leap-shell x86_64-opensuse-leap-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|/usr/bin/chkstat|/usr/sbin/update-ca-certificates
 
 qemu-system-x86_64-opensuse-leap: override CMDLINE += rw init=/usr/lib/systemd/systemd
-x86_64-opensuse-leap-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
 endif
 
 $(eval $(call void-rootfs,x86_64,20221001))
@@ -874,7 +856,6 @@ aarch64-archlinuxarm-rootfs: | aarch64-archlinuxarm-rootfs/etc/machine-id
 
 $(eval $(call pacstrap-rootfs,aarch64,archlinuxarm,base))
 aarch64-archlinuxarm-chroot aarch64-archlinuxarm-shell aarch64-archlinuxarm-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib:/usr/lib
-aarch64-archlinuxarm-chroot aarch64-archlinuxarm-shell aarch64-archlinuxarm-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
 endif
 
 ifneq ($(shell command -v arm-linux-gnueabihf-gcc 2>/dev/null),)

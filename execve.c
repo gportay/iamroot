@@ -1144,31 +1144,15 @@ static char *__getld_preload(const char *ldso, int abi)
 		return ret;
 
 #ifdef __linux__
-	/* IAMROOT_LD_PRELOAD_LINUX_2 */
-	if (streq(ldso, "linux") && abi == 2)
-		return "/usr/lib/libc.so.6:/usr/lib/libdl.so.2";
-
-	/* IAMROOT_LD_PRELOAD_LINUX_X86_64_2 */
-	if (streq(ldso, "linux-x86-64") && abi == 2)
-		return "/usr/lib64/libc.so.6:/usr/lib64/libdl.so.2";
-
-	/* IAMROOT_LD_PRELOAD_LINUX_3 */
-	if (streq(ldso, "linux") && abi == 3)
-		return "/usr/lib/libc.so.6:/usr/lib/libdl.so.2";
-
-	/* IAMROOT_LD_PRELOAD_LINUX_ARMHF_3 */
-	if (streq(ldso, "linux-armhf") && abi == 3)
-		return "/usr/lib/libc.so.6:/usr/lib/libdl.so.2";
-
-	/* IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 */
-	if (streq(ldso, "linux-aarch64") && abi == 1)
-		return "/usr/lib64/libc.so.6:/usr/lib64/libdl.so.2";
+	/* IAMROOT_LD_PRELOAD_LINUX_$ARCH_$ABI */
+	if (__strneq(ldso, "linux"))
+		return "libc.so.6:libdl.so.2:libpthread.so.0";
 #endif
 
 #ifdef __FreeBSD__
 	/* IAMROOT_LD_PRELOAD_ELF_1 */
 	if (streq(ldso, "elf") && abi == 1)
-		return "/lib/libc.so.7:/usr/lib/libdl.so.1";
+		return "libc.so.7:libdl.so.1";
 #endif
 
 	return "";

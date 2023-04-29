@@ -1,5 +1,6 @@
 # iamroot
 
+[![Packaging status](https://repology.org/badge/vertical-allrepos/iamroot.svg)](https://repology.org/project/iamroot/versions)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b167e3d1271545d2b6e1a416bcf3d00d)](https://app.codacy.com/gh/gportay/iamroot?utm_source=github.com&utm_medium=referral&utm_content=gportay/iamroot&utm_campaign=Badge_Grade_Settings)
 [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/db94176b5c354fe7bbdf93a194064140)](https://www.codacy.com/gh/gportay/iamroot/dashboard?utm_source=github.com&utm_medium=referral&utm_content=gportay/iamroot&utm_campaign=Badge_Coverage)
 
@@ -63,7 +64,7 @@ Written by Gaël PORTAY *gael.portay@gmail.com*
 
 # COPYRIGHT
 
-Copyright (c) 2021-2022 Gaël PORTAY
+Copyright (c) 2021-2023 Gaël PORTAY
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU Lesser General Public License as published by the Free

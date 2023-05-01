@@ -409,6 +409,30 @@ $(1)-$(2)-postrootfs:
 	chmod +r $(1)-$(2)-rootfs/bin/bbsuid
 endef
 
+define void-rootfs
+$(eval $(call chroot_shell,$(1),void,/bin/bash,tar xf void-$(1)-ROOTFS-$(2).tar.xz -C $(1)-void-rootfs))
+$(1)-void-chroot $(1)-void-shell: | x86_64/libiamroot-linux-x86-64.so.2
+
+$(1)-void-rootfs: | x86_64/libiamroot-linux-x86-64.so.2 void-$(1)-ROOTFS-$(2).tar.xz
+	mkdir -p $(1)-void-rootfs
+	tar xf void-$(1)-ROOTFS-$(2).tar.xz -C $(1)-void-rootfs
+
+void-$(1)-ROOTFS-$(2).tar.xz:
+	wget http://repo-default.voidlinux.org/live/current/void-$(1)-ROOTFS-$(2).tar.xz
+endef
+
+define void-musl-rootfs
+$(eval $(call chroot_shell,$(1),void-musl,/bin/bash,tar xf void-$(1)-musl-ROOTFS-$(2).tar.xz -C $(1)-void-musl-rootfs))
+$(1)-void-musl-chroot $(1)-void-musl-shell: | x86_64/libiamroot-linux-x86-64.so.2 x86_64/libiamroot-musl-x86_64.so.1
+
+$(1)-void-musl-rootfs: | x86_64/libiamroot-linux-x86-64.so.2 x86_64/libiamroot-musl-x86_64.so.1 void-$(1)-musl-ROOTFS-$(2).tar.xz
+	mkdir -p $(1)-void-musl-rootfs
+	tar xf void-$(1)-musl-ROOTFS-$(2).tar.xz -C $(1)-void-musl-rootfs
+
+void-$(1)-musl-ROOTFS-$(2).tar.xz:
+	wget http://repo-default.voidlinux.org/live/current/void-$(1)-musl-ROOTFS-$(2).tar.xz
+endef
+
 define alpine-mini-rootfs
 $(eval $(call chroot_shell,$(1),alpine-mini,/bin/ash,tar xf alpine-minirootfs-$(2).0-$(1).tar.gz -C $(1)-alpine-mini-rootfs))
 $(1)-alpine-mini-chroot $(1)-alpine-mini-shell: | $(call libs,musl,$(1))
@@ -724,6 +748,8 @@ qemu-system-x86_64-opensuse-leap: override CMDLINE += rw init=/usr/lib/systemd/s
 x86_64-opensuse-leap-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
 endif
 
+$(eval $(call void-rootfs,x86_64,20221001))
+
 ifneq ($(shell command -v musl-gcc 2>/dev/null)$(if musl,$(LIBC),YES,),)
 .PHONY: alpine-test
 alpine-test: | x86_64-alpine-mini-rootfs/usr/bin/shebang.sh
@@ -740,6 +766,8 @@ alpine-test: $(call libs,musl,x86_64) | x86_64-alpine-mini-rootfs
 	bash iamroot-shell -c "chroot x86_64-alpine-mini-rootfs /lib/ld-musl-x86_64.so.1 --preload "$$PWD/x86_64/libiamroot-musl-x86_64.so.1" bin/busybox"
 
 rootfs: alpine-rootfs
+
+$(eval $(call void-musl-rootfs,x86_64,20221001))
 
 $(eval $(call alpine-mini-rootfs,x86_64,3.17))
 

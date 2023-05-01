@@ -250,6 +250,32 @@ $(if $(findstring x86_64,$(1)), \
 )
 endef
 
+define xbps-install-rootfs
+$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
+$(eval $(call chroot_shell,$(1),$(2),/bin/bash,xbps-install -S -r $(1)-$(2)-rootfs -R https://repo-default.voidlinux.org/current base-system))
+
+$(1)-$(2)-rootfs: | $(1)-$(2)-rootfs/bin/sh
+$(1)-$(2)-rootfs/bin/sh: export XBPS_ARCH=$(1)
+$(1)-$(2)-rootfs/bin/sh: | $(call libs,linux,$(1))
+	bash ish -c "install -D -t $(1)-$(2)-rootfs/var/db/xbps/keys/ /var/db/xbps/keys/*"
+	bash ish -c "xbps-install -S -y -r $(1)-$(2)-rootfs -R http://repo-default.voidlinux.org/current base-system"
+
+$(eval $(call log,xbps-install,$(1)-$(2)-rootfs))
+endef
+
+define xbps-install-musl-rootfs
+$(1)-$(2)-musl-chroot $(1)-$(2)-musl-shell $(1)-$(2)-musl-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
+$(eval $(call chroot_shell,$(1),$(2)-musl,/bin/bash,xbps-install -S -r $(1)-$(2)-musl-rootfs -R https://repo-default.voidlinux.org/current base-system))
+
+$(1)-$(2)-musl-rootfs: | $(1)-$(2)-musl-rootfs/bin/sh
+$(1)-$(2)-musl-rootfs/bin/sh: export XBPS_ARCH=$(1)-musl
+$(1)-$(2)-musl-rootfs/bin/sh: | $(call libs,musl,$(1))
+	bash ish -c "install -D -t $(1)-$(2)-musl-rootfs/var/db/xbps/keys/ /var/db/xbps/keys/*"
+	bash ish -c "xbps-install -S -y -r $(1)-$(2)-musl-rootfs -R http://repo-default.voidlinux.org/current base-system"
+
+$(eval $(call log,xbps-install,$(1)-$(2)-musl-rootfs))
+endef
+
 define alpine-make-rootfs-rootfs
 $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export APK_OPTS = --arch $(1) --no-progress
 $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export ISH_PRESERVE_ENV := APK_OPTS
@@ -758,6 +784,11 @@ x86_64-opensuse-leap-chroot x86_64-opensuse-leap-shell x86_64-opensuse-leap-root
 qemu-system-x86_64-opensuse-leap: override CMDLINE += rw init=/usr/lib/systemd/systemd
 endif
 
+ifneq ($(shell command -v xbps-install 2>/dev/null),)
+$(eval $(call xbps-install-rootfs,x86_64,voidlinux))
+$(eval $(call xbps-install-musl-rootfs,x86_64,voidlinux))
+endif
+
 $(eval $(call void-rootfs,x86_64,20221001))
 
 ifneq ($(shell command -v musl-gcc 2>/dev/null)$(if musl,$(LIBC),YES,),)
@@ -1223,6 +1254,20 @@ extra-log: opensuse-log
 .PHONY: opensuse-log
 broken-log: x86_64-opensuse-leap-rootfs.log
 opensuse-log: x86_64-opensuse-tumbleweed-rootfs.log
+endif
+
+ifneq ($(shell command -v xbps-install 2>/dev/null),)
+extra-support: voidlinux-support
+
+.PHONY: voidlinux-support
+voidlinux-support: support/x86_64-voidlinux-rootfs.txt
+voidlinux-support: support/x86_64-voidlinux-musl-rootfs.txt
+
+extra-log: voidlinux-log
+
+.PHONY: voidlinux-log
+voidlinux-log: x86_64-voidlinux-rootfs.log
+voidlinux-log: x86_64-voidlinux-musl-rootfs.log
 endif
 
 ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)

@@ -64,6 +64,7 @@ The table below lists the distributions and its tool that work with.
 | [dnf(8)]             | Fedora                                               |
 | [zypper(8)]          | openSUSE                                             |
 | [debootstrap(8)]     | Debian\*, Ubuntu\*, Devuan\*                         |
+| [xbps-install(1)]    | Void Linux                                           |
 
 \*: Works with hacks.
 
@@ -164,4 +165,5 @@ later version.
 [qemu]: https://www.qemu.org/
 [readlink(2)]: https://linux.die.net/man/2/readlink
 [stat(2)]: https://linux.die.net/man/2/stat
+[xbps-install(1)]: https://man.voidlinux.org/xbps-install.1
 [zypper(8)]: https://en.opensuse.org/SDB:Zypper_manual_(plain)

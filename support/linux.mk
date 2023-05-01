@@ -397,19 +397,19 @@ $(1)-$(2)-postrootfs:
 endef
 
 define alpine-mini-rootfs
-$(eval $(call chroot_shell,$(1),alpine-mini,/bin/ash,tar xf alpine-minirootfs-3.17.0-$(1).tar.gz -C $(1)-alpine-minirootfs))
-$(1)-$(2)-shell: | x86_64/libiamroot-linux-x86-64.so.2
+$(eval $(call chroot_shell,$(1),alpine-mini,/bin/ash,tar xf alpine-minirootfs-3.17.0-$(1).tar.gz -C $(1)-alpine-mini-rootfs))
+$(1)-alpine-mini-chroot $(1)-alpine-mini-shell: | x86_64/libiamroot-linux-x86-64.so.2 x86_64/libiamroot-musl-x86_64.so.1
 
 $(1)-alpine-mini-rootfs: | $(1)-alpine-mini-rootfs/bin/busybox
-$(1)-alpine-mini-rootfs/bin/busybox: | x86_64/libiamroot-linux-x86-64.so.2 alpine-minirootfs-3.17.0-$(1).tar.gz
+$(1)-alpine-mini-rootfs/bin/busybox: | x86_64/libiamroot-linux-x86-64.so.2 x86_64/libiamroot-musl-x86_64.so.1 alpine-minirootfs-3.17.0-$(1).tar.gz
 	mkdir -p $(1)-alpine-mini-rootfs
 	tar xf alpine-minirootfs-3.17.0-$(1).tar.gz -C $(1)-alpine-mini-rootfs
 
 alpine-minirootfs-3.17.0-$(1).tar.gz:
 	wget http://mirrors.edge.kernel.org/alpine/v3.17/releases/$(1)/alpine-minirootfs-3.17.0-$(1).tar.gz
 
-$(1)-alpine-minirootfs/usr/bin/%: support/% | $(1)-alpine-minirootfs
-	cp $< $@
+$(1)-alpine-mini-rootfs/usr/bin/%: support/% | $(1)-alpine-mini-rootfs
+	cp $$< $$@
 endef
 
 export CC
@@ -549,7 +549,6 @@ clean:
 	rm -f *.ext4 *.cpio
 	rm -f *-rootfs.log
 	rm -Rf *-rootfs/
-	rm -Rf *-minirootfs/
 
 ifeq ($(ARCH),x86_64)
 ifneq ($(shell command -v pacstrap 2>/dev/null),)
@@ -711,32 +710,31 @@ endif
 
 ifneq ($(shell command -v musl-gcc 2>/dev/null),)
 .PHONY: alpine-test
-alpine-test: | x86_64-alpine-minirootfs/usr/bin/shebang.sh
-alpine-test: | x86_64-alpine-minirootfs/usr/bin/shebang-arg.sh
-alpine-test: | x86_64-alpine-minirootfs/usr/bin/shebang-busybox.sh
-alpine-test: x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2 | x86_64-alpine-minirootfs
-	bash iamroot-shell -c "chroot x86_64-alpine-minirootfs pwd" | tee /dev/stderr | grep -q "^/\$$"
-	bash iamroot-shell -c "chroot x86_64-alpine-minirootfs cat /etc/os-release" | tee /dev/stderr | grep 'NAME="Alpine Linux"'
-	bash iamroot-shell -c "chroot x86_64-alpine-minirootfs chroot . cat /etc/os-release" | tee /dev/stderr | grep 'NAME="Alpine Linux"'
-	bash iamroot-shell -c "chroot x86_64-alpine-minirootfs /bin/busybox"
-	bash iamroot-shell -c "chroot x86_64-alpine-minirootfs shebang.sh one two three"
-	bash iamroot-shell -c "chroot x86_64-alpine-minirootfs shebang-arg.sh one two three"
-	bash iamroot-shell -c "chroot x86_64-alpine-minirootfs shebang-busybox.sh one two three"
-	bash iamroot-shell -c "chroot x86_64-alpine-minirootfs /lib/ld-musl-x86_64.so.1 --preload "$$PWD/x86_64/libiamroot-musl-x86_64.so.1" bin/busybox"
+alpine-test: | x86_64-alpine-mini-rootfs/usr/bin/shebang.sh
+alpine-test: | x86_64-alpine-mini-rootfs/usr/bin/shebang-arg.sh
+alpine-test: | x86_64-alpine-mini-rootfs/usr/bin/shebang-busybox.sh
+alpine-test: x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2 | x86_64-alpine-mini-rootfs
+	bash iamroot-shell -c "chroot x86_64-alpine-mini-rootfs pwd" | tee /dev/stderr | grep -q "^/\$$"
+	bash iamroot-shell -c "chroot x86_64-alpine-mini-rootfs cat /etc/os-release" | tee /dev/stderr | grep 'NAME="Alpine Linux"'
+	bash iamroot-shell -c "chroot x86_64-alpine-mini-rootfs chroot . cat /etc/os-release" | tee /dev/stderr | grep 'NAME="Alpine Linux"'
+	bash iamroot-shell -c "chroot x86_64-alpine-mini-rootfs /bin/busybox"
+	bash iamroot-shell -c "chroot x86_64-alpine-mini-rootfs shebang.sh one two three"
+	bash iamroot-shell -c "chroot x86_64-alpine-mini-rootfs shebang-arg.sh one two three"
+	bash iamroot-shell -c "chroot x86_64-alpine-mini-rootfs shebang-busybox.sh one two three"
+	bash iamroot-shell -c "chroot x86_64-alpine-mini-rootfs /lib/ld-musl-x86_64.so.1 --preload "$$PWD/x86_64/libiamroot-musl-x86_64.so.1" bin/busybox"
 
 rootfs: alpine-rootfs
 
 $(eval $(call alpine-mini-rootfs,x86_64))
-x86_64-alpine-mini-chroot: x86_64/libiamroot-musl-x86_64.so.1
 
 $(eval $(call alpine-mini-rootfs,x86))
-x86-alpine-mini-chroot: i686/libiamroot-musl-i386.so.1
+x86-alpine-mini-chroot x86-alpine-mini-shell x86-alpine-mini-rootfs/bin/busybox: | i686/libiamroot-musl-i386.so.1
 
 ifneq ($(shell command -v arm-linux-musleabihf-gcc 2>/dev/null),)
 arm-rootfs: armhf-alpine-rootfs
 
 $(eval $(call alpine-mini-rootfs,armhf))
-armhf-alpine-mini-chroot: armhf/libiamroot-musl-armhf.so.1
+armhf-alpine-mini-chroot armhf-alpine-mini-shell armhf-alpine-mini-rootfs/bin/busybox: | armhf/libiamroot-musl-armhf.so.1
 endif
 
 ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
@@ -924,7 +922,7 @@ ifneq ($(shell command -v aarch64-linux-musl-gcc 2>/dev/null),)
 aarch64-rootfs: aarch64-alpine-rootfs
 
 $(eval $(call alpine-mini-rootfs,aarch64))
-aarch64-alpine-mini-chroot: aarch64/libiamroot-musl-aarch64.so.1
+aarch64-alpine-mini-chroot aarch64-alpine-mini-shell aarch64-alpine-mini-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1
 
 ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
 .PHONY: aarch64-alpine-rootfs

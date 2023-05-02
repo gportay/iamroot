@@ -745,6 +745,7 @@ alpine-rootfs: x86_64-alpine-3.14-rootfs
 alpine-rootfs: x86_64-alpine-3.15-rootfs
 alpine-rootfs: x86_64-alpine-3.16-rootfs
 alpine-rootfs: x86_64-alpine-3.17-rootfs
+alpine-rootfs: x86_64-alpine-3.18-rootfs
 alpine-rootfs: x86_64-alpine-edge-rootfs
 
 x86_64-alpine-edge-rootfs/bin/busybox: ALPINE_MAKE_ROOTFSFLAGS = --packages apk-tools --packages openrc
@@ -752,6 +753,7 @@ $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpine,3.14))
 $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpine,3.15))
 $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpine,3.16))
 $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpine,3.17))
+$(eval $(call alpine-make-rootfs-rootfs,x86_64,alpine,3.18))
 $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpine,edge))
 
 chroot-alpine-%: PATH = /usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin
@@ -793,6 +795,8 @@ x86_64-alpine-3.16-rootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgc
 x86_64-alpine-3.17-shell: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-alpine-3.17-chroot: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-alpine-3.17-rootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpine-3.18-chroot: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpine-3.18-rootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-alpine-edge-shell: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-alpine-edge-chroot: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-alpine-edge-rootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
@@ -808,17 +812,20 @@ x86-alpine-rootfs: x86-alpine-3.14-rootfs
 x86-alpine-rootfs: x86-alpine-3.15-rootfs
 x86-alpine-rootfs: x86-alpine-3.16-rootfs
 x86-alpine-rootfs: x86-alpine-3.17-rootfs
+x86-alpine-rootfs: x86-alpine-3.18-rootfs
 x86-alpine-rootfs: x86-alpine-edge-rootfs
 
 $(eval $(call alpine-make-rootfs-rootfs,x86,alpine,3.14))
 $(eval $(call alpine-make-rootfs-rootfs,x86,alpine,3.15))
 $(eval $(call alpine-make-rootfs-rootfs,x86,alpine,3.16))
 $(eval $(call alpine-make-rootfs-rootfs,x86,alpine,3.17))
+$(eval $(call alpine-make-rootfs-rootfs,x86,alpine,3.18))
 $(eval $(call alpine-make-rootfs-rootfs,x86,alpine,edge))
 x86-alpine-3.14-rootfs/bin/busybox: | i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2
 x86-alpine-3.15-rootfs/bin/busybox: | i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2
 x86-alpine-3.16-rootfs/bin/busybox: | i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2
 x86-alpine-3.17-rootfs/bin/busybox: | i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2
+x86-alpine-3.18-rootfs/bin/busybox: | i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2
 x86-alpine-edge-rootfs/bin/busybox: | i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2
 endif
 endif
@@ -926,6 +933,7 @@ aarch64-alpine-rootfs: aarch64-alpine-3.14-rootfs
 aarch64-alpine-rootfs: aarch64-alpine-3.15-rootfs
 aarch64-alpine-rootfs: aarch64-alpine-3.16-rootfs
 aarch64-alpine-rootfs: aarch64-alpine-3.17-rootfs
+aarch64-alpine-rootfs: aarch64-alpine-3.18-rootfs
 aarch64-alpine-rootfs: aarch64-alpine-edge-rootfs
 
 $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpine,3.14))
@@ -937,6 +945,7 @@ aarch64-alpine-3.14-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1 x
 aarch64-alpine-3.15-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 aarch64-alpine-3.16-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 aarch64-alpine-3.17-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
+aarch64-alpine-3.18-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 aarch64-alpine-edge-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 endif
 endif
@@ -1169,6 +1178,7 @@ alpine-support: support/x86_64-alpine-3.14-rootfs.txt
 alpine-support: support/x86_64-alpine-3.15-rootfs.txt
 alpine-support: support/x86_64-alpine-3.16-rootfs.txt
 alpine-support: support/x86_64-alpine-3.17-rootfs.txt
+alpine-support: support/x86_64-alpine-3.18-rootfs.txt
 alpine-support: support/x86_64-alpine-edge-rootfs.txt
 
 log: alpine-log
@@ -1178,6 +1188,7 @@ alpine-log: x86_64-alpine-3.14-rootfs.log
 alpine-log: x86_64-alpine-3.15-rootfs.log
 alpine-log: x86_64-alpine-3.16-rootfs.log
 alpine-log: x86_64-alpine-3.17-rootfs.log
+alpine-log: x86_64-alpine-3.18-rootfs.log
 alpine-log: x86_64-alpine-edge-rootfs.log
 endif
 endif

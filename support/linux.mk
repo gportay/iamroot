@@ -808,12 +808,6 @@ x86-alpine-rootfs: x86-alpine-3.16-rootfs
 x86-alpine-rootfs: x86-alpine-3.17-rootfs
 x86-alpine-rootfs: x86-alpine-edge-rootfs
 
-x86-alpine-3.14-rootfs: | x86-alpine-3.14-rootfs/bin/busybox
-x86-alpine-3.15-rootfs: | x86-alpine-3.15-rootfs/bin/busybox
-x86-alpine-3.16-rootfs: | x86-alpine-3.16-rootfs/bin/busybox
-x86-alpine-3.17-rootfs: | x86-alpine-3.17-rootfs/bin/busybox
-x86-alpine-edge-rootfs: | x86-alpine-edge-rootfs/bin/busybox
-
 $(eval $(call alpine-make-rootfs-rootfs,x86,alpine,3.14))
 $(eval $(call alpine-make-rootfs-rootfs,x86,alpine,3.15))
 $(eval $(call alpine-make-rootfs-rootfs,x86,alpine,3.16))
@@ -931,12 +925,6 @@ aarch64-alpine-rootfs: aarch64-alpine-3.15-rootfs
 aarch64-alpine-rootfs: aarch64-alpine-3.16-rootfs
 aarch64-alpine-rootfs: aarch64-alpine-3.17-rootfs
 aarch64-alpine-rootfs: aarch64-alpine-edge-rootfs
-
-aarch64-alpine-3.14-rootfs: | aarch64-alpine-3.14-rootfs/bin/busybox
-aarch64-alpine-3.15-rootfs: | aarch64-alpine-3.15-rootfs/bin/busybox
-aarch64-alpine-3.16-rootfs: | aarch64-alpine-3.16-rootfs/bin/busybox
-aarch64-alpine-3.17-rootfs: | aarch64-alpine-3.17-rootfs/bin/busybox
-aarch64-alpine-edge-rootfs: | aarch64-alpine-edge-rootfs/bin/busybox
 
 $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpine,3.14))
 $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpine,3.15))

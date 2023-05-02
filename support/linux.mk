@@ -397,16 +397,16 @@ $(1)-$(2)-postrootfs:
 endef
 
 define alpine-mini-rootfs
-$(eval $(call chroot_shell,$(1),alpine-mini,/bin/ash,tar xf alpine-minirootfs-3.17.0-$(1).tar.gz -C $(1)-alpine-mini-rootfs))
+$(eval $(call chroot_shell,$(1),alpine-mini,/bin/ash,tar xf alpine-minirootfs-$(2).0-$(1).tar.gz -C $(1)-alpine-mini-rootfs))
 $(1)-alpine-mini-chroot $(1)-alpine-mini-shell: | x86_64/libiamroot-linux-x86-64.so.2 x86_64/libiamroot-musl-x86_64.so.1
 
 $(1)-alpine-mini-rootfs: | $(1)-alpine-mini-rootfs/bin/busybox
-$(1)-alpine-mini-rootfs/bin/busybox: | x86_64/libiamroot-linux-x86-64.so.2 x86_64/libiamroot-musl-x86_64.so.1 alpine-minirootfs-3.17.0-$(1).tar.gz
+$(1)-alpine-mini-rootfs/bin/busybox: | x86_64/libiamroot-linux-x86-64.so.2 x86_64/libiamroot-musl-x86_64.so.1 alpine-minirootfs-$(2).0-$(1).tar.gz
 	mkdir -p $(1)-alpine-mini-rootfs
-	tar xf alpine-minirootfs-3.17.0-$(1).tar.gz -C $(1)-alpine-mini-rootfs
+	tar xf alpine-minirootfs-$(2).0-$(1).tar.gz -C $(1)-alpine-mini-rootfs
 
-alpine-minirootfs-3.17.0-$(1).tar.gz:
-	wget http://mirrors.edge.kernel.org/alpine/v3.17/releases/$(1)/alpine-minirootfs-3.17.0-$(1).tar.gz
+alpine-minirootfs-$(2).0-$(1).tar.gz:
+	wget http://mirrors.edge.kernel.org/alpine/v$(2)/releases/$(1)/alpine-minirootfs-$(2).0-$(1).tar.gz
 
 $(1)-alpine-mini-rootfs/usr/bin/%: support/% | $(1)-alpine-mini-rootfs
 	cp $$< $$@
@@ -727,15 +727,15 @@ alpine-test: x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.s
 
 rootfs: alpine-rootfs
 
-$(eval $(call alpine-mini-rootfs,x86_64))
+$(eval $(call alpine-mini-rootfs,x86_64,3.17))
 
-$(eval $(call alpine-mini-rootfs,x86))
+$(eval $(call alpine-mini-rootfs,x86,3.17))
 x86-alpine-mini-chroot x86-alpine-mini-shell x86-alpine-mini-rootfs/bin/busybox: | i686/libiamroot-musl-i386.so.1
 
 ifneq ($(shell command -v arm-linux-musleabihf-gcc 2>/dev/null),)
 arm-rootfs: armhf-alpine-rootfs
 
-$(eval $(call alpine-mini-rootfs,armhf))
+$(eval $(call alpine-mini-rootfs,armhf,3.17))
 armhf-alpine-mini-chroot armhf-alpine-mini-shell armhf-alpine-mini-rootfs/bin/busybox: | armhf/libiamroot-musl-armhf.so.1
 endif
 
@@ -924,7 +924,7 @@ endif
 ifneq ($(shell command -v aarch64-linux-musl-gcc 2>/dev/null),)
 aarch64-rootfs: aarch64-alpine-rootfs
 
-$(eval $(call alpine-mini-rootfs,aarch64))
+$(eval $(call alpine-mini-rootfs,aarch64,3.17))
 aarch64-alpine-mini-chroot aarch64-alpine-mini-shell aarch64-alpine-mini-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1
 
 ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)

@@ -13,6 +13,7 @@
 
 #define __dlperror(s) fprintf(stderr, "%s: %s\n", s, dlerror())
 
+#ifdef __linux__
 int main(int argc, char * const argv[])
 {
 	int flags = RTLD_LAZY, ret = EXIT_FAILURE;
@@ -42,3 +43,9 @@ int main(int argc, char * const argv[])
 
 	return ret;
 }
+#else
+int main(void)
+{
+	return EXIT_SUCCESS;
+}
+#endif

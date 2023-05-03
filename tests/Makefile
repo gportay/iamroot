@@ -177,6 +177,7 @@ libiamnotroot.so: override LDFLAGS += -nodefaultlibs
 libiamnotroot.so: iamnotroot.o
 
 test-dlopen: override LDLIBS += -ldl
+test-dlmopen: override LDLIBS += -ldl
 
 test-path_resolution: libiamnotroot.so
 test-path_resolution: override LDLIBS += libiamnotroot.so

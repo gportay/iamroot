@@ -7,8 +7,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
 
+#ifdef __linux__
 #include <sys/types.h>
 #include <shadow.h>
 
@@ -41,3 +41,9 @@ int main(int argc, char * const argv[])
 
 	return EXIT_SUCCESS;
 }
+#else
+int main(void)
+{
+	return EXIT_SUCCESS;
+}
+#endif

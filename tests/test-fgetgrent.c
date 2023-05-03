@@ -13,6 +13,7 @@
 #include <sys/types.h>
 #include <grp.h>
 
+#ifdef __linux__
 int main(int argc, char * const argv[])
 {
 	struct group *grp;
@@ -42,3 +43,9 @@ int main(int argc, char * const argv[])
 
 	return EXIT_SUCCESS;
 }
+#else
+int main(void)
+{
+	return EXIT_SUCCESS;
+}
+#endif

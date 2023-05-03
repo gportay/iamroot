@@ -296,8 +296,10 @@ ifeq ($(OS),GNU/Linux)
 endif
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-name_to_handle_at - /tmp/file0 0
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-ftok rootfs/usr/bin/test-ftok 1
+ifeq ($(OS),GNU/Linux)
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-ftok /usr/bin/test-ftok 1
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-ftw rootfs/usr/bin
+endif
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-ftw /usr/bin
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-nftw rootfs/usr/bin d
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-nftw /usr/bin p
@@ -417,21 +419,29 @@ endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-getpwnam_r root                                                                  | tee /dev/stderr | grep -q '^root:.*:0:0:.*:.*:.*$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-getpwuid 0                                                                       | tee /dev/stderr | grep -q '^root:.*:0:0:.*:.*:.*$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-getpwuid_r 0                                                                     | tee /dev/stderr | grep -q '^root:.*:0:0:.*:.*:.*$$'
+ifeq ($(OS),GNU/Linux)
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-fgetpwent <passwd
+endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-getpwent
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-setpwent
+ifeq ($(OS),GNU/Linux)
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-putpwent iamroot x 1000 1000 "iamroot user" /home/iamroot /usr/bin/iamroot-shell | tee /dev/stderr | grep -q '^iamroot:x:1000:1000:iamroot user:/home/iamroot:/usr/bin/iamroot-shell$$'
+endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-endpwent
+ifeq ($(OS),GNU/Linux)
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-getgrnam root                                                                    | tee /dev/stderr | grep -q '^root:.*:0:.*$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-getgrnam_r root                                                                  | tee /dev/stderr | grep -q '^root:.*:0:.*$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-getgrgid 0                                                                       | tee /dev/stderr | grep -q '^root:.*:0:.*$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-getgrgid_r 0                                                                     | tee /dev/stderr | grep -q '^root:.*:0:.*$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-fgetgrent <group
+endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-getgrent
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-setgrent
+ifeq ($(OS),GNU/Linux)
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-putgrent iamroot x 1000                                                          | tee /dev/stderr | grep -q '^iamroot:x:1000:$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-putgrent iamroot x 1000 iamroot                                                  | tee /dev/stderr | grep -q '^iamroot:x:1000:iamroot$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-putgrent iamroot x 1000 iamroot wheel                                            | tee /dev/stderr | grep -q '^iamroot:x:1000:iamroot,wheel$$'
+endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-endgrent
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-getgroups                                                                        | tee /dev/stderr | grep -q '^1 0$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin   IAMROOT_GROUPS=0:100:1000 test-getgroups                                                                        | tee /dev/stderr | grep -q '^3 0 100 1000$$'
@@ -442,6 +452,7 @@ endif
 	! env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_GROUPS=0:100:1000 test-getgroups 2
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin   IAMROOT_GROUPS=0:100:1000 test-setgroups                                                                        | tee /dev/stderr | grep -q '^$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-setgroups 0 100 1000                                                             | tee /dev/stderr | grep -q '^0:100:1000$$'
+ifeq ($(OS),GNU/Linux)
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-getspnam root                                                    | tee /dev/stderr | grep -q 'root:\*:14871::::::$$'
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-getspnam_r root                                                  | tee /dev/stderr | grep -q '^root:\*:14871::::::$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-fgetspent <shadow
@@ -450,7 +461,6 @@ endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-endspent
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-lckpwdf
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                             test-ulckpwdf
-ifeq ($(OS),GNU/Linux)
 	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-fsetxattr    rootfs/etc/os-release user.one   0 0
 	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-fsetxattr    rootfs/etc/os-release user.one   1 0
 	  env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                             test-fsetxattr    rootfs/etc/os-release user.two   1 1

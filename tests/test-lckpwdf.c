@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#ifdef __linux__
 #include <shadow.h>
 
 int main(int argc, char * const argv[])
@@ -26,3 +27,9 @@ int main(int argc, char * const argv[])
 
 	return EXIT_SUCCESS;
 }
+#else
+int main(void)
+{
+	return EXIT_SUCCESS;
+}
+#endif

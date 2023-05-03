@@ -132,7 +132,6 @@ libiamroot.so: fchownat.o
 libiamroot.so: fdopen.o
 libiamroot.so: fexecve.o
 libiamroot.so: fgetxattr.o
-libiamroot.so: fileno.o
 libiamroot.so: flistxattr.o
 libiamroot.so: fopen.o
 libiamroot.so: fremovexattr.o

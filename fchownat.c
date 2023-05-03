@@ -8,6 +8,12 @@
 #include <errno.h>
 #include <limits.h>
 #include <dlfcn.h>
+#ifdef __linux__
+#include <sys/xattr.h>
+#endif
+#ifdef __FreeBSD__
+#include <sys/extattr.h>
+#endif
 
 #include <fcntl.h>
 #include <unistd.h>

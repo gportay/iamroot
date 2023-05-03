@@ -445,6 +445,29 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 	   __set_errno(save_errno, 0); \
 	})
 
+#define __fget_mode(fd) \
+	({ const int save_errno = errno; \
+	   mode_t m; \
+	   if (next_extattr_set_fd((fd), EXTATTR_NAMESPACE_USER, \
+				   IAMROOT_EXTATTR_MODE, &m, sizeof(m)) \
+				   != sizeof(m)) \
+		m = (mode_t)-1; \
+	   __set_errno(save_errno, m); \
+	})
+
+#define __fset_mode(fd, oldmode, mode) \
+	({ const int save_errno = errno; \
+	   if ((oldmode) == (mode)) { \
+	     next_extattr_delete_link((fd), EXTATTR_NAMESPACE_USER, \
+				      IAMROOT_EXTATTR_MODE); \
+	   } else { \
+	     next_extattr_set_link((fd), EXTATTR_NAMESPACE_USER, \
+				   IAMROOT_EXTATTR_MODE, &(oldmode), \
+				   sizeof((oldmode)), 0); \
+	   } \
+	   __set_errno(save_errno, 0); \
+	})
+
 #define __get_uid(path) \
 	({ const int save_errno = errno; \
 	   uid_t u; \
@@ -517,9 +540,9 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 #define __fget_gid(fd) \
 	({ const int save_errno = errno; \
 	   gid_t g; \
-	   if (next_extattr_get_link((fd), EXTATTR_NAMESPACE_USER, \
-				     IAMROOT_EXTATTR_MODE, &g, sizeof(g)) \
-				     != sizeof(g)) \
+	   if (next_extattr_get_fd((fd), EXTATTR_NAMESPACE_USER, \
+				   IAMROOT_EXTATTR_MODE, &g, sizeof(g)) \
+				   != sizeof(g)) \
 		g = (gid_t)-1; \
 	   __set_errno(save_errno, g); \
 	})

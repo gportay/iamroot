@@ -8,7 +8,12 @@
 #include <stdio.h>
 #include <errno.h>
 #include <dlfcn.h>
+#ifdef __linux__
 #include <sys/xattr.h>
+#endif
+#ifdef __FreeBSD__
+#include <sys/extattr.h>
+#endif
 #include <fcntl.h>
 
 #include <sys/stat.h>

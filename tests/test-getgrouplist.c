@@ -12,6 +12,10 @@
 #ifdef __linux__
 #include <linux/limits.h>
 #endif
+#ifdef __FreeBSD__
+#include <limits.h>
+#include <sys/syslimits.h>
+#endif
 
 #include <grp.h>
 

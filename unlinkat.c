@@ -45,6 +45,5 @@ int unlinkat(int dfd, const char *path, int atflags)
 	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', atflags: 0x%x)\n",
 		__func__, dfd, __fpath(dfd), path, buf, atflags);
 
-	__remove_at_empty_path_if_needed(buf, atflags);
 	return next_unlinkat(dfd, buf, atflags);
 }

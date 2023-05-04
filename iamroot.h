@@ -231,11 +231,6 @@ void __verbose_exec(const char *, char * const[], char * const[]);
 #define __verbose_exec(fmt, ...)
 #endif
 
-#define __remove_at_empty_path_if_needed(path, flags) \
-	({ if ((*(path)) && ((flags) & AT_EMPTY_PATH)) { \
-	     (flags) &= ~AT_EMPTY_PATH; \
-	   } })
-
 #define __fwarn_and_set_user_mode(fd, mode, user_mode) \
 	({ if (((mode) & (user_mode)) != (user_mode)) { \
 	     __info("%s: %i <-> %s: Insuffisant user mode 0%03o!\n", __func__, (fd), __fpath((fd)), (mode)); \

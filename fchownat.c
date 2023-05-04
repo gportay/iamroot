@@ -57,7 +57,6 @@ int fchownat(int dfd, const char *path, uid_t owner, gid_t group, int atflags)
 		__func__, dfd, __fpath(dfd), path, buf, oldowner, owner,
 		oldgroup, group, atflags);
 
-	__remove_at_empty_path_if_needed(buf, atflags);
 	ret = next_fchownat(dfd, buf, owner, group, atflags);
 	__ignore_error_and_warn(ret, dfd, path, atflags);
 	/* Force ignoring EPERM error if not chroot'ed */

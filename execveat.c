@@ -168,7 +168,6 @@ execveat:
 		*narg++ = NULL; /* ensure NULL-terminated */
 
 		__verbose_exec(*nargv, nargv, __environ);
-		__remove_at_empty_path_if_needed(*nargv, atflags);
 		return next_execveat(dfd, *nargv, nargv, __environ, atflags);
 	}
 

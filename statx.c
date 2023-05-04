@@ -56,7 +56,6 @@ int statx(int dfd, const char *path, int atflags, unsigned int mask,
 	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', atflags: 0x%x...)\n",
 		__func__, dfd, __fpath(dfd), path, buf, atflags);
 
-	__remove_at_empty_path_if_needed(buf, atflags);
 	ret = next_statx(dfd, buf, atflags, mask, statxbuf);
 	if (ret == -1)
 		goto exit;

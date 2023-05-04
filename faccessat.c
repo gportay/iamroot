@@ -43,6 +43,5 @@ int faccessat(int dfd, const char *path, int mode, int atflags)
 	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', mode: 0%03o, atflags: 0x%x)\n",
 		__func__, dfd, __fpath(dfd), path, buf, mode, atflags);
 
-	__remove_at_empty_path_if_needed(buf, atflags);
 	return next_faccessat(dfd, buf, mode, atflags);
 }

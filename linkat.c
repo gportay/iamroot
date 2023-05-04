@@ -50,7 +50,5 @@ int linkat(int olddfd, const char *oldpath, int newdfd, const char *newpath,
 		__func__, olddfd, __fpath(olddfd), oldpath, oldbuf, newdfd,
 		__fpath2(newdfd), newpath, newbuf, atflags);
 
-	__remove_at_empty_path_if_needed(oldbuf, atflags);
-	__remove_at_empty_path_if_needed(newbuf, atflags);
 	return next_linkat(olddfd, oldbuf, newdfd, newbuf, atflags);
 }

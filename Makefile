@@ -312,7 +312,7 @@ check:
 	shellcheck -e SC1090 -e SC3037 iamroot-shell exec.sh
 
 .PHONY: test
-test:
+test: libiamroot.so
 	$(MAKE) -C tests
 	$(MAKE) -C tests $@
 

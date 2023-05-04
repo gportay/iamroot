@@ -55,6 +55,18 @@ static struct __libc {
 #define do_catopen(p) __catopen(p, oflag)
 
 /*
+ * Stolen and hacked from musl (/include/langinfo.h)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+#ifndef _NL_LOCALE_NAME
+#define _NL_LOCALE_NAME(cat) (((cat)<<16) | 0xffff)
+#endif
+
+/*
  * Stolen and hacked from musl (/src/locale/catopen.c)
  *
  * SPDX-FileCopyrightText: The musl Contributors

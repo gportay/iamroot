@@ -24,7 +24,11 @@ export IAMROOT_EXEC
 -include local.mk
 
 .PHONY: all
-all: $(ARCH)/libiamroot-elf.so.1
+all: libiamroot.so
+
+.PRECIOUS: libiamroot.so
+libiamroot.so: $(ARCH)/libiamroot-elf.so.1
+	install -m755 $< $@
 
 .PRECIOUS: $(ARCH)/libiamroot-elf.so.1
 $(ARCH)/libiamroot-elf.so.1: output-$(ARCH)/libiamroot.so
@@ -55,7 +59,7 @@ FreeBSD-%-RELEASE-base-$(ARCH).txz:
 	wget https://download.freebsd.org/releases/$(ARCH)/$*-RELEASE/base.txz -O $@
 
 .PHONY: test
-test: $(ARCH)/libiamroot-elf.so.1
+test: libiamroot.so
 test:
 	$(MAKE) -f Makefile $@
 

@@ -4,6 +4,10 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#ifdef __FreeBSD__
+#include <unistd.h>
+#endif
+
 /*
  * Stolen from musl (src/misc/initgroups.c)
  *

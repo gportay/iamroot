@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -15,6 +15,7 @@ int mkstemps(char *path, int suffixlen)
 {
 	__debug("%s(path: '%s', ...)\n", __func__, path);
 
+	/* Forward to another function */
 	return mkostemps(path, suffixlen, 0);
 }
 

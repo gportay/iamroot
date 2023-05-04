@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -18,6 +18,7 @@ int stat64(const char *path, struct stat64 *statbuf)
 {
 	__debug("%s(path: '%s', ...)\n", __func__, path);
 
+	/* Forward to another function */
 	return fstatat64(AT_FDCWD, path, statbuf, 0);
 }
 

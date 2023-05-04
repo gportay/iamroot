@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -17,5 +17,6 @@ int mkdir(const char *path, mode_t mode)
 {
 	__debug("%s(path: '%s', mode: 0%03o)\n", __func__, path, mode);
 
+	/* Forward to another function */
 	return mkdirat(AT_FDCWD, path, mode);
 }

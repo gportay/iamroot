@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -15,6 +15,7 @@ int mkostemp(char *path, int oflags)
 {
 	__debug("%s(path: '%s', oflags: 0%o)\n", __func__, path, oflags);
 
+	/* Forward to another function */
 	return mkostemps(path, 0, oflags);
 }
 

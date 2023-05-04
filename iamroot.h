@@ -298,7 +298,7 @@ extern int next_lremovexattr(const char *, const char *);
 
 #define __get_mode(path) \
 	({ const int save_errno = errno; \
-	   mode_t m; \
+	   mode_t m = (mode_t)-1; \
 	   if (next_lgetxattr((path), IAMROOT_XATTRS_MODE, &m, sizeof(m)) != sizeof(m)) \
 		m = (mode_t)-1; \
 	   __set_errno(save_errno, m); \
@@ -317,7 +317,7 @@ extern int next_lremovexattr(const char *, const char *);
 
 #define __fget_mode(fd) \
 	({ const int save_errno = errno; \
-	   mode_t m; \
+	   mode_t m = (mode_t)-1; \
 	   if (next_fgetxattr((fd), IAMROOT_XATTRS_MODE, &m, sizeof(m)) != sizeof(m)) \
 		m = (mode_t)-1; \
 	   __set_errno(save_errno, m); \
@@ -336,7 +336,7 @@ extern int next_lremovexattr(const char *, const char *);
 
 #define __get_uid(path) \
 	({ const int save_errno = errno; \
-	   uid_t u; \
+	   uid_t u = (uid_t)-1; \
 	   if (next_lgetxattr((path), IAMROOT_XATTRS_UID, &u, sizeof(u)) != sizeof(u)) \
 		u = (uid_t)-1; \
 	   __set_errno(save_errno, u); \
@@ -355,7 +355,7 @@ extern int next_lremovexattr(const char *, const char *);
 
 #define __fget_uid(fd) \
 	({ const int save_errno = errno; \
-	   uid_t u; \
+	   uid_t u = (uid_t)-1; \
 	   if (next_fgetxattr((fd), IAMROOT_XATTRS_UID, &u, sizeof(u)) != sizeof(u)) \
 		u = (uid_t)-1; \
 	   __set_errno(save_errno, u); \
@@ -374,7 +374,7 @@ extern int next_lremovexattr(const char *, const char *);
 
 #define __get_gid(path) \
 	({ const int save_errno = errno; \
-	   gid_t g; \
+	   gid_t g = (gid_t)-1; \
 	   if (next_lgetxattr((path), IAMROOT_XATTRS_GID, &g, sizeof(g)) != sizeof(g)) \
 		g = (gid_t)-1; \
 	   __set_errno(save_errno, g); \
@@ -393,7 +393,7 @@ extern int next_lremovexattr(const char *, const char *);
 
 #define __fget_gid(fd) \
 	({ const int save_errno = errno; \
-	   gid_t g; \
+	   gid_t g = (gid_t)-1; \
 	   if (next_fgetxattr((fd), IAMROOT_XATTRS_GID, &g, sizeof(g)) != sizeof(g)) \
 		g = (gid_t)-1; \
 	   __set_errno(save_errno, g); \
@@ -424,7 +424,7 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 
 #define __get_mode(path) \
 	({ const int save_errno = errno; \
-	   mode_t m; \
+	   mode_t m = (mode_t)-1; \
 	   if (next_extattr_get_link((path), EXTATTR_NAMESPACE_USER, \
 				     IAMROOT_EXTATTR_MODE, &m, sizeof(m)) \
 				     != sizeof(m)) \
@@ -447,7 +447,7 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 
 #define __fget_mode(fd) \
 	({ const int save_errno = errno; \
-	   mode_t m; \
+	   mode_t m = (mode_t)-1; \
 	   if (next_extattr_set_fd((fd), EXTATTR_NAMESPACE_USER, \
 				   IAMROOT_EXTATTR_MODE, &m, sizeof(m)) \
 				   != sizeof(m)) \
@@ -470,7 +470,7 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 
 #define __get_uid(path) \
 	({ const int save_errno = errno; \
-	   uid_t u; \
+	   uid_t u = (uid_t)-1; \
 	   if (next_extattr_get_link((path), EXTATTR_NAMESPACE_USER, \
 				     IAMROOT_EXTATTR_UID, &u, sizeof(u)) \
 				     != sizeof(u)) \
@@ -493,7 +493,7 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 
 #define __fget_uid(fd) \
 	({ const int save_errno = errno; \
-	   uid_t u; \
+	   uid_t u = (uid_t)-1; \
 	   if (next_extattr_get_fd((fd), EXTATTR_NAMESPACE_USER, \
 				   IAMROOT_EXTATTR_UID, &u, sizeof(u)) \
 				   != sizeof(u)) \
@@ -516,7 +516,7 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 
 #define __get_gid(path) \
 	({ const int save_errno = errno; \
-	   gid_t g; \
+	   gid_t g = (gid_t)-1; \
 	   if (next_extattr_get_link((path), EXTATTR_NAMESPACE_USER, \
 				     IAMROOT_EXTATTR_MODE, &g, sizeof(g)) \
 				     != sizeof(g)) \
@@ -539,7 +539,7 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 
 #define __fget_gid(fd) \
 	({ const int save_errno = errno; \
-	   gid_t g; \
+	   gid_t g = (gid_t)-1; \
 	   if (next_extattr_get_fd((fd), EXTATTR_NAMESPACE_USER, \
 				   IAMROOT_EXTATTR_MODE, &g, sizeof(g)) \
 				   != sizeof(g)) \

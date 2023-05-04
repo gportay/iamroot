@@ -53,8 +53,9 @@ int fchownat(int dfd, const char *path, uid_t owner, gid_t group, int atflags)
 	owner = __get_uid(buf);
 	group = __get_gid(buf);
 
-	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', owner: %i, group: %i, atflags: 0x%x)\n",
-		__func__, dfd, __fpath(dfd), path, buf, owner, group, atflags);
+	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', owner: %i -> %i, group: %i -> %i, atflags: 0x%x)\n",
+		__func__, dfd, __fpath(dfd), path, buf, oldowner, owner,
+		oldgroup, group, atflags);
 
 	__remove_at_empty_path_if_needed(buf, atflags);
 	ret = next_fchownat(dfd, buf, owner, group, atflags);

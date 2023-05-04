@@ -236,6 +236,20 @@ void __verbose_exec(const char *, char * const[], char * const[]);
 	     (flags) &= ~AT_EMPTY_PATH; \
 	   } })
 
+#define __fwarn_and_set_user_mode(fd, mode, user_mode) \
+	({ if (((mode) & (user_mode)) != (user_mode)) { \
+	     __info("%s: %i <-> %s: Insuffisant user mode 0%03o!\n", __func__, (fd), __fpath((fd)), (mode)); \
+	     (mode) |= (user_mode); \
+	   } \
+	   if ((mode) & S_ISUID) { \
+	     __info("%s: %i <-> %s: SUID bit 0%04o!\n", __func__, (fd), __fpath((fd)), (mode)); \
+	     (mode) &= ~S_ISUID; \
+	   } \
+	   if ((mode)& S_ISGID) { \
+	     __info("%s: %i <-> %s: SGID bit 0%04o!\n", __func__, (fd), __fpath((fd)), (mode)); \
+	     (mode) &= ~S_ISGID; \
+	   } })
+
 #define __fwarn_and_set_user_modeat(fd, path, mode, flags, user_mode) \
 	({ if (((mode) & (user_mode)) != (user_mode)) { \
 	     __info("%s: %i/%s: Insuffisant user mode 0%03o!\n", __func__, (fd), (path), (mode)); \
@@ -248,6 +262,13 @@ void __verbose_exec(const char *, char * const[], char * const[]);
 	   if ((mode)& S_ISGID) { \
 	     __info("%s: %i/%s: SGID bit 0%04o!\n", __func__, (fd), (path), (mode)); \
 	     (mode) &= ~S_ISGID; \
+	   } })
+
+#define __fwarn_if_insuffisant_user_mode(fd, mode) \
+	({ if (__fisdirectory((fd)) > 0) { \
+	     __fwarn_and_set_user_mode((fd), (mode), 0700); \
+	   } else { \
+	     __fwarn_and_set_user_mode((fd), (mode), 0600); \
 	   } })
 
 #define __fwarn_if_insuffisant_user_modeat(fd, path, mode, flags) \

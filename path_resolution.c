@@ -410,10 +410,8 @@ __attribute__((constructor,visibility("hidden")))
 void path_resolution_init()
 {
 	static __regex_t regex_allow, regex_ignore;
-	const char *allow, *ignore, *exec;
-	char buf[BUFSIZ];
+	const char *allow, *ignore;
 	int ret;
-	int n;
 
 	if (re_allow)
 		goto ignore;
@@ -436,23 +434,13 @@ ignore:
 	if (!ignore)
 		ignore = "^/proc/|/sys/|"_PATH_DEV"|"_PATH_VARRUN"|/run/";
 
-	exec = getenv("IAMROOT_EXEC");
-	if (!exec)
-		exec = "^/usr/lib/iamroot/exec.sh$";
-
-	n = _snprintf(buf, sizeof(buf), "%s|%s", ignore, exec);
-	if (n == -1) {
-		perror("_snprintf");
-		return;
-	}
-
-	ret = regcomp(&regex_ignore.re, buf, REG_NOSUB|REG_EXTENDED);
+	ret = regcomp(&regex_ignore.re, ignore, REG_NOSUB|REG_EXTENDED);
 	if (ret) {
 		__regex_perror("regcomp", &regex_ignore.re, ret);
 		return;
 	}
 
-	__info("IAMROOT_PATH_RESOLUTION_IGNORE|IAMROOT_EXEC=%s\n", buf);
+	__info("IAMROOT_PATH_RESOLUTION_IGNORE=%s\n", ignore);
 	re_ignore = &regex_ignore.re;
 }
 

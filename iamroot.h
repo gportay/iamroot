@@ -124,32 +124,6 @@ extern char **__environ;
 
 int _snprintf(char *, size_t, const char *, ...) __attribute__((format(printf,3,4)));
 
-static inline const char *__libc()
-{
-#if defined(__GLIBC__)
-	return "glibc";
-#elif defined(__FreeBSD__)
-	return "FreeBSD libc";
-#else
-	return "libc";
-#endif
-}
-
-static inline const char *__arch()
-{
-#if defined(__aarch64__)
-	return "aarch64";
-#elif defined(__arm__)
-	return "arm";
-#elif defined(__x86_64__)
-	return "x86_64";
-#elif defined(__i386__)
-	return "i686";
-#else
-	return "unknown";
-#endif
-}
-
 int __fissymlinkat(int, const char *, int);
 int __fissymlink(int);
 int __issymlink(const char *);

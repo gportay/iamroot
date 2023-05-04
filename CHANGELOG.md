@@ -34,6 +34,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Removed
 
 - Remove function `mq_open()`
+- Remove output the architecture, the libc and the pid on level 6 and above
 
 ### Changed
 

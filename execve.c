@@ -951,10 +951,6 @@ void __verbose_exec(const char *path, char * const argv[], char * const envp[])
 	} else {
 		char * const *p;
 
-		if (debug > 5)
-			dprintf(fd, "platform: %s/%s: pid: %u: ", __libc(),
-				__arch(), getpid());
-
 		dprintf(fd, "execve(path: '%s', argv: {", path);
 
 		p = argv;

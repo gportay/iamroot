@@ -174,6 +174,11 @@ ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
 	char tmp[sizeof("/proc/self/fd/") + 3*sizeof(int) + 2]; /* sign + NULL-terminated */
 	const int errno_save = errno;
 	ssize_t ret;
+	if (fd == AT_FDCWD) {
+		buf[0] = '.';
+		buf[1] = 0;
+		return 1;
+	}
 	__procfdname(tmp, fd);
 	ret = next_readlinkat(AT_FDCWD, tmp, buf, bufsize);
 	errno = errno_save;
@@ -533,7 +538,7 @@ ssize_t fpath(int fd, char *buf, size_t bufsiz)
 {
 	ssize_t siz;
 
-	if (fd < 0)
+	if (fd < 0 && fd != AT_FDCWD)
 		return __set_errno(EINVAL, -1);
 
 	siz = __procfdreadlink(fd, buf, bufsiz);

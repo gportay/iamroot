@@ -59,6 +59,7 @@ all: libiamroot.so
 libiamroot.so: __abort.o
 libiamroot.so: __envperror.o
 libiamroot.so: __fpathperror.o
+libiamroot.so: __fpathperror2.o
 libiamroot.so: __fxstat.o
 libiamroot.so: __fxstat64.o
 libiamroot.so: __fxstatat.o
@@ -90,6 +91,7 @@ libiamroot.so: chmod.o
 libiamroot.so: chown.o
 libiamroot.so: chroot.o
 libiamroot.so: close.o
+libiamroot.so: close_range.o
 libiamroot.so: closefrom.o
 libiamroot.so: connect.o
 libiamroot.so: creat.o

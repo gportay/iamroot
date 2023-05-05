@@ -79,6 +79,16 @@ vars:
 	@echo export "IAMROOT_EXEC=\"$(IAMROOT_EXEC)\""
 	@echo export "IAMROOT_EXEC_IGNORE=\"$(IAMROOT_EXEC_IGNORE)\""
 
+define libs
+$(strip libiamroot.so \
+	$(if $(findstring :$(2):,:x86_64:                        ),$(if $(findstring :$(1):,:musl:),x86_64/libiamroot-musl-x86_64.so.1  ,x86_64/libiamroot-linux-x86-64.so.2  ), \
+	$(if $(findstring :$(2):,:armhf: :arm: :armv7hl: :armv7h:),$(if $(findstring :$(1):,:musl:),armhf/libiamroot-musl-armhf.so.1    ,armhf/libiamroot-linux-armhf.so.3    ), \
+	$(if $(findstring :$(2):,:x86: :i386: :i686:             ),$(if $(findstring :$(1):,:musl:),i686/libiamroot-musl-i386.so.1      ,i686/libiamroot-linux.so.2           ), \
+	$(if $(findstring :$(2):,:aarch64:                       ),$(if $(findstring :$(1):,:musl:),aarch64/libiamroot-musl-aarch64.so.1,aarch64/libiamroot-linux-aarch64.so.1), \
+	$(error $(1)-$(2): No such library))))) \
+)
+endef
+
 define libiamroot_so =
 iamroot_lib_$(2)_$(3) = $(1)/libiamroot-$(2).so.$(3)
 IAMROOT_LIB_$(call UPPERCASE,$(2))_$(3) = $(CURDIR)/$(1)/libiamroot-$(2).so.$(3)
@@ -138,7 +148,7 @@ $(1)-$(2)-chroot: | $(1)-$(2)-rootfs
 	bash iamroot-shell -c "chroot $(1)-$(2)-rootfs $(3)"
 
 .PHONY: $(1)-$(2)-shell
-$(1)-$(2)-shell:
+$(1)-$(2)-shell: libiamroot.so
 	@echo $(4)
 	bash iamroot-shell
 endef
@@ -148,10 +158,9 @@ $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/etc/machine-id: export IAMROOT
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/etc/machine-id: export EUID = 0
 
 $(eval $(call chroot_shell,$(1),$(2),/bin/bash,pacstrap -GMC support/$(1)-$(2)-pacman.conf $(1)-$(2)-rootfs $(3)))
-$(1)-$(2)-shell: | x86_64/libiamroot-linux-x86-64.so.2
 
 $(1)-$(2)-rootfs: | $(1)-$(2)-rootfs/etc/machine-id
-$(1)-$(2)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
+$(1)-$(2)-rootfs/etc/machine-id: | $(call libs,linux,$(1))
 	mkdir -p $(1)-$(2)-rootfs
 	bash iamroot-shell -c "pacstrap -GMC support/$(1)-$(2)-pacman.conf $(1)-$(2)-rootfs $(3)"
 
@@ -177,10 +186,9 @@ $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id:
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export DEBOOTSTRAPFLAGS ?= --merged-usr --no-check-gpg
 
 $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/bash,debootstrap --keep-debootstrap-dir $$(DEBOOTSTRAPFLAGS) $(3) $(1)-$(2)-$(3)-rootfs $$(DEBOOTSTRAP_MIRROR)))
-$(1)-$(2)-$(3)-shell: | x86_64/libiamroot-linux-x86-64.so.2
 
 $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/etc/machine-id
-$(1)-$(2)-$(3)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
+$(1)-$(2)-$(3)-rootfs/etc/machine-id: | $(call libs,linux,$(1))
 	mkdir -p $(1)-$(2)-$(3)-rootfs
 	bash iamroot-shell -c "debootstrap --keep-debootstrap-dir $$(DEBOOTSTRAPFLAGS) $(3) $(1)-$(2)-$(3)-rootfs $$(DEBOOTSTRAP_MIRROR)"
 	cat $(1)-$(2)-$(3)-rootfs/debootstrap/debootstrap.log
@@ -200,11 +208,10 @@ $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id:
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora.repo
 
 $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/bash,dnf --forcearch $(1) --releasever $(3) --assumeyes --installroot $(CURDIR)/$(1)-$(2)-$(3)-rootfs group install minimal-environment))
-$(1)-$(2)-$(3)-shell: | x86_64/libiamroot-linux-x86-64.so.2
 
 $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/etc/machine-id
 $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_WORKAROUND = 0
-$(1)-$(2)-$(3)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
+$(1)-$(2)-$(3)-rootfs/etc/machine-id: | $(call libs,linux,$(1))
 	install -D -m644 $$(FEDORA_REPO) $(1)-$(2)-$(3)-rootfs/etc/distro.repos.d/fedora.repo
 	bash iamroot-shell -c "dnf --forcearch $(1) --releasever $(3) --assumeyes --installroot $(CURDIR)/$(1)-$(2)-$(3)-rootfs group install minimal-environment"
 	rm -f $(1)-$(2)-$(3)-rootfs/etc/distro.repos.d/fedora.repo
@@ -222,10 +229,9 @@ $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/etc/machine-id: export IAMROOT
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
 
 $(eval $(call chroot_shell,$(1),$(2),/bin/bash,zypper --root $(CURDIR)/$(1)-$(2)-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd))
-$(1)-$(2)-shell: | x86_64/libiamroot-linux-x86-64.so.2
 
 $(1)-$(2)-rootfs: | $(1)-$(2)-rootfs/etc/machine-id
-$(1)-$(2)-rootfs/etc/machine-id: | x86_64/libiamroot-linux-x86-64.so.2
+$(1)-$(2)-rootfs/etc/machine-id: | $(call libs,linux,$(1))
 	bash iamroot-shell -c "zypper --root $(CURDIR)/$(1)-$(2)-rootfs addrepo --no-gpgcheck support/$(2)-repo-oss.repo"
 	bash iamroot-shell -c "zypper --root $(CURDIR)/$(1)-$(2)-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd"
 
@@ -241,10 +247,9 @@ define alpine-make-rootfs-rootfs
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export APK_OPTS = --arch $(1) --no-progress
 
 $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/ash,alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --mirror-uri http://mirrors.edge.kernel.org/alpine --branch $(3)))
-$(1)-$(2)-$(3)-shell: | x86_64/libiamroot-linux-x86-64.so.2
 
 $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/busybox
-$(1)-$(2)-$(3)-rootfs/bin/busybox: | x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2
+$(1)-$(2)-$(3)-rootfs/bin/busybox: | $(call libs,musl,$(1))
 	bash iamroot-shell -c "alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --mirror-uri http://mirrors.edge.kernel.org/alpine --branch $(3) $$(ALPINE_MAKE_ROOTFSFLAGS)"
 
 $(eval $(call log,alpine-make-rootfs,$(1)-$(2)-$(3)-rootfs))
@@ -398,10 +403,10 @@ endef
 
 define alpine-mini-rootfs
 $(eval $(call chroot_shell,$(1),alpine-mini,/bin/ash,tar xf alpine-minirootfs-$(2).0-$(1).tar.gz -C $(1)-alpine-mini-rootfs))
-$(1)-alpine-mini-chroot $(1)-alpine-mini-shell: | x86_64/libiamroot-linux-x86-64.so.2 x86_64/libiamroot-musl-x86_64.so.1
+$(1)-alpine-mini-chroot $(1)-alpine-mini-shell: | $(call libs,musl,$(1))
 
 $(1)-alpine-mini-rootfs: | $(1)-alpine-mini-rootfs/bin/busybox
-$(1)-alpine-mini-rootfs/bin/busybox: | x86_64/libiamroot-linux-x86-64.so.2 x86_64/libiamroot-musl-x86_64.so.1 alpine-minirootfs-$(2).0-$(1).tar.gz
+$(1)-alpine-mini-rootfs/bin/busybox: | $(call libs,musl,$(1)) alpine-minirootfs-$(2).0-$(1).tar.gz
 	mkdir -p $(1)-alpine-mini-rootfs
 	tar xf alpine-minirootfs-$(2).0-$(1).tar.gz -C $(1)-alpine-mini-rootfs
 
@@ -574,7 +579,6 @@ i686-rootfs: i686-archlinux32-rootfs
 i686-archlinux32-rootfs: | i686-archlinux32-rootfs/etc/machine-id
 
 $(eval $(call pacstrap-rootfs,i686,archlinux32,base))
-i686-archlinux32-rootfs/etc/machine-id: | i686/libiamroot-linux.so.2 x86_64/libiamroot-linux-x86-64.so.2
 
 extra-rootfs: x86_64-manjaro-stable-rootfs
 
@@ -715,7 +719,7 @@ ifneq ($(shell command -v musl-gcc 2>/dev/null),)
 alpine-test: | x86_64-alpine-mini-rootfs/usr/bin/shebang.sh
 alpine-test: | x86_64-alpine-mini-rootfs/usr/bin/shebang-arg.sh
 alpine-test: | x86_64-alpine-mini-rootfs/usr/bin/shebang-busybox.sh
-alpine-test: x86_64/libiamroot-musl-x86_64.so.1 x86_64/libiamroot-linux-x86-64.so.2 | x86_64-alpine-mini-rootfs
+alpine-test: $(call libs,musl,x86_64) | x86_64-alpine-mini-rootfs
 	bash iamroot-shell -c "chroot x86_64-alpine-mini-rootfs pwd" | tee /dev/stderr | grep -q "^/\$$"
 	bash iamroot-shell -c "chroot x86_64-alpine-mini-rootfs cat /etc/os-release" | tee /dev/stderr | grep 'NAME="Alpine Linux"'
 	bash iamroot-shell -c "chroot x86_64-alpine-mini-rootfs chroot . cat /etc/os-release" | tee /dev/stderr | grep 'NAME="Alpine Linux"'
@@ -730,13 +734,11 @@ rootfs: alpine-rootfs
 $(eval $(call alpine-mini-rootfs,x86_64,3.17))
 
 $(eval $(call alpine-mini-rootfs,x86,3.17))
-x86-alpine-mini-chroot x86-alpine-mini-shell x86-alpine-mini-rootfs/bin/busybox: | i686/libiamroot-musl-i386.so.1
 
 ifneq ($(shell command -v arm-linux-musleabihf-gcc 2>/dev/null),)
 arm-rootfs: armhf-alpine-rootfs
 
 $(eval $(call alpine-mini-rootfs,armhf,3.17))
-armhf-alpine-mini-chroot armhf-alpine-mini-shell armhf-alpine-mini-rootfs/bin/busybox: | armhf/libiamroot-musl-armhf.so.1
 endif
 
 ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
@@ -821,12 +823,6 @@ $(eval $(call alpine-make-rootfs-rootfs,x86,alpine,3.16))
 $(eval $(call alpine-make-rootfs-rootfs,x86,alpine,3.17))
 $(eval $(call alpine-make-rootfs-rootfs,x86,alpine,3.18))
 $(eval $(call alpine-make-rootfs-rootfs,x86,alpine,edge))
-x86-alpine-3.14-rootfs/bin/busybox: | i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2
-x86-alpine-3.15-rootfs/bin/busybox: | i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2
-x86-alpine-3.16-rootfs/bin/busybox: | i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2
-x86-alpine-3.17-rootfs/bin/busybox: | i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2
-x86-alpine-3.18-rootfs/bin/busybox: | i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2
-x86-alpine-edge-rootfs/bin/busybox: | i686/libiamroot-musl-i386.so.1 x86_64/libiamroot-linux-x86-64.so.2
 endif
 endif
 endif
@@ -841,7 +837,6 @@ aarch64-archlinuxarm-rootfs: | aarch64-archlinuxarm-rootfs/etc/machine-id
 $(eval $(call pacstrap-rootfs,aarch64,archlinuxarm,base))
 aarch64-archlinuxarm-chroot aarch64-archlinuxarm-shell aarch64-archlinuxarm-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib:/usr/lib
 aarch64-archlinuxarm-chroot aarch64-archlinuxarm-shell aarch64-archlinuxarm-rootfs/etc/machine-id: export IAMROOT_LD_PRELOAD_LINUX_AARCH64_1 = /usr/lib/libc.so.6:/usr/lib/libdl.so.2
-aarch64-archlinuxarm-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 endif
 
 ifneq ($(shell command -v arm-linux-gnueabihf-gcc 2>/dev/null),)
@@ -851,7 +846,6 @@ arm-rootfs: armv7h-archlinuxarm-rootfs
 armv7h-archlinuxarm-rootfs: | armv7h-archlinuxarm-rootfs/etc/machine-id
 
 $(eval $(call pacstrap-rootfs,armv7h,archlinuxarm,base))
-armv7h-archlinuxarm-rootfs/etc/machine-id: | armhf/libiamroot-linux-armhf.so.3 x86_64/libiamroot-linux-x86-64.so.2
 endif
 endif
 
@@ -882,12 +876,6 @@ $(eval $(call dnf-rootfs,aarch64,fedora,35))
 $(eval $(call dnf-rootfs,aarch64,fedora,36))
 $(eval $(call dnf-rootfs,aarch64,fedora,37))
 $(eval $(call dnf-rootfs,aarch64,fedora,38))
-aarch64-fedora-33-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
-aarch64-fedora-34-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
-aarch64-fedora-35-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
-aarch64-fedora-36-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
-aarch64-fedora-37-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
-aarch64-fedora-38-rootfs/etc/machine-id: | aarch64/libiamroot-linux-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 endif
 
 ifneq ($(shell command -v arm-linux-gnueabihf-gcc 2>/dev/null),)
@@ -914,10 +902,6 @@ armv7hl-fedora-33-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib/
 armv7hl-fedora-34-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib/ldb:/lib:/usr/lib
 armv7hl-fedora-35-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib/ldb:/lib:/usr/lib
 armv7hl-fedora-36-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib/ldb:/lib:/usr/lib
-armv7hl-fedora-33-rootfs/etc/machine-id: | armhf/libiamroot-linux-armhf.so.3 x86_64/libiamroot-linux-x86-64.so.2
-armv7hl-fedora-34-rootfs/etc/machine-id: | armhf/libiamroot-linux-armhf.so.3 x86_64/libiamroot-linux-x86-64.so.2
-armv7hl-fedora-35-rootfs/etc/machine-id: | armhf/libiamroot-linux-armhf.so.3 x86_64/libiamroot-linux-x86-64.so.2
-armv7hl-fedora-36-rootfs/etc/machine-id: | armhf/libiamroot-linux-armhf.so.3 x86_64/libiamroot-linux-x86-64.so.2
 endif
 endif
 
@@ -925,7 +909,6 @@ ifneq ($(shell command -v aarch64-linux-musl-gcc 2>/dev/null),)
 aarch64-rootfs: aarch64-alpine-rootfs
 
 $(eval $(call alpine-mini-rootfs,aarch64,3.17))
-aarch64-alpine-mini-chroot aarch64-alpine-mini-shell aarch64-alpine-mini-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1
 
 ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
 .PHONY: aarch64-alpine-rootfs
@@ -941,12 +924,6 @@ $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpine,3.15))
 $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpine,3.16))
 $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpine,3.17))
 $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpine,edge))
-aarch64-alpine-3.14-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
-aarch64-alpine-3.15-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
-aarch64-alpine-3.16-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
-aarch64-alpine-3.17-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
-aarch64-alpine-3.18-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
-aarch64-alpine-edge-rootfs/bin/busybox: | aarch64/libiamroot-musl-aarch64.so.1 x86_64/libiamroot-linux-x86-64.so.2
 endif
 endif
 

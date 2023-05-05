@@ -590,7 +590,6 @@ $(eval $(call pacstrap-rootfs,x86_64,manjaro-stable,base))
 endif
 
 ifneq ($(shell command -v debootstrap 2>/dev/null),)
-x86_64-debian-oldoldstable-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
 x86_64-debian-oldstable-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
 x86_64-debian-stable-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
 x86_64-debian-testing-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
@@ -599,19 +598,15 @@ x86_64-debian-unstable-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x
 rootfs: x86_64-debian-rootfs
 
 .PHONY: x86_64-debian-rootfs
-x86_64-debian-rootfs: x86_64-debian-oldoldstable-rootfs
 x86_64-debian-rootfs: x86_64-debian-oldstable-rootfs
 x86_64-debian-rootfs: x86_64-debian-stable-rootfs
 x86_64-debian-rootfs: x86_64-debian-testing-rootfs
 x86_64-debian-rootfs: x86_64-debian-unstable-rootfs
 
-$(eval $(call debootstrap-rootfs,x86_64,debian,oldoldstable))
 $(eval $(call debootstrap-rootfs,x86_64,debian,oldstable))
 $(eval $(call debootstrap-rootfs,x86_64,debian,stable))
 $(eval $(call debootstrap-rootfs,x86_64,debian,testing))
 $(eval $(call debootstrap-rootfs,x86_64,debian,unstable))
-x86_64-debian-oldoldstable-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
-x86_64-debian-oldoldstable-rootfs/etc/machine-id: export DEBOOTSTRAPFLAGS += --include ssh
 
 x86_64-ubuntu-trusty-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
 x86_64-ubuntu-xenial-chroot: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib/x86_64-linux-gnu/libc.so.6:/lib/x86_64-linux-gnu/libdl.so.2:/lib/x86_64-linux-gnu/libpthread.so.0
@@ -1076,7 +1071,6 @@ ifneq ($(shell command -v debootstrap 2>/dev/null),)
 support: debian-support
 
 .PHONY: debian-support
-debian-support: support/x86_64-debian-oldoldstable-rootfs.txt
 debian-support: support/x86_64-debian-oldstable-rootfs.txt
 debian-support: support/x86_64-debian-stable-rootfs.txt
 debian-support: support/x86_64-debian-testing-rootfs.txt
@@ -1085,7 +1079,6 @@ debian-support: support/x86_64-debian-unstable-rootfs.txt
 log: debian-log
 
 .PHONY: debian-log
-debian-log: x86_64-debian-oldoldstable-rootfs.log
 debian-log: x86_64-debian-oldstable-rootfs.log
 debian-log: x86_64-debian-stable-rootfs.log
 debian-log: x86_64-debian-testing-rootfs.log

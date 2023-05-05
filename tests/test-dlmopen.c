@@ -13,7 +13,7 @@
 
 #define __dlperror(s) fprintf(stderr, "%s: %s\n", s, dlerror())
 
-#ifdef __linux__
+#ifdef __GLIBC__
 int main(int argc, char * const argv[])
 {
 	int flags = RTLD_LAZY, ret = EXIT_FAILURE;

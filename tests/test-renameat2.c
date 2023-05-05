@@ -45,7 +45,7 @@ int main(int argc, char * const argv[])
 		}
 	}
 
-#ifdef __linux__
+#ifdef __GLIBC__
 	if (renameat2(olddfd, argv[2], newdfd, argv[4], flags)) {
 		perror("renameat2");
 		goto exit;

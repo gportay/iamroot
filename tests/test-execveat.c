@@ -10,8 +10,11 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#ifdef __GLIBC__
-#if !__GLIBC_PREREQ(2,34)
+#ifndef __GLIBC_PREREQ
+#define __GLIBC_PREREQ(maj,min) 0
+#endif
+
+#if defined __GLIBC__ && !__GLIBC_PREREQ(2,34)
 int execveat(int dfd, const char *path, char * const argv[],
 	     char * const envp[], int atflags)
 {
@@ -20,7 +23,6 @@ int execveat(int dfd, const char *path, char * const argv[],
 
 	return execve(path, argv, envp);
 }
-#endif
 #endif
 
 #ifdef __FreeBSD__

@@ -16,7 +16,11 @@
 
 #include "iamroot.h"
 
-#ifdef __GLIBC__
+#ifndef __GLIBC_PREREQ
+#define __GLIBC_PREREQ(maj,min) 0
+#endif
+
+#if defined __GLIBC__ && __GLIBC_PREREQ(2,28)
 int main(int argc, char * const argv[])
 {
 	int dfd = AT_FDCWD, flags = 0, ret = EXIT_FAILURE;

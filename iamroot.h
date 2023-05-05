@@ -683,7 +683,7 @@ const char *__path();
 
 const char *__library_path();
 
-#if defined(__GLIBC__) || defined(__aarch64__) || defined(__x86_64__)
+#if defined(__GLIBC__) && (defined(__aarch64__) || defined(__x86_64__))
 #define _PATH_DEFLIBRARY_PATH   "/lib64:/usr/local/lib64:/usr/lib64"
 #else
 #define _PATH_DEFLIBRARY_PATH   "/lib:/usr/local/lib:/usr/lib"

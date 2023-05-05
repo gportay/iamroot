@@ -6,6 +6,8 @@
 
 PREFIX ?= /usr/local
 O ?= output
+CCMACH ?= $(shell $(CC) -dumpmachine 2>/dev/null)
+LIBC ?= $(if $(findstring musl,$(CCMACH)),musl,linux)
 ARCH ?= $(shell uname -m 2>/dev/null)
 KVER ?= $(shell uname -r 2>/dev/null)
 VMLINUX_KVER ?= $(shell vmlinux --version 2>/dev/null)
@@ -20,8 +22,13 @@ IAMROOT_PATH_RESOLUTION_WORKAROUND ?= 1
 export IAMROOT_PATH_RESOLUTION_WORKAROUND
 
 ifeq ($(ARCH),x86_64)
+ifeq ($(LIBC),musl)
+IAMROOT_LIB = $(IAMROOT_LIB_MUSL_X86_64_1)
+export IAMROOT_LIB
+else
 IAMROOT_LIB = $(IAMROOT_LIB_LINUX_X86_64_2)
 export IAMROOT_LIB
+endif
 endif
 
 ifeq ($(ARCH),aarch64)
@@ -422,6 +429,12 @@ export CC
 export CFLAGS
 
 ifeq ($(ARCH),x86_64)
+ifeq ($(LIBC),musl)
+libiamroot.so: x86_64/libiamroot-musl-x86_64.so.1
+	install -D -m755 $< $@
+
+$(eval $(call libiamroot_so,x86_64,musl-x86_64,1))
+else
 libiamroot.so: x86_64/libiamroot-linux-x86-64.so.2
 	install -D -m755 $< $@
 
@@ -465,6 +478,7 @@ endif
 ifneq ($(shell command -v aarch64-linux-musl-gcc 2>/dev/null),)
 $(O)-aarch64-musl-aarch64/libiamroot.so: CC = aarch64-linux-musl-gcc
 $(eval $(call libiamroot_so,aarch64,musl-aarch64,1))
+endif
 endif
 
 ifdef CLANG
@@ -710,7 +724,7 @@ qemu-system-x86_64-opensuse-leap: override CMDLINE += rw init=/usr/lib/systemd/s
 x86_64-opensuse-leap-postrootfs: export IAMROOT_LD_PRELOAD_LINUX_X86_64_2 = /lib64/libc.so.6:/lib64/libdl.so.2
 endif
 
-ifneq ($(shell command -v musl-gcc 2>/dev/null),)
+ifneq ($(shell command -v musl-gcc 2>/dev/null)$(if musl,$(LIBC),YES,),)
 .PHONY: alpine-test
 alpine-test: | x86_64-alpine-mini-rootfs/usr/bin/shebang.sh
 alpine-test: | x86_64-alpine-mini-rootfs/usr/bin/shebang-arg.sh

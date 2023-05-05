@@ -22,8 +22,8 @@ and [fakechroot(1)].
 The project targets the *Linux* userlands [glibc] and [musl]; the works to
 support *BSD* userlands such as [FreeBSD] (13.1) or [OpenBSD] is on-going.
 
-The project compiles on x86 and ARM 64-bit, and runs on [Arch Linux], [Debian]
-and [FreeBSD] 13.1.
+The project compiles on x86 and ARM 64-bit, and runs on [Arch Linux], [Debian],
+[Alpine Linux] and [FreeBSD] 13.1.
 
 ## HOW IT WORKS
 
@@ -78,6 +78,7 @@ later version.
 [iamroot(7)], [iamroot-shell(1)], [chroot(2)], [path_resolution(7)],
 [fakechroot(1)]
 
+[Alpine Linux]: https://www.alpinelinux.org/
 [Arch Linux]: https://archlinux.org/
 [Debian]: https://www.debian.org/
 [FreeBSD]: https://www.freebsd.org/

@@ -314,6 +314,7 @@ endif
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-fopen /etc/passwd r
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-freopen rootfs/etc/group r
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-freopen /etc/group r
+ifneq ($(OS),Linux)
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-catopen "rootfs/usr/lib/nls/msg/$$LANG/null.cat" 0
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-catopen "/usr/lib/nls/msg/$$LANG/null.cat" 0
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-catopen null.cat 0
@@ -330,6 +331,7 @@ endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-closefrom 2                                                        2>&1 | tee /dev/stderr | grep -q '^stderr$$' || true
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-closefrom 1                                                        2>&1 | tee /dev/stderr | grep -q '^stderr$$' || true
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-closefrom 1                                                        2>&1 | tee /dev/stderr | grep -q '^stdout$$' || true
+endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-rename rootfs/tmp/file0 rootfs/tmp/file1
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-renameat - rootfs/tmp/file1 - rootfs/tmp/file2
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-renameat - /tmp/file2 - /tmp/file3
@@ -524,8 +526,10 @@ rootfs:
 	install -m644 passwd $(DESTDIR)/etc/
 	install -m644 group  $(DESTDIR)/etc/
 	install -m600 shadow $(DESTDIR)/etc/
+ifneq ($(OS),Linux)
 	install -d -m755 $(DESTDIR)/usr/lib/nls/msg/$$LANG/
 	gencat $(DESTDIR)/usr/lib/nls/msg/$$LANG/null.cat /dev/null
+endif
 	install -d -m755 $(DESTDIR)/usr/bin
 	for i in *.c; do \
 		test -e $${i%.c} || continue; \
@@ -556,6 +560,10 @@ ifeq ($(ARCH),aarch64)
 	ln -sf lib $(DESTDIR)/lib64
 endif
 	install -D -m755 libiamnotroot.so --target-directory=$(DESTDIR)/usr/lib64
+endif
+ifeq ($(OS),Linux)
+	install -D -m755 /lib/ld-musl-x86_64.so.1 --target-directory=$(DESTDIR)/lib
+	install -D -m755 libiamnotroot.so --target-directory=$(DESTDIR)/usr/lib
 endif
 	install -m 644 os-release $(DESTDIR)/usr/lib/
 	ln -sf ../usr/lib/os-release $(DESTDIR)/etc/os-release

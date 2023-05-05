@@ -1,0 +1,6 @@
+# syntax=docker/dockerfile:1
+FROM alpine:edge
+RUN apk add --update bash bash-completion gcc libc-dev linux-headers make
+RUN apk add --update ccache
+RUN apk add --update alpine-make-rootfs shellcheck
+ENV PATH=/usr/lib/ccache:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin

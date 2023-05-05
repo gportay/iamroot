@@ -35,6 +35,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Remove function `mq_open()`
 - Remove output the architecture, the libc and the pid on level 6 and above
+- Remove output the `root` directory for the functions `__fpathperror()`,
+  `__fpathperror2()`, `__pathperror()` and `__pathperror2()`
 
 ### Changed
 

@@ -21,10 +21,9 @@ void __fpathperror(int fd, const char *s)
 	siz = fpath(fd, buf, sizeof(buf));
 	if (siz == -1) {
 #ifdef __FreeBSD__
-		__notice("%s: %i: %s: %i\n", __getrootdir(), fd, s, save_errno);
+		__notice("%i: %s: %i\n", fd, s, save_errno);
 #else
-		__notice("%s: %i: %s: %s\n", __getrootdir(), fd, s,
-			 strerror(save_errno));
+		__notice("%i: %s: %s\n", fd, s, strerror(save_errno));
 #endif
 		errno = save_errno;
 		return;
@@ -32,18 +31,16 @@ void __fpathperror(int fd, const char *s)
 
 	if (__ignored_errno(errno) || __ignored_function(s)) {
 #ifdef __FreeBSD__
-		__debug("%s: %i <-> %s: %s: %i\n", __getrootdir(), fd, buf, s,
-		       errno);
+		__debug("%i <-> %s: %s: %i\n", fd, buf, s, errno);
 #else
-		__debug("%s: %i <-> %s: %s: %m\n", __getrootdir(), fd, buf, s);
+		__debug("%i <-> %s: %s: %m\n", fd, buf, s);
 #endif
 		return;
 	}
 
 #ifdef __FreeBSD__
-	__note_or_fatal("%s: %i <-> %s: %s: %i\n", __getrootdir(), fd, buf, s,
-			errno);
+	__note_or_fatal("%i <-> %s: %s: %i\n", fd, buf, s, errno);
 #else
-	__note_or_fatal("%s: %i <-> %s: %s: %m\n", __getrootdir(), fd, buf, s);
+	__note_or_fatal("%i <-> %s: %s: %m\n", fd, buf, s);
 #endif
 }

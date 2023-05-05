@@ -18,18 +18,18 @@ void __pathperror2(const char *oldpath, const char *newpath, const char *s)
 
 	if (__ignored_errno(errno) || __ignored_function(s)) {
 #ifdef __FreeBSD__
-		__debug("%s: %s: %s: %s: %i\n", __getrootdir(), oldp, newp, s,
+		__debug("%s: %s: %s: %i\n", oldp, newp, s,
 		       errno);
 #else
-		__debug("%s: %s: %s: %s: %m\n", __getrootdir(), oldp, newp, s);
+		__debug("%s: %s: %s: %m\n", oldp, newp, s);
 #endif
 		return;
 	}
 
 #ifdef __FreeBSD__
-	__note_or_fatal("%s: %s: %s: %s: %i\n", __getrootdir(), oldp, newp, s,
+	__note_or_fatal("%s: %s: %s: %i\n", oldp, newp, s,
 			errno);
 #else
-	__note_or_fatal("%s: %s: %s: %s: %m\n", __getrootdir(), oldp, newp, s);
+	__note_or_fatal("%s: %s: %s: %m\n", oldp, newp, s);
 #endif
 }

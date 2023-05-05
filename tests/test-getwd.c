@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -18,7 +18,11 @@ int main()
 	char buf[PATH_MAX];
 	char *cwd;
 
+#if defined (__GLIBC__) || defined (__FreeBSD__)
 	cwd = getwd(buf);
+#else
+	cwd = getcwd(buf, sizeof(buf));
+#endif
 	printf("%s\n", cwd);
 
 	return EXIT_SUCCESS;

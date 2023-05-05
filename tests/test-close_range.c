@@ -11,6 +11,11 @@
 
 #include <unistd.h>
 
+#ifndef __GLIBC_PREREQ
+#define __GLIBC_PREREQ(maj,min) 0
+#endif
+
+#if defined __GLIBC__ && __GLIBC_PREREQ(2,34)
 int main(int argc, char * const argv[])
 {
 	unsigned int first, last;
@@ -38,3 +43,9 @@ int main(int argc, char * const argv[])
 
 	return EXIT_SUCCESS;
 }
+#else
+int main(void)
+{
+	return EXIT_SUCCESS;
+}
+#endif

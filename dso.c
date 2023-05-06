@@ -19,6 +19,7 @@
 
 #include "iamroot.h"
 
+extern int next_faccessat(int, const char *, int);
 extern int next_open(const char *, int, mode_t);
 extern void *next_dlopen(const char *, int);
 
@@ -346,6 +347,39 @@ static int __ld_linux_has_preload_option(const char *path)
 
 	/* --preload is supported since glibc 2.30 */
 	return (maj > 2) || ((maj == 2) && (min >= 30));
+}
+
+static ssize_t __getelfheader(int fd, Elf64_Ehdr *ehdr)
+{
+	ssize_t siz;
+	int err;
+
+	if (fd < 0 || !ehdr)
+		return __set_errno(EINVAL, -1);
+
+	err = lseek(fd, 0, SEEK_SET);
+	if (err)
+		return -1;
+
+	siz = read(fd, ehdr, sizeof(*ehdr));
+	if (siz == -1)
+		return -1;
+	else if ((size_t)siz < sizeof(*ehdr))
+		return __set_errno(EIO, -1);
+
+	/* Not an ELF */
+	if (memcmp(ehdr->e_ident, ELFMAG, 4) != 0)
+		return __set_errno(ENOEXEC, -1);
+
+	/* It is a 32-bits ELF */
+	if (ehdr->e_ident[EI_CLASS] == ELFCLASS32)
+		return sizeof(Elf32_Ehdr);
+	/* It is a 64-bits ELF */
+	else if (ehdr->e_ident[EI_CLASS] == ELFCLASS64)
+		return sizeof(Elf64_Ehdr);
+
+	/* It is an invalid ELF */
+	return __set_errno(ENOEXEC, -1);
 }
 
 static ssize_t __getinterp32(int fd, Elf32_Ehdr *ehdr, char *buf,
@@ -728,26 +762,13 @@ static int __dl_iterate_shared_object(int fd, int dt_tag,
 
 static ssize_t __getinterp(int fd, char *buf, size_t bufsize)
 {
-	ssize_t siz, err;
 	Elf64_Ehdr ehdr;
+	ssize_t siz;
 
-	err = lseek(fd, 0, SEEK_SET);
-	if (err)
-		return -1;
-
-	siz = read(fd, &ehdr, sizeof(ehdr));
+	/* Get the ELF header */
+	siz = __getelfheader(fd, &ehdr);
 	if (siz == -1)
-		return siz;
-	else if ((size_t)siz < sizeof(ehdr))
-		return __set_errno(EIO, -1);
-
-	/* Not an ELF */
-	if (memcmp(ehdr.e_ident, ELFMAG, 4) != 0)
-		return __set_errno(ENOEXEC, -1);
-
-	/* Not a linked program or shared object */
-	if ((ehdr.e_type != ET_EXEC) && (ehdr.e_type != ET_DYN))
-		return __set_errno(ENOEXEC, -1);
+		return -1;
 
 	/* It is a 32-bits ELF */
 	if (ehdr.e_ident[EI_CLASS] == ELFCLASS32)
@@ -776,12 +797,103 @@ static void __env_sanitize(char *name, int upper)
 	}
 }
 
-static char *__getlibiamroot(const char *ldso, int abi)
+static int is_64_bits(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
-	char buf[NAME_MAX];
-	char *ret;
-	int n;
+	(void)ldso;
+	(void)abi;
 
+	/* It is a 64-bits ELF */
+	return ehdr && (ehdr->e_ident[EI_CLASS] == ELFCLASS64);
+}
+
+static int is_x86(Elf64_Ehdr *ehdr, const char *ldso, int abi)
+{
+	(void)ldso;
+	(void)abi;
+
+	/* It is an x86 ELF */
+	return ehdr && (ehdr->e_machine == EM_386);
+}
+
+static int is_x86_64(Elf64_Ehdr *ehdr, const char *ldso, int abi)
+{
+	(void)ldso;
+	(void)abi;
+
+	/* It is an x86-64 ELF */
+	return ehdr && (ehdr->e_machine == EM_X86_64);
+}
+
+static int is_arm(Elf64_Ehdr *ehdr, const char *ldso, int abi)
+{
+	(void)ldso;
+	(void)abi;
+
+	/* It is an ARM ELF */
+	return ehdr && (ehdr->e_machine == EM_ARM);
+}
+
+static int is_aarch64(Elf64_Ehdr *ehdr, const char *ldso, int abi)
+{
+	(void)ldso;
+	(void)abi;
+
+	/* It is an AArch64 ELF */
+	return ehdr && (ehdr->e_machine == EM_AARCH64);
+}
+
+static int is_riscv(Elf64_Ehdr *ehdr, const char *ldso, int abi)
+{
+	(void)ldso;
+	(void)abi;
+
+	/* It is a RISC-V ELF */
+	return ehdr && (ehdr->e_machine == EM_RISCV);
+}
+
+static int is_linux(Elf64_Ehdr *ehdr, const char *ldso, int abi)
+{
+	(void)ldso;
+	(void)abi;
+
+	/* It is a GNU/Linux ELF */
+	return ehdr && (ehdr->e_ident[EI_OSABI] == ELFOSABI_GNU);
+}
+
+static int is_gnu_linux(Elf64_Ehdr *ehdr, const char *ldso, int abi)
+{
+	/* LINUX_$ARCH_$ABI or it is a GNU/Linux ELF */
+	return __strneq(ldso, "linux") || is_linux(ehdr, ldso, abi);
+}
+
+static int is_musl(Elf64_Ehdr *ehdr, const char *ldso, int abi)
+{
+	(void)ehdr;
+	(void)abi;
+
+	/* MUSL_$ARCH_$ABI */
+	return __strneq(ldso, "musl");
+}
+
+static int is_freebsd(Elf64_Ehdr *ehdr, const char *ldso, int abi)
+{
+	/* It is a FreeBSD ELF or ELF_1 */
+	return (ehdr && (ehdr->e_ident[EI_OSABI] == ELFOSABI_FREEBSD)) ||
+	       (streq(ldso, "elf") && abi == 1);
+}
+
+static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
+				   int abi)
+{
+	const int errno_save = errno;
+	char buf[NAME_MAX];
+	int n, err;
+	char *ret;
+
+	/*
+	 * Use the library set by the environment variable
+	 * IAMROOT_LIB_<LDSO>_<ABI> if set.
+	 */
 	n = _snprintf(buf, sizeof(buf), "IAMROOT_LIB_%s_%i", ldso, abi);
 	if (n == -1)
 		return NULL;
@@ -791,94 +903,134 @@ static char *__getlibiamroot(const char *ldso, int abi)
 	if (ret)
 		goto exit;
 
-#ifdef __linux__
-	/* IAMROOT_LIB_LINUX_2 */
-	if (streq(ldso, "linux") && abi == 2) {
-		ret = __xstr(PREFIX)"/lib/iamroot/i686/libiamroot-linux.so.2";
-		goto exit;
-	}
+	/* The variable is unset, keep going... */
 
-	/* IAMROOT_LIB_LINUX_X86_64_2 */
-	if (streq(ldso, "linux-x86-64") && abi == 2) {
-		ret = __xstr(PREFIX)"/lib/iamroot/x86_64/libiamroot-linux-x86-64.so.2";
-		goto exit;
-	}
-
-	/* IAMROOT_LIB_LINUX_3 */
-	if (streq(ldso, "linux") && abi == 3) {
-		ret = __xstr(PREFIX)"/lib/iamroot/arm/libiamroot-linux.so.3";
-		goto exit;
-	}
-
-	/* IAMROOT_LIB_LINUX_ARMHF_3 */
-	if (streq(ldso, "linux-armhf") && abi == 3) {
-		ret = __xstr(PREFIX)"/lib/iamroot/armhf/libiamroot-linux-armhf.so.3";
-		goto exit;
-	}
-
-	/* IAMROOT_LIB_LINUX_AARCH64_1 */
-	if (streq(ldso, "linux-aarch64") && abi == 1) {
-		ret = __xstr(PREFIX)"/lib/iamroot/aarch64/libiamroot-linux-aarch64.so.1";
-		goto exit;
-	}
-
-	/* IAMROOT_LIB_LINUX_RISCV64_LP64D_1 */
-	if (streq(ldso, "linux-riscv64-lp64d") && abi == 1) {
-		ret = __xstr(PREFIX)"/lib/iamroot/riscv64/libiamroot-linux-riscv64-lp64d.so.1";
-		goto exit;
-	}
-
-	/* IAMROOT_LIB_MUSL_I386_1 */
-	if (streq(ldso, "musl-i386") && abi == 1) {
-		ret = __xstr(PREFIX)"/lib/iamroot/i686/libiamroot-musl-i386.so.1";
-		goto exit;
-	}
-
-	/* IAMROOT_LIB_MUSL_X86_64_1 */
-	if (streq(ldso, "musl-x86_64") && abi == 1) {
-		ret = __xstr(PREFIX)"/lib/iamroot/x86_64/libiamroot-musl-x86_64.so.1";
-		goto exit;
-	}
-
-	/* IAMROOT_LIB_MUSL_ARMHF_1 */
-	if (streq(ldso, "musl-armhf") && abi == 1) {
-		ret = __xstr(PREFIX)"/lib/iamroot/armhf/libiamroot-musl-armhf.so.1";
-		goto exit;
-	}
-
-	/* IAMROOT_LIB_MUSL_AARCH64_1 */
-	if (streq(ldso, "musl-aarch64") && abi == 1) {
-		ret = __xstr(PREFIX)"/lib/iamroot/aarch64/libiamroot-musl-aarch64.so.1";
-		goto exit;
-	}
-#endif
-
-#ifdef __FreeBSD__
-	/* IAMROOT_LIB_ELF_1 */
-	if (streq(ldso, "elf") && abi == 1) {
-#if defined(__x86_64__)
-		ret = __xstr(PREFIX)"/lib/iamroot/amd64/libiamroot-elf.so.1";
-#elif defined(__aarch64__)
-		ret = __xstr(PREFIX)"/lib/iamroot/arm64/libiamroot-elf.so.1";
-#else
-		ret = __xstr(PREFIX)"/lib/iamroot/libiamroot-elf.so.1";
-#endif
-		goto exit;
-	}
-#endif
-
+	/*
+	 * Use the library set by the environment variable IAMROOT_LIB  if set.
+	 */
 	ret = getenv("IAMROOT_LIB");
-	if (!ret)
+	if (ret)
+		goto exit;
+
+	/*
+	 * Neither IAMROOT_LIB_<LDSO>_<ABI> nor IAMROOT_LIB are set; try to
+	 * guess automagically the library.
+	 */
+
+	/* IAMROOT_LIB_LINUX_$ARCH_$ABI */
+	if (is_gnu_linux(ehdr, ldso, abi)) {
+		/* It is an x86 ELF or IAMROOT_LIB_LINUX_2 */
+		if (is_x86(ehdr, ldso, abi) ||
+		    (streq(ldso, "linux") && abi == 2)) {
+			ret = __xstr(PREFIX)"/lib/iamroot/i686/libiamroot-linux.so.2";
+			goto access;
+		}
+
+		/* It is an x86-64 ELF or IAMROOT_LIB_LINUX_X86_64_2 */
+		if (is_x86_64(ehdr, ldso, abi) ||
+		    (streq(ldso, "linux-x86-64") && abi == 2)) {
+			ret = __xstr(PREFIX)"/lib/iamroot/x86_64/libiamroot-linux-x86-64.so.2";
+			goto access;
+		}
+
+		/* It is an ARM ELF or IAMROOT_LIB_LINUX_3 */
+		if (is_arm(ehdr, ldso, abi) ||
+		    (streq(ldso, "linux") && abi == 3)) {
+			ret = __xstr(PREFIX)"/lib/iamroot/arm/libiamroot-linux.so.3";
+			goto access;
+		}
+
+		/* It is an ARM ELF or IAMROOT_LIB_LINUX_ARMHF_3 */
+		if (is_arm(ehdr, ldso, abi) ||
+		    (streq(ldso, "linux-armhf") && abi == 3)) {
+			ret = __xstr(PREFIX)"/lib/iamroot/armhf/libiamroot-linux-armhf.so.3";
+			goto access;
+		}
+
+		/* It is an AArch64 ELF or IAMROOT_LIB_LINUX_AARCH64_1 */
+		if (is_aarch64(ehdr, ldso, abi) ||
+		    (streq(ldso, "linux-aarch64") && abi == 1)) {
+			ret = __xstr(PREFIX)"/lib/iamroot/aarch64/libiamroot-linux-aarch64.so.1";
+			goto access;
+		}
+
+		/* It is an RISC-V lp64d ELF or IAMROOT_LIB_LINUX_RISCV64_LP64D_1 */
+		if ((is_riscv(ehdr, ldso, abi) && is_64_bits(ehdr, ldso, abi)) ||
+		    (streq(ldso, "linux-riscv64-lp64d") && abi == 1)) {
+			ret = __xstr(PREFIX)"/lib/iamroot/riscv64/libiamroot-linux-riscv64-lp64d.so.1";
+			goto access;
+		}
+	}
+
+	/* IAMROOT_LIB_MUSL_$ARCH_$ABI */
+	if (is_musl(ehdr, ldso, abi)) {
+		/* It is an x86 ELF or IAMROOT_LIB_MUSL_I386_1 */
+		if (is_x86(ehdr, ldso, abi) ||
+		    (streq(ldso, "musl-i386") && abi == 1)) {
+			ret = __xstr(PREFIX)"/lib/iamroot/i686/libiamroot-musl-i386.so.1";
+			goto access;
+		}
+
+		/* It is an x86-64 ELF or IAMROOT_LIB_MUSL_X86_64_1 */
+		if (is_x86_64(ehdr, ldso, abi) ||
+		    (streq(ldso, "musl-x86_64") && abi == 1)) {
+			ret = __xstr(PREFIX)"/lib/iamroot/x86_64/libiamroot-musl-x86_64.so.1";
+			goto access;
+		}	
+
+		/* It is an ARM ELF or IAMROOT_LIB_MUSL_ARMHF_1 */
+		if (is_arm(ehdr, ldso, abi) ||
+		    (streq(ldso, "musl-armhf") && abi == 1)) {
+			ret = __xstr(PREFIX)"/lib/iamroot/armhf/libiamroot-musl-armhf.so.1";
+			goto access;
+		}
+
+		/* It is an AArch64 ELF or IAMROOT_LIB_MUSL_AARCH64_1 */
+		if (is_aarch64(ehdr, ldso, abi) ||
+		    (streq(ldso, "musl-aarch64") && abi == 1)) {
+			ret = __xstr(PREFIX)"/lib/iamroot/aarch64/libiamroot-musl-aarch64.so.1";
+			goto access;
+		}
+
+		/* It is an RISC-V ELF or IAMROOT_LIB_MUSL_RISCV64_1 */
+		if ((is_riscv(ehdr, ldso, abi) && is_64_bits(ehdr, ldso, abi)) ||
+		    (streq(ldso, "musl-riscv64") && abi == 1)) {
+			ret = __xstr(PREFIX)"/lib/iamroot/riscv64/libiamroot-musl-riscv64.so.1";
+			goto access;
+		}
+	}
+
+	/* It is a FreeBSD ELF or IAMROOT_LIB_ELF_1 */
+	if (!is_freebsd(ehdr, ldso, abi)) {
+		/* It is an x86-64 ELF */
+		if (is_x86_64(ehdr, ldso, abi)) {
+			ret = __xstr(PREFIX)"/local/lib/iamroot/amd64/libiamroot-elf.so.1";
+			goto access;
+		}
+		
+		/* It is an AArch64 ELF */
+		if (is_aarch64(ehdr, ldso, abi)) {
+			ret = __xstr(PREFIX)"/local/lib/iamroot/arm64/libiamroot-elf.so.1";
+			goto access;
+		}
+	}
+
+	/* It is something else */
+	ret = __xstr(PREFIX)"/lib/iamroot/libiamroot.so";
+
+access:
+	err = next_faccessat(AT_FDCWD, ret, X_OK);
+	if (err == -1)
 		ret = __xstr(PREFIX)"/lib/iamroot/libiamroot.so";
 
 exit:
 	if (setenv("IAMROOT_LIB", ret, 1))
 		return NULL;
 
-	return getenv("IAMROOT_LIB");
+	return __set_errno(errno_save, getenv("IAMROOT_LIB"));
 }
 
-static char *__getld_preload(const char *ldso, int abi)
+static const char *__getld_preload(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
 	char buf[NAME_MAX];
 	char *ret;
@@ -893,22 +1045,20 @@ static char *__getld_preload(const char *ldso, int abi)
 	if (ret)
 		return ret;
 
-#ifdef __linux__
-	/* IAMROOT_LD_PRELOAD_LINUX_$ARCH_$ABI */
-	if (__strneq(ldso, "linux"))
+	/* LINUX_$ARCH_$ABI or it is a GNU/Linux ELF */
+	if (is_gnu_linux(ehdr, ldso, abi))
 		return "libc.so.6:libdl.so.2:libpthread.so.0";
-#endif
 
-#ifdef __FreeBSD__
-	/* IAMROOT_LD_PRELOAD_ELF_1 */
-	if (streq(ldso, "elf") && abi == 1)
+	/* It is a FreeBSD ELF or ELF_1 */
+	if (is_freebsd(ehdr, ldso, abi))
 		return "libc.so.7:libdl.so.1";
-#endif
 
+	/* It is something else */
 	return "";
 }
 
-static char *__getld_library_path(const char *ldso, int abi)
+static const char *__getld_library_path(Elf64_Ehdr *ehdr, const char *ldso,
+					int abi)
 {
 	char buf[NAME_MAX];
 	char *ret;
@@ -928,24 +1078,22 @@ static char *__getld_library_path(const char *ldso, int abi)
 	if (ret)
 		return ret;
 
-#ifdef __linux__
-	/* IAMROOT_LIBRARY_PATH_LINUX_X86_64_2 */
-	if (streq(ldso, "linux-x86-64") && abi == 2)
+	/*
+	 * According do dl.so(8):
+	 *
+	 * On some 64-bit architectures, the default paths for 64-bit shared
+	 * objects are /lib64, and then /usr/lib64.
+	 */
+
+	/* It is a 64-bits GNU/Linux */
+	if (is_gnu_linux(ehdr, ldso, abi) && is_64_bits(ehdr, ldso, abi))
 		return "/lib64:/usr/local/lib64:/usr/lib64";
 
-	/* IAMROOT_LIBRARY_PATH_LINUX_AARCH64_1 */
-	if (streq(ldso, "linux-aarch64") && abi == 1)
-		return "/lib64:/usr/local/lib64:/usr/lib64";
-
-	/* IAMROOT_LIBRARY_PATH_LINUX_RISC64_LP64D_1 */
-	if (streq(ldso, "linux-riscv64-lp64d") && abi == 1)
-		return "/lib64:/usr/local/lib64:/usr/lib64";
-#endif
-
+	/* It is something else */
 	return "/lib:/usr/local/lib:/usr/lib";
 }
 
-static char *__ld_preload(const char *ldso, int abi)
+static char *__ld_preload(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
 	char path[PATH_MAX];
 	char val[PATH_MAX];
@@ -953,8 +1101,9 @@ static char *__ld_preload(const char *ldso, int abi)
 	char *needed;
 	char *rpath;
 	int ret;
+	(void)ehdr;
 
-	__strncpy(path, __getld_library_path(ldso, abi));
+	__strncpy(path, __getld_library_path(ehdr, ldso, abi));
 
 	rpath = getenv("rpath");
 	if (rpath) {
@@ -970,7 +1119,7 @@ static char *__ld_preload(const char *ldso, int abi)
 		__strncat(path, runpath);
 	}
 
-	__strncpy(val, __getld_preload(ldso, abi));
+	__strncpy(val, __getld_preload(ehdr, ldso, abi));
 
 	needed = getenv("needed");
 	if (needed) {
@@ -987,7 +1136,7 @@ static char *__ld_preload(const char *ldso, int abi)
 	if (ret == -1)
 		return NULL;
 
-	__strncpy(val, __getlibiamroot(ldso, abi));
+	__strncpy(val, __getlibiamroot(ehdr, ldso, abi));
 	ret = __path_prependenv("ld_preload", val, 1);
 	if (ret == -1)
 		return NULL;
@@ -995,14 +1144,14 @@ static char *__ld_preload(const char *ldso, int abi)
 	return getenv("ld_preload");
 }
 
-static char *__ld_library_path(const char *ldso, int abi)
+static char *__ld_library_path(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
 	char val[PATH_MAX];
 	char *runpath;
 	char *rpath;
 	int ret;
 
-	__strncpy(val, __getld_library_path(ldso, abi));
+	__strncpy(val, __getld_library_path(ehdr, ldso, abi));
 	ret = __path_setenv(__getrootdir(), "ld_library_path", val, 1);
 	if (ret == -1)
 		return NULL;
@@ -1322,6 +1471,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 {
 	char buf[HASHBANG_MAX];
 	int fd, ret = -1;
+	Elf64_Ehdr ehdr;
 	ssize_t siz;
 	(void)argv;
 
@@ -1332,8 +1482,13 @@ int __loader(const char *path, char * const argv[], char *interp,
 	if (fd == -1)
 		return -1;
 
+	/* ... get the ELF header... */
+	siz = __getelfheader(fd, &ehdr);
+	if (siz == -1)
+		goto close;
+
 	/*
-	 * ... to get the dynamic loader stored in the .interp section of the
+	 * ... and get the dynamic loader stored in the .interp section of the
 	 * ELF linked program.
 	 */
 	siz = __getinterp(fd, buf, sizeof(buf));
@@ -1399,11 +1554,11 @@ int __loader(const char *path, char * const argv[], char *interp,
 		if (inhibit_rpath)
 			__notice("%s: %s\n", "inhibit_rpath", inhibit_rpath);
 
-		ld_library_path = __ld_library_path(ldso, abi);
+		ld_library_path = __ld_library_path(&ehdr, ldso, abi);
 		if (!ld_library_path)
 			__warning("%s: is unset!\n", "ld_library_path");
 
-		ld_preload = __ld_preload(ldso, abi);
+		ld_preload = __ld_preload(&ehdr, ldso, abi);
 		if (!ld_preload)
 			__warning("%s: is unset!\n", "ld_preload");
 
@@ -1573,7 +1728,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 		if (runpath)
 			__info("%s: RUNPATH=%s\n", path, runpath);
 
-		ld_library_path = __ld_library_path(ldso, abi);
+		ld_library_path = __ld_library_path(&ehdr, ldso, abi);
 		if (ld_library_path) {
 			ret = setenv("LD_LIBRARY_PATH", ld_library_path, 1);
 			if (ret)
@@ -1584,7 +1739,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 				goto close;
 		}
 
-		ld_preload = __ld_preload(ldso, abi);
+		ld_preload = __ld_preload(&ehdr, ldso, abi);
 		if (ld_preload) {
 			ret = setenv("LD_PRELOAD", ld_preload, 1);
 			if (ret)

@@ -575,11 +575,11 @@ coverage: gcov/index.html
 .PHONY: gcov/index.html
 gcov/index.html:
 	mkdir -p $(@D)
-	gcovr --html-details --html-title iamroot -s -v -o $@ $(O)-x86_64-linux-x86-64/ tests/
+	gcovr --gcov-ignore-parse-errors --html-details --html-title iamroot -s -v -o $@ $(O)-x86_64-linux-x86-64/ tests/
 
 .PHONY: cobertura.xml
 cobertura.xml:
-	gcovr --cobertura -s -v -o $@ $(O)-x86_64-linux-x86-64/ tests/
+	gcovr --gcov-ignore-parse-errors --cobertura -s -v -o $@ $(O)-x86_64-linux-x86-64/ tests/
 
 .PHONY: codacy
 codacy: cobertura.xml

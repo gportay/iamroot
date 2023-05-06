@@ -89,7 +89,7 @@ iamroot_lib_$(2)_$(3):
 	@echo export "IAMROOT_LIB_$(call UPPERCASE,$(2))_$(3)=\"$$(IAMROOT_LIB_$(call UPPERCASE,$(2))_$(3))\""
 
 all: $(1)/libiamroot-$(2).so.$(3)
-ci: $(1)/libiamroot-$(2).so.$(3)
+test: $(1)/libiamroot-$(2).so.$(3)
 
 .PRECIOUS: $(1)/libiamroot-$(2).so.$(3)
 $(1)/libiamroot-$(2).so.$(3): output-$(1)-$(2)/libiamroot.so
@@ -420,7 +420,6 @@ libiamroot.so: x86_64/libiamroot-linux-x86-64.so.2
 	install -D -m755 $< $@
 
 $(eval $(call libiamroot_so,x86_64,linux-x86-64,2))
-test: x86_64/libiamroot-linux-x86-64.so.2
 
 output-i686-linux/libiamroot.so: override CC += -m32
 output-i686-linux/libiamroot.so: override CFLAGS += -fno-stack-protector
@@ -489,7 +488,6 @@ libiamroot.so: aarch64/libiamroot-linux-aarch64.so.1
 	install -D -m755 $< $@
 
 $(eval $(call libiamroot_so,aarch64,linux-aarch64,1))
-test: aarch64/libiamroot-linux-aarch64.so.1
 endif
 
 .PRECIOUS: output-%/libiamroot.so
@@ -520,6 +518,10 @@ aarch64-rootfs:
 
 .PHONY: arm-rootfs
 arm-rootfs:
+
+.PHONY: ci
+ci: test
+	$(MAKE) -f Makefile $@
 
 .PHONY: test
 test:

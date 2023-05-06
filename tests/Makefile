@@ -319,6 +319,8 @@ ifneq ($(OS),Linux)
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-catopen "/usr/lib/nls/msg/$$LANG/null.cat" 0
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-catopen null.cat 0
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-catopen null.cat 0
+endif
+ifeq ($(OS),FreeBSD)
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-close_range 3 3 0                                                  2>&1 | tee /dev/stderr | grep -q '^stdout$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-close_range 3 3 0                                                  2>&1 | tee /dev/stderr | grep -q '^stderr$$' || true
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-close_range 2 3 0                                                  2>&1 | tee /dev/stderr | grep -q '^stdout$$'

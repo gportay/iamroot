@@ -21,10 +21,10 @@ int main(int argc, char * const argv[])
 	unsigned char buf[MAX_HANDLE_SZ];
 	struct file_handle *h;
 
-	if (argc < 3) {
+	if (argc < 4) {
 		fprintf(stderr, "Too few arguments\n");
 		exit(EXIT_FAILURE);
-	} else if (argc > 5) {
+	} else if (argc > 4) {
 		fprintf(stderr, "Too many arguments\n");
 		exit(EXIT_FAILURE);
 	}

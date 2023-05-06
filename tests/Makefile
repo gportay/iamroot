@@ -294,8 +294,8 @@ ifeq ($(OS),GNU/Linux)
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR) test-pathsetenv LD_LIBRARY_PATH /lib64:/usr/local/lib64:/usr/lib64                                                              | tee /dev/stderr | grep -q "^/lib64:/usr/local/lib64:/usr/lib64$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib64 IAMROOT_ROOT=$(CURDIR)/rootfs test-pathsetenv LD_LIBRARY_PATH /lib64:/usr/local/lib64:/usr/lib64 | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/lib64:$(CURDIR)/rootfs/usr/local/lib64:$(CURDIR)/rootfs/usr/lib64$$"
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-name_to_handle_at . rootfs/tmp/file0 0
-endif
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-name_to_handle_at - /tmp/file0 0
+endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-ftok rootfs/usr/bin/test-ftok 1
 ifeq ($(OS),GNU/Linux)
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-ftok /usr/bin/test-ftok 1

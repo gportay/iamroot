@@ -99,6 +99,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `ftok()`
 - Fix the handling for path argument without slash in the function `catopen()`
   by opening the catalog files from the environment variable `NLSPATH`
+- Fix the following symlink behaviour for the function `name_to_handle_at()` by
+  adding manually the `AT` flag `AT_SYMLINK_NOFOLLOW` to `path_resolution()`
 
 ### Security
 

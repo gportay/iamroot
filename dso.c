@@ -688,99 +688,76 @@ exit:
 	return ret;
 }
 
-static int __dl_iterate_shared_object(const char *path, int dt_tag,
+static int __dl_iterate_shared_object(int fd, int dt_tag,
 		     int (*callback)(const void *, size_t, void *), void *data)
 {
-	int fd, ret = -1;
 	Elf64_Ehdr ehdr;
 	ssize_t siz;
+	int err;
 
-	fd = next_open(path, O_RDONLY, 0);
-	if (fd == -1)
+	err = lseek(fd, 0, SEEK_SET);
+	if (err)
 		return -1;
 
 	siz = read(fd, &ehdr, sizeof(ehdr));
-	if (siz == -1) {
-		goto close;
-	} else if ((size_t)siz < sizeof(ehdr)) {
-		ret = __set_errno(EIO, -1);
-		goto close;
-	}
+	if (siz == -1)
+		return -1;
+	else if ((size_t)siz < sizeof(ehdr))
+		return __set_errno(EIO, -1);
 
 	/* Not an ELF */
-	if (memcmp(ehdr.e_ident, ELFMAG, 4) != 0) {
-		ret = __set_errno(ENOEXEC, -1);
-		goto close;
-	}
+	if (memcmp(ehdr.e_ident, ELFMAG, 4) != 0)
+		return __set_errno(ENOEXEC, -1);
 
 	/* Not a linked program or shared object */
-	if ((ehdr.e_type != ET_EXEC) && (ehdr.e_type != ET_DYN)) {
-		__set_errno(ENOEXEC, -1);
-		goto close;
-	}
+	if ((ehdr.e_type != ET_EXEC) && (ehdr.e_type != ET_DYN))
+		return __set_errno(ENOEXEC, -1);
 
 	/* It is a 32-bits ELF */
 	if (ehdr.e_ident[EI_CLASS] == ELFCLASS32)
-		ret = __dl_iterate_ehdr32(fd, (Elf32_Ehdr *)&ehdr, dt_tag,
-					  callback, data);
+		return __dl_iterate_ehdr32(fd, (Elf32_Ehdr *)&ehdr, dt_tag,
+					   callback, data);
 	/* It is a 64-bits ELF */
 	else if (ehdr.e_ident[EI_CLASS] == ELFCLASS64)
-		ret = __dl_iterate_ehdr64(fd, (Elf64_Ehdr *)&ehdr, dt_tag,
-					  callback, data);
+		return __dl_iterate_ehdr64(fd, (Elf64_Ehdr *)&ehdr, dt_tag,
+					   callback, data);
+
 	/* It is an invalid ELF */
-	else
-		ret = __set_errno(ENOEXEC, -1);
-
-close:
-	__close(fd);
-
-	return ret;
+	return __set_errno(ENOEXEC, -1);
 }
 
-static ssize_t __getinterp(const char *path, char *buf, size_t bufsize)
+static ssize_t __getinterp(int fd, char *buf, size_t bufsize)
 {
-	ssize_t siz, ret = -1;
+	ssize_t siz, err;
 	Elf64_Ehdr ehdr;
-	int fd;
 
-	fd = next_open(path, O_RDONLY, 0);
-	if (fd == -1)
+	err = lseek(fd, 0, SEEK_SET);
+	if (err)
 		return -1;
 
 	siz = read(fd, &ehdr, sizeof(ehdr));
-	if (siz == -1) {
-		goto close;
-	} else if ((size_t)siz < sizeof(ehdr)) {
-		ret = __set_errno(EIO, -1);
-		goto close;
-	}
+	if (siz == -1)
+		return siz;
+	else if ((size_t)siz < sizeof(ehdr))
+		return __set_errno(EIO, -1);
 
 	/* Not an ELF */
-	if (memcmp(ehdr.e_ident, ELFMAG, 4) != 0) {
-		ret = __set_errno(ENOEXEC, -1);
-		goto close;
-	}
+	if (memcmp(ehdr.e_ident, ELFMAG, 4) != 0)
+		return __set_errno(ENOEXEC, -1);
 
 	/* Not a linked program or shared object */
-	if ((ehdr.e_type != ET_EXEC) && (ehdr.e_type != ET_DYN)) {
-		ret = __set_errno(ENOEXEC, -1);
-		goto close;
-	}
+	if ((ehdr.e_type != ET_EXEC) && (ehdr.e_type != ET_DYN))
+		return __set_errno(ENOEXEC, -1);
 
 	/* It is a 32-bits ELF */
 	if (ehdr.e_ident[EI_CLASS] == ELFCLASS32)
-		ret = __getinterp32(fd, (Elf32_Ehdr *)&ehdr, buf, bufsize);
+		return __getinterp32(fd, (Elf32_Ehdr *)&ehdr, buf, bufsize);
 	/* It is a 64-bits ELF */
 	else if (ehdr.e_ident[EI_CLASS] == ELFCLASS64)
-		ret = __getinterp64(fd, (Elf64_Ehdr *)&ehdr, buf, bufsize);
+		return __getinterp64(fd, (Elf64_Ehdr *)&ehdr, buf, bufsize);
+
 	/* It is an invalid ELF */
-	else
-		ret = __set_errno(ENOEXEC, -1);
-
-close:
-	__close(fd);
-
-	return ret;
+	return __set_errno(ENOEXEC, -1);
 }
 
 static void __env_sanitize(char *name, int upper)
@@ -1075,52 +1052,98 @@ static int __path_callback(const void *data, size_t size, void *user)
 	return 0;
 }
 
+static ssize_t __fgetneeded(int fd, char *buf, size_t bufsize)
+{
+	int err;
+
+	*buf = 0;
+	err = __dl_iterate_shared_object(fd, DT_NEEDED, __path_callback, buf);
+	if (err == -1)
+		return -1;
+
+	return strnlen(buf, bufsize);
+}
+
 static ssize_t __getneeded(const char *path, char *buf, size_t bufsize)
+{
+	ssize_t ret;
+	int fd;
+
+	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
+	if (fd == -1)
+		return -1;
+
+	ret = __fgetneeded(fd, buf, bufsize);
+
+	__close(fd);
+
+	return ret;
+}
+
+static ssize_t __fgetrpath(int fd, char *buf, size_t bufsize)
 {
 	int err, n;
 
 	*buf = 0;
-	err = __dl_iterate_shared_object(path, DT_NEEDED, __path_callback,
-					 buf);
+	err = __dl_iterate_shared_object(fd, DT_RPATH, __path_callback, buf);
 	if (err == -1)
 		return -1;
 
 	n = __variable_has_dynamic_string_tokens(buf);
 	if (n)
 		__warning("%s: RPATH has dynamic %i string token(s): %s\n",
-			  path, n, buf);
+			  __fpath(fd), n, buf);
 
 	return strnlen(buf, bufsize);
 }
 
 static ssize_t __getrpath(const char *path, char *buf, size_t bufsize)
 {
+	ssize_t ret;
+	int fd;
+
+	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
+	if (fd == -1)
+		return -1;
+
+	ret = __fgetrpath(fd, buf, bufsize);
+
+	__close(fd);
+
+	return ret;
+}
+
+static ssize_t __fgetrunpath(int fd, char *buf, size_t bufsize)
+{
 	int err, n;
 
 	*buf = 0;
-	err = __dl_iterate_shared_object(path, DT_RPATH, __path_callback, buf);
+	err = __dl_iterate_shared_object(fd, DT_RUNPATH, __path_callback, buf);
 	if (err == -1)
 		return -1;
 
 	n = __variable_has_dynamic_string_tokens(buf);
 	if (n)
 		__warning("%s: RUNPATH has dynamic %i string token(s): %s\n",
-			  path, n, buf);
+			  __fpath(fd), n, buf);
 
 	return strnlen(buf, bufsize);
 }
 
 static ssize_t __getrunpath(const char *path, char *buf, size_t bufsize)
 {
-	int err;
+	ssize_t ret;
+	int fd;
 
-	*buf = 0;
-	err = __dl_iterate_shared_object(path, DT_RUNPATH, __path_callback,
-					 buf);
-	if (err == -1)
+	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
+	if (fd == -1)
 		return -1;
 
-	return strnlen(buf, bufsize);
+	ret = __fgetrunpath(fd, buf, bufsize);
+
+	__close(fd);
+
+	return ret;
 }
 
 __attribute__((visibility("hidden")))
@@ -1214,14 +1237,14 @@ ssize_t __getlibrary_path(const char *path, char *buf, size_t bufsize)
 	return strnlen(buf, bufsize);
 }
 
-static char *__needed(const char *path)
+static char *__needed(int fd)
 {
 	char buf[PATH_MAX];
-	ssize_t siz;
+	ssize_t err;
 	int ret;
 
-	siz = __getneeded(path, buf, sizeof(buf));
-	if (siz == -1)
+	err = __fgetneeded(fd, buf, sizeof(buf));
+	if (err == -1)
 		return NULL;
 
 	ret = setenv("needed", buf, 1);
@@ -1231,20 +1254,20 @@ static char *__needed(const char *path)
 	return getenv("needed");
 }
 
-static char *__rpath(const char *path)
+static char *__rpath(int fd)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
 	int n, ret;
 
-	siz = __getrpath(path, buf, sizeof(buf));
+	siz = __fgetrpath(fd, buf, sizeof(buf));
 	if (siz == -1)
 		return NULL;
 
 	n = __variable_has_dynamic_string_tokens(buf);
 	if (n)
 		__warning("%s: RPATH has dynamic %i string token(s): %s\n",
-			  path, n, buf);
+			  __fpath(fd), n, buf);
 
 	ret = setenv("rpath", buf, 1);
 	if (ret)
@@ -1253,20 +1276,20 @@ static char *__rpath(const char *path)
 	return getenv("rpath");
 }
 
-static char *__runpath(const char *path)
+static char *__runpath(int fd)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
 	int n, ret;
 
-	siz = __getrunpath(path, buf, sizeof(buf));
+	siz = __fgetrunpath(fd, buf, sizeof(buf));
 	if (siz == -1)
 		return NULL;
 
 	n = __variable_has_dynamic_string_tokens(buf);
 	if (n)
 		__warning("%s: RUNPATH has dynamic %i string token(s): %s\n",
-			  path, n, buf);
+			  __fpath(fd), n, buf);
 
 	ret = setenv("runpath", buf, 1);
 	if (ret)
@@ -1298,16 +1321,24 @@ int __loader(const char *path, char * const argv[], char *interp,
 	     size_t interpsiz, char *interparg[])
 {
 	char buf[HASHBANG_MAX];
+	int fd, ret = -1;
 	ssize_t siz;
 	(void)argv;
 
 	/*
-	 * Get the dynamic loader stored in the .interp section of the ELF
-	 * linked program.
+	 * Open the shared object...
 	 */
-	siz = __getinterp(path, buf, sizeof(buf));
+	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
+	if (fd == -1)
+		return -1;
+
+	/*
+	 * ... to get the dynamic loader stored in the .interp section of the
+	 * ELF linked program.
+	 */
+	siz = __getinterp(fd, buf, sizeof(buf));
 	if (siz < 1)
-		return siz;
+		goto close;
 
 	/*
 	 * The interpreter has to preload its libiamroot.so library.
@@ -1317,7 +1348,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 		     *inhibit_rpath, *ld_library_path, *ld_preload;
 		int has_argv0 = 1, has_preload = 1, has_inhibit_rpath = 0,
 		    has_inhibit_cache = 0;
-		int ret, i, j, shift = 1, abi = 0;
+		int i, j, shift = 1, abi = 0;
 		const char *basename;
 		char ldso[NAME_MAX];
 		char * const *arg;
@@ -1325,8 +1356,10 @@ int __loader(const char *path, char * const argv[], char *interp,
 		basename = __basename(buf);
 		ret = sscanf(basename, "ld-%" __xstr(NAME_MAX) "[^.].so.%i",
 			     ldso, &abi);
-		if (ret < 2)
-			return __set_errno(ENOTSUP, -1);
+		if (ret < 2) {
+			ret = __set_errno(ENOTSUP, -1);
+			goto close;
+		}
 
 		/*
 		 * the glibc world supports --argv0 since 2.33, --preload since
@@ -1339,26 +1372,26 @@ int __loader(const char *path, char * const argv[], char *interp,
 			has_inhibit_cache =
 				      __ld_linux_has_inhibit_cache_option(buf);
 			if (has_inhibit_cache == -1)
-				return -1;
+				goto close;
 
 			has_argv0 = __ld_linux_has_argv0_option(buf);
 			if (has_argv0 == -1)
-				return -1;
+				goto close;
 
 			has_preload = __ld_linux_has_preload_option(buf);
 			if (has_preload == -1)
-				return -1;
+				goto close;
 		}
 
-		needed = __needed(path);
+		needed = __needed(fd);
 		if (needed)
 			__info("%s: NEEDED=%s\n", path, needed);
 
-		rpath = __rpath(path);
+		rpath = __rpath(fd);
 		if (rpath)
 			__info("%s: RPATH=%s\n", path, rpath);
 
-		runpath = __runpath(path);
+		runpath = __runpath(fd);
 		if (runpath)
 			__info("%s: RUNPATH=%s\n", path, runpath);
 
@@ -1438,12 +1471,12 @@ int __loader(const char *path, char * const argv[], char *interp,
 			interparg[i++] = ld_preload;
 
 			ret = unsetenv("LD_PRELOAD");
-			if (ret)
-				return -1;
+			if (ret == -1)
+				goto close;
 		} else if (ld_preload) {
 			ret = setenv("LD_PRELOAD", ld_preload, 1);
-			if (ret)
-				return -1;
+			if (ret == -1)
+				goto close;
 		}
 
 		/* Add --library-path (chroot) */
@@ -1473,8 +1506,8 @@ int __loader(const char *path, char * const argv[], char *interp,
 			 * __libc_start_main().
 			 */
 			ret = setenv("argv0", argv0, 1);
-			if (ret)
-				return -1;
+			if (ret == -1)
+				goto close;
 		}
 
 		/* Add path to binary (in chroot, first positional argument) */
@@ -1482,11 +1515,11 @@ int __loader(const char *path, char * const argv[], char *interp,
 		i += j;
 		interparg[i] = NULL; /* ensure NULL-terminated */
 
-		return i;
+		ret = i;
 	} else {
 		char *argv0, *xargv1, *needed, *rpath, *runpath,
 		     *ld_library_path, *ld_preload;
-		int ret, i, j, shift = 1, abi = 0;
+		int i, j, shift = 1, abi = 0;
 		const char *basename;
 		char ldso[NAME_MAX];
 		char * const *arg;
@@ -1494,12 +1527,14 @@ int __loader(const char *path, char * const argv[], char *interp,
 		basename = __basename(buf);
 		ret = sscanf(basename, "ld-%" __xstr(NAME_MAX) "[^.].so.%i",
 			     ldso, &abi);
-		if (ret < 2)
-			return __set_errno(ENOTSUP, -1);
+		if (ret < 2) {
+			ret = __set_errno(ENOTSUP, -1);
+			goto close;
+		}
 
 		siz = path_resolution(AT_FDCWD, buf, interp, interpsiz, 0);
 		if (siz == -1)
-			return -1;
+			goto close;
 
 		/*
 		 * Shift enough room in interparg to prepend:
@@ -1524,17 +1559,17 @@ int __loader(const char *path, char * const argv[], char *interp,
 
 		ret = setenv("argv0", argv0, 1);
 		if (ret)
-			return -1;
+			goto close;
 
-		needed = __needed(path);
+		needed = __needed(fd);
 		if (needed)
 			__info("%s: NEEDED=%s\n", path, needed);
 
-		rpath = __rpath(path);
+		rpath = __rpath(fd);
 		if (rpath)
 			__info("%s: RPATH=%s\n", path, rpath);
 
-		runpath = __runpath(path);
+		runpath = __runpath(fd);
 		if (runpath)
 			__info("%s: RUNPATH=%s\n", path, runpath);
 
@@ -1542,22 +1577,22 @@ int __loader(const char *path, char * const argv[], char *interp,
 		if (ld_library_path) {
 			ret = setenv("LD_LIBRARY_PATH", ld_library_path, 1);
 			if (ret)
-				return -1;
+				goto close;
 
 			ret = unsetenv("ld_library_path");
 			if (ret)
-				return -1;
+				goto close;
 		}
 
 		ld_preload = __ld_preload(ldso, abi);
 		if (ld_preload) {
 			ret = setenv("LD_PRELOAD", ld_preload, 1);
 			if (ret)
-				return -1;
+				goto close;
 
 			ret = unsetenv("ld_preload");
 			if (ret)
-				return -1;
+				goto close;
 		}
 
 		/* Add path to interpreter (host, argv0) */
@@ -1573,9 +1608,11 @@ int __loader(const char *path, char * const argv[], char *interp,
 		i += j;
 		interparg[i] = NULL; /* ensure NULL-terminated */
 
-		return i;
+		ret = i;
 	}
 
-	__notice("%s: not handled\n", buf);
-	return setenv("interp", buf, 1);
+close:
+	__close(fd);
+
+	return ret;
 }

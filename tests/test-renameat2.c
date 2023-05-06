@@ -14,6 +14,11 @@
 
 #include "iamroot.h"
 
+#ifndef __GLIBC_PREREQ
+#define __GLIBC_PREREQ(maj,min) 0
+#endif
+
+
 int main(int argc, char * const argv[])
 {
 	int olddfd = AT_FDCWD, newdfd = AT_FDCWD, ret = EXIT_FAILURE;
@@ -45,7 +50,7 @@ int main(int argc, char * const argv[])
 		}
 	}
 
-#ifdef __GLIBC__
+#if defined __GLIBC__ && __GLIBC_PREREQ(2,28)
 	if (renameat2(olddfd, argv[2], newdfd, argv[4], flags)) {
 		perror("renameat2");
 		goto exit;

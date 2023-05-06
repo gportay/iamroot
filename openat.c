@@ -80,10 +80,3 @@ int openat(int dfd, const char *path, int oflags, ...)
 #ifdef _LARGEFILE64_SOURCE
 weak_alias(openat, openat64);
 #endif
-
-#ifdef __GLIBC__
-weak_alias(openat, __openat_2);
-#ifdef _LARGEFILE64_SOURCE
-weak_alias(openat, __openat64_2);
-#endif
-#endif

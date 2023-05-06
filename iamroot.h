@@ -140,18 +140,7 @@ int __pathsetenv(const char *, const char *, const char *, int);
 
 int __execve(const char *, char * const [], char * const []);
 int __exec_ignored(const char *);
-int __ld_linux_has_inhibit_cache_option(const char *);
-int __ld_linux_has_argv0_option(const char *);
-int __ld_linux_has_preload_option(const char *);
 int __issuid(const char *);
-ssize_t __getinterp(const char *, char *, size_t);
-ssize_t __gethashbang(const char *, char *, size_t);
-char *__ld_preload(const char *, int);
-char *__ld_library_path(const char *, int);
-char *__rpath(const char *);
-char *__runpath(const char *);
-char *__inhibit_rpath();
-char *__getexec();
 int __loader(const char *, char * const [], char *, size_t, char *[]);
 int __exec_sh(const char *, char * const *, char **, char *, size_t);
 int __hashbang(const char *, char * const [], char *, size_t, char *[]);

@@ -367,8 +367,7 @@ static int __ld_linux_version(const char *path, int *major, int *minor)
 	return 0;
 }
 
-__attribute__((visibility("hidden")))
-int __ld_linux_has_inhibit_cache_option(const char *path)
+static int __ld_linux_has_inhibit_cache_option(const char *path)
 {
 	int ret, maj = 0, min = 0;
 
@@ -384,8 +383,7 @@ int __ld_linux_has_inhibit_cache_option(const char *path)
 	return (maj > 2) || ((maj == 2) && (min >= 16));
 }
 
-__attribute__((visibility("hidden")))
-int __ld_linux_has_argv0_option(const char *path)
+static int __ld_linux_has_argv0_option(const char *path)
 {
 	int ret, maj = 0, min = 0;
 
@@ -401,8 +399,7 @@ int __ld_linux_has_argv0_option(const char *path)
 	return (maj > 2) || ((maj == 2) && (min >= 33));
 }
 
-__attribute__((visibility("hidden")))
-int __ld_linux_has_preload_option(const char *path)
+static int __ld_linux_has_preload_option(const char *path)
 {
 	int ret, maj = 0, min = 0;
 
@@ -812,8 +809,7 @@ close:
 	return ret;
 }
 
-__attribute__((visibility("hidden")))
-ssize_t __getinterp(const char *path, char *buf, size_t bufsize)
+static ssize_t __getinterp(const char *path, char *buf, size_t bufsize)
 {
 	ssize_t siz, ret = -1;
 	Elf64_Ehdr ehdr;
@@ -859,8 +855,7 @@ close:
 	return ret;
 }
 
-__attribute__((visibility("hidden")))
-ssize_t __gethashbang(const char *path, char *buf, size_t bufsize)
+static ssize_t __gethashbang(const char *path, char *buf, size_t bufsize)
 {
 	ssize_t ret;
 	char *d, *s;
@@ -1189,8 +1184,7 @@ static char *__getld_library_path(const char *ldso, int abi)
 	return "/lib:/usr/local/lib:/usr/lib";
 }
 
-__attribute__((visibility("hidden")))
-char *__ld_preload(const char *ldso, int abi)
+static char *__ld_preload(const char *ldso, int abi)
 {
 	char path[PATH_MAX];
 	char val[PATH_MAX];
@@ -1240,8 +1234,7 @@ char *__ld_preload(const char *ldso, int abi)
 	return getenv("ld_preload");
 }
 
-__attribute__((visibility("hidden")))
-char *__ld_library_path(const char *ldso, int abi)
+static char *__ld_library_path(const char *ldso, int abi)
 {
 	char val[PATH_MAX];
 	char *runpath;
@@ -1317,8 +1310,7 @@ char *__needed(const char *path)
 	return getenv("needed");
 }
 
-__attribute__((visibility("hidden")))
-char *__rpath(const char *path)
+static char *__rpath(const char *path)
 {
 	char buf[PATH_MAX];
 	int ret;
@@ -1335,8 +1327,7 @@ char *__rpath(const char *path)
 	return getenv("rpath");
 }
 
-__attribute__((visibility("hidden")))
-char *__runpath(const char *path)
+static char *__runpath(const char *path)
 {
 	char buf[PATH_MAX];
 	int ret;
@@ -1354,8 +1345,7 @@ char *__runpath(const char *path)
 	return getenv("runpath");
 }
 
-__attribute__((visibility("hidden")))
-char *__inhibit_rpath()
+static char *__inhibit_rpath()
 {
 	char *inhibit_rpath;
 	char val[PATH_MAX];
@@ -1373,8 +1363,7 @@ char *__inhibit_rpath()
 	return getenv("inhibit_rpath");
 }
 
-__attribute__((visibility("hidden")))
-char *__getexec()
+static char *__getexec()
 {
 	char *ret;
 

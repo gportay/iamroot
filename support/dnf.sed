@@ -67,6 +67,21 @@
 	# (2022-06-16 22:01:23:225076): [sss_cache] [confdb_get_enabled_domain_list] (0x0040): Failed to get [domains] from [sssd], error [2] (No such file or directory)
 	# (2022-06-16 22:01:23:225167): [sss_cache] [init_domains] (0x0020): Could not initialize domains
 	s,^(\S\{4\,4\}-\S\{2\,2\}-\S\{2\,2\}\s\{1\,2\}\S\{1\,2\}:\S\{2\,2\}:\S\{2\,2\}:\S\{6\,6\}):\s,(YYYY-MM-DD hh:mm:ss:nnnnnn): ,
+
+	#   Running scriptlet: systemd XXX/XXX
+	# Creating group 'input' with GID XXX.
+	# Creating group 'kvm' with GID XXX.
+	# Creating group 'render' with GID XXX.
+	# Creating group 'sgx' with GID XXX.
+	# Creating group 'systemd-journal' with GID XXX.
+	# Creating group 'systemd-network' with GID XXX.
+	# Creating user 'systemd-network' (systemd Network Management) with UID XXX and GID XXX.
+	# Creating group 'systemd-oom' with GID XXX.
+	# Creating user 'systemd-oom' (systemd Userspace OOM Killer) with UID XXX and GID XXX.
+	# Creating group 'systemd-resolve' with GID XXX.
+	# Creating user 'systemd-resolve' (systemd Resolver) with UID XXX and GID XXX.
+	# Failed to flush /etc/.#groupXXXXXXXXXXXXXXXX: No such file or directory
+	/Failed to flush/s,/etc/\.#group[[:alnum:]]\{16\,16\}:,/etc/.#groupXXXXXXXXXXXXXXXX:,
 }
 
 /^Installed:/,$ {

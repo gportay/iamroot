@@ -225,6 +225,8 @@ libiamroot.so: scandir_b.o
 libiamroot.so: scandirat.o
 libiamroot.so: setegid.o
 libiamroot.so: seteuid.o
+libiamroot.so: setfsgid.o
+libiamroot.so: setfsuid.o
 libiamroot.so: setgid.o
 libiamroot.so: setgroups.o
 libiamroot.so: setregid.o

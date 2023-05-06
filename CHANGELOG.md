@@ -8,8 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-- Intercept the functions `ctermid()`, `ttyname()`, `ttyname_r()`, `updwtmp()`,
-  `updwtmpx()`, `utmpname()` and `utmpxname()`
+- Intercept the functions `ctermid()`, `setfsuid()`, `setfsgid()`, `ttyname()`,
+  `ttyname_r()`, `updwtmp()`, `updwtmpx()`, `utmpname()` and `utmpxname()`
 
 ### Changed
 

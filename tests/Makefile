@@ -143,6 +143,8 @@ all: test-scandir
 all: test-scandirat
 all: test-setegid
 all: test-seteuid
+all: test-setfsgid
+all: test-setfsuid
 all: test-setgid
 all: test-setgrent
 all: test-setgroups
@@ -444,6 +446,10 @@ endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-setresuid  0  0 -1 | tee /dev/stderr | grep '^0:0:$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-setresuid  0 -1  0 | tee /dev/stderr | grep '^0::0$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-setresuid -1  0  0 | tee /dev/stderr | grep '^:0:0$$'
+ifeq ($(OS),GNU/Linux)
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-setfsuid   0       | tee /dev/stderr | grep '^0$$'
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-setfsgid   0       | tee /dev/stderr | grep '^0$$'
+endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-execl              | tee /dev/stderr | grep '^one two three$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-execle             | tee /dev/stderr | grep '^one two three$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-execlp             | tee /dev/stderr | grep '^one two three$$'

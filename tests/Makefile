@@ -193,7 +193,7 @@ test: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/lib/libc.so.7:$(CURDIR)/roo
 endif
 ifeq ($(OS),GNU/Linux)
 test: export IAMROOT_LIBRARY_PATH := /lib64:/usr/lib64
-test: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/usr/lib64/libc.so.6:$(CURDIR)/rootfs/usr/lib64/libdl.so.2
+test: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/usr/lib64/libc.so.6:$(CURDIR)/rootfs/usr/lib64/libdl.so.2:$(CURDIR)/rootfs/usr/lib64/libpthread.so.0
 endif
 test: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|.*\.gcda
 test: export NLSPATH = /usr/lib/nls/msg/%L/%N
@@ -544,11 +544,11 @@ ifeq ($(OS),FreeBSD)
 endif
 ifeq ($(OS),GNU/Linux)
 ifeq ($(shell test -d /lib/$(ARCH)-linux-gnu/ && echo 1),1)
-	install -D -m755 /usr/lib/$(ARCH)-linux-gnu/libc.so.6 /usr/lib/$(ARCH)-linux-gnu/libdl.so.2 --target-directory=$(DESTDIR)/usr/lib64
+	install -D -m755 /lib/$(ARCH)-linux-gnu/libc.so.6 /lib/$(ARCH)-linux-gnu/libdl.so.2 /lib/$(ARCH)-linux-gnu/libpthread.so.0 --target-directory=$(DESTDIR)/usr/lib64
 	ln -sf lib64 $(DESTDIR)/usr/lib
 	ln -sf . $(DESTDIR)/usr/lib/$(ARCH)-linux-gnu
 else
-	install -D -m755 /usr/lib64/libc.so.6 /usr/lib64/libdl.so.2 --target-directory=$(DESTDIR)/usr/lib64
+	install -D -m755 /usr/lib64/libc.so.6 /usr/lib64/libdl.so.2 /usr/lib64/libpthread.so.0 --target-directory=$(DESTDIR)/usr/lib64
 	ln -sf lib64 $(DESTDIR)/usr/lib
 endif
 ifeq ($(ARCH),x86_64)

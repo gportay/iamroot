@@ -46,6 +46,8 @@ int fchown(int fd, uid_t owner, gid_t group)
 	char buf[PATH_MAX];
 	ssize_t siz;
 	int ret;
+	(void)oldowner;
+	(void)oldgroup;
 
 	siz = fpath(fd, buf, sizeof(buf));
 	if (siz == -1)

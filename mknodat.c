@@ -28,6 +28,7 @@ int mknodat(int dfd, const char *path, mode_t mode, dev_t dev)
 	char buf[PATH_MAX];
 	ssize_t siz;
 	int fd;
+	(void)oldmode;
 	(void)dev;
 
 	siz = path_resolution(dfd, path, buf, sizeof(buf), 0);

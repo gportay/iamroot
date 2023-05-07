@@ -43,6 +43,7 @@ int fchmod(int fd, mode_t mode)
 	char buf[PATH_MAX];
 	ssize_t siz;
 	int ret;
+	(void)oldmode;
 
 	siz = fpath(fd, buf, sizeof(buf));
 	if (siz == -1)

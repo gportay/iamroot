@@ -45,6 +45,8 @@ int fchownat(int dfd, const char *path, uid_t owner, gid_t group, int atflags)
 	char buf[PATH_MAX];
 	ssize_t siz;
 	int ret;
+	(void)oldowner;
+	(void)oldgroup;
 
 	siz = path_resolution(dfd, path, buf, sizeof(buf), atflags);
 	if (siz == -1)

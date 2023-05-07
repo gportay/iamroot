@@ -14,6 +14,8 @@ __attribute__((visibility("hidden")))
 void __pathperror(const char *path, const char *s)
 {
 	const char *p = *path ? path : "(empty)";
+	(void)p;
+	(void)s;
 
 	if (__ignored_errno(errno) || __ignored_function(s)) {
 #ifdef __FreeBSD__

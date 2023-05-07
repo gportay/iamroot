@@ -44,6 +44,8 @@ ssize_t extattr_set_file(const char *path, int attrnamespace,
 	const char *oldattrname = attrname;
 	char buf[PATH_MAX];
 	ssize_t siz;
+	(void)oldattrnamespace;
+	(void)oldattrname;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)

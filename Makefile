@@ -43,6 +43,12 @@ export IAMROOT_LIB_ELF_1
 IAMROOT_EXEC = $(CURDIR)/exec.sh
 export IAMROOT_EXEC
 
+NVERBOSE ?= 1
+
+ifneq ($(NVERBOSE),0)
+CFLAGS += -DNVERBOSE
+endif
+
 %.o: override CPPFLAGS += -D_GNU_SOURCE -DVERSION=$(VERSION)
 %.o: override CFLAGS += -fPIC -Wall -Wextra
 %.so: override LDFLAGS += -nodefaultlibs

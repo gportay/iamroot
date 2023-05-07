@@ -13,6 +13,8 @@ __attribute__((visibility("hidden")))
 void __envperror(const char *name, const char *s)
 {
 	const char *n = *name ? name : "(empty)";
+	(void)n;
+	(void)s;
 
 #ifdef __FreeBSD__
 	__note_or_fatal("%s: %s: %i\n", n, s, errno);

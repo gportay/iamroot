@@ -12,6 +12,9 @@ ARCH ?= $(shell uname -m 2>/dev/null)
 KVER ?= $(shell uname -r 2>/dev/null)
 VMLINUX_KVER ?= $(shell vmlinux --version 2>/dev/null)
 
+NVERBOSE ?= 0
+export NVERBOSE
+
 IAMROOT_EXEC = $(CURDIR)/exec.sh
 export IAMROOT_EXEC
 

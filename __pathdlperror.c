@@ -14,6 +14,8 @@ __attribute__((visibility("hidden")))
 void __pathdlperror(const char *path, const char *s)
 {
 	const char *p = *path ? path : "(empty)";
+	(void)p;
+	(void)s;
 
 	__note_or_fatal("%s: %s: %s\n", p, s, dlerror());
 }

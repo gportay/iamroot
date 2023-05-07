@@ -46,6 +46,7 @@ int open(const char *path, int oflags, ...)
 	int atflags = 0;
 	ssize_t siz;
 	int ret;
+	(void)oldmode;
 
 	if (oflags & O_NOFOLLOW)
 		atflags = AT_SYMLINK_NOFOLLOW;

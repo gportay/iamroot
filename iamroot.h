@@ -198,11 +198,11 @@ int __verbosef(int, const char *, const char *, ...) __attribute__((format(print
 #define __warning(fmt, ...) __verbosef(0, __func__, fmt, __VA_ARGS__)
 void __verbose_exec(const char *, char * const[], char * const[]);
 #else
-#define __debug(fmt, ...)
-#define __info(fmt, ...)
-#define __notice(fmt, ...)
-#define __warning(fmt, ...)
-#define __verbose_exec(fmt, ...)
+#define __debug(fmt, ...) {}
+#define __info(fmt, ...) {}
+#define __notice(fmt, ...) {}
+#define __warning(fmt, ...) {}
+#define __verbose_exec(fmt, ...) {}
 #endif
 
 #define __fwarn_and_set_user_mode(fd, mode, user_mode) \

@@ -41,6 +41,8 @@ int extattr_delete_fd(int fd, int attrnamespace, const char *attrname)
 	const char *oldattrname = attrname;
 	char buf[PATH_MAX];
 	ssize_t siz;
+	(void)oldattrnamespace;
+	(void)oldattrname;
 
 	siz = fpath(fd, buf, sizeof(buf));
 	if (siz == -1)

@@ -968,8 +968,6 @@ void __verbose_exec(const char *path, char * const argv[], char * const envp[])
 		}
 	}
 }
-#else
-#define __verbose_exec(path, argv, envp)
 #endif
 
 __attribute__((visibility("hidden")))

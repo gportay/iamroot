@@ -44,6 +44,8 @@ int chown(const char *path, uid_t owner, gid_t group)
 	char buf[PATH_MAX];
 	ssize_t siz;
 	int ret;
+	(void)oldowner;
+	(void)oldgroup;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)

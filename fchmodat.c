@@ -43,6 +43,7 @@ int fchmodat(int dfd, const char *path, mode_t mode, int atflags)
 	char buf[PATH_MAX];
 	ssize_t siz;
 	int ret;
+	(void)oldmode;
 
 	siz = path_resolution(dfd, path, buf, sizeof(buf), atflags);
 	if (siz == -1)

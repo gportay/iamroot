@@ -43,6 +43,7 @@ int creat(const char *path, mode_t mode)
 	char buf[PATH_MAX];
 	ssize_t siz;
 	int ret;
+	(void)oldmode;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)

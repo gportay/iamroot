@@ -37,6 +37,7 @@ int lchmod(const char *path, mode_t mode)
 	char buf[PATH_MAX];
 	ssize_t siz;
 	int ret;
+	(void)oldmode;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
 			      AT_SYMLINK_NOFOLLOW);

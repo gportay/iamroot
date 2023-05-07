@@ -20,9 +20,9 @@ int main(int argc, char * const argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	if (__pathsetenv(getenv(argc > 3 ? argv[3] : "IAMROOT_ROOT"), argv[1],
-			 argv[2], 1) == -1) {
-		perror("__pathsetenv");
+	if (__path_setenv(getenv(argc > 3 ? argv[3] : "IAMROOT_ROOT"), argv[1],
+			  argv[2], 1) == -1) {
+		perror("__path_setenv");
 		return EXIT_FAILURE;
 	}
 

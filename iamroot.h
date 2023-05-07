@@ -135,8 +135,8 @@ int __fisfile(int);
 int __isfile(const char *);
 char *__getenv(const char *);
 int __setenv(const char *, const char *, int);
-int __pathprependenv(const char *, const char *, int);
-int __pathsetenv(const char *, const char *, const char *, int);
+int __path_prependenv(const char *, const char *, int);
+int __path_setenv(const char *, const char *, const char *, int);
 
 int __execve(const char *, char * const [], char * const []);
 int __exec_ignored(const char *);

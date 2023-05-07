@@ -18,7 +18,7 @@ int __getdebug_fd()
 	return STDERR_FILENO;
 }
 
-int __pathsetenv(const char *root, const char *name, const char *value,
+int __path_setenv(const char *root, const char *name, const char *value,
 		 int overwrite)
 {
 	(void)root;

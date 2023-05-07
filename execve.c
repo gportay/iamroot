@@ -541,6 +541,7 @@ exit:
 static int __dl_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
 		     int (*callback)(const void *, size_t, void *), void *data)
 {
+	const int errno_save = errno;
 	size_t strtab_siz = 0;
 	off_t strtab_off = 0;
 	Elf32_Dyn dyn[1024];
@@ -650,12 +651,16 @@ static int __dl_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
 	ret = 0;
 
 exit:
+	if (ret != -1)
+		errno = errno_save;
+
 	return ret;
 }
 
 static int __dl_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
 		     int (*callback)(const void *, size_t, void *), void *data)
 {
+	const int errno_save = errno;
 	size_t strtab_siz = 0;
 	off_t strtab_off = 0;
 	Elf64_Dyn dyn[1024];
@@ -765,6 +770,9 @@ static int __dl_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
 	ret = 0;
 
 exit:
+	if (ret != -1)
+		errno = errno_save;
+
 	return ret;
 }
 

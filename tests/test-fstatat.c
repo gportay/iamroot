@@ -20,15 +20,15 @@ int main(int argc, char * const argv[])
 	int dfd = AT_FDCWD, flags = 0, ret = EXIT_FAILURE;
 	struct stat statbuf;
 
-	if (argc < 5) {
+	if (argc < 2) {
 		fprintf(stderr, "Too few arguments\n");
 		exit(EXIT_FAILURE);
-	} else if (argc > 6) {
+	} else if (argc > 4) {
 		fprintf(stderr, "Too many arguments\n");
 		exit(EXIT_FAILURE);
 	}
 
-	if (argc == 3)
+	if (argc > 2)
 		flags = strtoul(argv[3], NULL, 0);
 
 	if (!__strneq(argv[1], "-")) {

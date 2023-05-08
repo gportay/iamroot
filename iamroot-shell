@@ -301,8 +301,18 @@ mapfile -t envs < <(env)
 for env in "${envs[@]}"
 do
 	var="${env%%=*}"
-	if [[ ! "$var" =~ ^(IAMROOT_.*|LD_.*|PATH|HOME|SHELL|USER|${IAMROOT_PRESERVE_ENV//:/|})$ ]]
+	if [[ "$var" =~ ^(IAMROOT_.*|LD_.*|PATH|HOME|SHELL|USER)$ ]]
 	then
+		continue
+	elif [[ $IAMROOT_PRESERVE_ENV ]] &&
+	     [[ "$var" =~ ^(${IAMROOT_PRESERVE_ENV//:/|})$ ]]
+	then
+		if [ "${IAMROOT_DEBUG:-0}" -gt 1 ]
+		then
+			echo "Info: Preserving $env" >&2
+		fi
+		continue
+	else
 		unset "$var"
 	fi
 done

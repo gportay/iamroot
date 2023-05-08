@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [unreleased]
+
+### Fixed
+
+- Fix the starting of `iamroot-shell` with a clean environment if the variable
+  `IAMROOT_PRESERVE_ENV` is unset
+
 ## [v9] - 2023-05-06
 
 ### Added

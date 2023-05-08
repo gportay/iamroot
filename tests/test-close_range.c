@@ -15,7 +15,7 @@
 #define __GLIBC_PREREQ(maj,min) 0
 #endif
 
-#if defined __GLIBC__ && __GLIBC_PREREQ(2,34)
+#if (defined __GLIBC__ && __GLIBC_PREREQ(2,34)) || defined __FreeBSD__
 int main(int argc, char * const argv[])
 {
 	unsigned int first, last;

@@ -18,7 +18,7 @@ void __pathperror(const char *path, const char *s)
 	(void)s;
 
 	if (__ignored_errno(errno) || __ignored_function(s)) {
-#ifdef __FreeBSD__
+#if defined __FreeBSD__ || defined __OpenBSD__
 		__debug("%s: %s: %i\n", p, s, errno);
 #else
 		__debug("%s: %s: %m\n", p, s);
@@ -26,7 +26,7 @@ void __pathperror(const char *path, const char *s)
 		return;
 	}
 
-#ifdef __FreeBSD__
+#if defined __FreeBSD__ || defined __OpenBSD__
 	__note_or_fatal("%s: %s: %i\n", p, s, errno);
 #else
 	__note_or_fatal("%s: %s: %m\n", p, s);

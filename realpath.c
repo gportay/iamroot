@@ -16,7 +16,9 @@
 
 #include "iamroot.h"
 
+#ifndef SYMLOOP_MAX
 #define SYMLOOP_MAX 40
+#endif
 #define readlink(...) next_readlinkat(AT_FDCWD, __VA_ARGS__)
 #define getcwd next_getcwd
 #define strlen __strnlen

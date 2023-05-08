@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#if defined __linux__ || defined __FreeBSD__
 #include <unistd.h>
 #include <stdio.h>
 #include <errno.h>
@@ -63,3 +64,4 @@ int __fxstat(int ver, int fd, struct stat *statbuf)
 exit:
 	return ret;
 }
+#endif

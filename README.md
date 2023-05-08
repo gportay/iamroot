@@ -20,11 +20,12 @@ userspace.
 It aims to provide a self-contained and all-in-one alternative to [fakeroot(1)]
 and [fakechroot(1)].
 
-The project targets the *Linux* userlands [glibc] and [musl]; the works to
-support *BSD* userlands such as [FreeBSD] (13.1) or [OpenBSD] is on-going.
+The project targets the *Linux* userlands [glibc] and [musl]. However, it works
+on [FreeBSD] (13.1) and [OpenBSD] (7.3) even if its usage is limited by some
+binaries statically linked (`pkg-static`, `chroot`...).
 
 The project compiles on x86 and ARM 64-bit, and runs on [Arch Linux], [Debian],
-[Alpine Linux] and [FreeBSD] 13.1.
+[Alpine Linux], [FreeBSD] (13.1) and [OpenBSD] (7.3).
 
 ## HOW IT WORKS
 

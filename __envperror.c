@@ -16,7 +16,7 @@ void __envperror(const char *name, const char *s)
 	(void)n;
 	(void)s;
 
-#ifdef __FreeBSD__
+#if defined __FreeBSD__ || defined __OpenBSD__
 	__note_or_fatal("%s: %s: %i\n", n, s, errno);
 #else
 	__note_or_fatal("%s: %s: %m\n", n, s);

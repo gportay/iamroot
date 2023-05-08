@@ -1,10 +1,10 @@
 /*
- * Copyright 2022 Gaël PORTAY
+ * Copyright 2022-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
-#ifdef __FreeBSD__
+#if defined __FreeBSD__ || defined __OpenBSD__
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>

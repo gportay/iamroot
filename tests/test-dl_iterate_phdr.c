@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 #include <link.h>
 
@@ -36,7 +37,9 @@ static int callback(struct dl_phdr_info *info, size_t size, void *data)
 		       (p_type == PT_PHDR) ? "PT_PHDR" :
 		       (p_type == PT_TLS) ? "PT_TLS" :
 		       (p_type == PT_GNU_EH_FRAME) ? "PT_GNU_EH_FRAME" :
+#if defined __linux__ || defined __FreeBSD__
 		       (p_type == PT_GNU_STACK) ? "PT_GNU_STACK" :
+#endif
 		       (p_type == PT_GNU_RELRO) ? "PT_GNU_RELRO" : NULL;
 
 		printf("    %2d: [%14p; memsz:%7jx] flags: %#jx; ", j,

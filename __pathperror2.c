@@ -19,7 +19,7 @@ void __pathperror2(const char *oldpath, const char *newpath, const char *s)
 	(void)newp;
 
 	if (__ignored_errno(errno) || __ignored_function(s)) {
-#ifdef __FreeBSD__
+#if defined __FreeBSD__ || defined __OpenBSD__
 		__debug("%s: %s: %s: %i\n", oldp, newp, s,
 		       errno);
 #else
@@ -28,7 +28,7 @@ void __pathperror2(const char *oldpath, const char *newpath, const char *s)
 		return;
 	}
 
-#ifdef __FreeBSD__
+#if defined __FreeBSD__ || defined __OpenBSD__
 	__note_or_fatal("%s: %s: %s: %i\n", oldp, newp, s,
 			errno);
 #else

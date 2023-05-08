@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
-#ifdef __FreeBSD__
+#if defined __FreeBSD__ || defined __OpenBSD__
 #include <stdio.h>
 #include <errno.h>
 #include <limits.h>
@@ -17,9 +17,17 @@
 #include "iamroot.h"
 
 __attribute__((visibility("hidden")))
+#ifdef __OpenBSD__
+int next_chflagsat(int dfd, const char *path, unsigned int flags, int atflag)
+#else
 int next_chflagsat(int dfd, const char *path, unsigned long flags, int atflag)
+#endif
 {
+#ifdef __OpenBSD__
+	int (*sym)(int, const char *, unsigned int, int);
+#else
 	int (*sym)(int, const char *, unsigned long, int);
+#endif
 	int ret;
 
 	sym = dlsym(RTLD_NEXT, "chflagsat");
@@ -33,7 +41,11 @@ int next_chflagsat(int dfd, const char *path, unsigned long flags, int atflag)
 	return ret;
 }
 
+#ifdef __OpenBSD__
+int chflagsat(int dfd, const char *path, unsigned int flags, int atflag)
+#else
 int chflagsat(int dfd, const char *path, unsigned long flags, int atflag)
+#endif
 {
 	char buf[PATH_MAX];
 	ssize_t siz;

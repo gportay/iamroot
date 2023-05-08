@@ -45,6 +45,53 @@ static int __getpath_resolution_workaround()
 		      NULL, 0);
 }
 
+#ifdef __OpenBSD__
+/*
+ * Stolen from musl (src/string/strchrnul.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+#include <stdint.h>
+
+#ifdef ALIGN
+#undef ALIGN
+#endif
+#define ALIGN (sizeof(size_t))
+#define ONES ((size_t)-1/UCHAR_MAX)
+#define HIGHS (ONES * (UCHAR_MAX/2+1))
+#define HASZERO(x) ((x)-ONES & ~(x) & HIGHS)
+
+__attribute__((visibility("hidden")))
+char *__strchrnul(const char *s, int c)
+{
+	c = (unsigned char)c;
+	if (!c) return (char *)s + strlen(s);
+
+#ifdef __GNUC__
+	typedef size_t __attribute__((__may_alias__)) word;
+	const word *w;
+	for (; (uintptr_t)s % ALIGN; s++)
+		if (!*s || *(unsigned char *)s == c) return (char *)s;
+	size_t k = ONES * c;
+	for (w = (void *)s; !HASZERO(*w) && !HASZERO(*w^k); w++);
+	s = (void *)w;
+#endif
+	for (; *s && *(unsigned char *)s != c; s++);
+	return (char *)s;
+}
+
+static ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
+{
+	(void)fd;
+	(void)buf;
+	(void)bufsize;
+
+	return __set_errno(ENOSYS, -1);
+}
+#endif
+
 #ifdef __FreeBSD__
 /*
  * Stolen from FreeBSD (lib/libutil/kinfo_getfile.c)
@@ -145,7 +192,9 @@ static ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
 	free(kif);
 	return ret;
 }
-#else
+#endif
+
+#ifdef __linux__
 /*
  * Stolen and hacked from musl (src/internal/procfdname.c)
  *
@@ -201,7 +250,9 @@ int __strtofd(const char *nptr, char **endptr)
 	return l;
 }
 
+#ifndef SYMLOOP_MAX
 #define SYMLOOP_MAX 40
+#endif
 #define readlink(...) next_readlinkat(AT_FDCWD, __VA_ARGS__)
 #define getcwd next_getcwd
 #define strlen __strnlen

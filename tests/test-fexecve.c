@@ -10,7 +10,7 @@
 
 #include <unistd.h>
 
-#ifdef __FreeBSD__
+#if defined __FreeBSD__ || __OpenBSD__
 extern char **environ;
 #endif
 
@@ -18,6 +18,7 @@ int main(void)
 {
 	char * const argv[] = { "-sh", "-c", "echo \"$@\"", "sh", "one", "two",
 				"three", NULL };
+#if defined __linux__ || __FreeBSD__
 	int fd;
 
 	fd = open(_PATH_BSHELL, O_RDONLY);
@@ -26,5 +27,9 @@ int main(void)
 
 	fexecve(fd, argv, environ);
 	perror("fexecve");
+#else
+	execve(_PATH_BSHELL, argv, environ);
+	perror("execve");
+#endif
 	_exit(127);
 }

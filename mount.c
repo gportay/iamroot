@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2022 Gaël PORTAY
+ * Copyright 2020-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -30,7 +30,7 @@ int mount(const char *source, const char *target, const char *filesystemtype,
 }
 #endif
 
-#ifdef __FreeBSD__
+#if defined __FreeBSD__ || defined __OpenBSD__
 int mount(const char *type, const char *dir, int flags, void *data)
 {
 	(void)flags;

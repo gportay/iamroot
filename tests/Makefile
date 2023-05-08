@@ -7,8 +7,8 @@
 SHELL = bash
 .SHELLFLAGS = -ec -o pipefail
 
-ARCH ?= $(shell uname -m)
-OS ?= $(shell uname -o)
+ARCH ?= $(shell uname -m 2>/dev/null)
+OS ?= $(shell uname -o 2>/dev/null || uname -s 2>/dev/null)
 
 override CPPFLAGS += -D_GNU_SOURCE
 override CFLAGS += -fPIC -Wall -Wextra
@@ -177,8 +177,10 @@ all: test-utimes
 libiamnotroot.so: override LDFLAGS += -nodefaultlibs
 libiamnotroot.so: iamnotroot.o
 
+ifneq ($(OS),OpenBSD)
 test-dlopen: override LDLIBS += -ldl
 test-dlmopen: override LDLIBS += -ldl
+endif
 
 test-path_resolution: libiamnotroot.so
 test-path_resolution: override LDLIBS += libiamnotroot.so
@@ -190,6 +192,10 @@ test-path_setenv: override LDLIBS += libiamnotroot.so
 ifeq ($(OS),FreeBSD)
 test: export IAMROOT_LIBRARY_PATH := /lib:/usr/lib:/usr/local/lib
 test: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/lib/libc.so.7:$(CURDIR)/rootfs/usr/lib/libdl.so.1
+endif
+ifeq ($(OS),OpenBSD)
+test: export IAMROOT_LIBRARY_PATH := /usr/lib:/usr/local/lib
+test: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/usr/lib/libc.so.97.0:$(CURDIR)/rootfs/usr/lib/libpthread.so.27.0
 endif
 ifeq ($(OS),GNU/Linux)
 test: export IAMROOT_LIBRARY_PATH := /lib64:/usr/lib64
@@ -544,6 +550,12 @@ ifeq ($(OS),FreeBSD)
 	install -m444 /lib/libc.so.7 $(DESTDIR)/lib
 	install -m444 /usr/lib/libdl.so.1 $(DESTDIR)/usr/lib
 	install -m555 /libexec/ld-elf.so.1 $(DESTDIR)/libexec
+	install -m444 libiamnotroot.so $(DESTDIR)/usr/local/lib
+endif
+ifeq ($(OS),OpenBSD)
+	install -d -m755 $(DESTDIR)/usr/libexec $(DESTDIR)/usr/lib $(DESTDIR)/usr/local/lib
+	install -m444 /usr/lib/libc.so.97.0 /usr/lib/libpthread.so.27.0 $(DESTDIR)/usr/lib
+	install -m444 /usr/libexec/ld.so $(DESTDIR)/usr/libexec
 	install -m444 libiamnotroot.so $(DESTDIR)/usr/local/lib
 endif
 ifeq ($(OS),GNU/Linux)

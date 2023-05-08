@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021,2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -24,10 +24,17 @@ int main(int argc, char * const argv[])
 	times[0].tv_sec = strtoul(argv[2], NULL, 0);
 	times[1].tv_sec = strtoul(argv[3], NULL, 0);
 
+#ifdef __OpenBSD__
+	if (utimes(argv[1], times)) {
+		perror("utimes");
+		return EXIT_FAILURE;
+	}
+#else
 	if (lutimes(argv[1], times)) {
 		perror("lutimes");
 		return EXIT_FAILURE;
 	}
+#endif
 
 	return EXIT_SUCCESS;
 }

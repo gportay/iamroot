@@ -44,6 +44,7 @@ ssize_t readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 	if (siz == -1)
 		return __path_resolution_perror(path, -1);
 
+#if defined __linux__ || defined __FreeBSD__
 	if (streq(tmp, "/proc/self/exe")) {
 		const char *exe;
 
@@ -59,6 +60,7 @@ ssize_t readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 			goto exit;
 		}
 	}
+#endif
 
 	ret = next_readlinkat(dfd, tmp, tmp2, sizeof(tmp2)-1); /* NULL-terminated */
 	if (ret == -1)

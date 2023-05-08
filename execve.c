@@ -18,7 +18,9 @@
 #include <dlfcn.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#if defined __linux__ || defined __FreeBSD__
 #include <sys/auxv.h>
+#endif
 #include <fcntl.h>
 #include <elf.h>
 #include <regex.h>
@@ -64,6 +66,13 @@ static const char *__execfn()
 		return NULL;
 
 	return buf;
+}
+#endif
+
+#ifdef __OpenBSD__
+static const char *__execfn()
+{
+	return __set_errno(ENOSYS, NULL);
 }
 #endif
 
@@ -615,7 +624,7 @@ static int __dl_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
 			char buf[BUFSIZ];
 			size_t size;
 
-			if (dyn[j].d_tag != dt_tag)
+			if ((int)dyn[j].d_tag != dt_tag)
 				continue;
 
 			/*
@@ -730,7 +739,7 @@ static int __dl_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
 			char buf[BUFSIZ];
 			size_t size;
 
-			if (dyn[j].d_tag != dt_tag)
+			if ((int)dyn[j].d_tag != dt_tag)
 				continue;
 
 			/*

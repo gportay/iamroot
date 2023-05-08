@@ -102,6 +102,10 @@ extern "C" {
 /* See https://www.in-ulm.de/~mascheck/various/shebang/#results */
 #define HASHBANG_MAX NAME_MAX
 
+#ifdef __OpenBSD__
+char *strchrnul(const char *, int);
+#endif
+
 #ifndef __linux__
 #define __environ environ
 
@@ -162,7 +166,9 @@ int __strtofd(const char *, char **);
 void __procfdname(char *, unsigned);
 
 char *__getroot();
+#if defined __linux__ || defined __FreeBSD__
 const char *__getexe();
+#endif
 
 const char *__getrootdir();
 int __chrootdir(const char *);
@@ -539,6 +545,7 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 	})
 #endif
 
+#if defined __linux__ || defined __FreeBSD__
 #define __st_mode(path, statbuf) \
 	({ mode_t m = __get_mode((path)); \
 	   if (m != (mode_t)-1) { \
@@ -592,6 +599,26 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 	   if (g != (gid_t)-1) { \
 	     statxbuf->stx_gid = g; \
 	   } })
+#else
+#define __get_mode(path) ({ (mode_t)-1; })
+#define __set_mode(path, oldmode, mode) {}
+#define __fget_mode(fd) ({ (mode_t)-1; })
+#define __fset_mode(fd, oldmode, mode) {}
+#define __get_uid(path) ({ (uid_t)-1; })
+#define __set_uid(path, olduid, uid) {}
+#define __fget_uid(fd) ({ (uid_t)-1; })
+#define __fset_uid(fd, olduid, uid) {}
+#define __get_gid(path) ({ (gid_t)-1; })
+#define __set_gid(path, oldgid, gid) {}
+#define __fget_gid(fd) ({ (gid_t)-1; })
+#define __fset_gid(fd, oldgid, gid) {}
+#define __st_mode(path, statbuf) {}
+#define __fst_mode(fd, statbuf) {}
+#define __st_uid(path, statbuf) {}
+#define __fst_uid(fd, statbuf) {}
+#define __st_gid(path, statbuf) {}
+#define __fst_gid(fd, statbuf) {}
+#endif
 
 #define __ignored_function(func) (streq(func, "next_extattr_delete_fd") || \
 				  streq(func, "next_extattr_delete_link") || \

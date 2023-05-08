@@ -278,10 +278,12 @@ do
 	cd "$OLDPWD"
 done
 
-if uname -o | grep -q "GNU/Linux"
+os="$(uname -o 2>/dev/null || uname -s 2>/dev/null)"
+if [[ "$os" == "GNU/Linux" ]]
 then
 	IAMROOT_LIB="$IAMROOT_LIB:libdl.so.2"
-else
+elif [[ "$os" == "FreeBSD" ]]
+then
 	IAMROOT_LIB="$IAMROOT_LIB:libdl.so"
 fi
 

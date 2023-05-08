@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -9,7 +9,7 @@
 
 #include <unistd.h>
 
-#ifdef __FreeBSD__
+#if defined __FreeBSD__ || __OpenBSD__
 extern char **environ;
 #endif
 

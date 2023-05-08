@@ -15,6 +15,24 @@
 
 #include "iamroot.h"
 
+#ifdef __OpenBSD__
+__attribute__((visibility("hidden")))
+int next_closefrom(int fd)
+{
+	int (*sym)(int);
+	int ret;
+
+	sym = dlsym(RTLD_NEXT, "closefrom");
+	if (!sym)
+		return __dl_set_errno(ENOSYS, -1);
+
+	ret = sym(fd);
+	if (ret == -1)
+		__fpathperror(fd, __func__);
+
+	return ret;
+}
+#else
 __attribute__((visibility("hidden")))
 void next_closefrom(int fd)
 {
@@ -26,6 +44,7 @@ void next_closefrom(int fd)
 
 	sym(fd);
 }
+#endif
 
 struct __closefrom {
 	int fd;
@@ -57,7 +76,11 @@ static int __callback(const char *path, const char *filename, void *user)
 	return 0;
 }
 
+#ifdef __OpenBSD__
+int closefrom(int fd)
+#else
 void closefrom(int fd)
+#endif
 {
 	struct __closefrom data = {
 		.fd = fd,
@@ -72,5 +95,9 @@ void closefrom(int fd)
 	__debug("%s(fd: %i <-> '%s') fds: { %s }\n", __func__, fd, __fpath(fd),
 		data.buf);
 
+#ifdef __OpenBSD__
+	return next_closefrom(fd);
+#else
 	next_closefrom(fd);
+#endif
 }

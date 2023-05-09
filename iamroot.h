@@ -160,7 +160,6 @@ int __dir_iterate(const char *, int (*)(const char *, const char *, void *),
 int __strtofd(const char *, char **);
 
 void __procfdname(char *, unsigned);
-ssize_t __procfdreadlink(int, char *, size_t);
 
 char *__getroot();
 const char *__getexe();

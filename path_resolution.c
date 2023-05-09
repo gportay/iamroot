@@ -124,7 +124,7 @@ struct kinfo_file *kinfo_getfile(pid_t pid, int *cntp)
 	return (kif);	/* Caller must free() return value */
 }
 
-ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
+static ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
 {
 	struct kinfo_file *kif;
 	ssize_t ret = -1;
@@ -168,8 +168,7 @@ void __procfdname(char *buf, unsigned fd)
 	for (; fd; fd/=10) buf[--i] = '0' + fd%10;
 }
 
-__attribute__((visibility("hidden")))
-ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
+static ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
 {
 	char tmp[sizeof("/proc/self/fd/") + 3*sizeof(int) + 2]; /* sign + NULL-terminated */
 	const int errno_save = errno;

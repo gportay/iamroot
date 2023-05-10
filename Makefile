@@ -259,9 +259,13 @@ libiamroot.so: unlink.o
 libiamroot.so: unlinkat.o
 libiamroot.so: unmount.o
 libiamroot.so: unshare.o
+libiamroot.so: updwtmp.o
+libiamroot.so: updwtmpx.o
 libiamroot.so: utime.o
 libiamroot.so: utimensat.o
 libiamroot.so: utimes.o
+libiamroot.so: utmpname.o
+libiamroot.so: utmpxname.o
 
 .PHONY: doc
 doc: iamroot-shell.1.gz iamroot.7.gz

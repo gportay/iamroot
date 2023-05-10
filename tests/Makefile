@@ -174,8 +174,12 @@ all: test-umount2
 all: test-unlink
 all: test-unlinkat
 all: test-unshare
+all: test-updwtmp
+all: test-updwtmpx
 all: test-utimensat
 all: test-utimes
+all: test-utmpname
+all: test-utmpxname
 
 libiamnotroot.so: override LDFLAGS += -nodefaultlibs
 libiamnotroot.so: iamnotroot.o
@@ -208,7 +212,7 @@ test: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|.*\.gcda
 test: export NLSPATH = /usr/lib/nls/msg/%L/%N
 test: | rootfs
 	rm -Rf rootfs/tmp/* rootfs/dev/*
-	touch rootfs/tmp/file0
+	touch rootfs/tmp/file0 rootfs/tmp/wtmp rootfs/tmp/wtmpx
 	ln -s file0 rootfs/tmp/symlink0
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-access rootfs/tmp/file0 0
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-access /tmp/file0 0
@@ -278,6 +282,10 @@ endif
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mktemp /tmp/tmp-XXXXXX              | tee /dev/stderr | grep -q "^/tmp/tmp-......\$$"
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-mkdtemp rootfs/tmp/tmpdir-XXXXXX                                                | tee /dev/stderr | grep -q "^rootfs/tmp/tmpdir-......\$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-mkdtemp /tmp/tmpdir-XXXXXX          | tee /dev/stderr | grep -q "^/tmp/tmpdir-......\$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-utmpname  /tmp/wtmp
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-updwtmp   /tmp/wtmp
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-utmpxname /tmp/wtmpx
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-updwtmpx  /tmp/wtmpx
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-mount -t procfs none rootfs/proc
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-umount rootfs/proc
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-umount2 rootfs/proc

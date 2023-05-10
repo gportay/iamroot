@@ -39,7 +39,8 @@ _iamroot-shell()
 		setuid setxattr stat stat64 statfs statfs64 statvfs statvfs64
 		statx swapoff swapon symlink symlinkat tempnam tmpnam tmpnam_r
 		truncate truncate64 ttyname ttyname_r umask umount umount2
-		unlink unlinkat unmount unshare utime utimensat utimes)
+		unlink unlinkat unmount unshare updwtmp updwtmpx utime
+		utimensat utimes utmpname utmpxname)
 
 	COMMON_PATH=(/bin /sbin /usr/bin /usr/sbin /usr/local/bin
 		/usr/local/sbin)

@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [unreleased]
 
+### Changed
+
+- The function `utimes()` do not call the AT-function `utimensat()` anymore
+
 ### Fixed
 
 - Fix the starting of `iamroot-shell` with a clean environment if the variable

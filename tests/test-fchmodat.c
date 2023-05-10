@@ -41,7 +41,7 @@ int main(int argc, char * const argv[])
 	}
 
 	if (fchmodat(dfd, argv[2], mode, flags)) {
-		perror("fchownat");
+		perror("fchmodat");
 		goto exit;
 	}
 

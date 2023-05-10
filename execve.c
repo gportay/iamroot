@@ -223,7 +223,7 @@ static int __librarypath_callback(const char *library, void *user)
 	ssize_t siz;
 
 	/* ignore dynamic loaders */
-	if (__strneq(library, "ld-"))
+	if (streq(library, "ld.so") || __strneq(library, "ld-"))
 		return 0;
 
 	if (*library != '/') {

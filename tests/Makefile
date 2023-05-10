@@ -37,6 +37,7 @@ all: test-chown
 all: test-chroot
 all: test-close_range
 all: test-closefrom
+all: test-ctermid
 all: test-dl_iterate_phdr
 all: test-dlmopen
 all: test-dlopen
@@ -165,6 +166,8 @@ all: test-tmpnam
 all: test-tmpnam_r
 all: test-truncate
 all: test-truncate64
+all: test-ttyname
+all: test-ttyname_r
 all: test-ulckpwdf
 all: test-umount
 all: test-umount2
@@ -377,6 +380,14 @@ endif
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-truncate /tmp/file0 0
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-truncate64 rootfs/tmp/file0 1
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-truncate64 /tmp/file0 0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-ctermid
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-ctermid
+ifneq ($(shell tty 2>/dev/null),not a tty)
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-ttyname 1
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-ttyname 1
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-ttyname_r 2
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-ttyname_r 2
+endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-utimes rootfs/tmp/file0 0x3fffffff 0x3fffffff
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-lutimes rootfs/tmp/symlink0 0x3fffffff 0x3fffffff
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-utimensat . rootfs/tmp/file0 0x3fffffff 0x3fffffff

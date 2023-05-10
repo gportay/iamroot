@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [unreleased]
 
+### Added
+
+- Intercept the functions `ctermid()`, `ttyname()` and `ttyname_r()`
+
 ### Changed
 
 - The function `utimes()` do not call the AT-function `utimensat()` anymore

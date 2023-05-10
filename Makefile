@@ -102,6 +102,7 @@ libiamroot.so: close_range.o
 libiamroot.so: closefrom.o
 libiamroot.so: connect.o
 libiamroot.so: creat.o
+libiamroot.so: ctermid.o
 libiamroot.so: dl_iterate_phdr.o
 libiamroot.so: dlmopen.o
 libiamroot.so: dlopen.o
@@ -249,6 +250,8 @@ libiamroot.so: tmpnam.o
 libiamroot.so: tmpnam_r.o
 libiamroot.so: truncate.o
 libiamroot.so: truncate64.o
+libiamroot.so: ttyname.o
+libiamroot.so: ttyname_r.o
 libiamroot.so: umask.o
 libiamroot.so: umount.o
 libiamroot.so: umount2.o

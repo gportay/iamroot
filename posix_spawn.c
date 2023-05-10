@@ -171,7 +171,7 @@ posix_spawn:
 		arg = argv+1; /* skip original-argv0 */
 		while (*arg)
 			*narg++ = *arg++;
-		*narg++ = NULL; /* NULL-terminated */
+		*narg++ = NULL; /* ensure NULL-terminated */
 
 		__verbose_exec(*nargv, nargv, __environ);
 		return next_posix_spawn(pid, *nargv, file_actions, attrp,

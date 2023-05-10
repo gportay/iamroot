@@ -5,9 +5,7 @@
  */
 
 #include <stdio.h>
-#include <string.h>
 #include <errno.h>
-#include <limits.h>
 #include <dlfcn.h>
 
 #include <unistd.h>

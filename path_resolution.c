@@ -82,7 +82,7 @@ char *__strchrnul(const char *s, int c)
 	return (char *)s;
 }
 
-static ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
+static ssize_t __fgetpath(int fd, char *buf, size_t bufsize)
 {
 	(void)fd;
 	(void)buf;
@@ -171,7 +171,7 @@ struct kinfo_file *kinfo_getfile(pid_t pid, int *cntp)
 	return (kif);	/* Caller must free() return value */
 }
 
-static ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
+static ssize_t __fgetpath(int fd, char *buf, size_t bufsize)
 {
 	struct kinfo_file *kif;
 	ssize_t ret = -1;
@@ -217,7 +217,7 @@ void __procfdname(char *buf, unsigned fd)
 	for (; fd; fd/=10) buf[--i] = '0' + fd%10;
 }
 
-static ssize_t __procfdreadlink(int fd, char *buf, size_t bufsize)
+static ssize_t __fgetpath(int fd, char *buf, size_t bufsize)
 {
 	char tmp[sizeof("/proc/self/fd/") + 3*sizeof(int) + 2]; /* sign + NULL-terminated */
 	const int errno_save = errno;
@@ -591,7 +591,7 @@ ssize_t fpath(int fd, char *buf, size_t bufsiz)
 	if (fd < 0 && fd != AT_FDCWD)
 		return __set_errno(EINVAL, -1);
 
-	siz = __procfdreadlink(fd, buf, bufsiz);
+	siz = __fgetpath(fd, buf, bufsiz);
 	if (siz == -1)
 		return -1;
 	buf[siz] = 0; /* ensure NULL-terminated */

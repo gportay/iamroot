@@ -654,7 +654,7 @@ extern void __pathdlperror(const char *, const char *);
 	   (r); })
 
 #define __env_perror(e, f, r) \
-	({ __envperror((e), f); \
+	({ __envperror((e), (f)); \
 	   (r); })
 
 int close(int);

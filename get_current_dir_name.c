@@ -34,10 +34,8 @@ char *get_current_dir_name()
 	char *ret;
 
 	ret = next_get_current_dir_name();
-	if (!ret) {
-		perror(__func__);
+	if (!ret)
 		return NULL;
-	}
 
 	ret = __striprootdir(ret);
 	if (!ret) {

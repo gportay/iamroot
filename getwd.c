@@ -34,10 +34,8 @@ char *getwd(char *buf)
 	char *ret;
 
 	ret = next_getwd(buf);
-	if (!ret) {
-		perror(__func__);
+	if (!ret)
 		return NULL;
-	}
 
 	ret = __striprootdir(ret);
 	if (!ret) {

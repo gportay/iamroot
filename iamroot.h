@@ -643,7 +643,7 @@ extern void __pathdlperror(const char *, const char *);
 
 #define __dl_set_errno(ENOSYS, r) \
 	({ __dlperror(__func__); \
-	   __set_errno(ENOSYS, r); })
+	   __set_errno(ENOSYS, (r)); })
 
 #define __fpath_perror(fd, r) \
 	({ __fpathperror((fd), __func__); \

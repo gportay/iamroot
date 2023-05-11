@@ -138,6 +138,7 @@ libiamroot.so: fchmod.o
 libiamroot.so: fchmodat.o
 libiamroot.so: fchown.o
 libiamroot.so: fchownat.o
+libiamroot.so: fclose.o
 libiamroot.so: fdopen.o
 libiamroot.so: fexecve.o
 libiamroot.so: fgetxattr.o

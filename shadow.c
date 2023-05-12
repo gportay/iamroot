@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -172,7 +172,6 @@ int getspnam_r(const char *name, struct spwd *sp, char *buf, size_t size, struct
 	return rv;
 }
 
-
 /*
  * Stolen from musl (src/passwd/getspnam.c)
  *
@@ -260,6 +259,14 @@ int putspent(const struct spwd *sp, FILE *f)
 		NUM(sp->sp_min), NUM(sp->sp_max), NUM(sp->sp_warn),
 		NUM(sp->sp_inact), NUM(sp->sp_expire), NUM((long)sp->sp_flag)) < 0 ? -1 : 0;
 }
+
+/*
+ * Stolen from musl (src/passwd/lckpwdf.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 
 #include <shadow.h>
 

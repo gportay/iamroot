@@ -12,6 +12,7 @@ ARCH ?= $(shell uname -m 2>/dev/null)
 KVER ?= $(shell uname -r 2>/dev/null)
 VMLINUX_KVER ?= $(shell vmlinux --version 2>/dev/null)
 KVM ?= $(shell test -c /dev/kvm 2>/dev/null)
+CLANG ?= 0
 
 NVERBOSE ?= 0
 export NVERBOSE
@@ -534,7 +535,7 @@ $(eval $(call libiamroot_so,riscv64,musl-riscv64,1))
 endif
 endif
 
-ifdef CLANG
+ifneq ($(CLANG),0)
 ifneq ($(shell command -v clang 2>/dev/null),)
 $(O)-clang-linux-x86-64/libiamroot.so: CC = clang
 $(eval $(call libiamroot_so,clang,linux-x86-64,2))

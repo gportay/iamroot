@@ -121,7 +121,6 @@ end:
  * SPDX-License-Identifier: MIT
  */
 #include <pthread.h>
-#include <byteswap.h>
 #include <string.h>
 #include <unistd.h>
 
@@ -306,10 +305,7 @@ done:
  */
 #include <grp.h>
 #include <string.h>
-#include <limits.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <byteswap.h>
 #include <errno.h>
 
 int getgrouplist(const char *user, gid_t gid, gid_t *groups, int *ngroups)

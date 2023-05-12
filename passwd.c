@@ -107,7 +107,6 @@ int __getpwent_a(FILE *f, struct passwd *pw, char **line, size_t *size, struct p
  * SPDX-License-Identifier: MIT
  */
 #include <pthread.h>
-#include <byteswap.h>
 #include <string.h>
 #include <unistd.h>
 

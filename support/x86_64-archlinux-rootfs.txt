@@ -282,6 +282,8 @@ Warning: chmod: /dev/loop-control: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/net: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/vhost-net: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/vhost-vsock: Ignoring error 'Operation not permitted'!
+Warning: chmod: /sys/kernel: Ignoring error 'Operation not permitted'!
+Warning: chmod: /sys/kernel: Ignoring error 'Operation not permitted'!
 (XXX/XXX) Reloading device manager configuration...
   Skipped: Running in chroot.
 (XXX/XXX) Arming ConditionNeedsUpdate...

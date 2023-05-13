@@ -640,11 +640,19 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 
 #define __ignored_error(rc) ((rc == -1) && (errno == EPERM))
 
+#if defined __FreeBSD__ || defined __OpenBSD__
+#define __ignore_error_and_warn(rc, fd, path, flags) \
+	({ if (__ignored_error(rc) && (__path_ignored((fd), (path)) > 0)) { \
+	     __warning("%s: %s: Ignoring error '%i'!\n", __func__, __getpath((fd), (path), (flags)), rc); \
+	     rc = __set_errno(0, 0); \
+	   } })
+#else
 #define __ignore_error_and_warn(rc, fd, path, flags) \
 	({ if (__ignored_error(rc) && (__path_ignored((fd), (path)) > 0)) { \
 	     __warning("%s: %s: Ignoring error '%m'!\n", __func__, __getpath((fd), (path), (flags))); \
 	     rc = __set_errno(0, 0); \
 	   } })
+#endif
 
 #define __warn_or_fatal(fmt, ...) \
 	({ __warning(fmt, __VA_ARGS__); \

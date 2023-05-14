@@ -35,15 +35,12 @@ char *getcwd(char *buf, size_t size)
 
 	ret = next_getcwd(buf, size);
 	if (!ret)
-		return NULL;
+		goto exit;
 
 	ret = __striprootdir(ret);
-	if (!ret) {
-		__pathperror(buf, __func__);
-		return NULL;
-	}
 
-	__debug("%s(buf: %p, size: %zu)\n", __func__, buf, size);
+exit:
+	__debug("%s(buf: %p, size: %zu) -> '%s'\n", __func__, buf, size, ret);
 
 	return ret;
 }

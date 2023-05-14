@@ -52,14 +52,14 @@ int accept4(int socket, struct sockaddr *addr, socklen_t *addrlen, int oflags)
 
 	buflen = SUN_LEN(&buf);
 
-	__debug("%s(socket: %i, addr: { .sun_path: '%s' -> '%s', ... }, addrlen: %i -> %i, oflags: 0%o)\n",
-		__func__, socket, addrun->sun_path, buf.sun_path,
-		addrlen ? *addrlen : 0, buflen, oflags);
-
 	ret = next_accept4(socket, (struct sockaddr *)&buf, &buflen, oflags);
 
 	if (ret == 0 && addrlen)
 		*addrlen = buflen;
+
+	__debug("%s(socket: %i, addr: { .sun_path: '%s' -> '%s', ... }, addrlen: %i -> %i, oflags: 0%o) -> %i\n",
+		__func__, socket, addrun->sun_path, buf.sun_path,
+		addrlen ? *addrlen : 0, buflen, oflags, ret);
 
 	return ret;
 }

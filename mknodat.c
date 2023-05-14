@@ -27,7 +27,7 @@ int mknodat(int dfd, const char *path, mode_t mode, dev_t dev)
 	const mode_t oldmode = mode;
 	char buf[PATH_MAX];
 	ssize_t siz;
-	int fd;
+	int fd, ret;
 	(void)oldmode;
 	(void)dev;
 
@@ -36,14 +36,19 @@ int mknodat(int dfd, const char *path, mode_t mode, dev_t dev)
 		return __path_resolution_perror(path, -1);
 
 	__fwarn_if_insuffisant_user_modeat(dfd, buf, mode, 0);
-	__debug("%s(dfd %i <-> '%s', path: '%s' -> '%s', mode: 0%03o -> 0%03o)\n",
-		__func__, dfd, __fpath(dfd), path, buf, oldmode, mode);
 
-	fd = next_creat(buf, mode);
-	if (fd == -1)
-		return -1;
+	ret = next_creat(buf, mode);
+	if (ret == -1)
+		goto exit;
+
+	fd = ret;
+	ret = 0;
 	__close(fd);
 	__set_mode(buf, oldmode, mode);
 
-	return 0;
+exit:
+	__debug("%s(dfd %i <-> '%s', path: '%s' -> '%s', mode: 0%03o -> 0%03o) -> %i\n",
+		__func__, dfd, __fpath(dfd), path, buf, oldmode, mode, ret);
+
+	return ret;
 }

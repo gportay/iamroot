@@ -31,8 +31,12 @@ FILE *next_fdopen(int fd, const char *mode)
 
 FILE *fdopen(int fd, const char *mode)
 {
-	__debug("%s(fd: %i <-> '%s', mode: '%s')\n", __func__, fd, __fpath(fd),
-		mode);
+	FILE *ret;
 
-	return next_fdopen(fd, mode);
+	ret = next_fdopen(fd, mode);
+
+	__debug("%s(fd: %i <-> '%s', mode: '%s') -> %p\n", __func__, fd,
+		__fpath(fd), mode, ret);
+
+	return ret;
 }

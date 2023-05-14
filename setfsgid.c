@@ -18,15 +18,21 @@ int setfsgid(gid_t fsgid)
 	char buf[BUFSIZ];
 	int ret;
 
-	__debug("%s(fsgid: %u)\n", __func__, fsgid);
-
-	if (fsgid == (gid_t)-1)
-		return __set_errno(EINVAL, -1);
+	if (fsgid == (gid_t)-1) {
+		ret = __set_errno(EINVAL, -1);
+		goto exit;
+	}
 
 	ret = _snprintf(buf, sizeof(buf), "%u", fsgid);
 	if (ret == -1)
-		return -1;
+		goto exit;
 
-	return __setenv("FSGID", buf, 1);
+	/* Not forwarding function */
+	ret = __setenv("FSGID", buf, 1);
+
+exit:
+	__debug("%s(fsgid: %u) -> %i\n", __func__, fsgid, ret);
+
+	return ret;
 }
 #endif

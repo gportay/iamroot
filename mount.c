@@ -17,30 +17,38 @@
 int mount(const char *source, const char *target, const char *filesystemtype,
 	  unsigned long mountflags, const void *data)
 {
+	int ret;
 	(void)filesystemtype;
 	(void)mountflags;
 	(void)source;
 	(void)target;
 	(void)data;
 
-	__debug("%s(source: '%s', target: '%s', ..., mountflags: 0x%lx, ...)\n",
-		__func__, source, target, mountflags);
+	/* Not forwarding function */
+	ret = 0;
 
-	return 0;
+	__debug("%s(source: '%s', target: '%s', ..., mountflags: 0x%lx, ...) -> %i\n",
+		__func__, source, target, mountflags, ret);
+
+	return ret;
 }
 #endif
 
 #if defined __FreeBSD__ || defined __OpenBSD__
 int mount(const char *type, const char *dir, int flags, void *data)
 {
+	int ret;
 	(void)flags;
 	(void)type;
 	(void)data;
 	(void)dir;
 
-	__debug("%s(..., dir: '%s', flags: 0x%x, ...)\n", __func__, dir,
-		flags);
+	/* Not forwarding function */
+	ret = 0;
 
-	return 0;
+	__debug("%s(..., dir: '%s', flags: 0x%x, ...) -> %i\n", __func__, dir,
+		flags, ret);
+
+	return ret;
 }
 #endif

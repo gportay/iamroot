@@ -34,12 +34,12 @@ int dup(int fd)
 {
 	int ret;
 
-	__debug("%s(fd: %i <-> '%s')\n", __func__, fd, __fpath(fd));
-
 	ret = next_dup(fd);
 
 	if (ret >= 0)
 		__setfd(ret, __fpath(fd));
+
+	__debug("%s(fd: %i <-> '%s') -> %i\n", __func__, fd, __fpath(fd), ret);
 
 	return ret;
 }

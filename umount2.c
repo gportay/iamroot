@@ -14,10 +14,15 @@
 
 int umount2(const char *target, int flags)
 {
+	int ret;
 	(void)target;
 	(void)flags;
 
-	__debug("%s(target: '%s', flags: 0x%x)\n", __func__, target, flags);
+	/* Not forwarding function */
+	ret = 0;
 
-	return 0;
+	__debug("%s(target: '%s', flags: 0x%x) -> %i\n", __func__, target,
+		flags, ret);
+
+	return ret;
 }

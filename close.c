@@ -34,12 +34,12 @@ int close(int fd)
 {
 	int ret;
 
-	__debug("%s(fd: %i <-> '%s')\n", __func__, fd, __fpath(fd));
-
 	ret = next_close(fd);
 
 	if (ret != -1)
 		__setfd(fd, NULL);
+
+	__debug("%s(fd: %i <-> '%s') -> %i\n", __func__, fd, __fpath(fd), ret);
 
 	return ret;
 }

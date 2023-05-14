@@ -52,8 +52,8 @@ int mkostempsat(int dfd, char *path, int suffixlen, int oflags)
 	memcpy(path, buf+__strlen(buf)-len, len);
 
 exit:
-	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', ..., oflags: 0%o)\n",
-		__func__, dfd, __fpath(dfd), path, buf, oflags);
+	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', ..., oflags: 0%o) -> %i\n",
+		__func__, dfd, __fpath(dfd), path, buf, oflags, ret);
 
 	return ret;
 }

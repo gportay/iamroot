@@ -17,17 +17,19 @@
 int setgroups(size_t listsize, const gid_t *list)
 {
 	char buf[BUFSIZ];
+	int ret = -1;
 	size_t size;
 	size_t i;
 
-	__debug("%s(listsize: %i, list: %p): IAMROOT_GROUPS: '%s'\n", __func__,
-		(int)listsize, list, getenv("IAMROOT_GROUPS"));
+	if (listsize > NGROUPS_MAX) {
+		ret = __set_errno(EINVAL, -1);
+		goto exit;
+	}
 
-	if (listsize > NGROUPS_MAX)
-		return __set_errno(EINVAL, -1);
-
-	if (listsize == 0)
-		return unsetenv("IAMROOT_GROUPS");
+	if (listsize == 0) {
+		ret = unsetenv("IAMROOT_GROUPS");
+		goto exit;
+	}
 
 	size = 0;
 	for (i = 0; i < listsize; i++) {
@@ -36,10 +38,17 @@ int setgroups(size_t listsize, const gid_t *list)
 		n = _snprintf(&buf[size], sizeof(buf)-size, "%s%u",
 			      i > 0 ? ":" : "", list[i]);
 		if (n == -1)
-			return -1;
+			goto exit;
 
 		size += n;
 	}
 
-	return setenv("IAMROOT_GROUPS", buf, 1);
+	/* Not forwarding function */
+	ret = setenv("IAMROOT_GROUPS", buf, 1);
+
+exit:
+	__debug("%s(listsize: %i, list: %p): -> %i, IAMROOT_GROUPS: '%s'\n",
+		__func__, (int)listsize, list, ret, getenv("IAMROOT_GROUPS"));
+
+	return ret;
 }

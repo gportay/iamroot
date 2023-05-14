@@ -38,16 +38,19 @@ int utimensat(int dfd, const char *path, const struct timespec times[2],
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
+	int ret;
 
 	siz = path_resolution(dfd, path, buf, sizeof(buf),
 			      AT_SYMLINK_NOFOLLOW);
 	if (siz == -1)
 		return __path_resolution_perror(path, -1);
 
-	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', ..., atflags: 0x%x)\n",
-		__func__, dfd, __fpath(dfd), path, buf, atflags);
+	ret = next_utimensat(dfd, buf, times, atflags);
 
-	return next_utimensat(dfd, buf, times, atflags);
+	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', ..., atflags: 0x%x) -> %i\n",
+		__func__, dfd, __fpath(dfd), path, buf, atflags, ret);
+
+	return ret;
 }
 
 #ifdef __GLIBC__

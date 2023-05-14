@@ -15,11 +15,16 @@
 
 int unmount(const char *dir, int flags)
 {
+	int ret;
 	(void)dir;
 	(void)flags;
 
-	__debug("%s(dir: '%s', flags: 0x%x)\n", __func__, dir, flags);
+	/* Not forwarding function */
+	ret = 0;
 
-	return 0;
+	__debug("%s(dir: '%s', flags: 0x%x) -> %i\n", __func__, dir, flags,
+		ret);
+
+	return ret;
 }
 #endif

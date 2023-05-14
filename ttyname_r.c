@@ -36,15 +36,15 @@ int ttyname_r(int fd, char *buf, size_t bufsize)
 
 	ret = next_ttyname_r(fd, buf, bufsize);
 	if (ret == -1)
-		return -1;
+		goto exit;
 
 	s = __striprootdir(buf);
-	if (!s) {
-		__fpathperror(fd, __func__);
-		return -1;
-	}
+	if (!s)
+		ret = -1;
 
-	__debug("%s(fd: %i <-> '%s', ...)\n", __func__, fd, __fpath(fd));
+exit:
+	__debug("%s(fd: %i <-> '%s', ...) -> %i\n", __func__, fd, __fpath(fd),
+		ret);
 
 	return ret;
 }

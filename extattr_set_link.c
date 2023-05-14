@@ -43,7 +43,7 @@ ssize_t extattr_set_link(const char *path, int attrnamespace,
 	const int oldattrnamespace = attrnamespace;
 	const char *oldattrname = attrname;
 	char buf[PATH_MAX];
-	ssize_t siz;
+	ssize_t ret, siz;
 	(void)oldattrnamespace;
 	(void)oldattrname;
 
@@ -64,11 +64,13 @@ ssize_t extattr_set_link(const char *path, int attrnamespace,
 		attrname = extbuf;
 	}
 
+	ret = next_extattr_set_link(buf, attrnamespace, attrname, data,
+				    nbytes);
+
 	__debug("%s(path: '%s' -> '%s', attrnamespace: %i -> %i, attrname: '%s' -> '%s', ...)\n",
 		__func__, path, buf, oldattrnamespace, attrnamespace,
 		oldattrname, attrname);
 
-	return next_extattr_set_link(buf, attrnamespace, attrname, data,
-				     nbytes);
+	return ret;
 }
 #endif

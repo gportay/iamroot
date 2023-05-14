@@ -38,9 +38,9 @@ ssize_t next_llistxattr(const char *path, char *list, size_t size)
 ssize_t llistxattr(const char *path, char *list, size_t size)
 {
 	char xbuf[XATTR_LIST_MAX+1]; /* NULL-terminated */
+	ssize_t i, ret = -1;
 	char buf[PATH_MAX];
 	ssize_t xsize, siz;
-	ssize_t i, ret;
 	(void)size;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
@@ -48,11 +48,9 @@ ssize_t llistxattr(const char *path, char *list, size_t size)
 	if (siz == -1)
 		return __path_resolution_perror(path, -1);
 
-	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
-
 	xsize = next_llistxattr(buf, xbuf, sizeof(xbuf)-1); /* NULL-terminated */
 	if (xsize == -1)
-		return -1;
+		goto exit;
 
 	xbuf[xsize] = 0; /* ensure NULL-terminated */
 
@@ -75,6 +73,10 @@ ssize_t llistxattr(const char *path, char *list, size_t size)
 		if (len != off)
 			ret += len + 1 - off; /* NULL-terminated */
 	} while (i < xsize);
+
+exit:
+	__debug("%s(path: '%s' -> '%s', ...) -> %zi\n", __func__, path, buf,
+		ret);
 
 	return ret;
 }

@@ -54,14 +54,12 @@ ssize_t extattr_list_link(const char *path, int attrnamespace, void *data,
 	if (attrnamespace == EXTATTR_NAMESPACE_SYSTEM)
 		attrnamespace = EXTATTR_NAMESPACE_USER;
 
-	__debug("%s(path: '%s' -> '%s', attrnamespace: %i -> %i, ...)\n",
-		__func__, path, buf, oldattrnamespace, attrnamespace);
+	ret = next_extattr_list_link(path, attrnamespace, extbuf,
+				     sizeof(extbuf));
+	if (ret == -1)
+		goto exit;
 
-	extsize = next_extattr_list_link(path, attrnamespace, extbuf,
-				       sizeof(extbuf));
-	if (extsize == -1)
-		return -1;
-
+	extsize = ret;
 	ret = 0;
 	i = 0;
 	while (i < extsize) {
@@ -84,6 +82,10 @@ ssize_t extattr_list_link(const char *path, int attrnamespace, void *data,
 		if (len != off)
 			ret += len + 1 - off; /* len */
 	}
+
+exit:
+	__debug("%s(path: '%s' -> '%s', attrnamespace: %i -> %i, ...) -> %zi\n",
+		__func__, path, buf, oldattrnamespace, attrnamespace, ret);
 
 	return ret;
 }

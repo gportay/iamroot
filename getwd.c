@@ -35,15 +35,12 @@ char *getwd(char *buf)
 
 	ret = next_getwd(buf);
 	if (!ret)
-		return NULL;
+		goto exit;
 
 	ret = __striprootdir(ret);
-	if (!ret) {
-		__pathperror(buf, __func__);
-		return NULL;
-	}
 
-	__debug("%s(buf: %p)\n", __func__, buf);
+exit:
+	__debug("%s(buf: %p) -> '%s'\n", __func__, buf, ret);
 
 	return ret;
 }

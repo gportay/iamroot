@@ -90,20 +90,32 @@ void closefrom(int fd)
 		.buf = { 0 },
 	};
 	int err;
+#endif
+#ifdef __OpenBSD__
+	int ret;
+#endif
 
+#ifdef __linux__
 	err = __dir_iterate("/proc/self/fd", __callback, &data);
 	if (err == -1)
 		__strncpy(data.buf, "(error)");
+#endif
 
+#ifdef __OpenBSD__
+	ret = next_closefrom(fd);
+
+	__debug("%s(fd: %i <-> '%s') -> %i, fds: { %s }\n", __func__, fd,
+		__fpath(fd), ret, data.buf);
+
+	return ret;
+#else
+	next_closefrom(fd);
+
+#ifdef __linux__
 	__debug("%s(fd: %i <-> '%s') fds: { %s }\n", __func__, fd, __fpath(fd),
 		data.buf);
 #else
 	__debug("%s(fd: %i <-> '%s')\n", __func__, fd, __fpath(fd));
 #endif
-
-#ifdef __OpenBSD__
-	return next_closefrom(fd);
-#else
-	next_closefrom(fd);
 #endif
 }

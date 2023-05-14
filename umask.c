@@ -49,13 +49,14 @@ mode_t umask(mode_t mask)
 	mode_t ret, m;
 
 	m = mask & ~(S_IRUSR | S_IWUSR);
-	__debug("%s(mask: 0%03o -> 0%03o)\n", __func__, mask, m);
 
 	ret = __getumask();
 	next_umask(m);
 	__setumask(mask);
 
 	__warn_if_too_restrictive_umask(mask);
+
+	__debug("%s(mask: 0%03o -> 0%03o) -> %i\n", __func__, mask, m, ret);
 
 	return ret;
 }

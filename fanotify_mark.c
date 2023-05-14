@@ -55,14 +55,17 @@ int fanotify_mark(int fanotify_fd, unsigned int flags, unsigned long long mask,
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
+	int ret;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
 		return __path_resolution_perror(path, -1);
 
-	__debug("%s(..., dfd: %i <-> '%s', path: '%s')\n", __func__, dfd,
-		__fpath(dfd), path);
+	ret = next_fanotify_mark(fanotify_fd, flags, mask, dfd, path);
 
-	return next_fanotify_mark(fanotify_fd, flags, mask, dfd, path);
+	__debug("%s(..., dfd: %i <-> '%s', path: '%s') -> %i\n", __func__, dfd,
+		__fpath(dfd), path, ret);
+
+	return ret;
 }
 #endif

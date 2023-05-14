@@ -37,14 +37,17 @@ DIR *__opendir2(const char *path, int oflags)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
+	DIR *ret;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
 		return __path_resolution_perror(path, NULL);
 
-	__debug("%s(path: '%s' -> '%s', oflags: 0%o)\n", __func__, path, buf,
-		oflags);
+	ret = next___opendir2(buf, oflags);
 
-	return next___opendir2(buf, oflags);
+	__debug("%s(path: '%s' -> '%s', oflags: 0%o) -> %p\n", __func__, path,
+		buf, oflags, ret);
+
+	return ret;
 }
 #endif

@@ -38,13 +38,17 @@ int getfh(const char *path, fhandle_t *fhp)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
+	int ret;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
 		return __path_resolution_perror(path, -1);
 
-	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
+	ret = next_getfh(path, fhp);
 
-	return next_getfh(path, fhp);
+	__debug("%s(path: '%s' -> '%s', ...) -> %i\n", __func__, path, buf,
+		ret);
+
+	return ret;
 }
 #endif

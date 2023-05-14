@@ -35,14 +35,17 @@ int unlinkat(int dfd, const char *path, int atflags)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
+	int ret;
 
 	siz = path_resolution(dfd, path, buf, sizeof(buf),
 			      atflags | AT_SYMLINK_NOFOLLOW);
 	if (siz == -1)
 		return __path_resolution_perror(path, -1);
 
-	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', atflags: 0x%x)\n",
-		__func__, dfd, __fpath(dfd), path, buf, atflags);
+	ret = next_unlinkat(dfd, buf, atflags);
 
-	return next_unlinkat(dfd, buf, atflags);
+	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', atflags: 0x%x) -> %i\n",
+		__func__, dfd, __fpath(dfd), path, buf, atflags, ret);
+
+	return ret;
 }

@@ -36,14 +36,17 @@ DIR *opendir(const char *path)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
+	DIR *ret;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
 		return __path_resolution_perror(path, NULL);
 
-	__debug("%s(path: '%s' -> '%s')\n", __func__, path, buf);
+	ret = next_opendir(buf);
 
-	return next_opendir(buf);
+	__debug("%s(path: '%s' -> '%s') -> %p\n", __func__, path, buf, ret);
+
+	return ret;
 }
 
 #ifdef __GLIBC__

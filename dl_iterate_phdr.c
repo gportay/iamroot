@@ -57,8 +57,12 @@ int dl_iterate_phdr(int (*callback)(struct dl_phdr_info *, size_t, void *),
 		.callback = callback,
 		.data = data,
 	};
+	int ret;
 
-	__debug("%s(callback: %p, data: %p)\n", __func__, callback, data);
+	ret = next_dl_iterate_phdr(__dl_iterate_phdr_callback, &args);
 
-	return next_dl_iterate_phdr(__dl_iterate_phdr_callback, &args);
+	__debug("%s(callback: %p, data: %p) -> %i\n", __func__, callback, data,
+		ret);
+
+	return ret;
 }

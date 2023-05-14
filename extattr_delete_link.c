@@ -43,6 +43,7 @@ int extattr_delete_link(const char *path, int attrnamespace,
 	const char *oldattrname = attrname;
 	char buf[PATH_MAX];
 	ssize_t siz;
+	int ret;
 	(void)oldattrnamespace;
 	(void)oldattrname;
 
@@ -63,10 +64,12 @@ int extattr_delete_link(const char *path, int attrnamespace,
 		attrname = extbuf;
 	}
 
-	__debug("%s(path: '%s' -> '%s', attrnamespace: %i -> %i, attrname: '%s' -> '%s')\n",
-		__func__, path, buf, oldattrnamespace, attrnamespace,
-		oldattrname, attrname);
+	ret = next_extattr_delete_link(buf, attrnamespace, attrname);
 
-	return next_extattr_delete_link(buf, attrnamespace, attrname);
+	__debug("%s(path: '%s' -> '%s', attrnamespace: %i -> %i, attrname: '%s' -> '%s') -> %i\n",
+		__func__, path, buf, oldattrnamespace, attrnamespace,
+		oldattrname, attrname, ret);
+
+	return ret;
 }
 #endif

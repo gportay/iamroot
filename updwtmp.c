@@ -37,8 +37,8 @@ void updwtmp(const char *path, const struct utmp *ut)
 	if (siz == -1)
 		return;
 
-	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
-
 	next_updwtmp(buf, ut);
+
+	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
 }
 #endif

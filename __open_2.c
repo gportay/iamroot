@@ -47,13 +47,12 @@ int __open_2(const char *path, int oflags)
 	if (siz == -1)
 		return __path_resolution_perror(path, -1);
 
-	__debug("%s(path: '%s' -> '%s', oflags: 0%o)\n", __func__, path, buf,
-		oflags);
-
 	ret = next___open_2(buf, oflags);
-
 	if (ret >= 0)
 		__setfd(ret, buf);
+
+	__debug("%s(path: '%s' -> '%s', oflags: 0%o) -> %i\n", __func__, path,
+		buf, oflags, ret);
 
 	return ret;
 }

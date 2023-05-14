@@ -55,10 +55,6 @@ int fchownat(int dfd, const char *path, uid_t owner, gid_t group, int atflags)
 	owner = __get_uid(buf);
 	group = __get_gid(buf);
 
-	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', owner: %i -> %i, group: %i -> %i, atflags: 0x%x)\n",
-		__func__, dfd, __fpath(dfd), path, buf, oldowner, owner,
-		oldgroup, group, atflags);
-
 	ret = next_fchownat(dfd, buf, owner, group, atflags);
 	__ignore_error_and_warn(ret, dfd, path, atflags);
 	/* Force ignoring EPERM error if not chroot'ed */
@@ -66,6 +62,10 @@ int fchownat(int dfd, const char *path, uid_t owner, gid_t group, int atflags)
 		ret = __set_errno(0, 0);
 	__set_uid(buf, oldowner, owner);
 	__set_gid(buf, oldgroup, group);
+
+	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', owner: %i -> %i, group: %i -> %i, atflags: 0x%x) -> %i\n",
+		__func__, dfd, __fpath(dfd), path, buf, oldowner, owner,
+		oldgroup, group, atflags, ret);
 
 	return ret;
 }

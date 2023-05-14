@@ -15,19 +15,23 @@ int setreuid(uid_t ruid, uid_t euid)
 {
 	int ret;
 
-	__debug("%s(ruid: %u, euid: %u)\n", __func__, ruid, euid);
-
 	if (euid != (uid_t)-1) {
 		ret = seteuid(euid);
 		if (ret == -1)
-			return -1;
+			goto exit;
 	}
 
 	if (ruid != (uid_t)-1) {
 		ret = setuid(ruid);
 		if (ret == -1)
-			return -1;
+			goto exit;
 	}
 
-	return 0;
+	/* Not forwarding function */
+	ret = 0;
+
+exit:
+	__debug("%s(ruid: %u, euid: %u) -> %i\n", __func__, ruid, euid, ret);
+
+	return ret;
 }

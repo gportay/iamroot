@@ -47,7 +47,7 @@ char *mkdtemp(char *path)
 	memcpy(path, buf+__strlen(buf)-len, len);
 
 exit:
-	__debug("%s(path: '%s')\n", __func__, path);
+	__debug("%s(path: '%s') -> '%s'\n", __func__, path, ret);
 
 	return path;
 }

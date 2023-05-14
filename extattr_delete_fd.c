@@ -41,6 +41,7 @@ int extattr_delete_fd(int fd, int attrnamespace, const char *attrname)
 	const char *oldattrname = attrname;
 	char buf[PATH_MAX];
 	ssize_t siz;
+	int ret;
 	(void)oldattrnamespace;
 	(void)oldattrname;
 
@@ -60,10 +61,12 @@ int extattr_delete_fd(int fd, int attrnamespace, const char *attrname)
 		attrname = extbuf;
 	}
 
-	__debug("%s(fd: %i <-> '%s', attrnamespace: %i -> %i, attrname: '%s' -> '%s')\n",
-		__func__, fd, buf, oldattrnamespace, attrnamespace,
-		oldattrname, attrname);
+	ret = next_extattr_delete_fd(fd, attrnamespace, attrname);
 
-	return next_extattr_delete_fd(fd, attrnamespace, attrname);
+	__debug("%s(fd: %i <-> '%s', attrnamespace: %i -> %i, attrname: '%s' -> '%s') -> %i\n",
+		__func__, fd, buf, oldattrnamespace, attrnamespace,
+		oldattrname, attrname, ret);
+
+	return ret;
 }
 #endif

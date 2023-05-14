@@ -42,13 +42,13 @@ FILE *fopen(const char *path, const char *mode)
 	if (siz == -1)
 		return __path_resolution_perror(path, NULL);
 
-	__debug("%s(path: '%s' -> '%s', mode: '%s')\n", __func__, path, buf,
-		mode);
-
 	ret = next_fopen(buf, mode);
 
 	if (ret != NULL)
 		__setfd(fileno(ret), buf);
+
+	__debug("%s(path: '%s' -> '%s', mode: '%s') -> %p\n", __func__, path,
+		buf, mode, ret);
 
 	return ret;
 }

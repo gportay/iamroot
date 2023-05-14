@@ -54,9 +54,6 @@ int chown(const char *path, uid_t owner, gid_t group)
 	owner = __get_uid(buf);
 	group = __get_gid(buf);
 
-	__debug("%s(path: '%s' -> '%s', owner: %i -> %i, group: %i -> %i)\n",
-		__func__, path, buf, oldowner, owner, oldgroup, group);
-
 	ret = next_chown(buf, owner, group);
 	__ignore_error_and_warn(ret, AT_FDCWD, path, 0);
 	/* Force ignoring EPERM error if not chroot'ed */
@@ -64,6 +61,9 @@ int chown(const char *path, uid_t owner, gid_t group)
 		ret = __set_errno(0, 0);
 	__set_uid(buf, oldowner, owner);
 	__set_gid(buf, oldgroup, group);
+
+	__debug("%s(path: '%s' -> '%s', owner: %i -> %i, group: %i -> %i) -> %i\n",
+		__func__, path, buf, oldowner, owner, oldgroup, group, ret);
 
 	return ret;
 }

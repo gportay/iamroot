@@ -43,8 +43,6 @@ int __fxstat(int ver, int fd, struct stat *statbuf)
 	gid_t gid;
 	int ret;
 
-	__debug("%s(fd: %i <-> '%s', ...)\n", __func__, fd, __fpath(fd));
-
 	ret = next___fxstat(ver, fd, statbuf);
 	if (ret == -1)
 		goto exit;
@@ -62,6 +60,9 @@ int __fxstat(int ver, int fd, struct stat *statbuf)
 	__fst_gid(fd, statbuf);
 
 exit:
+	__debug("%s(fd: %i <-> '%s', ...) -> %i\n", __func__, fd, __fpath(fd),
+		ret);
+
 	return ret;
 }
 #endif

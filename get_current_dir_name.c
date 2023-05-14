@@ -35,15 +35,12 @@ char *get_current_dir_name()
 
 	ret = next_get_current_dir_name();
 	if (!ret)
-		return NULL;
+		goto exit;
 
 	ret = __striprootdir(ret);
-	if (!ret) {
-		__pathperror(NULL, __func__);
-		return NULL;
-	}
 
-	__debug("%s()\n", __func__);
+exit:
+	__debug("%s() -> '%s'\n", __func__, ret);
 
 	return ret;
 }

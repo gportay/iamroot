@@ -34,16 +34,18 @@ int next_utmpxname(const char *path)
 
 int utmpxname(const char *path)
 {
+	int ret, atflags = 0;
 	char buf[PATH_MAX];
-	int atflags = 0;
 	ssize_t siz;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), atflags);
 	if (siz == -1)
 		return __path_resolution_perror(path, -1);
 
-	__debug("%s(path: '%s' -> '%s')\n", __func__, path, buf);
+	ret = next_utmpxname(buf);
 
-	return next_utmpxname(buf);
+	__debug("%s(path: '%s' -> '%s') -> %i\n", __func__, path, buf, ret);
+
+	return ret;
 }
 #endif

@@ -38,6 +38,7 @@ void *dlmopen(Lmid_t lmid, const char *path, int flags)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
+	void *ret;
 
 	if (!path || !__inchroot())
 		return next_dlmopen(lmid, path, flags);
@@ -54,9 +55,11 @@ void *dlmopen(Lmid_t lmid, const char *path, int flags)
 		return __path_resolution_perror(path, NULL);
 
 next:
-	__debug("%s(..., path: '%s' -> '%s', flags: 0x%x)\n", __func__, path,
-		buf, flags);
+	ret = next_dlmopen(lmid, buf, flags);
 
-	return next_dlmopen(lmid, buf, flags);
+	__debug("%s(..., path: '%s' -> '%s', flags: 0x%x) -> %p\n", __func__,
+		path, buf, flags, ret);
+
+	return ret;
 }
 #endif

@@ -39,6 +39,7 @@ int fremovexattr(int fd, const char *name)
 	char xbuf[XATTR_NAME_MAX+1]; /* NULL-terminated */
 	char buf[PATH_MAX];
 	ssize_t siz;
+	int ret;
 
 	siz = fpath(fd, buf, sizeof(buf));
 	if (siz == -1)
@@ -55,9 +56,11 @@ int fremovexattr(int fd, const char *name)
 		name = xbuf;
 	}
 
-	__debug("%s(fd: %i <-> '%s', name: '%s' -> '%s', ...)\n", __func__,
-		fd, buf, name, xbuf);
+	ret = next_fremovexattr(fd, name);
 
-	return next_fremovexattr(fd, name);
+	__debug("%s(fd: %i <-> '%s', name: '%s' -> '%s', ...) -> %i\n", __func__,
+		fd, buf, name, xbuf, ret);
+
+	return ret;
 }
 #endif

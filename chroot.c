@@ -292,13 +292,13 @@ int chroot(const char *path)
 
 	ret = setenv("PATH", __path(), 1);
 	if (ret == -1)
-		return __env_perror("PATH", "setenv", -1);
+		goto exit;
 
+	/* Not forwarding function */
 	ret = __setrootdir(buf);
-	if (ret == -1)
-		return -1;
 
-	__debug("%s(path: '%s' -> '%s')\n", __func__, path, buf);
+exit:
+	__debug("%s(path: '%s' -> '%s') -> %i\n", __func__, path, buf, ret);
 
-	return 0;
+	return ret;
 }

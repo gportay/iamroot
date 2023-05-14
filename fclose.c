@@ -32,11 +32,13 @@ int next_fclose(FILE *stream)
 int fclose(FILE *stream)
 {
 	const int fd = fileno(stream);
+	int ret;
 	(void)fd;
 
-	__debug("%s(...)\n", __func__);
-
+	ret = next_fclose(stream);
 	__notice("%s: %i -> '%s'\n", __func__, fd, __fpath(fd));
 
-	return next_fclose(stream);
+	__debug("%s(...) -> %i\n", __func__, ret);
+
+	return ret;
 }

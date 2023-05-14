@@ -34,14 +34,14 @@ int dup3(int oldfd, int newfd, int oflags)
 {
 	int ret;
 
-	__debug("%s(oldfd: %i <-> '%s', newfd: %i <-> '%s', oflags: 0%o)\n",
-		__func__, oldfd, __fpath(oldfd), newfd, __fpath2(newfd),
-		oflags);
-
 	ret = next_dup3(oldfd, newfd, oflags);
 
 	if (ret >= 0)
 		__setfd(newfd, __fpath(oldfd));
+
+	__debug("%s(oldfd: %i <-> '%s', newfd: %i <-> '%s', oflags: 0%o) -> %i \n",
+		__func__, oldfd, __fpath(oldfd), newfd, __fpath2(newfd),
+		oflags, ret);
 
 	return ret;
 }

@@ -38,6 +38,7 @@ void *dlopen(const char *path, int flags)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
+	void *ret;
 
 	if (!path || !__inchroot())
 		return next_dlopen(path, flags);
@@ -54,8 +55,10 @@ void *dlopen(const char *path, int flags)
 		return __path_resolution_perror(path, NULL);
 
 next:
-	__debug("%s(path: '%s' -> '%s', flags: 0x%x)\n", __func__, path, buf,
-		flags);
+	ret = next_dlopen(buf, flags);
 
-	return next_dlopen(buf, flags);
+	__debug("%s(path: '%s' -> '%s', flags: 0x%x) -> %p\n", __func__, path,
+		buf, flags, ret);
+
+	return ret;
 }

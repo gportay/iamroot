@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Gaël PORTAY
+ * Copyright 2021,2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -14,9 +14,13 @@
 
 int unshare(int flags)
 {
+	int ret;
 	(void)flags;
 
-	__debug("%s(flags: 0x%x)\n", __func__, flags);
+	/* Not forwarding function */
+	ret = 0;
 
-	return 0;
+	__debug("%s(flags: 0x%x) -> %i\n", __func__, flags, ret);
+
+	return ret;
 }

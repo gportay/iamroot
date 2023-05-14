@@ -50,14 +50,15 @@ int creat(const char *path, mode_t mode)
 		return __path_resolution_perror(path, -1);
 
 	__warn_if_insuffisant_user_mode(buf, mode);
-	__debug("%s(path: '%s' -> '%s', mode: 0%03o -> 0%03o)\n", __func__,
-		path, buf, oldmode, mode);
 
 	ret = next_creat(buf, mode);
 	__set_mode(buf, oldmode, mode);
 
 	if (ret >= 0)
 		__notice("%s: %i -> '%s'\n", __func__, ret, __fpath(ret));
+
+	__debug("%s(path: '%s' -> '%s', mode: 0%03o -> 0%03o) -> %i\n",
+		__func__, path, buf, oldmode, mode, ret);
 
 	return ret;
 }

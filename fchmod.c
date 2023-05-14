@@ -49,8 +49,6 @@ int fchmod(int fd, mode_t mode)
 	if (siz == -1)
 		return __fpath_perror(fd, -1);
 
-	__debug("%s(fd: %i <-> '%s', mode: 0%03o -> 0%03o)\n", __func__, fd,
-		__fpath(fd), oldmode, mode);
 	__fwarn_if_insuffisant_user_mode(fd, mode);
 
 	ret = next_fchmod(fd, mode);
@@ -59,6 +57,9 @@ int fchmod(int fd, mode_t mode)
 	if ((ret == -1) && (errno == EPERM))
 		ret = __set_errno(0, 0);
 	__set_mode(buf, oldmode, mode);
+
+	__debug("%s(fd: %i <-> '%s', mode: 0%03o -> 0%03o) -> %i\n", __func__,
+		fd, __fpath(fd), oldmode, mode, ret);
 
 	return ret;
 }

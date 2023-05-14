@@ -47,12 +47,11 @@ ssize_t listxattr(const char *path, char *list, size_t size)
 	if (siz == -1)
 		return __path_resolution_perror(path, -1);
 
-	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
+	ret = next_listxattr(buf, xbuf, sizeof(xbuf)-1); /* NULL-terminated */
+	if (ret == -1)
+		goto exit;
 
-	xsize = next_listxattr(buf, xbuf, sizeof(xbuf)-1); /* NULL-terminated */
-	if (xsize == -1)
-		return -1;
-
+	xsize = ret;
 	xbuf[xsize] = 0; /* ensure NULL-terminated */
 
 	ret = 0;
@@ -74,6 +73,10 @@ ssize_t listxattr(const char *path, char *list, size_t size)
 		if (len != off)
 			ret += len + 1 - off; /* NULL-terminated */
 	} while (i < xsize);
+
+exit:
+	__debug("%s(path: '%s' -> '%s', ...) -> %zi\n", __func__, path, buf,
+		ret);
 
 	return ret;
 }

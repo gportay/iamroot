@@ -37,6 +37,7 @@ int linkat(int olddfd, const char *oldpath, int newdfd, const char *newpath,
 {
 	char oldbuf[PATH_MAX], newbuf[PATH_MAX];
 	ssize_t siz;
+	int ret;
 
 	siz = path_resolution(olddfd, oldpath, oldbuf, sizeof(oldbuf), atflags);
 	if (siz == -1)
@@ -46,9 +47,11 @@ int linkat(int olddfd, const char *oldpath, int newdfd, const char *newpath,
 	if (siz == -1)
 		return __path_resolution_perror(newpath, -1);
 
-	__debug("%s(olddfd: %i <-> '%s', oldpath: '%s' -> '%s', newdfd: %i <-> '%s', newpath: '%s' -> '%s', atflags: 0x%x)\n",
-		__func__, olddfd, __fpath(olddfd), oldpath, oldbuf, newdfd,
-		__fpath2(newdfd), newpath, newbuf, atflags);
+	ret = next_linkat(olddfd, oldbuf, newdfd, newbuf, atflags);
 
-	return next_linkat(olddfd, oldbuf, newdfd, newbuf, atflags);
+	__debug("%s(olddfd: %i <-> '%s', oldpath: '%s' -> '%s', newdfd: %i <-> '%s', newpath: '%s' -> '%s', atflags: 0x%x) -> %i\n",
+		__func__, olddfd, __fpath(olddfd), oldpath, oldbuf, newdfd,
+		__fpath2(newdfd), newpath, newbuf, atflags, ret);
+
+	return ret;
 }

@@ -35,15 +35,12 @@ char *ctermid(char *s)
 
 	ret = next_ctermid(s);
 	if (!ret)
-		return NULL;
+		goto exit;
 
 	ret = __striprootdir(ret);
-	if (!ret) {
-		__pathperror(s, __func__);
-		return NULL;
-	}
 
-	__debug("%s(s: '%s')\n", __func__, s);
+exit:
+	__debug("%s(s: '%s') -> '%s'\n", __func__, s, ret);
 
 	return ret;
 }

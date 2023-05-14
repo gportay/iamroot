@@ -56,9 +56,6 @@ int statx(int dfd, const char *path, int atflags, unsigned int mask,
 	if (siz == -1)
 		return __path_resolution_perror(path, -1);
 
-	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', atflags: 0x%x...)\n",
-		__func__, dfd, __fpath(dfd), path, buf, atflags);
-
 	ret = next_statx(dfd, buf, atflags, mask, statxbuf);
 	if (ret == -1)
 		goto exit;
@@ -76,6 +73,9 @@ int statx(int dfd, const char *path, int atflags, unsigned int mask,
 	__stx_gid(buf, statxbuf);
 
 exit:
+	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', atflags: 0x%x...) -> %i\n",
+		__func__, dfd, __fpath(dfd), path, buf, atflags, ret);
+
 	return ret;
 }
 #endif

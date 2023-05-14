@@ -15,20 +15,18 @@
 int getresgid(gid_t *rgid, gid_t *egid, gid_t *sgid)
 {
 	const int save_errno = errno;
-
-	__debug("%s(rgid: %p, egid: %p, sgid: %p)\n", __func__, rgid, egid,
-		sgid);
+	int ret = -1;
 
 	if (rgid) {
 		*rgid = getgid();
 		if (*rgid == (gid_t)-1)
-			return -1;
+			goto exit;
 	}
 
 	if (egid) {
 		*egid = getegid();
 		if (*egid == (gid_t)-1)
-			return -1;
+			goto exit;
 	}
 
 	if (sgid) {
@@ -42,5 +40,12 @@ int getresgid(gid_t *rgid, gid_t *egid, gid_t *sgid)
 		*sgid = ul;
 	}
 
-	return __set_errno(save_errno, 0);
+	/* Not forwarding function */
+	ret = __set_errno(save_errno, 0);
+
+exit:
+	__debug("%s(rgid: %p, egid: %p, sgid: %p) -> %i\n", __func__, rgid,
+		egid, sgid, ret);
+
+	return ret;
 }

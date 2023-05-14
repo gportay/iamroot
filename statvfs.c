@@ -34,13 +34,17 @@ int next_statvfs(const char *path, struct statvfs *statvfsbuf)
 int statvfs(const char *path, struct statvfs *statvfsbuf)
 {
 	char buf[PATH_MAX];
+	int ret = -1;
 	ssize_t siz;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
 		return __path_resolution_perror(path, -1);
 
-	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
+	ret = next_statvfs(buf, statvfsbuf);
 
-	return next_statvfs(buf, statvfsbuf);
+	__debug("%s(path: '%s' -> '%s', ...) -> %i\n", __func__, path, buf,
+		ret);
+
+	return ret;
 }

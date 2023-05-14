@@ -42,12 +42,13 @@ int chdir(const char *path)
 		return __path_resolution_perror(path, -1);
 
 	ret = next_chdir(buf);
-	if (ret == -1) {
-		__pathperror(buf, "chdir");
-		return ret;
-	}
+	if (ret == -1)
+		goto exit;
 
-	__debug("%s(path: '%s' -> '%s')\n", __func__, path, buf);
+	ret = __chrootdir(NULL);
 
-	return __chrootdir(NULL);
+exit:
+	__debug("%s(path: '%s' -> '%s') -> %i\n", __func__, path, buf, ret);
+
+	return ret;
 }

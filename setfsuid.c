@@ -18,15 +18,21 @@ int setfsuid(uid_t fsuid)
 	char buf[BUFSIZ];
 	int ret;
 
-	__debug("%s(fsuid: %u)\n", __func__, fsuid);
-
-	if (fsuid == (uid_t)-1)
-		return __set_errno(EINVAL, -1);
+	if (fsuid == (uid_t)-1) {
+		ret = __set_errno(EINVAL, -1);
+		goto exit;
+	}
 
 	ret = _snprintf(buf, sizeof(buf), "%u", fsuid);
 	if (ret == -1)
-		return -1;
+		goto exit;
 
-	return __setenv("FSUID", buf, 1);
+	/* Not forwarding function */
+	ret = __setenv("FSUID", buf, 1);
+
+exit:
+	__debug("%s(fsuid: %u) -> %i\n", __func__, fsuid, ret);
+
+	return ret;
 }
 #endif

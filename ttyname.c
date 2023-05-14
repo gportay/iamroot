@@ -35,15 +35,13 @@ char *ttyname(int fd)
 
 	ret = next_ttyname(fd);
 	if (!ret)
-		return NULL;
+		goto exit;
 
 	ret = __striprootdir(ret);
-	if (!ret) {
-		__fpathperror(fd, __func__);
-		return NULL;
-	}
 
-	__debug("%s(fd: %i <-> '%s')\n", __func__, fd, __fpath(fd));
+exit:
+	__debug("%s(fd: %i <-> '%s') -> '%s'\n", __func__, fd, __fpath(fd),
+		ret);
 
 	return ret;
 }

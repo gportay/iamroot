@@ -38,14 +38,18 @@ nl_catd __catopen(const char *path, int flag)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
+	nl_catd ret;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
 		return __path_resolution_perror(path, (nl_catd)-1);
 
-	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
+	ret = next_catopen(buf, flag);
 
-	return next_catopen(buf, flag);
+	__debug("%s(path: '%s' -> '%s', ...) -> %p\n", __func__, path, buf,
+		ret);
+
+	return ret;
 }
 
 static struct __libc {

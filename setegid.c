@@ -17,14 +17,20 @@ int setegid(gid_t gid)
 	char buf[BUFSIZ];
 	int ret;
 
-	__debug("%s(gid: %u)\n", __func__, gid);
-
-	if (gid == (gid_t)-1)
-		return __set_errno(EINVAL, -1);
+	if (gid == (gid_t)-1) {
+		ret = __set_errno(EINVAL, -1);
+		goto exit;
+	}
 
 	ret = _snprintf(buf, sizeof(buf), "%u", gid);
 	if (ret == -1)
-		return -1;
+		goto exit;
 
-	return __setenv("EGID", buf, 1);
+	/* Not forwarding function */
+	ret = __setenv("EGID", buf, 1);
+
+exit:
+	__debug("%s(gid: %u) -> %i\n", __func__, gid, ret);
+
+	return ret;
 }

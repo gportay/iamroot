@@ -50,9 +50,6 @@ int fchmodat(int dfd, const char *path, mode_t mode, int atflags)
 		return __path_resolution_perror(path, -1);
 
 	__fwarn_if_insuffisant_user_modeat(dfd, buf, mode, atflags);
-	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', mode: 0%03o -> 0%03o, atflags: 0x%x)\n",
-		__func__, dfd, __fpath(dfd), path, buf, oldmode, mode,
-		atflags);
 
 	ret = next_fchmodat(dfd, buf, mode, atflags);
 	__ignore_error_and_warn(ret, dfd, path, atflags);
@@ -60,6 +57,10 @@ int fchmodat(int dfd, const char *path, mode_t mode, int atflags)
 	if ((ret == -1) && (errno == EPERM))
 		ret = __set_errno(0, 0);
 	__set_mode(buf, oldmode, mode);
+
+	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', mode: 0%03o -> 0%03o, atflags: 0x%x) -> %i\n",
+		__func__, dfd, __fpath(dfd), path, buf, oldmode, mode,
+		atflags, ret);
 
 	return ret;
 }

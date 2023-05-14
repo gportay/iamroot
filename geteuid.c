@@ -16,13 +16,17 @@ uid_t geteuid(void)
 {
 	const int save_errno = errno;
 	unsigned long ul;
+	uid_t ret;
 
 	errno = 0;
 	ul = strtoul(__getenv("EUID") ?: "0", NULL, 0);
 	if (errno)
 		ul = 0;
 
-	__debug("%s(): %lu\n", __func__, ul);
+	/* Not forwarding function */
+	ret = __set_errno(save_errno, ul);
 
-	return __set_errno(save_errno, ul);
+	__debug("%s() -> %i\n", __func__, ret);
+
+	return ret;
 }

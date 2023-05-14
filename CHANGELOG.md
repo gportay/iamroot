@@ -21,6 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Remove output the three-dots `...` for the function `umount()`
 - Output the flags in hexadecimal for the functions `mount()`, `nmount()`,
   `umount2()` and `unmount()`
+- Output the returned value for the functions
 
 ### Removed
 

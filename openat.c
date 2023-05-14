@@ -66,14 +66,15 @@ int openat(int dfd, const char *path, int oflags, ...)
 
 	if (oflags & O_CREAT)
 		__fwarn_if_insuffisant_user_modeat(dfd, buf, mode, 0);
-	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', oflags: 0%o, mode: 0%03o -> 0%03o)\n",
-		__func__, dfd, __fpath(dfd), path, buf, oflags, oldmode, mode);
 
 	ret = next_openat(dfd, buf, oflags, mode);
 	__set_mode(buf, oldmode, mode);
-
 	if (ret >= 0)
 		__setfd(ret, buf);
+
+	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', oflags: 0%o, mode: 0%03o -> 0%03o) -> %i\n",
+		__func__, dfd, __fpath(dfd), path, buf, oflags, oldmode, mode,
+		ret);
 
 	return ret;
 }

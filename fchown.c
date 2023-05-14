@@ -56,9 +56,6 @@ int fchown(int fd, uid_t owner, gid_t group)
 	owner = __get_uid(buf);
 	group = __get_gid(buf);
 
-	__debug("%s(fd: %i <-> '%s', owner: %i -> %i, group: %i -> %i)\n",
-		__func__, fd, __fpath(fd), oldowner, owner, oldgroup, group);
-
 	ret = next_fchown(fd, owner, group);
 	__ignore_error_and_warn(ret, AT_FDCWD, buf, 0);
 	/* Force ignoring EPERM error if not chroot'ed */
@@ -66,6 +63,10 @@ int fchown(int fd, uid_t owner, gid_t group)
 		ret = __set_errno(0, 0);
 	__set_uid(buf, oldowner, owner);
 	__set_gid(buf, oldgroup, group);
+
+	__debug("%s(fd: %i <-> '%s', owner: %i -> %i, group: %i -> %i) -> %i\n",
+		__func__, fd, __fpath(fd), oldowner, owner, oldgroup, group,
+		ret);
 
 	return ret;
 }

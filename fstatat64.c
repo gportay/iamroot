@@ -55,9 +55,6 @@ int fstatat64(int dfd, const char *path, struct stat64 *statbuf, int atflags)
 	if (siz == -1)
 		return __path_resolution_perror(path, -1);
 
-	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', ..., atflags: 0x%x)\n",
-		__func__, dfd, __fpath(dfd), path, buf, atflags);
-
 	ret = next_fstatat64(dfd, buf, statbuf, atflags);
 	if (ret == -1)
 		goto exit;
@@ -75,6 +72,9 @@ int fstatat64(int dfd, const char *path, struct stat64 *statbuf, int atflags)
 	__st_gid(buf, statbuf);
 
 exit:
+	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', ..., atflags: 0x%x) -> %i\n",
+		__func__, dfd, __fpath(dfd), path, buf, atflags, ret);
+
 	return ret;
 }
 

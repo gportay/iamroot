@@ -47,12 +47,11 @@ ssize_t flistxattr(int fd, char *list, size_t size)
 	if (siz == -1)
 		return __fpath_perror(fd, -1);
 
-	__debug("%s(fd: %i <-> '%s', ...)\n", __func__, fd, buf);
+	ret = next_flistxattr(fd, xbuf, sizeof(xbuf)-1); /* NULL-terminated */
+	if (ret == -1)
+		goto exit;
 
-	xsize = next_flistxattr(fd, xbuf, sizeof(xbuf)-1); /* NULL-terminated */
-	if (xsize == -1)
-		return -1;
-
+	xsize = ret;
 	xbuf[xsize] = 0; /* ensure NULL-terminated */
 
 	ret = 0;
@@ -74,6 +73,9 @@ ssize_t flistxattr(int fd, char *list, size_t size)
 		if (len != off)
 			ret += len + 1 - off; /* NULL-terminated */
 	} while (i < xsize);
+
+exit:
+	__debug("%s(fd: %i <-> '%s', ...) -> %zi\n", __func__, fd, buf, ret);
 
 	return ret;
 }

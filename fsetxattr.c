@@ -41,6 +41,7 @@ int fsetxattr(int fd, const char *name, const void *value, size_t size,
 	char xbuf[XATTR_NAME_MAX+1]; /* NULL-terminated */
 	char buf[PATH_MAX];
 	ssize_t siz;
+	int ret;
 
 	siz = fpath(fd, buf, sizeof(buf));
 	if (siz == -1)
@@ -57,9 +58,11 @@ int fsetxattr(int fd, const char *name, const void *value, size_t size,
 		name = xbuf;
 	}
 
-	__debug("%s(fd: %i <-> '%s', name: '%s', ..., flags: 0x%x)\n",
-		__func__, fd, buf, name, flags);
+	ret = next_fsetxattr(fd, name, value, size, flags);
 
-	return next_fsetxattr(fd, name, value, size, flags);
+	__debug("%s(fd: %i <-> '%s', name: '%s', ..., flags: 0x%x) -> %i\n",
+		__func__, fd, buf, name, flags, ret);
+
+	return ret;
 }
 #endif

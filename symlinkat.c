@@ -35,14 +35,17 @@ int symlinkat(const char *string, int dfd, const char *path)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
+	int ret;
 
 	siz = path_resolution(dfd, path, buf, sizeof(buf),
 			      AT_SYMLINK_NOFOLLOW);
 	if (siz == -1)
 		return __path_resolution_perror(path, -1);
 
-	__debug("%s(string: '%s', dfd: %i <-> '%s', path: '%s' -> '%s')\n",
-		__func__, string, dfd, __fpath(dfd), path, buf);
+	ret = next_symlinkat(string, dfd, buf);
 
-	return next_symlinkat(string, dfd, buf);
+	__debug("%s(string: '%s', dfd: %i <-> '%s', path: '%s' -> '%s') -> %i\n",
+		__func__, string, dfd, __fpath(dfd), path, buf, ret);
+
+	return ret;
 }

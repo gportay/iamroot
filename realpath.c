@@ -235,7 +235,8 @@ char *realpath(const char *path, char *resolved_path)
 	ret = memmove(resolved_path, ret+len, __strlen(ret)-len+1);
 
 exit:
-	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
+	__debug("%s(path: '%s' -> '%s', ...) -> '%s'\n", __func__, path, buf,
+		ret);
 
 	return ret;
 

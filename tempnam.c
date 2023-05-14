@@ -52,8 +52,8 @@ char *tempnam(const char *path, const char *pfx)
 	ret = __striprootdir(ret);
 
 exit:
-	__debug("%s(path: '%s' -> '%s', pfx: '%s')\n", __func__, path, buf,
-		pfx);
+	__debug("%s(path: '%s' -> '%s', pfx: '%s') -> '%s'\n", __func__, path,
+		buf, pfx, ret);
 
 	return ret;
 }

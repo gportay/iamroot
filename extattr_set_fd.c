@@ -43,6 +43,7 @@ ssize_t extattr_set_fd(int fd, int attrnamespace, const char *attrname,
 	const char *oldattrname = attrname;
 	char buf[PATH_MAX];
 	ssize_t siz;
+	int ret;
 	(void)oldattrnamespace;
 	(void)oldattrname;
 
@@ -62,10 +63,12 @@ ssize_t extattr_set_fd(int fd, int attrnamespace, const char *attrname,
 		attrname = extbuf;
 	}
 
-	__debug("%s(fd: %i <-> '%s', attrnamespace: %i -> %i, attrname: '%s' -> '%s', ...)\n",
-		__func__, fd, buf, oldattrnamespace, attrnamespace,
-		oldattrname, attrname);
+	ret = next_extattr_set_fd(fd, attrnamespace, attrname, data, nbytes);
 
-	return next_extattr_set_fd(fd, attrnamespace, attrname, data, nbytes);
+	__debug("%s(fd: %i <-> '%s', attrnamespace: %i -> %i, attrname: '%s' -> '%s', ...) -> %zi\n",
+		__func__, fd, buf, oldattrnamespace, attrnamespace,
+		oldattrname, attrname, ret);
+
+	return ret;
 }
 #endif

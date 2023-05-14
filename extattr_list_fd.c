@@ -52,14 +52,11 @@ ssize_t extattr_list_fd(int fd, int attrnamespace, void *data, size_t nbytes)
 	if (attrnamespace == EXTATTR_NAMESPACE_SYSTEM)
 		attrnamespace = EXTATTR_NAMESPACE_USER;
 
-	__debug("%s(fd: %i -> '%s', attrnamespace: %i -> %i, ...)\n", __func__,
-		fd, buf, oldattrnamespace, attrnamespace);
+	ret = next_extattr_list_fd(fd, attrnamespace, extbuf, sizeof(extbuf));
+	if (ret == -1)
+		goto exit;
 
-	extsize = next_extattr_list_fd(fd, attrnamespace, extbuf,
-				       sizeof(extbuf));
-	if (extsize == -1)
-		return -1;
-
+	extsize = ret;
 	ret = 0;
 	i = 0;
 	while (i < extsize) {
@@ -82,6 +79,10 @@ ssize_t extattr_list_fd(int fd, int attrnamespace, void *data, size_t nbytes)
 		if (len != off)
 			ret += len + 1 - off; /* len */
 	}
+
+exit:
+	__debug("%s(fd: %i -> '%s', attrnamespace: %i -> %i, ...) -> %zi\n",
+		__func__, fd, buf, oldattrnamespace, attrnamespace, ret);
 
 	return ret;
 }

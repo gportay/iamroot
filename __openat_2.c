@@ -45,13 +45,12 @@ int __openat_2(int dfd, const char *path, int oflags)
 	if (siz == -1)
 		return __path_resolution_perror(path, -1);
 
-	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', oflags: 0%o)\n",
-		__func__, dfd, __fpath(dfd), path, buf, oflags);
-
 	ret = next___openat_2(dfd, buf, oflags);
-
 	if (ret >= 0)
 		__setfd(ret, buf);
+
+	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', oflags: 0%o) -> %i\n",
+		__func__, dfd, __fpath(dfd), path, buf, oflags, ret);
 
 	return ret;
 }

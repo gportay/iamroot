@@ -38,8 +38,6 @@ int __fxstat64(int ver, int fd, struct stat64 *statbuf)
 	gid_t gid;
 	int ret;
 
-	__debug("%s(fd: %i <-> '%s', ...)\n", __func__, fd, __fpath(fd));
-
 	ret = next___fxstat64(ver, fd, statbuf);
 	if (ret == -1)
 		goto exit;
@@ -57,6 +55,9 @@ int __fxstat64(int ver, int fd, struct stat64 *statbuf)
 	__fst_gid(fd, statbuf);
 
 exit:
+	__debug("%s(fd: %i <-> '%s', ...) -> %i\n", __func__, fd, __fpath(fd),
+		ret);
+
 	return ret;
 }
 #endif

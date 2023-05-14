@@ -38,6 +38,7 @@ int connect(int socket, const struct sockaddr *addr, socklen_t addrlen)
 	struct sockaddr_un *addrun = (struct sockaddr_un *)addr;
 	socklen_t buflen;
 	ssize_t siz;
+	int ret;
 
 	/* Do not proceed to any hack if not an Unix socket */
 	if (!addrun || addrun->sun_family != AF_UNIX || !*addrun->sun_path)
@@ -50,9 +51,11 @@ int connect(int socket, const struct sockaddr *addr, socklen_t addrlen)
 
 	buflen = SUN_LEN(&buf);
 
-	__debug("%s(socket: %i, addr: { .sun_path: '%s' -> '%s', ... }, addrlen: %i -> %i)\n",
-		__func__, socket, addrun->sun_path, buf.sun_path,
-		addrlen, buflen);
+	ret = next_connect(socket, (const struct sockaddr *)&buf, buflen);
 
-	return next_connect(socket, (const struct sockaddr *)&buf, buflen);
+	__debug("%s(socket: %i, addr: { .sun_path: '%s' -> '%s', ... }, addrlen: %i -> %i) -> %i\n",
+		__func__, socket, addrun->sun_path, buf.sun_path,
+		addrlen, buflen, ret);
+
+	return ret;
 }

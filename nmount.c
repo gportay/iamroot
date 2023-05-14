@@ -16,12 +16,16 @@
 
 int nmount(struct iovec *iov, u_int niov, int flags)
 {
+	int ret;
 	(void)iov;
 	(void)niov;
 	(void)flags;
 
-	__debug("%s(..., flags: 0x%x)\n", __func__, flags);
+	/* Not forwarding function */
+	ret = 0;
 
-	return 0;
+	__debug("%s(..., flags: 0x%x) -> %i\n", __func__, flags, ret);
+
+	return ret;
 }
 #endif

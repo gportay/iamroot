@@ -41,12 +41,16 @@ int scandir(const char *path, struct dirent ***namelist,
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
+	int ret;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
 		return __path_resolution_perror(path, -1);
 
-	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
+	ret = next_scandir(buf, namelist, filter, compar);
 
-	return next_scandir(buf, namelist, filter, compar);
+	__debug("%s(path: '%s' -> '%s', ...) -> %i\n", __func__, path, buf,
+		ret);
+
+	return ret;
 }

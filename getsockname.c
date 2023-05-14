@@ -51,14 +51,14 @@ int getsockname(int socket, struct sockaddr *addr, socklen_t *addrlen)
 
 	buflen = SUN_LEN(&buf);
 
-	__debug("%s(socket: %i, addr: { .sun_path: '%s' -> '%s', ... }, addrlen: %i -> %i)\n",
-		__func__, socket, addrun->sun_path, buf.sun_path,
-		addrlen ? *addrlen : 0, buflen);
-
 	ret = next_getsockname(socket, (struct sockaddr *)&buf, &buflen);
 
 	if (ret == 0 && addrlen)
 		*addrlen = buflen;
+
+	__debug("%s(socket: %i, addr: { .sun_path: '%s' -> '%s', ... }, addrlen: %i -> %i) -> %i\n",
+		__func__, socket, addrun->sun_path, buf.sun_path,
+		addrlen ? *addrlen : 0, buflen, ret);
 
 	return ret;
 }

@@ -37,8 +37,8 @@ void updwtmpx(const char *path, const struct utmpx *ut)
 	if (siz == -1)
 		return;
 
-	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
-
 	next_updwtmpx(buf, ut);
+
+	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
 }
 #endif

@@ -42,9 +42,12 @@ int fchdir(int fd)
 
 	ret = next_fchdir(fd);
 	if (ret == -1)
-		return __fpath_perror(fd, -1);
+		goto exit;
 
-	__debug("%s(fd: %i <-> '%s')\n", __func__, fd, buf);
+	ret = __chrootdir(NULL);
 
-	return __chrootdir(NULL);
+exit:
+	__debug("%s(fd: %i <-> '%s') -> %i\n", __func__, fd, buf, ret);
+
+	return ret;
 }

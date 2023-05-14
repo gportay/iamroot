@@ -41,17 +41,14 @@ char *canonicalize_file_name(const char *path)
 	if (siz == -1)
 		return __path_resolution_perror(path, NULL);
 
-	__debug("%s(path: '%s' -> '%s')\n", __func__, path, buf);
-
 	ret = next_canonicalize_file_name(buf);
 	if (!ret)
-		return NULL;
+		goto exit;
 
 	ret = __striprootdir(ret);
-	if (!ret) {
-		__pathperror(buf, __func__);
-		return NULL;
-	}
+
+exit:
+	__debug("%s(path: '%s' -> '%s') -> '%s'\n", __func__, path, buf, ret);
 
 	return ret;
 }

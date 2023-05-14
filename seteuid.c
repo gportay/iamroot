@@ -17,14 +17,20 @@ int seteuid(uid_t uid)
 	char buf[BUFSIZ];
 	int ret;
 
-	__debug("%s(uid: %u)\n", __func__, uid);
-
-	if (uid == (uid_t)-1)
-		return __set_errno(EINVAL, -1);
+	if (uid == (uid_t)-1) {
+		ret = __set_errno(EINVAL, -1);
+		goto exit;
+	}
 
 	ret = _snprintf(buf, sizeof(buf), "%u", uid);
 	if (ret == -1)
-		return -1;
+		goto exit;
 
-	return __setenv("EUID", buf, 1);
+	/* Not forwarding function */
+	ret = __setenv("EUID", buf, 1);
+
+exit:
+	__debug("%s(uid: %u) -> %i\n", __func__, uid, ret);
+
+	return ret;
 }

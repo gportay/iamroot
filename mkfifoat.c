@@ -50,11 +50,12 @@ int mkfifoat(int dfd, const char *path, mode_t mode)
 		return __path_resolution_perror(path, -1);
 
 	__fwarn_if_insuffisant_user_modeat(dfd, buf, mode, 0);
-	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', mode: 0%03o -> 0%03o)\n",
-		__func__, dfd, __fpath(dfd), path, buf, oldmode, mode);
 
 	ret = next_mkfifoat(dfd, buf, mode);
 	__set_mode(buf, oldmode, mode);
+
+	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', mode: 0%03o -> 0%03o) -> %i\n",
+		__func__, dfd, __fpath(dfd), path, buf, oldmode, mode, ret);
 
 	return ret;
 }

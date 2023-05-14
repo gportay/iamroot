@@ -38,7 +38,7 @@ ssize_t fgetxattr(int fd, const char *name, void *value, size_t size)
 {
 	char xbuf[XATTR_NAME_MAX+1]; /* NULL-terminated */
 	char buf[PATH_MAX];
-	ssize_t siz;
+	ssize_t ret, siz;
 
 	siz = fpath(fd, buf, sizeof(buf));
 	if (siz == -1)
@@ -55,9 +55,11 @@ ssize_t fgetxattr(int fd, const char *name, void *value, size_t size)
 		name = xbuf;
 	}
 
-	__debug("%s(fd: %i <-> '%s', name: '%s' -> %s', ...)\n", __func__, fd,
-		buf, name, xbuf);
+	ret = next_fgetxattr(fd, name, value, size);
 
-	return next_fgetxattr(fd, name, value, size);
+	__debug("%s(fd: %i <-> '%s', name: '%s' -> %s', ...) -> %zi\n",
+		__func__, fd, buf, name, xbuf, ret);
+
+	return ret;
 }
 #endif

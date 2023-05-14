@@ -73,19 +73,27 @@ int close_range(unsigned int first, unsigned int last, int flags)
 		.last = last,
 		.buf = { 0 },
 	};
-	int err;
+	int err, ret;
 
 	err = __dir_iterate("/proc/self/fd", __callback, &data);
 	if (err == -1)
 		__strncpy(data.buf, "(error)");
 
-	__debug("%s(first: %u <-> '%s', last: %u <-> '%s', flags: 0x%x) fds: { %s }\n",
-		__func__, first, __fpath(first), last, __fpath2(last), flags,
-		data.buf);
 #else
-	__debug("%s(first: %u <-> '%s', last: %u <-> '%s', flags: 0x%x)\n",
-		__func__, first, __fpath(first), last, __fpath2(last), flags);
+	int ret;
+
+#endif
+	ret = next_close_range(first, last, flags);
+
+#ifdef __linux__
+	__debug("%s(first: %u <-> '%s', last: %u <-> '%s', flags: 0x%x) -> %i, fds: { %s }\n",
+		__func__, first, __fpath(first), last, __fpath2(last), flags,
+		ret, data.buf);
+#else
+	__debug("%s(first: %u <-> '%s', last: %u <-> '%s', flags: 0x%x) -> %i\n",
+		__func__, first, __fpath(first), last, __fpath2(last), flags,
+		ret);
 #endif
 
-	return next_close_range(first, last, flags);
+	return ret;
 }

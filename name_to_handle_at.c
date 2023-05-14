@@ -41,6 +41,7 @@ int name_to_handle_at(int dfd, const char *path, struct file_handle *handle,
 	const int oldatflags = atflags;
 	char buf[PATH_MAX];
 	ssize_t siz;
+	int ret;
 
 	if (!(atflags & AT_SYMLINK_FOLLOW))
 		atflags |= AT_SYMLINK_NOFOLLOW;
@@ -49,9 +50,12 @@ int name_to_handle_at(int dfd, const char *path, struct file_handle *handle,
 	if (siz == -1)
 		return __path_resolution_perror(path, -1);
 
-	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', ..., atflags: 0x%x -> 0x%x)\n",
-		__func__, dfd, __fpath(dfd), path, buf, oldatflags, atflags);
+	ret = next_name_to_handle_at(dfd, buf, handle, mount_id, oldatflags);
 
-	return next_name_to_handle_at(dfd, buf, handle, mount_id, oldatflags);
+	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', ..., atflags: 0x%x -> 0x%x) -> %i\n",
+		__func__, dfd, __fpath(dfd), path, buf, oldatflags, atflags,
+		ret);
+
+	return ret;
 }
 #endif

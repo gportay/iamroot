@@ -41,7 +41,7 @@ int setxattr(const char *path, const char *name, const void *value,
 {
 	char xbuf[XATTR_NAME_MAX+1]; /* NULL-terminated */
 	char buf[PATH_MAX];
-	ssize_t siz;
+	ssize_t ret, siz;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
@@ -58,9 +58,11 @@ int setxattr(const char *path, const char *name, const void *value,
 		name = xbuf;
 	}
 
-	__debug("%s(path: '%s' -> '%s', name: '%s' -> '%s', ..., flags: 0%x)\n",
-		__func__, path, buf, name, xbuf, flags);
+	ret = next_setxattr(buf, name, value, size, flags);
 
-	return next_setxattr(buf, name, value, size, flags);
+	__debug("%s(path: '%s' -> '%s', name: '%s' -> '%s', ..., flags: 0%x) -> %zi\n",
+		__func__, path, buf, name, xbuf, flags, ret);
+
+	return ret;
 }
 #endif

@@ -12,7 +12,7 @@
 __attribute__((visibility("hidden")))
 void __envperror(const char *name, const char *s)
 {
-	const char *n = *name ? name : "(empty)";
+	const char *n = name && *name ? name : "(empty)";
 	(void)n;
 	(void)s;
 

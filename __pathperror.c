@@ -13,7 +13,7 @@
 __attribute__((visibility("hidden")))
 void __pathperror(const char *path, const char *s)
 {
-	const char *p = *path ? path : "(empty)";
+	const char *p = path && *path ? path : "(empty)";
 	(void)p;
 	(void)s;
 

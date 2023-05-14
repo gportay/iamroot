@@ -13,8 +13,8 @@
 __attribute__((visibility("hidden")))
 void __pathperror2(const char *oldpath, const char *newpath, const char *s)
 {
-	const char *oldp = *oldpath ? oldpath : "(empty)";
-	const char *newp = *newpath ? newpath : "(empty)";
+	const char *oldp = oldpath && *oldpath ? oldpath : "(empty)";
+	const char *newp = newpath && *newpath ? newpath : "(empty)";
 	(void)oldp;
 	(void)newp;
 

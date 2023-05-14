@@ -10,6 +10,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Fix the starting of `iamroot-shell` with a clean environment if the variable
   `IAMROOT_PRESERVE_ENV` is unset
+- Fix the segmentation fault if the functions `__libc_start_main()`,
+  `close_range()`, `get_current_dir_name()`, `getcwd()`, `getegid()`,
+  `geteuid()`, `getgid()`, `getwd()` and `setuid()` return an error
 
 ## [v9] - 2023-05-06
 

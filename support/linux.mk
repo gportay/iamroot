@@ -588,14 +588,17 @@ cobertura.xml:
 codacy: cobertura.xml
 	bash <(curl -Ls https://coverage.codacy.com/get.sh)
 
-.PHONY: clean
-clean:
-	$(MAKE) -f Makefile $@
+.PHONY: cleanall
+cleanall: clean
 	rm -f cobertura.xml
 	rm -f *.gcda *.gcno
 	rm -f *.ext4 *.cpio
 	rm -f *-rootfs.log
 	rm -Rf *-rootfs/
+
+.PHONY: clean
+clean:
+	$(MAKE) -f Makefile $@
 
 ifeq ($(ARCH),x86_64)
 ifneq ($(shell command -v pacstrap 2>/dev/null),)

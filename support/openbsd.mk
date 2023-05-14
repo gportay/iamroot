@@ -57,10 +57,13 @@ base-73.tgz:
 test ci: libiamroot.so
 	$(MAKE) -f Makefile $@
 
+.PHONY: cleanall
+cleanall: clean
+	rm -Rf openbsd-*-rootfs/
+
 .PHONY: clean
 clean:
 	$(MAKE) -f Makefile $@
-	rm -Rf openbsd-*-rootfs/
 	rm -Rf $(O)-*/
 	rm -Rf $(ARCH)/
 

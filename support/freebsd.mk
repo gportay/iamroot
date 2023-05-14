@@ -63,10 +63,13 @@ FreeBSD-%-RELEASE-base-$(ARCH).txz:
 test ci: libiamroot.so
 	$(MAKE) -f Makefile $@
 
+.PHONY: cleanall
+cleanall: clean
+	rm -Rf freebsd-*-rootfs/
+
 .PHONY: clean
 clean:
 	$(MAKE) -f Makefile $@
-	rm -Rf freebsd-*-rootfs/
 	rm -Rf $(O)-*/
 	rm -Rf $(ARCH)/
 

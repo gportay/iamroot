@@ -17,6 +17,7 @@ void __fpathperror2(int fd1, int fd2, const char *s)
 	char buf1[PATH_MAX], buf2[PATH_MAX];
 	const int save_errno = errno;
 	ssize_t siz1, siz2;
+	(void)s;
 
 	siz1 = fpath(fd1, buf1, sizeof(buf1));
 	siz2 = fpath(fd2, buf2, sizeof(buf2));

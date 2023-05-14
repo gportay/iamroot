@@ -25,6 +25,7 @@ int __xmknodat(int ver, int dfd, const char *path, mode_t mode, dev_t *dev)
 	ssize_t siz;
 	int fd;
 	(void)ver;
+	(void)oldmode;
 	(void)dev;
 
 	siz = path_resolution(dfd, path, buf, sizeof(buf), 0);

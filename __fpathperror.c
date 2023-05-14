@@ -17,6 +17,7 @@ void __fpathperror(int fd, const char *s)
 	const int save_errno = errno;
 	char buf[PATH_MAX];
 	ssize_t siz;
+	(void)s;
 
 	siz = fpath(fd, buf, sizeof(buf));
 	if (siz == -1) {

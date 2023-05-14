@@ -17,6 +17,7 @@ void __pathperror2(const char *oldpath, const char *newpath, const char *s)
 	const char *newp = newpath && *newpath ? newpath : "(empty)";
 	(void)oldp;
 	(void)newp;
+	(void)s;
 
 	if (__ignored_errno(errno) || __ignored_function(s)) {
 #if defined __FreeBSD__ || defined __OpenBSD__

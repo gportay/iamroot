@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Intercept the functions `ctermid()`, `fclose()`, `setfsuid()`, `setfsgid()`,
   `ttyname()`, `ttyname_r()`, `updwtmp()`, `updwtmpx()`, `utmpname()` and
   `utmpxname()`
+- Compile for [OpenBSD] 7.2 and 7.3
 
 ### Changed
 
@@ -573,6 +574,7 @@ Initial release.
 [FreeBSD]: https://www.freebsd.org/
 [Leap]: https://www.opensuse.org/#Leap
 [Manjaro]: https://manjaro.org/
+[OpenBSD]: https://www.openbsd.org/
 [NO_COLOR]: https://no-color.org/
 [Tumbleweed]: https://www.opensuse.org/#Tumbleweed
 [Ubuntu]: https://ubuntu.com/

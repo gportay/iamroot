@@ -588,20 +588,6 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 #define __fst_gid(fd, statbuf) {}
 #endif
 
-#define __ignored_function(func) (streq(func, "next_extattr_delete_fd") || \
-				  streq(func, "next_extattr_delete_link") || \
-				  streq(func, "next_extattr_get_fd") || \
-				  streq(func, "next_extattr_get_link") || \
-				  streq(func, "next_extattr_set_fd") || \
-				  streq(func, "next_extattr_set_link") || \
-				  streq(func, "next_fgetxattr") || \
-				  streq(func, "next_fremovexattr") || \
-				  streq(func, "next_fsetxattr") || \
-				  streq(func, "next_lgetxattr") || \
-				  streq(func, "next_lremovexattr") || \
-				  streq(func, "next_lsetxattr") || \
-				  streq(func, "next_readlinkat"))
-
 #define __ignored_errno(e) (((e) == EPERM) || \
 			    ((e) == EACCES) || \
 			    ((e) == ENOSYS))

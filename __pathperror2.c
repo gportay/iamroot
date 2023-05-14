@@ -19,7 +19,7 @@ void __pathperror2(const char *oldpath, const char *newpath, const char *s)
 	(void)newp;
 	(void)s;
 
-	if (__ignored_errno(errno) || __ignored_function(s)) {
+	if (__ignored_errno(errno)) {
 #if defined __FreeBSD__ || defined __OpenBSD__
 		__debug("%s: %s: %s: %i\n", oldp, newp, s,
 		       errno);

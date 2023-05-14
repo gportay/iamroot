@@ -32,7 +32,7 @@ void __fpathperror2(int fd1, int fd2, const char *s)
 		return;
 	}
 
-	if (__ignored_errno(errno) || __ignored_function(s)) {
+	if (__ignored_errno(errno)) {
 #if defined __FreeBSD__ || defined __OpenBSD__
 		__debug("%i <-> %s, %i <-> %s: %s: %i\n", fd1, buf1, fd2, buf2,
 			s, errno);

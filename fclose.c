@@ -31,7 +31,7 @@ int next_fclose(FILE *stream)
 
 int fclose(FILE *stream)
 {
-	int fd = fileno(stream);
+	const int fd = fileno(stream);
 	(void)fd;
 
 	__debug("%s(...)\n", __func__);

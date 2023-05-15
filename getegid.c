@@ -7,28 +7,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
-#include <dlfcn.h>
 
 #include <unistd.h>
 
 #include "iamroot.h"
-
-__attribute__((visibility("hidden")))
-gid_t next_getegid()
-{
-	gid_t (*sym)();
-	gid_t ret;
-
-	sym = dlsym(RTLD_NEXT, "getegid");
-	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
-
-	ret = sym();
-	if (ret == (gid_t)-1)
-		__pathperror(NULL, __func__);
-
-	return ret;
-}
 
 gid_t getegid(void)
 {

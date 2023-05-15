@@ -9,13 +9,16 @@
 #include <limits.h>
 #include <fcntl.h>
 #include <dlfcn.h>
+#ifdef __linux__
+#include <sys/xattr.h>
+#endif
+#ifdef __FreeBSD__
+#include <sys/extattr.h>
+#endif
 
 #include <unistd.h>
 
 #include "iamroot.h"
-
-extern uid_t next_getegid();
-extern uid_t next_geteuid();
 
 __attribute__((visibility("hidden")))
 int next_lchown(const char *path, uid_t owner, gid_t group)
@@ -36,23 +39,32 @@ int next_lchown(const char *path, uid_t owner, gid_t group)
 
 int lchown(const char *path, uid_t owner, gid_t group)
 {
+	const uid_t oldowner = owner;
+	const uid_t oldgroup = group;
 	char buf[PATH_MAX];
 	ssize_t siz;
 	int ret;
+	(void)oldowner;
+	(void)oldgroup;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
 			      AT_SYMLINK_NOFOLLOW);
 	if (siz == -1)
 		return __path_resolution_perror(path, -1);
 
-	owner = next_geteuid();
-	group = next_getegid();
+	owner = __get_uid(buf);
+	group = __get_gid(buf);
 
-	__debug("%s(path: '%s' -> '%s', owner: %i, group: %i)\n", __func__,
-		path, buf, owner, group);
+	__debug("%s(path: '%s' -> '%s', owner: %i -> %i, group: %i -> %i)\n",
+		__func__, path, buf, oldowner, owner, oldgroup, group);
 
 	ret = next_lchown(buf, owner, group);
 	__ignore_error_and_warn(ret, AT_FDCWD, path, 0);
+	/* Force ignoring EPERM error if not chroot'ed */
+	if ((ret == -1) && (errno == EPERM))
+		ret = __set_errno(0, 0);
+	__set_uid(buf, oldowner, owner);
+	__set_gid(buf, oldgroup, group);
 
 	return ret;
 }

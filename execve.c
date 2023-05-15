@@ -266,7 +266,7 @@ static int __strtok(const char *str, const char *delim,
 				break;
 
 			ret = callback(token, user);
-			if (ret)
+			if (ret != 0)
 				return ret;
 		} while ((token = strtok_r(NULL, delim, &saveptr)));
 	}
@@ -315,7 +315,7 @@ void execve_init()
 		ignore = "ldd";
 
 	ret = regcomp(&regex_ignore.re, ignore, REG_NOSUB|REG_EXTENDED);
-	if (ret) {
+	if (ret == -1) {
 		__regex_perror("regcomp", &regex_ignore.re, ret);
 		return;
 	}
@@ -643,7 +643,7 @@ static int __dl_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
 			}
 
 			ret = callback(buf, size, data);
-			if (ret)
+			if (ret != 0)
 				break;
 		}
 	}
@@ -758,7 +758,7 @@ static int __dl_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
 			}
 
 			ret = callback(buf, size, data);
-			if (ret)
+			if (ret != 0)
 				break;
 		}
 	}
@@ -1237,7 +1237,7 @@ static char *__ld_preload(const char *ldso, int abi)
 
 	__strncpy(val, __getlibiamroot(ldso, abi));
 	ret = __path_prependenv("ld_preload", val, 1);
-	if (ret)
+	if (ret == -1)
 		return NULL;
 
 	return getenv("ld_preload");
@@ -1252,19 +1252,19 @@ static char *__ld_library_path(const char *ldso, int abi)
 
 	__strncpy(val, __getld_library_path(ldso, abi));
 	ret = __path_setenv(__getrootdir(), "ld_library_path", val, 1);
-	if (ret)
+	if (ret == -1)
 		return NULL;
 
 	rpath = getenv("rpath");
 	if (rpath) {
 		__strncpy(val, rpath);
 		ret = __path_setenv(__getrootdir(), "iamroot_rpath", val, 1);
-		if (ret)
+		if (ret == -1)
 			return NULL;
 
 		__strncpy(val, getenv("iamroot_rpath"));
 		ret = __path_prependenv("ld_library_path", val, 1);
-		if (ret)
+		if (ret == -1)
 			return NULL;
 	}
 
@@ -1272,12 +1272,12 @@ static char *__ld_library_path(const char *ldso, int abi)
 	if (runpath) {
 		__strncpy(val, runpath);
 		ret = __path_setenv(__getrootdir(), "iamroot_runpath", val, 1);
-		if (ret)
+		if (ret == -1)
 			return NULL;
 
 		__strncpy(val, getenv("iamroot_runpath"));
 		ret = __path_prependenv("ld_library_path", val, 1);
-		if (ret)
+		if (ret == -1)
 			return NULL;
 	}
 
@@ -1309,7 +1309,7 @@ char *__needed(const char *path)
 	*buf = 0;
 	ret = __dl_iterate_shared_object(path, DT_NEEDED, __path_callback,
 					 buf);
-	if (ret)
+	if (ret == -1)
 		return NULL;
 
 	ret = setenv("needed", buf, 1);
@@ -1326,7 +1326,7 @@ static char *__rpath(const char *path)
 
 	*buf = 0;
 	ret = __dl_iterate_shared_object(path, DT_RPATH, __path_callback, buf);
-	if (ret)
+	if (ret == -1)
 		return NULL;
 
 	ret = setenv("rpath", buf, 1);
@@ -1344,7 +1344,7 @@ static char *__runpath(const char *path)
 	*buf = 0;
 	ret = __dl_iterate_shared_object(path, DT_RUNPATH, __path_callback,
 					 buf);
-	if (ret)
+	if (ret == -1)
 		return NULL;
 
 	ret = setenv("runpath", buf, 1);
@@ -1365,7 +1365,7 @@ static char *__inhibit_rpath()
 
 		__strncpy(val, inhibit_rpath);
 		ret = __path_setenv(__getrootdir(), "inhibit_rpath", val, 1);
-		if (ret)
+		if (ret == -1)
 			return NULL;
 	}
 
@@ -1826,7 +1826,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	ret = __issuid(buf);
 	if (ret == -1)
 		return -1;
-	else if (ret)
+	else if (ret != 0)
 		goto exec_sh;
 
 	/* Do not proceed to any hack if not in chroot */

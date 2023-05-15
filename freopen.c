@@ -47,7 +47,7 @@ FILE *freopen(const char *path, const char *mode, FILE *stream)
 
 	ret = next_freopen(buf, mode, stream);
 
-	if (ret)
+	if (ret != NULL)
 		__setfd(fileno(ret), buf);
 
 	return ret;

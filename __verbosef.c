@@ -80,7 +80,7 @@ void verbosef_init()
 		allow = "^(chroot|chdir|fchdir)$";
 
 	ret = regcomp(&regex_allow.re, allow, REG_NOSUB|REG_EXTENDED);
-	if (ret) {
+	if (ret == -1) {
 		__regex_perror("regcomp", &regex_allow.re, ret);
 		return;
 	}
@@ -94,7 +94,7 @@ ignore:
 		ignore = "^$";
 
 	ret = regcomp(&regex_ignore.re, ignore, REG_NOSUB|REG_EXTENDED);
-	if (ret) {
+	if (ret == -1) {
 		__regex_perror("regcomp", &regex_ignore.re, ret);
 		return;
 	}

@@ -42,7 +42,7 @@ int chdir(const char *path)
 		return __path_resolution_perror(path, -1);
 
 	ret = next_chdir(buf);
-	if (ret) {
+	if (ret == -1) {
 		__pathperror(buf, "chdir");
 		return ret;
 	}

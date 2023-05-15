@@ -93,7 +93,7 @@ int posix_spawn(pid_t *pid, const char *path,
 	ret = __issuid(buf);
 	if (ret == -1)
 		return -1;
-	else if (ret)
+	else if (ret != 0)
 		goto exec_sh;
 
 	/* Do not proceed to any hack if not in chroot */

@@ -47,7 +47,7 @@ FILE *fopen(const char *path, const char *mode)
 
 	ret = next_fopen(buf, mode);
 
-	if (ret)
+	if (ret != NULL)
 		__setfd(fileno(ret), buf);
 
 	return ret;

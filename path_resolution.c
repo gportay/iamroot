@@ -560,7 +560,7 @@ void path_resolution_init()
 		allow = "^$";
 
 	ret = regcomp(&regex_allow.re, allow, REG_NOSUB|REG_EXTENDED);
-	if (ret) {
+	if (ret == -1) {
 		__regex_perror("regcomp", &regex_allow.re, ret);
 		return;
 	}
@@ -574,7 +574,7 @@ ignore:
 		ignore = "^/proc/|/sys/|"_PATH_DEV"|"_PATH_VARRUN"|/run/";
 
 	ret = regcomp(&regex_ignore.re, ignore, REG_NOSUB|REG_EXTENDED);
-	if (ret) {
+	if (ret == -1) {
 		__regex_perror("regcomp", &regex_ignore.re, ret);
 		return;
 	}

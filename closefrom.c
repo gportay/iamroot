@@ -46,6 +46,7 @@ void next_closefrom(int fd)
 }
 #endif
 
+#ifdef __linux__
 struct __closefrom {
 	int fd;
 	char buf[PATH_MAX];
@@ -75,6 +76,7 @@ static int __callback(const char *path, const char *filename, void *user)
 
 	return 0;
 }
+#endif
 
 #ifdef __OpenBSD__
 int closefrom(int fd)
@@ -82,6 +84,7 @@ int closefrom(int fd)
 void closefrom(int fd)
 #endif
 {
+#ifdef __linux__
 	struct __closefrom data = {
 		.fd = fd,
 		.buf = { 0 },
@@ -94,6 +97,9 @@ void closefrom(int fd)
 
 	__debug("%s(fd: %i <-> '%s') fds: { %s }\n", __func__, fd, __fpath(fd),
 		data.buf);
+#else
+	__debug("%s(fd: %i <-> '%s')\n", __func__, fd, __fpath(fd));
+#endif
 
 #ifdef __OpenBSD__
 	return next_closefrom(fd);

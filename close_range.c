@@ -32,6 +32,7 @@ int next_close_range(unsigned int first, unsigned int last, int flags)
 	return ret;
 }
 
+#ifdef __linux__
 struct __close_range {
 	int first;
 	int last;
@@ -62,9 +63,11 @@ static int __callback(const char *path, const char *filename, void *user)
 
 	return 0;
 }
+#endif
 
 int close_range(unsigned int first, unsigned int last, int flags)
 {
+#ifdef __linux__
 	struct __close_range data = {
 		.first = first,
 		.last = last,
@@ -79,6 +82,10 @@ int close_range(unsigned int first, unsigned int last, int flags)
 	__debug("%s(first: %u <-> '%s', last: %u <-> '%s', flags: 0x%x) fds: { %s }\n",
 		__func__, first, __fpath(first), last, __fpath2(last), flags,
 		data.buf);
+#else
+	__debug("%s(first: %u <-> '%s', last: %u <-> '%s', flags: 0x%x)\n",
+		__func__, first, __fpath(first), last, __fpath2(last), flags);
+#endif
 
 	return next_close_range(first, last, flags);
 }

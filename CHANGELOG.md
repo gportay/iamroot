@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - The function `utimes()` do not call the AT-function `utimensat()` anymore
 - Output the three-dots `...` for the functions `mkostemps()` and
   `mkostempsat()`
+- Remove output the three-dots `...` for the function `umount()`
 
 ### Fixed
 

@@ -38,7 +38,7 @@ char *tempnam(const char *path, const char *pfx)
 	ssize_t siz;
 
 	if (!path)
-		return next_tempnam(path, pfx);
+		path = P_tmpdir;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)

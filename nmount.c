@@ -20,7 +20,7 @@ int nmount(struct iovec *iov, u_int niov, int flags)
 	(void)niov;
 	(void)flags;
 
-	__debug("%s(...)\n", __func__);
+	__debug("%s(..., flags: 0x%x)\n", __func__, flags);
 
 	return 0;
 }

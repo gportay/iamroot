@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2021 Gaël PORTAY
+ * Copyright 2020-2021,2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -17,7 +17,7 @@ int umount2(const char *target, int flags)
 	(void)target;
 	(void)flags;
 
-	__debug("%s(target: '%s', ...)\n", __func__, target);
+	__debug("%s(target: '%s', flags: 0x%x)\n", __func__, target, flags);
 
 	return 0;
 }

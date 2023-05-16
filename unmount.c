@@ -18,7 +18,7 @@ int unmount(const char *dir, int flags)
 	(void)dir;
 	(void)flags;
 
-	__debug("%s(dir: '%s', ...)\n", __func__, dir);
+	__debug("%s(dir: '%s', flags: 0x%x)\n", __func__, dir, flags);
 
 	return 0;
 }

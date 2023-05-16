@@ -23,8 +23,8 @@ int mount(const char *source, const char *target, const char *filesystemtype,
 	(void)target;
 	(void)data;
 
-	__debug("%s(source: '%s', target: '%s', ...)\n", __func__, source,
-		target);
+	__debug("%s(source: '%s', target: '%s', ..., mountflags: 0x%lx, ...)\n",
+		__func__, source, target, mountflags);
 
 	return 0;
 }
@@ -38,7 +38,8 @@ int mount(const char *type, const char *dir, int flags, void *data)
 	(void)data;
 	(void)dir;
 
-	__debug("%s(..., dir: '%s', ...)\n", __func__, dir);
+	__debug("%s(..., dir: '%s', flags: 0x%x, ...)\n", __func__, dir,
+		flags);
 
 	return 0;
 }

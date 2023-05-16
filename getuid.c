@@ -25,6 +25,5 @@ uid_t getuid()
 
 	__debug("%s(): %lu\n", __func__, ul);
 
-	errno = save_errno;
-	return ul;
+	return __set_errno(save_errno, ul);
 }

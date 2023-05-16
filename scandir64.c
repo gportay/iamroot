@@ -50,7 +50,7 @@ int scandir64(const char *path, struct dirent64 ***namelist,
 	if (siz == -1)
 		return __path_resolution_perror(path, -1);
 
-	__debug("%s(path: '%s' -> '%s')\n", __func__, path, buf);
+	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
 
 	return next_scandir64(buf, namelist, filter, compar);
 }

@@ -46,8 +46,8 @@ int scandirat(int dfd, const char *path, struct dirent ***namelist,
 	if (siz == -1)
 		return __path_resolution_perror(path, -1);
 
-	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s')\n", __func__, dfd,
-		__fpath(dfd), path, buf);
+	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', ...)\n", __func__,
+		dfd, __fpath(dfd), path, buf);
 
 	return next_scandirat(dfd, buf, namelist, filter, compar);
 }

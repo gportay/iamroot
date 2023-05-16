@@ -47,7 +47,7 @@ int scandir_b(const char *path, struct dirent ***namelist,
 	if (siz == -1)
 		return __path_resolution_perror(path, -1);
 
-	__debug("%s(path: '%s' -> '%s')\n", __func__, path, buf);
+	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
 
 	return next_scandir_b(buf, namelist, select, compar);
 }

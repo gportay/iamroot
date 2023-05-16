@@ -23,11 +23,11 @@ int setgroups(size_t listsize, const gid_t *list)
 	__debug("%s(listsize: %i, list: %p): IAMROOT_GROUPS: '%s'\n", __func__,
 		(int)listsize, list, getenv("IAMROOT_GROUPS"));
 
-	if (listsize == 0)
-		return unsetenv("IAMROOT_GROUPS");
-
 	if (listsize > NGROUPS_MAX)
 		return __set_errno(EINVAL, -1);
+
+	if (listsize == 0)
+		return unsetenv("IAMROOT_GROUPS");
 
 	size = 0;
 	for (i = 0; i < listsize; i++) {

@@ -34,7 +34,6 @@ int next_unlinkat(int dfd, const char *path, int atflags)
 int unlinkat(int dfd, const char *path, int atflags)
 {
 	char buf[PATH_MAX];
-
 	ssize_t siz;
 
 	siz = path_resolution(dfd, path, buf, sizeof(buf),

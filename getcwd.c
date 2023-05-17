@@ -43,7 +43,7 @@ char *getcwd(char *buf, size_t size)
 		return NULL;
 	}
 
-	__debug("%s(buf: %p, size: %lu)\n", __func__, buf, (unsigned long)size);
+	__debug("%s(buf: %p, size: %zu)\n", __func__, buf, size);
 
 	return ret;
 }

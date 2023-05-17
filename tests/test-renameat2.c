@@ -18,7 +18,6 @@
 #define __GLIBC_PREREQ(maj,min) 0
 #endif
 
-
 int main(int argc, char * const argv[])
 {
 	int olddfd = AT_FDCWD, newdfd = AT_FDCWD, ret = EXIT_FAILURE;

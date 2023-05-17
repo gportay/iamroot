@@ -20,8 +20,11 @@
 
 #include "iamroot.h"
 
-#ifdef __GLIBC__
-#if __GLIBC_PREREQ(2,28)
+#ifndef __GLIBC_PREREQ
+#define __GLIBC_PREREQ(maj,min) 0
+#endif
+
+#if defined __GLIBC__ && __GLIBC_PREREQ(2,28)
 __attribute__((visibility("hidden")))
 int next_statx(int dfd, const char *path, int atflags, unsigned int mask,
 	       struct statx *statxbuf)
@@ -75,5 +78,4 @@ int statx(int dfd, const char *path, int atflags, unsigned int mask,
 exit:
 	return ret;
 }
-#endif
 #endif

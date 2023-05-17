@@ -40,6 +40,7 @@ int fexecve(int fd, char * const argv[], char * const envp[])
 	__debug("%s(fd: %i <-> '%s', argv: { '%s', '%s', ... }, envp: %p)\n",
 		__func__, fd, __fpath(fd), argv[0], argv[1], envp);
 
+	/* Forward to local function */
 	return __fexecve(fd, argv, envp);
 }
 #endif

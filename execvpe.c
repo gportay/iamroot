@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -76,5 +76,6 @@ int execvpe(const char *file, char * const argv[], char * const envp[])
 	__debug("%s(file: '%s', argv: { '%s', '%s', ... }, envp: %p)\n",
 		__func__, file, argv[0], argv[1], envp);
 
+	/* Forward to local function */
 	return __execvpe(file, argv, envp);
 }

@@ -39,6 +39,7 @@ int execle(const char *path, const char *arg, ...)
 		__debug("%s(path: '%s', arg: '%s', ..., envp: %p)\n", __func__,
 			path, arg, envp);
 
+		/* Forward to another function */
 		return execve(path, argv, envp);
 	}
 

@@ -129,6 +129,7 @@ int execvP(const char *file, const char *path, char * const argv[])
 	__debug("%s(file: '%s', path: '%s' argv: { '%s', '%s', ... })\n",
 		__func__, file, path, argv[0], argv[1]);
 
+	/* Forward to local function */
 	return __execvP(file, path, argv);
 }
 #endif
@@ -139,8 +140,10 @@ int execvp(const char *file, char * const argv[])
 		argv[0], argv[1]);
 
 #ifdef __FreeBSD__
+	/* Forward to another function */
 	return execvP(file, getenv("PATH"), argv);
 #else
+	/* Forward to local function */
 	return __execvp(file, argv);
 #endif
 }

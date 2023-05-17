@@ -38,6 +38,7 @@ int execlp(const char *file, const char *arg, ...)
 		__debug("%s(file: '%s', arg: '%s', ...)\n", __func__, file,
 			arg);
 
+		/* Forward to another function */
 #ifdef __linux__
 		return execvpe(file, argv, __environ);
 #else

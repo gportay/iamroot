@@ -13,15 +13,18 @@
 
 #include "iamroot.h"
 
-#ifdef __GLIBC__
+#ifndef __GLIBC_PREREQ
+#define __GLIBC_PREREQ(maj,min) 0
+#endif
+
 __attribute__((visibility("hidden")))
-#if __GLIBC_PREREQ(2,34)
+#if defined __GLIBC__ && __GLIBC_PREREQ(2,34)
 char *next_tmpnam_r(char path[L_tmpnam])
 #else
 char *next_tmpnam_r(char *path)
 #endif
 {
-#if __GLIBC_PREREQ(2,34)
+#if defined __GLIBC__ && __GLIBC_PREREQ(2,34)
 	char *(*sym)(char []);
 #else
 	char *(*sym)(char *);
@@ -39,7 +42,7 @@ char *next_tmpnam_r(char *path)
 	return ret;
 }
 
-#if __GLIBC_PREREQ(2,34)
+#if defined __GLIBC__ && __GLIBC_PREREQ(2,34)
 char *tmpnam_r(char path[L_tmpnam])
 #else
 char *tmpnam_r(char *path)
@@ -56,4 +59,3 @@ char *tmpnam_r(char *path)
 
 	return next_tmpnam_r(buf);
 }
-#endif

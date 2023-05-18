@@ -37,24 +37,22 @@ int bind(int socket, const struct sockaddr *addr, socklen_t addrlen)
 	struct sockaddr_un buf = { .sun_family = AF_UNIX, .sun_path = { 0 }};
 	struct sockaddr_un *addrun = (struct sockaddr_un *)addr;
 	socklen_t buflen;
+	ssize_t siz;
 
-	if (addrun && addrun->sun_family == AF_UNIX && *addrun->sun_path) {
-		ssize_t siz;
+	/* Do not proceed to any hack if not an Unix socket */
+	if (!addrun || addrun->sun_family != AF_UNIX || !*addrun->sun_path)
+		return next_bind(socket, addr, addrlen);
 
-		siz = path_resolution(AT_FDCWD, addrun->sun_path, buf.sun_path,
-				      sizeof(buf.sun_path), 0);
-		if (siz == -1)
-			return __path_resolution_perror(addrun->sun_path, -1);
+	siz = path_resolution(AT_FDCWD, addrun->sun_path, buf.sun_path,
+			      sizeof(buf.sun_path), 0);
+	if (siz == -1)
+		return __path_resolution_perror(addrun->sun_path, -1);
 
-		buflen = SUN_LEN(&buf);
+	buflen = SUN_LEN(&buf);
 
-		__debug("%s(socket: %i, addr: { .sun_path: '%s' -> '%s', ... }, addrlen: %i -> %i)\n",
-			__func__, socket, addrun->sun_path, buf.sun_path,
-			addrlen, buflen);
+	__debug("%s(socket: %i, addr: { .sun_path: '%s' -> '%s', ... }, addrlen: %i -> %i)\n",
+		__func__, socket, addrun->sun_path, buf.sun_path,
+		addrlen, buflen);
 
-		addr = (const struct sockaddr *)&buf;
-		addrlen = buflen;
-	}
-
-	return next_bind(socket, addr, addrlen);
+	return next_bind(socket, (const struct sockaddr *)&buf, buflen);
 }

@@ -26,7 +26,7 @@ int setgroups(size_t listsize, const gid_t *list)
 	if (listsize == 0)
 		return unsetenv("IAMROOT_GROUPS");
 
-	if (listsize > NGROUPS_MAX || !list)
+	if (listsize > NGROUPS_MAX)
 		return __set_errno(EINVAL, -1);
 
 	size = 0;

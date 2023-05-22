@@ -63,7 +63,6 @@ endif
 all: libiamroot.so
 
 libiamroot.so: __abort.o
-libiamroot.so: __envperror.o
 libiamroot.so: __fxstat.o
 libiamroot.so: __fxstat64.o
 libiamroot.so: __fxstatat.o

@@ -165,6 +165,7 @@ all: test-swapoff
 all: test-swapon
 all: test-symlink
 all: test-symlinkat
+all: test-tempnam
 all: test-tmpnam
 all: test-tmpnam_r
 all: test-truncate
@@ -388,6 +389,12 @@ ifeq ($(OS),GNU/Linux)
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-readlinkat . /proc/self/exe                                             | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/usr/bin/test-readlinkat$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-readlinkat . /proc/self/exe | tee /dev/stderr | grep -q "^/usr/bin/test-readlinkat$$"
 endif
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-tempnam                                                       | tee /dev/stderr | grep -qE "^/tmp/(file|tmp\.|tmp\.....)......$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-tempnam /run                                                  | tee /dev/stderr | grep -qE "^/run/(file|tmp\.|tmp\.....)......$$"
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-tempnam /run temp                                             | tee /dev/stderr | grep -qE "^/run/(temp|temp....)......$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-tempnam           | tee /dev/stderr | grep -qE "^/tmp/(file|tmp\.|tmp\.....)......$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-tempnam /run      | tee /dev/stderr | grep -qE "^/run/(file|tmp\.|tmp\.....)......$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-tempnam /run temp | tee /dev/stderr | grep -qE "^/run/(temp|temp....)......$$"
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-tmpnam /tmp/tmp0
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-tmpnam /tmp/tmp1
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-tmpnam_r /tmp/tmp2

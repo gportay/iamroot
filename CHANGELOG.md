@@ -37,6 +37,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   defaulting to `P_tmpdir`
 - Fix the missing stripping of the chroot directory in the function
   `tempnam()`
+- Fix the freeing the NULL pointer in the function `canonicalize_file_name()`
 
 ## [v9] - 2023-05-06
 

@@ -50,7 +50,6 @@ char *canonicalize_file_name(const char *path)
 	ret = __striprootdir(ret);
 	if (!ret) {
 		__pathperror(buf, __func__);
-		free(ret);
 		return NULL;
 	}
 

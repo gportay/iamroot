@@ -37,10 +37,10 @@ _iamroot-shell()
 		running_in_chroot scandir scandir64 scandir_b scandirat setegid
 		seteuid setgid setgroups setregid setresgid setresuid setreuid
 		setuid setxattr stat stat64 statfs statfs64 statvfs statvfs64
-		statx swapoff swapon symlink symlinkat tempnam tmpnam tmpnam_r
-		truncate truncate64 ttyname ttyname_r umask umount umount2
-		unlink unlinkat unmount unshare updwtmp updwtmpx utime
-		utimensat utimes utmpname utmpxname)
+		statx swapoff swapon symlink symlinkat tempnam truncate
+		truncate64 ttyname ttyname_r umask umount umount2 unlink
+		unlinkat unmount unshare updwtmp updwtmpx utime utimensat
+		utimes utmpname utmpxname)
 
 	COMMON_PATH=(/bin /sbin /usr/bin /usr/sbin /usr/local/bin
 		/usr/local/sbin)

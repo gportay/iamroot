@@ -166,8 +166,6 @@ all: test-swapon
 all: test-symlink
 all: test-symlinkat
 all: test-tempnam
-all: test-tmpnam
-all: test-tmpnam_r
 all: test-truncate
 all: test-truncate64
 all: test-ttyname
@@ -395,10 +393,6 @@ endif
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-tempnam           | tee /dev/stderr | grep -qE "^/tmp/(file|tmp\.|tmp\.....)......$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-tempnam /run      | tee /dev/stderr | grep -qE "^/run/(file|tmp\.|tmp\.....)......$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-tempnam /run temp | tee /dev/stderr | grep -qE "^/run/(temp|temp....)......$$"
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-tmpnam /tmp/tmp0
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-tmpnam /tmp/tmp1
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-tmpnam_r /tmp/tmp2
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-tmpnam_r /tmp/tmp3
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-truncate rootfs/tmp/file0 1
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-truncate /tmp/file0 0
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-truncate64 rootfs/tmp/file0 1

@@ -22,6 +22,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Output the flags in hexadecimal for the functions `mount()`, `nmount()`,
   `umount2()` and `unmount()`
 
+### Removed
+
+- Remove functions `tmpnam()` and `tmpnam_r()`
+
 ### Fixed
 
 - Fix the starting of `iamroot-shell` with a clean environment if the variable

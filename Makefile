@@ -249,8 +249,6 @@ libiamroot.so: swapon.o
 libiamroot.so: symlink.o
 libiamroot.so: symlinkat.o
 libiamroot.so: tempnam.o
-libiamroot.so: tmpnam.o
-libiamroot.so: tmpnam_r.o
 libiamroot.so: truncate.o
 libiamroot.so: truncate64.o
 libiamroot.so: ttyname.o

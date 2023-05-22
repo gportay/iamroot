@@ -15,21 +15,18 @@
 
 #include "iamroot.h"
 
+static int (*sym)(int, const char *, uint32_t);
+
 __attribute__((visibility("hidden")))
 int next_inotify_add_watch(int fd, const char *path, uint32_t mask)
 {
-	int (*sym)(int, const char *, uint32_t);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "inotify_add_watch");
 
-	sym = dlsym(RTLD_NEXT, "inotify_add_watch");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(fd, path, mask);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(fd, path, mask);
 }
 
 int inotify_add_watch(int fd, const char *path, uint32_t mask)

@@ -14,21 +14,18 @@
 
 #include "iamroot.h"
 
+static int (*sym)(const char *, const struct timeval[2]);
+
 __attribute__((visibility("hidden")))
 int next_utimes(const char *path, const struct timeval times[2])
 {
-	int (*sym)(const char *, const struct timeval[2]);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "utimes");
 
-	sym = dlsym(RTLD_NEXT, "utimes");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(path, times);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path, times);
 }
 
 int utimes(const char *path, const struct timeval times[2])

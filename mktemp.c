@@ -15,21 +15,18 @@
 
 #include "iamroot.h"
 
+static char *(*sym)(char *);
+
 __attribute__((visibility("hidden")))
 char *next_mktemp(char *path)
 {
-	char *(*sym)(char *);
-	char *ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "mktemp");
 
-	sym = dlsym(RTLD_NEXT, "mktemp");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, NULL);
 
-	ret = sym(path);
-	if (!ret)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path);
 }
 
 char *mktemp(char *path)

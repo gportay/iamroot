@@ -18,6 +18,12 @@
 
 #include "iamroot.h"
 
+#ifdef __GLIBC__
+static int (*sym)(int, unsigned int, uint64_t, int, const char *);
+#else
+static int (*sym)(int, unsigned int, unsigned long long, int, const char *);
+#endif
+
 __attribute__((visibility("hidden")))
 #ifdef __GLIBC__
 int next_fanotify_mark(int fanotify_fd, unsigned int flags, uint64_t mask,
@@ -27,22 +33,13 @@ int next_fanotify_mark(int fanotify_fd, unsigned int flags, unsigned long mask,
 		       int dfd, const char *path)
 #endif
 {
-#ifdef __GLIBC__
-	int (*sym)(int, unsigned int, uint64_t, int, const char *);
-#else
-	int (*sym)(int, unsigned int, unsigned long long, int, const char *);
-#endif
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "fanotify_mark");
 
-	sym = dlsym(RTLD_NEXT, "fanotify_mark");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(fanotify_fd, flags, mask, dfd, path);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(fanotify_fd, flags, mask, dfd, path);
 }
 
 #ifdef __GLIBC__

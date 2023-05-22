@@ -15,27 +15,24 @@
 #include "iamroot.h"
 
 #ifdef __GLIBC__
+static int (*sym)(const char *, struct dirent64 ***,
+		  int (*)(const struct dirent64 *),
+		  int (*)(const struct dirent64 **,
+			  const struct dirent64 **));
+
 __attribute__((visibility("hidden")))
 int next_scandir64(const char *path, struct dirent64 ***namelist,
 		   int (*filter)(const struct dirent64 *),
 		   int (*compar)(const struct dirent64 **,
 				 const struct dirent64 **))
 {
-	int (*sym)(const char *, struct dirent64 ***,
-		   int (*)(const struct dirent64 *),
-		   int (*)(const struct dirent64 **,
-			   const struct dirent64 **));
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "scandir64");
 
-	sym = dlsym(RTLD_NEXT, "scandir64");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(path, namelist, filter, compar);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path, namelist, filter, compar);
 }
 
 int scandir64(const char *path, struct dirent64 ***namelist,

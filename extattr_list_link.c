@@ -17,22 +17,19 @@
 
 #include "iamroot.h"
 
+static ssize_t (*sym)(const char *, int, void *, size_t);
+
 __attribute__((visibility("hidden")))
 ssize_t next_extattr_list_link(const char *path, int attrnamespace, void *data,
 			       size_t nbytes)
 {
-	ssize_t (*sym)(const char *, int, void *, size_t);
-	ssize_t ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "extattr_list_link");
 
-	sym = dlsym(RTLD_NEXT, "extattr_list_link");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(path, attrnamespace, data, nbytes);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path, attrnamespace, data, nbytes);
 }
 
 ssize_t extattr_list_link(const char *path, int attrnamespace, void *data,

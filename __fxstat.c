@@ -21,20 +21,17 @@
 
 #include "iamroot.h"
 
+static int (*sym)(int, int, struct stat *);
+
 int next___fxstat(int ver, int fd, struct stat *statbuf)
 {
-	int (*sym)(int, int, struct stat *);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "__fxstat");
 
-	sym = dlsym(RTLD_NEXT, "__fxstat");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(ver, fd, statbuf);
-	if (ret == -1)
-		__fpathperror(fd, __func__);
-
-	return ret;
+	return sym(ver, fd, statbuf);
 }
 
 int __fxstat(int ver, int fd, struct stat *statbuf)

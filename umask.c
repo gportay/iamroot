@@ -32,12 +32,14 @@ int __setumask(mode_t mask)
 	return setenv("IAMROOT_UMASK", buf, 1);
 }
 
+static mode_t (*sym)(mode_t);
+
 __attribute__((visibility("hidden")))
 mode_t next_umask(mode_t mask)
 {
-	mode_t (*sym)(mode_t);
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "umask");
 
-	sym = dlsym(RTLD_NEXT, "umask");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 

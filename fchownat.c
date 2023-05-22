@@ -20,22 +20,19 @@
 
 #include "iamroot.h"
 
+static int (*sym)(int, const char *, uid_t, gid_t, int);
+
 __attribute__((visibility("hidden")))
 int next_fchownat(int dfd, const char *path, uid_t owner, gid_t group,
 		  int atflags)
 {
-	int (*sym)(int, const char *, uid_t, gid_t, int);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "fchownat");
 
-	sym = dlsym(RTLD_NEXT, "fchownat");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(dfd, path, owner, group, atflags);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(dfd, path, owner, group, atflags);
 }
 
 int fchownat(int dfd, const char *path, uid_t owner, gid_t group, int atflags)

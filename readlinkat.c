@@ -14,21 +14,18 @@
 
 #include "iamroot.h"
 
+static ssize_t (*sym)(int, const char *, char *, size_t);
+
 __attribute__((visibility("hidden")))
 ssize_t next_readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 {
-	ssize_t (*sym)(int, const char *, char *, size_t);
-	ssize_t ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "readlinkat");
 
-	sym = dlsym(RTLD_NEXT, "readlinkat");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(dfd, path, buf, bufsize);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(dfd, path, buf, bufsize);
 }
 
 ssize_t readlinkat(int dfd, const char *path, char *buf, size_t bufsize)

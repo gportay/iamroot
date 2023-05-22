@@ -14,21 +14,18 @@
 
 #include "iamroot.h"
 
+static int (*sym)(const char *, int, const char *);
+
 __attribute__((visibility("hidden")))
 int next_symlinkat(const char *string, int dfd, const char *path)
 {
-	int (*sym)(const char *, int, const char *);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "symlinkat");
 
-	sym = dlsym(RTLD_NEXT, "symlinkat");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(string, dfd, path);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(string, dfd, path);
 }
 
 int symlinkat(const char *string, int dfd, const char *path)

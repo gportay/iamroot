@@ -16,20 +16,17 @@
 #include "iamroot.h"
 
 #ifdef _LARGEFILE64_SOURCE
+static int (*sym)(int, int, struct stat64 *);
+
 int next___fxstat64(int ver, int fd, struct stat64 *statbuf)
 {
-	int (*sym)(int, int, struct stat64 *);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "__fxstat64");
 
-	sym = dlsym(RTLD_NEXT, "__fxstat64");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(ver, fd, statbuf);
-	if (ret == -1)
-		__fpathperror(fd, __func__);
-
-	return ret;
+	return sym(ver, fd, statbuf);
 }
 
 int __fxstat64(int ver, int fd, struct stat64 *statbuf)

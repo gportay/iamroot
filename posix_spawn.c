@@ -17,25 +17,22 @@
 
 #include "iamroot.h"
 
+int (*sym)(pid_t *, const char *, const posix_spawn_file_actions_t *,
+		   const posix_spawnattr_t *, char * const [], char * const []);
+
 __attribute__((visibility("hidden")))
 int next_posix_spawn(pid_t *pid, const char *path,
 		     const posix_spawn_file_actions_t *file_actions,
 		     const posix_spawnattr_t *attrp,
 		     char * const argv[], char * const envp[])
 {
-	int (*sym)(pid_t *, const char *, const posix_spawn_file_actions_t *,
-		   const posix_spawnattr_t *, char * const [], char * const []);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "posix_spawn");
 
-	sym = dlsym(RTLD_NEXT, "posix_spawn");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(pid, path, file_actions, attrp, argv, envp);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(pid, path, file_actions, attrp, argv, envp);
 }
 
 int posix_spawn(pid_t *pid, const char *path,

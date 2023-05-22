@@ -16,29 +16,28 @@
 #include "iamroot.h"
 
 #ifdef __OpenBSD__
+static int (*sym)(int);
+
 __attribute__((visibility("hidden")))
 int next_closefrom(int fd)
 {
-	int (*sym)(int);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "closefrom");
 
-	sym = dlsym(RTLD_NEXT, "closefrom");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(fd);
-	if (ret == -1)
-		__fpathperror(fd, __func__);
-
-	return ret;
+	return sym(fd);
 }
 #else
+static void (*sym)(int);
+
 __attribute__((visibility("hidden")))
 void next_closefrom(int fd)
 {
-	void (*sym)(int);
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "closefrom");
 
-	sym = dlsym(RTLD_NEXT, "closefrom");
 	if (!sym)
 		return;
 

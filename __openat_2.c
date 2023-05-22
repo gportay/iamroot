@@ -14,21 +14,18 @@
 #include "iamroot.h"
 
 #ifdef __GLIBC__
+static int (*sym)(int, const char *, int);
+
 __attribute__((visibility("hidden")))
 int next___openat_2(int dfd, const char *path, int oflags)
 {
-	int (*sym)(int, const char *, int);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "__openat_2");
 
-	sym = dlsym(RTLD_NEXT, "__openat_2");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(dfd, path, oflags);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(dfd, path, oflags);
 }
 
 int __openat_2(int dfd, const char *path, int oflags)

@@ -15,22 +15,19 @@
 
 #include "iamroot.h"
 
+static int (*sym)(int, const struct sockaddr *, socklen_t *, int);
+
 __attribute__((visibility("hidden")))
 int next_accept4(int socket, struct sockaddr *addr, socklen_t *addrlen,
 		 int oflags)
 {
-	int (*sym)(int, const struct sockaddr *, socklen_t *, int);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "accept4");
 
-	sym = dlsym(RTLD_NEXT, "accept4");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(socket, addr, addrlen, oflags);
-	if (ret == -1)
-		__fpathperror(socket, __func__);
-
-	return ret;
+	return sym(socket, addr, addrlen, oflags);
 }
 
 int accept4(int socket, struct sockaddr *addr, socklen_t *addrlen, int oflags)

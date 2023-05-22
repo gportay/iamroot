@@ -17,21 +17,18 @@
 
 #include "iamroot.h"
 
+static int (*sym)(const char *, fhandle_t *);
+
 __attribute__((visibility("hidden")))
 int next_getfh(const char *path, fhandle_t *fhp)
 {
-	int (*sym)(const char *, fhandle_t *);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "getfh");
 
-	sym = dlsym(RTLD_NEXT, "getfh");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(path, fhp);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path, fhp);
 }
 
 int getfh(const char *path, fhandle_t *fhp)

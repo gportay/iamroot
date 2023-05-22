@@ -17,21 +17,18 @@
 
 #include "iamroot.h"
 
+static int (*sym)(int, int, const char *);
+
 __attribute__((visibility("hidden")))
 int next_extattr_delete_fd(int fd, int attrnamespace, const char *attrname)
 {
-	int (*sym)(int, int, const char *);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "extattr_delete_fd");
 
-	sym = dlsym(RTLD_NEXT, "extattr_delete_fd");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(fd, attrnamespace, attrname);
-	if (ret == -1)
-		__fpathperror(fd, __func__);
-
-	return ret;
+	return sym(fd, attrnamespace, attrname);
 }
 
 int extattr_delete_fd(int fd, int attrnamespace, const char *attrname)

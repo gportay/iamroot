@@ -18,22 +18,19 @@
 
 #include "iamroot.h"
 
+static int (*sym)(const char *, const char *, const void *, size_t, int);
+
 __attribute__((visibility("hidden")))
 int next_setxattr(const char *path, const char *name, const void *value,
 		  size_t size, int flags)
 {
-	int (*sym)(const char *, const char *, const void *, size_t, int);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "setxattr");
 
-	sym = dlsym(RTLD_NEXT, "setxattr");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(path, name, value, size, flags);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path, name, value, size, flags);
 }
 
 int setxattr(const char *path, const char *name, const void *value,

@@ -16,23 +16,19 @@
 
 #include "iamroot.h"
 
+static int (*sym)(int, const char *, char * const[], char * const[], int);
+
 __attribute__((visibility("hidden")))
 int next_execveat(int dfd, const char *path, char * const argv[],
 		  char * const envp[], int atflags)
 {
-	int (*sym)(int, const char *, char * const[], char * const[],
-		   int);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "execveat");
 
-	sym = dlsym(RTLD_NEXT, "execveat");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(dfd, path, argv, envp, atflags);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(dfd, path, argv, envp, atflags);
 }
 
 int execveat(int dfd, const char *path, char * const argv[],

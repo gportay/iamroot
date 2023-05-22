@@ -14,21 +14,18 @@
 
 #include "iamroot.h"
 
+static int (*sym)(const char *);
+
 __attribute__((visibility("hidden")))
 int next_rmdir(const char *path)
 {
-	int (*sym)(const char *);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "rmdir");
 
-	sym = dlsym(RTLD_NEXT, "rmdir");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(path);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path);
 }
 
 int rmdir(const char *path)

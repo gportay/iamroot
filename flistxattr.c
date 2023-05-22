@@ -18,21 +18,18 @@
 
 #include "iamroot.h"
 
+static ssize_t (*sym)(int, char *, size_t);
+
 __attribute__((visibility("hidden")))
 ssize_t next_flistxattr(int fd, char *list, size_t size)
 {
-	ssize_t (*sym)(int, char *, size_t);
-	ssize_t ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "flistxattr");
 
-	sym = dlsym(RTLD_NEXT, "flistxattr");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(fd, list, size);
-	if (ret == -1)
-		__fpathperror(fd, __func__);
-
-	return ret;
+	return sym(fd, list, size);
 }
 
 ssize_t flistxattr(int fd, char *list, size_t size)

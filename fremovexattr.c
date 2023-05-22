@@ -17,21 +17,18 @@
 
 #include "iamroot.h"
 
+static int (*sym)(int, const char *);
+
 __attribute__((visibility("hidden")))
 int next_fremovexattr(int fd, const char *name)
 {
-	int (*sym)(int, const char *);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "fremovexattr");
 
-	sym = dlsym(RTLD_NEXT, "fremovexattr");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(fd, name);
-	if (ret == -1)
-		__fpathperror(fd, __func__);
-
-	return ret;
+	return sym(fd, name);
 }
 
 int fremovexattr(int fd, const char *name)

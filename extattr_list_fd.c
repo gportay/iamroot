@@ -17,22 +17,19 @@
 
 #include "iamroot.h"
 
+static ssize_t (*sym)(int, int, void *, size_t);
+
 __attribute__((visibility("hidden")))
 ssize_t next_extattr_list_fd(int fd, int attrnamespace, void *data,
 			     size_t nbytes)
 {
-	ssize_t (*sym)(int, int, void *, size_t);
-	ssize_t ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "extattr_list_fd");
 
-	sym = dlsym(RTLD_NEXT, "extattr_list_fd");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(fd, attrnamespace, data, nbytes);
-	if (ret == -1)
-		__fpathperror(fd, __func__);
-
-	return ret;
+	return sym(fd, attrnamespace, data, nbytes);
 }
 
 ssize_t extattr_list_fd(int fd, int attrnamespace, void *data, size_t nbytes)

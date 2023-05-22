@@ -22,21 +22,18 @@
 #include "iamroot.h"
 
 #ifdef __GLIBC__
+static int (*sym)(const char *, struct statfs64 *);
+
 __attribute__((visibility("hidden")))
 int next_statfs64(const char *path, struct statfs64 *statfsbuf)
 {
-	int (*sym)(const char *, struct statfs64 *);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "statfs64");
 
-	sym = dlsym(RTLD_NEXT, "statfs64");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(path, statfsbuf);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path, statfsbuf);
 }
 
 int statfs64(const char *path, struct statfs64 *statfsbuf)

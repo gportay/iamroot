@@ -15,21 +15,18 @@
 
 #include "iamroot.h"
 
+static FILE *(*sym)(const char *, const char *, FILE *);
+
 __attribute__((visibility("hidden")))
 FILE *next_freopen(const char *path, const char *mode, FILE *stream)
 {
-	FILE *(*sym)(const char *, const char *, FILE *);
-	FILE *ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "freopen");
 
-	sym = dlsym(RTLD_NEXT, "freopen");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, NULL);
 
-	ret = sym(path, mode, stream);
-	if (!ret)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path, mode, stream);
 }
 
 FILE *freopen(const char *path, const char *mode, FILE *stream)

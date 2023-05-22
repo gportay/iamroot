@@ -15,25 +15,22 @@
 
 #include "iamroot.h"
 
+static int (*sym)(const char *, struct dirent ***,
+		  int (*)(const struct dirent *),
+		  int (*)(const struct dirent **, const struct dirent **));
+
 __attribute__((visibility("hidden")))
 int next_scandir_b(const char *path, struct dirent ***namelist,
 		   int (*select)(const struct dirent *),
 		   int (*compar)(const struct dirent **, const struct dirent **))
 {
-	int (*sym)(const char *, struct dirent ***,
-		   int (*)(const struct dirent *),
-		   int (*)(const struct dirent **, const struct dirent **));
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "scandir_b");
 
-	sym = dlsym(RTLD_NEXT, "scandir_b");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(path, namelist, select, compar);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path, namelist, select, compar);
 }
 
 int scandir_b(const char *path, struct dirent ***namelist,

@@ -14,21 +14,18 @@
 
 #include "iamroot.h"
 
+static int (*sym)(int, const char *, int);
+
 __attribute__((visibility("hidden")))
 int next_unlinkat(int dfd, const char *path, int atflags)
 {
-	int (*sym)(int, const char *, int);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "unlinkat");
 
-	sym = dlsym(RTLD_NEXT, "unlinkat");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(dfd, path, atflags);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(dfd, path, atflags);
 }
 
 int unlinkat(int dfd, const char *path, int atflags)

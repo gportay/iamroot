@@ -14,22 +14,19 @@
 
 #include "iamroot.h"
 
+static int (*sym)(int, const char *, int, const char *, int);
+
 __attribute__((visibility("hidden")))
 int next_linkat(int olddfd, const char *oldpath, int newdfd,
 		const char *newpath, int atflags)
 {
-	int (*sym)(int, const char *, int, const char *, int);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "linkat");
 
-	sym = dlsym(RTLD_NEXT, "linkat");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(olddfd, oldpath, newdfd, newpath, atflags);
-	if (ret == -1)
-		__pathperror2(oldpath, newpath, __func__);
-
-	return ret;
+	return sym(olddfd, oldpath, newdfd, newpath, atflags);
 }
 
 int linkat(int olddfd, const char *oldpath, int newdfd, const char *newpath,

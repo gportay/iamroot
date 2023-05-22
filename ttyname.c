@@ -12,21 +12,18 @@
 
 #include "iamroot.h"
 
+static char *(*sym)(int);
+
 __attribute__((visibility("hidden")))
 char *next_ttyname(int fd)
 {
-	char *(*sym)(int);
-	char *ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "ttyname");
 
-	sym = dlsym(RTLD_NEXT, "ttyname");
 	if (!sym)
 		return __set_errno(ENOSYS, NULL);
 
-	ret = sym(fd);
-	if (!ret)
-		__fpathperror(fd, __func__);
-
-	return ret;
+	return sym(fd);
 }
 
 char *ttyname(int fd)

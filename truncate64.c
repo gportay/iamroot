@@ -16,21 +16,18 @@
 #include "iamroot.h"
 
 #ifdef __GLIBC__
+static int (*sym)(const char *, off_t);
+
 __attribute__((visibility("hidden")))
 int next_truncate64(const char *path, off64_t length)
 {
-	int (*sym)(const char *, off_t);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "truncate64");
 
-	sym = dlsym(RTLD_NEXT, "truncate64");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(path, length);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path, length);
 }
 
 int truncate64(const char *path, off64_t length)

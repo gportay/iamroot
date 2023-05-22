@@ -18,21 +18,18 @@
 
 #include "iamroot.h"
 
+static int (*sym)(const char *, const char *);
+
 __attribute__((visibility("hidden")))
 int next_removexattr(const char *path, const char *name)
 {
-	int (*sym)(const char *, const char *);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "removexattr");
 
-	sym = dlsym(RTLD_NEXT, "removexattr");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(path, name);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path, name);
 }
 
 int removexattr(const char *path, const char *name)

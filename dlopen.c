@@ -16,22 +16,18 @@
 
 #include "iamroot.h"
 
+static void *(*sym)(const char *, int);
+
 __attribute__((visibility("hidden")))
 void *next_dlopen(const char *path, int flags)
-
 {
-	void *(*sym)(const char *, int);
-	void *ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "dlopen");
 
-	sym = dlsym(RTLD_NEXT, "dlopen");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, NULL);
 
-	ret = sym(path, flags);
-	if (!ret)
-		__pathdlperror(path, __func__);
-
-	return ret;
+	return sym(path, flags);
 }
 
 void *dlopen(const char *path, int flags)

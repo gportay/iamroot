@@ -15,21 +15,18 @@
 
 #include "iamroot.h"
 
+static char *(*sym)(const char *, const char *);
+
 __attribute__((visibility("hidden")))
 char *next_tempnam(const char *path, const char *pfx)
 {
-	char *(*sym)(const char *, const char *);
-	char *ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "tempnam");
 
-	sym = dlsym(RTLD_NEXT, "tempnam");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, NULL);
 
-	ret = sym(path, pfx);
-	if (!ret)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path, pfx);
 }
 
 char *tempnam(const char *path, const char *pfx)

@@ -16,6 +16,12 @@
 
 #include "iamroot.h"
 
+#ifdef __OpenBSD__
+static int (*sym)(int, const char *, unsigned int, int);
+#else
+static int (*sym)(int, const char *, unsigned long, int);
+#endif
+
 __attribute__((visibility("hidden")))
 #ifdef __OpenBSD__
 int next_chflagsat(int dfd, const char *path, unsigned int flags, int atflag)
@@ -23,22 +29,13 @@ int next_chflagsat(int dfd, const char *path, unsigned int flags, int atflag)
 int next_chflagsat(int dfd, const char *path, unsigned long flags, int atflag)
 #endif
 {
-#ifdef __OpenBSD__
-	int (*sym)(int, const char *, unsigned int, int);
-#else
-	int (*sym)(int, const char *, unsigned long, int);
-#endif
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "chflagsat");
 
-	sym = dlsym(RTLD_NEXT, "chflagsat");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(dfd, path, flags, atflag);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(dfd, path, flags, atflag);
 }
 
 #ifdef __OpenBSD__

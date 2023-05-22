@@ -16,22 +16,19 @@
 #include "iamroot.h"
 
 #ifdef __GLIBC__
+static void *(*sym)(Lmid_t, const char *, int);
+
 __attribute__((visibility("hidden")))
 void *next_dlmopen(Lmid_t lmid, const char *path, int flags)
 
 {
-	void *(*sym)(Lmid_t, const char *, int);
-	void *ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "dlmopen");
 
-	sym = dlsym(RTLD_NEXT, "dlmopen");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, NULL);
 
-	ret = sym(lmid, path, flags);
-	if (!ret)
-		__pathdlperror(path, __func__);
-
-	return ret;
+	return sym(lmid, path, flags);
 }
 
 void *dlmopen(Lmid_t lmid, const char *path, int flags)

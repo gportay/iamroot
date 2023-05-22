@@ -16,21 +16,18 @@
 
 #include "iamroot.h"
 
+static DIR *(*sym)(const char *, int);
+
 __attribute__((visibility("hidden")))
 DIR *next___opendir2(const char *path, int oflags)
 {
-	DIR *(*sym)(const char *, int);
-	DIR *ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "__opendir2");
 
-	sym = dlsym(RTLD_NEXT, "__opendir2");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, NULL);
 
-	ret = sym(path, oflags);
-	if (!ret)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path, oflags);
 }
 
 DIR *__opendir2(const char *path, int oflags)

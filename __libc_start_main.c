@@ -18,25 +18,22 @@ extern int next_dl_iterate_phdr(int (*)(struct dl_phdr_info *, size_t, void *),
 
 #include "iamroot.h"
 
+static int (*sym)(int (*)(), int, char **, int (*)(int, char **, char **),
+		  void (*)(), void(*)(), void(*)());
+
 __attribute__((visibility("hidden")))
 int next___libc_start_main(int (*main)(int, char **, char **), int argc,
 			   char **argv, int (*init)(int, char **, char **),
 			   void (*fini)(void), void (*rtld_fini)(void),
 			   void *stack_end)
 {
-	int (*sym)(int (*)(), int, char **, int (*)(int, char **, char **),
-		   void (*)(), void(*)(), void(*)());
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "__libc_start_main");
 
-	sym = dlsym(RTLD_NEXT, "__libc_start_main");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(main, argc, argv, init, fini, rtld_fini, stack_end);
-	if (!ret)
-		__pathperror(NULL, __func__);
-
-	return ret;
+	return sym(main, argc, argv, init, fini, rtld_fini, stack_end);
 }
 
 static int __dl_iterate_phdr_callback(struct dl_phdr_info *info, size_t size,

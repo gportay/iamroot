@@ -21,13 +21,14 @@
 
 #include "iamroot.h"
 
+static int (*sym)(int, const char *, struct stat *, int);
+
 __attribute__((visibility("hidden")))
 int next_fstatat(int dfd, const char *path, struct stat *statbuf, int atflags)
 {
-	int (*sym)(int, const char *, struct stat *, int);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "fstatat");
 
-	sym = dlsym(RTLD_NEXT, "fstatat");
 	if (!sym) {
 		int next___fxstatat(int, int, const char *, struct stat *,
 				    int);
@@ -38,11 +39,7 @@ int next_fstatat(int dfd, const char *path, struct stat *statbuf, int atflags)
 #endif
 	}
 
-	ret = sym(dfd, path, statbuf, atflags);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(dfd, path, statbuf, atflags);
 }
 
 int fstatat(int dfd, const char *path, struct stat *statbuf, int atflags)

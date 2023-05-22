@@ -14,21 +14,18 @@
 
 #include "iamroot.h"
 
+static int (*sym)(const char *, struct statvfs *);
+
 __attribute__((visibility("hidden")))
 int next_statvfs(const char *path, struct statvfs *statvfsbuf)
 {
-	int (*sym)(const char *, struct statvfs *);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "statvfs");
 
-	sym = dlsym(RTLD_NEXT, "statvfs");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(path, statvfsbuf);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path, statvfsbuf);
 }
 
 int statvfs(const char *path, struct statvfs *statvfsbuf)

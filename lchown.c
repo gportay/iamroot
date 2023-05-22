@@ -20,21 +20,18 @@
 
 #include "iamroot.h"
 
+static int (*sym)(const char *, uid_t, gid_t);
+
 __attribute__((visibility("hidden")))
 int next_lchown(const char *path, uid_t owner, gid_t group)
 {
-	int (*sym)(const char *, uid_t, gid_t);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "lchown");
 
-	sym = dlsym(RTLD_NEXT, "lchown");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(path, owner, group);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path, owner, group);
 }
 
 int lchown(const char *path, uid_t owner, gid_t group)

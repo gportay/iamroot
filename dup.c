@@ -13,21 +13,18 @@
 
 #include "iamroot.h"
 
+static int (*sym)(int);
+
 __attribute__((visibility("hidden")))
 int next_dup(int fd)
 {
-	int (*sym)(int);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "dup");
 
-	sym = dlsym(RTLD_NEXT, "dup");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(fd);
-	if (ret == -1)
-		__fpathperror(fd, __func__);
-
-	return ret;
+	return sym(fd);
 }
 
 int dup(int fd)

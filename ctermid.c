@@ -12,21 +12,18 @@
 
 #include "iamroot.h"
 
+static char *(*sym)(char *);
+
 __attribute__((visibility("hidden")))
 char *next_ctermid(char *s)
 {
-	char *(*sym)(char *);
-	char *ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "ctermid");
 
-	sym = dlsym(RTLD_NEXT, "ctermid");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, NULL);
 
-	ret = sym(s);
-	if (!ret)
-		__pathperror(s, __func__);
-
-	return ret;
+	return sym(s);
 }
 
 char *ctermid(char *s)

@@ -20,21 +20,18 @@
 
 #include "iamroot.h"
 
+static int (*sym)(int, mode_t);
+
 __attribute__((visibility("hidden")))
 int next_fchmod(int fd, mode_t mode)
 {
-	int (*sym)(int, mode_t);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "fchmod");
 
-	sym = dlsym(RTLD_NEXT, "fchmod");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(fd, mode);
-	if (ret == -1)
-		__fpathperror(fd, __func__);
-
-	return ret;
+	return sym(fd, mode);
 }
 
 int fchmod(int fd, mode_t mode)

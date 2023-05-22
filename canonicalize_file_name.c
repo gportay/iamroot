@@ -14,21 +14,18 @@
 
 #include "iamroot.h"
 
+static char *(*sym)(const char *);
+
 __attribute__((visibility("hidden")))
 char *next_canonicalize_file_name(const char *path)
 {
-	char *(*sym)(const char *);
-	char *ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "canonicalize_file_name");
 
-	sym = dlsym(RTLD_NEXT, "canonicalize_file_name");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, NULL);
 
-	ret = sym(path);
-	if (!ret)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path);
 }
 
 char *canonicalize_file_name(const char *path)

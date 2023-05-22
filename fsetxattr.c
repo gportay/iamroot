@@ -17,22 +17,19 @@
 
 #include "iamroot.h"
 
+static int (*sym)(int, const char *, const void *, size_t, int);
+
 __attribute__((visibility("hidden")))
 int next_fsetxattr(int fd, const char *name, const void *value, size_t size,
 		   int flags)
 {
-	int (*sym)(int, const char *, const void *, size_t, int);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "fsetxattr");
 
-	sym = dlsym(RTLD_NEXT, "fsetxattr");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(fd, name, value, size, flags);
-	if (ret == -1)
-		__fpathperror(fd, __func__);
-
-	return ret;
+	return sym(fd, name, value, size, flags);
 }
 
 int fsetxattr(int fd, const char *name, const void *value, size_t size,

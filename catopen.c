@@ -17,21 +17,18 @@
 
 #include "iamroot.h"
 
+static nl_catd (*sym)(const char *, int);
+
 __attribute__((visibility("hidden")))
 nl_catd next_catopen(const char *path, int flag)
 {
-	nl_catd (*sym)(const char *, int);
-	nl_catd ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "catopen");
 
-	sym = dlsym(RTLD_NEXT, "catopen");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, (nl_catd)-1);
 
-	ret = sym(path, flag);
-	if (ret == (nl_catd)-1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path, flag);
 }
 
 nl_catd __catopen(const char *path, int flag)

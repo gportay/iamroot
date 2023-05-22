@@ -14,21 +14,18 @@
 
 #include "iamroot.h"
 
+static int (*sym)(const char *, off_t);
+
 __attribute__((visibility("hidden")))
 int next_truncate(const char *path, off_t length)
 {
-	int (*sym)(const char *, off_t);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "truncate");
 
-	sym = dlsym(RTLD_NEXT, "truncate");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(path, length);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path, length);
 }
 
 int truncate(const char *path, off_t length)

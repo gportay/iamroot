@@ -22,21 +22,18 @@
 
 #include "iamroot.h"
 
+static int (*sym)(int, uid_t, gid_t);
+
 __attribute__((visibility("hidden")))
 int next_fchown(int fd, uid_t owner, gid_t group)
 {
-	int (*sym)(int, uid_t, gid_t);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "fchown");
 
-	sym = dlsym(RTLD_NEXT, "fchown");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(fd, owner, group);
-	if (ret == -1)
-		__fpathperror(fd, __func__);
-
-	return ret;
+	return sym(fd, owner, group);
 }
 
 int fchown(int fd, uid_t owner, gid_t group)

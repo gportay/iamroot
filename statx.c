@@ -25,22 +25,19 @@
 #endif
 
 #if defined __GLIBC__ && __GLIBC_PREREQ(2,28)
+static int (*sym)(int, const char *, int, unsigned int, struct statx *);
+
 __attribute__((visibility("hidden")))
 int next_statx(int dfd, const char *path, int atflags, unsigned int mask,
 	       struct statx *statxbuf)
 {
-	int (*sym)(int, const char *, int, unsigned int, struct statx *);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "statx");
 
-	sym = dlsym(RTLD_NEXT, "statx");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(dfd, path, atflags, mask, statxbuf);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(dfd, path, atflags, mask, statxbuf);
 }
 
 int statx(int dfd, const char *path, int atflags, unsigned int mask,

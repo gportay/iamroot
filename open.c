@@ -22,21 +22,18 @@
 
 #include "iamroot.h"
 
+static int (*sym)(const char *, int, ...);
+
 __attribute__((visibility("hidden")))
 int next_open(const char *path, int oflags, mode_t mode)
 {
-	int (*sym)(const char *, int, ...);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "open");
 
-	sym = dlsym(RTLD_NEXT, "open");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(path, oflags, mode);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path, oflags, mode);
 }
 
 int open(const char *path, int oflags, ...)

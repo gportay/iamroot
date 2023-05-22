@@ -14,25 +14,22 @@
 
 #include "iamroot.h"
 
+static int (*sym)(const char *,
+		  int (*)(const char *, const struct stat *, int, struct FTW *),
+		  int, int);
+
 __attribute__((visibility("hidden")))
 int next_nftw(const char *path,
 	      int (*fn)(const char *, const struct stat *, int, struct FTW *),
               int nopenfd, int flags)
 {
-	int (*sym)(const char *,
-		   int (*)(const char *, const struct stat *, int, struct FTW *),
-		   int, int);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "nftw");
 
-	sym = dlsym(RTLD_NEXT, "nftw");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(path, fn, nopenfd, flags);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path, fn, nopenfd, flags);
 }
 
 int nftw(const char *path,

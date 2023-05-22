@@ -17,21 +17,18 @@
 
 #include "iamroot.h"
 
+static int (*sym)(int, char *, fhandle_t *, int);
+
 __attribute__((visibility("hidden")))
 int next_getfhat(int dfd, char *path, fhandle_t *fhp, int atflags)
 {
-	int (*sym)(int, char *, fhandle_t *, int);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "getfhat");
 
-	sym = dlsym(RTLD_NEXT, "getfhat");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(dfd, path, fhp, atflags);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(dfd, path, fhp, atflags);
 }
 
 int getfhat(int dfd, char *path, fhandle_t *fhp, int atflags)

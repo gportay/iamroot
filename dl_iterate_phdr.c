@@ -15,13 +15,15 @@
 
 #include "iamroot.h"
 
+static int (*sym)(int (*)(struct dl_phdr_info *, size_t, void *), void *);
+
 __attribute__((visibility("hidden")))
 int next_dl_iterate_phdr(int (*callback)(struct dl_phdr_info *, size_t, void *),
 			 void *data)
 {
-	int (*sym)(int (*)(struct dl_phdr_info *, size_t, void *), void *);
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "dl_iterate_phdr");
 
-	sym = dlsym(RTLD_NEXT, "dl_iterate_phdr");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 

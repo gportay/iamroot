@@ -15,21 +15,18 @@
 
 #include "iamroot.h"
 
+static int (*sym)(unsigned int, unsigned int, int);
+
 __attribute__((visibility("hidden")))
 int next_close_range(unsigned int first, unsigned int last, int flags)
 {
-	int (*sym)(unsigned int, unsigned int, int);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "close_range");
 
-	sym = dlsym(RTLD_NEXT, "close_range");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(first, last, flags);
-	if (ret == -1)
-		__pathperror(NULL, __func__);
-
-	return ret;
+	return sym(first, last, flags);
 }
 
 #ifdef __linux__

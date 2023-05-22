@@ -15,21 +15,18 @@
 
 #include "iamroot.h"
 
+static int (*sym)(int, const struct sockaddr *, socklen_t);
+
 __attribute__((visibility("hidden")))
 int next_bind(int socket, const struct sockaddr *addr, socklen_t addrlen)
 {
-	int (*sym)(int, const struct sockaddr *, socklen_t);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "bind");
 
-	sym = dlsym(RTLD_NEXT, "bind");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(socket, addr, addrlen);
-	if (ret == -1)
-		__fpathperror(socket, __func__);
-
-	return ret;
+	return sym(socket, addr, addrlen);
 }
 
 int bind(int socket, const struct sockaddr *addr, socklen_t addrlen)

@@ -15,21 +15,18 @@
 #include "iamroot.h"
 
 #ifdef __GLIBC__
+static int (*sym)(const char *, struct statvfs64 *);
+
 __attribute__((visibility("hidden")))
 int next_statvfs64(const char *path, struct statvfs64 *statvfsbuf)
 {
-	int (*sym)(const char *, struct statvfs64 *);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "statvfs64");
 
-	sym = dlsym(RTLD_NEXT, "statvfs64");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(path, statvfsbuf);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path, statvfsbuf);
 }
 
 int statvfs64(const char *path, struct statvfs64 *statvfsbuf)

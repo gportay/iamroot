@@ -12,21 +12,18 @@
 
 #include "iamroot.h"
 
+static FILE *(*sym)(int, const char *);
+
 __attribute__((visibility("hidden")))
 FILE *next_fdopen(int fd, const char *mode)
 {
-	FILE *(*sym)(int, const char *);
-	FILE *ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "fdopen");
 
-	sym = dlsym(RTLD_NEXT, "fdopen");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, NULL);
 
-	ret = sym(fd, mode);
-	if (!ret)
-		__fpathperror(fd, __func__);
-
-	return ret;
+	return sym(fd, mode);
 }
 
 FILE *fdopen(int fd, const char *mode)

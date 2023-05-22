@@ -22,22 +22,19 @@
 
 #include "iamroot.h"
 
+static int (*sym)(int, int, const char *, struct stat *, int);
+
 __attribute__((visibility("hidden")))
 int next___fxstatat(int ver, int dfd, const char *path, struct stat *statbuf,
 		    int atflags)
 {
-	int (*sym)(int, int, const char *, struct stat *, int);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "__fxstatat");
 
-	sym = dlsym(RTLD_NEXT, "__fxstatat");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(ver, dfd, path, statbuf, atflags);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(ver, dfd, path, statbuf, atflags);
 }
 
 int __fxstatat(int ver, int dfd, const char *path, struct stat *statbuf,

@@ -15,12 +15,14 @@
 
 #include "iamroot.h"
 
+static void (*sym)(const char *, const struct utmp *);
+
 __attribute__((visibility("hidden")))
 void next_updwtmp(const char *path, const struct utmp *ut)
 {
-	void (*sym)(const char *, const struct utmp *);
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "updwtmp");
 
-	sym = dlsym(RTLD_NEXT, "updwtmp");
 	if (!sym)
 		return;
 

@@ -13,22 +13,19 @@
 
 #include "iamroot.h"
 
+static int (*sym)(int, const char *, int, const char *);
+
 __attribute__((visibility("hidden")))
 int next_renameat(int olddfd, const char *oldpath, int newdfd,
 		  const char *newpath)
 {
-	int (*sym)(int, const char *, int, const char *);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "renameat");
 
-	sym = dlsym(RTLD_NEXT, "renameat");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(olddfd, oldpath, newdfd, newpath);
-	if (ret == -1)
-		__pathperror2(oldpath, newpath, __func__);
-
-	return ret;
+	return sym(olddfd, oldpath, newdfd, newpath);
 }
 
 int renameat(int olddfd, const char *oldpath, int newdfd, const char *newpath)

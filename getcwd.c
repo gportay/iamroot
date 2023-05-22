@@ -12,21 +12,18 @@
 
 #include "iamroot.h"
 
+static char *(*sym)(char *, size_t);
+
 __attribute__((visibility("hidden")))
 char *next_getcwd(char *buf, size_t size)
 {
-	char *(*sym)(char *, size_t);
-	char *ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "getcwd");
 
-	sym = dlsym(RTLD_NEXT, "getcwd");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, NULL);
 
-	ret = sym(buf, size);
-	if (!ret)
-		__pathperror(NULL, __func__);
-
-	return ret;
+	return sym(buf, size);
 }
 
 char *getcwd(char *buf, size_t size)

@@ -18,22 +18,19 @@
 #include "iamroot.h"
 
 #ifdef _LARGEFILE64_SOURCE
+static int (*sym)(int, int, const char *, struct stat64 *, int);
+
 __attribute__((visibility("hidden")))
 int next___fxstatat64(int ver, int dfd, const char *path,
 		      struct stat64 *statbuf, int atflags)
 {
-	int (*sym)(int, int, const char *, struct stat64 *, int);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "__fxstatat64");
 
-	sym = dlsym(RTLD_NEXT, "__fxstatat64");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(ver, dfd, path, statbuf, atflags);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(ver, dfd, path, statbuf, atflags);
 }
 
 int __fxstatat64(int ver, int dfd, const char *path, struct stat64 *statbuf,

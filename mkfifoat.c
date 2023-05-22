@@ -20,21 +20,18 @@
 
 #include "iamroot.h"
 
+static int (*sym)(int, const char *, mode_t);
+
 __attribute__((visibility("hidden")))
 int next_mkfifoat(int dfd, const char *path, mode_t mode)
 {
-	int (*sym)(int, const char *, mode_t);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "mkfifoat");
 
-	sym = dlsym(RTLD_NEXT, "mkfifoat");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(dfd, path, mode);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(dfd, path, mode);
 }
 
 int mkfifoat(int dfd, const char *path, mode_t mode)

@@ -15,21 +15,18 @@
 
 #include "iamroot.h"
 
+static int (*sym)(char *, int, int);
+
 __attribute__((visibility("hidden")))
 int next_mkostemps(char *path, int suffixlen, int oflags)
 {
-	int (*sym)(char *, int, int);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "mkostemps");
 
-	sym = dlsym(RTLD_NEXT, "mkostemps");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(path, suffixlen, oflags);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path, suffixlen, oflags);
 }
 
 int mkostemps(char *path, int suffixlen, int oflags)

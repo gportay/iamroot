@@ -21,21 +21,18 @@
 
 #include "iamroot.h"
 
+static int (*sym)(const char *, struct statfs *);
+
 __attribute__((visibility("hidden")))
 int next_statfs(const char *path, struct statfs *statfsbuf)
 {
-	int (*sym)(const char *, struct statfs *);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "statfs");
 
-	sym = dlsym(RTLD_NEXT, "statfs");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(path, statfsbuf);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path, statfsbuf);
 }
 
 int statfs(const char *path, struct statfs *statfsbuf)

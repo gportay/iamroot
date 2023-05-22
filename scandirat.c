@@ -14,25 +14,22 @@
 
 #include "iamroot.h"
 
+static int (*sym)(int, const char *, struct dirent ***,
+		  int (*)(const struct dirent *),
+		  int (*)(const struct dirent **, const struct dirent **));
+
 __attribute__((visibility("hidden")))
 int next_scandirat(int dfd, const char *path, struct dirent ***namelist,
 		  int (*filter)(const struct dirent *),
 		  int (*compar)(const struct dirent **, const struct dirent **))
 {
-	int (*sym)(int, const char *, struct dirent ***,
-		   int (*)(const struct dirent *),
-		   int (*)(const struct dirent **, const struct dirent **));
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "scandirat");
 
-	sym = dlsym(RTLD_NEXT, "scandirat");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(dfd, path, namelist, filter, compar);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(dfd, path, namelist, filter, compar);
 }
 
 int scandirat(int dfd, const char *path, struct dirent ***namelist,

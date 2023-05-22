@@ -15,25 +15,22 @@
 #include "iamroot.h"
 
 #ifdef __GLIBC__
+static int (*sym)(const char *,
+		  int (*)(const char *, const struct stat64 *, int, struct FTW *),
+	          int, int);
+
 __attribute__((visibility("hidden")))
 int next_nftw64(const char *path,
 	     int (*fn)(const char *, const struct stat64 *, int, struct FTW *),
 	     int nopenfd, int flags)
 {
-	int (*sym)(const char *,
-	       int (*)(const char *, const struct stat64 *, int, struct FTW *),
-	       int, int);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "nftw64");
 
-	sym = dlsym(RTLD_NEXT, "nftw64");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(path, fn, nopenfd, flags);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path, fn, nopenfd, flags);
 }
 
 int nftw64(const char *path,

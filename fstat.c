@@ -20,12 +20,13 @@
 
 #include "iamroot.h"
 
+static int (*sym)(int, struct stat *);
+
 int next_fstat(int fd, struct stat *statbuf)
 {
-	int (*sym)(int, struct stat *);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "fstat");
 
-	sym = dlsym(RTLD_NEXT, "fstat");
 	if (!sym) {
 		int next___fxstat(int, int, struct stat *);
 #if defined(__arm__)
@@ -35,11 +36,7 @@ int next_fstat(int fd, struct stat *statbuf)
 #endif
 	}
 
-	ret = sym(fd, statbuf);
-	if (ret == -1)
-		__fpathperror(fd, __func__);
-
-	return ret;
+	return sym(fd, statbuf);
 }
 
 int fstat(int fd, struct stat *statbuf)

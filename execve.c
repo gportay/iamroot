@@ -996,21 +996,18 @@ const char *__getexe()
 	return &exec[len];
 }
 
+static int (*sym)(const char *, char * const[], char * const[]);
+
 __attribute__((visibility("hidden")))
 int next_execve(const char *path, char * const argv[], char * const envp[])
 {
-	int (*sym)(const char *, char * const[], char * const[]);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "execve");
 
-	sym = dlsym(RTLD_NEXT, "execve");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(path, argv, envp);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path, argv, envp);
 }
 
 static void __env_sanitize(char *name, int upper)

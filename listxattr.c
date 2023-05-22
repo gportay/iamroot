@@ -18,21 +18,18 @@
 
 #include "iamroot.h"
 
+static ssize_t (*sym)(const char *, char *, size_t);
+
 __attribute__((visibility("hidden")))
 ssize_t next_listxattr(const char *path, char *list, size_t size)
 {
-	ssize_t (*sym)(const char *, char *, size_t);
-	ssize_t ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "listxattr");
 
-	sym = dlsym(RTLD_NEXT, "listxattr");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(path, list, size);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path, list, size);
 }
 
 ssize_t listxattr(const char *path, char *list, size_t size)

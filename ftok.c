@@ -14,21 +14,18 @@
 
 #include "iamroot.h"
 
+static int (*sym)(const char *, int);
+
 __attribute__((visibility("hidden")))
 key_t next_ftok(const char *path, int proj_id)
 {
-	int (*sym)(const char *, int);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "ftok");
 
-	sym = dlsym(RTLD_NEXT, "ftok");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(path, proj_id);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path, proj_id);
 }
 
 key_t ftok(const char *path, int proj_id)

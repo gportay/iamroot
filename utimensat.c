@@ -15,22 +15,19 @@
 
 #include "iamroot.h"
 
+static int (*sym)(int, const char *, const struct timespec[2], int);
+
 __attribute__((visibility("hidden")))
 int next_utimensat(int dfd, const char *path, const struct timespec times[2],
 		   int atflags)
 {
-	int (*sym)(int, const char *, const struct timespec[2], int);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "utimensat");
 
-	sym = dlsym(RTLD_NEXT, "utimensat");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(dfd, path, times, atflags);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(dfd, path, times, atflags);
 }
 
 int utimensat(int dfd, const char *path, const struct timespec times[2],

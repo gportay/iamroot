@@ -16,21 +16,18 @@
 
 #include "iamroot.h"
 
+static int (*sym)(const char *, unsigned long);
+
 __attribute__((visibility("hidden")))
 int next_lchflags(const char *path, unsigned long flags)
 {
-	int (*sym)(const char *, unsigned long);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "lchflags");
 
-	sym = dlsym(RTLD_NEXT, "lchflags");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(path, flags);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path, flags);
 }
 
 int lchflags(const char *path, unsigned long flags)

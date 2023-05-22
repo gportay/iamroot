@@ -12,21 +12,18 @@
 
 #include "iamroot.h"
 
+static char *(*sym)();
+
 __attribute__((visibility("hidden")))
 char *next_get_current_dir_name()
 {
-	char *(*sym)();
-	char *ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "get_current_dir_name");
 
-	sym = dlsym(RTLD_NEXT, "get_current_dir_name");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, NULL);
 
-	ret = sym();
-	if (!ret)
-		__pathperror(NULL, __func__);
-
-	return ret;
+	return sym();
 }
 
 char *get_current_dir_name()

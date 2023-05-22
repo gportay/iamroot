@@ -12,21 +12,18 @@
 
 #include "iamroot.h"
 
+static int (*sym)(FILE *);
+
 __attribute__((visibility("hidden")))
 int next_fclose(FILE *stream)
 {
-	int (*sym)(FILE *);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "fclose");
 
-	sym = dlsym(RTLD_NEXT, "fclose");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(stream);
-	if (ret == -1)
-		__pathperror(NULL, __func__);
-
-	return ret;
+	return sym(stream);
 }
 
 int fclose(FILE *stream)

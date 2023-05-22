@@ -20,21 +20,18 @@
 
 #include "iamroot.h"
 
+static int (*sym)(const char *, mode_t);
+
 __attribute__((visibility("hidden")))
 int next_creat(const char *path, mode_t mode)
 {
-	int (*sym)(const char *, mode_t);
-	int ret;
+	if (!sym)
+		sym = dlsym(RTLD_NEXT, "creat");
 
-	sym = dlsym(RTLD_NEXT, "creat");
 	if (!sym)
 		return __dl_set_errno(ENOSYS, -1);
 
-	ret = sym(path, mode);
-	if (ret == -1)
-		__pathperror(path, __func__);
-
-	return ret;
+	return sym(path, mode);
 }
 
 int creat(const char *path, mode_t mode)

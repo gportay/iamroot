@@ -198,23 +198,13 @@ char *__getroot()
 
 static inline int __setrootdir(const char *path)
 {
-	int ret;
-
 	if (!path) {
 		__info("Exiting chroot: '%s'\n", __getrootdir());
-		ret = unsetenv("IAMROOT_ROOT");
-		if (ret == -1)
-			return __env_perror("IAMROOT_ROOT", "unsetenv", -1);
-
-		return ret;
+		return unsetenv("IAMROOT_ROOT");
 	}
 
 	__info("Enterring chroot: '%s'\n", path);
-	ret = setenv("IAMROOT_ROOT", path, 1);
-	if (ret == -1)
-		return __env_perror("IAMROOT_ROOT", "setenv", -1);
-
-	return ret;
+	return setenv("IAMROOT_ROOT", path, 1);
 }
 
 __attribute__((visibility("hidden")))

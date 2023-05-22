@@ -39,14 +39,14 @@ int extattr_delete_file(const char *path, int attrnamespace,
 	const int oldattrnamespace = attrnamespace;
 	const char *oldattrname = attrname;
 	char buf[PATH_MAX];
+	int ret = -1;
 	ssize_t siz;
-	int ret;
 	(void)oldattrnamespace;
 	(void)oldattrname;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
-		return __path_resolution_perror(path, -1);
+		goto exit;
 
 	if (attrnamespace == EXTATTR_NAMESPACE_SYSTEM) {
 		int ret;
@@ -62,6 +62,7 @@ int extattr_delete_file(const char *path, int attrnamespace,
 
 	ret = next_extattr_delete_file(buf, attrnamespace, attrname);
 
+exit:
 	__debug("%s(path: '%s' -> '%s', attrnamespace: %i -> %i, attrname: '%s' -> '%s') -> %i\n",
 		__func__, path, buf, oldattrnamespace, attrnamespace,
 		oldattrname, attrname, ret);

@@ -38,13 +38,13 @@ int fchmod(int fd, mode_t mode)
 {
 	const mode_t oldmode = mode;
 	char buf[PATH_MAX];
+	int ret = -1;
 	ssize_t siz;
-	int ret;
 	(void)oldmode;
 
 	siz = fpath(fd, buf, sizeof(buf));
 	if (siz == -1)
-		return __fpath_perror(fd, -1);
+		goto exit;
 
 	__fwarn_if_insuffisant_user_mode(fd, mode);
 
@@ -55,6 +55,7 @@ int fchmod(int fd, mode_t mode)
 		ret = __set_errno(0, 0);
 	__set_mode(buf, oldmode, mode);
 
+exit:
 	__debug("%s(fd: %i <-> '%s', mode: 0%03o -> 0%03o) -> %i\n", __func__,
 		fd, __fpath(fd), oldmode, mode, ret);
 

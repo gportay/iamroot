@@ -22,15 +22,15 @@ int __xmknodat(int ver, int dfd, const char *path, mode_t mode, dev_t *dev)
 {
 	const mode_t oldmode = mode;
 	char buf[PATH_MAX];
+	int fd, ret = -1;
 	ssize_t siz;
-	int fd, ret;
 	(void)ver;
 	(void)oldmode;
 	(void)dev;
 
 	siz = path_resolution(dfd, path, buf, sizeof(buf), 0);
 	if (siz == -1)
-		return __path_resolution_perror(path, -1);
+		goto exit;
 
 	__warn_if_insuffisant_user_mode(buf, mode);
 

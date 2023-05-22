@@ -36,15 +36,14 @@ ssize_t extattr_list_fd(int fd, int attrnamespace, void *data, size_t nbytes)
 {
 	char extbuf[EXTATTR_MAXNAMELEN+1]; /* NULL-terminated */
 	int oldattrnamespace = attrnamespace;
+	ssize_t i, extsize, siz, ret = -1;
 	unsigned char *pdata = data;
-	ssize_t extsize, siz;
 	char buf[PATH_MAX];
-	ssize_t i, ret;
 	(void)nbytes;
 
 	siz = fpath(fd, buf, sizeof(buf));
 	if (siz == -1)
-		return __fpath_perror(fd, -1);
+		goto exit;
 
 	if (attrnamespace == EXTATTR_NAMESPACE_SYSTEM)
 		attrnamespace = EXTATTR_NAMESPACE_USER;

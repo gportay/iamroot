@@ -46,14 +46,15 @@ int chflagsat(int dfd, const char *path, unsigned long flags, int atflag)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
-	int ret;
+	int ret = -1;
 
 	siz = path_resolution(dfd, path, buf, sizeof(buf), atflag);
 	if (siz == -1)
-		return __path_resolution_perror(path, -1);
+		goto exit;
 
 	ret = next_chflagsat(dfd, path, flags, atflag);
 
+exit:
 	__debug("%s(dfd: %i <-> '%s', path: '%s', ..., flags: 0x%x) -> %i\n",
 		__func__, dfd, __fpath(dfd), path, atflag, ret);
 

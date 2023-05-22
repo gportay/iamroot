@@ -36,13 +36,13 @@ ssize_t next_lgetxattr(const char *path, const char *name, void *value,
 ssize_t lgetxattr(const char *path, const char *name, void *value, size_t size)
 {
 	char xbuf[XATTR_NAME_MAX+1]; /* NULL-terminated */
+	ssize_t siz, ret = -1;
 	char buf[PATH_MAX];
-	ssize_t ret, siz;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
 			      AT_SYMLINK_NOFOLLOW);
 	if (siz == -1)
-		return __path_resolution_perror(path, -1);
+		goto exit;
 
 	if (!__strneq(name, IAMROOT_XATTRS_PREFIX)) {
 		int ret;
@@ -57,6 +57,7 @@ ssize_t lgetxattr(const char *path, const char *name, void *value, size_t size)
 
 	ret = next_lgetxattr(buf, name, value, size);
 
+exit:
 	__debug("%s(path: '%s' -> '%s', name: '%s' -> '%s', ...) -> %zi\n",
 		__func__, path, buf, name, xbuf, ret);
 

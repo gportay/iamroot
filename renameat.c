@@ -31,21 +31,22 @@ int next_renameat(int olddfd, const char *oldpath, int newdfd,
 int renameat(int olddfd, const char *oldpath, int newdfd, const char *newpath)
 {
 	char oldbuf[PATH_MAX], newbuf[PATH_MAX];
+	int ret = -1;
 	ssize_t siz;
-	int ret;
 
 	siz = path_resolution(olddfd, oldpath, oldbuf, sizeof(oldbuf),
 			      AT_SYMLINK_NOFOLLOW);
 	if (siz == -1)
-		return __path_resolution_perror(oldpath, -1);
+		goto exit;
 
 	siz = path_resolution(newdfd, newpath, newbuf, sizeof(newbuf),
 			      AT_SYMLINK_NOFOLLOW);
 	if (siz == -1)
-		return __path_resolution_perror(newpath, -1);
+		goto exit;
 
 	ret = next_renameat(olddfd, oldbuf, newdfd, newbuf);
 
+exit:
 	__debug("%s(olddfd: %i <-> '%s', oldpath: '%s' -> '%s', newdfd: %i <-> '%s', newpath: '%s' -> '%s') -> %i\n",
 		__func__, olddfd, __fpath(olddfd), oldpath, oldbuf, newdfd,
 		__fpath2(newdfd), newpath, newbuf, ret);

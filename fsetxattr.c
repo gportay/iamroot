@@ -37,12 +37,12 @@ int fsetxattr(int fd, const char *name, const void *value, size_t size,
 {
 	char xbuf[XATTR_NAME_MAX+1]; /* NULL-terminated */
 	char buf[PATH_MAX];
+	int ret = -1;
 	ssize_t siz;
-	int ret;
 
 	siz = fpath(fd, buf, sizeof(buf));
 	if (siz == -1)
-		return __fpath_perror(fd, -1);
+		goto exit;
 
 	if (!__strneq(name, IAMROOT_XATTRS_PREFIX)) {
 		int ret;
@@ -57,6 +57,7 @@ int fsetxattr(int fd, const char *name, const void *value, size_t size,
 
 	ret = next_fsetxattr(fd, name, value, size, flags);
 
+exit:
 	__debug("%s(fd: %i <-> '%s', name: '%s', ..., flags: 0x%x) -> %i\n",
 		__func__, fd, buf, name, flags, ret);
 

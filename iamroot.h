@@ -620,10 +620,6 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 
 extern void __abort();
 
-extern void __pathperror(const char *, const char *);
-extern void __pathperror2(const char *, const char *, const char *);
-extern void __fpathperror(int, const char *);
-
 extern void __envperror(const char *, const char *);
 
 extern void __pathdlperror(const char *, const char *);
@@ -633,26 +629,19 @@ extern void __pathdlperror(const char *, const char *);
 	({ __dlperror(__func__); \
 	   __set_errno(ENOSYS, (r)); })
 
-#define __fpath_perror(fd, r) \
-	({ __fpathperror((fd), __func__); \
-	   (r); })
-
-#define __path_resolution_perror(p, r) \
-	({ __pathperror((p), __func__); \
-	   (r); })
-
 #define __env_perror(e, f, r) \
 	({ __envperror((e), (f)); \
 	   (r); })
 
 int close(int);
+void perror(const char *);
 static inline void __close(int fd)
 {
 	extern int errno;
 	const int save_errno = errno;
 
 	if (close(fd))
-		__fpathperror(fd, "close");
+		perror("close");
 	errno = save_errno;
 }
 

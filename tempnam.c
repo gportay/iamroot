@@ -32,15 +32,15 @@ char *next_tempnam(const char *path, const char *pfx)
 char *tempnam(const char *path, const char *pfx)
 {
 	char buf[PATH_MAX];
+	char *ret = NULL;
 	ssize_t siz;
-	char *ret;
 
 	if (!path)
 		path = P_tmpdir;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
-		return __path_resolution_perror(path, NULL);
+		goto exit;
 
 	ret = next_tempnam(buf, pfx);
 	if (!ret)

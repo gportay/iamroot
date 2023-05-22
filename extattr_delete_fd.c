@@ -37,14 +37,14 @@ int extattr_delete_fd(int fd, int attrnamespace, const char *attrname)
 	const int oldattrnamespace = attrnamespace;
 	const char *oldattrname = attrname;
 	char buf[PATH_MAX];
+	int ret = -1;
 	ssize_t siz;
-	int ret;
 	(void)oldattrnamespace;
 	(void)oldattrname;
 
 	siz = fpath(fd, buf, sizeof(buf));
 	if (siz == -1)
-		return __fpath_perror(fd, -1);
+		goto exit;
 
 	if (attrnamespace == EXTATTR_NAMESPACE_SYSTEM) {
 		int ret;
@@ -60,6 +60,7 @@ int extattr_delete_fd(int fd, int attrnamespace, const char *attrname)
 
 	ret = next_extattr_delete_fd(fd, attrnamespace, attrname);
 
+exit:
 	__debug("%s(fd: %i <-> '%s', attrnamespace: %i -> %i, attrname: '%s' -> '%s') -> %i\n",
 		__func__, fd, buf, oldattrnamespace, attrnamespace,
 		oldattrname, attrname, ret);

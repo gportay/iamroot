@@ -37,12 +37,12 @@ int setxattr(const char *path, const char *name, const void *value,
 	     size_t size, int flags)
 {
 	char xbuf[XATTR_NAME_MAX+1]; /* NULL-terminated */
+	ssize_t siz, ret = -1;
 	char buf[PATH_MAX];
-	ssize_t ret, siz;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
-		return __path_resolution_perror(path, -1);
+		goto exit;
 
 	if (!__strneq(name, IAMROOT_XATTRS_PREFIX)) {
 		int ret;
@@ -57,6 +57,7 @@ int setxattr(const char *path, const char *name, const void *value,
 
 	ret = next_setxattr(buf, name, value, size, flags);
 
+exit:
 	__debug("%s(path: '%s' -> '%s', name: '%s' -> '%s', ..., flags: 0%x) -> %zi\n",
 		__func__, path, buf, name, xbuf, flags, ret);
 

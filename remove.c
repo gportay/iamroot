@@ -30,16 +30,17 @@ int next_remove(const char *path)
 int remove(const char *path)
 {
 	char buf[PATH_MAX];
+	int ret = -1;
 	ssize_t siz;
-	int ret;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
 			      AT_SYMLINK_NOFOLLOW);
 	if (siz == -1)
-		return __path_resolution_perror(path, -1);
+		goto exit;
 
 	ret = next_remove(buf);
 
+exit:
 	__debug("%s(path: '%s' -> '%s') -> %i\n", __func__, path, buf, ret);
 
 	return ret;

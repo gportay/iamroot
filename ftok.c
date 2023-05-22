@@ -30,16 +30,17 @@ key_t next_ftok(const char *path, int proj_id)
 
 key_t ftok(const char *path, int proj_id)
 {
+	key_t ret = (key_t)-1;
 	char buf[PATH_MAX];
 	ssize_t siz;
-	key_t ret;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
-		return __path_resolution_perror(path, -1);
+		goto exit;
 
 	ret = next_ftok(buf, proj_id);
 
+exit:
 	__debug("%s(path: '%s' -> '%s', ...) -> %i\n", __func__, path, buf,
 		ret);
 

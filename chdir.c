@@ -31,12 +31,12 @@ int next_chdir(const char *path)
 int chdir(const char *path)
 {
 	char buf[PATH_MAX];
+	int ret = -1;
 	ssize_t siz;
-	int ret;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
-		return __path_resolution_perror(path, -1);
+		goto exit;
 
 	ret = next_chdir(buf);
 	if (ret == -1)

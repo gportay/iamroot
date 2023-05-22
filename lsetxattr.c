@@ -44,7 +44,7 @@ int lsetxattr(const char *path, const char *name, const void *value,
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
 			      AT_SYMLINK_NOFOLLOW);
 	if (siz == -1)
-		return __path_resolution_perror(path, -1);
+		goto exit;
 
 	if (!__strneq(name, IAMROOT_XATTRS_PREFIX)) {
 		int ret;
@@ -59,6 +59,7 @@ int lsetxattr(const char *path, const char *name, const void *value,
 
 	ret = next_lsetxattr(buf, name, value, size, flags);
 
+exit:
 	__debug("%s(path: '%s' -> '%s', name: '%s' -> '%s', ...) -> %i\n",
 		__func__, path, buf, name, xbuf, ret);
 

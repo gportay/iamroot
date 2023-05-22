@@ -36,10 +36,11 @@ int statvfs(const char *path, struct statvfs *statvfsbuf)
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
-		return __path_resolution_perror(path, -1);
+		goto exit;
 
 	ret = next_statvfs(buf, statvfsbuf);
 
+exit:
 	__debug("%s(path: '%s' -> '%s', ...) -> %i\n", __func__, path, buf,
 		ret);
 

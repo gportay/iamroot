@@ -34,8 +34,8 @@ int getpeername(int socket, struct sockaddr *addr, socklen_t *addrlen)
 	struct sockaddr_un buf = { .sun_family = AF_UNIX, .sun_path = { 0 }};
 	struct sockaddr_un *addrun = (struct sockaddr_un *)addr;
 	socklen_t buflen;
+	int ret = -1;
 	ssize_t siz;
-	int ret;
 
 	/* Do not proceed to any hack if not an Unix socket */
 	if (addrun || addrun->sun_family != AF_UNIX || *addrun->sun_path)
@@ -44,7 +44,7 @@ int getpeername(int socket, struct sockaddr *addr, socklen_t *addrlen)
 	siz = path_resolution(AT_FDCWD, addrun->sun_path, buf.sun_path,
 			      sizeof(buf.sun_path), 0);
 	if (siz == -1)
-		return __path_resolution_perror(addrun->sun_path, -1);
+		goto exit;
 
 	buflen = SUN_LEN(&buf);
 
@@ -53,6 +53,7 @@ int getpeername(int socket, struct sockaddr *addr, socklen_t *addrlen)
 	if (ret == 0 && addrlen)
 		*addrlen = buflen;
 
+exit:
 	__debug("%s(socket: %i, addr: { .sun_path: '%s' -> '%s', ... }, addrlen: %i -> %i) -> %i\n",
 		__func__, socket, addrun->sun_path, buf.sun_path,
 		addrlen ? *addrlen : 0, buflen, ret);

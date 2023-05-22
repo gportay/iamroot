@@ -38,14 +38,14 @@ ssize_t extattr_get_fd(int fd, int attrnamespace, const char *attrname,
 	char extbuf[EXTATTR_MAXNAMELEN+1]; /* NULL-terminated */
 	const int oldattrnamespace = attrnamespace;
 	const char *oldattrname = attrname;
+	ssize_t siz, ret = -1;
 	char buf[PATH_MAX];
-	ssize_t ret, siz;
 	(void)oldattrnamespace;
 	(void)oldattrname;
 
 	siz = fpath(fd, buf, sizeof(buf));
 	if (siz == -1)
-		return __fpath_perror(fd, -1);
+		goto exit;
 
 	if (attrnamespace == EXTATTR_NAMESPACE_SYSTEM) {
 		int ret;
@@ -61,6 +61,7 @@ ssize_t extattr_get_fd(int fd, int attrnamespace, const char *attrname,
 
 	ret = next_extattr_get_fd(fd, attrnamespace, attrname, data, nbytes);
 
+exit:
 	__debug("%s(fd: %i <-> '%s', attrnamespace: %i -> %i, attrname: '%s' -> '%s', ...) -> %zi\n",
 		__func__, fd, buf, oldattrnamespace, attrnamespace,
 		oldattrname, attrname, ret);

@@ -67,7 +67,7 @@ int execveat(int dfd, const char *path, char * const argv[],
 
 	siz = path_resolution(dfd, path, buf, sizeof(buf), atflags);
 	if (siz == -1)
-		return __path_resolution_perror(path, -1);
+		return -1;
 
 	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', argv: { '%s', '%s', ... }, envp: %p, atflags: 0x%x)\n",
 		__func__, dfd, __fpath(dfd), path, buf, argv[0], argv[1], envp,

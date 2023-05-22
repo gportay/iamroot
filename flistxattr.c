@@ -35,14 +35,13 @@ ssize_t next_flistxattr(int fd, char *list, size_t size)
 ssize_t flistxattr(int fd, char *list, size_t size)
 {
 	char xbuf[XATTR_LIST_MAX+1]; /* NULL-terminated */
+	ssize_t i, xsize, siz, ret = -1;
 	char buf[PATH_MAX];
-	ssize_t xsize, siz;
-	ssize_t i, ret;
 	(void)size;
 
 	siz = fpath(fd, buf, sizeof(buf));
 	if (siz == -1)
-		return __fpath_perror(fd, -1);
+		goto exit;
 
 	ret = next_flistxattr(fd, xbuf, sizeof(xbuf)-1); /* NULL-terminated */
 	if (ret == -1)

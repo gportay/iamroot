@@ -204,13 +204,13 @@ char *realpath(const char *path, char *resolved_path)
 {
 	char buf[PATH_MAX];
 	const char *root;
+	char *ret = NULL;
 	ssize_t siz;
 	size_t len;
-	char *ret;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
-		return __path_resolution_perror(path, NULL);
+		goto exit;
 
 	ret = next_realpath(buf, resolved_path);
 	if (!ret)

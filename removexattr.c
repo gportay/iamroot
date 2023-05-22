@@ -36,12 +36,12 @@ int removexattr(const char *path, const char *name)
 {
 	char xbuf[XATTR_NAME_MAX+1]; /* NULL-terminated */
 	char buf[PATH_MAX];
+	int ret = -1;
 	ssize_t siz;
-	int ret;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
-		return __path_resolution_perror(path, -1);
+		goto exit;
 
 	if (!__strneq(name, IAMROOT_XATTRS_PREFIX)) {
 		int ret;
@@ -56,6 +56,7 @@ int removexattr(const char *path, const char *name)
 
 	ret = next_removexattr(buf, name);
 
+exit:
 	__debug("%s(path: '%s' -> '%s', name: '%s' -> '%s', ...) -> %i\n",
 		__func__, path, buf, name, xbuf, ret);
 

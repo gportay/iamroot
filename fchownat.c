@@ -40,14 +40,14 @@ int fchownat(int dfd, const char *path, uid_t owner, gid_t group, int atflags)
 	const uid_t oldowner = owner;
 	const uid_t oldgroup = group;
 	char buf[PATH_MAX];
+	int ret = -1;
 	ssize_t siz;
-	int ret;
 	(void)oldowner;
 	(void)oldgroup;
 
 	siz = path_resolution(dfd, path, buf, sizeof(buf), atflags);
 	if (siz == -1)
-		return __path_resolution_perror(path, -1);
+		goto exit;
 
 	owner = __get_uid(buf);
 	group = __get_gid(buf);
@@ -60,6 +60,7 @@ int fchownat(int dfd, const char *path, uid_t owner, gid_t group, int atflags)
 	__set_uid(buf, oldowner, owner);
 	__set_gid(buf, oldgroup, group);
 
+exit:
 	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', owner: %i -> %i, group: %i -> %i, atflags: 0x%x) -> %i\n",
 		__func__, dfd, __fpath(dfd), path, buf, oldowner, owner,
 		oldgroup, group, atflags, ret);

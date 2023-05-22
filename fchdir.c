@@ -30,12 +30,12 @@ int next_fchdir(int fd)
 int fchdir(int fd)
 {
 	char buf[PATH_MAX];
+	int ret = -1;
 	ssize_t siz;
-	int ret;
 
 	siz = fpath(fd, buf, sizeof(buf));
 	if (siz == -1)
-		return __fpath_perror(fd, -1);
+		goto exit;
 
 	ret = next_fchdir(fd);
 	if (ret == -1)

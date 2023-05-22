@@ -35,12 +35,12 @@ int fremovexattr(int fd, const char *name)
 {
 	char xbuf[XATTR_NAME_MAX+1]; /* NULL-terminated */
 	char buf[PATH_MAX];
+	int ret = 1;
 	ssize_t siz;
-	int ret;
 
 	siz = fpath(fd, buf, sizeof(buf));
 	if (siz == -1)
-		return __fpath_perror(fd, -1);
+		goto exit;
 
 	if (!__strneq(name, IAMROOT_XATTRS_PREFIX)) {
 		int ret;
@@ -55,6 +55,7 @@ int fremovexattr(int fd, const char *name)
 
 	ret = next_fremovexattr(fd, name);
 
+exit:
 	__debug("%s(fd: %i <-> '%s', name: '%s' -> '%s', ...) -> %i\n", __func__,
 		fd, buf, name, xbuf, ret);
 

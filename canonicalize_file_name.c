@@ -31,12 +31,12 @@ char *next_canonicalize_file_name(const char *path)
 char *canonicalize_file_name(const char *path)
 {
 	char buf[PATH_MAX];
+	char *ret = NULL;
 	ssize_t siz;
-	char *ret;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
-		return __path_resolution_perror(path, NULL);
+		goto exit;
 
 	ret = next_canonicalize_file_name(buf);
 	if (!ret)

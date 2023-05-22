@@ -32,15 +32,16 @@ int next_inotify_add_watch(int fd, const char *path, uint32_t mask)
 int inotify_add_watch(int fd, const char *path, uint32_t mask)
 {
 	char buf[PATH_MAX];
+	int ret = -1;
 	ssize_t siz;
-	int ret;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
-		return __path_resolution_perror(path, -1);
+		goto exit;
 
 	ret = next_inotify_add_watch(fd, path, mask);
 
+exit:
 	__debug("%s(fd: %i, path: '%s', mask: 0x%0x) -> %i\n", __func__, fd,
 		path, mask, ret);
 

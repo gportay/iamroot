@@ -42,14 +42,14 @@ int next_fstatat64(int dfd, const char *path, struct stat64 *statbuf,
 int fstatat64(int dfd, const char *path, struct stat64 *statbuf, int atflags)
 {
 	char buf[PATH_MAX];
+	int ret = -1;
 	ssize_t siz;
 	uid_t uid;
 	gid_t gid;
-	int ret;
 
 	siz = path_resolution(dfd, path, buf, sizeof(buf), atflags);
 	if (siz == -1)
-		return __path_resolution_perror(path, -1);
+		goto exit;
 
 	ret = next_fstatat64(dfd, buf, statbuf, atflags);
 	if (ret == -1)

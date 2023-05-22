@@ -38,13 +38,13 @@ int chmod(const char *path, mode_t mode)
 {
 	const mode_t oldmode = mode;
 	char buf[PATH_MAX];
+	int ret = -1;
 	ssize_t siz;
-	int ret;
 	(void)oldmode;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
-		return __path_resolution_perror(path, -1);
+		goto exit;
 
 	__warn_if_insuffisant_user_mode(buf, mode);
 
@@ -55,6 +55,7 @@ int chmod(const char *path, mode_t mode)
 		ret = __set_errno(0, 0);
 	__set_mode(buf, oldmode, mode);
 
+exit:
 	__debug("%s(path: '%s' -> '%s', mode: 0%03o -> 0%03o) -> %i\n",
 		__func__, path, buf, oldmode, mode, ret);
 

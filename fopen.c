@@ -32,18 +32,19 @@ FILE *next_fopen(const char *path, const char *mode)
 FILE *fopen(const char *path, const char *mode)
 {
 	char buf[PATH_MAX];
+	FILE *ret = NULL;
 	ssize_t siz;
-	FILE *ret;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
-		return __path_resolution_perror(path, NULL);
+		goto exit;
 
 	ret = next_fopen(buf, mode);
 
 	if (ret != NULL)
 		__setfd(fileno(ret), buf);
 
+exit:
 	__debug("%s(path: '%s' -> '%s', mode: '%s') -> %p\n", __func__, path,
 		buf, mode, ret);
 

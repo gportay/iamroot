@@ -64,8 +64,6 @@ all: libiamroot.so
 
 libiamroot.so: __abort.o
 libiamroot.so: __envperror.o
-libiamroot.so: __fpathperror.o
-libiamroot.so: __fpathperror2.o
 libiamroot.so: __fxstat.o
 libiamroot.so: __fxstat64.o
 libiamroot.so: __fxstatat.o
@@ -77,8 +75,6 @@ libiamroot.so: __open_2.o
 libiamroot.so: __openat_2.o
 libiamroot.so: __opendir2.o
 libiamroot.so: __pathdlperror.o
-libiamroot.so: __pathperror.o
-libiamroot.so: __pathperror2.o
 libiamroot.so: __verbosef.o
 libiamroot.so: __xmknod.o
 libiamroot.so: __xmknodat.o

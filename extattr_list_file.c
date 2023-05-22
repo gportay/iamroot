@@ -37,15 +37,14 @@ ssize_t extattr_list_file(const char *path, int attrnamespace, void *data,
 {
 	char extbuf[EXTATTR_MAXNAMELEN+1]; /* NULL-terminated */
 	int oldattrnamespace = attrnamespace;
+	ssize_t i, extsize, siz, ret = -1;
 	unsigned char *pdata = data;
-	ssize_t extsize, siz;
 	char buf[PATH_MAX];
-	ssize_t i, ret;
 	(void)nbytes;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
-		return __path_resolution_perror(path, -1);
+		goto exit;
 
 	if (attrnamespace == EXTATTR_NAMESPACE_SYSTEM)
 		attrnamespace = EXTATTR_NAMESPACE_USER;

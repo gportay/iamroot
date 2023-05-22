@@ -31,16 +31,17 @@ int next_symlinkat(const char *string, int dfd, const char *path)
 int symlinkat(const char *string, int dfd, const char *path)
 {
 	char buf[PATH_MAX];
+	int ret = -1;
 	ssize_t siz;
-	int ret;
 
 	siz = path_resolution(dfd, path, buf, sizeof(buf),
 			      AT_SYMLINK_NOFOLLOW);
 	if (siz == -1)
-		return __path_resolution_perror(path, -1);
+		goto exit;
 
 	ret = next_symlinkat(string, dfd, buf);
 
+exit:
 	__debug("%s(string: '%s', dfd: %i <-> '%s', path: '%s' -> '%s') -> %i\n",
 		__func__, string, dfd, __fpath(dfd), path, buf, ret);
 

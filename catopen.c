@@ -33,16 +33,17 @@ nl_catd next_catopen(const char *path, int flag)
 
 nl_catd __catopen(const char *path, int flag)
 {
+	nl_catd ret = (nl_catd)-1;
 	char buf[PATH_MAX];
 	ssize_t siz;
-	nl_catd ret;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
-		return __path_resolution_perror(path, (nl_catd)-1);
+		goto exit;
 
 	ret = next_catopen(buf, flag);
 
+exit:
 	__debug("%s(path: '%s' -> '%s', ...) -> %p\n", __func__, path, buf,
 		ret);
 

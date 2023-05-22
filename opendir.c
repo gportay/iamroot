@@ -32,15 +32,16 @@ DIR *next_opendir(const char *path)
 DIR *opendir(const char *path)
 {
 	char buf[PATH_MAX];
+	DIR *ret = NULL;
 	ssize_t siz;
-	DIR *ret;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
-		return __path_resolution_perror(path, NULL);
+		goto exit;
 
 	ret = next_opendir(buf);
 
+exit:
 	__debug("%s(path: '%s' -> '%s') -> %p\n", __func__, path, buf, ret);
 
 	return ret;

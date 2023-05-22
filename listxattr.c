@@ -34,15 +34,14 @@ ssize_t next_listxattr(const char *path, char *list, size_t size)
 
 ssize_t listxattr(const char *path, char *list, size_t size)
 {
+	ssize_t i, xsize, siz, ret = -1;
 	char xbuf[XATTR_NAME_MAX+1]; /* NULL-terminated */
 	char buf[PATH_MAX];
-	ssize_t xsize, siz;
-	ssize_t i, ret;
 	(void)size;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
-		return __path_resolution_perror(path, -1);
+		goto exit;
 
 	ret = next_listxattr(buf, xbuf, sizeof(xbuf)-1); /* NULL-terminated */
 	if (ret == -1)

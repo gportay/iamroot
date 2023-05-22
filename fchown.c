@@ -41,14 +41,14 @@ int fchown(int fd, uid_t owner, gid_t group)
 	const uid_t oldowner = owner;
 	const uid_t oldgroup = group;
 	char buf[PATH_MAX];
+	int ret = -1;
 	ssize_t siz;
-	int ret;
 	(void)oldowner;
 	(void)oldgroup;
 
 	siz = fpath(fd, buf, sizeof(buf));
 	if (siz == -1)
-		return __fpath_perror(fd, -1);
+		goto exit;
 
 	owner = __get_uid(buf);
 	group = __get_gid(buf);
@@ -61,6 +61,7 @@ int fchown(int fd, uid_t owner, gid_t group)
 	__set_uid(buf, oldowner, owner);
 	__set_gid(buf, oldgroup, group);
 
+exit:
 	__debug("%s(fd: %i <-> '%s', owner: %i -> %i, group: %i -> %i) -> %i\n",
 		__func__, fd, __fpath(fd), oldowner, owner, oldgroup, group,
 		ret);

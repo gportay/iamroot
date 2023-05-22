@@ -30,16 +30,16 @@ ssize_t next_readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 
 ssize_t readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 {
+	ssize_t siz, ret = -1;
 	char tmp2[PATH_MAX+1]; /* NULL-terminated */
 	char tmp[PATH_MAX];
 	const char *root;
-	ssize_t ret, siz;
 	size_t len;
 
 	siz = path_resolution(dfd, path, tmp, sizeof(tmp),
 			      AT_SYMLINK_NOFOLLOW);
 	if (siz == -1)
-		return __path_resolution_perror(path, -1);
+		goto exit;
 
 #if defined __linux__ || defined __FreeBSD__
 	if (streq(tmp, "/proc/self/exe")) {

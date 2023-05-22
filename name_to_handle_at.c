@@ -37,18 +37,19 @@ int name_to_handle_at(int dfd, const char *path, struct file_handle *handle,
 {
 	const int oldatflags = atflags;
 	char buf[PATH_MAX];
+	int ret = -1;
 	ssize_t siz;
-	int ret;
 
 	if (!(atflags & AT_SYMLINK_FOLLOW))
 		atflags |= AT_SYMLINK_NOFOLLOW;
 
 	siz = path_resolution(dfd, path, buf, sizeof(buf), atflags);
 	if (siz == -1)
-		return __path_resolution_perror(path, -1);
+		goto exit;
 
 	ret = next_name_to_handle_at(dfd, buf, handle, mount_id, oldatflags);
 
+exit:
 	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', ..., atflags: 0x%x -> 0x%x) -> %i\n",
 		__func__, dfd, __fpath(dfd), path, buf, oldatflags, atflags,
 		ret);

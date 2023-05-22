@@ -38,13 +38,13 @@ int fchmodat(int dfd, const char *path, mode_t mode, int atflags)
 {
 	const mode_t oldmode = mode;
 	char buf[PATH_MAX];
+	int ret = -1;
 	ssize_t siz;
-	int ret;
 	(void)oldmode;
 
 	siz = path_resolution(dfd, path, buf, sizeof(buf), atflags);
 	if (siz == -1)
-		return __path_resolution_perror(path, -1);
+		goto exit;
 
 	__fwarn_if_insuffisant_user_modeat(dfd, buf, mode, atflags);
 
@@ -55,6 +55,7 @@ int fchmodat(int dfd, const char *path, mode_t mode, int atflags)
 		ret = __set_errno(0, 0);
 	__set_mode(buf, oldmode, mode);
 
+exit:
 	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', mode: 0%03o -> 0%03o, atflags: 0x%x) -> %i\n",
 		__func__, dfd, __fpath(dfd), path, buf, oldmode, mode,
 		atflags, ret);

@@ -38,15 +38,15 @@ ssize_t extattr_get_link(const char *path, int attrnamespace,
 	char extbuf[EXTATTR_MAXNAMELEN+1]; /* NULL-terminated */
 	const int oldattrnamespace = attrnamespace;
 	const char *oldattrname = attrname;
+	ssize_t siz, ret = -1;
 	char buf[PATH_MAX];
-	ssize_t ret, siz;
 	(void)oldattrnamespace;
 	(void)oldattrname;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
 			      AT_SYMLINK_NOFOLLOW);
 	if (siz == -1)
-		return __path_resolution_perror(path, -1);
+		goto exit;
 
 	if (attrnamespace == EXTATTR_NAMESPACE_SYSTEM) {
 		int ret;
@@ -63,6 +63,7 @@ ssize_t extattr_get_link(const char *path, int attrnamespace,
 	ret = next_extattr_get_link(buf, attrnamespace, attrname, data,
 				    nbytes);
 
+exit:
 	__debug("%s(path: '%s' -> '%s', attrnamespace: %i -> %i, attrname: '%s' -> '%s', ...) -> %zi\n",
 		__func__, path, buf, oldattrnamespace, attrnamespace,
 		oldattrname, attrname, ret);

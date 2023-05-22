@@ -45,15 +45,16 @@ int chflags(const char *path, unsigned long flags)
 #endif
 {
 	char buf[PATH_MAX];
+	int ret = -1;
 	ssize_t siz;
-	int ret;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
-		return __path_resolution_perror(path, -1);
+		goto exit;
 
 	ret = next_chflags(path, flags);
 
+exit:
 	__debug("%s(path: '%s', ...) -> %i\n", __func__, path, ret);
 
 	return ret;

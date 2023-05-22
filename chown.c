@@ -39,14 +39,14 @@ int chown(const char *path, uid_t owner, gid_t group)
 	const uid_t oldowner = owner;
 	const uid_t oldgroup = group;
 	char buf[PATH_MAX];
+	int ret = 1;
 	ssize_t siz;
-	int ret;
 	(void)oldowner;
 	(void)oldgroup;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
-		return __path_resolution_perror(path, -1);
+		goto exit;
 
 	owner = __get_uid(buf);
 	group = __get_gid(buf);
@@ -59,6 +59,7 @@ int chown(const char *path, uid_t owner, gid_t group)
 	__set_uid(buf, oldowner, owner);
 	__set_gid(buf, oldgroup, group);
 
+exit:
 	__debug("%s(path: '%s' -> '%s', owner: %i -> %i, group: %i -> %i) -> %i\n",
 		__func__, path, buf, oldowner, owner, oldgroup, group, ret);
 

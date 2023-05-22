@@ -283,12 +283,12 @@ char *__striprootdir(char *path)
 int chroot(const char *path)
 {
 	char buf[PATH_MAX];
+	int ret = -1;
 	ssize_t siz;
-	int ret;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
-		return __path_resolution_perror(path, -1);
+		goto exit;
 
 	ret = setenv("PATH", __path(), 1);
 	if (ret == -1)

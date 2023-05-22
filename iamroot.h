@@ -405,8 +405,8 @@ extern ssize_t next_extattr_set_fd(int, int, const char *, const void *,
 extern int next_extattr_delete_fd(int, int, const char *);
 extern ssize_t next_extattr_get_link(const char *, int, const char *, void *,
 				     size_t);
-extern ssize_t next_extattr_set_link(const char *, int, const char *, const void *,
-				 size_t);
+extern ssize_t next_extattr_set_link(const char *, int, const char *,
+				     const void *, size_t);
 extern int next_extattr_delete_link(const char *, int, const char *);
 
 #define __get_mode(path) \

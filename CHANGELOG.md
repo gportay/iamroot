@@ -31,6 +31,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `geteuid()`, `getgid()`, `getwd()` and `setuid()` return an error
 - Fix the handling for NULL dir argument in the function `tempnam()` by
   defaulting to `P_tmpdir`
+- Fix the missing stripping of the chroot directory in the function
+  `tempnam()`
 
 ## [v9] - 2023-05-06
 

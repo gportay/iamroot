@@ -36,6 +36,7 @@ char *tempnam(const char *path, const char *pfx)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
+	char *ret;
 
 	if (!path)
 		path = P_tmpdir;
@@ -44,8 +45,15 @@ char *tempnam(const char *path, const char *pfx)
 	if (siz == -1)
 		return __path_resolution_perror(path, NULL);
 
+	ret = next_tempnam(buf, pfx);
+	if (!ret)
+		goto exit;
+
+	ret = __striprootdir(ret);
+
+exit:
 	__debug("%s(path: '%s' -> '%s', pfx: '%s')\n", __func__, path, buf,
 		pfx);
 
-	return next_tempnam(buf, pfx);
+	return ret;
 }

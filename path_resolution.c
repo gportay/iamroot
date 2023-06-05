@@ -796,38 +796,61 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		goto exit;
 	}
 
+	/*
+	 * The path is to be ignored.
+	 *
+	 * The path is copied as is.
+	 */
 	if (ignore(path)) {
 		_strncpy(buf, path, bufsize);
 		goto exit;
 	}
 
+	/* Get the root directory and its length */
 	root = __getrootdir();
 	if (streq(root, "/"))
 		root = "";
 	len = __strlen(root);
 
+	/*
+	 * The path is an absolute path.
+	 *
+	 * The root directory is prepended to path.
+	 */
 	if (*path == '/') {
 		int n;
 
+		/* Warn if the path contains the root directory already */
 		if (*root && __strleq(path, root)) {
 			if (!warning_ignore(path+len))
 				__warn_or_fatal("%s: contains root directory '%s'\n",
 						path, root);
-			path = &path[len];
+			path = &path[len]; /* strip root directory */
 		}
 
 		n = _snprintf(buf, bufsize, "%s%s", root, path);
 		if (n < 0)
 			return -1;
+	/*
+	 * The path is a relative to dfd.
+	 *
+	 * The directory fd is resolved first, and it is prepended to path.
+	 */
 	} else if (dfd != AT_FDCWD) {
 		char dirbuf[PATH_MAX];
 		ssize_t siz;
 		int n;
 
+		/* Get the directory fd path */
 		siz = fpath(dfd, dirbuf, sizeof(dirbuf));
 		if (siz == -1)
 			return -1;
 
+		/*
+		 * The directory fd is not an absolute path.
+		 *
+		 * The path is copied as is.
+		 */
 		if (*dirbuf != '/') {
 			__warning("%i: ignore non absolute path '%s'\n", dfd,
 				  dirbuf);
@@ -838,12 +861,19 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		n = _snprintf(buf, bufsize, "%s/%s", dirbuf, path);
 		if (n < 0)
 			return -1;
+	/*
+	 * The path is a relative path to cwd.
+	 *
+	 * The path is left unresolved, and it is copied as is.
+	 */
 	} else {
 		_strncpy(buf, path, bufsize);
 	}
 
+	/* Sanitize the resolved path if it is touched */
 	__path_sanitize(buf, bufsize);
 
+	/* Follow the symlink unless the AT_SYMLINK_NOFOLLOW is given */
 	if (follow_symlink(atflags)) {
 		char tmp[PATH_MAX];
 
@@ -851,6 +881,11 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		__realpath(tmp, buf);
 	}
 
+	/*
+	 * The path after the symlinks are followed is to be ignored.
+	 *
+	 * The resolved path is stripped from the root directory.
+	 */
 	if (*root && __strleq(buf, root) && ignore(buf+len))
 		__striprootdir(buf);
 

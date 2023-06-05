@@ -691,7 +691,6 @@ Creating group 'systemd-oom' with GID XXX.
 Creating user 'systemd-oom' (systemd Userspace OOM Killer) with UID XXX and GID XXX.
 Creating group 'systemd-resolve' with GID XXX.
 Creating user 'systemd-resolve' (systemd Resolver) with UID XXX and GID XXX.
-Failed to flush /etc/.#groupXXXXXXXXXXXXXXXX: No such file or directory
 
   Installing       : systemd-udev XXX/XXX
   Running scriptlet: systemd-udev XXX/XXX
@@ -903,22 +902,10 @@ Executed with unrecognized name (ldconfig), defaulting to restorecon behavior.
   Running scriptlet: sssd-common XXX/XXX
   Running scriptlet: firewalld XXX/XXX
   Running scriptlet: rootfiles XXX/XXX
-Creating group 'input' with GID XXX.
-Creating group 'kvm' with GID XXX.
-Creating group 'render' with GID XXX.
-Creating group 'sgx' with GID XXX.
-Creating group 'systemd-journal' with GID XXX.
 Creating group 'systemd-coredump' with GID XXX.
 Creating user 'systemd-coredump' (systemd Core Dumper) with UID XXX and GID XXX.
-Creating group 'systemd-network' with GID XXX.
-Creating user 'systemd-network' (systemd Network Management) with UID XXX and GID XXX.
-Creating group 'systemd-oom' with GID XXX.
-Creating user 'systemd-oom' (systemd Userspace OOM Killer) with UID XXX and GID XXX.
-Creating group 'systemd-resolve' with GID XXX.
-Creating user 'systemd-resolve' (systemd Resolver) with UID XXX and GID XXX.
 Creating group 'systemd-timesync' with GID XXX.
 Creating user 'systemd-timesync' (systemd Time Synchronization) with UID XXX and GID XXX.
-Failed to flush /etc/.#groupXXXXXXXXXXXXXXXX: No such file or directory
 
   Verifying        : ModemManager-glib XXX/XXX
   Verifying        : NetworkManager XXX/XXX

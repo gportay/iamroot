@@ -21,9 +21,6 @@ export IAMROOT_EXEC
 IAMROOT_EXEC_IGNORE = ldd|mountpoint
 export IAMROOT_EXEC_IGNORE
 
-IAMROOT_PATH_RESOLUTION_WORKAROUND ?= 1
-export IAMROOT_PATH_RESOLUTION_WORKAROUND
-
 ifeq ($(ARCH),x86_64)
 ifeq ($(LIBC),musl)
 IAMROOT_LIB = $(IAMROOT_LIB_MUSL_X86_64_1)
@@ -220,7 +217,6 @@ $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id:
 $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/bash,dnf --forcearch $(1) --releasever $(3) --assumeyes --installroot $(CURDIR)/$(1)-$(2)-$(3)-rootfs group install minimal-environment))
 
 $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/etc/machine-id
-$(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_WORKAROUND = 0
 $(1)-$(2)-$(3)-rootfs/etc/machine-id: | $(call libs,linux,$(1))
 	install -D -m644 $$(FEDORA_REPO) $(1)-$(2)-$(3)-rootfs/etc/distro.repos.d/fedora.repo
 	bash iamroot-shell -c "dnf --forcearch $(1) --releasever $(3) --assumeyes --installroot $(CURDIR)/$(1)-$(2)-$(3)-rootfs group install minimal-environment"
@@ -711,6 +707,9 @@ fedora-rootfs: x86_64-fedora-36-rootfs
 fedora-rootfs: x86_64-fedora-37-rootfs
 fedora-rootfs: x86_64-fedora-38-rootfs
 
+# Warning: $ROOT/x86_64-fedora-38-rootfs/etc: contains root directory '$ROOT/x86_64-fedora-38-rootfs'
+x86_64-fedora-38-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_WARNING_IGNORE = /var/log/dnf.rpm.log|/etc
+
 x86_64-fedora-33-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora-archive.repo
 x86_64-fedora-34-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora-archive.repo
 x86_64-fedora-35-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora-archive.repo
@@ -723,7 +722,8 @@ $(eval $(call dnf-rootfs,x86_64,fedora,38))
 endif
 
 ifneq ($(shell command -v zypper 2>/dev/null),)
-x86_64-opensuse-leap-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_WORKAROUND = 0
+# Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
+x86_64-opensuse-leap-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_WARNING_IGNORE = /usr/lib64/.libgcrypt.so.20.fips
 
 extra-rootfs: opensuse-rootfs
 

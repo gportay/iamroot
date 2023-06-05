@@ -39,12 +39,6 @@ extern int next_scandir(const char *, struct dirent ***,
 			const struct dirent **));
 extern int next_lstat(const char *, struct stat *);
 
-static int __getpath_resolution_workaround()
-{
-	return strtol(getenv("IAMROOT_PATH_RESOLUTION_WORKAROUND") ?: "0",
-		      NULL, 0);
-}
-
 __attribute__((visibility("hidden")))
 const char *__getfd(int fd)
 {
@@ -532,6 +526,7 @@ toolong:
 
 static regex_t *re_allow;
 static regex_t *re_ignore;
+static regex_t *re_warning_ignore;
 
 static void __regex_perror(const char *s, regex_t *regex, int err)
 {
@@ -548,8 +543,8 @@ static void __regex_perror(const char *s, regex_t *regex, int err)
 __attribute__((constructor,visibility("hidden")))
 void path_resolution_init()
 {
-	static __regex_t regex_allow, regex_ignore;
-	const char *allow, *ignore;
+	static __regex_t regex_allow, regex_ignore, regex_warning_ignore;
+	const char *allow, *ignore, *warning_ignore;
 	int ret;
 
 	if (re_allow)
@@ -569,6 +564,9 @@ void path_resolution_init()
 	re_allow = &regex_allow.re;
 
 ignore:
+	if (re_ignore)
+		goto warning_ignore;
+
 	ignore = getenv("IAMROOT_PATH_RESOLUTION_IGNORE");
 	if (!ignore)
 		ignore = "^/proc/|/sys/|"_PATH_DEV"|"_PATH_VARRUN"|/run/";
@@ -581,6 +579,22 @@ ignore:
 
 	__info("IAMROOT_PATH_RESOLUTION_IGNORE=%s\n", ignore);
 	re_ignore = &regex_ignore.re;
+
+warning_ignore:
+	warning_ignore = getenv("IAMROOT_PATH_RESOLUTION_WARNING_IGNORE");
+	if (!warning_ignore)
+		warning_ignore = "^/var/log/dnf\\.rpm\\.log$";
+
+	ret = regcomp(&regex_warning_ignore.re, warning_ignore,
+		      REG_NOSUB|REG_EXTENDED);
+	if (ret == -1) {
+		__regex_perror("regcomp", &regex_warning_ignore.re, ret);
+		return;
+	}
+
+	__info("IAMROOT_PATH_RESOLUTION_WARNING_IGNORE=%s\n",
+	       warning_ignore);
+	re_warning_ignore = &regex_warning_ignore.re;
 }
 
 __attribute__((destructor,visibility("hidden")))
@@ -631,6 +645,22 @@ static int ignore(const char *path)
 	ret = regexec(re_ignore, path, 0, NULL, 0);
 	if (ret == -1) {
 		__regex_perror("regexec", re_ignore, ret);
+		return 0;
+	}
+
+	return !ret;
+}
+
+static int warning_ignore(const char *path)
+{
+	int ret = 0;
+
+	if (!re_warning_ignore)
+		return 0;
+
+	ret = regexec(re_warning_ignore, path, 0, NULL, 0);
+	if (ret == -1) {
+		__regex_perror("regexec", re_warning_ignore, ret);
 		return 0;
 	}
 
@@ -772,20 +802,21 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 	root = __getrootdir();
 	if (streq(root, "/"))
 		root = "";
+	len = __strlen(root);
 
 	if (*path == '/') {
-		if (*root && __strleq(path, root) &&
-		    __getpath_resolution_workaround()) {
-			__warn_or_fatal("%s: contains root directory '%s'\n",
-					path, root);
-			_strncpy(buf, path, bufsize);
-		} else {
-			int n;
+		int n;
 
-			n = _snprintf(buf, bufsize, "%s%s", root, path);
-			if (n < 0)
-				return -1;
+		if (*root && __strleq(path, root)) {
+			if (!warning_ignore(path+len))
+				__warn_or_fatal("%s: contains root directory '%s'\n",
+						path, root);
+			path = &path[len];
 		}
+
+		n = _snprintf(buf, bufsize, "%s%s", root, path);
+		if (n < 0)
+			return -1;
 	} else if (dfd != AT_FDCWD) {
 		char dirbuf[PATH_MAX];
 		ssize_t siz;
@@ -814,7 +845,6 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		__realpath(tmp, buf);
 	}
 
-	len = __strlen(root);
 	if (ignore(buf+len)) {
 		memcpy(buf, buf+len, __strlen(buf+len)+1);
 		goto exit;

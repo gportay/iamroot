@@ -22,10 +22,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Output the flags in hexadecimal for the functions `mount()`, `nmount()`,
   `umount2()` and `unmount()`
 - Output the returned value for the functions
+- Replace the environment variable `IAMROOT_PATH_RESOLUTION_WORKAROUND` by the
+  environment variable `IAMROOT_PATH_RESOLUTION_WARNING_IGNORE` that disables
+  the prepend of the root directory if the path to resolve contains it already
+  via a regular expression
 
 ### Removed
 
 - Remove functions `tmpnam()` and `tmpnam_r()`
+- Remove the environment variable `IAMROOT_PATH_RESOLUTION_WORKAROUND`
 
 ### Fixed
 

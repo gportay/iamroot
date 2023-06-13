@@ -825,8 +825,11 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		if (siz == -1)
 			return -1;
 
-		if (*dirbuf != '/')
+		if (*dirbuf != '/') {
+			__warning("%i: ignore non absolute path '%s'\n", dfd,
+				  dirbuf);
 			goto ignore;
+		}
 
 		n = _snprintf(buf, bufsize, "%s/%s", dirbuf, path);
 		if (n < 0)

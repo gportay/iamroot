@@ -33,7 +33,7 @@ int connect(int socket, const struct sockaddr *addr, socklen_t addrlen)
 {
 	struct sockaddr_un buf = { .sun_family = AF_UNIX, .sun_path = { 0 }};
 	struct sockaddr_un *addrun = (struct sockaddr_un *)addr;
-	socklen_t buflen;
+	socklen_t buflen = SUN_LEN(&buf);
 	int ret = -1;
 	ssize_t siz;
 

@@ -38,8 +38,8 @@ int lsetxattr(const char *path, const char *name, const void *value,
 {
 	char xbuf[XATTR_LIST_MAX+1]; /* NULL-terminated */
 	char buf[PATH_MAX];
+	int ret = -1;
 	ssize_t siz;
-	int ret;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
 			      AT_SYMLINK_NOFOLLOW);

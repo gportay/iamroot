@@ -306,8 +306,7 @@ static ssize_t __fgetpath(int fd, char *buf, size_t bufsize)
 	}
 	__procfdname(tmp, fd);
 	ret = next_readlinkat(AT_FDCWD, tmp, buf, bufsize);
-	errno = errno_save;
-	return ret;
+	return __set_errno(errno_save, ret);
 }
 #endif
 

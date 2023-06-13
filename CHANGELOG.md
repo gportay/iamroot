@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [unreleased]
+## [v10] - 2023-06-13
 
 ### Added
 
@@ -629,5 +629,6 @@ Initial release.
 [v6]: https://github.com/gportay/iamroot/compare/v6...v5
 [v7]: https://github.com/gportay/iamroot/compare/v7...v8
 [v8]: https://github.com/gportay/iamroot/compare/v8...v9
-[v9]: https://github.com/gportay/iamroot/compare/v9...master
+[v9]: https://github.com/gportay/iamroot/compare/v9...v10
+[v10]: https://github.com/gportay/iamroot/compare/v10...master
 [zypper(8)]: https://en.opensuse.org/SDB:Zypper_manual_(plain)

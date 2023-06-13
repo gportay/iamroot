@@ -4,7 +4,7 @@
 :email: gael.portay@gmail.com
 :lang: en
 :man manual: iamroot Manual
-:man source: iamroot 9
+:man source: iamroot 10
 
 == NAME
 

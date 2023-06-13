@@ -157,12 +157,11 @@ static ssize_t __fgetpath(int fd, char *buf, size_t bufsize)
 	const char *path;
 
 	path = __getfd(fd);
-	if (path) {
-		_strncpy(buf, path, bufsize);
-		return strnlen(buf, bufsize);
-	}
+	if (!path)
+		return __set_errno(ENOENT, -1);
 
-	return __set_errno(ENOENT, -1);
+	_strncpy(buf, path, bufsize);
+	return strnlen(buf, bufsize);
 }
 #endif
 

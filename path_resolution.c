@@ -556,7 +556,6 @@ void path_resolution_init()
 		return;
 	}
 
-	__info("IAMROOT_PATH_RESOLUTION_ALLOW=%s\n", allow);
 	re_allow = &regex_allow.re;
 
 ignore:
@@ -573,7 +572,6 @@ ignore:
 		return;
 	}
 
-	__info("IAMROOT_PATH_RESOLUTION_IGNORE=%s\n", ignore);
 	re_ignore = &regex_ignore.re;
 
 warning_ignore:
@@ -588,8 +586,6 @@ warning_ignore:
 		return;
 	}
 
-	__info("IAMROOT_PATH_RESOLUTION_WARNING_IGNORE=%s\n",
-	       warning_ignore);
 	re_warning_ignore = &regex_warning_ignore.re;
 }
 

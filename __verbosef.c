@@ -85,7 +85,6 @@ void verbosef_init()
 		return;
 	}
 
-	__info("IAMROOT_DEBUG_ALLOW=%s\n", allow);
 	re_allow = &regex_allow.re;
 
 ignore:
@@ -99,7 +98,6 @@ ignore:
 		return;
 	}
 
-	__info("IAMROOT_DEBUG_IGNORE=%s\n", ignore);
 	re_ignore = &regex_ignore.re;
 }
 

@@ -320,7 +320,6 @@ void execve_init()
 		return;
 	}
 
-	__info("IAMROOT_EXEC_IGNORE=%s\n", ignore);
 	re_ignore = &regex_ignore.re;
 }
 

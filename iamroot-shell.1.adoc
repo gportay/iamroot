@@ -294,30 +294,29 @@ Change root directory via *arch-chroot(8)*
 
 Create a new Alpine Linux system installation from scratch via *alpine-make-rootfs*
 
-	[gportay@archlinux ~]$ iamroot-shell -c "alpine-make-rootfs alpine-rootfs --keys-dir /usr/share/apk/keys/x86_64 --mirror-uri http://dl-cdn.alpinelinux.org/alpine" && echo done
+	[gportay@archlinux ~]$ iamroot-shell -c "alpine-make-rootfs alpine-rootfs --keys-dir /usr/share/apk/keys/x86_64 --mirror-uri http://dl-cdn.alpinelinux.org/alpine"
 	
 	> Installing system
 	fetch http://dl-cdn.alpinelinux.org/alpine/latest-stable/main/x86_64/APKINDEX.tar.gz
 	fetch http://dl-cdn.alpinelinux.org/alpine/latest-stable/community/x86_64/APKINDEX.tar.gz
-	(1/7) Installing alpine-baselayout-data (3.2.0-r22)
-	(2/7) Installing musl (1.2.3-r0)
-	(3/7) Installing busybox (1.35.0-r14)
-	Executing busybox-1.35.0-r14.post-install
-	(4/7) Installing alpine-baselayout (3.2.0-r22)
-	Executing alpine-baselayout-3.2.0-r22.pre-install
-	Executing alpine-baselayout-3.2.0-r22.post-install
-	(5/7) Installing busybox-suid (1.35.0-r14)
-	(6/7) Installing scanelf (1.3.4-r0)
-	(7/7) Installing musl-utils (1.2.3-r0)
-	Executing busybox-1.35.0-r14.trigger
-	OK: 2 MiB in 7 packages
-	tar: Ignoring unknown extended header keyword 'APK-TOOLS.checksum.SHA1'
-	tar: Ignoring unknown extended header keyword 'APK-TOOLS.checksum.SHA1'
-	tar: Ignoring unknown extended header keyword 'APK-TOOLS.checksum.SHA1'
-	tar: Ignoring unknown extended header keyword 'APK-TOOLS.checksum.SHA1'
+	(1/8) Installing alpine-baselayout-data (3.4.3-r1)
+	(2/8) Installing musl (1.2.4-r0)
+	(3/8) Installing busybox (1.36.1-r0)
+	Executing busybox-1.36.1-r0.post-install
+	(4/8) Installing busybox-binsh (1.36.1-r0)
+	(5/8) Installing alpine-baselayout (3.4.3-r1)
+	Executing alpine-baselayout-3.4.3-r1.pre-install
+	Executing alpine-baselayout-3.4.3-r1.post-install
+	(6/8) Installing busybox-suid (1.36.1-r0)
+	(7/8) Installing scanelf (1.3.7-r1)
+	(8/8) Installing musl-utils (1.2.4-r0)
+	Executing busybox-1.36.1-r0.trigger
+	OK: 2 MiB in 8 packages
+	(1/2) Installing alpine-keys (2.4-r1)
+	(2/2) Installing alpine-release (3.18.0-r0)
+	OK: 2 MiB in 10 packages
 	
 	> Cleaning-up rootfs
-	done
 
 Change root directory via *chroot(8)*
 

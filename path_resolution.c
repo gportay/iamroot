@@ -37,7 +37,6 @@ extern int next_scandir(const char *, struct dirent ***,
 			int (*)(const struct dirent *),
 			int (*)(const struct dirent **,
 			const struct dirent **));
-extern int next_lstat(const char *, struct stat *);
 
 __attribute__((visibility("hidden")))
 const char *__getfd(int fd)

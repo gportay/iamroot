@@ -844,12 +844,9 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		__realpath(tmp, buf);
 	}
 
-	if (ignore(buf+len)) {
+	if (ignore(buf+len))
 		memcpy(buf, buf+len, __strlen(buf+len)+1); /* NULL-terminated */
-		goto exit;
-	}
 
-exit:
 	return strnlen(buf, bufsize);
 
 ignore:

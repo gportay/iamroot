@@ -246,7 +246,7 @@ Change root directory via *chroot(1)*
 Create a new Arch Linux system installation from scratch via *pacstrap(8)*
 
 	[gportay@archlinux ~]$ mkdir -p rootfs
-	[gportay@archlinux ~]$ env EUID=0 iamroot-shell -c "pacstrap -GM rootfs" && echo done
+	[gportay@archlinux ~]$ iamroot-shell -c "pacstrap -GM rootfs"
 	==> Creating install root at rootfs
 	==> Installing packages to rootfs
 	(...)
@@ -259,37 +259,26 @@ Create a new Arch Linux system installation from scratch via *pacstrap(8)*
 	( 5/10) Applying kernel sysctl settings...
 	  Skipped: Running in chroot.
 	( 6/10) Creating temporary files...
-	Warning: fchownat: /run/systemd/netif: Ignoring error 'Operation not permitted'!
-	Warning: fchmodat: /run/systemd/netif: Ignoring error 'Operation not permitted'!
-	Warning: fchownat: /run/systemd/netif/links: Ignoring error 'Operation not permitted'!
-	Warning: fchmodat: /run/systemd/netif/links: Ignoring error 'Operation not permitted'!
-	Warning: fchownat: /run/systemd/netif/leases: Ignoring error 'Operation not permitted'!
-	Warning: fchmodat: /run/systemd/netif/leases: Ignoring error 'Operation not permitted'!
-	Warning: fchownat: /run/systemd/netif/lldp: Ignoring error 'Operation not permitted'!
-	Warning: fchmodat: /run/systemd/netif/lldp: Ignoring error 'Operation not permitted'!
-	Warning: fchownat: /run/tpm2-tss/eventlog: Ignoring error 'Operation not permitted'!
-	Warning: fchmodat: /run/tpm2-tss/eventlog: Ignoring error 'Operation not permitted'!
-	Warning: fchownat: /dev/snd/seq: Ignoring error 'Operation not permitted'!
-	Warning: fchmodat: /dev/snd/seq: Ignoring error 'Operation not permitted'!
-	Warning: fchownat: /dev/snd/timer: Ignoring error 'Operation not permitted'!
-	Warning: fchmodat: /dev/snd/timer: Ignoring error 'Operation not permitted'!
-	Warning: fchownat: /dev/loop-control: Ignoring error 'Operation not permitted'!
-	Warning: fchmodat: /dev/loop-control: Ignoring error 'Operation not permitted'!
-	Warning: fchownat: /dev/kvm: Ignoring error 'Operation not permitted'!
-	Warning: fchmodat: /dev/kvm: Ignoring error 'Operation not permitted'!
-	Warning: fchownat: /dev/vhost-net: Ignoring error 'Operation not permitted'!
-	Warning: fchmodat: /dev/vhost-net: Ignoring error 'Operation not permitted'!
-	Warning: fchownat: /dev/vhost-vsock: Ignoring error 'Operation not permitted'!
-	Warning: fchmodat: /dev/vhost-vsock: Ignoring error 'Operation not permitted'!
-	Warning: fchownat: /run/log/journal: Ignoring error 'Operation not permitted'!
-	Warning: fchmodat: /run/log/journal: Ignoring error 'Operation not permitted'!
+	Warning: chmod: /run/dbus/containers: Ignoring error 'Operation not permitted'!
+	Warning: chmod: /run/systemd/netif: Ignoring error 'Operation not permitted'!
+	Warning: chmod: /run/systemd/netif/links: Ignoring error 'Operation not permitted'!
+	Warning: chmod: /run/systemd/netif/leases: Ignoring error 'Operation not permitted'!
+	Warning: chmod: /run/systemd/netif/lldp: Ignoring error 'Operation not permitted'!
+	Warning: chmod: /run/tpm2-tss/eventlog: Ignoring error 'Operation not permitted'!
+	Warning: chmod: /dev/snd/seq: Ignoring error 'Operation not permitted'!
+	Warning: chmod: /dev/snd/timer: Ignoring error 'Operation not permitted'!
+	Warning: chmod: /dev/loop-control: Ignoring error 'Operation not permitted'!
+	Warning: chmod: /dev/kvm: Ignoring error 'Operation not permitted'!
+	Warning: chmod: /dev/vhost-net: Ignoring error 'Operation not permitted'!
+	Warning: chmod: /dev/vhost-vsock: Ignoring error 'Operation not permitted'!
+	Warning: chmod: /run/log/journal: Ignoring error 'Operation not permitted'!
+	Warning: chmod: /sys/kernel/security/tpm0/binary_bios_measurements: Ignoring error 'Operation not permitted'!
 	( 7/10) Reloading device manager configuration...
 	  Skipped: Running in chroot.
 	( 8/10) Arming ConditionNeedsUpdate...
 	( 9/10) Rebuilding certificate stores...
 	(10/10) Reloading system bus configuration...
 	  Skipped: Running in chroot.
-	done
 
 Note: Some post-transaction hooks failed due to lack of privileges.
 

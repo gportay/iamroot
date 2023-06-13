@@ -14,7 +14,7 @@
 
 int getresuid(uid_t *ruid, uid_t *euid, uid_t *suid)
 {
-	const int save_errno = errno;
+	const int errno_save = errno;
 	int ret = -1;
 
 	if (ruid) {
@@ -41,7 +41,7 @@ int getresuid(uid_t *ruid, uid_t *euid, uid_t *suid)
 	}
 
 	/* Not forwarding function */
-	ret = __set_errno(save_errno, 0);
+	ret = __set_errno(errno_save, 0);
 
 exit:
 	__debug("%s(ruid: %p, euid: %p, suid: %p) -> %i\n", __func__, ruid,

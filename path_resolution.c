@@ -311,16 +311,16 @@ static ssize_t __fgetpath(int fd, char *buf, size_t bufsize)
 __attribute__((visibility("hidden")))
 int __strtofd(const char *nptr, char **endptr)
 {
-	int save_errno;
+	int errno_save;
 	long l;
 
-	save_errno = errno;
+	errno_save = errno;
 	errno = 0;
 	l = strtol(nptr, endptr, 0);
 	if (errno != 0)
 		return -1;
 
-	errno = save_errno;
+	errno = errno_save;
 	return l;
 }
 
@@ -712,14 +712,14 @@ ssize_t fpath(int fd, char *buf, size_t bufsiz)
 __attribute__((visibility("hidden")))
 char *__fpath(int fd)
 {
-	const int save_errno = errno;
+	const int errno_save = errno;
 	static char buf[PATH_MAX];
 	ssize_t siz;
 
 	*buf = 0;
 	siz = fpath(fd, buf, sizeof(buf));
 	if (siz == -1)
-		return __set_errno(save_errno, NULL);
+		return __set_errno(errno_save, NULL);
 
 	return buf;
 }
@@ -727,14 +727,14 @@ char *__fpath(int fd)
 __attribute__((visibility("hidden")))
 char *__fpath2(int fd)
 {
-	const int save_errno = errno;
+	const int errno_save = errno;
 	static char buf[PATH_MAX];
 	ssize_t siz;
 
 	*buf = 0;
 	siz = fpath(fd, buf, sizeof(buf));
 	if (siz == -1)
-		return __set_errno(save_errno, NULL);
+		return __set_errno(errno_save, NULL);
 
 	return buf;
 }

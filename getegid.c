@@ -14,7 +14,7 @@
 
 gid_t getegid(void)
 {
-	const int save_errno = errno;
+	const int errno_save = errno;
 	unsigned long ul;
 	uid_t ret;
 
@@ -24,7 +24,7 @@ gid_t getegid(void)
 		ul = 0;
 
 	/* Not forwarding function */
-	ret = __set_errno(save_errno, ul);
+	ret = __set_errno(errno_save, ul);
 
 	__debug("%s() -> %i\n", __func__, ret);
 

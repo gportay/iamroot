@@ -793,11 +793,13 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		__notice("%s: ignoring path resolution '%s'\n", __func__,
 			 path);
 		_strncpy(buf, "/", bufsize);
-		return 1;
+		goto exit;
 	}
 
-	if (ignore(path))
-		goto ignore;
+	if (ignore(path)) {
+		_strncpy(buf, path, bufsize);
+		goto exit;
+	}
 
 	root = __getrootdir();
 	if (streq(root, "/"))
@@ -829,7 +831,8 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		if (*dirbuf != '/') {
 			__warning("%i: ignore non absolute path '%s'\n", dfd,
 				  dirbuf);
-			goto ignore;
+			_strncpy(buf, path, bufsize);
+			goto exit;
 		}
 
 		n = _snprintf(buf, bufsize, "%s/%s", dirbuf, path);
@@ -851,10 +854,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 	if (*root && __strleq(buf, root) && ignore(buf+len))
 		__striprootdir(buf);
 
-	return strnlen(buf, bufsize);
-
-ignore:
-	_strncpy(buf, path, bufsize);
+exit:
 	return strnlen(buf, bufsize);
 }
 

@@ -845,7 +845,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 	}
 
 	if (*root && __strleq(buf, root) && ignore(buf+len))
-		memcpy(buf, buf+len, __strlen(buf+len)+1); /* NULL-terminated */
+		__striprootdir(buf);
 
 	return strnlen(buf, bufsize);
 

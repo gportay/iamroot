@@ -44,6 +44,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the missing stripping of the chroot directory in the function
   `tempnam()`
 - Fix the freeing the NULL pointer in the function `canonicalize_file_name()`
+- Fix the path resolution ignoration if the path is relative to the current
+  working directory
+
+### Security
+
+- Fix invalid read if ignoring a path relative to the current working directory
 
 ## [v9] - 2023-05-06
 

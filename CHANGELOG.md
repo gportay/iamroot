@@ -572,7 +572,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-- Run the [dynamic linker][ld.so(8)] directly
+- Run the [dynamic loader][ld.so(8)] directly
 - Chroot to a [musl] world
 - Create an [Alpine Linux] rootfs via [alpine-make-rootfs]
 - Intercept the [SUID][capabilities(7)] commands [passwd(1)] and [su(1)] in

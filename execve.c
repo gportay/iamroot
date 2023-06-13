@@ -1452,7 +1452,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 	(void)argv;
 
 	/*
-	 * Get the dynamic linker stored in the .interp section of the ELF
+	 * Get the dynamic loader stored in the .interp section of the ELF
 	 * linked program.
 	 */
 	siz = __getinterp(path, buf, sizeof(buf));
@@ -1853,7 +1853,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 
 loader:
 	/*
-	 * Run the dynamic linker directly
+	 * Run the dynamic loader directly
 	 */
 	if (__strneq(path, "/usr/bin/ld.so") || __strneq(path, "/lib/ld") ||
 	    __strneq(path, "/lib64/ld")) {

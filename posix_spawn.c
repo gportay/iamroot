@@ -125,7 +125,7 @@ int posix_spawn(pid_t *pid, const char *path,
 
 loader:
 	/*
-	 * Run the dynamic linker directly
+	 * Run the dynamic loader directly
 	 */
 	if (__strneq(path, "/usr/bin/ld.so") || __strneq(path, "/lib/ld") ||
 	    __strneq(path, "/lib64/ld")) {

@@ -119,7 +119,7 @@ int execveat(int dfd, const char *path, char * const argv[],
 
 loader:
 	/*
-	 * Run the dynamic linker directly
+	 * Run the dynamic loader directly
 	 */
 	if (__strneq(path, "/usr/bin/ld.so") || __strneq(path, "/lib/ld") ||
 	    __strneq(path, "/lib64/ld")) {

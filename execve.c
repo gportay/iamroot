@@ -106,7 +106,7 @@ const char *__library_path()
 	ret = getenv("IAMROOT_LIBRARY_PATH");
 	if (!ret)
 		ret = _PATH_DEFLIBRARY_PATH;
-       
+
 	return ret;
 }
 

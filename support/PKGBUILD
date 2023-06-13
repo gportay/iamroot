@@ -57,6 +57,8 @@ package() {
 	make PREFIX=/usr DESTDIR="$pkgdir" install-exec-i686-musl-i386.1
 	make PREFIX=/usr DESTDIR="$pkgdir" install-exec-x86_64-linux-x86-64.2
 	make PREFIX=/usr DESTDIR="$pkgdir" install-exec-x86_64-musl-x86_64.1
+	make PREFIX=/usr DESTDIR="$pkgdir" libiamroot.so
+	make PREFIX=/usr DESTDIR="$pkgdir" install-exec
 	make PREFIX=/usr DESTDIR="$pkgdir" install-doc
 	make PREFIX=/usr DESTDIR="$pkgdir" install-bash-completion
 	install -D -m644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"

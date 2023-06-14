@@ -135,15 +135,15 @@ shells, please refers to their manuals.
 	Set absolute path to root directory to chroot in.
 	Equivalent to --root DIR.
 
-**IAMROOT_PROFILE_FILE**::
+**IAMROOT_SHELL_PROFILE_FILE**::
 	Set path to initialization file.
 	Equivalent to --profile-file FILE.
 
-**IAMROOT_RC_FILE**::
+**IAMROOT_SHELL_RC_FILE**::
 	Set path to command file.
 	Equivalent to --rc-file FILE.
 
-**IAMROOT_PRESERVE_ENV**::
+**IAMROOT_SHELL_PRESERVE_ENV**::
 	Set environment to preserve.
 	Equivalent to --preserve-env ENV.
 

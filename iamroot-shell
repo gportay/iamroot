@@ -79,13 +79,15 @@ Environment variables:
       IAMROOT_ROOT              Set absolute path to root directory to chroot
                                 in. Equivalent to --root DIR.
 
-      IAMROOT_PROFILE_FILE      Set path to initialization file.
+      IAMROOT_SHELL_PROFILE_FILE
+                                Set path to initialization file.
                                 Equivalent to --profile-file FILE.
 
-      IAMROOT_RC_FILE           Set path to command file.
+      IAMROOT_SHELL_RC_FILE     Set path to command file.
                                 Equivalent to --rc-file FILE.
 
-      IAMROOT_PRESERVE_ENV      Set environment to preserve.
+      IAMROOT_SHELL_PRESERVE_ENV
+                                Set environment to preserve.
                                 Equivalent to --preserve-env ENV.
 
       IAMROOT_PATH              Set PATH to use in chroot.
@@ -205,18 +207,18 @@ do
 	elif [[ "$1" == "--preserve-env" ]]
 	then
 		shift
-		IAMROOT_PRESERVE_ENV="$1"
-		export IAMROOT_PRESERVE_ENV
+		IAMROOT_SHELL_PRESERVE_ENV="$1"
+		export IAMROOT_SHELL_PRESERVE_ENV
 	elif [[ "$1" == "--rc-file" ]]
 	then
 		shift
-		IAMROOT_RC_FILE="$1"
-		export IAMROOT_RC_FILE
+		IAMROOT_SHELL_RC_FILE="$1"
+		export IAMROOT_SHELL_RC_FILE
 	elif [[ "$1" == "--profile-file" ]]
 	then
 		shift
-		IAMROOT_PROFILE_FILE="$1"
-		export IAMROOT_PROFILE_FILE
+		IAMROOT_SHELL_PROFILE_FILE="$1"
+		export IAMROOT_SHELL_PROFILE_FILE
 	elif [[ "$1" == "--root" ]]
 	then
 		shift
@@ -242,7 +244,7 @@ then
 	exec {IAMROOT_DEBUG_FD}>&2
 fi
 
-for i in "${IAMROOT_PROFILE_FILE:-}" "${IAMROOT_RC_FILE:-}"
+for i in "${IAMROOT_SHELL_PROFILE_FILE:-}" "${IAMROOT_SHELL_RC_FILE:-}"
 do
 	if [[ ! "$i" ]]
 	then
@@ -282,8 +284,8 @@ do
 	if [[ "$var" =~ ^(IAMROOT_.*|LD_.*|PATH|HOME|SHELL|USER)$ ]]
 	then
 		continue
-	elif [[ $IAMROOT_PRESERVE_ENV ]] &&
-	     [[ "$var" =~ ^(${IAMROOT_PRESERVE_ENV//:/|})$ ]]
+	elif [[ $IAMROOT_SHELL_PRESERVE_ENV ]] &&
+	     [[ "$var" =~ ^(${IAMROOT_SHELL_PRESERVE_ENV//:/|})$ ]]
 	then
 		if [ "${IAMROOT_DEBUG:-0}" -gt 1 ]
 		then

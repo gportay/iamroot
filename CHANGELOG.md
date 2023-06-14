@@ -13,6 +13,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Remove the `iamroot-shell`'s option `--debug-allow` and its environment
   variable `IAMROOT_DEBUG_ALLOW`
 
+### Deprecated
+
+- Replace the `iamroot-shell` environment variables `IAMROOT_PROFILE_FILE`,
+  `IAMROOT_RC_FILE` and `IAMROOT_PRESERVE_ENV` by the environment variables
+  `IAMROOT_SHELL_PROFILE_FILE`, `IAMROOT_SHELL_RC_FILE` and
+  `IAMROOT_SHELL_PRESERVE_ENV`
+
 ## [v10] - 2023-06-13
 
 ### Added

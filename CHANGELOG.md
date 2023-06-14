@@ -10,6 +10,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Remove the `iamroot-shell`'s option `--path-resolution-allow` and its
   environment variable `IAMROOT_PATH_RESOLUTION_ALLOW`
+- Remove the `iamroot-shell`'s option `--debug-allow` and its environment
+  variable `IAMROOT_DEBUG_ALLOW`
 
 ## [v10] - 2023-06-13
 

@@ -120,7 +120,7 @@ _iamroot-shell()
 		COMPREPLY=($(compgen -W "${fds[*]}" -- "$cur"))
 		return 0
 		;;
-	--debug-allow|--debug-ignore)
+	--debug-ignore)
 		local prefix realcur wordlist
 		realcur="${cur##*\|}"
 		prefix="${cur%$realcur}"
@@ -186,7 +186,7 @@ _iamroot-shell()
 
 	if [[ "$shell" != 1 ]]
 	then
-		COMPREPLY+=($(compgen -W "--user --root --profile-file --rc-file --preserve-env --path --library-path --exec --library --shell --no-color --fatal --debug --debug-fd --debug-allow --debug-ignore --exec-ignore --path-resolution-ignore --version" -- "$cur"))
+		COMPREPLY+=($(compgen -W "--user --root --profile-file --rc-file --preserve-env --path --library-path --exec --library --shell --no-color --fatal --debug --debug-fd --debug-ignore --exec-ignore --path-resolution-ignore --version" -- "$cur"))
 	fi
 } &&
 complete -F _iamroot-shell iamroot-shell

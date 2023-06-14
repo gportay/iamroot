@@ -1456,11 +1456,6 @@ warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply
 warning: group systemd-journal does not exist - using root
 
 Running in chroot, ignoring command 'daemon-reexec'
-Creating group 'systemd-journal' with GID XXX.
-Creating group 'systemd-timesync' with GID XXX.
-Creating user 'systemd-timesync' (systemd Time Synchronization) with UID XXX and GID XXX.
-/usr/lib/tmpfiles.d/suse.conf:10: Failed to resolve group 'lock'.
-/usr/lib/tmpfiles.d/suse.conf:13: Failed to resolve group 'utmp'.
 
 Retrieving package sysuser-shadow (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: sysuser-shadow [done]
@@ -1490,6 +1485,9 @@ Creating group 'render' with GID XXX.
 Creating group 'sgx' with GID XXX.
 Creating group 'tape' with GID XXX.
 Creating group 'video' with GID XXX.
+Creating group 'systemd-journal' with GID XXX.
+Creating group 'systemd-timesync' with GID XXX.
+Creating user 'systemd-timesync' (systemd Time Synchronization) with UID XXX and GID XXX.
 
 Retrieving package libutempter0 (XXX/XXX), XXX.X KiB ( XXX.X KiB unpacked)
 Retrieving: libutempter0.rpm [done]

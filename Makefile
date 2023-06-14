@@ -264,7 +264,7 @@ libiamroot.so: utmpname.o
 libiamroot.so: utmpxname.o
 
 .PHONY: doc
-doc: iamroot-shell.1.gz iamroot.7.gz
+doc: ish.1.gz iamroot.7.gz
 
 .PHONY: install
 install: install-exec install-doc install-bash-completion
@@ -273,15 +273,15 @@ install: install-exec install-doc install-bash-completion
 install-exec:
 	install -d -m755 $(DESTDIR)$(PREFIX)/bin/ $(DESTDIR)$(PREFIX)/lib/iamroot/
 	install -m755 libiamroot.so $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
-	sed -e "s,\$$PWD,$(PREFIX)/lib/iamroot," iamroot-shell >$(DESTDIR)$(PREFIX)/bin/iamroot-shell
-	chmod a+x $(DESTDIR)$(PREFIX)/bin/iamroot-shell
+	sed -e "s,\$$PWD,$(PREFIX)/lib/iamroot," ish >$(DESTDIR)$(PREFIX)/bin/ish
+	chmod a+x $(DESTDIR)$(PREFIX)/bin/ish
 	install -m755 libiamroot.so $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
 	install -m755 exec.sh $(DESTDIR)$(PREFIX)/lib/iamroot/exec.sh
 
 .PHONY: install-doc
 install-doc:
 	install -d -m755 $(DESTDIR)$(PREFIX)/share/man/man1/ $(DESTDIR)$(PREFIX)/share/man/man7/
-	install -m644 iamroot-shell.1.gz $(DESTDIR)$(PREFIX)/share/man/man1/iamroot-shell.1.gz
+	install -m644 ish.1.gz $(DESTDIR)$(PREFIX)/share/man/man1/ish.1.gz
 	install -m644 iamroot.7.gz $(DESTDIR)$(PREFIX)/share/man/man7/iamroot.7.gz
 
 .PHONY: install-bash-completion
@@ -291,21 +291,21 @@ install-bash-completion:
 	                             bash-completion 2>/dev/null)}; \
 	if [ -n "$$completionsdir" ]; then \
 		install -d -m755 $(DESTDIR)$$completionsdir/; \
-		install -m644 bash-completion $(DESTDIR)$$completionsdir/iamroot-shell; \
+		install -m644 bash-completion $(DESTDIR)$$completionsdir/ish; \
 	fi
 
 .PHONY: uninstall
 uninstall:
-	rm -f $(DESTDIR)$(PREFIX)/bin/iamroot-shell
+	rm -f $(DESTDIR)$(PREFIX)/bin/ish
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/exec.sh
-	rm -f $(DESTDIR)$(PREFIX)/share/man/man1/iamroot-shell.1.gz
+	rm -f $(DESTDIR)$(PREFIX)/share/man/man1/ish.1.gz
 	rm -f $(DESTDIR)$(PREFIX)/share/man/man7/iamroot.7.gz
 	completionsdir=$${BASHCOMPLETIONSDIR:-$$(pkg-config --define-variable=prefix=$(PREFIX) \
 	                             --variable=completionsdir \
 	                             bash-completion)}; \
 	if [ -n "$$completionsdir" ]; then \
-		rm -f $(DESTDIR)$$completionsdir/iamroot-shell; \
+		rm -f $(DESTDIR)$$completionsdir/ish; \
 	fi
 
 .PHONY: user-install
@@ -320,7 +320,7 @@ ci: check test
 
 .PHONY: check
 check:
-	shellcheck -e SC1090 -e SC3037 iamroot-shell exec.sh
+	shellcheck -e SC1090 -e SC3037 ish exec.sh
 
 .PHONY: test
 test: libiamroot.so
@@ -329,7 +329,7 @@ test: libiamroot.so
 
 .PHONY: shell
 shell: libiamroot.so
-	bash iamroot-shell
+	bash ish
 
 .PHONY: clean
 clean:

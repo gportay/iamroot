@@ -1,34 +1,33 @@
-= iamroot-shell(1)
+= ish(1)
 :doctype: manpage
 :author: Gaël PORTAY
 :email: gael.portay@gmail.com
 :lang: en
-:man manual: iamroot-shell Manual
+:man manual: ish Manual
 :man source: iamroot 10
 
 == NAME
 
-iamroot-shell - run a shell ready to emulate the syscall chroot(2) for
-unprivileged users.
+ish - run a shell ready to emulate the syscall chroot(2) for unprivileged
+users.
 
 == SYNOPSIS
 
-*iamroot-shell* [OPTIONS] [--]    [SCRIPT_FILE  [ARGS...]]
+*ish* [OPTIONS] [--]    [SCRIPT_FILE  [ARGS...]]
 
-*iamroot-shell* [OPTIONS] [--] -c COMMAND [NAME [ARGS...]]
+*ish* [OPTIONS] [--] -c COMMAND [NAME [ARGS...]]
 
-*iamroot-shell* [OPTIONS] [--] -s [ARGS...]
+*ish* [OPTIONS] [--] -s [ARGS...]
 
 == DESCRIPTION
 
 Runs the _command_ process in an _iamroot_ environment ready to emulate the
 *chroot(2)* syscall for unprivileged _users_.
 
-When called without arguments, *iamroot-shell* defaults to running an
-interactive shell.
+When called without arguments, *ish* defaults to running an interactive shell.
 
-Under the hood, *iamroot-shell* preloads a library which intercepts some
-*libc(7)* functions to emulates *chroot(2)* in a pure unprivileged process.
+Under the hood, *ish* preloads a library which intercepts some *libc(7)*
+functions to emulates *chroot(2)* in a pure unprivileged process.
 
 For a more thorough description of *sh(1)*, *bash(1)*, *zsh(1)* or any other
 shells, please refers to their manuals.
@@ -77,7 +76,7 @@ shells, please refers to their manuals.
 
 **shell SHELL**::
 	Set shell interpretor.
-	Equivalent to set IAMROOT_SHELL=<SHELL>.
+	Equivalent to set ISH=<SHELL>.
 
 **--fatal**::
 	Abort on error.
@@ -112,20 +111,20 @@ shells, please refers to their manuals.
 **SHELL**::
 	The shell interpreter to use.
 
-**IAMROOT_SHELL_LVL**::
-	Incremented by one each time an instance of iamroot-shell is started.
+**ISHLVL**::
+	Incremented by one each time an instance of ish is started.
 
-**IAMROOT_SHELL_COMMAND**::
-	Set to the command run by iamroot-shell, including any args.
+**ISH_COMMAND**::
+	Set to the command run by ish, including any args.
 
-**IAMROOT_SHELL_GID**::
-	Set to the group-ID of the user who invoked iamroot-shell.
+**ISH_GID**::
+	Set to the group-ID of the user who invoked ish.
 
-**IAMROOT_SHELL_UID**::
-	Set to the user-ID of the user who invoked iamroot-shell.
+**ISH_UID**::
+	Set to the user-ID of the user who invoked ish.
 
-**IAMROOT_SHELL_USER**::
-	Set to the login name of the user who invoked iamroot-shell.
+**ISH_USER**::
+	Set to the login name of the user who invoked ish.
 
 **IAMROOT_USER**::
 	Set user login name to usurp the identity.
@@ -135,15 +134,15 @@ shells, please refers to their manuals.
 	Set absolute path to root directory to chroot in.
 	Equivalent to --root DIR.
 
-**IAMROOT_SHELL_PROFILE_FILE**::
+**ISH_PROFILE_FILE**::
 	Set path to initialization file.
 	Equivalent to --profile-file FILE.
 
-**IAMROOT_SHELL_RC_FILE**::
+**ISH_RC_FILE**::
 	Set path to command file.
 	Equivalent to --rc-file FILE.
 
-**IAMROOT_SHELL_PRESERVE_ENV**::
+**ISH_PRESERVE_ENV**::
 	Set environment to preserve.
 	Equivalent to --preserve-env ENV.
 
@@ -163,7 +162,7 @@ shells, please refers to their manuals.
 	Set absolute path to library to use.
 	Equivalent to --library LIB.
 
-**IAMROOT_SHELL**::
+**ISH**::
 	Set shell interpretor to use.
 	Equivalent to --shell.
 
@@ -195,7 +194,7 @@ shells, please refers to their manuals.
 
 Run an _interactive shell_ in an _iamroot_ environment
 
-	[gportay@archlinux ~]$ iamroot-shell
+	[gportay@archlinux ~]$ ish
 	[root@archlinux ~]# 
 
 Print _effective_ user name
@@ -208,7 +207,7 @@ Change root directory via *chroot(1)*
 	[gportay@archlinux ~]$ mkdir -p alpine-minirootfs
 	[gportay@archlinux ~]$ wget http://dl-cdn.alpinelinux.org/alpine/v3.13/releases/x86_64/alpine-minirootfs-3.13.0-x86_64.tar.gz
 	[gportay@archlinux ~]$ tar xf alpine-minirootfs-3.13.0-x86_64.tar.gz -C alpine-minirootfs
-	[gportay@archlinux ~]$ iamroot-shell
+	[gportay@archlinux ~]$ ish
 	[root@archlinux ~]# chroot alpine-minirootfs /bin/ash
 	/ # cat /etc/os-release
 	NAME="Alpine Linux"
@@ -231,7 +230,7 @@ Change root directory via *chroot(1)*
 Create a new Arch Linux system installation from scratch via *pacstrap(8)*
 
 	[gportay@archlinux ~]$ mkdir -p rootfs
-	[gportay@archlinux ~]$ iamroot-shell -c "pacstrap -GM rootfs"
+	[gportay@archlinux ~]$ ish -c "pacstrap -GM rootfs"
 	==> Creating install root at rootfs
 	==> Installing packages to rootfs
 	(...)
@@ -269,7 +268,7 @@ Note: Some post-transaction hooks failed due to lack of privileges.
 
 Change root directory via *arch-chroot(8)*
 
-	[gportay@archlinux ~]$ iamroot-shell
+	[gportay@archlinux ~]$ ish
 	[root@archlinux ~]# arch-chroot rootfs
 	==> ERROR: This script must be run with root privileges
 	[root@archlinux ~]# ls -l /proc/self/cwd
@@ -279,7 +278,7 @@ Change root directory via *arch-chroot(8)*
 
 Create a new Alpine Linux system installation from scratch via *alpine-make-rootfs*
 
-	[gportay@archlinux ~]$ iamroot-shell -c "alpine-make-rootfs alpine-rootfs --keys-dir /usr/share/apk/keys/x86_64 --mirror-uri http://dl-cdn.alpinelinux.org/alpine"
+	[gportay@archlinux ~]$ ish -c "alpine-make-rootfs alpine-rootfs --keys-dir /usr/share/apk/keys/x86_64 --mirror-uri http://dl-cdn.alpinelinux.org/alpine"
 	
 	> Installing system
 	fetch http://dl-cdn.alpinelinux.org/alpine/latest-stable/main/x86_64/APKINDEX.tar.gz
@@ -305,7 +304,7 @@ Create a new Alpine Linux system installation from scratch via *alpine-make-root
 
 Change root directory via *chroot(8)*
 
-	[gportay@archlinux ~]$ iamroot-shell
+	[gportay@archlinux ~]$ ish
 	[root@archlinux ~]# ls -l /proc/self/cwd
 	lrwxrwxrwx 1 root root 0 Apr 25 09:54 /proc/self/cwd -> /home/gportay
 	[root@archlinux ~]# ls -l /proc/self/root

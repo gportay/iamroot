@@ -46,7 +46,7 @@ $(O)-%:
 
 freebsd-13.1-chroot:
 freebsd-%-chroot: $(ARCH)/libiamroot-elf.so.1 | freebsd-%-rootfs
-	bash iamroot-shell -c "chroot freebsd-$*-rootfs"
+	bash ish -c "chroot freebsd-$*-rootfs"
 
 freebsd-13.1-rootfs:
 freebsd-%-rootfs: | $(ARCH)/libiamroot-elf.so.1 FreeBSD-%-RELEASE-base-$(ARCH).txz

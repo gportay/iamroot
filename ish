@@ -39,7 +39,7 @@ iamroot specific options:
                                 use.
       --library LIB             Absolute path to the iamroot library to use.
       --shell SHELL             Set shell interpretor.
-                                Equivalent to set IAMROOT_SHELL=<SHELL>.
+                                Equivalent to set ISH=<SHELL>.
       --no-color                Turn off color.
       --fatal                   Abort on error.
       --debug                   Turn on debug mode.
@@ -58,20 +58,20 @@ iamroot specific options:
 Environment variables:
       SHELL                     The shell interpreter to use.
 
-      IAMROOT_SHELL_LVL         Incremented by one each time an instance of
-                                iamroot-shell is started.
+      ISHLVL                    Incremented by one each time an instance of
+                                ish is started.
 
-      IAMROOT_SHELL_COMMAND     Set to the command run by iamroot-shell,
-				including any args.
+      ISH_COMMAND               Set to the command run by ish, including any
+                                args.
 
-      IAMROOT_SHELL_GID         Set to the group-ID of the user who invoked
-                                iamroot-shell.
+      ISH_GID                   Set to the group-ID of the user who invoked
+                                ish.
 
-      IAMROOT_SHELL_UID         Set to the user-ID of the user who invoked
-                                iamroot-shell.
+      ISH_UID                   Set to the user-ID of the user who invoked
+                                ish.
 
-      IAMROOT_SHELL_USER        Set to the login name of the user who invoked
-                                iamroot-shell.
+      ISH_USER                  Set to the login name of the user who invoked
+                                ish.
 
       IAMROOT_USER              Set user login name to usurp the identity.
                                 Equivalent to --user USER.
@@ -79,15 +79,13 @@ Environment variables:
       IAMROOT_ROOT              Set absolute path to root directory to chroot
                                 in. Equivalent to --root DIR.
 
-      IAMROOT_SHELL_PROFILE_FILE
-                                Set path to initialization file.
+      ISH_PROFILE_FILE          Set path to initialization file.
                                 Equivalent to --profile-file FILE.
 
-      IAMROOT_SHELL_RC_FILE     Set path to command file.
+      ISH_RC_FILE               Set path to command file.
                                 Equivalent to --rc-file FILE.
 
-      IAMROOT_SHELL_PRESERVE_ENV
-                                Set environment to preserve.
+      ISH_PRESERVE_ENV          Set environment to preserve.
                                 Equivalent to --preserve-env ENV.
 
       IAMROOT_PATH              Set PATH to use in chroot.
@@ -102,7 +100,7 @@ Environment variables:
       IAMROOT_LIB               Set absolute path to library to use.
                                 Equivalent to --library LIB.
 
-      IAMROOT_SHELL             Set shell interpretor to use.
+      ISH                       Set shell interpretor to use.
                                 Equivalent to --shell.
 
       IAMROOT_FATAL             Set abort on error.
@@ -182,8 +180,8 @@ do
 	elif [[ "$1" == "--shell" ]]
 	then
 		shift
-		IAMROOT_SHELL="$1"
-		export IAMROOT_SHELL
+		ISH="$1"
+		export ISH
 	elif [[ "$1" == "--library" ]]
 	then
 		shift
@@ -207,18 +205,18 @@ do
 	elif [[ "$1" == "--preserve-env" ]]
 	then
 		shift
-		IAMROOT_SHELL_PRESERVE_ENV="$1"
-		export IAMROOT_SHELL_PRESERVE_ENV
+		ISH_PRESERVE_ENV="$1"
+		export ISH_PRESERVE_ENV
 	elif [[ "$1" == "--rc-file" ]]
 	then
 		shift
-		IAMROOT_SHELL_RC_FILE="$1"
-		export IAMROOT_SHELL_RC_FILE
+		ISH_RC_FILE="$1"
+		export ISH_RC_FILE
 	elif [[ "$1" == "--profile-file" ]]
 	then
 		shift
-		IAMROOT_SHELL_PROFILE_FILE="$1"
-		export IAMROOT_SHELL_PROFILE_FILE
+		ISH_PROFILE_FILE="$1"
+		export ISH_PROFILE_FILE
 	elif [[ "$1" == "--root" ]]
 	then
 		shift
@@ -244,7 +242,7 @@ then
 	exec {IAMROOT_DEBUG_FD}>&2
 fi
 
-for i in "${IAMROOT_SHELL_PROFILE_FILE:-}" "${IAMROOT_SHELL_RC_FILE:-}"
+for i in "${ISH_PROFILE_FILE:-}" "${ISH_RC_FILE:-}"
 do
 	if [[ ! "$i" ]]
 	then
@@ -281,11 +279,11 @@ mapfile -t envs < <(env)
 for env in "${envs[@]}"
 do
 	var="${env%%=*}"
-	if [[ "$var" =~ ^(IAMROOT_.*|LD_.*|PATH|HOME|SHELL|USER)$ ]]
+	if [[ "$var" =~ ^(IAMROOT_.*|ISH.*|LD_.*|PATH|HOME|SHELL|USER)$ ]]
 	then
 		continue
-	elif [[ $IAMROOT_SHELL_PRESERVE_ENV ]] &&
-	     [[ "$var" =~ ^(${IAMROOT_SHELL_PRESERVE_ENV//:/|})$ ]]
+	elif [[ $ISH_PRESERVE_ENV ]] &&
+	     [[ "$var" =~ ^(${ISH_PRESERVE_ENV//:/|})$ ]]
 	then
 		if [ "${IAMROOT_DEBUG:-0}" -gt 1 ]
 		then
@@ -299,10 +297,10 @@ done
 
 command=("${SHELL:-/bin/sh}" "${argv[@]}" "$@")
 
-IAMROOT_SHELL_USER="$USER" \
-IAMROOT_SHELL_UID="$UID" \
-IAMROOT_SHELL_GID="${GROUPS[0]}" \
-IAMROOT_SHELL_COMMAND="${command[*]}" \
-IAMROOT_SHELL_LVL="$((IAMROOT_SHELL_LVL+1))" \
+ISH_USER="$USER" \
+ISH_UID="$UID" \
+ISH_GID="${GROUPS[0]}" \
+ISH_COMMAND="${command[*]}" \
+ISHLVL="$((ISHLVL+1))" \
 LD_PRELOAD="$IAMROOT_LIB${LD_PRELOAD+:$LD_PRELOAD}" \
 exec "${command[@]}"

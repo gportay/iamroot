@@ -77,8 +77,7 @@ later version.
 
 # SEE ALSO
 
-[iamroot(7)], [iamroot-shell(1)], [chroot(2)], [path_resolution(7)],
-[fakechroot(1)]
+[iamroot(7)], [ish(1)], [chroot(2)], [path_resolution(7)], [fakechroot(1)]
 
 [Alpine Linux]: https://www.alpinelinux.org/
 [Arch Linux]: https://archlinux.org/
@@ -98,7 +97,7 @@ later version.
 [fopen(3)]: https://linux.die.net/man/3/fopen
 [glibc]: https://www.gnu.org/software/libc/
 [iamroot(7)]: iamroot.7.adoc
-[iamroot-shell(1)]: iamroot-shell.1.adoc
+[ish(1)]: ish.1.adoc
 [musl]: https://www.musl-libc.org/
 [open(2)]: https://linux.die.net/man/2/open
 [pacstrap(8)]: https://man.archlinux.org/man/pacstrap.8

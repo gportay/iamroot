@@ -153,12 +153,12 @@ endef
 define chroot_shell
 .PHONY: $(1)-$(2)-chroot
 $(1)-$(2)-chroot: | $(1)-$(2)-rootfs
-	bash iamroot-shell -c "chroot $(1)-$(2)-rootfs $(3)"
+	bash ish -c "chroot $(1)-$(2)-rootfs $(3)"
 
 .PHONY: $(1)-$(2)-shell
 $(1)-$(2)-shell: libiamroot.so
 	@echo $(4)
-	bash iamroot-shell
+	bash ish
 endef
 
 define pacstrap-rootfs
@@ -170,7 +170,7 @@ $(eval $(call chroot_shell,$(1),$(2),/bin/bash,pacstrap -GMC support/$(1)-$(2)-p
 $(1)-$(2)-rootfs: | $(1)-$(2)-rootfs/etc/machine-id
 $(1)-$(2)-rootfs/etc/machine-id: | $(call libs,linux,$(1))
 	mkdir -p $(1)-$(2)-rootfs
-	bash iamroot-shell -c "pacstrap -GMC support/$(1)-$(2)-pacman.conf $(1)-$(2)-rootfs $(3)"
+	bash ish -c "pacstrap -GMC support/$(1)-$(2)-pacman.conf $(1)-$(2)-rootfs $(3)"
 
 $(eval $(call log,pacstrap,$(1)-$(2)-rootfs))
 
@@ -187,7 +187,7 @@ $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id:
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^/dev/(null|zero|full|random|urandom|tty|console|pts|shm|ptmx)|^$(CURDIR)/.*\.gcda
 # debconf: PERL_DL_NONLAZY is not set, if debconf is running from a preinst script, this is not safe
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_SHELL_PRESERVE_ENV = PERL_DL_NONLAZY
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export ISH_PRESERVE_ENV = PERL_DL_NONLAZY
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export PERL_DL_NONLAZY = 1
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://deb.debian.org/debian
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export DEBOOTSTRAPFLAGS ?= --merged-usr --no-check-gpg
@@ -197,7 +197,7 @@ $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/bash,debootstrap --keep-debootstr
 $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/etc/machine-id
 $(1)-$(2)-$(3)-rootfs/etc/machine-id: | $(call libs,linux,$(1))
 	mkdir -p $(1)-$(2)-$(3)-rootfs
-	bash iamroot-shell -c "debootstrap --keep-debootstrap-dir $$(DEBOOTSTRAPFLAGS) $(3) $(1)-$(2)-$(3)-rootfs $$(DEBOOTSTRAP_MIRROR)"
+	bash ish -c "debootstrap --keep-debootstrap-dir $$(DEBOOTSTRAPFLAGS) $(3) $(1)-$(2)-$(3)-rootfs $$(DEBOOTSTRAP_MIRROR)"
 	cat $(1)-$(2)-$(3)-rootfs/debootstrap/debootstrap.log
 	rm -Rf $(1)-$(2)-$(3)-rootfs/debootstrap/
 
@@ -219,7 +219,7 @@ $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/bash,dnf --forcearch $(1) --relea
 $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/etc/machine-id
 $(1)-$(2)-$(3)-rootfs/etc/machine-id: | $(call libs,linux,$(1))
 	install -D -m644 $$(FEDORA_REPO) $(1)-$(2)-$(3)-rootfs/etc/distro.repos.d/fedora.repo
-	bash iamroot-shell -c "dnf --forcearch $(1) --releasever $(3) --assumeyes --installroot $(CURDIR)/$(1)-$(2)-$(3)-rootfs group install minimal-environment"
+	bash ish -c "dnf --forcearch $(1) --releasever $(3) --assumeyes --installroot $(CURDIR)/$(1)-$(2)-$(3)-rootfs group install minimal-environment"
 	rm -f $(1)-$(2)-$(3)-rootfs/etc/distro.repos.d/fedora.repo
 
 $(eval $(call log,dnf,$(1)-$(2)-$(3)-rootfs))
@@ -238,8 +238,8 @@ $(eval $(call chroot_shell,$(1),$(2),/bin/bash,zypper --root $(CURDIR)/$(1)-$(2)
 
 $(1)-$(2)-rootfs: | $(1)-$(2)-rootfs/etc/machine-id
 $(1)-$(2)-rootfs/etc/machine-id: | $(call libs,linux,$(1))
-	bash iamroot-shell -c "zypper --root $(CURDIR)/$(1)-$(2)-rootfs addrepo --no-gpgcheck support/$(2)-repo-oss.repo"
-	bash iamroot-shell -c "zypper --root $(CURDIR)/$(1)-$(2)-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd"
+	bash ish -c "zypper --root $(CURDIR)/$(1)-$(2)-rootfs addrepo --no-gpgcheck support/$(2)-repo-oss.repo"
+	bash ish -c "zypper --root $(CURDIR)/$(1)-$(2)-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd"
 
 $(eval $(call log,zypper,$(1)-$(2)-rootfs))
 
@@ -256,7 +256,7 @@ $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/ash,alpine-make-rootfs $(1)-$(2)-
 
 $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/busybox
 $(1)-$(2)-$(3)-rootfs/bin/busybox: | $(call libs,musl,$(1))
-	bash iamroot-shell -c "alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --mirror-uri http://mirrors.edge.kernel.org/alpine --branch $(3) $$(ALPINE_MAKE_ROOTFSFLAGS)"
+	bash ish -c "alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --mirror-uri http://mirrors.edge.kernel.org/alpine --branch $(3) $$(ALPINE_MAKE_ROOTFSFLAGS)"
 
 $(eval $(call log,alpine-make-rootfs,$(1)-$(2)-$(3)-rootfs))
 
@@ -307,7 +307,7 @@ $(1)-$(2).ext4: | x86_64/libiamroot-linux-x86-64.so.2 $(1)-$(2)-rootfs $$(MODULE
 	$(MAKE) $(1)-$(2)-postrootfs
 	rm -f $$@.tmp
 	fallocate --length 2G $$@.tmp
-	bash iamroot-shell -c "mkfs.ext4 -d $(1)-$(2)-rootfs $$@.tmp"
+	bash ish -c "mkfs.ext4 -d $(1)-$(2)-rootfs $$@.tmp"
 	mv $$@.tmp $$@
 
 .PHONY: $(1)-$(2)-postrootfs
@@ -317,7 +317,7 @@ $(1)-$(2)-postrootfs:
 $(1)-$(2)-rootfs/usr/lib/modules/$(KVER) $(1)-$(2)-rootfs/usr/lib/modules/$(VMLINUX_KVER): | x86_64/libiamroot-linux-x86-64.so.2 $(1)-$(2)-rootfs
 	rm -Rf $$@.tmp $$@
 	mkdir -p $$(@D)
-	bash iamroot-shell -c "rsync -a /usr/lib/modules/$$(@F)/. $$@.tmp/."
+	bash ish -c "rsync -a /usr/lib/modules/$$(@F)/. $$@.tmp/."
 	mv $$@.tmp $$@
 
 .PHONY: chroot-$(1)-$(2)
@@ -343,7 +343,7 @@ $(1)-$(2)-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	    -i $(1)-$(2)-rootfs/etc/shadow
 	mkdir -p $(1)-$(2)-rootfs/var/lib/systemd/linger
 	rm -f $(1)-$(2)-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
-	bash iamroot-shell -c "chroot $(1)-$(2)-rootfs systemctl enable getty@tty0.service"
+	bash ish -c "chroot $(1)-$(2)-rootfs systemctl enable getty@tty0.service"
 endef
 
 define debootstrap-postrootfs
@@ -354,10 +354,10 @@ $(1)-$(2)-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	sed -e '/^root::/s,^root::,root:x:,' \
 	    -i $(1)-$(2)-rootfs/etc/shadow
 	rm -f $(1)-$(2)-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
-	bash iamroot-shell -c "chroot $(1)-$(2)-rootfs systemctl enable getty@tty0.service"
+	bash ish -c "chroot $(1)-$(2)-rootfs systemctl enable getty@tty0.service"
 	rm -f $(1)-$(2)-rootfs/etc/systemd/system/multi-user.target.wants/sshd.service
-	bash iamroot-shell -c "chroot $(1)-$(2)-rootfs systemctl disable sshd.service"
-	bash iamroot-shell -c "chroot $(1)-$(2)-rootfs pam-auth-update"
+	bash ish -c "chroot $(1)-$(2)-rootfs systemctl disable sshd.service"
+	bash ish -c "chroot $(1)-$(2)-rootfs pam-auth-update"
 endef
 
 define dnf-postrootfs
@@ -369,9 +369,9 @@ $(1)-$(2)-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	touch $(1)-$(2)-rootfs/etc/systemd/zram-generator.conf
 	mkdir -p $(1)-$(2)-rootfs/var/lib/systemd/linger
 	rm -f $(1)-$(2)-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
-	bash iamroot-shell -c "chroot $(1)-$(2)-rootfs systemctl enable getty@tty0.service"
+	bash ish -c "chroot $(1)-$(2)-rootfs systemctl enable getty@tty0.service"
 	rm -f $(1)-$(2)-rootfs/etc/systemd/system/multi-user.target.wants/sshd.service
-	bash iamroot-shell -c "chroot $(1)-$(2)-rootfs systemctl disable sshd.service"
+	bash ish -c "chroot $(1)-$(2)-rootfs systemctl disable sshd.service"
 endef
 
 define zypper-postrootfs
@@ -380,12 +380,12 @@ $(1)-$(2)-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	    -i $(1)-$(2)-rootfs/etc/passwd
 	sed -e '/^root:\*:/s,^root:\*:,root:x:,' \
 	    -i $(1)-$(2)-rootfs/etc/shadow
-	bash iamroot-shell -c "chroot $(1)-$(2)-rootfs pam-config -a --nullok"
+	bash ish -c "chroot $(1)-$(2)-rootfs pam-config -a --nullok"
 	mkdir -p $(1)-$(2)-rootfs/var/lib/systemd/linger
 	rm -f $(1)-$(2)-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
-	bash iamroot-shell -c "chroot $(1)-$(2)-rootfs systemctl enable getty@tty0.service"
+	bash ish -c "chroot $(1)-$(2)-rootfs systemctl enable getty@tty0.service"
 	rm -f $(1)-$(2)-rootfs/etc/systemd/system/getty.target.wants/getty@ttyS0.service
-	bash iamroot-shell -c "chroot $(1)-$(2)-rootfs systemctl enable getty@ttyS0.service"
+	bash ish -c "chroot $(1)-$(2)-rootfs systemctl enable getty@ttyS0.service"
 endef
 
 define alpine-postrootfs
@@ -602,8 +602,8 @@ ifneq ($(shell command -v pacstrap 2>/dev/null),)
 archlinux-test: | x86_64-archlinux-rootfs/usr/bin/shebang.sh
 archlinux-test: | x86_64-archlinux-rootfs/usr/bin/shebang-arg.sh
 archlinux-test: $(subst $(CURDIR)/,,$(IAMROOT_LIB)) | x86_64-archlinux-rootfs
-	bash iamroot-shell -c "chroot x86_64-archlinux-rootfs shebang.sh one two three"
-	bash iamroot-shell -c "chroot x86_64-archlinux-rootfs shebang-arg.sh one two three"
+	bash ish -c "chroot x86_64-archlinux-rootfs shebang.sh one two three"
+	bash ish -c "chroot x86_64-archlinux-rootfs shebang-arg.sh one two three"
 
 x86_64-archlinux-rootfs/usr/bin/%: support/% | x86_64-archlinux-rootfs
 	cp $< $@
@@ -680,19 +680,19 @@ x86_64-ubuntu-bionic-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mou
 #  triggers looping, abandoned
 # Errors were encountered while processing:
 #  libc-bin
-x86_64-ubuntu-trusty-rootfs/etc/machine-id: export IAMROOT_SHELL_PRESERVE_ENV := $(IAMROOT_SHELL_PRESERVE_ENV):LDCONFIG_NOTRIGGER
+x86_64-ubuntu-trusty-rootfs/etc/machine-id: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
 x86_64-ubuntu-trusty-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
-x86_64-ubuntu-xenial-rootfs/etc/machine-id: export IAMROOT_SHELL_PRESERVE_ENV := $(IAMROOT_SHELL_PRESERVE_ENV):LDCONFIG_NOTRIGGER
+x86_64-ubuntu-xenial-rootfs/etc/machine-id: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
 x86_64-ubuntu-xenial-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
-x86_64-ubuntu-bionic-rootfs/etc/machine-id: export IAMROOT_SHELL_PRESERVE_ENV := $(IAMROOT_SHELL_PRESERVE_ENV):LDCONFIG_NOTRIGGER
+x86_64-ubuntu-bionic-rootfs/etc/machine-id: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
 x86_64-ubuntu-bionic-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
-x86_64-ubuntu-focal-rootfs/etc/machine-id: export IAMROOT_SHELL_PRESERVE_ENV := $(IAMROOT_SHELL_PRESERVE_ENV):LDCONFIG_NOTRIGGER
+x86_64-ubuntu-focal-rootfs/etc/machine-id: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
 x86_64-ubuntu-focal-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
-x86_64-ubuntu-jammy-rootfs/etc/machine-id: export IAMROOT_SHELL_PRESERVE_ENV := $(IAMROOT_SHELL_PRESERVE_ENV):LDCONFIG_NOTRIGGER
+x86_64-ubuntu-jammy-rootfs/etc/machine-id: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
 x86_64-ubuntu-jammy-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
-x86_64-ubuntu-kinetic-rootfs/etc/machine-id: export IAMROOT_SHELL_PRESERVE_ENV := $(IAMROOT_SHELL_PRESERVE_ENV):LDCONFIG_NOTRIGGER
+x86_64-ubuntu-kinetic-rootfs/etc/machine-id: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
 x86_64-ubuntu-kinetic-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
-x86_64-ubuntu-lunar-rootfs/etc/machine-id: export IAMROOT_SHELL_PRESERVE_ENV := $(IAMROOT_SHELL_PRESERVE_ENV):LDCONFIG_NOTRIGGER
+x86_64-ubuntu-lunar-rootfs/etc/machine-id: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
 x86_64-ubuntu-lunar-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
 endif
 
@@ -745,14 +745,14 @@ alpine-test: | x86_64-alpine-mini-rootfs/usr/bin/shebang.sh
 alpine-test: | x86_64-alpine-mini-rootfs/usr/bin/shebang-arg.sh
 alpine-test: | x86_64-alpine-mini-rootfs/usr/bin/shebang-busybox.sh
 alpine-test: $(call libs,musl,x86_64) | x86_64-alpine-mini-rootfs
-	bash iamroot-shell -c "chroot x86_64-alpine-mini-rootfs pwd" | tee /dev/stderr | grep -q "^/\$$"
-	bash iamroot-shell -c "chroot x86_64-alpine-mini-rootfs cat /etc/os-release" | tee /dev/stderr | grep 'NAME="Alpine Linux"'
-	bash iamroot-shell -c "chroot x86_64-alpine-mini-rootfs chroot . cat /etc/os-release" | tee /dev/stderr | grep 'NAME="Alpine Linux"'
-	bash iamroot-shell -c "chroot x86_64-alpine-mini-rootfs /bin/busybox"
-	bash iamroot-shell -c "chroot x86_64-alpine-mini-rootfs shebang.sh one two three"
-	bash iamroot-shell -c "chroot x86_64-alpine-mini-rootfs shebang-arg.sh one two three"
-	bash iamroot-shell -c "chroot x86_64-alpine-mini-rootfs shebang-busybox.sh one two three"
-	bash iamroot-shell -c "chroot x86_64-alpine-mini-rootfs /lib/ld-musl-x86_64.so.1 --preload "$$PWD/x86_64/libiamroot-musl-x86_64.so.1" bin/busybox"
+	bash ish -c "chroot x86_64-alpine-mini-rootfs pwd" | tee /dev/stderr | grep -q "^/\$$"
+	bash ish -c "chroot x86_64-alpine-mini-rootfs cat /etc/os-release" | tee /dev/stderr | grep 'NAME="Alpine Linux"'
+	bash ish -c "chroot x86_64-alpine-mini-rootfs chroot . cat /etc/os-release" | tee /dev/stderr | grep 'NAME="Alpine Linux"'
+	bash ish -c "chroot x86_64-alpine-mini-rootfs /bin/busybox"
+	bash ish -c "chroot x86_64-alpine-mini-rootfs shebang.sh one two three"
+	bash ish -c "chroot x86_64-alpine-mini-rootfs shebang-arg.sh one two three"
+	bash ish -c "chroot x86_64-alpine-mini-rootfs shebang-busybox.sh one two three"
+	bash ish -c "chroot x86_64-alpine-mini-rootfs /lib/ld-musl-x86_64.so.1 --preload "$$PWD/x86_64/libiamroot-musl-x86_64.so.1" bin/busybox"
 
 rootfs: alpine-rootfs
 
@@ -1008,7 +1008,7 @@ endif
 
 .PHONY: static-chroot
 static-chroot: x86_64/libiamroot-linux-x86-64.so.2 | static-rootfs
-	bash iamroot-shell -c "chroot static-rootfs /bin/sh"
+	bash ish -c "chroot static-rootfs /bin/sh"
 
 .PHONY: static-rootfs
 static-rootfs: static-rootfs/usr/bin/sh

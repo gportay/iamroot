@@ -19,6 +19,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `IAMROOT_RC_FILE` and `IAMROOT_PRESERVE_ENV` by the environment variables
   `IAMROOT_SHELL_PROFILE_FILE`, `IAMROOT_SHELL_RC_FILE` and
   `IAMROOT_SHELL_PRESERVE_ENV`
+- Replace the `iamroot-shell` script and its environment variables starting by
+  `IAMROOT_SHELL` by the `ish` script and its environment variables starting by
+  `ISH`, at the exception for `IAMROOT_SHELL` and `IAMROOT_SHELL_LVL` replaced
+  by `ISH` and `ISHLVL`
 
 ## [v10] - 2023-06-13
 

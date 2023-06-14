@@ -42,7 +42,7 @@ $(O)-%:
 	mkdir $@
 
 openbsd-73-chroot: $(ARCH)/libiamroot.so | openbsd-73-rootfs
-	bash iamroot-shell -c "chroot $@"
+	bash ish -c "chroot $@"
 
 openbsd-73-rootfs: | $(ARCH)/libiamroot.so base-73.tgz
 	rm -Rf $@

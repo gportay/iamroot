@@ -97,4 +97,4 @@ later version.
 
 == SEE ALSO
 
-*iamroot-shell(1)*, *chroot(2)*, *path_resolution(7)*
+*ish(1)*, *chroot(2)*, *path_resolution(7)*

@@ -520,7 +520,6 @@ toolong:
 #undef getcwd
 #undef strlen
 
-static regex_t *re_allow;
 static regex_t *re_ignore;
 static regex_t *re_warning_ignore;
 
@@ -539,26 +538,10 @@ static void __regex_perror(const char *s, regex_t *regex, int err)
 __attribute__((constructor,visibility("hidden")))
 void path_resolution_init()
 {
-	static __regex_t regex_allow, regex_ignore, regex_warning_ignore;
-	const char *allow, *ignore, *warning_ignore;
+	static __regex_t regex_ignore, regex_warning_ignore;
+	const char *ignore, *warning_ignore;
 	int ret;
 
-	if (re_allow)
-		goto ignore;
-
-	allow = getenv("IAMROOT_PATH_RESOLUTION_ALLOW");
-	if (!allow)
-		allow = "^$";
-
-	ret = regcomp(&regex_allow.re, allow, REG_NOSUB|REG_EXTENDED);
-	if (ret == -1) {
-		__regex_perror("regcomp", &regex_allow.re, ret);
-		return;
-	}
-
-	re_allow = &regex_allow.re;
-
-ignore:
 	if (re_ignore)
 		goto warning_ignore;
 
@@ -606,39 +589,20 @@ void path_resolution_fini()
 
 ignore:
 	if (!re_ignore)
-		goto allow;
+		return;
 
 	regfree(re_ignore);
 	re_ignore = NULL;
-
-allow:
-	if (!re_allow)
-		return;
-
-	regfree(re_allow);
-	re_allow = NULL;
 }
 
 static int ignore(const char *path)
 {
 	int ret = 0;
 
-	if (!re_allow)
-		return 0;
-
 	if (!re_ignore)
 		return 0;
 
 	if (!*path)
-		return 0;
-
-	ret = regexec(re_allow, path, 0, NULL, 0);
-	if (ret == -1) {
-		__regex_perror("regexec", re_allow, ret);
-		return 0;
-	}
-
-	if (!ret)
 		return 0;
 
 	ret = regexec(re_ignore, path, 0, NULL, 0);

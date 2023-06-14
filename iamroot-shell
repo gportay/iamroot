@@ -52,9 +52,6 @@ iamroot specific options:
                                 Does not imply --debug.
       --exec-ignore REGEX       Regular expression of executable path to ignore
                                 at execve().
-      --path-resolution-allow   REGEX
-                                Regular expression of path to allow for path
-                                resolution in chroot.
       --path-resolution-ignore  REGEX
                                 Regular expression of path to ignore for path
                                 resolution in chroot.
@@ -127,11 +124,6 @@ Environment variables:
       IAMROOT_EXEC_IGNORE       Set executable path to ignore in execve().
                                 Equivalent to --exec-ignore.
 
-      IAMROOT_PATH_RESOLUTION_ALLOW
-                                Set path to allow for path resolution in
-                                chroot.
-                                Equivalent to --path-resolution-allow.
-
       IAMROOT_PATH_RESOLUTION_IGNORE
                                 Set path to ignore for path resolution in
                                 chroot.
@@ -164,11 +156,6 @@ do
 		shift
 		IAMROOT_PATH_RESOLUTION_IGNORE="$1"
 		export IAMROOT_PATH_RESOLUTION_IGNORE
-	elif [[ "$1" == "--path-resolution-allow" ]]
-	then
-		shift
-		IAMROOT_PATH_RESOLUTION_ALLOW="$1"
-		export IAMROOT_PATH_RESOLUTION_ALLOW
 	elif [[ "$1" == "--exec-ignore" ]]
 	then
 		shift

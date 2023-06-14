@@ -598,6 +598,13 @@ void path_resolution_fini()
 	 */
 	unsetenv("IAMROOT_ROOT");
 
+	if (!re_warning_ignore)
+		goto ignore;
+
+	regfree(re_warning_ignore);
+	re_warning_ignore = NULL;
+
+ignore:
 	if (!re_ignore)
 		goto allow;
 

@@ -1051,55 +1051,55 @@ static char *__getlibiamroot(const char *ldso, int abi)
 #ifdef __linux__
 	/* IAMROOT_LIB_LINUX_2 */
 	if (streq(ldso, "linux") && abi == 2) {
-		ret = "/usr/lib/iamroot/i686/libiamroot-linux.so.2";
+		ret = __xstr(PREFIX)"/lib/iamroot/i686/libiamroot-linux.so.2";
 		goto exit;
 	}
 
 	/* IAMROOT_LIB_LINUX_X86_64_2 */
 	if (streq(ldso, "linux-x86-64") && abi == 2) {
-		ret = "/usr/lib/iamroot/x86_64/libiamroot-linux-x86-64.so.2";
+		ret = __xstr(PREFIX)"/lib/iamroot/x86_64/libiamroot-linux-x86-64.so.2";
 		goto exit;
 	}
 
 	/* IAMROOT_LIB_LINUX_3 */
 	if (streq(ldso, "linux") && abi == 3) {
-		ret = "/usr/lib/iamroot/arm/libiamroot-linux.so.3";
+		ret = __xstr(PREFIX)"/lib/iamroot/arm/libiamroot-linux.so.3";
 		goto exit;
 	}
 
 	/* IAMROOT_LIB_LINUX_ARMHF_3 */
 	if (streq(ldso, "linux-armhf") && abi == 3) {
-		ret = "/usr/lib/iamroot/armhf/libiamroot-linux-armhf.so.3";
+		ret = __xstr(PREFIX)"/lib/iamroot/armhf/libiamroot-linux-armhf.so.3";
 		goto exit;
 	}
 
 	/* IAMROOT_LIB_LINUX_AARCH64_1 */
 	if (streq(ldso, "linux-aarch64") && abi == 1) {
-		ret = "/usr/lib/iamroot/aarch64/libiamroot-linux-aarch64.so.1";
+		ret = __xstr(PREFIX)"/lib/iamroot/aarch64/libiamroot-linux-aarch64.so.1";
 		goto exit;
 	}
 
 	/* IAMROOT_LIB_MUSL_I386_1 */
 	if (streq(ldso, "musl-i386") && abi == 1) {
-		ret = "/usr/lib/iamroot/i686/libiamroot-musl-i386.so.1";
+		ret = __xstr(PREFIX)"/lib/iamroot/i686/libiamroot-musl-i386.so.1";
 		goto exit;
 	}
 
 	/* IAMROOT_LIB_MUSL_X86_64_1 */
 	if (streq(ldso, "musl-x86_64") && abi == 1) {
-		ret = "/usr/lib/iamroot/x86_64/libiamroot-musl-x86_64.so.1";
+		ret = __xstr(PREFIX)"/lib/iamroot/x86_64/libiamroot-musl-x86_64.so.1";
 		goto exit;
 	}
 
 	/* IAMROOT_LIB_MUSL_ARMHF_1 */
 	if (streq(ldso, "musl-armhf") && abi == 1) {
-		ret = "/usr/lib/iamroot/armhf/libiamroot-musl-armhf.so.1";
+		ret = __xstr(PREFIX)"/lib/iamroot/armhf/libiamroot-musl-armhf.so.1";
 		goto exit;
 	}
 
 	/* IAMROOT_LIB_MUSL_AARCH64_1 */
 	if (streq(ldso, "musl-aarch64") && abi == 1) {
-		ret = "/usr/lib/iamroot/aarch64/libiamroot-musl-aarch64.so.1";
+		ret = __xstr(PREFIX)"/lib/iamroot/aarch64/libiamroot-musl-aarch64.so.1";
 		goto exit;
 	}
 #endif
@@ -1108,24 +1108,19 @@ static char *__getlibiamroot(const char *ldso, int abi)
 	/* IAMROOT_LIB_ELF_1 */
 	if (streq(ldso, "elf") && abi == 1) {
 #if defined(__x86_64__)
-		ret = "/usr/local/lib/iamroot/amd64/libiamroot-elf.so.1";
+		ret = __xstr(PREFIX)"/lib/iamroot/amd64/libiamroot-elf.so.1";
 #elif defined(__aarch64__)
-		ret = "/usr/local/lib/iamroot/arm64/libiamroot-elf.so.1";
+		ret = __xstr(PREFIX)"/lib/iamroot/arm64/libiamroot-elf.so.1";
 #else
-		ret = "/usr/local/lib/iamroot/libiamroot-elf.so.1";
+		ret = __xstr(PREFIX)"/lib/iamroot/libiamroot-elf.so.1";
 #endif
 		goto exit;
 	}
 #endif
 
 	ret = getenv("IAMROOT_LIB");
-#ifdef __linux__
 	if (!ret)
-		ret = "/usr/lib/iamroot/libiamroot.so";
-#else
-	if (!ret)
-		ret = "/usr/local/lib/iamroot/libiamroot.so";
-#endif
+		ret = __xstr(PREFIX)"/lib/iamroot/libiamroot.so";
 
 exit:
 	if (setenv("IAMROOT_LIB", ret, 1))

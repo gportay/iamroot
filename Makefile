@@ -49,7 +49,7 @@ ifneq ($(NVERBOSE),0)
 CFLAGS += -DNVERBOSE
 endif
 
-%.o: override CPPFLAGS += -D_GNU_SOURCE -DVERSION=$(VERSION)
+%.o: override CPPFLAGS += -D_GNU_SOURCE -DVERSION=$(VERSION) -DPREFIX=$(PREFIX)
 %.o: override CFLAGS += -fPIC -Wall -Wextra
 %.so: override LDFLAGS += -nodefaultlibs
 

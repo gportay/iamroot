@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [unreleased]
 
+### Added
+
+- Chroot to a RISC-V [glibc] world; tested on [Arch Linux RISC-V].
+
 ### Removed
 
 - Remove the `iamroot-shell`'s option `--path-resolution-allow` and its
@@ -614,6 +618,7 @@ Initial release.
 [Alpine Linux]: https://alpinelinux.org/
 [Arch Linux 32]: https://archlinux32.org/
 [Arch Linux ARM]: https://archlinuxarm.org/
+[Arch Linux RISC-V]: https://archriscv.felixc.at/
 [Debian]: https://www.debian.org/
 [Fedora ARM]: https://arm.fedoraproject.org/
 [Fedora]: https://getfedora.org/

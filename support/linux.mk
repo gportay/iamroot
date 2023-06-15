@@ -89,11 +89,12 @@ vars:
 
 define libs
 $(strip libiamroot.so \
-	$(if $(findstring :$(2):,:x86_64:                        ),$(if $(findstring :$(1):,:musl:),x86_64/libiamroot-musl-x86_64.so.1  ,x86_64/libiamroot-linux-x86-64.so.2  ), \
-	$(if $(findstring :$(2):,:armhf: :arm: :armv7hl: :armv7h:),$(if $(findstring :$(1):,:musl:),armhf/libiamroot-musl-armhf.so.1    ,armhf/libiamroot-linux-armhf.so.3    ), \
-	$(if $(findstring :$(2):,:x86: :i386: :i686:             ),$(if $(findstring :$(1):,:musl:),i686/libiamroot-musl-i386.so.1      ,i686/libiamroot-linux.so.2           ), \
-	$(if $(findstring :$(2):,:aarch64:                       ),$(if $(findstring :$(1):,:musl:),aarch64/libiamroot-musl-aarch64.so.1,aarch64/libiamroot-linux-aarch64.so.1), \
-	$(error $(1)-$(2): No such library))))) \
+	$(if $(findstring :$(2):,:x86_64:                        ),$(if $(findstring :$(1):,:musl:),x86_64/libiamroot-musl-x86_64.so.1  ,x86_64/libiamroot-linux-x86-64.so.2        ), \
+	$(if $(findstring :$(2):,:armhf: :arm: :armv7hl: :armv7h:),$(if $(findstring :$(1):,:musl:),armhf/libiamroot-musl-armhf.so.1    ,armhf/libiamroot-linux-armhf.so.3          ), \
+	$(if $(findstring :$(2):,:x86: :i386: :i686:             ),$(if $(findstring :$(1):,:musl:),i686/libiamroot-musl-i386.so.1      ,i686/libiamroot-linux.so.2                 ), \
+	$(if $(findstring :$(2):,:aarch64:                       ),$(if $(findstring :$(1):,:musl:),aarch64/libiamroot-musl-aarch64.so.1,aarch64/libiamroot-linux-aarch64.so.1      ), \
+	$(if $(findstring :$(2):,:riscv64:                       ),$(if $(findstring :$(1):,:musl:),                                    ,riscv64/libiamroot-linux-riscv64-lp64d.so.1), \
+	$(error $(1)-$(2): No such library)))))) \
 )
 endef
 
@@ -479,6 +480,11 @@ endif
 ifneq ($(shell command -v aarch64-linux-gnu-gcc 2>/dev/null),)
 $(O)-aarch64-linux-aarch64/libiamroot.so: CC = aarch64-linux-gnu-gcc
 $(eval $(call libiamroot_so,aarch64,linux-aarch64,1))
+endif
+
+ifneq ($(shell command -v riscv64-linux-gnu-gcc 2>/dev/null),)
+$(O)-riscv64-linux-riscv64-lp64d/libiamroot.so: CC = riscv64-linux-gnu-gcc
+$(eval $(call libiamroot_so,riscv64,linux-riscv64-lp64d,1))
 endif
 
 ifneq ($(shell command -v i386-musl-gcc 2>/dev/null),)
@@ -873,6 +879,16 @@ arm-rootfs: armv7h-archlinuxarm-rootfs
 armv7h-archlinuxarm-rootfs: | armv7h-archlinuxarm-rootfs/etc/machine-id
 
 $(eval $(call pacstrap-rootfs,armv7h,archlinuxarm,base))
+endif
+
+ifneq ($(shell command -v riscv64-linux-gnu-gcc 2>/dev/null),)
+riscv64-rootfs: riscv64-archlinuxriscv-rootfs
+
+.PHONY: riscv64-archlinuxriscv-rootfs
+riscv64-archlinuxriscv-rootfs: | riscv64-archlinuxriscv-rootfs/etc/machine-id
+
+$(eval $(call pacstrap-rootfs,riscv64,archlinuxriscv,base))
+riscv64-archlinuxriscv-chroot riscv64-archlinuxriscv-shell riscv64-archlinuxriscv-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib:/usr/lib
 endif
 endif
 

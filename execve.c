@@ -1079,6 +1079,12 @@ static char *__getlibiamroot(const char *ldso, int abi)
 		goto exit;
 	}
 
+	/* IAMROOT_LIB_LINUX_RISCV64_LP64D_1 */
+	if (streq(ldso, "linux-riscv64-lp64d") && abi == 1) {
+		ret = __xstr(PREFIX)"/lib/iamroot/riscv64/libiamroot-linux-riscv64-lp64d.so.1";
+		goto exit;
+	}
+
 	/* IAMROOT_LIB_MUSL_I386_1 */
 	if (streq(ldso, "musl-i386") && abi == 1) {
 		ret = __xstr(PREFIX)"/lib/iamroot/i686/libiamroot-musl-i386.so.1";
@@ -1186,6 +1192,10 @@ static char *__getld_library_path(const char *ldso, int abi)
 
 	/* IAMROOT_LIBRARY_PATH_LINUX_AARCH64_1 */
 	if (streq(ldso, "linux-aarch64") && abi == 1)
+		return "/lib64:/usr/local/lib64:/usr/lib64";
+
+	/* IAMROOT_LIBRARY_PATH_LINUX_RISC64_LP64D_1 */
+	if (streq(ldso, "linux-riscv64-lp64d") && abi == 1)
 		return "/lib64:/usr/local/lib64:/usr/lib64";
 #endif
 

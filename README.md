@@ -27,6 +27,11 @@ some statically linked binaries (`pkg-static`, `chroot`...).
 The project compiles on x86 and ARM 64-bit, and runs on [Arch Linux], [Debian],
 [Alpine Linux], [FreeBSD] (13.1) and [OpenBSD] (7.2 and 7.3).
 
+The [Miscellaneous Binary Format][binfmt_misc] on *Linux* allows to [chroot(2)]
+in a rootfs directory using a different architecture thanks to emulators, such
+as the [QEMU user-mode emulation][qemu] static binaries. The architectures
+`x86_64`, `i386`, `aarch64`, `armhf`, `arm`, and `riscv64` are supported.
+
 ## HOW IT WORKS
 
 It consists of an ELF shim library which is preloaded using the environment
@@ -85,6 +90,7 @@ later version.
 [FreeBSD]: https://www.freebsd.org/
 [OpenBSD]: https://www.openbsd.org/
 [alpine-make-rootfs]: https://github.com/alpinelinux/alpine-make-rootfs/blob/master/README.adoc
+[binfmt_misc]: https://www.kernel.org/doc/html/latest/admin-guide/binfmt-misc.html
 [changelog]: CHANGELOG.md#unreleased
 [chdir(2)]: https://linux.die.net/man/2/chdir
 [chown(2)]: https://linux.die.net/man/2/chown
@@ -102,6 +108,7 @@ later version.
 [open(2)]: https://linux.die.net/man/2/open
 [pacstrap(8)]: https://man.archlinux.org/man/pacstrap.8
 [path_resolution(7)]: https://linux.die.net/man/7/path_resolution
+[qemu]: https://www.qemu.org/
 [readlink(2)]: https://linux.die.net/man/2/readlink
 [stat(2)]: https://linux.die.net/man/2/stat
 [zypper(8)]: https://en.opensuse.org/SDB:Zypper_manual_(plain)

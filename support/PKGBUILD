@@ -31,10 +31,10 @@ prepare() {
 	cd "$srcdir/$pkgname"
 	ln -sf support/linux.mk makefile
 	touch local.mk
-	sed -e "/^VERSION = /s,\w$,$pkgver," -i Makefile
-	sed -e "/^VERSION=/s,\w$,$pkgver," -i ish
-	sed -e "/^:man source:/s,\w$,$pkgver," -i ish.1.adoc
-	sed -e "/^:man source:/s,\w$,$pkgver," -i iamroot.7.adoc
+	sed -e "/^VERSION = /s,\w\+$,$pkgver," -i Makefile
+	sed -e "/^VERSION=/s,\w\+$,$pkgver," -i ish
+	sed -e "/^:man source:/s,\w\+$,$pkgver," -i ish.1.adoc
+	sed -e "/^:man source:/s,\w\+$,$pkgver," -i iamroot.7.adoc
 }
 
 build() {

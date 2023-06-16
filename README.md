@@ -7,58 +7,58 @@
 [![FreeBSD-vm](https://github.com/gportay/iamroot/actions/workflows/FreeBSD-vm.yml/badge.svg)](https://github.com/gportay/iamroot/actions/workflows/FreeBSD-vm.yml)
 [![OpenBSD-vm](https://github.com/gportay/iamroot/actions/workflows/OpenBSD-vm.yml/badge.svg)](https://github.com/gportay/iamroot/actions/workflows/OpenBSD-vm.yml)
 
+[iamroot(7)] emulates privileged syscalls such as [chroot(2)] for unprivileged
+processes in userspace.
+
 ## TL;DR;
 
-[iamroot(7)] emulates the syscall [chroot(2)] for unprivileged processes in
-userspace.
-
-It aims to provide a self-contained and all-in-one alternative to [fakeroot(1)]
-and [fakechroot(1)].
+[iamroot(7)] provides a self-contained and an all-in-one alternative to both
+[fakeroot(1)] and [fakechroot(1)].
 
 The project targets the *Linux* userlands [glibc] and [musl]. However, it works
 on [FreeBSD] (13.1) and [OpenBSD] (7.2 and 7.3) even if its usage is limited by
 some statically linked binaries (`pkg-static`, `chroot`...).
 
-The project compiles on x86 and ARM 64-bit, and runs on [Arch Linux], [Debian],
-[Alpine Linux], [FreeBSD] (13.1) and [OpenBSD] (7.2 and 7.3).
+The project compiles on Intel x86 and ARM 64-bit, and it runs on [Arch Linux],
+[Debian], [Alpine Linux], [FreeBSD] (13.1) and [OpenBSD] (7.2 and 7.3).
 
 The [Miscellaneous Binary Format][binfmt_misc] on *Linux* allows to [chroot(2)]
-in a rootfs directory using a different architecture thanks to emulators, such
-as the [QEMU user-mode emulation][qemu] static binaries. The architectures
+in a rootfs directory using a different architecture thanks to emulators (such
+as the [QEMU user-mode emulation][qemu] static binaries). The architectures
 `x86_64`, `i386`, `aarch64`, `armhf`, `arm`, and `riscv64` are supported.
 
 ## HOW IT WORKS
 
 It consists of an ELF shim library which is preloaded using the environment
-variable `LD_PRELOAD` and which intercepts the calls to libc functions with a
+variable `LD_PRELOAD`. It intercepts the calls to the libc functions with a
 `filename` or `pathname` in parameter ([open(2)], [fopen(3)], [stat(2)],
 [readlink(2)], [chown(2)], [chdir(2)], [chroot(2)]...).
 
 The syscall [chroot(2)] changes a small ingredient in the pathname resolution
 process; it is visible via each process's symlink `/proc/self/root`. The
-environment variable `IAMROOT_ROOT` implements the behaviour in the world of
-iamroot. Basically, it replaces the leading `/` of an absolute pathname with
-the alternate root.
+environment variable `IAMROOT_ROOT` implements that behaviour in the world of
+[iamroot(7)]. Basically, it replaces the leading `/` of an absolute pathname
+with the alternate root.
 
 For the curious, the magic operates in files [chroot.c](chroot.c) for entering
 in chroot, in [chdir.c](chdir.c) and [fchdir.c](fchdir.c) for exiting "chroot
 jail", in [path_resolution.c](path_resolution.c) for resolving pathnames, and
-in [execve.c](execve.c) for exec'ing executable form chroot.
+in [execve.c](execve.c) for exec'ing executables from chroot.
 
 [fakechroot(1)] does not run well for creating rootfs with [pacstrap(8)] (Arch
 Linux, Manjaro), [alpine-make-rootfs] (Alpine Linux), [dnf(8)] (Fedora),
-[zypper(8)] (openSUSE) or [debootstrap(8)] (Debian, Ubuntu).  Its existing
+[zypper(8)] (openSUSE) or even [debootstrap(8)] (Debian, Ubuntu). Its existing
 world would likely break if it is hacked to address the rootfs-creation related
 issues (i.e. fixing entering-exiting chroot and absolute symlink resolution in
 short).
 
-Of course, iamroot cannot substitute to the superuser permissions, and commands
-will end with `EACCESS` or `EPERM` as of reading or writing files in `/proc`,
-`/sys`, `/dev` or `/run`, to name but a few.
+Of course, [iamroot(7)] cannot substitute itself to the superuser permissions,
+and commands will end with `EACCESS` or `EPERM` as of reading or writing files
+in `/proc`, `/sys`, `/dev` or `/run`, to name but a few.
 
-iamroot is a proof-of-concept, therefore expect the unexpectable!
+[iamroot(7)] is a proof-of-concept, therefore expect the unexpectable!
 
-# BUGS
+## BUGS
 
 Report bugs at *https://github.com/gportay/iamroot/issues*
 
@@ -66,7 +66,7 @@ Report bugs at *https://github.com/gportay/iamroot/issues*
 
 Written by Gaël PORTAY *gael.portay@gmail.com*
 
-# COPYRIGHT
+## COPYRIGHT
 
 Copyright (c) 2021-2023 Gaël PORTAY
 
@@ -75,9 +75,10 @@ the terms of the GNU Lesser General Public License as published by the Free
 Software Foundation, either version 2.1 of the License, or (at your option) any
 later version.
 
-# SEE ALSO
+## SEE ALSO
 
-[iamroot(7)], [ish(1)], [chroot(2)], [path_resolution(7)], [fakechroot(1)]
+[iamroot(7)], [ish(1)], [chroot(2)], [path_resolution(7)], [fakechroot(1)],
+[fakeroot(1)], [binfmt_misc], [qemu]
 
 [Alpine Linux]: https://www.alpinelinux.org/
 [Arch Linux]: https://archlinux.org/

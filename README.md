@@ -7,11 +7,6 @@
 [![FreeBSD-vm](https://github.com/gportay/iamroot/actions/workflows/FreeBSD-vm.yml/badge.svg)](https://github.com/gportay/iamroot/actions/workflows/FreeBSD-vm.yml)
 [![OpenBSD-vm](https://github.com/gportay/iamroot/actions/workflows/OpenBSD-vm.yml/badge.svg)](https://github.com/gportay/iamroot/actions/workflows/OpenBSD-vm.yml)
 
-_Disclaimer_: The project is still in development; therefore it is not suitable
-for a production usage. Consult the [changelog] for the recent changes. The
-project is not mature yet, and the API are subject to change accross the
-versions with no backward compatibility.
-
 ## TL;DR;
 
 [iamroot(7)] emulates the syscall [chroot(2)] for unprivileged processes in
@@ -91,7 +86,6 @@ later version.
 [OpenBSD]: https://www.openbsd.org/
 [alpine-make-rootfs]: https://github.com/alpinelinux/alpine-make-rootfs/blob/master/README.adoc
 [binfmt_misc]: https://www.kernel.org/doc/html/latest/admin-guide/binfmt-misc.html
-[changelog]: CHANGELOG.md#unreleased
 [chdir(2)]: https://linux.die.net/man/2/chdir
 [chown(2)]: https://linux.die.net/man/2/chown
 [chroot(2)]: https://linux.die.net/man/2/chroot

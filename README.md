@@ -58,6 +58,37 @@ in `/proc`, `/sys`, `/dev` or `/run`, to name but a few.
 
 [iamroot(7)] is a proof-of-concept, therefore expect the unexpectable!
 
+## DOCUMENTATION
+
+Build the documentation using *make(1)*
+
+	$ make doc
+	asciidoctor -b manpage -o ish.1 ish.1.adoc
+	gzip -c ish.1 >ish.1.gz
+	asciidoctor -b manpage -o iamroot.7 iamroot.7.adoc
+	gzip -c iamroot.7 >iamroot.7.gz
+	rm iamroot.7 ish.1
+
+## INSTALL
+
+Run the following command to install *iamroot(7)* and *ish(1)*
+
+To your home directory
+
+	$ make user-install
+
+Or, to your system
+
+	$ sudo make install
+
+The traditional variables *DESTDIR* and *PREFIX* can be overridden
+
+	$ sudo make install PREFIX=/opt/iamroot
+
+Or
+
+	$ make install DESTDIR=$PWD/pkg PREFIX=/usr
+
 ## BUGS
 
 Report bugs at *https://github.com/gportay/iamroot/issues*

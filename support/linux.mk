@@ -1698,6 +1698,8 @@ $(eval $(call alpine-make-rootfs-rootfs,ppc64le,alpinelinux,3.18))
 $(eval $(call alpine-make-rootfs-rootfs,ppc64le,alpinelinux,3.19))
 $(eval $(call alpine-make-rootfs-rootfs,ppc64le,alpinelinux,3.20))
 $(eval $(call alpine-make-rootfs-rootfs,ppc64le,alpinelinux,edge))
+
+$(eval $(call alpine-mini-rootfs,ppc64le,3.20))
 endif
 endif
 
@@ -1711,6 +1713,8 @@ riscv64-alpinelinux-rootfs: riscv64-alpinelinux-edge-rootfs
 
 $(eval $(call alpine-make-rootfs-rootfs,riscv64,alpinelinux,3.20))
 $(eval $(call alpine-make-rootfs-rootfs,riscv64,alpinelinux,edge))
+
+$(eval $(call alpine-mini-rootfs,riscv64,3.20))
 endif
 
 ifneq ($(shell command -v s390x-buildroot-linux-musl-gcc 2>/dev/null),)
@@ -1734,6 +1738,8 @@ $(eval $(call alpine-make-rootfs-rootfs,s390x,alpinelinux,3.18))
 $(eval $(call alpine-make-rootfs-rootfs,s390x,alpinelinux,3.19))
 $(eval $(call alpine-make-rootfs-rootfs,s390x,alpinelinux,3.20))
 $(eval $(call alpine-make-rootfs-rootfs,s390x,alpinelinux,edge))
+
+$(eval $(call alpine-mini-rootfs,s390x,3.20))
 endif
 endif
 

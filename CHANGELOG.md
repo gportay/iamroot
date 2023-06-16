@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-- Chroot to a RISC-V [glibc] world; tested on [Arch Linux RISC-V].
+- Chroot to a RISC-V world; tested on [Arch Linux RISC-V] and [Alpine Linux]
 
 ### Removed
 

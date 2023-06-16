@@ -93,7 +93,7 @@ $(strip libiamroot.so \
 	$(if $(findstring :$(2):,:armhf: :arm: :armv7hl: :armv7h:),$(if $(findstring :$(1):,:musl:),armhf/libiamroot-musl-armhf.so.1    ,armhf/libiamroot-linux-armhf.so.3          ), \
 	$(if $(findstring :$(2):,:x86: :i386: :i686:             ),$(if $(findstring :$(1):,:musl:),i686/libiamroot-musl-i386.so.1      ,i686/libiamroot-linux.so.2                 ), \
 	$(if $(findstring :$(2):,:aarch64:                       ),$(if $(findstring :$(1):,:musl:),aarch64/libiamroot-musl-aarch64.so.1,aarch64/libiamroot-linux-aarch64.so.1      ), \
-	$(if $(findstring :$(2):,:riscv64:                       ),$(if $(findstring :$(1):,:musl:),                                    ,riscv64/libiamroot-linux-riscv64-lp64d.so.1), \
+	$(if $(findstring :$(2):,:riscv64:                       ),$(if $(findstring :$(1):,:musl:),riscv64/libiamroot-musl-riscv64.so.1,riscv64/libiamroot-linux-riscv64-lp64d.so.1), \
 	$(error $(1)-$(2): No such library)))))) \
 )
 endef
@@ -506,6 +506,11 @@ endif
 ifneq ($(shell command -v aarch64-linux-musl-gcc 2>/dev/null),)
 $(O)-aarch64-musl-aarch64/libiamroot.so: CC = aarch64-linux-musl-gcc
 $(eval $(call libiamroot_so,aarch64,musl-aarch64,1))
+endif
+
+ifneq ($(shell command -v riscv64-linux-musl-gcc 2>/dev/null),)
+$(O)-riscv64-musl-riscv64/libiamroot.so: CC = riscv64-linux-musl-gcc
+$(eval $(call libiamroot_so,riscv64,musl-riscv64,1))
 endif
 endif
 
@@ -969,6 +974,17 @@ $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpine,3.15))
 $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpine,3.16))
 $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpine,3.17))
 $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpine,edge))
+endif
+endif
+
+ifneq ($(shell command -v riscv64-linux-musl-gcc 2>/dev/null),)
+riscv64-rootfs: riscv64-alpine-rootfs
+
+ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
+.PHONY: riscv64-alpine-rootfs
+riscv64-alpine-rootfs: riscv64-alpine-edge-rootfs
+
+$(eval $(call alpine-make-rootfs-rootfs,riscv64,alpine,edge))
 endif
 endif
 

@@ -281,7 +281,6 @@ install-exec:
 	install -m755 libiamroot.so $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
 	sed -e "s,/usr/local,$(PREFIX)," ish >$(DESTDIR)$(PREFIX)/bin/ish
 	chmod a+x $(DESTDIR)$(PREFIX)/bin/ish
-	install -m755 libiamroot.so $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
 	install -m755 exec.sh $(DESTDIR)$(PREFIX)/lib/iamroot/exec.sh
 
 .PHONY: install-doc

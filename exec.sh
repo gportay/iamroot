@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2021-2022 Gaël PORTAY
+# Copyright 2021-2023 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -57,6 +57,13 @@ path_resolution() {
 
 	echo "$IAMROOT_ROOT/${1#/*}"
 }
+
+if [ $# -eq 0 ]
+then
+	echo "Usage: $0 COMMAND [ARGUMENTS...]" >&2
+	error "Too few arguments!"
+	exit 1
+fi
 
 path="$1"
 inchroot_path="$(path_resolution "$path")"

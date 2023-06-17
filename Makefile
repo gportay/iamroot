@@ -279,7 +279,6 @@ install: install-exec install-doc install-bash-completion
 install-exec:
 	install -d -m755 $(DESTDIR)$(PREFIX)/bin/ $(DESTDIR)$(PREFIX)/lib/iamroot/
 	install -m755 libiamroot.so $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
-	sed -e "s,\$$PWD,$(PREFIX)/lib/iamroot," ish >$(DESTDIR)$(PREFIX)/bin/ish
 	chmod a+x $(DESTDIR)$(PREFIX)/bin/ish
 	install -m755 libiamroot.so $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
 	install -m755 exec.sh $(DESTDIR)$(PREFIX)/lib/iamroot/exec.sh

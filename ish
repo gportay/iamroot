@@ -125,10 +125,10 @@ Environment variables:
 EOF
 }
 
-IAMROOT_LIB="${IAMROOT_LIB:-/usr/lib/iamroot/libiamroot.so}"
+IAMROOT_LIB="${IAMROOT_LIB:-/usr/local/lib/iamroot/libiamroot.so}"
 export IAMROOT_LIB
 
-IAMROOT_EXEC="${IAMROOT_EXEC:-/usr/lib/iamroot/exec.sh}"
+IAMROOT_EXEC="${IAMROOT_EXEC:-/usr/local/lib/iamroot/exec.sh}"
 export IAMROOT_EXEC
 
 IAMROOT_USER="${IAMROOT_USER:-root}"

@@ -276,12 +276,20 @@ doc: ish.1.gz iamroot.7.gz
 install: install-exec install-doc install-bash-completion
 
 .PHONY: install-exec
-install-exec:
-	install -d -m755 $(DESTDIR)$(PREFIX)/bin/ $(DESTDIR)$(PREFIX)/lib/iamroot/
-	install -m755 libiamroot.so $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
+install-exec: install-bin install-lib
+
+.PHONY: install-bin
+install-bin:
+	install -d -m755 $(DESTDIR)$(PREFIX)/bin/
 	sed -e "s,/usr/local,$(PREFIX)," ish >$(DESTDIR)$(PREFIX)/bin/ish
 	chmod a+x $(DESTDIR)$(PREFIX)/bin/ish
+	install -d -m755 $(DESTDIR)$(PREFIX)/lib/iamroot/
 	install -m755 exec.sh $(DESTDIR)$(PREFIX)/lib/iamroot/exec.sh
+
+.PHONY: install-lib
+install-lib:
+	install -d -m755 $(DESTDIR)$(PREFIX)/lib/iamroot/
+	install -m755 libiamroot.so $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
 
 .PHONY: install-doc
 install-doc:

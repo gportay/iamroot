@@ -43,20 +43,35 @@ with the alternate root.
 For the curious, the magic operates in files [chroot.c](chroot.c) for entering
 in chroot, in [chdir.c](chdir.c) and [fchdir.c](fchdir.c) for exiting "chroot
 jail", in [path_resolution.c](path_resolution.c) for resolving pathnames, and
-in [execve.c](execve.c) for exec'ing executables from chroot.
-
-[fakechroot(1)] does not run well for creating rootfs with [pacstrap(8)] (Arch
-Linux, Manjaro), [alpine-make-rootfs] (Alpine Linux), [dnf(8)] (Fedora),
-[zypper(8)] (openSUSE) or even [debootstrap(8)] (Debian, Ubuntu). Its existing
-world would likely break if it is hacked to address the rootfs-creation related
-issues (i.e. fixing entering-exiting chroot and absolute symlink resolution in
-short).
+in [execve.c](execve.c) and [dso.c](dso.c) for exec'ing executable files from
+chroot.
 
 Of course, [iamroot(7)] cannot substitute itself to the superuser permissions,
 and commands will end with `EACCESS` or `EPERM` as of reading or writing files
 in `/proc`, `/sys`, `/dev` or `/run`, to name but a few.
 
-[iamroot(7)] is a proof-of-concept, therefore expect the unexpectable!
+## BUILD ROOTFS
+
+[iamroot(7)] aims to create any Linux rootfs using the package manager of the
+distribution (or its bootstrap script).
+
+The table below lists the distributions and its tool that work with.
+
+| Tool                 | Distributions                                        |
+| -------------------- | ---------------------------------------------------- |
+| [pacstrap(8)]        | Arch Linux, Arch Linux ARM, Arch Linux 32, Manjaro   |
+| [alpine-make-rootfs] | Alpine Linux                                         |
+| [dnf(8)]             | Fedora                                               |
+| [zypper(8)]          | openSUSE                                             |
+| [debootstrap(8)]     | Debian\*, Ubuntu\*                                   |
+
+\*: Works with hacks.
+
+## FAKECHROOT
+
+[fakechroot(1)] does not run well for creating rootfs. It has to be hacked to
+address the rootfs-creation related issues (i.e. fixing entering-exiting chroot
+and absolute symlink resolution in short).
 
 ## DOCUMENTATION
 
@@ -69,15 +84,27 @@ Build the documentation using *make(1)*
 	gzip -c iamroot.7 >iamroot.7.gz
 	rm iamroot.7 ish.1
 
+## BUILD
+
+Run the following command to build *libiamroot.so*
+
+For your home directory (i.e. your user only)
+
+	$ make libiamroot.so PREFIX=$HOME/.local
+
+Or, for your system (i.e. every users)
+
+	$ make libiamroot.so
+
 ## INSTALL
 
 Run the following command to install *iamroot(7)* and *ish(1)*
 
-To your home directory
+To your home directory (i.e. your user only)
 
 	$ make user-install
 
-Or, to your system
+Or, to your system (i.e. every users)
 
 	$ sudo make install
 

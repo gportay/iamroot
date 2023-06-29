@@ -12,7 +12,6 @@
 #include <ctype.h>
 #include <string.h>
 #include <errno.h>
-#include <spawn.h>
 #include <paths.h>
 #include <limits.h>
 #include <dlfcn.h>
@@ -38,10 +37,6 @@ typedef struct {
 
 extern int next_open(const char *, int, mode_t);
 extern int next_fstatat(int, const char *, struct stat *, int);
-extern int next_posix_spawn(pid_t *, const char *,
-			    const posix_spawn_file_actions_t *,
-			    const posix_spawnattr_t *, char * const [],
-			    char * const []);
 
 #ifdef __linux__
 static int __secure()

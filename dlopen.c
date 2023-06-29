@@ -11,7 +11,6 @@
 #include <errno.h>
 #include <limits.h>
 #include <fcntl.h>
-#include <link.h>
 
 #include <dlfcn.h>
 
@@ -29,80 +28,6 @@ void *next_dlopen(const char *path, int flags)
 		return __dl_set_errno_and_perror(ENOSYS, NULL);
 
 	return sym(path, flags);
-}
-
-static int __dl_is_opened(const char *path)
-{
-	struct link_map *dso;
-	void *handle;
-	int err;
-
-	handle = next_dlopen(NULL, RTLD_NOW);
-	if (!handle)
-		return -1;
-
-	err = dlinfo(handle, RTLD_DI_LINKMAP, &dso);
-	if (err == -1)
-		return -1;
-
-	while (dso) {
-		if (streq(path, dso->l_name))
-			return 1;
-
-		dso = dso->l_next;
-	}
-
-	return 0;
-}
-
-static int __dlopen_needed_callback(const char *needed, void *user)
-{
-	char *library_path = (char *)user;
-	char buf[PATH_MAX];
-	void *handle;
-	ssize_t siz;
-	int ret;
-
-	siz = __path_access(needed, F_OK, library_path, buf, sizeof(buf));
-	if (siz == -1)
-		return -1;
-
-	/* Open the needed shared object first */
-	ret = __dlopen_needed(buf);
-	if (ret == -1)
-		return -1;
-
-	/* Open the shared object then */
-	handle = next_dlopen(buf, RTLD_LAZY);
-	if (!handle)
-		return -1;
-
-	return 0;
-}
-
-__attribute__((visibility("hidden")))
-int __dlopen_needed(const char *path)
-{
-	char library_path[PATH_MAX];
-	char needed[PATH_MAX];
-	ssize_t siz;
-	int ret;
-
-	/* The shared object is already opened */
-	ret = __dl_is_opened(path);
-	if (ret == -1 || ret == 1)
-		return ret;
-
-	siz = __dl_library_path(path, library_path, sizeof(library_path));
-	if (siz == -1)
-		return -1;
-
-	siz = __getneeded(path, needed, sizeof(needed));
-	if (siz == -1)
-		return -1;
-
-	/* Open the needed shared objects */
-	return __path_iterate(needed, __dlopen_needed_callback, library_path);
 }
 
 void *dlopen(const char *path, int flags)

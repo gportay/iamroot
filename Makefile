@@ -1,5 +1,5 @@
 #
-# Copyright 2020-2022 Gaël PORTAY
+# Copyright 2020-2023 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -107,6 +107,7 @@ libiamroot.so: ctermid.o
 libiamroot.so: dl_iterate_phdr.o
 libiamroot.so: dlmopen.o
 libiamroot.so: dlopen.o
+libiamroot.so: dso.o
 libiamroot.so: dup.o
 libiamroot.so: dup2.o
 libiamroot.so: dup3.o

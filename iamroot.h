@@ -173,6 +173,7 @@ const char *__getexe();
 const char *__getfd(int);
 int __setfd(int, const char *);
 int __execfd();
+const char *__execfn();
 const char *__getrootdir();
 int __chrootdir(const char *);
 int __inchroot();
@@ -644,10 +645,6 @@ static inline void __close(int fd)
 const char *__path();
 
 const char *__library_path();
-
-ssize_t __getneeded(const char *, char *, size_t);
-ssize_t __getrpath(const char *, char *, size_t);
-ssize_t __getrunpath(const char *, char *, size_t);
 
 ssize_t __dl_library_path(const char *, char *, size_t);
 

@@ -69,7 +69,7 @@ static struct __libc {
 #endif
 
 /*
- * Stolen and hacked from musl (/src/locale/catopen.c)
+ * Stolen and hacked from musl (src/locale/catopen.c)
  *
  * SPDX-FileCopyrightText: The musl Contributors
  *

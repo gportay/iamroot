@@ -9,6 +9,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - Chroot to a RISC-V world; tested on [Arch Linux RISC-V] and [Alpine Linux]
+- Output a warning if the `RPATH` or the `RUNPATH` contain dynamic string
+  tokens
 
 ### Changed
 

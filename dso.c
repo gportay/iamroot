@@ -138,6 +138,38 @@ setenv:
 	return setenv(name, value, overwrite);
 }
 
+/*
+ * Stolen and hacked from musl (ldso/dynlink.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/* The original function name is fixup_rpath() in the musl sources */
+static int __variable_has_dynamic_string_tokens(const char *value)
+{
+	const char *s, *t;
+	int n;
+
+	if (!strchr(value, '$'))
+		return 0;
+
+	n = 0;
+	s = value;
+	while ((t = strchr(s, '$'))) {
+		if (__strneq(t, "$ORIGIN") && __strneq(t, "${ORIGIN}"))
+			return 1;
+		if (__strneq(t, "$LIB") && __strneq(t, "${LIB}"))
+			return 1;
+		if (__strneq(t, "$PLATFORM") && __strneq(t, "${PLATFORM}"))
+			return 1;
+		s = t + 1;
+		n++;
+	}
+
+	return n;
+}
+
 static ssize_t __getneeded(const char *, char *, size_t);
 static ssize_t __getrpath(const char *, char *, size_t);
 static ssize_t __getrunpath(const char *, char *, size_t);
@@ -1045,7 +1077,7 @@ static int __path_callback(const void *data, size_t size, void *user)
 
 static ssize_t __getneeded(const char *path, char *buf, size_t bufsize)
 {
-	int err;
+	int err, n;
 
 	*buf = 0;
 	err = __dl_iterate_shared_object(path, DT_NEEDED, __path_callback,
@@ -1053,17 +1085,27 @@ static ssize_t __getneeded(const char *path, char *buf, size_t bufsize)
 	if (err == -1)
 		return -1;
 
+	n = __variable_has_dynamic_string_tokens(buf);
+	if (n)
+		__warning("%s: RPATH has dynamic %i string token(s): %s\n",
+			  path, n, buf);
+
 	return strnlen(buf, bufsize);
 }
 
 static ssize_t __getrpath(const char *path, char *buf, size_t bufsize)
 {
-	int err;
+	int err, n;
 
 	*buf = 0;
 	err = __dl_iterate_shared_object(path, DT_RPATH, __path_callback, buf);
 	if (err == -1)
 		return -1;
+
+	n = __variable_has_dynamic_string_tokens(buf);
+	if (n)
+		__warning("%s: RUNPATH has dynamic %i string token(s): %s\n",
+			  path, n, buf);
 
 	return strnlen(buf, bufsize);
 }
@@ -1193,11 +1235,16 @@ static char *__rpath(const char *path)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
-	int ret;
+	int n, ret;
 
 	siz = __getrpath(path, buf, sizeof(buf));
 	if (siz == -1)
 		return NULL;
+
+	n = __variable_has_dynamic_string_tokens(buf);
+	if (n)
+		__warning("%s: RPATH has dynamic %i string token(s): %s\n",
+			  path, n, buf);
 
 	ret = setenv("rpath", buf, 1);
 	if (ret)
@@ -1210,11 +1257,16 @@ static char *__runpath(const char *path)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
-	int ret;
+	int n, ret;
 
 	siz = __getrunpath(path, buf, sizeof(buf));
 	if (siz == -1)
 		return NULL;
+
+	n = __variable_has_dynamic_string_tokens(buf);
+	if (n)
+		__warning("%s: RUNPATH has dynamic %i string token(s): %s\n",
+			  path, n, buf);
 
 	ret = setenv("runpath", buf, 1);
 	if (ret)

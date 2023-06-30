@@ -57,7 +57,7 @@ static struct __libc {
 #define do_catopen(p) __catopen(p, oflag)
 
 /*
- * Stolen and hacked from musl (/include/langinfo.h)
+ * Stolen and hacked from musl (include/langinfo.h)
  *
  * SPDX-FileCopyrightText: The musl Contributors
  *

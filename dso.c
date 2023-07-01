@@ -1558,15 +1558,16 @@ int __loader(const char *path, char * const argv[], char *interp,
 
 		inhibit_rpath = __inhibit_rpath();
 		if (inhibit_rpath)
-			__notice("%s: %s\n", "inhibit_rpath", inhibit_rpath);
+			__notice("%s: %s\n", __xstr(inhibit_rpath),
+				 inhibit_rpath);
 
 		ld_library_path = __ld_library_path(&ehdr, ldso, abi);
 		if (!ld_library_path)
-			__warning("%s: is unset!\n", "ld_library_path");
+			__warning("%s: is unset!\n", __xstr(ld_library_path));
 
 		ld_preload = __ld_preload(&ehdr, ldso, abi);
 		if (!ld_preload)
-			__warning("%s: is unset!\n", "ld_preload");
+			__warning("%s: is unset!\n", __xstr(ld_preload));
 
 		siz = path_resolution(AT_FDCWD, buf, interp, interpsiz, 0);
 		if (siz == -1)

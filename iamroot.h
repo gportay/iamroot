@@ -639,8 +639,17 @@ extern void __pathdlperror(const char *, const char *);
 
 int __dlopen_needed(const char *, int);
 
+int munmap(void *, size_t);
 int close(int);
 void perror(const char *);
+static inline void __munmap(void *addr, size_t len)
+{
+	const int errno_save = errno;
+
+	if (munmap(addr, len))
+		perror("munmap");
+	errno = errno_save;
+}
 static inline void __close(int fd)
 {
 	extern int errno;
@@ -660,6 +669,8 @@ int __ldso_execv(const char *, char * const[], char * const[]);
 int __is_ldso(const char *path);
 
 ssize_t __dl_access(const char *, int, char *, size_t);
+
+ssize_t __ldso_cache(const char *, char *, size_t);
 
 #if defined(__GLIBC__) && (defined(__aarch64__) || defined(__x86_64__))
 #define _PATH_DEFLIB "/lib64:/usr/local/lib64:/usr/lib64"

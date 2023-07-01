@@ -179,6 +179,7 @@ libiamroot.so: kill.o
 libiamroot.so: lchflags.o
 libiamroot.so: lchmod.o
 libiamroot.so: lchown.o
+libiamroot.so: ldso-cache.o
 libiamroot.so: lgetfh.o
 libiamroot.so: lgetxattr.o
 libiamroot.so: link.o

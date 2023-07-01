@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the missing stripping of the root directory in the functions `ftw()`,
   `nftw()` and `nftw64()`
 - Output some resolving shared object traces
+- Look up the [ld.so(8)] cache file `/etc/ld.so.cache`
 
 ### Changed
 

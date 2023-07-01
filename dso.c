@@ -500,7 +500,13 @@ static ssize_t __ldso_access(const char *path,
 	 * skipped. Shared objects installed in hardware capability directories
 	 * are preferred to other shared objects.
 	 */
-	/* TODO: This is not applicable, at least for now. */
+	__info("%s: trying accessing from cache...\n", path);
+	ret = __ldso_cache(path, buf, bufsize);
+	if (ret == -1 && errno != ENOENT)
+		return -1;
+
+	if (ret > 0)
+		return ret;
 
 	/*
 	 * (5)  In the default path /lib, and then /usr/lib. (On some 64-bit

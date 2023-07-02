@@ -22,6 +22,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   detect the path to the library to preload
 - Look up the content of the deprecated environment variable `DT_RPATH` library
   paths if the `DT_RUNPATH` is unset only
+- The [dynamic loader][ld.so(8)] does not append the default library paths to
+  `--library-path` if the flag `DF_1_NODEFLIB` is set in the dynamic entry
+  `DT_FLAGS_1`
 
 ### Removed
 

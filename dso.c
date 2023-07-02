@@ -538,7 +538,7 @@ static int __dl_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int d_tag,
 	if (!strtab_off)
 		goto exit;
 
-	/* Look for the string entry in the .dynamic segment */
+	/* Look for the dynamic entry in the .dynamic segment */
 	off = ehdr->e_phoff;
 	num = ehdr->e_phnum;
 	for (i = 0; i < num; i++) {
@@ -575,7 +575,7 @@ static int __dl_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int d_tag,
 			goto exit;
 		}
 
-		/* look for the string entry */
+		/* look for the dynamic entry */
 		for (j = 0; j < phdr.p_filesz / sizeof(dyn[0]); j++) {
 			char buf[BUFSIZ];
 			size_t size;
@@ -584,11 +584,27 @@ static int __dl_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int d_tag,
 				continue;
 
 			/*
+			 * dymamic entry is an integer
+			 */
+			if (d_tag != DT_NEEDED && d_tag != DT_SONAME &&
+			    d_tag != DT_RPATH && d_tag != DT_RUNPATH) {
+				ret = callback(&dyn[j].d_un.d_val,
+					       sizeof(dyn[j].d_un.d_val),
+					       data);
+				if (ret != 0)
+					break;
+
+				continue;
+			}
+
+			/*
+			 * dynamic entry is a string
+			 *
 			 * copy the NULL-terminated string from the .strtab
 			 * table
 			 */
-			str_off = strtab_off + dyn[j].d_un.d_val;
-			str_siz = strtab_siz - dyn[j].d_un.d_val;
+			str_off = strtab_off + dyn[j].d_un.d_ptr;
+			str_siz = strtab_siz - dyn[j].d_un.d_ptr;
 			size = __min(str_siz, sizeof(buf));
 			siz = pread(fd, buf, size, str_off);
 			if (siz == -1) {
@@ -657,7 +673,7 @@ static int __dl_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int d_tag,
 	if (!strtab_off)
 		goto exit;
 
-	/* Look for the string entry in the .dynamic segment */
+	/* Look for the dynamic entry in the .dynamic segment */
 	off = ehdr->e_phoff;
 	num = ehdr->e_phnum;
 	for (i = 0; i < num; i++) {
@@ -694,7 +710,7 @@ static int __dl_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int d_tag,
 			goto exit;
 		}
 
-		/* look for the string entry */
+		/* look for the dynamic entry */
 		for (j = 0; j < phdr.p_filesz / sizeof(dyn[0]); j++) {
 			char buf[BUFSIZ];
 			size_t size;
@@ -703,11 +719,27 @@ static int __dl_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int d_tag,
 				continue;
 
 			/*
+			 * dymamic entry is an integer
+			 */
+			if (d_tag != DT_NEEDED && d_tag != DT_SONAME &&
+			    d_tag != DT_RPATH && d_tag != DT_RUNPATH) {
+				ret = callback(&dyn[j].d_un.d_val,
+					       sizeof(dyn[j].d_un.d_val),
+					       data);
+				if (ret != 0)
+					break;
+
+				continue;
+			}
+
+			/*
+			 * dynamic entry is a string
+			 *
 			 * copy the NULL-terminated string from the .strtab
 			 * table
 			 */
-			str_off = strtab_off + dyn[j].d_un.d_val;
-			str_siz = strtab_siz - dyn[j].d_un.d_val;
+			str_off = strtab_off + dyn[j].d_un.d_ptr;
+			str_siz = strtab_siz - dyn[j].d_un.d_ptr;
 			size = __min(str_siz, sizeof(buf));
 			siz = pread(fd, buf, size, str_off);
 			if (siz == -1) {
@@ -1157,14 +1189,25 @@ static char *__ld_preload(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 static char *__ld_library_path(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
 	char val[PATH_MAX];
+	int flags_1, ret;
 	char *runpath;
 	char *rpath;
-	int ret;
 
-	__strncpy(val, __getld_library_path(ehdr, ldso, abi));
-	ret = __path_setenv(__getrootdir(), "ld_library_path", val, 1);
-	if (ret == -1)
-		return NULL;
+	/*
+	 * According to dl.so(8)
+	 *
+	 * (5)  In the default path /lib, and then /usr/lib. (On some 64-bit
+	 * architectures, the default paths for 64-bit shared objects are
+	 * /lib64, and then /usr/lib64.) If the binary was linked with the
+	 * -z nodeflib linker option, this step is skipped.
+	 */
+	flags_1 = strtol(getenv("flags_1") ?: "0", NULL, 0);
+	if (!(flags_1 & DF_1_NODEFLIB)) {
+		__strncpy(val, __getld_library_path(ehdr, ldso, abi));
+		ret = __path_setenv(__getrootdir(), "ld_library_path", val, 1);
+		if (ret == -1)
+			return NULL;
+	}
 
 	/*
 	 * (3)  Using the directories specified in the DT_RUNPATH dynamic
@@ -1207,6 +1250,42 @@ static char *__ld_library_path(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	}
 
 	return getenv("ld_library_path");
+}
+
+static int __flags_callback(const void *data, size_t size, void *user)
+{
+	uint32_t *flags = (uint32_t *)data;
+	uint32_t *f = (uint32_t *)user;
+	(void)size;
+
+	if (!data || !user)
+		return __set_errno(EINVAL, -1);
+
+	*f = *flags;
+
+	return 0;
+}
+
+static int __flags_1(int fd)
+{
+	char buf[BUFSIZ];
+	uint32_t flags;
+	int ret;
+
+	ret = __dl_iterate_shared_object(fd, DT_FLAGS_1, __flags_callback,
+					 &flags);
+	if (ret == -1)
+		return -1;
+
+	ret = _snprintf(buf, sizeof(buf), "0x%x", flags);
+	if (ret == -1)
+		return -1;
+
+	ret = setenv("flags_1", buf, 1);
+	if (ret == -1)
+		return -1;
+
+	return flags;
 }
 
 static int __path_callback(const void *data, size_t size, void *user)
@@ -1535,6 +1614,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 		    has_inhibit_cache = 0;
 		int i, j, shift = 1;
 		char * const *arg;
+		int flags_1;
 
 		/*
 		 * the glibc world supports --argv0 since 2.33, --preload since
@@ -1557,6 +1637,11 @@ int __loader(const char *path, char * const argv[], char *interp,
 			if (has_preload == -1)
 				goto close;
 		}
+
+		flags_1 = __flags_1(fd);
+		if (flags_1 & DF_1_NODEFLIB)
+			__info("%s: FLAGS_1=0x%08x (DF_1_NODEFLIB)\n", path,
+			       flags_1);
 
 		needed = __needed(fd);
 		if (needed)
@@ -1697,6 +1782,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 		     *ld_library_path, *ld_preload;
 		int i, j, shift = 1;
 		char * const *arg;
+		int flags_1;
 
 		siz = path_resolution(AT_FDCWD, buf, interp, interpsiz, 0);
 		if (siz == -1)
@@ -1726,6 +1812,11 @@ int __loader(const char *path, char * const argv[], char *interp,
 		ret = setenv("argv0", argv0, 1);
 		if (ret)
 			goto close;
+
+		flags_1 = __flags_1(fd);
+		if (flags_1 & DF_1_NODEFLIB)
+			__info("%s: FLAGS_1=0x%08x (DF_1_NODEFLIB)\n", path,
+			       flags_1);
 
 		needed = __needed(fd);
 		if (needed)

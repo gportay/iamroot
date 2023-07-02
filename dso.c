@@ -1188,6 +1188,7 @@ static char *__ld_preload(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 
 static char *__ld_library_path(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
+	char *ld_library_path;
 	char val[PATH_MAX];
 	int flags_1, ret;
 	char *runpath;
@@ -1226,6 +1227,25 @@ static char *__ld_library_path(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 			return NULL;
 
 		__strncpy(val, getenv("iamroot_runpath"));
+		ret = __path_prependenv("ld_library_path", val, 1);
+		if (ret == -1)
+			return NULL;
+	}
+
+	/*
+	 * (2)  Using the environment variable LD_LIBRARY_PATH, unless the
+	 * executable is being run in secure-execution mode (see below), in
+	 * which case this variable is ignored.
+	 */
+	ld_library_path = getenv("ld_library_path");
+	if (ld_library_path) {
+		__strncpy(val, ld_library_path);
+		ret = __path_setenv(__getrootdir(), "iamroot_ld_library_path",
+				    val, 1);
+		if (ret == -1)
+			return NULL;
+
+		__strncpy(val, getenv("iamroot_ld_library_path"));
 		ret = __path_prependenv("ld_library_path", val, 1);
 		if (ret == -1)
 			return NULL;

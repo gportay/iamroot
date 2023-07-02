@@ -494,7 +494,7 @@ exit:
 	return ret;
 }
 
-static int __dl_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
+static int __dl_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int d_tag,
 		     int (*callback)(const void *, size_t, void *), void *data)
 {
 	const int errno_save = errno;
@@ -580,7 +580,7 @@ static int __dl_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int dt_tag,
 			char buf[BUFSIZ];
 			size_t size;
 
-			if ((int)dyn[j].d_tag != dt_tag)
+			if ((int)dyn[j].d_tag != d_tag)
 				continue;
 
 			/*
@@ -613,7 +613,7 @@ exit:
 	return ret;
 }
 
-static int __dl_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
+static int __dl_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int d_tag,
 		     int (*callback)(const void *, size_t, void *), void *data)
 {
 	const int errno_save = errno;
@@ -699,7 +699,7 @@ static int __dl_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int dt_tag,
 			char buf[BUFSIZ];
 			size_t size;
 
-			if ((int)dyn[j].d_tag != dt_tag)
+			if ((int)dyn[j].d_tag != d_tag)
 				continue;
 
 			/*
@@ -732,7 +732,7 @@ exit:
 	return ret;
 }
 
-static int __dl_iterate_shared_object(int fd, int dt_tag,
+static int __dl_iterate_shared_object(int fd, int d_tag,
 		     int (*callback)(const void *, size_t, void *), void *data)
 {
 	Elf64_Ehdr ehdr;
@@ -759,11 +759,11 @@ static int __dl_iterate_shared_object(int fd, int dt_tag,
 
 	/* It is a 32-bits ELF */
 	if (ehdr.e_ident[EI_CLASS] == ELFCLASS32)
-		return __dl_iterate_ehdr32(fd, (Elf32_Ehdr *)&ehdr, dt_tag,
+		return __dl_iterate_ehdr32(fd, (Elf32_Ehdr *)&ehdr, d_tag,
 					   callback, data);
 	/* It is a 64-bits ELF */
 	else if (ehdr.e_ident[EI_CLASS] == ELFCLASS64)
-		return __dl_iterate_ehdr64(fd, (Elf64_Ehdr *)&ehdr, dt_tag,
+		return __dl_iterate_ehdr64(fd, (Elf64_Ehdr *)&ehdr, d_tag,
 					   callback, data);
 
 	/* It is an invalid ELF */

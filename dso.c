@@ -1166,19 +1166,6 @@ static char *__ld_library_path(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	if (ret == -1)
 		return NULL;
 
-	rpath = getenv("rpath");
-	if (rpath) {
-		__strncpy(val, rpath);
-		ret = __path_setenv(__getrootdir(), "iamroot_rpath", val, 1);
-		if (ret == -1)
-			return NULL;
-
-		__strncpy(val, getenv("iamroot_rpath"));
-		ret = __path_prependenv("ld_library_path", val, 1);
-		if (ret == -1)
-			return NULL;
-	}
-
 	runpath = getenv("runpath");
 	if (runpath) {
 		__strncpy(val, runpath);
@@ -1187,6 +1174,19 @@ static char *__ld_library_path(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 			return NULL;
 
 		__strncpy(val, getenv("iamroot_runpath"));
+		ret = __path_prependenv("ld_library_path", val, 1);
+		if (ret == -1)
+			return NULL;
+	}
+
+	rpath = getenv("rpath");
+	if (rpath) {
+		__strncpy(val, rpath);
+		ret = __path_setenv(__getrootdir(), "iamroot_rpath", val, 1);
+		if (ret == -1)
+			return NULL;
+
+		__strncpy(val, getenv("iamroot_rpath"));
 		ret = __path_prependenv("ld_library_path", val, 1);
 		if (ret == -1)
 			return NULL;

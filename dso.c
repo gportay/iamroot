@@ -1255,6 +1255,16 @@ static char *__ld_library_path(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	}
 
 	/*
+	 * (4)  From the cache file /etc/ld.so.cache, which contains a compiled
+	 * list of candidate shared objects previously found in the augmented
+	 * library path. If, however, the binary was linked with the -z
+	 * nodeflib linker option, shared objects in the default paths are
+	 * skipped. Shared objects installed in hardware capability directories
+	 * are preferred to other shared objects.
+	 */
+	/* TODO: This is not applicable, at least for now. */
+
+	/*
 	 * (3)  Using the directories specified in the DT_RUNPATH dynamic
 	 * section attribute of the binary if present. Such directories are
 	 * searched only to find those objects required by DT_NEEDED (direct

@@ -1166,6 +1166,15 @@ static char *__ld_library_path(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	if (ret == -1)
 		return NULL;
 
+	/*
+	 * (3)  Using the directories specified in the DT_RUNPATH dynamic
+	 * section attribute of the binary if present. Such directories are
+	 * searched only to find those objects required by DT_NEEDED (direct
+	 * dependencies) entries and do not apply to those objects' children,
+	 * which must themselves have their own DT_RUNPATH entries. This is
+	 * unlike DT_RPATH, which is applied to searches for all children in
+	 * the dependency tree.
+	 */
 	runpath = getenv("runpath");
 	if (runpath) {
 		__strncpy(val, runpath);
@@ -1179,8 +1188,13 @@ static char *__ld_library_path(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 			return NULL;
 	}
 
+	/*
+	 * (1)  Using the directories specified in the DT_RPATH dynamic section
+	 * attribute of the binary if present and DT_RUNPATH attribute does not
+	 * exist. Use of DT_RPATH is deprecated.
+	 */
 	rpath = getenv("rpath");
-	if (rpath) {
+	if (rpath && (!runpath || (runpath && !*runpath))) {
 		__strncpy(val, rpath);
 		ret = __path_setenv(__getrootdir(), "iamroot_rpath", val, 1);
 		if (ret == -1)

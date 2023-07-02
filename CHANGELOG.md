@@ -20,9 +20,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   (maintained by [ldconfig(8)]) that is unchecked yet
 - Use both ELF header and [dynamic loader][ld.so(8)] (`SONAME` and `ABI`) to
   detect the path to the library to preload
-- Look up the content of the deprecated environment variable `DT_RPATH` before
-  any other library paths (i.e. the `DT_RUNPATH` and the default directories
-  `/lib:/usr/local/lib:/usr/lib`)
+- Look up the content of the deprecated environment variable `DT_RPATH` library
+  paths if the `DT_RUNPATH` is unset only
 
 ### Removed
 

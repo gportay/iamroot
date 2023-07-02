@@ -1212,15 +1212,15 @@ static char *__ld_library_path(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 static int __path_callback(const void *data, size_t size, void *user)
 {
 	const char *path = (const char *)data;
-	char *needed = (char *)user;
+	char *p = (char *)user;
 	(void)size;
 
 	if (!data || !user)
 		return __set_errno(EINVAL, -1);
 
-	if (*needed)
-		_strncat(needed, ":", PATH_MAX);
-	_strncat(needed, path, PATH_MAX);
+	if (*p)
+		_strncat(p, ":", PATH_MAX);
+	_strncat(p, path, PATH_MAX);
 
 	return 0;
 }

@@ -1186,6 +1186,50 @@ static char *__ld_preload(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	return getenv("ld_preload");
 }
 
+static int __secure_execution_mode()
+{
+	uid_t ruid, euid, suid;
+	gid_t rgid, egid, sgid;
+	int ret;
+
+	/*
+	 * Secure-execution mode
+	 *
+	 * For security reasons, if the dynamic linker determines that a binary
+	 * should be run in secure-execution mode, the effects of some
+	 * environment variables are voided or modified, and furthermore those
+	 * environment variables are stripped from the environment, so that the
+	 * program does not even see the definitions. Some of these environment
+	 * variables affect the operation of the dynamic linker itself, and are
+	 * described below. Other environment variables treated in this way
+	 * include: GCONV_PATH, GETCONF_DIR, HOSTALIASES, LOCALDOMAIN, LOCPATH,
+	 * MALLOC_TRACE, NIS_PATH, NLSPATH, RESOLV_HOST_CONF, RES_OPTIONS,
+	 * TMPDIR, and TZDIR.
+	 *
+	 * A binary is executed in secure-execution mode if the AT_SECURE entry
+	 * in the auxiliary vector (see getauxval(3)) has a nonzero value. This
+	 * entry may have a non‐zero value for various reasons, including:
+	 *
+	 * •  The process's real and effective user IDs differ, or the real and
+	 * effective group IDs differ. This typically occurs as a result of
+	 * executing a set-user-ID or set-group-ID program.
+	 *
+	 * •  A process with a non-root user ID executed a binary that
+	 * conferred capabilities to the process.
+	 *
+	 * •  A nonzero value may have been set by a Linux Security Module.
+	 */
+	ret = getresuid(&ruid, &euid, &suid);
+	if (ret == -1)
+		return -1;
+	
+	ret = getresgid(&rgid, &egid, &sgid);
+	if (ret == -1)
+		return -1;
+
+	return ruid != euid || rgid != egid;
+}
+
 static char *__ld_library_path(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
 	char *ld_library_path;
@@ -1237,8 +1281,8 @@ static char *__ld_library_path(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	 * executable is being run in secure-execution mode (see below), in
 	 * which case this variable is ignored.
 	 */
-	ld_library_path = getenv("ld_library_path");
-	if (ld_library_path) {
+	ld_library_path = getenv("LD_LIBRARY_PATH");
+	if (ld_library_path && !__secure_execution_mode()) {
 		__strncpy(val, ld_library_path);
 		ret = __path_setenv(__getrootdir(), "iamroot_ld_library_path",
 				    val, 1);

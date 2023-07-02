@@ -26,7 +26,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `--library-path` if the flag `DF_1_NODEFLIB` is set in the dynamic entry
   `DT_FLAGS_1`
 - The [dynamic loader][ld.so(8)] prepends the content of the environment
-  variable `LD_LIBRARY_PATH` to `--library-path`
+  variable `LD_LIBRARY_PATH` to `--library-path` unless the executable file
+  is in secure execution mode
 
 ### Removed
 

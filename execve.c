@@ -902,7 +902,7 @@ static ssize_t __gethashbang(const char *path, char *buf, size_t bufsize)
 		/* skip leading blanks */
 		while (isblank(*s))
 			s++;
-		/* copy interpreter */
+		/* copy optional argument */
 		while (*s && *s != '\n' && !isblank(*s))
 			*d++ = *s++;
 		*d++ = 0;

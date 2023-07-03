@@ -1302,8 +1302,7 @@ static int __path_callback(const void *data, size_t size, void *user)
 	return 0;
 }
 
-__attribute__((visibility("hidden")))
-char *__needed(const char *path)
+static char *__needed(const char *path)
 {
 	char buf[PATH_MAX];
 	int ret;

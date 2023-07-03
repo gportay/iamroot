@@ -10,7 +10,7 @@
 
 #include "iamroot.h"
 
-int exect(const char *path, char *const argv[], char *const envp[])
+int exect(const char *path, char * const argv[], char * const envp[])
 {
 	__debug("%s(path: '%s', argv: { '%s', '%s', ... }, envp: %p)\n",
 		__func__, path, argv[0], argv[1], envp);

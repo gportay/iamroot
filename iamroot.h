@@ -627,6 +627,8 @@ extern void __pathdlperror(const char *, const char *);
 	({ __dlperror(__func__); \
 	   __set_errno(e, (r)); })
 
+int __dlopen_needed(const char *);
+
 int close(int);
 void perror(const char *);
 static inline void __close(int fd)
@@ -642,6 +644,12 @@ static inline void __close(int fd)
 const char *__path();
 
 const char *__library_path();
+
+ssize_t __getneeded(const char *, char *, size_t);
+ssize_t __getrpath(const char *, char *, size_t);
+ssize_t __getrunpath(const char *, char *, size_t);
+
+ssize_t __dl_library_path(const char *, char *, size_t);
 
 #if defined(__GLIBC__) && (defined(__aarch64__) || defined(__x86_64__))
 #define _PATH_DEFLIBRARY_PATH   "/lib64:/usr/local/lib64:/usr/lib64"

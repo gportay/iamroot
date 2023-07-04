@@ -1302,15 +1302,146 @@ static int __path_callback(const void *data, size_t size, void *user)
 	return 0;
 }
 
+__attribute__((visibility("hidden")))
+ssize_t __getneeded(const char *path, char *buf, size_t bufsize)
+{
+	int err;
+
+	*buf = 0;
+	err = __dl_iterate_shared_object(path, DT_NEEDED, __path_callback,
+					 buf);
+	if (err == -1)
+		return -1;
+
+	return strnlen(buf, bufsize);
+}
+
+__attribute__((visibility("hidden")))
+ssize_t __getrpath(const char *path, char *buf, size_t bufsize)
+{
+	int err;
+
+	*buf = 0;
+	err = __dl_iterate_shared_object(path, DT_RPATH, __path_callback, buf);
+	if (err == -1)
+		return -1;
+
+	return strnlen(buf, bufsize);
+}
+
+__attribute__((visibility("hidden")))
+ssize_t __getrunpath(const char *path, char *buf, size_t bufsize)
+{
+	int err;
+
+	*buf = 0;
+	err = __dl_iterate_shared_object(path, DT_RUNPATH, __path_callback,
+					 buf);
+	if (err == -1)
+		return -1;
+
+	return strnlen(buf, bufsize);
+}
+
+__attribute__((visibility("hidden")))
+ssize_t __getlibrary_path(const char *path, char *buf, size_t bufsize)
+{
+	const char *library_path;
+	char tmp[PATH_MAX];
+	int has_runpath;
+	ssize_t ret;
+
+	if (!buf)
+		return __set_errno(EINVAL, -1);
+
+	*buf = 0;
+	if (!path)
+		path = __execfn();
+
+	/*
+	 * According to dlopen(3)
+	 *
+	 * •  (ELF only) If the calling object (i.e., the shared library or
+	 * executable from which dlopen() is called) contains a DT_RPATH tag,
+	 * and does not contain a DT_RUNPATH tag, then the directories listed
+	 * in the DT_RPATH tag are searched.
+	 */
+	ret = __getrunpath(path, tmp, sizeof(tmp));
+	if (ret == -1)
+		return -1;
+
+	has_runpath = ret > 0;
+	if (!has_runpath) {
+		ret = __getrpath(path, tmp, sizeof(tmp));
+		if (ret == -1)
+			return -1;
+
+		if (ret != 0) {
+			if (*buf)
+				strncat(buf, ":", bufsize);
+			strncat(buf, tmp, bufsize);
+		}
+	}
+
+	/*
+	 * •  If, at the time that the program was started, the environment
+	 * variable LD_LIBRARY_PATH was defined to contain a colon-separated
+	 * list of directories, then these are searched. (As a security
+	 * measure, this variable is ignored for set-user-ID and set-group-ID
+	 * programs.)
+	 */
+	library_path = getenv("LD_LIBRARY_PATH");
+	if (library_path) {
+		if (*buf)
+			strncat(buf, ":", bufsize);
+		strncat(buf, library_path, bufsize);
+	}
+
+	/*
+	 * •  (ELF only) If the calling object contains a DT_RUNPATH tag, then
+	 * the directories listed in that tag are searched.
+	 */
+	if (has_runpath) {
+		if (*buf)
+			strncat(buf, ":", bufsize);
+		strncat(buf, tmp, bufsize);
+	}
+
+	/*
+	 * •  The cache file /etc/ld.so.cache (maintained by ldconfig(8)) is
+	 * checked to see whether it contains an entry for filename.
+	 */
+	/* TODO: This is not applicable, at least for now. */
+
+	/*
+	 * •  The directories /lib and /usr/lib are searched (in that order).
+	 */
+	library_path = __library_path();
+	if (library_path) {
+		if (*buf)
+			strncat(buf, ":", bufsize);
+		strncat(buf, library_path, bufsize);
+	}
+
+	/*
+	 * If the object specified by filename has dependencies on other shared
+	 * objects, then these are also automatically loaded by the dynamic
+	 * linker using the same rules. (This process may occur recursively, if
+	 * those objects in turn have dependencies, and so on.)
+	 */
+	/* TODO: This is to be implemented, at least in a near future. */
+
+	return strnlen(buf, bufsize);
+}
+
 static char *__needed(const char *path)
 {
 	char buf[PATH_MAX];
+	ssize_t siz;
 	int ret;
 
-	*buf = 0;
-	ret = __dl_iterate_shared_object(path, DT_NEEDED, __path_callback,
-					 buf);
-	if (ret == -1)
+	siz = __getneeded(path, buf, sizeof(buf));
+	if (siz == -1)
 		return NULL;
 
 	ret = setenv("needed", buf, 1);
@@ -1323,11 +1454,11 @@ static char *__needed(const char *path)
 static char *__rpath(const char *path)
 {
 	char buf[PATH_MAX];
+	ssize_t siz;
 	int ret;
 
-	*buf = 0;
-	ret = __dl_iterate_shared_object(path, DT_RPATH, __path_callback, buf);
-	if (ret == -1)
+	siz = __getrpath(path, buf, sizeof(buf));
+	if (siz == -1)
 		return NULL;
 
 	ret = setenv("rpath", buf, 1);
@@ -1340,12 +1471,11 @@ static char *__rpath(const char *path)
 static char *__runpath(const char *path)
 {
 	char buf[PATH_MAX];
+	ssize_t siz;
 	int ret;
 
-	*buf = 0;
-	ret = __dl_iterate_shared_object(path, DT_RUNPATH, __path_callback,
-					 buf);
-	if (ret == -1)
+	siz = __getrunpath(path, buf, sizeof(buf));
+	if (siz == -1)
 		return NULL;
 
 	ret = setenv("runpath", buf, 1);

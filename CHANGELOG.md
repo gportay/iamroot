@@ -10,6 +10,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Chroot to a RISC-V world; tested on [Arch Linux RISC-V] and [Alpine Linux]
 
+### Changed
+
+- The functions `dlopen()` and `dlmopen()` resolve and open manually the
+  `DT_NEEDED` shared objects of the given shared object, as described by
+  [dlopen(3)] and at the exception of the cache file `/etc/ld.so.cache`
+  (maintained by [ldconfig(8)]) that is unchecked yet
+
 ### Removed
 
 - Remove the `iamroot-shell`'s option `--path-resolution-allow` and its
@@ -645,10 +652,12 @@ Initial release.
 [busybox(1)]: https://linux.die.net/man/1/busybox
 [capabilities(7)]: https://linux.die.net/man/7/capabilities
 [debootstrap(8)]: https://linux.die.net/man/8/debootstrap
+[dlopen(3)]: https://linux.die.net/man/3/dlopen
 [dnf(8)]: https://dnf.readthedocs.io/en/latest/command_ref.html
 [exec(3)]: https://linux.die.net/man/3/exec
 [glibc]: https://www.gnu.org/software/libc/
 [ld.so(8)]: https://linux.die.net/man/8/ld.so
+[ldconfig(8)]: https://linux.die.net/man/8/ldconfig
 [mountpoint(1)]: https://linux.die.net/man/1/mountpoint
 [musl]: https://www.musl-libc.org/
 [openSUSE]: https://www.opensuse.org/

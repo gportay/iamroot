@@ -11,6 +11,7 @@
 #include <errno.h>
 #include <limits.h>
 #include <fcntl.h>
+#include <link.h>
 
 #include <dlfcn.h>
 
@@ -30,24 +31,133 @@ void *next_dlopen(const char *path, int flags)
 	return sym(path, flags);
 }
 
+static int __dl_is_opened(const char *path)
+{
+	struct link_map *dso;
+	void *handle;
+	int err;
+
+	handle = next_dlopen(NULL, RTLD_NOW);
+	if (!handle)
+		return -1;
+
+	err = dlinfo(handle, RTLD_DI_LINKMAP, &dso);
+	if (err == -1)
+		return -1;
+
+	while (dso) {
+		if (streq(path, dso->l_name))
+			return 1;
+
+		dso = dso->l_next;
+	}
+
+	return 0;
+}
+
+static int __dlopen_needed_callback(const char *needed, void *user)
+{
+	char *library_path = (char *)user;
+	char buf[PATH_MAX];
+	void *handle;
+	ssize_t siz;
+	int ret;
+
+	siz = __path_access(needed, F_OK, library_path, buf, sizeof(buf));
+	if (siz == -1)
+		return -1;
+
+	/* Open the needed shared object first */
+	ret = __dlopen_needed(buf);
+	if (ret == -1)
+		return -1;
+
+	/* Open the shared object then */
+	handle = next_dlopen(buf, RTLD_LAZY);
+	if (!handle)
+		return -1;
+
+	return 0;
+}
+
+__attribute__((visibility("hidden")))
+int __dlopen_needed(const char *path)
+{
+	char library_path[PATH_MAX];
+	char needed[PATH_MAX];
+	ssize_t siz;
+	int ret;
+
+	/* The shared object is already opened */
+	ret = __dl_is_opened(path);
+	if (ret == -1 || ret == 1)
+		return ret;
+
+	siz = __dl_library_path(path, library_path, sizeof(library_path));
+	if (siz == -1)
+		return -1;
+
+	siz = __getneeded(path, needed, sizeof(needed));
+	if (siz == -1)
+		return -1;
+
+	/* Open the needed shared objects */
+	return __path_iterate(needed, __dlopen_needed_callback, library_path);
+}
+
 void *dlopen(const char *path, int flags)
 {
 	char buf[PATH_MAX];
 	void *ret = NULL;
 	ssize_t siz;
+	int err;
 
+	/*
+	 * According to dlopen(3):
+	 *
+	 * If filename is NULL, then the returned handle is for the main
+	 * program.
+	 */
+        /* Do not proceed to any hack if not in chroot */
 	if (!path || !__inchroot())
 		return next_dlopen(path, flags);
 
-	if (!strchr(path, '/')) {
+	/*
+	 * If filename contains a slash ("/"), then it is interpreted as a
+	 * (relative or absolute) pathname.
+	 */
+	if (strchr(path, '/')) {
+		siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
+		if (siz == -1)
+			goto exit;
+	/*
+	 * Otherwise, the dynamic linker searches for the object as follows
+	 * (see ld.so(8) for further details).
+	 */
+	} else {
+		char library_path[PATH_MAX];
+
+		*library_path = 0;
+		siz = __dl_library_path(NULL, library_path,
+					sizeof(library_path));
+		if (siz == -1)
+			goto next;
+
 		siz = __path_access(path, F_OK, __library_path(), buf,
 				    sizeof(buf));
-		if (siz != -1)
-			goto next;
+		if (siz == -1)
+			goto exit;
 	}
 
-	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
-	if (siz == -1)
+	/*
+	 * If the object specified by filename has dependencies on other shared
+	 * objects, then these are also automatically loaded by the dynamic
+	 * linker using the same rules. (This process may occur recursively, if
+	 * those objects in turn have dependencies, and so on.)
+	 */
+	 /* Bypass the libdl.so loading of the DT_NEEDED shared objects. */
+	err = __dlopen_needed(buf);
+	if (err == -1)
 		goto exit;
 
 next:

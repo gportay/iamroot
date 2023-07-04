@@ -211,6 +211,22 @@ $(if $(findstring x86_64,$(1)), \
 endef
 
 define dnf-rootfs
+# ldb: unable to dlopen /usr/lib64/ldb/modules/ldb/ldb.so : libldb-tdb-int.so: cannot open shared object file: No such file or directory
+# ldb: unable to dlopen /usr/lib64/ldb/modules/ldb/mdb.so : libldb-key-value.so: cannot open shared object file: No such file or directory
+# ldb: unable to dlopen /usr/lib64/ldb/modules/ldb/tdb.so : libldb-key-value.so: cannot open shared object file: No such file or directory
+# (YYYY-MM-DD hh:mm:ss:nnnnnn): [sss_cache] [ldb] (0x0010): Unable to find backend for '/var/lib/sss/db/config.ldb' - do you need to set LDB_MODULES_PATH?
+# (YYYY-MM-DD hh:mm:ss:nnnnnn): [sss_cache] [confdb_init] (0x0010): Unable to open config database [/var/lib/sss/db/config.ldb]
+# Could not open available domains
+# sh: sss_cache exited with status 5
+# sh: Failed to flush the sssd cache.
+# ldb: unable to dlopen /usr/lib64/ldb/modules/ldb/ldb.so : libldb-tdb-int.so: cannot open shared object file: No such file or directory
+# ldb: unable to dlopen /usr/lib64/ldb/modules/ldb/mdb.so : libldb-key-value.so: cannot open shared object file: No such file or directory
+# ldb: unable to dlopen /usr/lib64/ldb/modules/ldb/tdb.so : libldb-key-value.so: cannot open shared object file: No such file or directory
+# (YYYY-MM-DD hh:mm:ss:nnnnnn): [sss_cache] [ldb] (0x0010): Unable to find backend for '/var/lib/sss/db/config.ldb' - do you need to set LDB_MODULES_PATH?
+# (YYYY-MM-DD hh:mm:ss:nnnnnn): [sss_cache] [confdb_init] (0x0010): Unable to open config database [/var/lib/sss/db/config.ldb]
+# Could not open available domains
+# sh: sss_cache exited with status 5
+# sh: Failed to flush the sssd cache.
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /usr/lib64/ldb:/lib64:/usr/lib64
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora.repo

@@ -22,7 +22,7 @@ int next_dup2(int oldfd, int newfd)
 		sym = dlsym(RTLD_NEXT, "dup2");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(oldfd, newfd);
 }

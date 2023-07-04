@@ -27,7 +27,7 @@ ssize_t next_extattr_list_fd(int fd, int attrnamespace, void *data,
 		sym = dlsym(RTLD_NEXT, "extattr_list_fd");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(fd, attrnamespace, data, nbytes);
 }

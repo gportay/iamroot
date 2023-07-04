@@ -24,7 +24,7 @@ int next_inotify_add_watch(int fd, const char *path, uint32_t mask)
 		sym = dlsym(RTLD_NEXT, "inotify_add_watch");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(fd, path, mask);
 }

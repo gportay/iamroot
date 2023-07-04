@@ -623,7 +623,7 @@ extern void __abort();
 extern void __pathdlperror(const char *, const char *);
 #define __dlperror(s) __info("%s: %s\n", s, dlerror())
 
-#define __dl_set_errno(e, r) \
+#define __dl_set_errno_and_perror(e, r) \
 	({ __dlperror(__func__); \
 	   __set_errno(e, (r)); })
 

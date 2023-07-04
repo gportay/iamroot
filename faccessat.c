@@ -23,7 +23,7 @@ int next_faccessat(int dfd, const char *path, int mode, int atflags)
 		sym = dlsym(RTLD_NEXT, "faccessat");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(dfd, path, mode, atflags);
 }

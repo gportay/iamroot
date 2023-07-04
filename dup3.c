@@ -22,7 +22,7 @@ int next_dup3(int oldfd, int newfd, int oflags)
 		sym = dlsym(RTLD_NEXT, "dup3");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(oldfd, newfd, oflags);
 }

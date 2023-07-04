@@ -21,7 +21,7 @@ char *next_ctermid(char *s)
 		sym = dlsym(RTLD_NEXT, "ctermid");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, NULL);
+		return __dl_set_errno_and_perror(ENOSYS, NULL);
 
 	return sym(s);
 }

@@ -24,7 +24,7 @@ int next_bind(int socket, const struct sockaddr *addr, socklen_t addrlen)
 		sym = dlsym(RTLD_NEXT, "bind");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(socket, addr, addrlen);
 }

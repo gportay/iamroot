@@ -23,7 +23,7 @@ int next___openat_2(int dfd, const char *path, int oflags)
 		sym = dlsym(RTLD_NEXT, "__openat_2");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(dfd, path, oflags);
 }

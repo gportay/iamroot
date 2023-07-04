@@ -25,7 +25,7 @@ DIR *next___opendir2(const char *path, int oflags)
 		sym = dlsym(RTLD_NEXT, "__opendir2");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, NULL);
+		return __dl_set_errno_and_perror(ENOSYS, NULL);
 
 	return sym(path, oflags);
 }

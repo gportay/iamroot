@@ -24,7 +24,7 @@ int next_close_range(unsigned int first, unsigned int last, int flags)
 		sym = dlsym(RTLD_NEXT, "close_range");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(first, last, flags);
 }

@@ -30,7 +30,7 @@ int next_scandir64(const char *path, struct dirent64 ***namelist,
 		sym = dlsym(RTLD_NEXT, "scandir64");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(path, namelist, filter, compar);
 }

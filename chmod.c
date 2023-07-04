@@ -29,7 +29,7 @@ int next_chmod(const char *path, mode_t mode)
 		sym = dlsym(RTLD_NEXT, "chmod");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(path, mode);
 }

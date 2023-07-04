@@ -30,7 +30,7 @@ int next_openat(int dfd, const char *path, int oflags, mode_t mode)
 		sym = dlsym(RTLD_NEXT, "openat");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(dfd, path, oflags, mode);
 }

@@ -24,7 +24,7 @@ int next___fxstat64(int ver, int fd, struct stat64 *statbuf)
 		sym = dlsym(RTLD_NEXT, "__fxstat64");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(ver, fd, statbuf);
 }

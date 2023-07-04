@@ -25,7 +25,7 @@ int next___open_2(const char *path, int oflags)
 		sym = dlsym(RTLD_NEXT, "__open_2");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(path, oflags);
 }

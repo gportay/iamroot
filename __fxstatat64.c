@@ -28,7 +28,7 @@ int next___fxstatat64(int ver, int dfd, const char *path,
 		sym = dlsym(RTLD_NEXT, "__fxstatat64");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(ver, dfd, path, statbuf, atflags);
 }

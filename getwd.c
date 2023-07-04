@@ -21,7 +21,7 @@ char *next_getwd(char *buf)
 		sym = dlsym(RTLD_NEXT, "getwd");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, NULL);
+		return __dl_set_errno_and_perror(ENOSYS, NULL);
 
 	return sym(buf);
 }

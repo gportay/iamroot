@@ -23,7 +23,7 @@ int next_symlinkat(const char *string, int dfd, const char *path)
 		sym = dlsym(RTLD_NEXT, "symlinkat");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(string, dfd, path);
 }

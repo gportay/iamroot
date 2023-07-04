@@ -24,7 +24,7 @@ char *next_tempnam(const char *path, const char *pfx)
 		sym = dlsym(RTLD_NEXT, "tempnam");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, NULL);
+		return __dl_set_errno_and_perror(ENOSYS, NULL);
 
 	return sym(path, pfx);
 }

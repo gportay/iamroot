@@ -27,7 +27,7 @@ ssize_t next_extattr_get_link(const char *path, int attrnamespace,
 		sym = dlsym(RTLD_NEXT, "extattr_get_link");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(path, attrnamespace, attrname, data, nbytes);
 }

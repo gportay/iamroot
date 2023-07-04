@@ -26,7 +26,7 @@ int next_extattr_delete_fd(int fd, int attrnamespace, const char *attrname)
 		sym = dlsym(RTLD_NEXT, "extattr_delete_fd");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(fd, attrnamespace, attrname);
 }

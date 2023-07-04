@@ -21,7 +21,7 @@ char *next_get_current_dir_name()
 		sym = dlsym(RTLD_NEXT, "get_current_dir_name");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, NULL);
+		return __dl_set_errno_and_perror(ENOSYS, NULL);
 
 	return sym();
 }

@@ -28,7 +28,7 @@ int next_scandir_b(const char *path, struct dirent ***namelist,
 		sym = dlsym(RTLD_NEXT, "scandir_b");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(path, namelist, select, compar);
 }

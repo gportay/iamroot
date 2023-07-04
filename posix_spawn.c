@@ -30,7 +30,7 @@ int next_posix_spawn(pid_t *pid, const char *path,
 		sym = dlsym(RTLD_NEXT, "posix_spawn");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(pid, path, file_actions, attrp, argv, envp);
 }

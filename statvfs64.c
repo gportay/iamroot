@@ -24,7 +24,7 @@ int next_statvfs64(const char *path, struct statvfs64 *statvfsbuf)
 		sym = dlsym(RTLD_NEXT, "statvfs64");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(path, statvfsbuf);
 }

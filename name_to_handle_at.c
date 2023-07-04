@@ -27,7 +27,7 @@ int next_name_to_handle_at(int dfd, const char *path,
 		sym = dlsym(RTLD_NEXT, "name_to_handle_at");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(dfd, path, handle, mount_id, atflags);
 }

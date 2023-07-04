@@ -24,7 +24,7 @@ FILE *next_fopen(const char *path, const char *mode)
 		sym = dlsym(RTLD_NEXT, "fopen");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, NULL);
+		return __dl_set_errno_and_perror(ENOSYS, NULL);
 
 	return sym(path, mode);
 }

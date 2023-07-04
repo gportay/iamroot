@@ -26,7 +26,7 @@ int next_getfhat(int dfd, char *path, fhandle_t *fhp, int atflags)
 		sym = dlsym(RTLD_NEXT, "getfhat");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(dfd, path, fhp, atflags);
 }

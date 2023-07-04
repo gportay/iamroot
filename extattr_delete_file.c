@@ -27,7 +27,7 @@ int next_extattr_delete_file(const char *path, int attrnamespace,
 		sym = dlsym(RTLD_NEXT, "extattr_delete_file");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(path, attrnamespace, attrname);
 }

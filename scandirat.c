@@ -27,7 +27,7 @@ int next_scandirat(int dfd, const char *path, struct dirent ***namelist,
 		sym = dlsym(RTLD_NEXT, "scandirat");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(dfd, path, namelist, filter, compar);
 }

@@ -31,7 +31,7 @@ int next_fchown(int fd, uid_t owner, gid_t group)
 		sym = dlsym(RTLD_NEXT, "fchown");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(fd, owner, group);
 }

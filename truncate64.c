@@ -25,7 +25,7 @@ int next_truncate64(const char *path, off64_t length)
 		sym = dlsym(RTLD_NEXT, "truncate64");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, -1);
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(path, length);
 }

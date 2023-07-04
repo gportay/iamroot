@@ -25,7 +25,7 @@ void *next_dlopen(const char *path, int flags)
 		sym = dlsym(RTLD_NEXT, "dlopen");
 
 	if (!sym)
-		return __dl_set_errno(ENOSYS, NULL);
+		return __dl_set_errno_and_perror(ENOSYS, NULL);
 
 	return sym(path, flags);
 }

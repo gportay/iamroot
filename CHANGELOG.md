@@ -38,6 +38,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   environment variable `IAMROOT_PATH_RESOLUTION_ALLOW`
 - Remove the `iamroot-shell`'s option `--debug-allow` and its environment
   variable `IAMROOT_DEBUG_ALLOW`
+- Remove the two [exec][exec(3)] environment variables `IAMROOT_EXEC_LD_ARGV1`
+  and `IAMROOT_EXEC_HASHBANG_ARGV1`
 
 ### Changed
 

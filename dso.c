@@ -1898,8 +1898,8 @@ int __loader(const char *path, char * const argv[], char *interp,
 	 * The interpreter has to preload its libiamroot.so library.
 	 */
 	if (__strneq(buf, "/lib/ld") || __strneq(buf, "/lib64/ld")) {
-		char *argv0, *xargv1, *needed, *rpath, *runpath,
-		     *inhibit_rpath, *ld_library_path, *ld_preload;
+		char *argv0, *needed, *rpath, *runpath, *inhibit_rpath,
+		     *ld_library_path, *ld_preload;
 		int has_argv0 = 1, has_preload = 1, has_inhibit_rpath = 0,
 		    has_inhibit_cache = 0;
 		int i, j, shift = 1;
@@ -1966,7 +1966,6 @@ int __loader(const char *path, char * const argv[], char *interp,
 		 * Shift enough room in interparg to prepend:
 		 *   - the path to the interpreter (i.e. the absolute path in
 		 *     host, including the chroot; argv0).
-		 *   - the optional extra argument as argv1.
 		 *   - the option --ld-preload and its argument (i.e. the path
 		 *     in host environment to the iamroot library and the path
 		 *     in chroot environment to the interpreter's libc.so and
@@ -1984,9 +1983,6 @@ int __loader(const char *path, char * const argv[], char *interp,
 		 *       by one (i.e. without argv0; following arguments).
 		 */
 		argv0 = interparg[0];
-		xargv1 = getenv("IAMROOT_EXEC_LD_ARGV1");
-		if (xargv1)
-			shift++;
 		if (has_argv0)
 			shift += 2;
 		if (has_preload && ld_preload)
@@ -2007,10 +2003,6 @@ int __loader(const char *path, char * const argv[], char *interp,
 		/* Add path to interpreter (host, argv0) */
 		i = 0;
 		interparg[i++] = interp;
-
-		/* Add extra argument as argv1 */
-		if (xargv1)
-			interparg[i++] = xargv1;
 
 		/*
 		 * Add --preload and interpreter's libraries:
@@ -2068,8 +2060,8 @@ int __loader(const char *path, char * const argv[], char *interp,
 
 		ret = i;
 	} else {
-		char *argv0, *xargv1, *needed, *rpath, *runpath,
-		     *ld_library_path, *ld_preload;
+		char *argv0, *needed, *rpath, *runpath, *ld_library_path,
+		     *ld_preload;
 		int i, j, shift = 1;
 		char * const *arg;
 		int flags_1;
@@ -2082,16 +2074,12 @@ int __loader(const char *path, char * const argv[], char *interp,
 		 * Shift enough room in interparg to prepend:
 		 *   - the path to the interpreter (i.e. the absolute path in
 		 *     host, including the chroot; argv0).
-		 *   - the optional extra argument as argv1.
 		 *   - the path to the binary (i.e. the full path in chroot,
 		 *     *not* including chroot; first positional argument).
 		 * Note: the binary's arguments are the original argv shifted
 		 *       by one (i.e. without argv0; following arguments).
 		 */
 		argv0 = interparg[0];
-		xargv1 = getenv("IAMROOT_EXEC_LD_ARGV1");
-		if (xargv1)
-			shift++;
 		i = 0;
 		for (arg = interparg; *arg; arg++)
 			i++;
@@ -2145,10 +2133,6 @@ int __loader(const char *path, char * const argv[], char *interp,
 		/* Add path to interpreter (host, argv0) */
 		i = 0;
 		interparg[i++] = interp;
-
-		/* Add extra argument as argv1 */
-		if (xargv1)
-			interparg[i++] = xargv1;
 
 		/* Add path to binary (in chroot, first positional argument) */
 		interparg[i] = (char *)path;

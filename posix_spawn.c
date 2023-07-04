@@ -40,7 +40,7 @@ int posix_spawn(pid_t *pid, const char *path,
 		const posix_spawnattr_t *attrp,
 		char * const argv[], char * const envp[])
 {
-	char *interparg[15+1] = { NULL }; /*  0 ARGV0
+	char *interparg[14+1] = { NULL }; /*  0 ARGV0
 					   *  1 /lib/ld.so
 					   *  2 LD_LINUX_ARGV1
 					   *  3 --preload
@@ -53,10 +53,9 @@ int posix_spawn(pid_t *pid, const char *path,
 					   * 10 --inhibit-cache
 					   * 11 /usr/lib/lib.so:/lib/lib.so
 					   * 12 /bin/sh
-					   * 13 HASHBANG_ARGV1
-					   * 14 -x
-					   * 15 script.sh
-					   * 16 NULL-terminated
+					   * 13 -x
+					   * 14 script.sh
+					   * 15 NULL-terminated
 					   */
 	char hashbang[HASHBANG_MAX];
 	char hashbangbuf[PATH_MAX];

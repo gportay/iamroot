@@ -447,7 +447,6 @@ __attribute__((visibility("hidden")))
 int __hashbang(const char *path, char * const argv[], char *interp,
 	       size_t interpsiz, char *interparg[])
 {
-	char *xargv1;
 	ssize_t siz;
 	size_t len;
 	int i = 0;
@@ -461,10 +460,6 @@ int __hashbang(const char *path, char * const argv[], char *interp,
 	/* Reset argv0 */
 	interparg[i++] = interp; /* hashbang as argv0 */
 
-	/* Add extra argument */
-	xargv1 = getenv("IAMROOT_EXEC_HASHBANG_ARGV1");
-	if (xargv1)
-		interparg[i++] = xargv1; /* extra argument as argv1 */
 	/* Add optional argument */
 	len = strnlen(interp, interpsiz);
 	if (len < (size_t)siz && interp[len+1])
@@ -514,7 +509,7 @@ int __exec_sh(const char *path, char * const *argv, char *interparg[],
 
 int execve(const char *path, char * const argv[], char * const envp[])
 {
-	char *interparg[15+1] = { NULL }; /*  0 ARGV0
+	char *interparg[14+1] = { NULL }; /*  0 ARGV0
 					   *  1 /lib/ld.so
 					   *  2 LD_LINUX_ARGV1
 					   *  3 --preload
@@ -527,10 +522,9 @@ int execve(const char *path, char * const argv[], char * const envp[])
 					   * 10 --inhibit-cache
 					   * 11 /usr/lib/lib.so:/lib/lib.so
 					   * 12 /bin/sh
-					   * 13 HASHBANG_ARGV1
-					   * 14 -x
-					   * 15 script.sh
-					   * 16 NULL-terminated
+					   * 13 -x
+					   * 14 script.sh
+					   * 15 NULL-terminated
 					   */
 	char hashbang[HASHBANG_MAX];
 	char hashbangbuf[PATH_MAX];

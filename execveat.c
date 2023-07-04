@@ -34,7 +34,7 @@ int next_execveat(int dfd, const char *path, char * const argv[],
 int execveat(int dfd, const char *path, char * const argv[],
 	     char * const envp[], int atflags)
 {
-	char *interparg[15+1] = { NULL }; /*  0 ARGV0
+	char *interparg[14+1] = { NULL }; /*  0 ARGV0
 					   *  1 /lib/ld.so
 					   *  2 LD_LINUX_ARGV1
 					   *  3 --preload
@@ -47,10 +47,9 @@ int execveat(int dfd, const char *path, char * const argv[],
 					   * 10 --inhibit-cache
 					   * 11 /usr/lib/lib.so:/lib/lib.so
 					   * 12 /bin/sh
-					   * 13 HASHBANG_ARGV1
-					   * 14 -x
-					   * 15 script.sh
-					   * 16 NULL-terminated
+					   * 13 -x
+					   * 14 script.sh
+					   * 15 NULL-terminated
 					   */
 	char hashbang[HASHBANG_MAX];
 	char hashbangbuf[PATH_MAX];

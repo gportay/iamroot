@@ -1728,7 +1728,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 }
 
 __attribute__((visibility("hidden")))
-int __exec_sh(const char *path, char * const *argv, char **interparg,
+int __exec_sh(const char *path, char * const *argv, char *interparg[],
 	      char *buf, size_t bufsize)
 {
 	int ret, i;

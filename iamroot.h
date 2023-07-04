@@ -623,9 +623,9 @@ extern void __abort();
 extern void __pathdlperror(const char *, const char *);
 #define __dlperror(s) __info("%s: %s\n", s, dlerror())
 
-#define __dl_set_errno(ENOSYS, r) \
+#define __dl_set_errno(e, r) \
 	({ __dlperror(__func__); \
-	   __set_errno(ENOSYS, (r)); })
+	   __set_errno(e, (r)); })
 
 int close(int);
 void perror(const char *);

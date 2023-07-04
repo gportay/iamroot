@@ -1631,13 +1631,12 @@ int __loader(const char *path, char * const argv[], char *interp,
 
 		return i;
 	} else {
-		char *argv0, *needed, *rpath, *runpath, *ld_library_path,
-		     *ld_preload;
+		char *argv0, *xargv1, *needed, *rpath, *runpath,
+		     *ld_library_path, *ld_preload;
 		int ret, i, j, shift = 1, abi = 0;
 		const char *basename;
 		char ldso[NAME_MAX];
 		char * const *arg;
-		char *xargv1;
 
 		basename = __basename(buf);
 		ret = sscanf(basename, "ld-%" __xstr(NAME_MAX) "[^.].so.%i",

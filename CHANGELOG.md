@@ -631,8 +631,8 @@ Initial release.
 [FreeBSD]: https://www.freebsd.org/
 [Leap]: https://www.opensuse.org/#Leap
 [Manjaro]: https://manjaro.org/
-[OpenBSD]: https://www.openbsd.org/
 [NO_COLOR]: https://no-color.org/
+[OpenBSD]: https://www.openbsd.org/
 [Tumbleweed]: https://www.opensuse.org/#Tumbleweed
 [Ubuntu]: https://ubuntu.com/
 [__nss_files_fopen()]: https://sourceware.org/git/?p=glibc.git;a=blob;f=nss/nss_files_fopen.c;h=594e4216578766e4534c44dc6c75283d5d1a20fe;hb=299210c1fa67e2dfb564475986fce11cd33db9ad

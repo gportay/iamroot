@@ -24,7 +24,7 @@ extern int next_open(const char *, int, mode_t);
 extern void *next_dlopen(const char *, int);
 
 __attribute__((visibility("hidden")))
-char *__basename(char *path)
+const char *__basename(const char *path)
 {
 	char *s = strrchr(path, '/');
 	if (!s)
@@ -281,9 +281,20 @@ exit:
 	return __path_appendenv("ld_preload", buf, 1);
 }
 
+static int __ld_ldso_abi(const char *path, char ldso[NAME_MAX], int *abi)
+{
+	int ret;
+
+	ret = sscanf(__basename(path), "ld-%" __xstr(NAME_MAX) "[^.].so.%i",
+		     ldso, abi);
+	if (ret < 2)
+		return __set_errno(ENOTSUP, -1);
+
+	return 0;
+}
+
 static int __ld_linux_version(const char *path, int *major, int *minor)
 {
-	const char *basename;
 	char buf[PATH_MAX];
 	ssize_t siz;
 	int ret;
@@ -293,8 +304,7 @@ static int __ld_linux_version(const char *path, int *major, int *minor)
 	if (siz == -1)
 		return -1;
 
-	basename = __basename(buf);
-	ret = sscanf(basename, "ld-%i.%i.so", major, minor);
+	ret = sscanf(__basename(buf), "ld-%i.%i.so", major, minor);
 	if (ret < 2)
 		return __set_errno(ENOTSUP, -1);
 
@@ -1469,8 +1479,9 @@ __attribute__((visibility("hidden")))
 int __loader(const char *path, char * const argv[], char *interp,
 	     size_t interpsiz, char *interparg[])
 {
+	int fd, abi = 0, ret = -1;
 	char buf[HASHBANG_MAX];
-	int fd, ret = -1;
+	char ldso[NAME_MAX];
 	Elf64_Ehdr ehdr;
 	ssize_t siz;
 	(void)argv;
@@ -1489,10 +1500,15 @@ int __loader(const char *path, char * const argv[], char *interp,
 
 	/*
 	 * ... and get the dynamic loader stored in the .interp section of the
-	 * ELF linked program.
+	 * ELF linked program...
 	 */
 	siz = __getinterp(fd, buf, sizeof(buf));
 	if (siz < 1)
+		goto close;
+
+	/* ... and gets its LDSO-name and ABI number */
+	ret = __ld_ldso_abi(buf, ldso, &abi);
+	if (ret == -1)
 		goto close;
 
 	/*
@@ -1503,18 +1519,8 @@ int __loader(const char *path, char * const argv[], char *interp,
 		     *inhibit_rpath, *ld_library_path, *ld_preload;
 		int has_argv0 = 1, has_preload = 1, has_inhibit_rpath = 0,
 		    has_inhibit_cache = 0;
-		int i, j, shift = 1, abi = 0;
-		const char *basename;
-		char ldso[NAME_MAX];
+		int i, j, shift = 1;
 		char * const *arg;
-
-		basename = __basename(buf);
-		ret = sscanf(basename, "ld-%" __xstr(NAME_MAX) "[^.].so.%i",
-			     ldso, &abi);
-		if (ret < 2) {
-			ret = __set_errno(ENOTSUP, -1);
-			goto close;
-		}
 
 		/*
 		 * the glibc world supports --argv0 since 2.33, --preload since
@@ -1674,18 +1680,8 @@ int __loader(const char *path, char * const argv[], char *interp,
 	} else {
 		char *argv0, *xargv1, *needed, *rpath, *runpath,
 		     *ld_library_path, *ld_preload;
-		int i, j, shift = 1, abi = 0;
-		const char *basename;
-		char ldso[NAME_MAX];
+		int i, j, shift = 1;
 		char * const *arg;
-
-		basename = __basename(buf);
-		ret = sscanf(basename, "ld-%" __xstr(NAME_MAX) "[^.].so.%i",
-			     ldso, &abi);
-		if (ret < 2) {
-			ret = __set_errno(ENOTSUP, -1);
-			goto close;
-		}
 
 		siz = path_resolution(AT_FDCWD, buf, interp, interpsiz, 0);
 		if (siz == -1)

@@ -23,8 +23,7 @@ extern int next_faccessat(int, const char *, int);
 extern int next_open(const char *, int, mode_t);
 extern void *next_dlopen(const char *, int);
 
-__attribute__((visibility("hidden")))
-const char *__basename(const char *path)
+static const char *__basename(const char *path)
 {
 	char *s = strrchr(path, '/');
 	if (!s)

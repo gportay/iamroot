@@ -149,7 +149,6 @@ int __loader(const char *, char * const [], char *, size_t, char *[]);
 int __exec_sh(const char *, char * const *, char *[], char *, size_t);
 int __hashbang(const char *, char * const [], char *, size_t, char *[]);
 
-const char *__basename(const char *);
 char *__path_sanitize(char *, size_t);
 char *__fpath(int);
 char *__fpath2(int);

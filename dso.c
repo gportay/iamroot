@@ -32,6 +32,14 @@ static const char *__basename(const char *path)
 	return s+1; /* trailing-slash */
 }
 
+static char *__path_strncat(char *dst, const char *src, size_t siz)
+{
+	if (*dst)
+		_strncat(dst, ":", siz);
+
+	return _strncat(dst, src, siz);
+}
+
 __attribute__((visibility("hidden")))
 int __path_prependenv(const char *name, const char *value, int overwrite)
 {
@@ -43,11 +51,8 @@ int __path_prependenv(const char *name, const char *value, int overwrite)
 
 	newval = __strncpy(buf, value);
 	oldval = getenv(name);
-	if (oldval && *oldval) {
-		if (*buf)
-			__strncat(buf, ":");
-		__strncat(buf, oldval);
-	}
+	if (oldval && *oldval)
+		__path_strncat(buf, oldval, sizeof(buf));
 
 	return setenv(name, newval, overwrite);
 }
@@ -66,11 +71,8 @@ int __path_appendenv(const char *name, const char *value, int overwrite)
 		return setenv(name, value, overwrite);
 
 	newval = __strncpy(buf, oldval);
-	if (*value) {
-		if (*buf)
-			__strncat(buf, ":");
-		__strncat(buf, value);
-	}
+	if (*value)
+		__path_strncat(buf, value, sizeof(buf));
 
 	return setenv(name, newval, overwrite);
 }
@@ -1147,27 +1149,18 @@ static char *__ld_preload(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	__strncpy(path, __getld_library_path(ehdr, ldso, abi));
 
 	rpath = getenv("rpath");
-	if (rpath) {
-		if (*path)
-			__strncat(path, ":");
-		__strncat(path, rpath);
-	}
+	if (rpath)
+		__path_strncat(path, rpath, sizeof(path));
 
 	runpath = getenv("runpath");
-	if (runpath) {
-		if (*path)
-			__strncat(path, ":");
-		__strncat(path, runpath);
-	}
+	if (runpath)
+		__path_strncat(path, runpath, sizeof(path));
 
 	__strncpy(val, __getld_preload(ehdr, ldso, abi));
 
 	needed = getenv("needed");
-	if (needed) {
-		if (*val)
-			__strncat(val, ":");
-		__strncat(val, needed);
-	}
+	if (needed)
+		__path_strncat(val, needed, sizeof(val));
 
 	ret = unsetenv("ld_preload");
 	if (ret)
@@ -1370,9 +1363,7 @@ static int __path_callback(const void *data, size_t size, void *user)
 	if (!data || !user)
 		return __set_errno(EINVAL, -1);
 
-	if (*p)
-		_strncat(p, ":", PATH_MAX);
-	_strncat(p, path, PATH_MAX);
+	__path_strncat(p, path, PATH_MAX);
 
 	return 0;
 }
@@ -1504,11 +1495,8 @@ ssize_t __getlibrary_path(const char *path, char *buf, size_t bufsize)
 		if (ret == -1)
 			return -1;
 
-		if (ret != 0) {
-			if (*buf)
-				strncat(buf, ":", bufsize);
-			strncat(buf, tmp, bufsize);
-		}
+		if (ret != 0)
+			__path_strncat(buf, tmp, bufsize);
 	}
 
 	/*
@@ -1519,21 +1507,15 @@ ssize_t __getlibrary_path(const char *path, char *buf, size_t bufsize)
 	 * programs.)
 	 */
 	library_path = getenv("LD_LIBRARY_PATH");
-	if (library_path) {
-		if (*buf)
-			strncat(buf, ":", bufsize);
-		strncat(buf, library_path, bufsize);
-	}
+	if (library_path)
+		__path_strncat(buf, library_path, bufsize);
 
 	/*
 	 * •  (ELF only) If the calling object contains a DT_RUNPATH tag, then
 	 * the directories listed in that tag are searched.
 	 */
-	if (has_runpath) {
-		if (*buf)
-			strncat(buf, ":", bufsize);
-		strncat(buf, tmp, bufsize);
-	}
+	if (has_runpath)
+		__path_strncat(buf, tmp, bufsize);
 
 	/*
 	 * •  The cache file /etc/ld.so.cache (maintained by ldconfig(8)) is
@@ -1545,11 +1527,8 @@ ssize_t __getlibrary_path(const char *path, char *buf, size_t bufsize)
 	 * •  The directories /lib and /usr/lib are searched (in that order).
 	 */
 	library_path = __library_path();
-	if (library_path) {
-		if (*buf)
-			strncat(buf, ":", bufsize);
-		strncat(buf, library_path, bufsize);
-	}
+	if (library_path)
+		__path_strncat(buf, library_path, bufsize);
 
 	/*
 	 * If the object specified by filename has dependencies on other shared

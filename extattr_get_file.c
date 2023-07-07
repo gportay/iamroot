@@ -53,7 +53,7 @@ ssize_t extattr_get_file(const char *path, int attrnamespace,
 		ret = _snprintf(extbuf, sizeof(extbuf), "%s%s",
 				IAMROOT_EXTATTR_PREFIX, attrname);
 		if (ret == -1)
-			return -1;
+			goto exit;
 
 		attrnamespace = EXTATTR_NAMESPACE_USER;
 		attrname = extbuf;

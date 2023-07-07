@@ -47,7 +47,7 @@ ssize_t fgetxattr(int fd, const char *name, void *value, size_t size)
 		ret = _snprintf(xbuf, sizeof(xbuf), "%s%s",
 				IAMROOT_XATTRS_PREFIX, name);
 		if (ret == -1)
-			return -1;
+			goto exit;
 
 		name = xbuf;
 	}

@@ -44,10 +44,11 @@ ssize_t llistxattr(const char *path, char *list, size_t size)
 	if (siz == -1)
 		goto exit;
 
-	xsize = next_llistxattr(buf, xbuf, sizeof(xbuf)-1); /* NULL-terminated */
-	if (xsize == -1)
+	ret = next_llistxattr(buf, xbuf, sizeof(xbuf)-1); /* NULL-terminated */
+	if (ret == -1)
 		goto exit;
 
+	xsize = ret;
 	xbuf[xsize] = 0; /* ensure NULL-terminated */
 
 	ret = 0;

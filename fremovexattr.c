@@ -48,7 +48,7 @@ int fremovexattr(int fd, const char *name)
 		ret = _snprintf(xbuf, sizeof(xbuf), "%s%s",
 				IAMROOT_XATTRS_PREFIX, name);
 		if (ret == -1)
-			return -1;
+			goto exit;
 
 		name = xbuf;
 	}

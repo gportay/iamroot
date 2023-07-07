@@ -52,7 +52,7 @@ int extattr_delete_fd(int fd, int attrnamespace, const char *attrname)
 		ret = _snprintf(extbuf, sizeof(extbuf), "%s%s",
 				IAMROOT_EXTATTR_PREFIX, attrname);
 		if (ret == -1)
-			return -1;
+			goto exit;
 
 		attrnamespace = EXTATTR_NAMESPACE_USER;
 		attrname = extbuf;

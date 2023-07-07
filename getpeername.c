@@ -56,7 +56,7 @@ int getpeername(int socket, struct sockaddr *addr, socklen_t *addrlen)
 exit:
 	__debug("%s(socket: %i, addr: { .sun_path: '%s' -> '%s', ... }, addrlen: %i -> %i) -> %i\n",
 		__func__, socket, addrun->sun_path, buf.sun_path,
-		addrlen ? *addrlen : 0, buflen, ret);
+		addrlen ? *addrlen : 0, addrlen ? buflen : 0, ret);
 
 	return ret;
 }

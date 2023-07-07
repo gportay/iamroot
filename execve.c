@@ -1578,7 +1578,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 		/*
 		 * Add --preload and interpreter's libraries:
 		 *  - libiamroot.so (from host)
-		 *  - libc.so and libdl.so (from chroot)
+		 *  - libc.so, libdl.so and libpthread.so (from chroot)
 		 */
 		if (has_preload && ld_preload) {
 			interparg[i++] = "--preload";

@@ -199,11 +199,9 @@ test-path_setenv: override LDLIBS += libiamnotroot.so
 
 .PHONY: test
 ifeq ($(OS),FreeBSD)
-test: export IAMROOT_LIBRARY_PATH := /lib:/usr/lib:/usr/local/lib
 test: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/lib/libc.so.7:$(CURDIR)/rootfs/usr/lib/libdl.so.1
 endif
 ifeq ($(OS),OpenBSD)
-test: export IAMROOT_LIBRARY_PATH := /usr/lib:/usr/local/lib
 ifeq ($(KVER),7.2)
 test: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/usr/lib/libc.so.96.2:$(CURDIR)/rootfs/usr/lib/libpthread.so.26.2
 endif
@@ -212,7 +210,6 @@ test: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/usr/lib/libc.so.97.0:$(CURD
 endif
 endif
 ifeq ($(OS),GNU/Linux)
-test: export IAMROOT_LIBRARY_PATH := /lib64:/usr/lib64
 test: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/usr/lib64/libc.so.6:$(CURDIR)/rootfs/usr/lib64/libdl.so.2:$(CURDIR)/rootfs/usr/lib64/libpthread.so.0
 endif
 test: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|.*\.gcda

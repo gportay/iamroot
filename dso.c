@@ -799,7 +799,7 @@ static int __dl_iterate_shared_object(int fd, int d_tag,
 	return __set_errno(ENOEXEC, -1);
 }
 
-static ssize_t __getinterp(int fd, char *buf, size_t bufsize)
+static ssize_t __fgetinterp(int fd, char *buf, size_t bufsize)
 {
 	Elf64_Ehdr ehdr;
 	ssize_t siz;
@@ -818,6 +818,22 @@ static ssize_t __getinterp(int fd, char *buf, size_t bufsize)
 
 	/* It is an invalid ELF */
 	return __set_errno(ENOEXEC, -1);
+}
+
+static ssize_t __getinterp(const char *path, char *buf, size_t bufsize)
+{
+	ssize_t ret;
+	int fd;
+
+	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
+	if (fd == -1)
+		return -1;
+
+	ret = __fgetinterp(fd, buf, bufsize);
+
+	__close(fd);
+
+	return ret;
 }
 
 static void __env_sanitize(char *name, int upper)
@@ -1101,23 +1117,43 @@ static const char *__getld_library_path(Elf64_Ehdr *ehdr, const char *ldso,
 {
 	char buf[NAME_MAX];
 	char *ret;
-	int n;
 
-	n = _snprintf(buf, sizeof(buf), "IAMROOT_LIBRARY_PATH_%s_%d", ldso,
-		      abi);
-	if (n == -1)
-		return NULL;
-	__env_sanitize(buf, 1);
+	/*
+	 * The shared object is an executable file.
+	 */
+	if (ldso && *ldso && abi != -1) {
+		int n;
 
-	ret = getenv(buf);
-	if (ret)
-		return ret;
+		/*
+		 * Use the default library path set by the environment variable
+		 * IAMROOT_LIBRARY_PATH_<LDSO>_<ABI> if set.
+		 */
+		n = _snprintf(buf, sizeof(buf), "IAMROOT_LIBRARY_PATH_%s_%d",
+			      ldso, abi);
+		if (n == -1)
+			return NULL;
+		__env_sanitize(buf, 1);
 
+		ret = getenv(buf);
+		if (ret)
+			return ret;
+
+		/* The variable is unset, keep going... */
+	}
+
+	/*
+	 * Use the default library path set by the environment variable
+	 * IAMROOT_LIBRARY_PATH if set.
+	 */
 	ret = getenv("IAMROOT_LIBRARY_PATH");
 	if (ret)
 		return ret;
 
 	/*
+	 * Neither IAMROOT_LIBRARY_<LDSO>_<ABI> nor IAMROOT_LIBRARY_PATH are
+	 * set; try to guess automagically the standard library path for the
+	 * GNU/Linux systems.
+	 *
 	 * According do dl.so(8):
 	 *
 	 * On some 64-bit architectures, the default paths for 64-bit shared
@@ -1458,6 +1494,151 @@ static ssize_t __getrunpath(const char *path, char *buf, size_t bufsize)
 	return ret;
 }
 
+static int __has_needed_callback(const char *needed, void *user)
+{
+	const char *filename = (const char *)user;
+
+	return __strleq(needed, filename);
+}
+
+static int __has_needed(int fd, const char *filename)
+{
+	char needed[PATH_MAX];
+	ssize_t siz;
+
+	siz = __fgetneeded(fd, needed, sizeof(needed));
+	if (siz == -1)
+		return -1;
+
+	/* Search for the needed shared object */
+	return __path_iterate(needed, __has_needed_callback, (void *)filename);
+}
+
+static int __getld_linux_so_callback(const char *needed, void *user)
+{
+	char *interp = (char *)user;
+
+	/* It is not the linux dynamic loader */
+	if (__strneq(needed, "ld-linux") == 0)
+		return 0;
+
+	_strncpy(interp, needed, HASHBANG_MAX);
+
+	return 1;
+}
+
+static ssize_t __getld_linux_so(int fd, char *buf, size_t bufsize)
+{
+	const char *libc_so_6 = "libc.so.6";
+	char needed[PATH_MAX];
+	char tmp[PATH_MAX];
+	ssize_t siz;
+	int err;
+
+	/* Search for the linux C library (libc.so.6) first */
+	err = __has_needed(fd, libc_so_6);
+	if (err == -1)
+		return -1;
+	if (err == 0)
+		return __set_errno(ENOENT, -1);
+
+	siz = __fgetneeded(fd, needed, sizeof(needed));
+	if (siz == -1)
+		return -1;
+
+	siz = __path_access(libc_so_6, F_OK, "/lib:/lib64", tmp, sizeof(tmp));
+	if (siz == -1)
+		return -1;
+
+	/* Search for the linux dynamic loader (ld-linux-$ARCH.so.$ABI) then */
+	err = __path_iterate(needed, __getld_linux_so_callback, buf);
+	if (err == -1)
+		return -1;
+	if (err == 0)
+		return __set_errno(ENOENT, -1);
+
+	return strnlen(buf, bufsize);
+}
+
+static ssize_t __fgetdeflib(int fd, char *buf, size_t bufsize)
+{
+	const int errno_save = errno;
+	char interp[HASHBANG_MAX];
+	const char *library_path;
+	char ldso[NAME_MAX];
+	int err, abi = 0;
+	Elf64_Ehdr ehdr;
+	ssize_t siz;
+
+	/*
+	 * Detects the default library path using the ELF header:
+	 *  - the class (32-bit or 64-bit architectures)
+	 *  - the operating system and ABI (UNIX System V, GNU or Linux alias,
+	 *    FreeBSD ABIs)
+	 * and using the interpreter in the PT_INTERP segment if the shared
+	 * object is an executable file, or from the needed libc, or from the
+	 * executable file.
+	 */
+	siz = __getelfheader(fd, &ehdr);
+	if (siz == -1)
+		return -1;
+
+	siz = __fgetinterp(fd, interp, sizeof(interp));
+	/* It is an ELF library */
+	if (siz == -1 && errno == ENOEXEC) {
+		__info("%s: dynamic loader not found, trying libc.so.6...\n",
+		       __fpath(fd));
+		siz = __getld_linux_so(fd, interp, sizeof(interp));
+		if (siz == -1 && errno != ENOENT)
+			return -1;
+	}
+	/* It is an ELF library linked against libc */
+	if (siz == -1 && errno == ENOENT) {
+		const char *path;
+
+		path = __execfn();
+		__info("%s: dynamic loader not found, trying executable file...\n",
+		       path);
+		siz = __getinterp(path, interp, sizeof(interp));
+		if (siz == -1 && errno != ENOENT)
+			return -1;
+	}
+	if (siz < 1) {
+		__warning("%s: dynamic loader not found!\n", __fpath(fd));
+		*ldso = __set_errno(errno_save, 0);
+		goto library_path;
+	}
+
+	err = __ld_ldso_abi(interp, ldso, &abi);
+	if (err == -1)
+		return -1;
+
+library_path:
+	library_path = __getld_library_path(&ehdr, ldso, abi);
+	if (!library_path)
+		return -1;
+
+	strncpy(buf, library_path, bufsize);
+
+	return strnlen(buf, bufsize);
+}
+
+static ssize_t __getdeflib(const char *path, char *buf, size_t bufsize)
+{
+	ssize_t ret;
+	int fd;
+
+	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
+	if (fd == -1)
+		return -1;
+
+	ret = __fgetdeflib(fd, buf, bufsize);
+
+	__close(fd);
+
+	return ret;
+}
+
 __attribute__((visibility("hidden")))
 ssize_t __getlibrary_path(const char *path, char *buf, size_t bufsize)
 {
@@ -1581,10 +1762,11 @@ ssize_t __getlibrary_path(const char *path, char *buf, size_t bufsize)
 	 *
 	 * Finally, try the default path.
 	 */
-	/* TODO: This is to be reworked, at least in a close future. */
-	library_path = __library_path();
-	if (library_path)
-		__path_strncat(buf, library_path, bufsize);
+	ret = __getdeflib(path, tmp, sizeof(tmp));
+	if (ret == -1)
+		return -1;
+
+	__path_strncat(buf, tmp, bufsize);
 
 	/*
 	 * If the object specified by filename has dependencies on other shared
@@ -1703,7 +1885,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 	 * ... and get the dynamic loader stored in the .interp section of the
 	 * ELF linked program...
 	 */
-	siz = __getinterp(fd, buf, sizeof(buf));
+	siz = __fgetinterp(fd, buf, sizeof(buf));
 	if (siz < 1)
 		goto close;
 

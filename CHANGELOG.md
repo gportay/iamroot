@@ -11,6 +11,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Chroot to a RISC-V world; tested on [Arch Linux RISC-V] and [Alpine Linux]
 - Output a warning if the `RPATH` or the `RUNPATH` contain dynamic string
   tokens
+- Detects the default library path of the chroot'ed environment to get rid off
+  the use of the environment variable `IAMROOT_LIBRARY_PATH` while chroot'ing
+  in some 64-bit architectures GNU/Linux systems
 
 ### Changed
 

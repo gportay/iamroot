@@ -49,11 +49,11 @@ int extattr_delete_file(const char *path, int attrnamespace,
 		goto exit;
 
 	if (attrnamespace == EXTATTR_NAMESPACE_SYSTEM) {
-		int ret;
+		int n;
 
-		ret = _snprintf(extbuf, sizeof(extbuf), "%s%s",
-				IAMROOT_EXTATTR_PREFIX, attrname);
-		if (ret == -1)
+		n = _snprintf(extbuf, sizeof(extbuf), "%s%s",
+			      IAMROOT_EXTATTR_PREFIX, attrname);
+		if (n == -1)
 			goto exit;
 
 		attrnamespace = EXTATTR_NAMESPACE_USER;

@@ -44,11 +44,11 @@ int removexattr(const char *path, const char *name)
 		goto exit;
 
 	if (!__strneq(name, IAMROOT_XATTRS_PREFIX)) {
-		int ret;
+		int n;
 
-		ret = _snprintf(xbuf, sizeof(xbuf), "%s%s",
-				IAMROOT_XATTRS_PREFIX, name);
-		if (ret == -1)
+		n = _snprintf(xbuf, sizeof(xbuf), "%s%s",
+			      IAMROOT_XATTRS_PREFIX, name);
+		if (n == -1)
 			goto exit;
 
 		name = xbuf;

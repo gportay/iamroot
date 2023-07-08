@@ -52,7 +52,7 @@ int creat(const char *path, mode_t mode)
 	__set_mode(buf, oldmode, mode);
 
 	if (ret >= 0)
-		__notice("%s: %i -> '%s'\n", __func__, ret, __fpath(ret));
+		__info("%s: %i -> '%s'\n", __func__, ret, __fpath(ret));
 
 exit:
 	__debug("%s(path: '%s' -> '%s', mode: 0%03o -> 0%03o) -> %i\n",

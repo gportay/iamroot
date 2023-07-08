@@ -17,6 +17,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Remove the `iamroot-shell`'s option `--debug-allow` and its environment
   variable `IAMROOT_DEBUG_ALLOW`
 
+### Changed
+
+- Increase the verbosity level for the opened, duplicated and fd traces to
+  info
+
 ### Deprecated
 
 - Replace the `iamroot-shell` environment variables `IAMROOT_PROFILE_FILE`,

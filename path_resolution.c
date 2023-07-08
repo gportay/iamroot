@@ -54,7 +54,7 @@ const char *__getfd(int fd)
 	if (!ret)
 		return __set_errno(ENOENT, NULL);
 
-	__notice("%i: %s='%s'\n", fd, buf, ret);
+	__info("%i: %s='%s'\n", fd, buf, ret);
 
 	return ret;
 #else
@@ -75,7 +75,7 @@ int __setfd(int fd, const char *path)
 	if (n == -1)
 		return -1;
 
-	__notice("%i: %s='%s' -> '%s'\n", fd, buf, getenv(buf), path);
+	__info("%i: %s='%s' -> '%s'\n", fd, buf, getenv(buf), path);
 
 	if (!path)
 		return unsetenv(buf);

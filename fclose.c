@@ -33,7 +33,7 @@ int fclose(FILE *stream)
 	(void)fd;
 
 	ret = next_fclose(stream);
-	__notice("%s: %i -> '%s'\n", __func__, fd, __fpath(fd));
+	__info("%s: %i -> '%s'\n", __func__, fd, __fpath(fd));
 
 	__debug("%s(...) -> %i\n", __func__, ret);
 

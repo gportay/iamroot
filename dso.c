@@ -40,43 +40,6 @@ static char *__path_strncat(char *dst, const char *src, size_t siz)
 	return _strncat(dst, src, siz);
 }
 
-__attribute__((visibility("hidden")))
-int __path_prependenv(const char *name, const char *value, int overwrite)
-{
-	char *newval, *oldval;
-	char buf[PATH_MAX];
-
-	if (!name || !value)
-		return __set_errno(EINVAL, -1);
-
-	newval = __strncpy(buf, value);
-	oldval = getenv(name);
-	if (oldval && *oldval)
-		__path_strncat(buf, oldval, sizeof(buf));
-
-	return setenv(name, newval, overwrite);
-}
-
-__attribute__((visibility("hidden")))
-int __path_appendenv(const char *name, const char *value, int overwrite)
-{
-	char *newval, *oldval;
-	char buf[PATH_MAX];
-
-	if (!name || !value)
-		return __set_errno(EINVAL, -1);
-
-	oldval = getenv(name);
-	if (!oldval)
-		return setenv(name, value, overwrite);
-
-	newval = __strncpy(buf, oldval);
-	if (*value)
-		__path_strncat(buf, value, sizeof(buf));
-
-	return setenv(name, newval, overwrite);
-}
-
 int __path_setenv(const char *root, const char *name, const char *value,
 		  int overwrite)
 {
@@ -140,6 +103,23 @@ setenv:
 	return setenv(name, value, overwrite);
 }
 
+static int __is_in_path_callback(const char *path, void *user)
+{
+	const char *p = (const char *)user;
+
+	return strneq(path, p, PATH_MAX);
+}
+
+static int __is_in_path(const char *pathname, const char *path)
+{
+	return __path_iterate(path, __is_in_path_callback, (void *)pathname);
+}
+
+static int __so_is_lib(const char *path)
+{
+	return __strncmp(__basename(path), "lib") == 0;
+}
+
 /*
  * Stolen and hacked from musl (ldso/dynlink.c)
  *
@@ -175,6 +155,131 @@ static int __variable_has_dynamic_string_tokens(const char *value)
 static ssize_t __getneeded(const char *, char *, size_t);
 static ssize_t __getrpath(const char *, char *, size_t);
 static ssize_t __getrunpath(const char *, char *, size_t);
+static int __getflags_1(const char *, uint32_t *);
+static ssize_t __getdeflib(const char *, char *, size_t);
+
+static int __ldso_preload_needed(const char *, const char *, char *, size_t);
+
+struct __ldso_preload_needed_context {
+	const char *library_path;
+	char *buf;
+	size_t bufsize;
+};
+
+static int __ldso_preload_needed_callback(const char *needed, void *user)
+{
+	struct __ldso_preload_needed_context *ctx =
+				  (struct __ldso_preload_needed_context *)user;
+	char buf[PATH_MAX];
+	ssize_t siz;
+	int ret;
+
+	/* FIXME: skipping */
+	if (*needed == '/')
+		return 0;
+
+	siz = __path_access(needed, F_OK, ctx->library_path, buf, sizeof(buf));
+	if (siz == -1)
+		return -1;
+
+	/* Ignore none-libraries (i.e. linux-vdso.so.1, ld.so-ish...) */
+	if (!__so_is_lib(buf))
+		return 0;
+
+	/* The shared object is already in the buffer */
+	ret = __is_in_path(buf, ctx->buf);
+	if (ret == -1 || ret == 1)
+		return 0;
+
+	/* Add the needed shared objects to buf */
+	return __ldso_preload_needed(buf, ctx->library_path, ctx->buf,
+				     ctx->bufsize);
+}
+
+static int __ldso_preload_needed(const char *path, const char *library_path,
+				 char *buf, size_t bufsize)
+{
+	struct __ldso_preload_needed_context ctx;
+	char needed[PATH_MAX];
+	ssize_t siz;
+	int ret;
+
+	siz = __getneeded(path, needed, sizeof(needed));
+	if (siz == -1)
+		return -1;
+
+	/* Add the needed shared objects to path first */
+	ctx.library_path = library_path;
+	ctx.buf = buf;
+	ctx.bufsize = bufsize;
+	ret = __path_iterate(needed, __ldso_preload_needed_callback, &ctx);
+	if (ret == -1)
+		return -1;
+
+	/* Add the shared object to path then */
+	__path_strncat(buf, path, bufsize);
+
+	return 0;
+}
+
+static const char *__getlibiamroot(Elf64_Ehdr *, const char *, int);
+static const char *__getld_preload(Elf64_Ehdr *, const char *, int abi);
+static const char *__getld_library_path(Elf64_Ehdr *, const char *, int);
+
+/*
+ * Note: The library libiamroot.so is **NOT** linked to any library, even the
+ * libc. Therefore, it has no DT_NEEDED shared objects; the libc.so, libdl.so
+ * and libpthread.so **HAVE TO** be preloaded manually.
+ */
+static int __ldso_preload_libiamroot_so(Elf64_Ehdr *ehdr, const char *ldso,
+					int abi, char *buf, size_t bufsize)
+{
+	struct __ldso_preload_needed_context ctx;
+	const char *library_path;
+	const char *needed;
+	const char *path;
+
+	path = __getlibiamroot(ehdr, ldso, abi);
+	if (!path)
+		return -1;
+
+	library_path = __getld_library_path(ehdr, ldso, abi);
+	if (!library_path)
+		return -1;
+
+	needed = __getld_preload(ehdr, ldso, abi);
+	if (!needed)
+		return -1;
+
+	/* Add the shared object to buffer first */
+	__path_strncat(buf, path, bufsize);
+
+	/* Add the needed shared objects to buffer then */
+	ctx.library_path = library_path;
+	ctx.buf = buf;
+	ctx.bufsize = bufsize;
+	return __path_iterate(needed, __ldso_preload_needed_callback, &ctx);
+}
+
+static int __ldso_preload_executable(const char *path,
+				     const char *library_path,
+				     char *buf,
+				     size_t bufsize)
+{
+	struct __ldso_preload_needed_context ctx;
+	char needed[PATH_MAX];
+	ssize_t siz;
+
+	siz = __getneeded(path, needed, sizeof(needed));
+	if (siz == -1)
+		return -1;
+
+	/* Add the needed shared objects to path only */
+	ctx.library_path = library_path;
+	ctx.buf = buf;
+	ctx.bufsize = bufsize;
+	return __path_iterate(needed, __ldso_preload_needed_callback, &ctx);
+}
 
 static int __dl_is_opened(const char *path)
 {
@@ -248,34 +353,6 @@ int __dlopen_needed(const char *path)
 
 	/* Open the needed shared objects */
 	return __path_iterate(needed, __dlopen_needed_callback, library_path);
-}
-
-static int __librarypath_callback(const char *library, void *user)
-{
-	const char *library_path = (const char *)user;
-	char buf[PATH_MAX];
-	ssize_t siz;
-
-	/* ignore dynamic loaders */
-	if (streq(library, "ld.so") || __strneq(library, "ld-"))
-		return 0;
-
-	if (*library != '/') {
-		siz = __path_access(library, F_OK, library_path, buf,
-				    sizeof(buf));
-		if (siz == -1)
-			__warning("%s: library not found in library-path %s\n",
-				  library, library_path);
-
-		goto exit;
-	}
-
-	siz = path_resolution(AT_FDCWD, library, buf, sizeof(buf), 0);
-	if (siz == -1)
-		return -1;
-
-exit:
-	return __path_appendenv("ld_preload", buf, 1);
 }
 
 static int __ld_ldso_abi(const char *path, char ldso[NAME_MAX], int *abi)
@@ -1168,43 +1245,35 @@ static const char *__getld_library_path(Elf64_Ehdr *ehdr, const char *ldso,
 	return "/lib:/usr/local/lib:/usr/lib";
 }
 
-static char *__setenv_ld_preload(Elf64_Ehdr *ehdr, const char *ldso, int abi)
+static ssize_t __ld_library_path(const char *, char *, size_t);
+
+/*
+ * Note: This resolves all the needed shared objects to preload in order to
+ * prevent from loading the shared objects from the host system.
+*/
+static char *__setenv_ld_preload(Elf64_Ehdr *ehdr, const char *ldso, int abi,
+				 const char *path)
 {
-	char path[PATH_MAX];
-	char val[PATH_MAX];
-	char *runpath;
-	char *needed;
-	char *rpath;
-	int ret;
-	(void)ehdr;
+	char library_path[PATH_MAX];
+	char buf[PATH_MAX];
+	ssize_t siz;
+	int err;
 
-	__strncpy(path, __getld_library_path(ehdr, ldso, abi));
-
-	rpath = getenv("rpath");
-	if (rpath)
-		__path_strncat(path, rpath, sizeof(path));
-
-	runpath = getenv("runpath");
-	if (runpath)
-		__path_strncat(path, runpath, sizeof(path));
-
-	__strncpy(val, __getld_preload(ehdr, ldso, abi));
-
-	needed = getenv("needed");
-	if (needed)
-		__path_strncat(val, needed, sizeof(val));
-
-	ret = unsetenv("ld_preload");
-	if (ret)
+	*buf = 0;
+	err = __ldso_preload_libiamroot_so(ehdr, ldso, abi, buf, sizeof(buf));
+	if (err == -1)
 		return NULL;
 
-	ret = __path_iterate(val, __librarypath_callback, path);
-	if (ret == -1)
+	siz = __ld_library_path(path, library_path, sizeof(library_path));
+	if (siz == -1)
 		return NULL;
 
-	__strncpy(val, __getlibiamroot(ehdr, ldso, abi));
-	ret = __path_prependenv("ld_preload", val, 1);
-	if (ret == -1)
+	err = __ldso_preload_executable(path, library_path, buf, sizeof(buf));
+	if (err == -1)
+		return NULL;
+
+	err = setenv("ld_preload", buf, 1);
+	if (err == -1)
 		return NULL;
 
 	return getenv("ld_preload");
@@ -1254,14 +1323,18 @@ static int __secure_execution_mode()
 	return ruid != euid || rgid != egid;
 }
 
-static char *__setenv_ld_library_path(Elf64_Ehdr *ehdr, const char *ldso,
-				      int abi)
+/*
+ * Note: This resolves all the library path of the executable file in order to
+ * prevent from loading the shared objects from the host system.
+*/
+static ssize_t __ld_library_path(const char *path, char *buf, size_t bufsize)
 {
 	char *ld_library_path;
-	char val[PATH_MAX];
-	int flags_1, ret;
-	char *runpath;
-	char *rpath;
+	int err, has_runpath;
+	char tmp[PATH_MAX];
+	uint32_t flags_1;
+
+	*buf = 0;
 
 	/*
 	 * According to dl.so(8)
@@ -1271,12 +1344,13 @@ static char *__setenv_ld_library_path(Elf64_Ehdr *ehdr, const char *ldso,
 	 * /lib64, and then /usr/lib64.) If the binary was linked with the
 	 * -z nodeflib linker option, this step is skipped.
 	 */
-	flags_1 = strtol(getenv("flags_1") ?: "0", NULL, 0);
+	err = __getflags_1(path, &flags_1);
 	if (!(flags_1 & DF_1_NODEFLIB)) {
-		__strncpy(val, __getld_library_path(ehdr, ldso, abi));
-		ret = __path_setenv(__getrootdir(), "ld_library_path", val, 1);
-		if (ret == -1)
-			return NULL;
+		err = __getdeflib(path, tmp, sizeof(tmp));
+		if (err == -1)
+			return -1;
+
+		__path_strncat(buf, tmp, bufsize);
 	}
 
 	/*
@@ -1298,18 +1372,13 @@ static char *__setenv_ld_library_path(Elf64_Ehdr *ehdr, const char *ldso,
 	 * unlike DT_RPATH, which is applied to searches for all children in
 	 * the dependency tree.
 	 */
-	runpath = getenv("runpath");
-	if (runpath) {
-		__strncpy(val, runpath);
-		ret = __path_setenv(__getrootdir(), "iamroot_runpath", val, 1);
-		if (ret == -1)
-			return NULL;
+	err = __getrunpath(path, tmp, bufsize);
+	if (err == -1)
+		return -1;
 
-		__strncpy(val, getenv("iamroot_runpath"));
-		ret = __path_prependenv("ld_library_path", val, 1);
-		if (ret == -1)
-			return NULL;
-	}
+	has_runpath = err > 0;
+	if (has_runpath)
+		__path_strncat(buf, tmp, bufsize);
 
 	/*
 	 * (2)  Using the environment variable LD_LIBRARY_PATH, unless the
@@ -1317,36 +1386,38 @@ static char *__setenv_ld_library_path(Elf64_Ehdr *ehdr, const char *ldso,
 	 * which case this variable is ignored.
 	 */
 	ld_library_path = getenv("LD_LIBRARY_PATH");
-	if (ld_library_path && !__secure_execution_mode()) {
-		__strncpy(val, ld_library_path);
-		ret = __path_setenv(__getrootdir(), "iamroot_ld_library_path",
-				    val, 1);
-		if (ret == -1)
-			return NULL;
-
-		__strncpy(val, getenv("iamroot_ld_library_path"));
-		ret = __path_prependenv("ld_library_path", val, 1);
-		if (ret == -1)
-			return NULL;
-	}
+	if (ld_library_path && !__secure_execution_mode())
+		__path_strncat(buf, ld_library_path, bufsize);
 
 	/*
 	 * (1)  Using the directories specified in the DT_RPATH dynamic section
 	 * attribute of the binary if present and DT_RUNPATH attribute does not
 	 * exist. Use of DT_RPATH is deprecated.
 	 */
-	rpath = getenv("rpath");
-	if (rpath && (!runpath || (runpath && !*runpath))) {
-		__strncpy(val, rpath);
-		ret = __path_setenv(__getrootdir(), "iamroot_rpath", val, 1);
-		if (ret == -1)
-			return NULL;
+	if (!has_runpath) {
+		err = __getrpath(path, tmp, sizeof(tmp));
+		if (err == -1)
+			return -1;
 
-		__strncpy(val, getenv("iamroot_rpath"));
-		ret = __path_prependenv("ld_library_path", val, 1);
-		if (ret == -1)
-			return NULL;
+		__path_strncat(buf, tmp, bufsize);
 	}
+
+	return strnlen(buf, bufsize);
+}
+
+static char *__setenv_ld_library_path(const char *path)
+{
+	char buf[PATH_MAX];
+	ssize_t siz;
+	int err;
+
+	siz = __ld_library_path(path, buf, sizeof(buf));
+	if (siz == -1)
+		return NULL;
+
+	err = __path_setenv(__getrootdir(), "ld_library_path", buf, 1);
+	if (err == -1)
+		return NULL;
 
 	return getenv("ld_library_path");
 }
@@ -1365,26 +1436,26 @@ static int __flags_callback(const void *data, size_t size, void *user)
 	return 0;
 }
 
-static int __setenv_flags_1(int fd)
+static int __fgetflags_1(int fd, uint32_t *flags)
 {
-	char buf[BUFSIZ];
-	uint32_t flags;
-	int ret;
+	*flags = 0;
+	return __dl_iterate_shared_object(fd, DT_FLAGS_1, __flags_callback,
+					  flags);
+}
 
-	ret = __dl_iterate_shared_object(fd, DT_FLAGS_1, __flags_callback,
-					 &flags);
-	if (ret == -1)
+static int __getflags_1(const char *path, uint32_t *flags)
+{
+	int fd, ret;
+
+	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
+	if (fd == -1)
 		return -1;
 
-	ret = _snprintf(buf, sizeof(buf), "0x%x", flags);
-	if (ret == -1)
-		return -1;
+	ret = __fgetflags_1(fd, flags);
 
-	ret = setenv("flags_1", buf, 1);
-	if (ret == -1)
-		return -1;
+	__close(fd);
 
-	return flags;
+	return ret;
 }
 
 static int __path_callback(const void *data, size_t size, void *user)
@@ -1641,7 +1712,7 @@ static ssize_t __getdeflib(const char *path, char *buf, size_t bufsize)
 }
 
 __attribute__((visibility("hidden")))
-ssize_t __getlibrary_path(const char *path, char *buf, size_t bufsize)
+ssize_t __dl_library_path(const char *path, char *buf, size_t bufsize)
 {
 	const char *library_path;
 	char tmp[PATH_MAX];
@@ -1780,67 +1851,6 @@ ssize_t __getlibrary_path(const char *path, char *buf, size_t bufsize)
 	return strnlen(buf, bufsize);
 }
 
-static char *__setenv_needed(int fd)
-{
-	char buf[PATH_MAX];
-	ssize_t err;
-	int ret;
-
-	err = __fgetneeded(fd, buf, sizeof(buf));
-	if (err == -1)
-		return NULL;
-
-	ret = setenv("needed", buf, 1);
-	if (ret)
-		return NULL;
-
-	return getenv("needed");
-}
-
-static char *__setenv_rpath(int fd)
-{
-	char buf[PATH_MAX];
-	ssize_t siz;
-	int n, ret;
-
-	siz = __fgetrpath(fd, buf, sizeof(buf));
-	if (siz == -1)
-		return NULL;
-
-	n = __variable_has_dynamic_string_tokens(buf);
-	if (n)
-		__warning("%s: RPATH has dynamic %i string token(s): %s\n",
-			  __fpath(fd), n, buf);
-
-	ret = setenv("rpath", buf, 1);
-	if (ret)
-		return NULL;
-
-	return getenv("rpath");
-}
-
-static char *__setenv_runpath(int fd)
-{
-	char buf[PATH_MAX];
-	ssize_t siz;
-	int n, ret;
-
-	siz = __fgetrunpath(fd, buf, sizeof(buf));
-	if (siz == -1)
-		return NULL;
-
-	n = __variable_has_dynamic_string_tokens(buf);
-	if (n)
-		__warning("%s: RUNPATH has dynamic %i string token(s): %s\n",
-			  __fpath(fd), n, buf);
-
-	ret = setenv("runpath", buf, 1);
-	if (ret)
-		return NULL;
-
-	return getenv("runpath");
-}
-
 static char *__setenv_inhibit_rpath()
 {
 	char *inhibit_rpath;
@@ -1899,13 +1909,11 @@ int __loader(const char *path, char * const argv[], char *interp,
 	 * The interpreter has to preload its libiamroot.so library.
 	 */
 	if (__strneq(buf, "/lib/ld") || __strneq(buf, "/lib64/ld")) {
-		char *argv0, *needed, *rpath, *runpath, *inhibit_rpath,
-		     *ld_library_path, *ld_preload;
+		char *argv0, *inhibit_rpath, *ld_library_path, *ld_preload;
 		int has_argv0 = 1, has_preload = 1, has_inhibit_rpath = 0,
 		    has_inhibit_cache = 0;
 		int i, j, shift = 1;
 		char * const *arg;
-		int flags_1;
 
 		/*
 		 * the glibc world supports --argv0 since 2.33, --preload since
@@ -1929,33 +1937,16 @@ int __loader(const char *path, char * const argv[], char *interp,
 				goto close;
 		}
 
-		flags_1 = __setenv_flags_1(fd);
-		if (flags_1 & DF_1_NODEFLIB)
-			__info("%s: FLAGS_1=0x%08x (DF_1_NODEFLIB)\n", path,
-			       flags_1);
-
-		needed = __setenv_needed(fd);
-		if (needed)
-			__info("%s: NEEDED=%s\n", path, needed);
-
-		rpath = __setenv_rpath(fd);
-		if (rpath)
-			__info("%s: RPATH=%s\n", path, rpath);
-
-		runpath = __setenv_runpath(fd);
-		if (runpath)
-			__info("%s: RUNPATH=%s\n", path, runpath);
-
 		inhibit_rpath = __setenv_inhibit_rpath();
 		if (inhibit_rpath)
 			__notice("%s: %s\n", __xstr(inhibit_rpath),
 				 inhibit_rpath);
 
-		ld_library_path = __setenv_ld_library_path(&ehdr, ldso, abi);
+		ld_library_path = __setenv_ld_library_path(path);
 		if (!ld_library_path)
 			__warning("%s: is unset!\n", __xstr(ld_library_path));
 
-		ld_preload = __setenv_ld_preload(&ehdr, ldso, abi);
+		ld_preload = __setenv_ld_preload(&ehdr, ldso, abi, path);
 		if (!ld_preload)
 			__warning("%s: is unset!\n", __xstr(ld_preload));
 
@@ -2061,11 +2052,9 @@ int __loader(const char *path, char * const argv[], char *interp,
 
 		ret = i;
 	} else {
-		char *argv0, *needed, *rpath, *runpath, *ld_library_path,
-		     *ld_preload;
+		char *argv0, *ld_library_path, *ld_preload;
 		int i, j, shift = 1;
 		char * const *arg;
-		int flags_1;
 
 		siz = path_resolution(AT_FDCWD, buf, interp, interpsiz, 0);
 		if (siz == -1)
@@ -2092,24 +2081,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 		if (ret)
 			goto close;
 
-		flags_1 = __setenv_flags_1(fd);
-		if (flags_1 & DF_1_NODEFLIB)
-			__info("%s: FLAGS_1=0x%08x (DF_1_NODEFLIB)\n", path,
-			       flags_1);
-
-		needed = __setenv_needed(fd);
-		if (needed)
-			__info("%s: NEEDED=%s\n", path, needed);
-
-		rpath = __setenv_rpath(fd);
-		if (rpath)
-			__info("%s: RPATH=%s\n", path, rpath);
-
-		runpath = __setenv_runpath(fd);
-		if (runpath)
-			__info("%s: RUNPATH=%s\n", path, runpath);
-
-		ld_library_path = __setenv_ld_library_path(&ehdr, ldso, abi);
+		ld_library_path = __setenv_ld_library_path(path);
 		if (ld_library_path) {
 			ret = setenv("LD_LIBRARY_PATH", ld_library_path, 1);
 			if (ret)
@@ -2120,7 +2092,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 				goto close;
 		}
 
-		ld_preload = __setenv_ld_preload(&ehdr, ldso, abi);
+		ld_preload = __setenv_ld_preload(&ehdr, ldso, abi, path);
 		if (ld_preload) {
 			ret = setenv("LD_PRELOAD", ld_preload, 1);
 			if (ret)

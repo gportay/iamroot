@@ -17,10 +17,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
-- The functions `dlopen()` and `dlmopen()` resolve and open manually the
-  `DT_NEEDED` shared objects of the given shared object, as described by
-  [dlopen(3)] and at the exception of the cache file `/etc/ld.so.cache`
-  (maintained by [ldconfig(8)]) that is unchecked yet
+- Resolve manually the `DT_NEEDED` shared objects to preload them along with
+  the `LD_PRELOAD` shared objects to preload (with the [ld.so(8)]) or to open
+  them along with the shared object to open (with the functions `dlopen()` and
+  `dlmopen()`), as described by [ld.so(8)] and [dlopen(3)], and at the
+  exception of the cache file `/etc/ld.so.cache` (maintained by [ldconfig(8)])
+  that is unchecked yet
 - Use both ELF header and [dynamic loader][ld.so(8)] (`SONAME` and `ABI`) to
   detect the path to the library to preload
 - Look up the content of the deprecated environment variable `DT_RPATH` library

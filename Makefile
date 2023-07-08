@@ -372,6 +372,10 @@ mrproper: clean
 %-debug6:
 	$(MAKE) $* IAMROOT_DEBUG=6
 
+.PHONY: define-list
+define-list:
+	$(CPP) -dM - </dev/null
+
 PREPROCESS.c = $(PREPROCESS.S)
 %.i: %.c
 	$(PREPROCESS.c) $(OUTPUT_OPTION) $<

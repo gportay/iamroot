@@ -238,11 +238,7 @@ int __dlopen_needed(const char *path)
 	if (ret == -1 || ret == 1)
 		return ret;
 
-	/*
-	 * NULL for the calling object (i.e., the shared library or executable
-	 * from which dlopen() is called).
-	 */
-	siz = __dl_library_path(NULL, library_path, sizeof(library_path));
+	siz = __dl_library_path(path, library_path, sizeof(library_path));
 	if (siz == -1)
 		return -1;
 
@@ -1474,6 +1470,7 @@ ssize_t __getlibrary_path(const char *path, char *buf, size_t bufsize)
 		return __set_errno(EINVAL, -1);
 
 	*buf = 0;
+	/* FIXME: The executable file RPATH is looked up twice! */
 	if (!path)
 		path = __execfn();
 
@@ -1485,18 +1482,55 @@ ssize_t __getlibrary_path(const char *path, char *buf, size_t bufsize)
 	 * and does not contain a DT_RUNPATH tag, then the directories listed
 	 * in the DT_RPATH tag are searched.
 	 */
+	/* The man-page is incomplete! */
 	ret = __getrunpath(path, tmp, sizeof(tmp));
 	if (ret == -1)
 		return -1;
 
+	/*
+	 * According to glibc (elf/dl-load.c)
+	 *
+	 * When the object has the RUNPATH information we don't use any RPATHs.
+	 */
 	has_runpath = ret > 0;
 	if (!has_runpath) {
-		ret = __getrpath(path, tmp, sizeof(tmp));
+		char rpath[PATH_MAX];
+
+		/*
+		 * According to glibc (elf/dl-load.c)
+		 *
+		 * First try the DT_RPATH of the dependent object that caused
+		 * NAME to be loaded. Then that object's dependent, and on up.
+		 */
+		ret = __getrpath(path, rpath, sizeof(rpath));
 		if (ret == -1)
 			return -1;
 
 		if (ret != 0)
-			__path_strncat(buf, tmp, bufsize);
+			__path_strncat(buf, rpath, bufsize);
+
+		/*
+		 * According to glibc (elf/dl-load.c)
+		 *
+		 * If dynamically linked, try the DT_RPATH of the executable
+		 * itself.
+		 *
+		 * According to glibc (elf/get-dynamic-info.h)
+		 *
+		 * If both RUNPATH and RPATH are given, the latter is ignored.
+		 */
+		ret = __getrunpath(__execfn(), rpath, sizeof(rpath));
+		if (ret == -1)
+			return -1;
+
+		if (ret <= 0) {
+			ret = __getrpath(__execfn(), rpath, sizeof(rpath));
+			if (ret == -1)
+				return -1;
+
+			if (ret != 0)
+				__path_strncat(buf, rpath, bufsize);
+		}
 	}
 
 	/*
@@ -1506,6 +1540,11 @@ ssize_t __getlibrary_path(const char *path, char *buf, size_t bufsize)
 	 * measure, this variable is ignored for set-user-ID and set-group-ID
 	 * programs.)
 	 */
+	/*
+	 * According to glibc (elf/dl-load.c)
+	 *
+	 * Try the LD_LIBRARY_PATH environment variable.
+	 */
 	library_path = getenv("LD_LIBRARY_PATH");
 	if (library_path)
 		__path_strncat(buf, library_path, bufsize);
@@ -1514,6 +1553,11 @@ ssize_t __getlibrary_path(const char *path, char *buf, size_t bufsize)
 	 * •  (ELF only) If the calling object contains a DT_RUNPATH tag, then
 	 * the directories listed in that tag are searched.
 	 */
+	/*
+	 * According to glibc (elf/dl-load.c)
+	 *
+	 * Look at the RUNPATH information for this binary.
+	 */
 	if (has_runpath)
 		__path_strncat(buf, tmp, bufsize);
 
@@ -1521,11 +1565,23 @@ ssize_t __getlibrary_path(const char *path, char *buf, size_t bufsize)
 	 * •  The cache file /etc/ld.so.cache (maintained by ldconfig(8)) is
 	 * checked to see whether it contains an entry for filename.
 	 */
+	/*
+	 * According to glibc (elf/dl-load.c)
+	 *
+	 * Check the list of libraries in the file /etc/ld.so.cache, for
+	 * compatibility with Linux's ldconfig program.
+	 */
 	/* TODO: This is not applicable, at least for now. */
 
 	/*
 	 * •  The directories /lib and /usr/lib are searched (in that order).
 	 */
+	/*
+	 * According to glibc (elf/dl-load.c)
+	 *
+	 * Finally, try the default path.
+	 */
+	/* TODO: This is to be reworked, at least in a close future. */
 	library_path = __library_path();
 	if (library_path)
 		__path_strncat(buf, library_path, bufsize);

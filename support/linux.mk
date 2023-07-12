@@ -489,55 +489,55 @@ $(O)-i686-linux/libiamroot.so: override CFLAGS += -fno-stack-protector
 $(eval $(call libiamroot_so,i686,linux,2))
 
 ifneq ($(shell command -v arm-linux-gnueabi-gcc 2>/dev/null),)
-$(O)-arm-linux/libiamroot.so: CC = arm-linux-gnueabi-gcc
+$(O)-arm-linux/libiamroot.so: override CC = arm-linux-gnueabi-gcc
 $(eval $(call libiamroot_so,arm,linux,3))
 endif
 
 ifneq ($(shell command -v arm-linux-gnueabihf-gcc 2>/dev/null),)
-$(O)-armhf-linux-armhf/libiamroot.so: CC = arm-linux-gnueabihf-gcc
+$(O)-armhf-linux-armhf/libiamroot.so: override CC = arm-linux-gnueabihf-gcc
 $(eval $(call libiamroot_so,armhf,linux-armhf,3))
 endif
 
 ifneq ($(shell command -v aarch64-linux-gnu-gcc 2>/dev/null),)
-$(O)-aarch64-linux-aarch64/libiamroot.so: CC = aarch64-linux-gnu-gcc
+$(O)-aarch64-linux-aarch64/libiamroot.so: override CC = aarch64-linux-gnu-gcc
 $(eval $(call libiamroot_so,aarch64,linux-aarch64,1))
 endif
 
 ifneq ($(shell command -v riscv64-linux-gnu-gcc 2>/dev/null),)
-$(O)-riscv64-linux-riscv64-lp64d/libiamroot.so: CC = riscv64-linux-gnu-gcc
+$(O)-riscv64-linux-riscv64-lp64d/libiamroot.so: override CC = riscv64-linux-gnu-gcc
 $(eval $(call libiamroot_so,riscv64,linux-riscv64-lp64d,1))
 endif
 
 ifneq ($(shell command -v i386-musl-gcc 2>/dev/null),)
-$(O)-i686-musl-i386/libiamroot.so: CC = i386-musl-gcc
+$(O)-i686-musl-i386/libiamroot.so: override CC = i386-musl-gcc
 $(O)-i686-musl-i386/libiamroot.so: override CFLAGS += -fno-stack-protector
 $(eval $(call libiamroot_so,i686,musl-i386,1))
 endif
 
 ifneq ($(shell command -v musl-gcc 2>/dev/null),)
-$(O)-x86_64-musl-x86_64/libiamroot.so: CC = musl-gcc
+$(O)-x86_64-musl-x86_64/libiamroot.so: override CC = musl-gcc
 $(eval $(call libiamroot_so,x86_64,musl-x86_64,1))
 endif
 
 ifneq ($(shell command -v arm-linux-musleabihf-gcc 2>/dev/null),)
-$(O)-armhf-musl-armhf/libiamroot.so: CC = arm-linux-musleabihf-gcc
+$(O)-armhf-musl-armhf/libiamroot.so: override CC = arm-linux-musleabihf-gcc
 $(eval $(call libiamroot_so,armhf,musl-armhf,1))
 endif
 
 ifneq ($(shell command -v aarch64-linux-musl-gcc 2>/dev/null),)
-$(O)-aarch64-musl-aarch64/libiamroot.so: CC = aarch64-linux-musl-gcc
+$(O)-aarch64-musl-aarch64/libiamroot.so: override CC = aarch64-linux-musl-gcc
 $(eval $(call libiamroot_so,aarch64,musl-aarch64,1))
 endif
 
 ifneq ($(shell command -v riscv64-linux-musl-gcc 2>/dev/null),)
-$(O)-riscv64-musl-riscv64/libiamroot.so: CC = riscv64-linux-musl-gcc
+$(O)-riscv64-musl-riscv64/libiamroot.so: override CC = riscv64-linux-musl-gcc
 $(eval $(call libiamroot_so,riscv64,musl-riscv64,1))
 endif
 endif
 
 ifneq ($(CLANG),0)
 ifneq ($(shell command -v clang 2>/dev/null),)
-$(O)-clang-linux-x86-64/libiamroot.so: CC = clang
+$(O)-clang-linux-x86-64/libiamroot.so: override CC = clang
 $(eval $(call libiamroot_so,clang,linux-x86-64,2))
 endif
 endif

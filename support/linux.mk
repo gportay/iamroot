@@ -516,22 +516,8 @@ endif
 
 ifdef CLANG
 ifneq ($(shell command -v clang 2>/dev/null),)
-all: clang/libiamroot-linux-x86-64.so.2
-
-.PRECIOUS: clang/libiamroot-linux-x86_64.so.2
-clang/libiamroot-linux-x86-64.so.2: $(O)-clang-linux-x86-64/libiamroot.so
-
-$(O)-clang-linux-x86-64/libiamroot.so:
-
-clang/libiamroot-linux-x86-64.so.2:
-clang/libiamroot-linux-x86-64.so.2: export CC = clang
-
-clean: clean-clang-linux-x86-64.2
-
-.PHONY: clean-clang-linux-x86-64.2
-clean-clang-linux-x86-64.2:
-	rm -Rf $(O)-clang-x86-64/
-	rm -Rf clang/
+$(O)-clang-linux-x86-64/libiamroot.so: CC = clang
+$(eval $(call libiamroot_so,clang,linux-x86-64,2))
 endif
 endif
 endif

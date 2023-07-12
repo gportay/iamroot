@@ -40,16 +40,12 @@
 	s,[[:digit:]]\+,X,
 }
 
-# Retrieving package filesystem-84.87-3.2.x86_64 (X/XXX),  X.X KiB (  XXX   B unpacked)
-/^Retrieving package/{
-	s,\([[:lower:][:upper:][:digit:]._+-]\+\)-\([[:digit:]]\+:[[:alnum:]._~^+-]\+\|[[:alnum:]._~^+-]\+\)-\([[:alnum:].%{?}-]\+\)\.\([[:lower:][:digit:]]\+\.[[:alnum:]_]\+\|[[:alnum:]_]\+\),\1,
-	s,([[:digit:]]\+\/[[:digit:]]\+),(XXX/XXX),
-	s,[[:digit:] .]\{5\,6\}\s\([MK]i\|  \)B, XXX.X \1B,g
-}
-
+# Retrieving: filesystem-84.87-12.1.x86_64 (openSUSE-Tumbleweed-Oss) (X/XXX),  XX.X KiB    
 # Retrieving: filesystem-84.87-3.2.x86_64.rpm [done]
 /^Retrieving:/{
 	s,\([[:lower:][:upper:][:digit:]._+-]\+\)-\([[:digit:]]\+:[[:alnum:]._~^+-]\+\|[[:alnum:]._~^+-]\+\)-\([[:alnum:].%{?}-]\+\)\.\([[:lower:][:digit:]]\+\.[[:alnum:]_]\+\|[[:alnum:]_]\+\),\1,
+	s,([[:digit:]]\+\/[[:digit:]]\+),(XXX/XXX),
+	s,[[:digit:] .]\{5\,6\}\s\([MK]i\|  \)B, XXX.X \1B,g
 }
 
 # ( XX/XXX) Installing: filesystem-84.87-3.2.x86_64 [............done]

@@ -55,5 +55,7 @@ exit:
 }
 
 #ifdef __GLIBC__
+int __statfs (const char *__file, struct statfs *__buf)
+     __THROW __nonnull ((1, 2));
 weak_alias(statfs, __statfs);
 #endif

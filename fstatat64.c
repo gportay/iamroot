@@ -74,7 +74,13 @@ exit:
 	return ret;
 }
 
+int __fstatat64 (int __fd, const char *__restrict __file,
+		 struct stat64 *__restrict __buf, int __flag)
+     __THROW __nonnull ((2, 3));
 weak_alias(fstatat64, __fstatat64);
+int __fstatat_time64 (int __fd, const char *__restrict __file,
+		      struct stat64 *__restrict __buf, int __flag)
+     __THROW __nonnull ((2, 3));
 weak_alias(fstatat64, __fstatat_time64);
 #endif
 #endif

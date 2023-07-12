@@ -52,5 +52,9 @@ exit:
 }
 
 #ifdef __GLIBC__
+int __utimensat64 (int __fd, const char *__path,
+		   const struct timespec __times[2],
+		   int __flags)
+     __THROW __nonnull ((2));
 weak_alias(utimensat, __utimensat64);
 #endif

@@ -55,5 +55,7 @@ exit:
 	return ret;
 }
 
+int __statfs64 (const char *__file, struct statfs64 *__buf)
+     __THROW __nonnull ((1, 2));
 weak_alias(statfs64, __statfs64);
 #endif

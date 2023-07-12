@@ -66,7 +66,9 @@ exit:
 	return ret;
 }
 
+int __fstat64 (int __fd, struct stat64 *__buf) __THROW __nonnull ((2));
 weak_alias(fstat64, __fstat64);
+int __fstat_time64 (int __fd, struct stat64 *__buf) __THROW __nonnull ((2));
 weak_alias(fstat64, __fstat_time64);
 #endif
 #endif

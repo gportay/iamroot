@@ -48,5 +48,15 @@ exit:
 }
 
 #ifdef __GLIBC__
+#ifndef __GLIBC_PREREQ
+#define __GLIBC_PREREQ(maj,min) 0
+#endif
+
+#if defined __GLIBC__ && !__GLIBC_PREREQ(2,36)
+DIR *opendir (const char *__name) __nonnull ((1));
+#else
+DIR *__opendir (const char *__name) __nonnull ((1))
+     __attribute_malloc__ __attr_dealloc (closedir, 1);
+#endif
 weak_alias(opendir, __opendir);
 #endif

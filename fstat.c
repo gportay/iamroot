@@ -69,5 +69,6 @@ exit:
 }
 
 #ifdef __GLIBC__
+int __fstat (int __fd, struct stat *__buf) __THROW __nonnull ((2));
 weak_alias(fstat, __fstat);
 #endif

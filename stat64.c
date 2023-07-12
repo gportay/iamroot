@@ -22,7 +22,11 @@ int stat64(const char *path, struct stat64 *statbuf)
 	return fstatat64(AT_FDCWD, path, statbuf, 0);
 }
 
+int __stat64 (const char *__restrict __file,
+	      struct stat64 *__restrict __buf) __THROW __nonnull ((1, 2));
 weak_alias(stat64, __stat64);
+int __stat_time64 (const char *__restrict __file,
+		   struct stat64 *__restrict __buf) __THROW __nonnull ((1, 2));
 weak_alias(stat64, __stat_time64);
 #endif
 #endif

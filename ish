@@ -260,7 +260,7 @@ then
 	IAMROOT_LIB="$IAMROOT_LIB:libdl.so.2"
 elif [[ "$os" == "FreeBSD" ]]
 then
-	IAMROOT_LIB="$IAMROOT_LIB:libdl.so"
+	IAMROOT_LIB="$IAMROOT_LIB:libdl.so.1"
 fi
 
 USER="${IAMROOT_USER}"

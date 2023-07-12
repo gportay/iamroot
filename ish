@@ -254,29 +254,6 @@ do
 	cd "$OLDPWD"
 done
 
-os="$(uname -o 2>/dev/null || uname -s 2>/dev/null)"
-release="$(uname -r 2>/dev/null)"
-if [[ "$os" == "GNU/Linux" ]]
-then
-	IAMROOT_LIB="$IAMROOT_LIB:libc.so.6:libdl.so.2:libpthread.so.0"
-elif [[ "$os" == "FreeBSD" ]]
-then
-	IAMROOT_LIB="$IAMROOT_LIB:libc.so.7:libdl.so.1"
-elif [[ "$os" == "OpenBSD" ]]
-then
-	case "$release" in
-	7.2)
-		IAMROOT_LIB="$IAMROOT_LIB:libc.so.96.2:libpthread.so.26.2"
-		;;
-	7.3|*)
-		IAMROOT_LIB="$IAMROOT_LIB:libc.so.97.0:libpthread.so.27.0"
-		;;
-	esac
-elif [[ "$os" == "NetBSD" ]]
-then
-	IAMROOT_LIB="$IAMROOT_LIB:/usr/lib/libc.so.12"
-fi
-
 USER="${IAMROOT_USER}"
 export USER
 

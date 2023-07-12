@@ -14,6 +14,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Chroot to a [Debian] riscv64 world; tested on [Debian RISC-V 64 Port]
 - Chroot to a [Debian] i386 world; tested on [Debian i386 Port]
 
+### Removed
+
+- Remove the preload of `libdl.so` and `libpthread.so` in `ish`
+
 ### Fixed
 
 - Fix the interception of the `_time64` variant functions `__fstat64_time64()`,

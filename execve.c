@@ -490,7 +490,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 					   *  1 /lib/ld.so
 					   *  2 LD_LINUX_ARGV1
 					   *  3 --preload
-					   *  4 libiamroot.so:libc.so:libdl.so
+					   *  4 libiamroot.so:$LD_PRELOAD
 					   *  5 --library-path
 					   *  6 /usr/lib:/lib
 					   *  7 --argv0

@@ -28,6 +28,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `ISH`, at the exception for `IAMROOT_SHELL` and `IAMROOT_SHELL_LVL` replaced
   by `ISH` and `ISHLVL`
 
+### Fixed
+
+- Fix the mispreloading of the needed libc.so shared object in `ish` (and
+  libpthread.so on Linux) if extra shared objects are preloaded via the
+  environment `LD_PRELOAD`
+
 ## [v10] - 2023-06-13
 
 ### Added

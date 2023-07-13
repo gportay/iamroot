@@ -1168,7 +1168,7 @@ static const char *__getld_library_path(Elf64_Ehdr *ehdr, const char *ldso,
 	return "/lib:/usr/local/lib:/usr/lib";
 }
 
-static char *__ld_preload(Elf64_Ehdr *ehdr, const char *ldso, int abi)
+static char *__setenv_ld_preload(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
 	char path[PATH_MAX];
 	char val[PATH_MAX];
@@ -1254,7 +1254,8 @@ static int __secure_execution_mode()
 	return ruid != euid || rgid != egid;
 }
 
-static char *__ld_library_path(Elf64_Ehdr *ehdr, const char *ldso, int abi)
+static char *__setenv_ld_library_path(Elf64_Ehdr *ehdr, const char *ldso,
+				      int abi)
 {
 	char *ld_library_path;
 	char val[PATH_MAX];
@@ -1364,7 +1365,7 @@ static int __flags_callback(const void *data, size_t size, void *user)
 	return 0;
 }
 
-static int __flags_1(int fd)
+static int __setenv_flags_1(int fd)
 {
 	char buf[BUFSIZ];
 	uint32_t flags;
@@ -1779,7 +1780,7 @@ ssize_t __getlibrary_path(const char *path, char *buf, size_t bufsize)
 	return strnlen(buf, bufsize);
 }
 
-static char *__needed(int fd)
+static char *__setenv_needed(int fd)
 {
 	char buf[PATH_MAX];
 	ssize_t err;
@@ -1796,7 +1797,7 @@ static char *__needed(int fd)
 	return getenv("needed");
 }
 
-static char *__rpath(int fd)
+static char *__setenv_rpath(int fd)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
@@ -1818,7 +1819,7 @@ static char *__rpath(int fd)
 	return getenv("rpath");
 }
 
-static char *__runpath(int fd)
+static char *__setenv_runpath(int fd)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
@@ -1840,7 +1841,7 @@ static char *__runpath(int fd)
 	return getenv("runpath");
 }
 
-static char *__inhibit_rpath()
+static char *__setenv_inhibit_rpath()
 {
 	char *inhibit_rpath;
 	char val[PATH_MAX];
@@ -1928,33 +1929,33 @@ int __loader(const char *path, char * const argv[], char *interp,
 				goto close;
 		}
 
-		flags_1 = __flags_1(fd);
+		flags_1 = __setenv_flags_1(fd);
 		if (flags_1 & DF_1_NODEFLIB)
 			__info("%s: FLAGS_1=0x%08x (DF_1_NODEFLIB)\n", path,
 			       flags_1);
 
-		needed = __needed(fd);
+		needed = __setenv_needed(fd);
 		if (needed)
 			__info("%s: NEEDED=%s\n", path, needed);
 
-		rpath = __rpath(fd);
+		rpath = __setenv_rpath(fd);
 		if (rpath)
 			__info("%s: RPATH=%s\n", path, rpath);
 
-		runpath = __runpath(fd);
+		runpath = __setenv_runpath(fd);
 		if (runpath)
 			__info("%s: RUNPATH=%s\n", path, runpath);
 
-		inhibit_rpath = __inhibit_rpath();
+		inhibit_rpath = __setenv_inhibit_rpath();
 		if (inhibit_rpath)
 			__notice("%s: %s\n", __xstr(inhibit_rpath),
 				 inhibit_rpath);
 
-		ld_library_path = __ld_library_path(&ehdr, ldso, abi);
+		ld_library_path = __setenv_ld_library_path(&ehdr, ldso, abi);
 		if (!ld_library_path)
 			__warning("%s: is unset!\n", __xstr(ld_library_path));
 
-		ld_preload = __ld_preload(&ehdr, ldso, abi);
+		ld_preload = __setenv_ld_preload(&ehdr, ldso, abi);
 		if (!ld_preload)
 			__warning("%s: is unset!\n", __xstr(ld_preload));
 
@@ -2091,24 +2092,24 @@ int __loader(const char *path, char * const argv[], char *interp,
 		if (ret)
 			goto close;
 
-		flags_1 = __flags_1(fd);
+		flags_1 = __setenv_flags_1(fd);
 		if (flags_1 & DF_1_NODEFLIB)
 			__info("%s: FLAGS_1=0x%08x (DF_1_NODEFLIB)\n", path,
 			       flags_1);
 
-		needed = __needed(fd);
+		needed = __setenv_needed(fd);
 		if (needed)
 			__info("%s: NEEDED=%s\n", path, needed);
 
-		rpath = __rpath(fd);
+		rpath = __setenv_rpath(fd);
 		if (rpath)
 			__info("%s: RPATH=%s\n", path, rpath);
 
-		runpath = __runpath(fd);
+		runpath = __setenv_runpath(fd);
 		if (runpath)
 			__info("%s: RUNPATH=%s\n", path, runpath);
 
-		ld_library_path = __ld_library_path(&ehdr, ldso, abi);
+		ld_library_path = __setenv_ld_library_path(&ehdr, ldso, abi);
 		if (ld_library_path) {
 			ret = setenv("LD_LIBRARY_PATH", ld_library_path, 1);
 			if (ret)
@@ -2119,7 +2120,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 				goto close;
 		}
 
-		ld_preload = __ld_preload(&ehdr, ldso, abi);
+		ld_preload = __setenv_ld_preload(&ehdr, ldso, abi);
 		if (ld_preload) {
 			ret = setenv("LD_PRELOAD", ld_preload, 1);
 			if (ret)

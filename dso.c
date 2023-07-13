@@ -1716,6 +1716,7 @@ ssize_t __dl_library_path(const char *path, char *buf, size_t bufsize)
 {
 	const char *library_path;
 	char tmp[PATH_MAX];
+	uint32_t flags_1;
 	int has_runpath;
 	ssize_t ret;
 
@@ -1834,11 +1835,14 @@ ssize_t __dl_library_path(const char *path, char *buf, size_t bufsize)
 	 *
 	 * Finally, try the default path.
 	 */
-	ret = __getdeflib(path, tmp, sizeof(tmp));
-	if (ret == -1)
-		return -1;
+	ret = __getflags_1(path, &flags_1);
+	if (!(flags_1 & DF_1_NODEFLIB)) {
+		ret = __getdeflib(path, tmp, sizeof(tmp));
+		if (ret == -1)
+			return -1;
 
-	__path_strncat(buf, tmp, bufsize);
+		__path_strncat(buf, tmp, bufsize);
+	}
 
 	/*
 	 * If the object specified by filename has dependencies on other shared

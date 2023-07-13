@@ -1800,7 +1800,7 @@ ssize_t __dl_library_path(const char *path, char *buf, size_t bufsize)
 	 * Try the LD_LIBRARY_PATH environment variable.
 	 */
 	library_path = getenv("LD_LIBRARY_PATH");
-	if (library_path)
+	if (library_path && !__secure_execution_mode())
 		__path_strncat(buf, library_path, bufsize);
 
 	/*

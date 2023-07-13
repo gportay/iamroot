@@ -29,9 +29,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   paths if the `DT_RUNPATH` is unset only
 - Do not look up the default library paths if the flag `DF_1_NODEFLIB` is set
   in the dynamic entry `DT_FLAGS_1`
-- The [dynamic loader][ld.so(8)] prepends the content of the environment
-  variable `LD_LIBRARY_PATH` to `--library-path` unless the executable file
-  is in secure execution mode
+- Do not lookup the content of the environment variable `LD_LIBRARY_PATH`
+  unless executable file runs in secure execution mode
 
 ### Removed
 

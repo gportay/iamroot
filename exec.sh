@@ -95,13 +95,29 @@ mountpoint)
 	notice "running" "$inchroot_path" "$@"
 	exec "$inchroot_path" "$@"
 	;;
-chfn|chkstat|pam-auth-update|update-ca-certificates|*.postinst)
+build-locale-archive|chfn|chkstat|pam-auth-update|update-ca-certificates|*.postinst)
 	fixme "not-running" "$argv0" "$@"
 	exit 0
 	;;
 busybox)
 	info "running" "$inchroot_path" "$@"
 	exec "$inchroot_path" "$@"
+	;;
+# /sbin/ldconfig: Can't create temporary cache file /etc/ld.so.cache~: Permission denied
+# /usr/sbin/glibc_post_upgrade: While trying to execute /sbin/ldconfig child exited with exit code 1
+glibc_post_upgrade.*)
+	if [ -r "$IAMROOT_ROOT/etc/ld.so.conf" ] &&
+	   ! grep -q "^include /etc/ld.so.conf.d/*.conf$" "$IAMROOT_ROOT/etc/ld.so.conf"
+	then
+		echo "include /etc/ld.so.conf.d/*.conf" >"$IAMROOT_ROOT/etc/ld.so.conf"
+	fi
+
+	if [ "${IAMROOT_ROOT:-/}" != / ]
+	then
+		exec "$IAMROOT_ROOT/sbin/ldconfig" -r "$IAMROOT_ROOT"
+	fi
+
+	exec "/sbin/ldconfig"
 	;;
 ldconfig|ldconfig.real)
 	if [ "${IAMROOT_ROOT:-/}" != / ]

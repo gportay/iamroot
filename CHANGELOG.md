@@ -13,6 +13,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Chroot to a [Debian] arm64 world; tested on [Debian ARM 64 Port]
 - Chroot to a [Debian] riscv64 world; tested on [Debian RISC-V 64 Port]
 - Chroot to a [Debian] i386 world; tested on [Debian i386 Port]
+- Chroot to a [glibc] pre-[ld.so(8)]'s `--preload` world; tested on [Fedora
+  30], based on [glibc 2.29]
 
 ### Removed
 
@@ -747,6 +749,7 @@ Initial release.
 [Debian RISC-V 64 Port]: https://wiki.debian.org/Ports/riscv64
 [Debian i386 Port]: https://www.debian.org/ports/i386/
 [Debian]: https://www.debian.org/
+[Fedora 30]: https://docs.fedoraproject.org/en-US/releases/f30/
 [Fedora ARM]: https://arm.fedoraproject.org/
 [Fedora]: https://getfedora.org/
 [FreeBSD]: https://www.freebsd.org/
@@ -765,6 +768,7 @@ Initial release.
 [dlopen(3)]: https://linux.die.net/man/3/dlopen
 [dnf(8)]: https://dnf.readthedocs.io/en/latest/command_ref.html
 [exec(3)]: https://linux.die.net/man/3/exec
+[glibc 2.29]: https://sourceware.org/glibc/wiki/Release/2.29
 [glibc]: https://www.gnu.org/software/libc/
 [ld.so(8)]: https://linux.die.net/man/8/ld.so
 [ldconfig(8)]: https://linux.die.net/man/8/ldconfig

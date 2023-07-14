@@ -755,6 +755,7 @@ ifneq ($(shell command -v dnf 2>/dev/null),)
 rootfs: x86_64-fedora-rootfs
 
 .PHONY: x86_64-fedora-rootfs
+fedora-rootfs: x86_64-fedora-31-rootfs
 fedora-rootfs: x86_64-fedora-32-rootfs
 fedora-rootfs: x86_64-fedora-33-rootfs
 fedora-rootfs: x86_64-fedora-34-rootfs
@@ -763,11 +764,13 @@ fedora-rootfs: x86_64-fedora-36-rootfs
 fedora-rootfs: x86_64-fedora-37-rootfs
 fedora-rootfs: x86_64-fedora-38-rootfs
 
+x86_64-fedora-31-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 x86_64-fedora-32-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 x86_64-fedora-33-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 x86_64-fedora-34-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 x86_64-fedora-35-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 x86_64-fedora-36-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
+$(eval $(call dnf-rootfs,x86_64,fedora,31))
 $(eval $(call dnf-rootfs,x86_64,fedora,32))
 $(eval $(call dnf-rootfs,x86_64,fedora,33))
 $(eval $(call dnf-rootfs,x86_64,fedora,34))
@@ -1235,6 +1238,7 @@ ifneq ($(shell command -v dnf 2>/dev/null),)
 fixme-support: fedora-support
 
 .PHONY: fedora-support
+fedora-support: support/x86_64-fedora-31-rootfs.txt
 fedora-support: support/x86_64-fedora-32-rootfs.txt
 fedora-support: support/x86_64-fedora-33-rootfs.txt
 fedora-support: support/x86_64-fedora-34-rootfs.txt
@@ -1246,6 +1250,7 @@ fedora-support: support/x86_64-fedora-38-rootfs.txt
 fixme-log: fedora-log
 
 .PHONY: fedora-log
+fedora-log: x86_64-fedora-31-rootfs.log
 fedora-log: x86_64-fedora-32-rootfs.log
 fedora-log: x86_64-fedora-33-rootfs.log
 fedora-log: x86_64-fedora-34-rootfs.log

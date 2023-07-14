@@ -1,6 +1,6 @@
 #!/bin/sed -f
 #
-# Copyright 2022 Gaël PORTAY
+# Copyright 2022-2023 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -21,6 +21,10 @@
 
 	#  acl                             x86_64  2.3.1-2.fc35                    fedora   XX k
 	/^\(\s\+\S\+\)\{6,6\}/s,^\(\s\+\S\+\).*,\1,
+
+	# elfutils-default-yama-scope
+	#                            noarch 0.179-1.fc32                     fedora  XX k
+	/^\W\+\(\s\+\S\+\)\{5,5\}/d
 
 	# Install  XXX Packages
 	# Total download size: XXX M

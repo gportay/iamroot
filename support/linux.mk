@@ -720,6 +720,7 @@ ifneq ($(shell command -v dnf 2>/dev/null),)
 rootfs: x86_64-fedora-rootfs
 
 .PHONY: x86_64-fedora-rootfs
+fedora-rootfs: x86_64-fedora-32-rootfs
 fedora-rootfs: x86_64-fedora-33-rootfs
 fedora-rootfs: x86_64-fedora-34-rootfs
 fedora-rootfs: x86_64-fedora-35-rootfs
@@ -730,9 +731,11 @@ fedora-rootfs: x86_64-fedora-38-rootfs
 # Warning: $ROOT/x86_64-fedora-38-rootfs/etc: contains root directory '$ROOT/x86_64-fedora-38-rootfs'
 x86_64-fedora-38-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_WARNING_IGNORE = /var/log/dnf.rpm.log|/etc
 
+x86_64-fedora-32-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 x86_64-fedora-33-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 x86_64-fedora-34-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 x86_64-fedora-35-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
+$(eval $(call dnf-rootfs,x86_64,fedora,32))
 $(eval $(call dnf-rootfs,x86_64,fedora,33))
 $(eval $(call dnf-rootfs,x86_64,fedora,34))
 $(eval $(call dnf-rootfs,x86_64,fedora,35))
@@ -1190,6 +1193,7 @@ ifneq ($(shell command -v dnf 2>/dev/null),)
 support: fedora-support
 
 .PHONY: fedora-support
+fedora-support: support/x86_64-fedora-32-rootfs.txt
 fedora-support: support/x86_64-fedora-33-rootfs.txt
 fedora-support: support/x86_64-fedora-34-rootfs.txt
 fedora-support: support/x86_64-fedora-35-rootfs.txt
@@ -1200,6 +1204,7 @@ fedora-support: support/x86_64-fedora-38-rootfs.txt
 log: fedora-log
 
 .PHONY: fedora-log
+fedora-log: x86_64-fedora-32-rootfs.log
 fedora-log: x86_64-fedora-33-rootfs.log
 fedora-log: x86_64-fedora-34-rootfs.log
 fedora-log: x86_64-fedora-35-rootfs.log

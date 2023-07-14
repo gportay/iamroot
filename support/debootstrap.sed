@@ -6,6 +6,11 @@
 #
 
 1,$ {
+	# I: Valid Release signature (key id XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX)
+	/^I: Valid Release signature\s/ {
+		/key\s/s,[0-9A-F]\{40\,40\},XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX,
+	}
+
 	# I: Retrieving base-files
 	# I: Validating base-files 12.2
 	/^I:\s\(Retrieving\|Validating\)\s/ {
@@ -87,3 +92,13 @@
 	s,UID [[:digit:]]\+,UID XXX,
 	s,GID [[:digit:]]\+,GID XXX,
 }
+
+/^gpgv:\s/ {
+	# gpgv: Signature made Day Mon dd hh:mm:ss YYYY TZ
+	# gpgv:                using RSA key XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+	# gpgv:                using RSA key XXXXXXXXXXXXXXXX
+	s,\(Signature made\s\+\).*$,\1Day Mon dd hh:mm:ss YYYY TZ,
+	/key\s/s,[0-9A-F]\{40\,40\},XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX,
+	/key\s/s,[0-9A-F]\{16\,16\},XXXXXXXXXXXXXXXX,
+}
+

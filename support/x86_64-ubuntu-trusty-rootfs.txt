@@ -1,6 +1,9 @@
 I: Target architecture can be executed
 I: Retrieving InRelease 
 I: Retrieving Release 
+I: Retrieving Release.gpg 
+I: Checking Release signature
+I: Valid Release signature (key id XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX)
 I: Retrieving Packages 
 I: Validating Packages 
 I: Resolving dependencies of required packages...
@@ -846,6 +849,12 @@ I: Configuring kbd...
 I: Configuring ubuntu-minimal...
 I: Configuring initramfs-tools...
 I: Base system installed successfully.
+gpgv: Signature made Day Mon dd hh:mm:ss YYYY TZ
+gpgv:                using DSA key XXXXXXXXXXXXXXXX
+gpgv: Can't check signature: No public key
+gpgv: Signature made Day Mon dd hh:mm:ss YYYY TZ
+gpgv:                using RSA key XXXXXXXXXXXXXXXX
+gpgv: Good signature from "Ubuntu Archive Automatic Signing Key (2012) <ftpmaster@ubuntu.com>"
 $ROOT/x86_64-ubuntu-trusty-rootfs/sbin/ldconfig.real: Warning: ignoring configuration file that cannot be opened: $ROOT/x86_64-ubuntu-trusty-rootfs/etc/ld.so.conf: No such file or directory
 dpkg: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
  missing description

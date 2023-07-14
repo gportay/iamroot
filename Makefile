@@ -184,6 +184,7 @@ libiamroot.so: getxattr.o
 libiamroot.so: group.o
 libiamroot.so: initgroups.o
 libiamroot.so: inotify_add_watch.o
+libiamroot.so: interpreter-script.o
 libiamroot.so: kill.o
 libiamroot.so: lchflags.o
 libiamroot.so: lchmod.o

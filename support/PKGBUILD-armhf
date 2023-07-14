@@ -1,7 +1,7 @@
 # Maintainer: Gaël PORTAY <gael.portay@gmail.com>
 
 pkgname=iamroot-armhf-git
-pkgver=10
+pkgver=11
 pkgrel=1
 pkgdesc='Emulating the syscall chroot(2) in an unpriviliged process (armhf)'
 arch=('x86_64')

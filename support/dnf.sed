@@ -102,3 +102,6 @@
 	s,UID [[:digit:]]\+,UID XXX,
 	s,GID [[:digit:]]\+,GID XXX,
 }
+
+# XXX blocks
+/^[[:digit:]]\+ blocks/s,[[:digit:]]\+,XXX,

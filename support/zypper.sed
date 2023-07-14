@@ -40,7 +40,7 @@
 	s,[[:digit:]]\+,X,
 }
 
-# Retrieving: filesystem-84.87-12.1.x86_64 (openSUSE-Tumbleweed-Oss) (X/XXX),  XX.X KiB    
+# Retrieving: filesystem-84.87-12.1.x86_64 (openSUSE-Tumbleweed-Oss) (X/XXX),  XX.X KiB
 # Retrieving: filesystem-84.87-3.2.x86_64.rpm [done]
 /^Retrieving:/{
 	s,\([[:lower:][:upper:][:digit:]._+-]\+\)-\([[:digit:]]\+:[[:alnum:]._~^+-]\+\|[[:alnum:]._~^+-]\+\)-\([[:alnum:].%{?}-]\+\)\.\([[:lower:][:digit:]]\+\.[[:alnum:]_]\+\|[[:alnum:]_]\+\),\1,

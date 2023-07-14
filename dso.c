@@ -253,11 +253,11 @@ static int __variable_has_dynamic_string_tokens(const char *value)
 	return n;
 }
 
-static ssize_t __getneeded(const char *, char *, size_t);
-static ssize_t __getrpath(const char *, char *, size_t);
-static ssize_t __getrunpath(const char *, char *, size_t);
-static int __getflags_1(const char *, uint32_t *);
-static ssize_t __getdeflib(const char *, char *, size_t);
+static ssize_t __elf_needed(const char *, char *, size_t);
+static ssize_t __elf_rpath(const char *, char *, size_t);
+static ssize_t __elf_runpath(const char *, char *, size_t);
+static int __elf_flags_1(const char *, uint32_t *);
+static ssize_t __elf_deflib(const char *, char *, size_t);
 
 static int __ldso_preload_needed(const char *, const char *, char *, size_t);
 
@@ -308,7 +308,7 @@ static int __ldso_preload_needed(const char *path, const char *library_path,
 	ssize_t siz;
 	int ret;
 
-	siz = __getneeded(path, needed, sizeof(needed));
+	siz = __elf_needed(path, needed, sizeof(needed));
 	if (siz == -1)
 		return -1;
 
@@ -374,7 +374,7 @@ static int __ldso_preload_executable(const char *path,
 	char needed[PATH_MAX];
 	ssize_t siz;
 
-	siz = __getneeded(path, needed, sizeof(needed));
+	siz = __elf_needed(path, needed, sizeof(needed));
 	if (siz == -1)
 		return -1;
 
@@ -451,7 +451,7 @@ int __dlopen_needed(const char *path)
 	if (siz == -1)
 		return -1;
 
-	siz = __getneeded(path, needed, sizeof(needed));
+	siz = __elf_needed(path, needed, sizeof(needed));
 	if (siz == -1)
 		return -1;
 
@@ -537,7 +537,7 @@ static int __ld_linux_has_preload_option(const char *path)
 	return (maj > 2) || ((maj == 2) && (min >= 30));
 }
 
-static ssize_t __getelfheader(int fd, Elf64_Ehdr *ehdr)
+static ssize_t __elf_header(int fd, Elf64_Ehdr *ehdr)
 {
 	ssize_t siz;
 	int err;
@@ -570,8 +570,8 @@ static ssize_t __getelfheader(int fd, Elf64_Ehdr *ehdr)
 	return __set_errno(ENOEXEC, -1);
 }
 
-static ssize_t __getinterp32(int fd, Elf32_Ehdr *ehdr, char *buf,
-			     size_t bufsize)
+static ssize_t __elf_interp32(int fd, Elf32_Ehdr *ehdr, char *buf,
+			      size_t bufsize)
 {
 	ssize_t ret = -1;
 	int i, num;
@@ -621,7 +621,7 @@ exit:
 	return ret;
 }
 
-static ssize_t __getinterp64(int fd, Elf64_Ehdr *ehdr, char *buf,
+static ssize_t __elf_interp64(int fd, Elf64_Ehdr *ehdr, char *buf,
 			     size_t bufsize)
 {
 	ssize_t ret = -1;
@@ -672,7 +672,7 @@ exit:
 	return ret;
 }
 
-static int __dl_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int d_tag,
+static int __elf_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int d_tag,
 		     int (*callback)(const void *, size_t, void *), void *data)
 {
 	const int errno_save = errno;
@@ -807,7 +807,7 @@ exit:
 	return ret;
 }
 
-static int __dl_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int d_tag,
+static int __elf_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int d_tag,
 		     int (*callback)(const void *, size_t, void *), void *data)
 {
 	const int errno_save = errno;
@@ -942,7 +942,7 @@ exit:
 	return ret;
 }
 
-static int __dl_iterate_shared_object(int fd, int d_tag,
+static int __elf_iterate_shared_object(int fd, int d_tag,
 		     int (*callback)(const void *, size_t, void *), void *data)
 {
 	Elf64_Ehdr ehdr;
@@ -969,39 +969,39 @@ static int __dl_iterate_shared_object(int fd, int d_tag,
 
 	/* It is a 32-bits ELF */
 	if (ehdr.e_ident[EI_CLASS] == ELFCLASS32)
-		return __dl_iterate_ehdr32(fd, (Elf32_Ehdr *)&ehdr, d_tag,
-					   callback, data);
+		return __elf_iterate_ehdr32(fd, (Elf32_Ehdr *)&ehdr, d_tag,
+					    callback, data);
 	/* It is a 64-bits ELF */
 	else if (ehdr.e_ident[EI_CLASS] == ELFCLASS64)
-		return __dl_iterate_ehdr64(fd, (Elf64_Ehdr *)&ehdr, d_tag,
-					   callback, data);
+		return __elf_iterate_ehdr64(fd, (Elf64_Ehdr *)&ehdr, d_tag,
+					    callback, data);
 
 	/* It is an invalid ELF */
 	return __set_errno(ENOEXEC, -1);
 }
 
-static ssize_t __fgetinterp(int fd, char *buf, size_t bufsize)
+static ssize_t __felf_interp(int fd, char *buf, size_t bufsize)
 {
 	Elf64_Ehdr ehdr;
 	ssize_t siz;
 
 	/* Get the ELF header */
-	siz = __getelfheader(fd, &ehdr);
+	siz = __elf_header(fd, &ehdr);
 	if (siz == -1)
 		return -1;
 
 	/* It is a 32-bits ELF */
 	if (ehdr.e_ident[EI_CLASS] == ELFCLASS32)
-		return __getinterp32(fd, (Elf32_Ehdr *)&ehdr, buf, bufsize);
+		return __elf_interp32(fd, (Elf32_Ehdr *)&ehdr, buf, bufsize);
 	/* It is a 64-bits ELF */
 	else if (ehdr.e_ident[EI_CLASS] == ELFCLASS64)
-		return __getinterp64(fd, (Elf64_Ehdr *)&ehdr, buf, bufsize);
+		return __elf_interp64(fd, (Elf64_Ehdr *)&ehdr, buf, bufsize);
 
 	/* It is an invalid ELF */
 	return __set_errno(ENOEXEC, -1);
 }
 
-static ssize_t __getinterp(const char *path, char *buf, size_t bufsize)
+static ssize_t __elf_interp(const char *path, char *buf, size_t bufsize)
 {
 	ssize_t ret;
 	int fd;
@@ -1010,7 +1010,7 @@ static ssize_t __getinterp(const char *path, char *buf, size_t bufsize)
 	if (fd == -1)
 		return -1;
 
-	ret = __fgetinterp(fd, buf, bufsize);
+	ret = __felf_interp(fd, buf, bufsize);
 
 	__close(fd);
 
@@ -1465,9 +1465,9 @@ static ssize_t __ld_library_path(const char *path, char *buf, size_t bufsize)
 	 * /lib64, and then /usr/lib64.) If the binary was linked with the
 	 * -z nodeflib linker option, this step is skipped.
 	 */
-	err = __getflags_1(path, &flags_1);
+	err = __elf_flags_1(path, &flags_1);
 	if (!(flags_1 & DF_1_NODEFLIB)) {
-		err = __getdeflib(path, tmp, sizeof(tmp));
+		err = __elf_deflib(path, tmp, sizeof(tmp));
 		if (err == -1)
 			return -1;
 
@@ -1493,7 +1493,7 @@ static ssize_t __ld_library_path(const char *path, char *buf, size_t bufsize)
 	 * unlike DT_RPATH, which is applied to searches for all children in
 	 * the dependency tree.
 	 */
-	err = __getrunpath(path, tmp, bufsize);
+	err = __elf_runpath(path, tmp, bufsize);
 	if (err == -1)
 		return -1;
 
@@ -1516,7 +1516,7 @@ static ssize_t __ld_library_path(const char *path, char *buf, size_t bufsize)
 	 * exist. Use of DT_RPATH is deprecated.
 	 */
 	if (!has_runpath) {
-		err = __getrpath(path, tmp, sizeof(tmp));
+		err = __elf_rpath(path, tmp, sizeof(tmp));
 		if (err == -1)
 			return -1;
 
@@ -1557,14 +1557,14 @@ static int __flags_callback(const void *data, size_t size, void *user)
 	return 0;
 }
 
-static int __fgetflags_1(int fd, uint32_t *flags)
+static int __felf_flags_1(int fd, uint32_t *flags)
 {
 	*flags = 0;
-	return __dl_iterate_shared_object(fd, DT_FLAGS_1, __flags_callback,
-					  flags);
+	return __elf_iterate_shared_object(fd, DT_FLAGS_1, __flags_callback,
+					   flags);
 }
 
-static int __getflags_1(const char *path, uint32_t *flags)
+static int __elf_flags_1(const char *path, uint32_t *flags)
 {
 	int fd, ret;
 
@@ -1572,7 +1572,7 @@ static int __getflags_1(const char *path, uint32_t *flags)
 	if (fd == -1)
 		return -1;
 
-	ret = __fgetflags_1(fd, flags);
+	ret = __felf_flags_1(fd, flags);
 
 	__close(fd);
 
@@ -1593,19 +1593,19 @@ static int __path_callback(const void *data, size_t size, void *user)
 	return 0;
 }
 
-static ssize_t __fgetneeded(int fd, char *buf, size_t bufsize)
+static ssize_t __felf_needed(int fd, char *buf, size_t bufsize)
 {
 	int err;
 
 	*buf = 0;
-	err = __dl_iterate_shared_object(fd, DT_NEEDED, __path_callback, buf);
+	err = __elf_iterate_shared_object(fd, DT_NEEDED, __path_callback, buf);
 	if (err == -1)
 		return -1;
 
 	return strnlen(buf, bufsize);
 }
 
-static ssize_t __getneeded(const char *path, char *buf, size_t bufsize)
+static ssize_t __elf_needed(const char *path, char *buf, size_t bufsize)
 {
 	ssize_t ret;
 	int fd;
@@ -1614,19 +1614,19 @@ static ssize_t __getneeded(const char *path, char *buf, size_t bufsize)
 	if (fd == -1)
 		return -1;
 
-	ret = __fgetneeded(fd, buf, bufsize);
+	ret = __felf_needed(fd, buf, bufsize);
 
 	__close(fd);
 
 	return ret;
 }
 
-static ssize_t __fgetrpath(int fd, char *buf, size_t bufsize)
+static ssize_t __felf_rpath(int fd, char *buf, size_t bufsize)
 {
 	int err, n;
 
 	*buf = 0;
-	err = __dl_iterate_shared_object(fd, DT_RPATH, __path_callback, buf);
+	err = __elf_iterate_shared_object(fd, DT_RPATH, __path_callback, buf);
 	if (err == -1)
 		return -1;
 
@@ -1638,7 +1638,7 @@ static ssize_t __fgetrpath(int fd, char *buf, size_t bufsize)
 	return strnlen(buf, bufsize);
 }
 
-static ssize_t __getrpath(const char *path, char *buf, size_t bufsize)
+static ssize_t __elf_rpath(const char *path, char *buf, size_t bufsize)
 {
 	ssize_t ret;
 	int fd;
@@ -1647,19 +1647,20 @@ static ssize_t __getrpath(const char *path, char *buf, size_t bufsize)
 	if (fd == -1)
 		return -1;
 
-	ret = __fgetrpath(fd, buf, bufsize);
+	ret = __felf_rpath(fd, buf, bufsize);
 
 	__close(fd);
 
 	return ret;
 }
 
-static ssize_t __fgetrunpath(int fd, char *buf, size_t bufsize)
+static ssize_t __felf_runpath(int fd, char *buf, size_t bufsize)
 {
 	int err, n;
 
 	*buf = 0;
-	err = __dl_iterate_shared_object(fd, DT_RUNPATH, __path_callback, buf);
+	err = __elf_iterate_shared_object(fd, DT_RUNPATH, __path_callback,
+					  buf);
 	if (err == -1)
 		return -1;
 
@@ -1671,7 +1672,7 @@ static ssize_t __fgetrunpath(int fd, char *buf, size_t bufsize)
 	return strnlen(buf, bufsize);
 }
 
-static ssize_t __getrunpath(const char *path, char *buf, size_t bufsize)
+static ssize_t __elf_runpath(const char *path, char *buf, size_t bufsize)
 {
 	ssize_t ret;
 	int fd;
@@ -1680,7 +1681,7 @@ static ssize_t __getrunpath(const char *path, char *buf, size_t bufsize)
 	if (fd == -1)
 		return -1;
 
-	ret = __fgetrunpath(fd, buf, bufsize);
+	ret = __felf_runpath(fd, buf, bufsize);
 
 	__close(fd);
 
@@ -1699,7 +1700,7 @@ static int __has_needed(int fd, const char *filename)
 	char needed[PATH_MAX];
 	ssize_t siz;
 
-	siz = __fgetneeded(fd, needed, sizeof(needed));
+	siz = __felf_needed(fd, needed, sizeof(needed));
 	if (siz == -1)
 		return -1;
 
@@ -1735,7 +1736,7 @@ static ssize_t __getld_linux_so(int fd, char *buf, size_t bufsize)
 	if (err == 0)
 		return __set_errno(ENOENT, -1);
 
-	siz = __fgetneeded(fd, needed, sizeof(needed));
+	siz = __felf_needed(fd, needed, sizeof(needed));
 	if (siz == -1)
 		return -1;
 
@@ -1753,7 +1754,7 @@ static ssize_t __getld_linux_so(int fd, char *buf, size_t bufsize)
 	return strnlen(buf, bufsize);
 }
 
-static ssize_t __fgetdeflib(int fd, char *buf, size_t bufsize)
+static ssize_t __felf_deflib(int fd, char *buf, size_t bufsize)
 {
 	const int errno_save = errno;
 	char interp[HASHBANG_MAX];
@@ -1772,11 +1773,11 @@ static ssize_t __fgetdeflib(int fd, char *buf, size_t bufsize)
 	 * object is an executable file, or from the needed libc, or from the
 	 * executable file.
 	 */
-	siz = __getelfheader(fd, &ehdr);
+	siz = __elf_header(fd, &ehdr);
 	if (siz == -1)
 		return -1;
 
-	siz = __fgetinterp(fd, interp, sizeof(interp));
+	siz = __felf_interp(fd, interp, sizeof(interp));
 	/* It is an ELF library */
 	if (siz == -1 && errno == ENOEXEC) {
 		__info("%s: dynamic loader not found, trying libc.so.6...\n",
@@ -1792,7 +1793,7 @@ static ssize_t __fgetdeflib(int fd, char *buf, size_t bufsize)
 		path = __execfn();
 		__info("%s: dynamic loader not found, trying executable file...\n",
 		       path);
-		siz = __getinterp(path, interp, sizeof(interp));
+		siz = __elf_interp(path, interp, sizeof(interp));
 		if (siz == -1 && errno != ENOENT)
 			return -1;
 	}
@@ -1816,7 +1817,7 @@ library_path:
 	return strnlen(buf, bufsize);
 }
 
-static ssize_t __getdeflib(const char *path, char *buf, size_t bufsize)
+static ssize_t __elf_deflib(const char *path, char *buf, size_t bufsize)
 {
 	ssize_t ret;
 	int fd;
@@ -1825,7 +1826,7 @@ static ssize_t __getdeflib(const char *path, char *buf, size_t bufsize)
 	if (fd == -1)
 		return -1;
 
-	ret = __fgetdeflib(fd, buf, bufsize);
+	ret = __felf_deflib(fd, buf, bufsize);
 
 	__close(fd);
 
@@ -1858,7 +1859,7 @@ ssize_t __dl_library_path(const char *path, char *buf, size_t bufsize)
 	 * in the DT_RPATH tag are searched.
 	 */
 	/* The man-page is incomplete! */
-	ret = __getrunpath(path, tmp, sizeof(tmp));
+	ret = __elf_runpath(path, tmp, sizeof(tmp));
 	if (ret == -1)
 		return -1;
 
@@ -1877,7 +1878,7 @@ ssize_t __dl_library_path(const char *path, char *buf, size_t bufsize)
 		 * First try the DT_RPATH of the dependent object that caused
 		 * NAME to be loaded. Then that object's dependent, and on up.
 		 */
-		ret = __getrpath(path, rpath, sizeof(rpath));
+		ret = __elf_rpath(path, rpath, sizeof(rpath));
 		if (ret == -1)
 			return -1;
 
@@ -1894,12 +1895,12 @@ ssize_t __dl_library_path(const char *path, char *buf, size_t bufsize)
 		 *
 		 * If both RUNPATH and RPATH are given, the latter is ignored.
 		 */
-		ret = __getrunpath(__execfn(), rpath, sizeof(rpath));
+		ret = __elf_runpath(__execfn(), rpath, sizeof(rpath));
 		if (ret == -1)
 			return -1;
 
 		if (ret <= 0) {
-			ret = __getrpath(__execfn(), rpath, sizeof(rpath));
+			ret = __elf_rpath(__execfn(), rpath, sizeof(rpath));
 			if (ret == -1)
 				return -1;
 
@@ -1956,9 +1957,9 @@ ssize_t __dl_library_path(const char *path, char *buf, size_t bufsize)
 	 *
 	 * Finally, try the default path.
 	 */
-	ret = __getflags_1(path, &flags_1);
+	ret = __elf_flags_1(path, &flags_1);
 	if (!(flags_1 & DF_1_NODEFLIB)) {
-		ret = __getdeflib(path, tmp, sizeof(tmp));
+		ret = __elf_deflib(path, tmp, sizeof(tmp));
 		if (ret == -1)
 			return -1;
 
@@ -2020,7 +2021,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 		return -1;
 
 	/* ... get the ELF header... */
-	siz = __getelfheader(fd, &ehdr);
+	siz = __elf_header(fd, &ehdr);
 	if (siz == -1)
 		goto close;
 
@@ -2028,7 +2029,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 	 * ... and get the dynamic loader stored in the .interp section of the
 	 * ELF linked program...
 	 */
-	siz = __fgetinterp(fd, buf, sizeof(buf));
+	siz = __felf_interp(fd, buf, sizeof(buf));
 	if (siz < 1)
 		goto close;
 
@@ -2332,7 +2333,7 @@ static int __ld_trace_loader_objects_needed(const char *path,
 	ssize_t siz;
 	int ret;
 
-	siz = __getneeded(path, needed, sizeof(needed));
+	siz = __elf_needed(path, needed, sizeof(needed));
 	if (siz == -1)
 		return -1;
 
@@ -2366,7 +2367,7 @@ static int __ld_trace_loader_objects_executable(const char *path,
 	ssize_t siz;
 
 	*buf = 0;
-	siz = __getinterp(path, interp, sizeof(interp));
+	siz = __elf_interp(path, interp, sizeof(interp));
 	if (siz == -1 && errno != ENOEXEC)
 		return -1;
 	/* It has no DT_INTERP */
@@ -2387,7 +2388,7 @@ static int __ld_trace_loader_objects_executable(const char *path,
 			(int)sizeof(map_start) * 2, map_start);
 
 	/* Print the DT_NEEDED shared objects */
-	siz = __getneeded(path, needed, sizeof(needed));
+	siz = __elf_needed(path, needed, sizeof(needed));
 	if (siz == -1)
 		return -1;
 	ctx.library_path = library_path;
@@ -2431,7 +2432,7 @@ static int __ldso_verify(const char *path)
 	if (siz == -1)
 		return -1;
 
-	siz = __getinterp(buf, interp, sizeof(interp));
+	siz = __elf_interp(buf, interp, sizeof(interp));
 	if (siz == -1)
 		return -1;
 

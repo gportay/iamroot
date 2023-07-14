@@ -27,20 +27,20 @@ _ish()
 		fstat64 fstatat fstatat64 ftw futimesat get_current_dir_name
 		getcwd getegid geteuid getfh getfhat getgid getgroups
 		getpeername getresgid getresuid getsockname getuid getwd
-		getxattr initgroups inotify_add_watch lchmod lchown lgetxattr
-		link linkat listxattr llistxattr lremovexattr lsetxattr lstat
-		lstat64 lutimes mkdir mkdirat mkdtemp mkfifo mkfifoat mknod
-		mknodat mkostemp mkostemps mkostempsat mkstemp mkstemps mktemp
-		mount name_to_handle_at nftw nftw64 nmount open openat opendir
-		path_resolution posix_spawn posix_spawnp readlink readlinkat
-		realpath remove removexattr rename renameat renameat2 rmdir
-		running_in_chroot scandir scandir64 scandir_b scandirat setegid
-		seteuid setgid setgroups setregid setresgid setresuid setreuid
-		setuid setxattr stat stat64 statfs statfs64 statvfs statvfs64
-		statx swapoff swapon symlink symlinkat tempnam truncate
-		truncate64 ttyname ttyname_r umask umount umount2 unlink
-		unlinkat unmount unshare updwtmp updwtmpx utime utimensat
-		utimes utmpname utmpxname)
+		getxattr initgroups inotify_add_watch kill lchmod lchown
+		lgetxattr link linkat listxattr llistxattr lremovexattr
+		lsetxattr lstat lstat64 lutimes mkdir mkdirat mkdtemp mkfifo
+		mkfifoat mknod mknodat mkostemp mkostemps mkostempsat mkstemp
+		mkstemps mktemp mount name_to_handle_at nftw nftw64 nmount open
+		openat opendir path_resolution posix_spawn posix_spawnp
+		readlink readlinkat realpath remove removexattr rename renameat
+		renameat2 rmdir running_in_chroot scandir scandir64 scandir_b
+		scandirat setegid seteuid setgid setgroups setregid setresgid
+		setresuid setreuid setuid setxattr stat stat64 statfs statfs64
+		statvfs statvfs64 statx swapoff swapon symlink symlinkat
+		tempnam truncate truncate64 ttyname ttyname_r umask umount
+		umount2 unlink unlinkat unmount unshare updwtmp updwtmpx utime
+		utimensat utimes utmpname utmpxname)
 
 	COMMON_PATH=(/bin /sbin /usr/bin /usr/sbin /usr/local/bin
 		/usr/local/sbin)

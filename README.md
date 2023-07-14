@@ -63,7 +63,7 @@ The table below lists the distributions and its tool that work with.
 | [alpine-make-rootfs] | Alpine Linux                                         |
 | [dnf(8)]             | Fedora                                               |
 | [zypper(8)]          | openSUSE                                             |
-| [debootstrap(8)]     | Debian\*, Ubuntu\*                                   |
+| [debootstrap(8)]     | Debian\*, Ubuntu\*, Devuan\*                         |
 
 \*: Works with hacks.
 

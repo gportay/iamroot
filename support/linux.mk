@@ -193,14 +193,15 @@ $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export 
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export ISH_PRESERVE_ENV = PERL_DL_NONLAZY
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export PERL_DL_NONLAZY = 1
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://deb.debian.org/debian
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= $(3)
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export DEBOOTSTRAPFLAGS ?= --merged-usr
 
-$(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/bash,debootstrap --keep-debootstrap-dir $$(DEBOOTSTRAPFLAGS) $(3) $(1)-$(2)-$(3)-rootfs $$(DEBOOTSTRAP_MIRROR)))
+$(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/bash,debootstrap --keep-debootstrap-dir $$(DEBOOTSTRAPFLAGS) $(3) $(1)-$(2)-$(3)-rootfs $$(DEBOOTSTRAP_MIRROR) $$(DEBOOTSTRAP_SCRIPT)))
 
 $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/sh
 $(1)-$(2)-$(3)-rootfs/bin/sh: | $(call libs,linux,$(1))
 	mkdir -p $(1)-$(2)-$(3)-rootfs
-	bash ish -c "debootstrap --keep-debootstrap-dir $$(DEBOOTSTRAPFLAGS) $(3) $(1)-$(2)-$(3)-rootfs $$(DEBOOTSTRAP_MIRROR)"
+	bash ish -c "debootstrap --keep-debootstrap-dir $$(DEBOOTSTRAPFLAGS) $(3) $(1)-$(2)-$(3)-rootfs $$(DEBOOTSTRAP_MIRROR) $$(DEBOOTSTRAP_SCRIPT)"
 	cat $(1)-$(2)-$(3)-rootfs/debootstrap/debootstrap.log
 	rm -Rf $(1)-$(2)-$(3)-rootfs/debootstrap/
 
@@ -359,10 +360,17 @@ $(1)-$(2)-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	    -i $(1)-$(2)-rootfs/etc/passwd
 	sed -e '/^root::/s,^root::,root:x:,' \
 	    -i $(1)-$(2)-rootfs/etc/shadow
-	rm -f $(1)-$(2)-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
-	bash ish -c "chroot $(1)-$(2)-rootfs systemctl enable getty@tty0.service"
-	rm -f $(1)-$(2)-rootfs/etc/systemd/system/multi-user.target.wants/sshd.service
-	bash ish -c "chroot $(1)-$(2)-rootfs systemctl disable sshd.service"
+	if test -e $(1)-$(2)-rootfs/lib/systemd/systemd; then \
+		rm -f $(1)-$(2)-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service; \
+		bash ish -c "chroot $(1)-$(2)-rootfs systemctl enable getty@tty0.service"; \
+		rm -f $(1)-$(2)-rootfs/etc/systemd/system/multi-user.target.wants/sshd.service; \
+		bash ish -c "chroot $(1)-$(2)-rootfs systemctl disable sshd.service"; \
+	else \
+		sed -e '/^1:/i0:2345:respawn:/sbin/getty --noclear 38400 tty0' \
+		    -e '/^[1-9]:/s,^,#,' \
+		    -e '/^#T0:/s,^#,,g' \
+		    -i $(1)-$(2)-rootfs/etc/inittab; \
+	fi
 	bash ish -c "chroot $(1)-$(2)-rootfs pam-auth-update"
 endef
 
@@ -696,6 +704,16 @@ x86_64-ubuntu-kinetic-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_E
 x86_64-ubuntu-kinetic-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
 x86_64-ubuntu-lunar-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
 x86_64-ubuntu-lunar-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
+
+extra-rootfs: x86_64-devuan-rootfs
+
+.PHONY: x86_64-devuan-rootfs
+x86_64-devuan-rootfs: x86_64-devuan-chimaera-rootfs
+
+x86_64-devuan-chimaera-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://deb.devuan.org/merged/
+x86_64-devuan-chimaera-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= support/ceres
+x86_64-devuan-chimaera-rootfs/bin/sh: export DEBOOTSTRAPFLAGS ?= --no-check-gpg
+$(eval $(call debootstrap-rootfs,x86_64,devuan,chimaera))
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)
@@ -1156,6 +1174,16 @@ ubuntu-log: x86_64-ubuntu-focal-rootfs.log
 ubuntu-log: x86_64-ubuntu-jammy-rootfs.log
 ubuntu-log: x86_64-ubuntu-kinetic-rootfs.log
 ubuntu-log: x86_64-ubuntu-lunar-rootfs.log
+	
+extra-support: devuan-support
+
+.PHONY: devuan-support
+devuan-support: support/x86_64-devuan-chimaera-rootfs.txt
+
+log: devuan-log
+
+.PHONY: devuan-log
+devuan-log: x86_64-devuan-chimaera-rootfs.log
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)

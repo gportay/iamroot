@@ -1177,6 +1177,7 @@ fedora-log: x86_64-fedora-34-rootfs.log
 fedora-log: x86_64-fedora-35-rootfs.log
 fedora-log: x86_64-fedora-36-rootfs.log
 fedora-log: x86_64-fedora-37-rootfs.log
+fedora-log: x86_64-fedora-38-rootfs.log
 endif
 
 ifneq ($(shell command -v zypper 2>/dev/null),)

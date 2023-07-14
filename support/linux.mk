@@ -11,7 +11,7 @@ LIBC ?= $(if $(findstring musl,$(CCMACH)),musl,linux)
 ARCH ?= $(shell uname -m 2>/dev/null)
 KVER ?= $(shell uname -r 2>/dev/null)
 VMLINUX_KVER ?= $(shell vmlinux --version 2>/dev/null)
-KVM ?= $(shell test -c /dev/kvm 2>/dev/null)
+KVM ?= $(shell test -c /dev/kvm 2>/dev/null && echo 1)
 CLANG ?= 0
 
 NVERBOSE ?= 0
@@ -270,7 +270,7 @@ $(if $(findstring x86_64,$(1)), \
 endef
 
 define run
-ifneq ($(KVM),)
+ifneq ($(KVM),0)
 .PHONY: qemu-system-$(1)-$(2)
 qemu-system-$(1)-$(2): override CMDLINE += panic=5
 qemu-system-$(1)-$(2): override CMDLINE += console=ttyS0

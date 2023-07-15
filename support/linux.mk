@@ -165,13 +165,13 @@ $(1)-$(2)-shell: libiamroot.so
 endef
 
 define pacstrap-rootfs
-$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
-$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/etc/machine-id: export EUID = 0
+$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
+$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export EUID = 0
 
 $(eval $(call chroot_shell,$(1),$(2),/bin/bash,pacstrap -GMC support/$(1)-$(2)-pacman.conf $(1)-$(2)-rootfs $(3)))
 
-$(1)-$(2)-rootfs: | $(1)-$(2)-rootfs/etc/machine-id
-$(1)-$(2)-rootfs/etc/machine-id: | $(call libs,linux,$(1))
+$(1)-$(2)-rootfs: | $(1)-$(2)-rootfs/bin/sh
+$(1)-$(2)-rootfs/bin/sh: | $(call libs,linux,$(1))
 	mkdir -p $(1)-$(2)-rootfs
 	bash ish -c "pacstrap -GMC support/$(1)-$(2)-pacman.conf $(1)-$(2)-rootfs $(3)"
 
@@ -184,21 +184,21 @@ $(if $(findstring x86_64,$(1)), \
 endef
 
 define debootstrap-rootfs
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib/$(1)-linux-gnu:/lib:/usr/lib/$(1)-linux-gnu:/usr/lib
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_LIBRARY_PATH = /lib/$(1)-linux-gnu:/lib:/usr/lib/$(1)-linux-gnu:/usr/lib
 # chfn: PAM: Critical error - immediate abort
 # adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^/dev/(null|zero|full|random|urandom|tty|console|pts|shm|ptmx)|^$(CURDIR)/.*\.gcda
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^/dev/(null|zero|full|random|urandom|tty|console|pts|shm|ptmx)|^$(CURDIR)/.*\.gcda
 # debconf: PERL_DL_NONLAZY is not set, if debconf is running from a preinst script, this is not safe
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export ISH_PRESERVE_ENV = PERL_DL_NONLAZY
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export PERL_DL_NONLAZY = 1
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://deb.debian.org/debian
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export DEBOOTSTRAPFLAGS ?= --merged-usr
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export ISH_PRESERVE_ENV = PERL_DL_NONLAZY
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export PERL_DL_NONLAZY = 1
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://deb.debian.org/debian
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export DEBOOTSTRAPFLAGS ?= --merged-usr
 
 $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/bash,debootstrap --keep-debootstrap-dir $$(DEBOOTSTRAPFLAGS) $(3) $(1)-$(2)-$(3)-rootfs $$(DEBOOTSTRAP_MIRROR)))
 
-$(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/etc/machine-id
-$(1)-$(2)-$(3)-rootfs/etc/machine-id: | $(call libs,linux,$(1))
+$(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/sh
+$(1)-$(2)-$(3)-rootfs/bin/sh: | $(call libs,linux,$(1))
 	mkdir -p $(1)-$(2)-$(3)-rootfs
 	bash ish -c "debootstrap --keep-debootstrap-dir $$(DEBOOTSTRAPFLAGS) $(3) $(1)-$(2)-$(3)-rootfs $$(DEBOOTSTRAP_MIRROR)"
 	cat $(1)-$(2)-$(3)-rootfs/debootstrap/debootstrap.log
@@ -213,13 +213,13 @@ $(if $(findstring x86_64,$(1)), \
 endef
 
 define dnf-rootfs
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora.repo
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora.repo
 
 $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/bash,dnf --forcearch $(1) --releasever $(3) --assumeyes --installroot $(CURDIR)/$(1)-$(2)-$(3)-rootfs group install minimal-environment))
 
-$(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/etc/machine-id
-$(1)-$(2)-$(3)-rootfs/etc/machine-id: | $(call libs,linux,$(1))
+$(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/sh
+$(1)-$(2)-$(3)-rootfs/bin/sh: | $(call libs,linux,$(1))
 	install -D -m644 $$(FEDORA_REPO) $(1)-$(2)-$(3)-rootfs/etc/distro.repos.d/fedora.repo
 	bash ish -c "dnf --forcearch $(1) --releasever $(3) --assumeyes --installroot $(CURDIR)/$(1)-$(2)-$(3)-rootfs group install minimal-environment"
 	rm -f $(1)-$(2)-$(3)-rootfs/etc/distro.repos.d/fedora.repo
@@ -233,13 +233,13 @@ $(if $(findstring x86_64,$(1)), \
 endef
 
 define zypper-rootfs
-$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|/usr/bin/chkstat
-$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
+$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|/usr/bin/chkstat
+$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
 
 $(eval $(call chroot_shell,$(1),$(2),/bin/bash,zypper --root $(CURDIR)/$(1)-$(2)-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd))
 
-$(1)-$(2)-rootfs: | $(1)-$(2)-rootfs/etc/machine-id
-$(1)-$(2)-rootfs/etc/machine-id: | $(call libs,linux,$(1))
+$(1)-$(2)-rootfs: | $(1)-$(2)-rootfs/bin/sh
+$(1)-$(2)-rootfs/bin/sh: | $(call libs,linux,$(1))
 	bash ish -c "zypper --root $(CURDIR)/$(1)-$(2)-rootfs addrepo --no-gpgcheck support/$(2)-repo-oss.repo"
 	bash ish -c "zypper --root $(CURDIR)/$(1)-$(2)-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd"
 
@@ -252,13 +252,13 @@ $(if $(findstring x86_64,$(1)), \
 endef
 
 define alpine-make-rootfs-rootfs
-$(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export APK_OPTS = --arch $(1) --no-progress
-$(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export ISH_PRESERVE_ENV := APK_OPTS
+$(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export APK_OPTS = --arch $(1) --no-progress
+$(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export ISH_PRESERVE_ENV := APK_OPTS
 
 $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/ash,alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --mirror-uri http://mirrors.edge.kernel.org/alpine --branch $(3)))
 
-$(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/busybox
-$(1)-$(2)-$(3)-rootfs/bin/busybox: | $(call libs,musl,$(1))
+$(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/sh
+$(1)-$(2)-$(3)-rootfs/bin/sh: | $(call libs,musl,$(1))
 	bash ish -c "alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --mirror-uri http://mirrors.edge.kernel.org/alpine --branch $(3) $$(ALPINE_MAKE_ROOTFSFLAGS)"
 
 $(eval $(call log,alpine-make-rootfs,$(1)-$(2)-$(3)-rootfs))
@@ -440,8 +440,8 @@ define alpine-mini-rootfs
 $(eval $(call chroot_shell,$(1),alpine-mini,/bin/ash,tar xf alpine-minirootfs-$(2).0-$(1).tar.gz -C $(1)-alpine-mini-rootfs))
 $(1)-alpine-mini-chroot $(1)-alpine-mini-shell: | $(call libs,musl,$(1))
 
-$(1)-alpine-mini-rootfs: | $(1)-alpine-mini-rootfs/bin/busybox
-$(1)-alpine-mini-rootfs/bin/busybox: | $(call libs,musl,$(1)) alpine-minirootfs-$(2).0-$(1).tar.gz
+$(1)-alpine-mini-rootfs: | $(1)-alpine-mini-rootfs/bin/sh
+$(1)-alpine-mini-rootfs/bin/sh: | $(call libs,musl,$(1)) alpine-minirootfs-$(2).0-$(1).tar.gz
 	mkdir -p $(1)-alpine-mini-rootfs
 	tar xf alpine-minirootfs-$(2).0-$(1).tar.gz -C $(1)-alpine-mini-rootfs
 
@@ -617,14 +617,14 @@ $(eval $(call pacstrap-rootfs,x86_64,archlinux,base))
 i686-rootfs: i686-archlinux32-rootfs
 
 .PHONY: i686-archlinux32-rootfs
-i686-archlinux32-rootfs: | i686-archlinux32-rootfs/etc/machine-id
+i686-archlinux32-rootfs: | i686-archlinux32-rootfs/bin/sh
 
 $(eval $(call pacstrap-rootfs,i686,archlinux32,base))
 
 extra-rootfs: x86_64-manjaro-stable-rootfs
 
 .PHONY: x86_64-manjaro-stable-rootfs
-x86_64-manjaro-stable-rootfs: | x86_64-manjaro-stable-rootfs/etc/machine-id
+x86_64-manjaro-stable-rootfs: | x86_64-manjaro-stable-rootfs/bin/sh
 
 $(eval $(call pacstrap-rootfs,x86_64,manjaro-stable,base))
 endif
@@ -652,13 +652,13 @@ x86_64-ubuntu-rootfs: x86_64-ubuntu-jammy-rootfs
 x86_64-ubuntu-rootfs: x86_64-ubuntu-kinetic-rootfs
 x86_64-ubuntu-rootfs: x86_64-ubuntu-lunar-rootfs
 
-x86_64-ubuntu-trusty-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
-x86_64-ubuntu-xenial-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
-x86_64-ubuntu-bionic-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
-x86_64-ubuntu-focal-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
-x86_64-ubuntu-jammy-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
-x86_64-ubuntu-kinetic-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
-x86_64-ubuntu-lunar-rootfs/etc/machine-id: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
+x86_64-ubuntu-trusty-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
+x86_64-ubuntu-xenial-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
+x86_64-ubuntu-bionic-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
+x86_64-ubuntu-focal-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
+x86_64-ubuntu-jammy-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
+x86_64-ubuntu-kinetic-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
+x86_64-ubuntu-lunar-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
 $(eval $(call debootstrap-rootfs,x86_64,ubuntu,trusty))
 $(eval $(call debootstrap-rootfs,x86_64,ubuntu,xenial))
 $(eval $(call debootstrap-rootfs,x86_64,ubuntu,bionic))
@@ -669,9 +669,9 @@ $(eval $(call debootstrap-rootfs,x86_64,ubuntu,lunar))
 # chmod: cannot access '/dev/tty[0-9]*': No such file or directory
 # dpkg: error processing package makedev (--configure):
 #  subprocess installed post-installation script returned error exit status 1
-x86_64-ubuntu-trusty-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|/var/lib/dpkg/info/(initscripts|initramfs-tools|makedev).postinst
-x86_64-ubuntu-xenial-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/(initramfs-tools|makedev).postinst
-x86_64-ubuntu-bionic-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/initramfs-tools.postinst
+x86_64-ubuntu-trusty-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|/var/lib/dpkg/info/(initscripts|initramfs-tools|makedev).postinst
+x86_64-ubuntu-xenial-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/(initramfs-tools|makedev).postinst
+x86_64-ubuntu-bionic-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/initramfs-tools.postinst
 # Processing triggers for libc-bin ...
 # dpkg: cycle found while processing triggers:
 #  chain of packages whose triggers are or may be responsible:
@@ -682,20 +682,20 @@ x86_64-ubuntu-bionic-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mou
 #  triggers looping, abandoned
 # Errors were encountered while processing:
 #  libc-bin
-x86_64-ubuntu-trusty-rootfs/etc/machine-id: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
-x86_64-ubuntu-trusty-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
-x86_64-ubuntu-xenial-rootfs/etc/machine-id: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
-x86_64-ubuntu-xenial-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
-x86_64-ubuntu-bionic-rootfs/etc/machine-id: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
-x86_64-ubuntu-bionic-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
-x86_64-ubuntu-focal-rootfs/etc/machine-id: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
-x86_64-ubuntu-focal-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
-x86_64-ubuntu-jammy-rootfs/etc/machine-id: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
-x86_64-ubuntu-jammy-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
-x86_64-ubuntu-kinetic-rootfs/etc/machine-id: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
-x86_64-ubuntu-kinetic-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
-x86_64-ubuntu-lunar-rootfs/etc/machine-id: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
-x86_64-ubuntu-lunar-rootfs/etc/machine-id: export LDCONFIG_NOTRIGGER = y
+x86_64-ubuntu-trusty-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
+x86_64-ubuntu-trusty-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
+x86_64-ubuntu-xenial-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
+x86_64-ubuntu-xenial-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
+x86_64-ubuntu-bionic-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
+x86_64-ubuntu-bionic-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
+x86_64-ubuntu-focal-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
+x86_64-ubuntu-focal-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
+x86_64-ubuntu-jammy-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
+x86_64-ubuntu-jammy-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
+x86_64-ubuntu-kinetic-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
+x86_64-ubuntu-kinetic-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
+x86_64-ubuntu-lunar-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
+x86_64-ubuntu-lunar-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)
@@ -710,11 +710,11 @@ fedora-rootfs: x86_64-fedora-37-rootfs
 fedora-rootfs: x86_64-fedora-38-rootfs
 
 # Warning: $ROOT/x86_64-fedora-38-rootfs/etc: contains root directory '$ROOT/x86_64-fedora-38-rootfs'
-x86_64-fedora-38-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_WARNING_IGNORE = /var/log/dnf.rpm.log|/etc
+x86_64-fedora-38-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_WARNING_IGNORE = /var/log/dnf.rpm.log|/etc
 
-x86_64-fedora-33-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora-archive.repo
-x86_64-fedora-34-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora-archive.repo
-x86_64-fedora-35-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora-archive.repo
+x86_64-fedora-33-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
+x86_64-fedora-34-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
+x86_64-fedora-35-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 $(eval $(call dnf-rootfs,x86_64,fedora,33))
 $(eval $(call dnf-rootfs,x86_64,fedora,34))
 $(eval $(call dnf-rootfs,x86_64,fedora,35))
@@ -725,7 +725,7 @@ endif
 
 ifneq ($(shell command -v zypper 2>/dev/null),)
 # Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
-x86_64-opensuse-leap-rootfs/etc/machine-id: export IAMROOT_PATH_RESOLUTION_WARNING_IGNORE = /usr/lib64/.libgcrypt.so.20.fips
+x86_64-opensuse-leap-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_WARNING_IGNORE = /usr/lib64/.libgcrypt.so.20.fips
 
 extra-rootfs: opensuse-rootfs
 
@@ -734,7 +734,7 @@ opensuse-rootfs: | x86_64-opensuse-tumbleweed-rootfs
 
 $(eval $(call zypper-rootfs,x86_64,opensuse-leap))
 $(eval $(call zypper-rootfs,x86_64,opensuse-tumbleweed))
-x86_64-opensuse-leap-chroot x86_64-opensuse-leap-shell x86_64-opensuse-leap-rootfs/etc/machine-id: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|/usr/bin/chkstat|/usr/sbin/update-ca-certificates
+x86_64-opensuse-leap-chroot x86_64-opensuse-leap-shell x86_64-opensuse-leap-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|/usr/bin/chkstat|/usr/sbin/update-ca-certificates
 
 qemu-system-x86_64-opensuse-leap: override CMDLINE += rw init=/usr/lib/systemd/systemd
 endif
@@ -779,7 +779,7 @@ alpine-rootfs: x86_64-alpine-3.17-rootfs
 alpine-rootfs: x86_64-alpine-3.18-rootfs
 alpine-rootfs: x86_64-alpine-edge-rootfs
 
-x86_64-alpine-edge-rootfs/bin/busybox: ALPINE_MAKE_ROOTFSFLAGS = --packages apk-tools --packages openrc
+x86_64-alpine-edge-rootfs/bin/sh: ALPINE_MAKE_ROOTFSFLAGS = --packages apk-tools --packages openrc
 $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpine,3.14))
 $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpine,3.15))
 $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpine,3.16))
@@ -861,17 +861,17 @@ ifneq ($(shell command -v aarch64-linux-gnu-gcc 2>/dev/null),)
 aarch64-rootfs: aarch64-archlinuxarm-rootfs
 
 .PHONY: aarch64-archlinuxarm-rootfs
-aarch64-archlinuxarm-rootfs: | aarch64-archlinuxarm-rootfs/etc/machine-id
+aarch64-archlinuxarm-rootfs: | aarch64-archlinuxarm-rootfs/bin/sh
 
 $(eval $(call pacstrap-rootfs,aarch64,archlinuxarm,base))
-aarch64-archlinuxarm-chroot aarch64-archlinuxarm-shell aarch64-archlinuxarm-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib:/usr/lib
+aarch64-archlinuxarm-chroot aarch64-archlinuxarm-shell aarch64-archlinuxarm-rootfs/bin/sh: export IAMROOT_LIBRARY_PATH = /lib:/usr/lib
 endif
 
 ifneq ($(shell command -v arm-linux-gnueabihf-gcc 2>/dev/null),)
 arm-rootfs: armv7h-archlinuxarm-rootfs
 
 .PHONY: armv7h-archlinuxarm-rootfs
-armv7h-archlinuxarm-rootfs: | armv7h-archlinuxarm-rootfs/etc/machine-id
+armv7h-archlinuxarm-rootfs: | armv7h-archlinuxarm-rootfs/bin/sh
 
 $(eval $(call pacstrap-rootfs,armv7h,archlinuxarm,base))
 endif
@@ -880,10 +880,10 @@ ifneq ($(shell command -v riscv64-linux-gnu-gcc 2>/dev/null),)
 riscv64-rootfs: riscv64-archlinuxriscv-rootfs
 
 .PHONY: riscv64-archlinuxriscv-rootfs
-riscv64-archlinuxriscv-rootfs: | riscv64-archlinuxriscv-rootfs/etc/machine-id
+riscv64-archlinuxriscv-rootfs: | riscv64-archlinuxriscv-rootfs/bin/sh
 
 $(eval $(call pacstrap-rootfs,riscv64,archlinuxriscv,base))
-riscv64-archlinuxriscv-chroot riscv64-archlinuxriscv-shell riscv64-archlinuxriscv-rootfs/etc/machine-id: export IAMROOT_LIBRARY_PATH = /lib:/usr/lib
+riscv64-archlinuxriscv-chroot riscv64-archlinuxriscv-shell riscv64-archlinuxriscv-rootfs/bin/sh: export IAMROOT_LIBRARY_PATH = /lib:/usr/lib
 endif
 endif
 
@@ -899,16 +899,16 @@ aarch64-fedora-rootfs: aarch64-fedora-36-rootfs
 aarch64-fedora-rootfs: aarch64-fedora-37-rootfs
 aarch64-fedora-rootfs: aarch64-fedora-38-rootfs
 
-aarch64-fedora-33-rootfs: | aarch64-fedora-33-rootfs/etc/machine-id
-aarch64-fedora-34-rootfs: | aarch64-fedora-34-rootfs/etc/machine-id
-aarch64-fedora-35-rootfs: | aarch64-fedora-35-rootfs/etc/machine-id
-aarch64-fedora-36-rootfs: | aarch64-fedora-36-rootfs/etc/machine-id
-aarch64-fedora-37-rootfs: | aarch64-fedora-37-rootfs/etc/machine-id
-aarch64-fedora-38-rootfs: | aarch64-fedora-38-rootfs/etc/machine-id
+aarch64-fedora-33-rootfs: | aarch64-fedora-33-rootfs/bin/sh
+aarch64-fedora-34-rootfs: | aarch64-fedora-34-rootfs/bin/sh
+aarch64-fedora-35-rootfs: | aarch64-fedora-35-rootfs/bin/sh
+aarch64-fedora-36-rootfs: | aarch64-fedora-36-rootfs/bin/sh
+aarch64-fedora-37-rootfs: | aarch64-fedora-37-rootfs/bin/sh
+aarch64-fedora-38-rootfs: | aarch64-fedora-38-rootfs/bin/sh
 
-aarch64-fedora-33-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora-archive.repo
-aarch64-fedora-34-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora-archive.repo
-aarch64-fedora-35-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora-archive.repo
+aarch64-fedora-33-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
+aarch64-fedora-34-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
+aarch64-fedora-35-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 $(eval $(call dnf-rootfs,aarch64,fedora,33))
 $(eval $(call dnf-rootfs,aarch64,fedora,34))
 $(eval $(call dnf-rootfs,aarch64,fedora,35))
@@ -926,14 +926,14 @@ armv7hl-fedora-rootfs: armv7hl-fedora-34-rootfs
 armv7hl-fedora-rootfs: armv7hl-fedora-35-rootfs
 armv7hl-fedora-rootfs: armv7hl-fedora-36-rootfs
 
-armv7hl-fedora-33-rootfs: | armv7hl-fedora-33-rootfs/etc/machine-id
-armv7hl-fedora-34-rootfs: | armv7hl-fedora-34-rootfs/etc/machine-id
-armv7hl-fedora-35-rootfs: | armv7hl-fedora-35-rootfs/etc/machine-id
-armv7hl-fedora-36-rootfs: | armv7hl-fedora-36-rootfs/etc/machine-id
+armv7hl-fedora-33-rootfs: | armv7hl-fedora-33-rootfs/bin/sh
+armv7hl-fedora-34-rootfs: | armv7hl-fedora-34-rootfs/bin/sh
+armv7hl-fedora-35-rootfs: | armv7hl-fedora-35-rootfs/bin/sh
+armv7hl-fedora-36-rootfs: | armv7hl-fedora-36-rootfs/bin/sh
 
-armv7hl-fedora-33-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora-archive.repo
-armv7hl-fedora-34-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora-archive.repo
-armv7hl-fedora-35-rootfs/etc/machine-id: export FEDORA_REPO ?= support/fedora-archive.repo
+armv7hl-fedora-33-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
+armv7hl-fedora-34-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
+armv7hl-fedora-35-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 $(eval $(call dnf-rootfs,armv7hl,fedora,33))
 $(eval $(call dnf-rootfs,armv7hl,fedora,34))
 $(eval $(call dnf-rootfs,armv7hl,fedora,35))

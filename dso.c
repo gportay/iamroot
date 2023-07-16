@@ -1884,9 +1884,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 	ssize_t siz;
 	(void)argv;
 
-	/*
-	 * Open the shared object...
-	 */
+	/* Open the executable file... */
 	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
 	if (fd == -1)
 		return -1;

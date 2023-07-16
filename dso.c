@@ -1884,6 +1884,15 @@ int __loader(const char *path, char * const argv[], char *interp,
 	ssize_t siz;
 	(void)argv;
 
+	/*
+	 * According to execve(2):
+	 *
+	 * If the executable is a dynamically linked ELF executable, the
+	 * interpreter named in the PT_INTERP segment is used to load the
+	 * needed shared objects. This interpreter is typically
+	 * /lib/ld-linux.so.2 for binaries linked with glibc (see
+	 * ld-linux.so(8)).
+	 */
 	/* Open the executable file... */
 	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
 	if (fd == -1)

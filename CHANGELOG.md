@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-- Intercept the function `kill()`
+- Intercept the function `getauxval()` and `kill()`
 
 ## [v11] - 2023-07-14
 

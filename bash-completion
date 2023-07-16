@@ -25,7 +25,7 @@ _ish()
 		fchmodat fchown fchownat fclose fdopen fexecve fgetxattr
 		flistxattr fopen fremovexattr freopen fsetxattr ftok fstat
 		fstat64 fstatat fstatat64 ftw futimesat get_current_dir_name
-		getcwd getegid geteuid getfh getfhat getgid getgroups
+		getauxval getcwd getegid geteuid getfh getfhat getgid getgroups
 		getpeername getresgid getresuid getsockname getuid getwd
 		getxattr initgroups inotify_add_watch kill lchmod lchown
 		lgetxattr link linkat listxattr llistxattr lremovexattr

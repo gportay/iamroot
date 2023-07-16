@@ -1281,19 +1281,15 @@ static char *__setenv_ld_preload(Elf64_Ehdr *ehdr, const char *ldso, int abi,
 
 static int __secure_execution_mode()
 {
-	uid_t ruid, euid, suid;
-	gid_t rgid, egid, sgid;
-	int ret;
+	int ret = 0;
 
-	ret = getresuid(&ruid, &euid, &suid);
+#ifdef __linux_
+	ret = getauxval(AT_SECURE);
 	if (ret == -1)
 		return -1;
+#endif
 
-	ret = getresgid(&rgid, &egid, &sgid);
-	if (ret == -1)
-		return -1;
-
-	return ruid != euid || rgid != egid;
+	return ret;
 }
 
 /*

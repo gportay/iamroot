@@ -157,6 +157,7 @@ libiamroot.so: ftok.o
 libiamroot.so: ftw.o
 libiamroot.so: futimesat.o
 libiamroot.so: get_current_dir_name.o
+libiamroot.so: getauxval.o
 libiamroot.so: getcwd.o
 libiamroot.so: getegid.o
 libiamroot.so: geteuid.o

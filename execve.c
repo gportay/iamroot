@@ -36,11 +36,6 @@ extern int next_open(const char *, int, mode_t);
 extern int next_fstatat(int, const char *, struct stat *, int);
 
 #ifdef __linux__
-static int __secure()
-{
-	return getauxval(AT_SECURE) != 0;
-}
-
 const char *__execfn()
 {
 	return (const char *)getauxval(AT_EXECFN);
@@ -149,11 +144,6 @@ void execve_init()
 	static __regex_t regex_ignore;
 	const char *ignore;
 	int ret;
-
-#ifdef __linux__
-	if (__secure())
-		__warning("%s: secure-execution mode\n", __execfn());
-#endif
 
 	if (re_ignore)
 		return;

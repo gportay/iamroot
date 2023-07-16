@@ -1315,7 +1315,7 @@ static int __secure_execution_mode()
 	ret = getresuid(&ruid, &euid, &suid);
 	if (ret == -1)
 		return -1;
-	
+
 	ret = getresgid(&rgid, &egid, &sgid);
 	if (ret == -1)
 		return -1;

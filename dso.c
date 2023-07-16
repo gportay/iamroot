@@ -1231,7 +1231,7 @@ static const char *__getld_library_path(Elf64_Ehdr *ehdr, const char *ldso,
 	 * set; try to guess automagically the standard library path for the
 	 * GNU/Linux systems.
 	 *
-	 * According do dl.so(8):
+	 * According to dl.so(8):
 	 *
 	 * On some 64-bit architectures, the default paths for 64-bit shared
 	 * objects are /lib64, and then /usr/lib64.

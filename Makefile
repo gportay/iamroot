@@ -215,6 +215,8 @@ libiamroot.so: passwd.o
 libiamroot.so: path_resolution.o
 libiamroot.so: posix_spawn.o
 libiamroot.so: posix_spawnp.o
+libiamroot.so: ptsname.o
+libiamroot.so: ptsname_r.o
 libiamroot.so: readlink.o
 libiamroot.so: readlinkat.o
 libiamroot.so: realpath.o

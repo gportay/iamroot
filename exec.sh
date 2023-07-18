@@ -102,7 +102,24 @@ ldd|busybox)
 ldconfig|ldconfig.real)
 	if [ "${IAMROOT_ROOT:-/}" != / ]
 	then
-		set -- "$@" -r "$IAMROOT_ROOT"
+		args=()
+		r=
+		prev=
+		for cur in "$@"
+		do
+			if [ "$prev" = "-r" ]
+			then
+				args+=("$IAMROOT_ROOT$cur")
+				r="${args[-1]}"
+			else
+				args+=("$IAMROOT_ROOT$cur")
+			fi
+		done
+
+		if [ ! "$r" ]
+		then
+			set -- "$@" -r "$IAMROOT_ROOT"
+		fi
 
 		# Fixes: $IAMROOT_ROOT/usr/sbin/ldconfig: need absolute file name for configuration file when using -r
 		if [ -r "$IAMROOT_ROOT/etc/ld.so.conf" ]

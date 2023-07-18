@@ -444,7 +444,10 @@ warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply
   Installing       : glibc-common XXX/XXX
   Running scriptlet: glibc XXX/XXX
   Installing       : glibc XXX/XXX
-  Running scriptlet: glibc XXX/XXX
+  Running scriptlet: glibc                            35/374/usr/sbin/ldconfig: /usr/lib/ld-musl-armhf.so.1 is for unknown machine 40.
+
+/usr/sbin/ldconfig: Can't create temporary cache file /etc/ld.so.cache~: Permission denied
+ 
   Installing       : ncurses-libs XXX/XXX
   Installing       : bash XXX/XXX
   Running scriptlet: bash XXX/XXX
@@ -665,7 +668,7 @@ warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply
   Installing       : cryptsetup-libs XXX/XXX
   Installing       : pam XXX/XXX
   Running scriptlet: tpm2-tss XXX/XXX
-ldconfig: Warning: missing or non-executable shell '/usr/sbin/nologin'
+useradd: Warning: missing or non-executable shell '/usr/sbin/nologin'
 
   Installing       : tpm2-tss XXX/XXX
   Installing       : kmod XXX/XXX
@@ -819,8 +822,6 @@ Created symlink /etc/systemd/system/sysinit.target.wants/selinux-autorelabel-mar
   Running scriptlet: selinux-policy-targeted XXX/XXX
   Installing       : selinux-policy-targeted XXX/XXX
   Running scriptlet: selinux-policy-targeted XXX/XXX
-Executed with unrecognized name (ldconfig), defaulting to restorecon behavior.
-
   Installing       : sssd-client XXX/XXX
   Running scriptlet: sssd-client XXX/XXX
   Installing       : sssd-common XXX/XXX
@@ -884,9 +885,7 @@ Created symlink /etc/systemd/system/multi-user.target.wants/sshd.service → /us
   Installing       : ncurses XXX/XXX
   Installing       : fedora-repos-modular XXX/XXX
   Installing       : rootfiles XXX/XXX
-  Running scriptlet: filesystem                      374/374Executed with unrecognized name (ldconfig), defaulting to restorecon behavior.
-Executed with unrecognized name (ldconfig), defaulting to restorecon behavior.
- 
+  Running scriptlet: filesystem XXX/XXX
   Running scriptlet: grub2-common XXX/XXX
   Running scriptlet: crypto-policies-scripts XXX/XXX
   Running scriptlet: ca-certificates XXX/XXX
@@ -897,11 +896,12 @@ Executed with unrecognized name (ldconfig), defaulting to restorecon behavior.
   Running scriptlet: nss XXX/XXX
   Running scriptlet: rpm XXX/XXX
   Running scriptlet: selinux-policy-targeted XXX/XXX
-Executed with unrecognized name (ldconfig), defaulting to restorecon behavior.
-
   Running scriptlet: sssd-common XXX/XXX
   Running scriptlet: firewalld XXX/XXX
-  Running scriptlet: rootfiles XXX/XXX
+  Running scriptlet: rootfiles                       374/374/usr/sbin/ldconfig: /usr/lib/ld-musl-armhf.so.1 is for unknown machine 40.
+
+/usr/sbin/ldconfig: Can't create temporary cache file /etc/ld.so.cache~: Permission denied
+ 
 Creating group 'systemd-coredump' with GID XXX.
 Creating user 'systemd-coredump' (systemd Core Dumper) with UID XXX and GID XXX.
 Creating group 'systemd-timesync' with GID XXX.
@@ -1659,3 +1659,4 @@ Installed:
   zram-generator-defaults
 
 Complete!
+Error: call to /usr/sbin/ldconfig failed.nError: call to /usr/sbin/ldconfig failed.n

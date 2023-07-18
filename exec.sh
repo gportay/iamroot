@@ -49,7 +49,7 @@ info() {
 }
 
 path_resolution() {
-	if [ "${1##*/}" != "$1" ]
+	if [ "${1:0:1}" != / ]
 	then
 		echo "$PWD/${1#/*}"
 		return

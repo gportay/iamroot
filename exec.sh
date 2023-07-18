@@ -40,7 +40,7 @@ notice() {
 }
 
 info() {
-	if [ "$IAMROOT_DEBUG" -le 2 ]
+	if [ "${IAMROOT_DEBUG:-0}" -le 2 ]
 	then
 		return
 	fi

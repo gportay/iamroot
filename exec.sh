@@ -104,6 +104,7 @@ ldconfig|ldconfig.real)
 	then
 		args=()
 		r=
+		f=
 		prev=
 		for cur in "$@"
 		do
@@ -111,6 +112,10 @@ ldconfig|ldconfig.real)
 			then
 				args+=("$IAMROOT_ROOT$cur")
 				r="${args[-1]}"
+			elif [ "$prev" = "-f" ]
+			then
+				args+=("$IAMROOT_ROOT$cur")
+				f="${args[-1]}"
 			else
 				args+=("$IAMROOT_ROOT$cur")
 			fi
@@ -121,11 +126,16 @@ ldconfig|ldconfig.real)
 			set -- "$@" -r "$IAMROOT_ROOT"
 		fi
 
+		if [ ! "$f" ]
+		then
+			f="$IAMROOT_ROOT/etc/ld.so.conf"
+		fi
+
 		# Fixes: $IAMROOT_ROOT/usr/sbin/ldconfig: need absolute file name for configuration file when using -r
-		if [ -r "$IAMROOT_ROOT/etc/ld.so.conf" ]
+		if [ -r "$f" ]
 		then
 			sed -e 's,include ld.so.conf.d/\*.conf,include /etc/ld.so.conf.d/*.conf,' \
-			    -i "$IAMROOT_ROOT/etc/ld.so.conf"
+			    -i "$f"
 		fi
 	fi
 

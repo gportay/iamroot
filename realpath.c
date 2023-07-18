@@ -240,3 +240,12 @@ exit:
 
 	return ret;
 }
+
+char *__realpath_chk(const char *path, char *resolved_path, size_t resolved_len)
+{
+	__debug("%s(path: '%s', resolved_path: %p, resolved_len: %zu)\n",
+		__func__, path, resolved_path, resolved_len);
+
+	/* Forward to another function */
+	return realpath(path, resolved_path);
+}

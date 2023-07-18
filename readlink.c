@@ -19,3 +19,13 @@ ssize_t readlink(const char *path, char *buf, size_t bufsize)
 	/* Forward to another function */
 	return readlinkat(AT_FDCWD, path, buf, bufsize);
 }
+
+ssize_t __readlink_chk(const char *path, char *buf, size_t pathlen,
+		       size_t bufsize)
+{
+	__debug("%s(path: '%s', buf: %p, pathlen: %zu, bufsize: %zu)\n",
+		__func__, path, buf, pathlen, bufsize);
+
+	/* Forward to another function */
+	return readlinkat(AT_FDCWD, path, buf, bufsize);
+}

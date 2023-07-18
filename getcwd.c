@@ -41,3 +41,12 @@ exit:
 
 	return ret;
 }
+
+char *__getcwd_chk(char *buf, size_t size, size_t buflen)
+{
+	__debug("%s(buf: %p, size: %zu, buflen: %zu)\n", __func__, buf, size,
+		buflen);
+
+	/* Forward to another function */
+	return getcwd(buf, size);
+}

@@ -45,3 +45,12 @@ exit:
 
 	return ret;
 }
+
+int __ptsname_r_chk(int fd, char *buf, size_t bufsize, size_t buflen)
+{
+	__debug("%s(fd: %i, buf: %p, bufsize: %zu, buflen: %zu)\n", __func__,
+		fd, buf, bufsize, buflen);
+
+	/* Forward to another function */
+	return ptsname_r(fd, buf, bufsize);
+}

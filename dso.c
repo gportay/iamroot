@@ -42,6 +42,7 @@ const char *__basename(const char *path)
 }
 
 static regex_t *re_ldso;
+static regex_t *re_lib;
 
 static void __regex_perror(const char *s, regex_t *regex, int err)
 {
@@ -58,12 +59,13 @@ static void __regex_perror(const char *s, regex_t *regex, int err)
 __attribute__((constructor,visibility("hidden")))
 void dso_init()
 {
-	static __regex_t regex_ldso;
+	static __regex_t regex_ldso, regex_lib;
 	const char *ldso = "^ld(|-[[:alnum:]._-]+)\\.so(|\\.[[:digit:]]+)$";
+	const char *lib = "^lib[[:alnum:]+._-]+.so(|.*)$";
 	int ret;
 
 	if (re_ldso)
-		return;
+		goto lib;
 
 	ret = regcomp(&regex_ldso.re, ldso, REG_NOSUB|REG_EXTENDED);
 	if (ret == -1) {
@@ -72,11 +74,30 @@ void dso_init()
 	}
 
 	re_ldso = &regex_ldso.re;
+
+lib:
+	if (re_lib)
+		return;
+
+	ret = regcomp(&regex_lib.re, lib, REG_NOSUB|REG_EXTENDED);
+	if (ret == -1) {
+		__regex_perror("regcomp", &regex_lib.re, ret);
+		return;
+	}
+
+	re_lib = &regex_lib.re;
 }
 
 __attribute__((destructor,visibility("hidden")))
 void dso_fini()
 {
+	if (!re_lib)
+		goto ldso;
+
+	regfree(re_lib);
+	re_lib = NULL;
+
+ldso:
 	if (!re_ldso)
 		return;
 
@@ -95,6 +116,22 @@ int __is_ldso(const char *path)
 	ret = regexec(re_ldso, path, 0, NULL, 0);
 	if (ret == -1) {
 		__regex_perror("regexec", re_ldso, ret);
+		return 0;
+	}
+
+	return !ret;
+}
+
+static int __is_lib(const char *path)
+{
+	int ret = 0;
+
+	if (!re_lib)
+		return 0;
+
+	ret = regexec(re_lib, path, 0, NULL, 0);
+	if (ret == -1) {
+		__regex_perror("regexec", re_lib, ret);
 		return 0;
 	}
 
@@ -184,11 +221,6 @@ static int __is_in_path(const char *pathname, const char *path)
 	return __path_iterate(path, __is_in_path_callback, (void *)pathname);
 }
 
-static int __so_is_lib(const char *path)
-{
-	return __strncmp(__basename(path), "lib") == 0;
-}
-
 /*
  * Stolen and hacked from musl (ldso/dynlink.c)
  *
@@ -252,7 +284,10 @@ static int __ldso_preload_needed_callback(const char *needed, void *user)
 		return -1;
 
 	/* Ignore none-libraries (i.e. linux-vdso.so.1, ld.so-ish...) */
-	if (!__so_is_lib(buf))
+	ret = __is_lib(__basename(buf));
+	if (ret == 0 && !__is_ldso(__basename(buf)))
+		__warning("%s: ignoring non-library!\n", __basename(buf));
+	if (ret == -1 || ret == 0)
 		return 0;
 
 	/* The shared object is already in the buffer */

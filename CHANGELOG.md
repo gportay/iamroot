@@ -108,8 +108,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `geteuid()`, `getgid()`, `getwd()` and `setuid()` return an error
 - Fix the handling for NULL dir argument in the function `tempnam()` by
   defaulting to `P_tmpdir`
-- Fix the missing stripping of the chroot directory in the function
-  `tempnam()`
+- Fix the missing stripping of the root directory in the function `tempnam()`
 - Fix the freeing the NULL pointer in the function `canonicalize_file_name()`
 - Fix the path resolution ignoration if the path is relative to the current
   working directory
@@ -204,9 +203,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   and `getuid()`
 - Fix the loading of the user ownership from extended attributes of the
   resolved paths in the function `fchownat()`
-- Fix the missing stripping of the chroot directory in the function
+- Fix the missing stripping of the root directory in the function
   `canonicalize_file_name()`
-- Fix the truncating of symlinks read from a chroot directory if the buffer is
+- Fix the truncating of symlinks read from a root directory if the buffer is
   too small to contain the whole symlink
 - Fix the handling for empty path if dfd is not `AT_FDCWD`
 - Fix the calling to the next symbol with the resolved path for the function
@@ -363,8 +362,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 
 - Create weak aliases for [glibc] `__` and `64` variants
-- Output the parameters even in chroot for the functions `execveat()`,
-  `execve()` and `posix_spawn()`
+- Output the parameters even in chroot'ed environment  for the functions
+  `execveat()`, `execve()` and `posix_spawn()`
 - Output a warning if the interpretor is not handled
 - Support the environment variables `argv0`, `LD_LIBRARY_PATH` and `LD_PRELOAD`
   while running a generic ELF dynamic loader

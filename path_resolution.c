@@ -576,8 +576,8 @@ __attribute__((destructor,visibility("hidden")))
 void path_resolution_fini()
 {
 	/*
-	 * Workaround: reset the chroot directory for later destructors call
-	 * such as __gcov_exit().
+	 * Workaround: reset the root directory for later destructors call such
+	 * as __gcov_exit().
 	 */
 	unsetenv("IAMROOT_ROOT");
 

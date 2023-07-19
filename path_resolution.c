@@ -630,6 +630,10 @@ static int warning_ignore(const char *path)
 	return !ret;
 }
 
+/*
+ * Sanitize the given path from its starting, and make it relative to / (does
+ * not handle parent directories ../).
+ */
 char *__path_sanitize(char *path, size_t bufsize)
 {
 	ssize_t len;
@@ -638,20 +642,24 @@ char *__path_sanitize(char *path, size_t bufsize)
 		return path;
 
 	len = strnlen(path, bufsize);
+	/* Strip leading ./ */
 	while ((len > 3) && __strneq(path, "./") && path[2] != '/') {
 		char *s;
 		for (s = path; *s; s++)
 			*s = *(s+2);
 		len -= 2;
 	}
+	/* Strip leading /. */
 	while ((len > 2) && __strneq(&path[len-2], "/.")) {
 		path[len-2] = 0;
 		len -= 2;
 	}
+	/* Strip leading / */
 	while ((len > 1) && (path[len-1] == '/')) {
 		path[len-1] = 0;
 		len--;
 	}
+	/* Assuming . if reaches 0-length */
 	if (len == 0) {
 		path[len++] = '.';
 		path[len] = 0;

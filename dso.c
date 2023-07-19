@@ -2023,7 +2023,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 	/*
 	 * The interpreter has to preload its libiamroot.so library.
 	 */
-	if (__strneq(buf, "/lib/ld") || __strneq(buf, "/lib64/ld")) {
+	if (is_gnu_linux(&ehdr, ldso, abi) || is_musl(&ehdr, ldso, abi)) {
 		char *argv0, *inhibit_rpath, *ld_library_path, *ld_preload;
 		int has_argv0 = 1, has_preload = 1, has_inhibit_rpath = 0,
 		    has_inhibit_cache = 0;
@@ -2035,7 +2035,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 		 * 2.30, --inhibit-cache since 2.16, and --inhibit-rpath since
 		 * 2.0.94
 		 */
-		if (__strneq(ldso, "linux")) {
+		if (is_gnu_linux(&ehdr, ldso, abi)) {
 			has_inhibit_rpath = 1;
 
 			has_inhibit_cache =

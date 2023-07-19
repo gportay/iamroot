@@ -594,8 +594,10 @@ loader:
 	/*
 	 * Run the dynamic loader directly
 	 */
-	if (__strneq(path, "/usr/bin/ld.so") || __strneq(path, "/lib/ld") ||
-	    __strneq(path, "/lib64/ld")) {
+	ret = __is_ldso(__basename(path));
+	if (ret == -1)
+		return -1;
+	if (ret == 1) {
 		__execfd();
 		__verbose_exec(buf, argv, envp);
 		return next_execve(buf, argv, envp);

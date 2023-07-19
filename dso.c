@@ -16,20 +16,89 @@
 #include <fcntl.h>
 #include <link.h>
 #include <elf.h>
+#include <regex.h>
 
 #include "iamroot.h"
+
+typedef struct {
+	regex_t re;
+#ifndef JIMREGEXP_H
+	char jimpad[40];
+#endif
+} __regex_t;
 
 extern int next_faccessat(int, const char *, int);
 extern int next_open(const char *, int, mode_t);
 extern void *next_dlopen(const char *, int);
 
-static const char *__basename(const char *path)
+__attribute__((visibility("hidden")))
+const char *__basename(const char *path)
 {
 	char *s = strrchr(path, '/');
 	if (!s)
 		return path;
 
 	return s+1; /* trailing-slash */
+}
+
+static regex_t *re_ldso;
+
+static void __regex_perror(const char *s, regex_t *regex, int err)
+{
+	char buf[128];
+	regerror(err, regex, buf, sizeof(buf));
+	if (!s) {
+		dprintf(STDERR_FILENO, "%s\n", buf);
+		return;
+	}
+
+	dprintf(STDERR_FILENO, "%s: %s\n", s, buf);
+}
+
+__attribute__((constructor,visibility("hidden")))
+void dso_init()
+{
+	static __regex_t regex_ldso;
+	const char *ldso = "^ld(|-[[:alnum:]._-]+)\\.so(|\\.[[:digit:]]+)$";
+	int ret;
+
+	if (re_ldso)
+		return;
+
+	ret = regcomp(&regex_ldso.re, ldso, REG_NOSUB|REG_EXTENDED);
+	if (ret == -1) {
+		__regex_perror("regcomp", &regex_ldso.re, ret);
+		return;
+	}
+
+	re_ldso = &regex_ldso.re;
+}
+
+__attribute__((destructor,visibility("hidden")))
+void dso_fini()
+{
+	if (!re_ldso)
+		return;
+
+	regfree(re_ldso);
+	re_ldso = NULL;
+}
+
+__attribute__((visibility("hidden")))
+int __is_ldso(const char *path)
+{
+	int ret = 0;
+
+	if (!re_ldso)
+		return 0;
+
+	ret = regexec(re_ldso, path, 0, NULL, 0);
+	if (ret == -1) {
+		__regex_perror("regexec", re_ldso, ret);
+		return 0;
+	}
+
+	return !ret;
 }
 
 static char *__path_strncat(char *dst, const char *src, size_t siz)

@@ -147,6 +147,7 @@ int __isdirectory(const char *);
 int __fisfileat(int, const char *, int);
 int __fisfile(int);
 int __isfile(const char *);
+const char *__basename(const char *);
 char *__getenv(const char *);
 int __setenv(const char *, const char *, int);
 int __path_setenv(const char *, const char *, const char *, int);
@@ -653,6 +654,8 @@ static inline void __close(int fd)
 const char *__path();
 
 const char *__library_path();
+
+int __is_ldso(const char *path);
 
 ssize_t __dl_library_path(const char *, char *, size_t);
 

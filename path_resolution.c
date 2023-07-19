@@ -726,6 +726,7 @@ int __path_ignored(int dfd, const char *path)
 ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 			int atflags)
 {
+	int is_atrootfd = 0;
 	const char *root;
 	size_t len;
 
@@ -821,6 +822,10 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 			goto exit;
 		}
 
+		/*
+		 * The directory fd is the root directory.
+		 */
+		is_atrootfd = streq(root, dirbuf);
 		n = _snprintf(buf, bufsize, "%s/%s", dirbuf, path);
 		if (n < 0)
 			return -1;
@@ -843,6 +848,15 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		_strncpy(tmp, buf, bufsize);
 		__realpath(tmp, buf);
 	}
+
+	/*
+	 * The directory fd is the root directory and the resolved path is
+	 * below the root directory.
+	 *
+	 * The resolved path is the root directory.
+	 */
+	if (*root && is_atrootfd && !__strleq(buf, root))
+		_strncpy(buf, root, bufsize);
 
 	/*
 	 * The path after the symlinks are followed is to be ignored.

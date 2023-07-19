@@ -9,6 +9,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - Intercept the function `kill()`
+- The internal function `path_resolution()` resolves the root directory if in
+  chroot'ed environment and the resolved path is below the root directory
 
 ## [v11] - 2023-07-14
 

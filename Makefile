@@ -6,6 +6,7 @@
 
 VERSION = 11
 PREFIX ?= /usr/local
+COVERAGE ?= 0
 
 IAMROOT_LIB ?= $(CURDIR)/libiamroot.so
 export IAMROOT_LIB
@@ -59,7 +60,7 @@ endif
 %.o: override CFLAGS += -fPIC -Wall -Wextra
 %.so: override LDFLAGS += -nodefaultlibs
 
-ifdef COVERAGE
+ifneq ($(COVERAGE),0)
 %.o: override CFLAGS += -fprofile-arcs -ftest-coverage
 %.so: override LDFLAGS += -fprofile-arcs
 %.so: override LDLIBS += -lgcov

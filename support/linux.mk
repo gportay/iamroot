@@ -13,6 +13,7 @@ KVER ?= $(shell uname -r 2>/dev/null)
 VMLINUX_KVER ?= $(shell vmlinux --version 2>/dev/null)
 KVM ?= $(shell test -c /dev/kvm 2>/dev/null && echo 1)
 CLANG ?= 0
+COVERAGE ?= 0
 
 NVERBOSE ?= 0
 export NVERBOSE
@@ -831,7 +832,7 @@ clean-gcompat:
 	-$(MAKE) -C gcompat clean
 	rm -f gcompat/ld-*.so*
 
-ifdef COVERAGE
+ifneq ($(COVERAGE),0)
 x86_64-alpine-mini-shell: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-alpine-mini-chroot: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-alpine-mini-rootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0

@@ -10,6 +10,7 @@ SHELL = bash
 ARCH ?= $(shell uname -m 2>/dev/null)
 KVER ?= $(shell uname -r 2>/dev/null)
 OS ?= $(shell uname -o 2>/dev/null || uname -s 2>/dev/null)
+COVERAGE ?= 0
 
 override CPPFLAGS += -D_GNU_SOURCE
 override CFLAGS += -fPIC -Wall -Wextra
@@ -20,7 +21,7 @@ export LANG
 IAMROOT_LIB ?= $(CURDIR)/libiamroot.so
 export IAMROOT_LIB
 
-ifdef COVERAGE
+ifneq ($(COVERAGE),0)
 test-%: override CFLAGS += -fprofile-arcs -ftest-coverage
 test-%: override LDFLAGS += -fprofile-arcs
 test-%: override LDLIBS += -lgcov

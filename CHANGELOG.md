@@ -548,7 +548,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   [exec][exec(3)]'ing to a [glibc] or [musl] chroot'ed environment
 - Add the environment variables `IAMROOT_LD_PRELOAD_<ldso>_<abi>` and
   `IAMROOT_LIB_<ldso>_<abi>` to override the list of libraries to be preloaded
-  by the [dynamic loader][ld.so(8)] in the chroot'd environment; the two
+  by the [dynamic loader][ld.so(8)] in the chroot'ed environment; the two
   libraries `/usr/lib64/libc.so.6` and `/usr/lib64/libdl.so.2` are preloaded in
   a [glibc]'s chroot'ed environment
 - Add the two [exec][exec(3)] environment variables `IAMROOT_EXEC_LD_ARGV1` and

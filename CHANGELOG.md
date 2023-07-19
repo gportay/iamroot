@@ -485,8 +485,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   functions `__openat64_2()`, `__openat_2()`, `openat()`, `openat64()` and
   `renameat2()`
 - Fix the `argv[0]` value for the [glibc] [dynamic loader][ld.so(8)] that does
-  not support the option `--argv0` before 2.33; the value in `argv[0]` is now
-  stripped from the path to the chroot
+  not support the option `--argv0` before 2.33
 - Fix the use for the [dynamic loader][ld.so(8)] option `--preload` which is
   supported since [glibc] 2.30
 - Fix the adding of extra arguments due to off-by-one shifting to prepend the

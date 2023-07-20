@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 #include <errno.h>
 #include <limits.h>
 #include <fcntl.h>
@@ -33,6 +34,23 @@ int next_nftw64(const char *path,
 	return sym(path, fn, nopenfd, flags);
 }
 
+static int (*__fn)(const char *, const struct stat64 *, int, struct FTW *);
+static int __nftw64_callback(const char *path, const struct stat64 *statbuf,
+			     int flags, struct FTW *ftwbuf)
+{
+	char buf[PATH_MAX];
+
+	__strncpy(buf, path);
+	__striprootdir(buf);
+	
+	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
+
+	if (!__fn)
+		return -1;
+
+	return __fn(buf, statbuf, flags, ftwbuf);
+}
+
 int nftw64(const char *path,
 	   int (*fn)(const char *, const struct stat64 *, int, struct FTW *),
 	   int nopenfd, int flags)
@@ -45,7 +63,9 @@ int nftw64(const char *path,
 	if (siz == -1)
 		goto exit;
 
-	ret = next_nftw64(buf, fn, nopenfd, flags);
+	__fn = fn;
+	ret = next_nftw64(buf, __nftw64_callback, nopenfd, flags);
+	__fn = NULL;
 
 exit:
 	__debug("%s(path: '%s' -> '%s') -> %i\n", __func__, path, buf, ret);

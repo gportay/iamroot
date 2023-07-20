@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 #include <errno.h>
 #include <limits.h>
 #include <fcntl.h>
@@ -32,6 +33,23 @@ int next_ftw(const char *path,
 	return sym(path, fn, nopenfd);
 }
 
+static int (*__fn)(const char *, const struct stat *, int);
+static int __ftw_callback(const char *path, const struct stat *statbuf,
+			  int flags)
+{
+	char buf[PATH_MAX];
+
+	__strncpy(buf, path);
+	__striprootdir(buf);
+	
+	__debug("%s(path: '%s' -> '%s', ...)\n", __func__, path, buf);
+
+	if (!__fn)
+		return -1;
+
+	return __fn(buf, statbuf, flags);
+}
+
 int ftw(const char *path, int (*fn)(const char *, const struct stat *, int),
 	int nopenfd)
 {
@@ -43,7 +61,9 @@ int ftw(const char *path, int (*fn)(const char *, const struct stat *, int),
 	if (siz == -1)
 		goto exit;
 
-	ret = next_ftw(buf, fn, nopenfd);
+	__fn = fn;
+	ret = next_ftw(buf, __ftw_callback, nopenfd);
+	__fn = NULL;
 
 exit:
 	__debug("%s(path: '%s' -> '%s') -> %i\n", __func__, path, buf, ret);

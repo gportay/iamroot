@@ -14,6 +14,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `ptsname()` and `ptsname_r()`
 - The internal function `path_resolution()` resolves the root directory if in
   chroot'ed environment and the resolved path is below the root directory
+- Fix the missing stripping of the root directory in the functions `ftw()`,
+  `nftw()` and `nftw64()`
 
 ## [v11] - 2023-07-14
 

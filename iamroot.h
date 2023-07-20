@@ -655,6 +655,8 @@ const char *__path();
 
 const char *__library_path();
 
+int __ldso_execv(const char *, char * const[], char * const[]);
+
 int __is_ldso(const char *path);
 
 ssize_t __dl_library_path(const char *, char *, size_t);

@@ -160,7 +160,7 @@ void execve_init()
 
 	ignore = getenv("IAMROOT_EXEC_IGNORE");
 	if (!ignore)
-		ignore = "ldd|mountpoint";
+		ignore = "mountpoint";
 
 	ret = regcomp(&regex_ignore.re, ignore, REG_NOSUB|REG_EXTENDED);
 	if (ret == -1) {
@@ -591,12 +591,19 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	program = hashbangbuf;
 
 loader:
-	/*
-	 * Run the dynamic loader directly
-	 */
+	/* It is the dynamic loader */
 	ret = __is_ldso(__basename(path));
 	if (ret == -1)
 		return -1;
+	/* Try to run the dynamic loader internaly... */
+	if (ret == 1) {
+		int err;
+
+		err = __ldso_execv(path, argv, envp);
+		if (err == -1 && errno != EAGAIN)
+			return -1;
+	}
+	/* ... or run it directly! */
 	if (ret == 1) {
 		__execfd();
 		__verbose_exec(buf, argv, envp);

@@ -95,7 +95,7 @@ chfn|chkstat|pam-auth-update|update-ca-certificates|*.postinst)
 	fixme "not-running" "$argv0" "$@"
 	exit 0
 	;;
-ldd|busybox)
+busybox)
 	info "running" "$inchroot_path" "$@"
 	exec "$inchroot_path" "$@"
 	;;

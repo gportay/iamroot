@@ -2252,3 +2252,240 @@ close:
 
 	return ret;
 }
+
+static const char *__root_basepath(const char *path)
+{
+	const char *root;
+	size_t len;
+
+	root = __getrootdir();
+        if (streq(root, "/"))
+                return NULL;
+
+        len = __strlen(root);
+	if (!strneq(root, path, len))
+		return NULL;
+
+	return path+len; /* root directory */
+}
+
+static int __getld_trace_loaded_objects()
+{
+	return strtol(getenv("LD_TRACE_LOADED_OBJECTS") ?: "0", NULL, 0);
+}
+
+static int __ld_trace_loader_objects_needed(const char *, const char *, char *,
+					    size_t);
+
+struct __ld_trace_loader_objects_needed_context {
+	const char *library_path;
+	char *buf;
+	size_t bufsize;
+	FILE *f;
+};
+
+static int __ld_trace_loader_objects_needed_callback(const char *so,
+						     void *user)
+{
+	struct __ld_trace_loader_objects_needed_context *ctx =
+		       (struct __ld_trace_loader_objects_needed_context *)user;
+	const ssize_t map_start = 0;
+	char buf[PATH_MAX];
+	ssize_t siz;
+	int ret;
+
+	siz = __path_access(so, F_OK, ctx->library_path, buf, sizeof(buf));
+	if (siz < 1)
+		fprintf(ctx->f, "\t%s => not found\n", so);
+	if (siz == -1)
+		return 0;
+
+	/* Ignore none-libraries (i.e. linux-vdso.so.1, ld.so-ish...) */
+	ret = __is_lib(__basename(buf));
+	if (ret == 0 && !__is_ldso(__basename(buf)))
+		__warning("%s: ignoring non-library!\n", __basename(buf));
+	if (ret == -1 || ret == 0)
+		return 0;
+
+	/* The shared object is already in the buffer */
+	ret = __is_in_path(buf, ctx->buf);
+	if (ret == -1 || ret == 1)
+		return 0;
+
+	/* Add the needed shared objects to buf */
+	ret = __ld_trace_loader_objects_needed(buf, ctx->library_path,
+					       ctx->buf, ctx->bufsize);
+
+	fprintf(ctx->f, "\t%s => %s (0x%0*zx)\n", so, __root_basepath(buf),
+		(int)sizeof(map_start) * 2, map_start);
+
+	return ret;
+}
+
+static int __ld_trace_loader_objects_needed(const char *path,
+					    const char *library_path,
+					    char *buf,
+					    size_t bufsize)
+{
+	struct __ld_trace_loader_objects_needed_context ctx;
+	char needed[PATH_MAX];
+	ssize_t siz;
+	int ret;
+
+	siz = __getneeded(path, needed, sizeof(needed));
+	if (siz == -1)
+		return -1;
+
+	/* Add the needed shared objects to path first */
+	ctx.library_path = library_path;
+	ctx.buf = buf;
+	ctx.bufsize = bufsize;
+	ctx.f = stdout;
+	ret = __path_iterate(needed, __ld_trace_loader_objects_needed_callback,
+			     &ctx);
+	if (ret == -1)
+		return -1;
+
+	/* Add the shared object to path then */
+	__path_strncat(buf, path, bufsize);
+
+	return 0;
+}
+
+static int __ld_trace_loader_objects_executable(const char *path,
+						const char *library_path)
+{
+	struct __ld_trace_loader_objects_needed_context ctx;
+	const size_t map_start = 0;
+	char interp[HASHBANG_MAX];
+	char needed[PATH_MAX];
+	char ldso[NAME_MAX];
+	char buf[PATH_MAX];
+	int ret, abi = 0;
+	FILE *f = stdout;
+	ssize_t siz;
+
+	*buf = 0;
+	siz = __getinterp(path, interp, sizeof(interp));
+	if (siz == -1 && errno != ENOEXEC)
+		return -1;
+	/* It has no DT_INTERP */
+	if (siz == -1 && errno == ENOEXEC)
+		fprintf(f, "\tstatically linked\n");
+	if (siz == -1 && errno == ENOEXEC)
+		return 0;
+
+	/* Print the vDSO if GNU/Linux */
+	ret = __ld_ldso_abi(interp, ldso, &abi);
+	if (ret == -1)
+		return -1;
+	ret = __is_linux_ldso(ldso);
+	if (ret == -1)
+		return -1;
+	if (ret == 1)
+		fprintf(f, "\t%s (0x%0*zx)\n", "linux-vdso.1",
+			(int)sizeof(map_start) * 2, map_start);
+
+	/* Print the DT_NEEDED shared objects */
+	siz = __getneeded(path, needed, sizeof(needed));
+	if (siz == -1)
+		return -1;
+	ctx.library_path = library_path;
+	ctx.buf = buf;
+	ctx.bufsize = sizeof(buf);
+	ctx.f = f;
+	ret = __path_iterate(needed, __ld_trace_loader_objects_needed_callback,
+			     &ctx);
+
+	/* Print the PT_INTERP interpreter */
+	fprintf(f, "\t%s => %s (0x%0*zx)\n", interp, interp,
+		(int)sizeof(map_start) * 2, map_start);
+
+	return ret;
+}
+
+static int __ld_trace_loader_objects_exec(const char *path)
+{
+	char library_path[PATH_MAX];
+	char buf[PATH_MAX];
+	ssize_t siz;
+
+	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
+	if (siz == -1)
+		return -1;
+
+	siz = __ld_library_path(buf, library_path, sizeof(library_path));
+	if (siz == -1)
+		return -1;
+
+	return __ld_trace_loader_objects_executable(buf, library_path);
+}
+
+static int __ldso_verify(const char *path)
+{
+	char interp[HASHBANG_MAX];
+	char buf[PATH_MAX];
+	ssize_t siz;
+
+	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
+	if (siz == -1)
+		return -1;
+
+	siz = __getinterp(buf, interp, sizeof(interp));
+	if (siz == -1)
+		return -1;
+
+	return 0;
+}
+
+__attribute__((visibility("hidden")))
+int __ldso_execv(const char *path, char * const argv[], char * const envp[])
+{
+	int ret;
+	(void)path;
+	(void)envp;
+
+	/*
+	 * According to ld.so(8)
+	 *
+	 * --verify
+	 *
+	 * Verify that program is dynamically linked and this dynamic linker
+	 * can handle it.
+	 */
+	if (streq(argv[1], "--verify")) {
+		ret = __ldso_verify(argv[2]);
+		if (ret == -1 && errno == ENOEXEC)
+			_exit(2);
+		if (ret == -1)
+			_exit(1);
+
+		_exit(0);
+	}
+
+	if (!argv[1])
+		goto exit;
+
+	/*
+	 * According to ld.so(8)
+	 *
+	 * LD_TRACE_LOADED_OBJECTS
+	 *
+	 * If set (to any value), causes the program to list its dynamic
+	 * dependencies, as if run by ldd(1), instead of running normally.
+	 */
+	ret = __getld_trace_loaded_objects();
+	if (ret == -1)
+		return -1;
+	if (ret == 0)
+		goto exit;
+
+	ret = __ld_trace_loader_objects_exec(argv[1]);
+	if (ret == -1)
+		return -1;
+
+	_exit(0);
+
+exit:
+	return __set_errno(EAGAIN, -1);
+}

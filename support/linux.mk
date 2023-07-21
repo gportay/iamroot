@@ -21,9 +21,6 @@ export NVERBOSE
 IAMROOT_EXEC = $(CURDIR)/exec.sh
 export IAMROOT_EXEC
 
-IAMROOT_EXEC_IGNORE = ldd|mountpoint
-export IAMROOT_EXEC_IGNORE
-
 ifeq ($(ARCH),x86_64)
 ifeq ($(LIBC),musl)
 IAMROOT_LIB = $(IAMROOT_LIB_MUSL_X86_64_1)

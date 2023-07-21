@@ -160,7 +160,7 @@ void execve_init()
 
 	ignore = getenv("IAMROOT_EXEC_IGNORE");
 	if (!ignore)
-		ignore = "ldd";
+		ignore = "ldd|mountpoint";
 
 	ret = regcomp(&regex_ignore.re, ignore, REG_NOSUB|REG_EXTENDED);
 	if (ret == -1) {

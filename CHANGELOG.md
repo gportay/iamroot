@@ -42,6 +42,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   in the dynamic entry `DT_FLAGS_1`
 - Do not lookup the content of the environment variable `LD_LIBRARY_PATH`
   unless executable file runs in secure execution mode
+- Ignore the command [mountpoint(1)] if `IAMROOT_EXEC_IGNORE` is unset
 
 ### Removed
 

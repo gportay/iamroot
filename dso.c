@@ -1033,6 +1033,21 @@ static void __env_sanitize(char *name, int upper)
 	}
 }
 
+static ssize_t __is_linux_ldso(const char *ldso)
+{
+	return __strneq(ldso, "linux");
+}
+
+static ssize_t __is_musl_ldso(const char *ldso)
+{
+	return __strneq(ldso, "musl");
+}
+
+static ssize_t __is_elf_ldso(const char *ldso)
+{
+	return streq(ldso, "elf");
+}
+
 static int is_64_bits(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
 	(void)ldso;
@@ -1099,7 +1114,7 @@ static int is_linux(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 static int is_gnu_linux(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
 	/* LINUX_$ARCH_$ABI or it is a GNU/Linux ELF */
-	return __strneq(ldso, "linux") || is_linux(ehdr, ldso, abi);
+	return __is_linux_ldso(ldso) || is_linux(ehdr, ldso, abi);
 }
 
 static int is_musl(Elf64_Ehdr *ehdr, const char *ldso, int abi)
@@ -1108,14 +1123,14 @@ static int is_musl(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	(void)abi;
 
 	/* MUSL_$ARCH_$ABI */
-	return __strneq(ldso, "musl");
+	return __is_musl_ldso(ldso);
 }
 
 static int is_freebsd(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
 	/* It is a FreeBSD ELF or ELF_1 */
 	return (ehdr && (ehdr->e_ident[EI_OSABI] == ELFOSABI_FREEBSD)) ||
-	       (streq(ldso, "elf") && abi == 1);
+	       (__is_elf_ldso(ldso) && abi == 1);
 }
 
 static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,

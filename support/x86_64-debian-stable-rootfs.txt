@@ -702,13 +702,12 @@ I: Configuring libc-bin...
 I: Base system installed successfully.
 gpgv: Signature made Day Mon dd hh:mm:ss YYYY TZ
 gpgv:                using RSA key XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-gpgv: Good signature from "Debian Archive Automatic Signing Key (10/buster) <ftpmaster@debian.org>"
-gpgv: Signature made Day Mon dd hh:mm:ss YYYY TZ
-gpgv:                using RSA key XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 gpgv: Good signature from "Debian Archive Automatic Signing Key (11/bullseye) <ftpmaster@debian.org>"
 gpgv: Signature made Day Mon dd hh:mm:ss YYYY TZ
+gpgv:                using RSA key XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+gpgv: Good signature from "Debian Archive Automatic Signing Key (12/bookworm) <ftpmaster@debian.org>"
+gpgv: Signature made Day Mon dd hh:mm:ss YYYY TZ
 gpgv:                using EDDSA key XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-gpgv:                issuer "debian-release@lists.debian.org"
 gpgv: Good signature from "Debian Stable Release Key (12/bookworm) <debian-release@lists.debian.org>"
 dpkg: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
  missing 'Description' field

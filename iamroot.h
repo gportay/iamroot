@@ -659,7 +659,7 @@ int __ldso_execv(const char *, char * const[], char * const[]);
 
 int __is_ldso(const char *path);
 
-ssize_t __dl_lib_path(const char *, char *, size_t);
+ssize_t __dl_access(const char *, int, char *, size_t);
 
 #if defined(__GLIBC__) && (defined(__aarch64__) || defined(__x86_64__))
 #define _PATH_DEFLIB "/lib64:/usr/local/lib64:/usr/lib64"

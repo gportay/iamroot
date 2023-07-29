@@ -383,6 +383,137 @@ static int __ldso_preload_executable(const char *path, const char *deflib,
 	return __path_iterate(needed, __ldso_preload_needed_callback, &ctx);
 }
 
+static int __secure_execution_mode();
+
+/*
+ * Note: This resolves the shared object as described by ld.so(8).
+*/
+static ssize_t __ldso_access(const char *path,
+			     int mode,
+			     const char *exec_rpath,
+			     const char *exec_runpath,
+			     const char *rpath,
+			     const char *ld_library_path,
+			     const char *runpath,
+			     const char *deflib,
+			     uint32_t flags_1,
+			     char *buf,
+			     size_t bufsize)
+{
+	ssize_t ret = -1;
+
+	/*
+	 * According to ld.so(8)
+	 *
+	 * If a shared object dependency does not contain a slash, then it is
+	 * searched for in the following order:
+	 */
+	if (strchr(path, '/')) {
+		strncpy(buf, path, bufsize);
+
+		return strnlen(buf, bufsize);
+	}
+
+	/* Search for NAME in several places. */
+
+	/*
+	 * (1)  Using the directories specified in the DT_RPATH dynamic section
+	 * attribute of the binary if present and DT_RUNPATH attribute does not
+	 * exist. Use of DT_RPATH is deprecated.
+	 */
+	if (!runpath) {
+		/*
+		 * According to glibc (elf/dl-load.c)
+		 *
+		 * First try the DT_RPATH of the dependent object that caused
+		 * NAME to be loaded. Then that object's dependent, and on up.
+		 */
+		ret = __path_access(path, mode, rpath, buf, bufsize);
+		if (ret == -1 && errno != ENOENT)
+			return -1;
+
+		if (ret > 0)
+			return ret;
+
+		/*
+		 * If dynamically linked, try the DT_RPATH of the executable
+		 * itself.
+		 */
+		ret = __path_access(path, mode, exec_rpath, buf, bufsize);
+		if (ret == -1 && errno != ENOENT)
+			return -1;
+
+		if (ret > 0)
+			return ret;
+
+		/*
+		 * Also try DT_RUNPATH in the executable for LD_AUDIT dlopen
+		 * call.
+		 */
+		/* TODO: This is not usefull, at least for now. */
+		(void)exec_runpath;
+	}
+
+	/*
+	 * (2)  Using the environment variable LD_LIBRARY_PATH, unless the
+	 * executable is being run in secure-execution mode (see below), in
+	 * which case this variable is ignored.
+	 */
+	if (ld_library_path && !__secure_execution_mode()) {
+		ret = __path_access(path, mode, ld_library_path, buf, bufsize);
+		if (ret == -1 && errno != ENOENT)
+			return -1;
+
+		if (ret > 0)
+			return ret;
+	}
+
+	/*
+	 * (3)  Using the directories specified in the DT_RUNPATH dynamic
+	 * section attribute of the binary if present. Such directories are
+	 * searched only to find those objects required by DT_NEEDED (direct
+	 * dependencies) entries and do not apply to those objects' children,
+	 * which must themselves have their own DT_RUNPATH entries. This is
+	 * unlike DT_RPATH, which is applied to searches for all children in
+	 * the dependency tree.
+	 */
+	if (runpath) {
+		ret = __path_access(path, mode, runpath, buf, bufsize);
+		if (ret == -1 && errno != ENOENT)
+			return -1;
+
+		if (ret > 0)
+			return ret;
+	}
+
+	/*
+	 * (4)  From the cache file /etc/ld.so.cache, which contains a compiled
+	 * list of candidate shared objects previously found in the augmented
+	 * library path. If, however, the binary was linked with the -z
+	 * nodeflib linker option, shared objects in the default paths are
+	 * skipped. Shared objects installed in hardware capability directories
+	 * are preferred to other shared objects.
+	 */
+	/* TODO: This is not applicable, at least for now. */
+
+	/*
+	 * (5)  In the default path /lib, and then /usr/lib. (On some 64-bit
+	 * architectures, the default paths for 64-bit shared objects are
+	 * /lib64, and then /usr/lib64.) If the binary was linked with the
+	 * -z nodeflib linker option, this step is skipped.
+	 */
+	if (!(flags_1 & DF_1_NODEFLIB) && deflib) {
+		ret = __path_access(path, mode, deflib, buf, bufsize);
+		if (ret == -1 && errno != ENOENT)
+			return -1;
+
+		if (ret > 0)
+			return ret;
+	}
+
+	return __set_errno(ENOENT, -1);
+}
+
 static int __dl_is_opened(const char *path)
 {
 	struct link_map *dso;
@@ -431,6 +562,8 @@ static int __dlopen_needed_callback(const char *needed, void *user)
 
 	return 0;
 }
+
+static ssize_t __dl_lib_path(const char *, char *, size_t);
 
 __attribute__((visibility("hidden")))
 int __dlopen_needed(const char *path)
@@ -1830,8 +1963,7 @@ static ssize_t __elf_deflib(const char *path, char *buf, size_t bufsize)
 	return ret;
 }
 
-__attribute__((visibility("hidden")))
-ssize_t __dl_lib_path(const char *path, char *buf, size_t bufsize)
+static ssize_t __dl_lib_path(const char *path, char *buf, size_t bufsize)
 {
 	const char *ld_library_path;
 	char tmp[PATH_MAX];
@@ -2251,6 +2383,62 @@ close:
 	return ret;
 }
 
+__attribute__((visibility("hidden")))
+ssize_t __dl_access(const char *path, int mode, char *buf, size_t bufsize)
+{
+	char *exec_rpath, *exec_runpath, *ld_library_path;
+	char deflib[PATH_MAX];
+	char tmp[PATH_MAX];
+	const char *execfn;
+	uint32_t flags_1;
+	ssize_t siz;
+	int err;
+
+	if (strchr(path, '/'))
+		return __set_errno(EINVAL, -1);
+
+	/* Get the executable */
+	execfn = __execfn();
+	if (!execfn)
+		return -1;
+
+	/*
+	 * Get the DT_RPATH, DT_RUNPATH, LD_LIBRARY_PATH, DT_FLAGS_1, and the
+	 * default library path
+	 */
+	siz = __elf_runpath(execfn, tmp, sizeof(tmp));
+	if (siz == -1)
+		return -1;
+
+	exec_runpath = siz > 0 ? tmp : NULL;
+	if (exec_runpath) {
+		exec_rpath = NULL; /* ignore DT_RPATH */
+	} else {
+		siz = __elf_rpath(execfn, tmp, sizeof(tmp));
+		if (siz == -1)
+			return -1;
+
+		exec_rpath = siz > 0 ? tmp : NULL;
+	}
+
+	ld_library_path = getenv("LD_LIBRARY_PATH");
+	if (__secure_execution_mode())
+		ld_library_path = NULL;
+
+	siz = __elf_deflib(execfn, deflib, sizeof(deflib));
+	if (siz == -1)
+		return -1;
+
+	err = __elf_flags_1(execfn, &flags_1);
+	if (err == -1)
+		return -1;
+
+	/* Look for the shared object */
+	return __ldso_access(path, mode, exec_rpath, exec_runpath, NULL,
+			     ld_library_path, NULL, deflib, flags_1, buf,
+			     bufsize);
+}
+
 static const char *__root_basepath(const char *path)
 {
 	const char *root;
@@ -2272,11 +2460,17 @@ static int __getld_trace_loaded_objects()
 	return strtol(getenv("LD_TRACE_LOADED_OBJECTS") ?: "0", NULL, 0);
 }
 
-static int __ld_trace_loader_objects_needed(const char *, const char *, char *,
+static int __ld_trace_loader_objects_needed(const char *, const char *,
+					    const char *, const char *,
+					    const char *, uint32_t, char *,
 					    size_t);
 
 struct __ld_trace_loader_objects_needed_context {
-	const char *lib_path;
+	const char *exec_rpath;
+	const char *ld_library_path;
+	const char *exec_runpath;
+	const char *deflib;
+	uint32_t flags_1;
 	char *buf;
 	size_t bufsize;
 	FILE *f;
@@ -2292,7 +2486,10 @@ static int __ld_trace_loader_objects_needed_callback(const char *so,
 	ssize_t siz;
 	int ret;
 
-	siz = __path_access(so, F_OK, ctx->lib_path, buf, sizeof(buf));
+	/* Look for the shared object */
+	siz = __ldso_access(so, F_OK, ctx->exec_rpath, ctx->exec_runpath,
+			    NULL, ctx->ld_library_path, NULL, ctx->deflib,
+			    ctx->flags_1, buf, sizeof(buf));
 	if (siz < 1)
 		fprintf(ctx->f, "\t%s => not found\n", so);
 	if (siz == -1)
@@ -2311,8 +2508,14 @@ static int __ld_trace_loader_objects_needed_callback(const char *so,
 		return 0;
 
 	/* Add the needed shared objects to buf */
-	ret = __ld_trace_loader_objects_needed(buf, ctx->lib_path,
-					       ctx->buf, ctx->bufsize);
+	ret = __ld_trace_loader_objects_needed(buf,
+					       ctx->exec_rpath,
+					       ctx->ld_library_path,
+					       ctx->exec_runpath,
+					       ctx->deflib,
+					       ctx->flags_1,
+					       ctx->buf,
+					       ctx->bufsize);
 
 	fprintf(ctx->f, "\t%s => %s (0x%0*zx)\n", so, __root_basepath(buf),
 		(int)sizeof(map_start) * 2, map_start);
@@ -2321,7 +2524,11 @@ static int __ld_trace_loader_objects_needed_callback(const char *so,
 }
 
 static int __ld_trace_loader_objects_needed(const char *path,
-					    const char *lib_path,
+					    const char *exec_rpath,
+					    const char *ld_library_path,
+					    const char *exec_runpath,
+					    const char *deflib,
+					    uint32_t flags_1,
 					    char *buf,
 					    size_t bufsize)
 {
@@ -2335,7 +2542,11 @@ static int __ld_trace_loader_objects_needed(const char *path,
 		return -1;
 
 	/* Add the needed shared objects to path first */
-	ctx.lib_path = lib_path;
+	ctx.exec_rpath = exec_rpath;
+	ctx.ld_library_path = ld_library_path;
+	ctx.exec_runpath = exec_runpath;
+	ctx.deflib = deflib;
+	ctx.flags_1 = flags_1;
 	ctx.buf = buf;
 	ctx.bufsize = bufsize;
 	ctx.f = stdout;
@@ -2350,20 +2561,55 @@ static int __ld_trace_loader_objects_needed(const char *path,
 	return 0;
 }
 
-static int __ld_trace_loader_objects_executable(const char *path,
-						const char *lib_path)
+static int __ld_trace_loader_objects_executable(const char *path)
 {
 	struct __ld_trace_loader_objects_needed_context ctx;
+	char *exec_rpath, *exec_runpath, *ld_library_path;
 	const size_t map_start = 0;
 	char interp[HASHBANG_MAX];
 	char needed[PATH_MAX];
+	char deflib[PATH_MAX];
 	char ldso[NAME_MAX];
 	char buf[PATH_MAX];
+	char tmp[PATH_MAX];
 	int ret, abi = 0;
+	uint32_t flags_1;
 	FILE *f = stdout;
 	ssize_t siz;
 
 	*buf = 0;
+	/*
+	 * Get the DT_RPATH, DT_RUNPATH, LD_LIBRARY_PATH, DT_FLAGS_1, and the
+	 * default library path
+	 */
+	siz = __elf_runpath(path, tmp, sizeof(tmp));
+	if (siz == -1)
+		return -1;
+
+	exec_runpath = siz > 0 ? tmp : NULL;
+	if (exec_runpath) {
+		exec_rpath = NULL; /* ignore DT_RPATH */
+	} else {
+		siz = __elf_rpath(path, tmp, sizeof(tmp));
+		if (siz == -1)
+			return -1;
+
+		exec_rpath = siz > 0 ? tmp : NULL;
+	}
+
+	ld_library_path = getenv("LD_LIBRARY_PATH");
+	if (__secure_execution_mode())
+		ld_library_path = NULL;
+
+	siz = __elf_deflib(path, deflib, sizeof(deflib));
+	if (siz == -1)
+		return -1;
+
+	ret = __elf_flags_1(path, &flags_1);
+	if (ret == -1)
+		return -1;
+
+	/* Get the DT_INTERP */
 	siz = __elf_interp(path, interp, sizeof(interp));
 	if (siz == -1 && errno != ENOEXEC)
 		return -1;
@@ -2388,7 +2634,11 @@ static int __ld_trace_loader_objects_executable(const char *path,
 	siz = __elf_needed(path, needed, sizeof(needed));
 	if (siz == -1)
 		return -1;
-	ctx.lib_path = lib_path;
+	ctx.exec_rpath = exec_rpath;
+	ctx.exec_runpath = exec_runpath;
+	ctx.ld_library_path = ld_library_path;
+	ctx.deflib = deflib;
+	ctx.flags_1 = flags_1;
 	ctx.buf = buf;
 	ctx.bufsize = sizeof(buf);
 	ctx.f = f;
@@ -2404,7 +2654,6 @@ static int __ld_trace_loader_objects_executable(const char *path,
 
 static int __ld_trace_loader_objects_exec(const char *path)
 {
-	char lib_path[PATH_MAX];
 	char buf[PATH_MAX];
 	ssize_t siz;
 
@@ -2412,11 +2661,7 @@ static int __ld_trace_loader_objects_exec(const char *path)
 	if (siz == -1)
 		return -1;
 
-	siz = __ld_lib_path(buf, lib_path, sizeof(lib_path));
-	if (siz == -1)
-		return -1;
-
-	return __ld_trace_loader_objects_executable(buf, lib_path);
+	return __ld_trace_loader_objects_executable(buf);
 }
 
 static int __ldso_verify(const char *path)

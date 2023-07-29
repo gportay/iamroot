@@ -61,7 +61,7 @@ void *dlmopen(Lmid_t lmid, const char *path, int flags)
 	 * (see ld.so(8) for further details):
 	 */
 	} else {
-		siz = __path_access(path, F_OK, __deflib(), buf, sizeof(buf));
+		siz = __dl_access(path, F_OK, buf, sizeof(buf));
 		if (siz == -1)
 			goto exit;
 	}

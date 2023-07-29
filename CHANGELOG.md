@@ -17,6 +17,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the missing stripping of the root directory in the functions `ftw()`,
   `nftw()` and `nftw64()`
 
+### Changed
+
+- Replace the environment variables `IAMROOT_LD_PRELOAD_<ldso>_<abi>` by
+  `IAMROOT_PRELOAD_<ldso>_<abi>`
+
 ## [v11] - 2023-07-14
 
 ### Added

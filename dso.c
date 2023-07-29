@@ -327,7 +327,7 @@ static int __ldso_preload_needed(const char *path, const char *library_path,
 }
 
 static const char *__getlibiamroot(Elf64_Ehdr *, const char *, int);
-static const char *__getld_preload(Elf64_Ehdr *, const char *, int);
+static const char *__getpreload(Elf64_Ehdr *, const char *, int);
 static const char *__getld_library_path(Elf64_Ehdr *, const char *, int);
 
 /*
@@ -351,7 +351,7 @@ static int __ldso_preload_libiamroot_so(Elf64_Ehdr *ehdr, const char *ldso,
 	if (!library_path)
 		return -1;
 
-	needed = __getld_preload(ehdr, ldso, abi);
+	needed = __getpreload(ehdr, ldso, abi);
 	if (!needed)
 		return -1;
 
@@ -1283,13 +1283,13 @@ exit:
 	return __set_errno(errno_save, getenv("IAMROOT_LIB"));
 }
 
-static const char *__getld_preload(Elf64_Ehdr *ehdr, const char *ldso, int abi)
+static const char *__getpreload(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
 	char buf[NAME_MAX];
 	char *ret;
 	int n;
 
-	n = _snprintf(buf, sizeof(buf), "IAMROOT_LD_PRELOAD_%s_%i", ldso, abi);
+	n = _snprintf(buf, sizeof(buf), "IAMROOT_PRELOAD_%s_%i", ldso, abi);
 	if (n == -1)
 		return NULL;
 	__env_sanitize(buf, 1);

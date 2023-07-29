@@ -60,14 +60,6 @@ void *dlopen(const char *path, int flags)
 	 * (see ld.so(8) for further details).
 	 */
 	} else {
-		char library_path[PATH_MAX];
-
-		*library_path = 0;
-		siz = __dl_library_path(NULL, library_path,
-					sizeof(library_path));
-		if (siz == -1)
-			goto next;
-
 		siz = __path_access(path, F_OK, __library_path(), buf,
 				    sizeof(buf));
 		if (siz == -1)
@@ -85,7 +77,6 @@ void *dlopen(const char *path, int flags)
 	if (err == -1)
 		goto exit;
 
-next:
 	ret = next_dlopen(buf, flags);
 
 exit:

@@ -19,9 +19,6 @@ export IAMROOT_LIB_ELF
 IAMROOT_PATH_RESOLUTION_IGNORE = ^/dev/|^/proc/
 export IAMROOT_PATH_RESOLUTION_IGNORE
 
-IAMROOT_PATH = /sbin:/bin:/usr/sbin:/usr/bin:/usr/pkg/sbin:/usr/pkg/bin
-export IAMROOT_PATH
-
 IAMROOT_EXEC = $(CURDIR)/exec.sh
 export IAMROOT_EXEC
 

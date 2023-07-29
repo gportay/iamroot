@@ -42,9 +42,6 @@ _ish()
 		umount2 unlink unlinkat unmount unshare updwtmp updwtmpx utime
 		utimensat utimes utmpname utmpxname)
 
-	COMMON_PATH=(/bin /sbin /usr/bin /usr/sbin /usr/local/bin
-		/usr/local/sbin)
-
 	COMMON_DEFLIB=(/usr/lib /usr/local/lib /usr/lib)
 
 	case "$prev" in
@@ -83,21 +80,6 @@ _ish()
 	--library)
 		_filedir so
 		return
-		;;
-	--path)
-		local prefix realcur wordlist
-		realcur="${cur##*\:}"
-		prefix="${cur%$realcur}"
-		for WORD in "${COMMON_PATH[@]}"
-		do
-			if ! [[ $prefix == *"$WORD"* ]]
-			then
-				wordlist+=("$WORD")
-			fi
-		done
-		compopt -o nospace
-		COMPREPLY=($(compgen -P "$prefix" -W "${wordlist[*]}" -S '\:' -- "$realcur"))
-		return 0
 		;;
 	--deflib)
 		local prefix realcur wordlist
@@ -186,7 +168,7 @@ _ish()
 
 	if [[ "$shell" != 1 ]]
 	then
-		COMPREPLY+=($(compgen -W "--user --root --profile-file --rc-file --preserve-env --path --deflib --exec --library --shell --no-color --fatal --debug --debug-fd --debug-ignore --exec-ignore --path-resolution-ignore --version" -- "$cur"))
+		COMPREPLY+=($(compgen -W "--user --root --profile-file --rc-file --preserve-env --deflib --exec --library --shell --no-color --fatal --debug --debug-fd --debug-ignore --exec-ignore --path-resolution-ignore --version" -- "$cur"))
 	fi
 } &&
 complete -F _ish ish

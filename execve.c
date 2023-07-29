@@ -160,18 +160,6 @@ const char *__execfn()
 }
 #endif
 
-__attribute__((visibility("hidden")))
-const char *__path()
-{
-	const char *ret;
-
-	ret = getenv("IAMROOT_PATH");
-	if (!ret)
-		ret = _PATH_STDPATH;
-
-	return ret;
-}
-
 static int __strtok(const char *str, const char *delim,
 		    int (*callback)(const char *, void *), void *user)
 {

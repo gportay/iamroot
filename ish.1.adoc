@@ -62,9 +62,6 @@ shells, please refers to their manuals.
 **--preserve-env ENV**::
 	Preserve environment variables.
 
-**--path PATH**::
-	PATH to use in chroot.
-
 **--library-path PATH**::
 	LD_LIBRARY_PATH to use in chroot.
 
@@ -145,10 +142,6 @@ shells, please refers to their manuals.
 **ISH_PRESERVE_ENV**::
 	Set environment to preserve.
 	Equivalent to --preserve-env ENV.
-
-**IAMROOT_PATH**::
-	Set PATH to use in chroot.
-	Equivalent to --path PATH.
 
 **IAMROOT_DEFLIB**::
 	Set default library path to use in chroot.

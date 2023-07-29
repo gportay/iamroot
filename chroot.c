@@ -280,10 +280,6 @@ int chroot(const char *path)
 	if (siz == -1)
 		goto exit;
 
-	ret = setenv("PATH", __path(), 1);
-	if (ret == -1)
-		goto exit;
-
 	/* Not forwarding function */
 	ret = __setrootdir(buf);
 

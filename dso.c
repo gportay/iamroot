@@ -1348,11 +1348,11 @@ static const char *__getld_library_path(Elf64_Ehdr *ehdr, const char *ldso,
 		return ret;
 
 	/*
-	 * Neither IAMROOT_LIBRARY_<LDSO>_<ABI> nor IAMROOT_LIBRARY_PATH are
-	 * set; try to guess automagically the standard library path for the
-	 * GNU/Linux systems.
+	 * Neither IAMROOT_LIBRARY_PATH_<LDSO>_<ABI> nor IAMROOT_LIBRARY_PATH
+	 * are set; try to guess automagically the standard library path for
+	 * the GNU/Linux systems.
 	 *
-	 * According to dl.so(8):
+	 * According to ld.so(8):
 	 *
 	 * On some 64-bit architectures, the default paths for 64-bit shared
 	 * objects are /lib64, and then /usr/lib64.
@@ -1446,7 +1446,7 @@ static int __secure_execution_mode()
 
 /*
  * Note: This resolves all the library path of the executable file in order to
- * prevent from loading the shared objects from the host system.
+ * prevent from loading the shared objects of the host system.
 */
 static ssize_t __ld_library_path(const char *path, char *buf, size_t bufsize)
 {
@@ -1458,7 +1458,7 @@ static ssize_t __ld_library_path(const char *path, char *buf, size_t bufsize)
 	*buf = 0;
 
 	/*
-	 * According to dl.so(8)
+	 * According to ld.so(8)
 	 *
 	 * (5)  In the default path /lib, and then /usr/lib. (On some 64-bit
 	 * architectures, the default paths for 64-bit shared objects are

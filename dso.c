@@ -327,7 +327,7 @@ static int __ldso_preload_needed(const char *path, const char *library_path,
 }
 
 static const char *__getlibiamroot(Elf64_Ehdr *, const char *, int);
-static const char *__getld_preload(Elf64_Ehdr *, const char *, int abi);
+static const char *__getld_preload(Elf64_Ehdr *, const char *, int);
 static const char *__getld_library_path(Elf64_Ehdr *, const char *, int);
 
 /*

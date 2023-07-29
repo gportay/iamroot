@@ -759,6 +759,7 @@ x86_64-fedora-32-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.rep
 x86_64-fedora-33-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 x86_64-fedora-34-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 x86_64-fedora-35-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
+x86_64-fedora-36-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 $(eval $(call dnf-rootfs,x86_64,fedora,32))
 $(eval $(call dnf-rootfs,x86_64,fedora,33))
 $(eval $(call dnf-rootfs,x86_64,fedora,34))
@@ -959,6 +960,7 @@ aarch64-fedora-38-rootfs: | aarch64-fedora-38-rootfs/bin/sh
 aarch64-fedora-33-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 aarch64-fedora-34-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 aarch64-fedora-35-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
+aarch64-fedora-36-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 $(eval $(call dnf-rootfs,aarch64,fedora,33))
 $(eval $(call dnf-rootfs,aarch64,fedora,34))
 $(eval $(call dnf-rootfs,aarch64,fedora,35))
@@ -984,6 +986,7 @@ armv7hl-fedora-36-rootfs: | armv7hl-fedora-36-rootfs/bin/sh
 armv7hl-fedora-33-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 armv7hl-fedora-34-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 armv7hl-fedora-35-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
+armv7hl-fedora-36-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 $(eval $(call dnf-rootfs,armv7hl,fedora,33))
 $(eval $(call dnf-rootfs,armv7hl,fedora,34))
 $(eval $(call dnf-rootfs,armv7hl,fedora,35))

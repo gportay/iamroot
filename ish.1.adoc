@@ -150,9 +150,9 @@ shells, please refers to their manuals.
 	Set PATH to use in chroot.
 	Equivalent to --path PATH.
 
-**IAMROOT_LIBRARY_PATH**::
-	Set LD_LIBRARY_PATH to use in chroot.
-	Equivalent to --library-path PATH.
+**IAMROOT_DEFLIB**::
+	Set default library path to use in chroot.
+	Equivalent to --deflib PATH.
 
 **IAMROOT_EXEC**::
 	Set absolute path to exec script to use.

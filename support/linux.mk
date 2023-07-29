@@ -182,7 +182,7 @@ $(if $(findstring x86_64,$(1)), \
 endef
 
 define debootstrap-rootfs
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_LIBRARY_PATH = /lib/$(1)-linux-gnu:/lib:/usr/lib/$(1)-linux-gnu:/usr/lib
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB = /lib/$(1)-linux-gnu:/lib:/usr/lib/$(1)-linux-gnu:/usr/lib
 # chfn: PAM: Critical error - immediate abort
 # adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn
@@ -378,7 +378,7 @@ $(1)-$(2)-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 endef
 
 define debootstrap-postrootfs
-$(1)-$(2)-postrootfs: export IAMROOT_LIBRARY_PATH = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+$(1)-$(2)-postrootfs: export IAMROOT_DEFLIB = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
 $(1)-$(2)-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i $(1)-$(2)-rootfs/etc/passwd
@@ -915,7 +915,7 @@ aarch64-rootfs: aarch64-archlinuxarm-rootfs
 aarch64-archlinuxarm-rootfs: | aarch64-archlinuxarm-rootfs/bin/sh
 
 $(eval $(call pacstrap-rootfs,aarch64,archlinuxarm,base))
-aarch64-archlinuxarm-chroot aarch64-archlinuxarm-shell aarch64-archlinuxarm-rootfs/bin/sh: export IAMROOT_LIBRARY_PATH = /lib:/usr/lib
+aarch64-archlinuxarm-chroot aarch64-archlinuxarm-shell aarch64-archlinuxarm-rootfs/bin/sh: export IAMROOT_DEFLIB = /lib:/usr/lib
 endif
 
 ifneq ($(shell command -v arm-linux-gnueabihf-gcc 2>/dev/null),)
@@ -934,7 +934,7 @@ riscv64-rootfs: riscv64-archlinuxriscv-rootfs
 riscv64-archlinuxriscv-rootfs: | riscv64-archlinuxriscv-rootfs/bin/sh
 
 $(eval $(call pacstrap-rootfs,riscv64,archlinuxriscv,base))
-riscv64-archlinuxriscv-chroot riscv64-archlinuxriscv-shell riscv64-archlinuxriscv-rootfs/bin/sh: export IAMROOT_LIBRARY_PATH = /lib:/usr/lib
+riscv64-archlinuxriscv-chroot riscv64-archlinuxriscv-shell riscv64-archlinuxriscv-rootfs/bin/sh: export IAMROOT_DEFLIB = /lib:/usr/lib
 endif
 endif
 

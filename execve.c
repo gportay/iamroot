@@ -81,13 +81,13 @@ const char *__path()
 }
 
 __attribute__((visibility("hidden")))
-const char *__library_path()
+const char *__deflib()
 {
 	const char *ret;
 
-	ret = getenv("IAMROOT_LIBRARY_PATH");
+	ret = getenv("IAMROOT_DEFLIB");
 	if (!ret)
-		ret = _PATH_DEFLIBRARY_PATH;
+		ret = _PATH_DEFLIB;
 
 	return ret;
 }

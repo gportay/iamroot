@@ -21,6 +21,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Replace the environment variables `IAMROOT_LD_PRELOAD_<ldso>_<abi>` by
   `IAMROOT_PRELOAD_<ldso>_<abi>`
+- Replace the environment variables `IAMROOT_LIBRARY_PATH_<ldso>_<abi>` and
+  `IAMROOT_LIBRARY_PATH` by `IAMROOT_DEFLIB_<ldso>_<abi>` and `IAMROOT_DEFLIB`
+- Replace the `ish` option `--library-path` by `--deflib`
 
 ## [v11] - 2023-07-14
 

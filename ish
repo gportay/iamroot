@@ -34,7 +34,7 @@ iamroot specific options:
       --rc-file FILE            Execute commands from FILE.
       --preserve-env ENV        Preserve environment variables.
       --path PATH               PATH to use in chroot.
-      --library-path PATH       LD_LIBRARY_PATH to use in chroot.
+      --deflib PATH             Default library path to use in chroot.
       --exec FILE               Absolute path to the iamroot exec script to
                                 use.
       --library LIB             Absolute path to the iamroot library to use.
@@ -91,8 +91,8 @@ Environment variables:
       IAMROOT_PATH              Set PATH to use in chroot.
                                 Equivalent to --path PATH.
 
-      IAMROOT_LIBRARY_PATH      Set LD_LIBRARY_PATH to use in chroot.
-                                Equivalent to --library-path PATH.
+      IAMROOT_DEFLIB            Set default library path to use in chroot.
+                                Equivalent to --deflib PATH.
 
       IAMROOT_EXEC              Set absolute path to exec script to use.
                                 Equivalent to --exec EXEC.
@@ -192,11 +192,11 @@ do
 		shift
 		IAMROOT_EXEC="$1"
 		export IAMROOT_EXEC
-	elif [[ "$1" == "--library-path" ]]
+	elif [[ "$1" == "--deflib" ]]
 	then
 		shift
-		IAMROOT_LIBRARY_PATH="$1"
-		export IAMROOT_LIBRARY_PATH
+		IAMROOT_DEFLIB="$1"
+		export IAMROOT_DEFLIB
 	elif [[ "$1" == "--path" ]]
 	then
 		shift

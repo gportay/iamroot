@@ -653,18 +653,18 @@ static inline void __close(int fd)
 
 const char *__path();
 
-const char *__library_path();
+const char *__deflib();
 
 int __ldso_execv(const char *, char * const[], char * const[]);
 
 int __is_ldso(const char *path);
 
-ssize_t __dl_library_path(const char *, char *, size_t);
+ssize_t __dl_lib_path(const char *, char *, size_t);
 
 #if defined(__GLIBC__) && (defined(__aarch64__) || defined(__x86_64__))
-#define _PATH_DEFLIBRARY_PATH   "/lib64:/usr/local/lib64:/usr/lib64"
+#define _PATH_DEFLIB "/lib64:/usr/local/lib64:/usr/lib64"
 #else
-#define _PATH_DEFLIBRARY_PATH   "/lib:/usr/local/lib:/usr/lib"
+#define _PATH_DEFLIB "/lib:/usr/local/lib:/usr/lib"
 #endif
 
 /*

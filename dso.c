@@ -262,7 +262,7 @@ static ssize_t __elf_deflib(const char *, char *, size_t);
 static int __ldso_preload_needed(const char *, const char *, char *, size_t);
 
 struct __ldso_preload_needed_context {
-	const char *library_path;
+	const char *deflib;
 	char *buf;
 	size_t bufsize;
 };
@@ -279,7 +279,7 @@ static int __ldso_preload_needed_callback(const char *needed, void *user)
 	if (*needed == '/')
 		return 0;
 
-	siz = __path_access(needed, F_OK, ctx->library_path, buf, sizeof(buf));
+	siz = __path_access(needed, F_OK, ctx->deflib, buf, sizeof(buf));
 	if (siz == -1)
 		return -1;
 
@@ -296,11 +296,11 @@ static int __ldso_preload_needed_callback(const char *needed, void *user)
 		return 0;
 
 	/* Add the needed shared objects to buf */
-	return __ldso_preload_needed(buf, ctx->library_path, ctx->buf,
+	return __ldso_preload_needed(buf, ctx->deflib, ctx->buf,
 				     ctx->bufsize);
 }
 
-static int __ldso_preload_needed(const char *path, const char *library_path,
+static int __ldso_preload_needed(const char *path, const char *deflib,
 				 char *buf, size_t bufsize)
 {
 	struct __ldso_preload_needed_context ctx;
@@ -313,7 +313,7 @@ static int __ldso_preload_needed(const char *path, const char *library_path,
 		return -1;
 
 	/* Add the needed shared objects to path first */
-	ctx.library_path = library_path;
+	ctx.deflib = deflib;
 	ctx.buf = buf;
 	ctx.bufsize = bufsize;
 	ret = __path_iterate(needed, __ldso_preload_needed_callback, &ctx);
@@ -328,7 +328,7 @@ static int __ldso_preload_needed(const char *path, const char *library_path,
 
 static const char *__getlibiamroot(Elf64_Ehdr *, const char *, int);
 static const char *__getpreload(Elf64_Ehdr *, const char *, int);
-static const char *__getld_library_path(Elf64_Ehdr *, const char *, int);
+static const char *__getdeflib(Elf64_Ehdr *, const char *, int);
 
 /*
  * Note: The library libiamroot.so is **NOT** linked to any library, even the
@@ -339,7 +339,7 @@ static int __ldso_preload_libiamroot_so(Elf64_Ehdr *ehdr, const char *ldso,
 					int abi, char *buf, size_t bufsize)
 {
 	struct __ldso_preload_needed_context ctx;
-	const char *library_path;
+	const char *deflib;
 	const char *needed;
 	const char *path;
 
@@ -347,8 +347,8 @@ static int __ldso_preload_libiamroot_so(Elf64_Ehdr *ehdr, const char *ldso,
 	if (!path)
 		return -1;
 
-	library_path = __getld_library_path(ehdr, ldso, abi);
-	if (!library_path)
+	deflib = __getdeflib(ehdr, ldso, abi);
+	if (!deflib)
 		return -1;
 
 	needed = __getpreload(ehdr, ldso, abi);
@@ -359,16 +359,14 @@ static int __ldso_preload_libiamroot_so(Elf64_Ehdr *ehdr, const char *ldso,
 	__path_strncat(buf, path, bufsize);
 
 	/* Add the needed shared objects to buffer then */
-	ctx.library_path = library_path;
+	ctx.deflib = deflib;
 	ctx.buf = buf;
 	ctx.bufsize = bufsize;
 	return __path_iterate(needed, __ldso_preload_needed_callback, &ctx);
 }
 
-static int __ldso_preload_executable(const char *path,
-				     const char *library_path,
-				     char *buf,
-				     size_t bufsize)
+static int __ldso_preload_executable(const char *path, const char *deflib,
+				     char *buf, size_t bufsize)
 {
 	struct __ldso_preload_needed_context ctx;
 	char needed[PATH_MAX];
@@ -379,7 +377,7 @@ static int __ldso_preload_executable(const char *path,
 		return -1;
 
 	/* Add the needed shared objects to path only */
-	ctx.library_path = library_path;
+	ctx.deflib = deflib;
 	ctx.buf = buf;
 	ctx.bufsize = bufsize;
 	return __path_iterate(needed, __ldso_preload_needed_callback, &ctx);
@@ -411,13 +409,13 @@ static int __dl_is_opened(const char *path)
 
 static int __dlopen_needed_callback(const char *needed, void *user)
 {
-	char *library_path = (char *)user;
+	char *lib_path = (char *)user;
 	char buf[PATH_MAX];
 	void *handle;
 	ssize_t siz;
 	int ret;
 
-	siz = __path_access(needed, F_OK, library_path, buf, sizeof(buf));
+	siz = __path_access(needed, F_OK, lib_path, buf, sizeof(buf));
 	if (siz == -1)
 		return -1;
 
@@ -437,7 +435,7 @@ static int __dlopen_needed_callback(const char *needed, void *user)
 __attribute__((visibility("hidden")))
 int __dlopen_needed(const char *path)
 {
-	char library_path[PATH_MAX];
+	char lib_path[PATH_MAX];
 	char needed[PATH_MAX];
 	ssize_t siz;
 	int ret;
@@ -447,7 +445,7 @@ int __dlopen_needed(const char *path)
 	if (ret == -1 || ret == 1)
 		return ret;
 
-	siz = __dl_library_path(path, library_path, sizeof(library_path));
+	siz = __dl_lib_path(path, lib_path, sizeof(lib_path));
 	if (siz == -1)
 		return -1;
 
@@ -456,7 +454,7 @@ int __dlopen_needed(const char *path)
 		return -1;
 
 	/* Open the needed shared objects */
-	return __path_iterate(needed, __dlopen_needed_callback, library_path);
+	return __path_iterate(needed, __dlopen_needed_callback, lib_path);
 }
 
 static int __ld_ldso_abi(const char *path, char ldso[NAME_MAX], int *abi)
@@ -1310,8 +1308,7 @@ static const char *__getpreload(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	return "";
 }
 
-static const char *__getld_library_path(Elf64_Ehdr *ehdr, const char *ldso,
-					int abi)
+static const char *__getdeflib(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
 	char buf[NAME_MAX];
 	char *ret;
@@ -1324,10 +1321,10 @@ static const char *__getld_library_path(Elf64_Ehdr *ehdr, const char *ldso,
 
 		/*
 		 * Use the default library path set by the environment variable
-		 * IAMROOT_LIBRARY_PATH_<LDSO>_<ABI> if set.
+		 * IAMROOT_DEFLIB_<LDSO>_<ABI> if set.
 		 */
-		n = _snprintf(buf, sizeof(buf), "IAMROOT_LIBRARY_PATH_%s_%d",
-			      ldso, abi);
+		n = _snprintf(buf, sizeof(buf), "IAMROOT_DEFLIB_%s_%d", ldso,
+			      abi);
 		if (n == -1)
 			return NULL;
 		__env_sanitize(buf, 1);
@@ -1341,16 +1338,16 @@ static const char *__getld_library_path(Elf64_Ehdr *ehdr, const char *ldso,
 
 	/*
 	 * Use the default library path set by the environment variable
-	 * IAMROOT_LIBRARY_PATH if set.
+	 * IAMROOT_DEFLIB if set.
 	 */
-	ret = getenv("IAMROOT_LIBRARY_PATH");
+	ret = getenv("IAMROOT_DEFLIB");
 	if (ret)
 		return ret;
 
 	/*
-	 * Neither IAMROOT_LIBRARY_PATH_<LDSO>_<ABI> nor IAMROOT_LIBRARY_PATH
-	 * are set; try to guess automagically the standard library path for
-	 * the GNU/Linux systems.
+	 * Neither IAMROOT_DEFLIB_<LDSO>_<ABI> nor IAMROOT_DEFLIB are set; try
+	 * to guess automagically the standard library path for the GNU/Linux
+	 * systems.
 	 *
 	 * According to ld.so(8):
 	 *
@@ -1366,7 +1363,7 @@ static const char *__getld_library_path(Elf64_Ehdr *ehdr, const char *ldso,
 	return "/lib:/usr/local/lib:/usr/lib";
 }
 
-static ssize_t __ld_library_path(const char *, char *, size_t);
+static ssize_t __ld_lib_path(const char *, char *, size_t);
 
 /*
  * Note: This resolves all the needed shared objects to preload in order to
@@ -1375,7 +1372,7 @@ static ssize_t __ld_library_path(const char *, char *, size_t);
 static char *__setenv_ld_preload(Elf64_Ehdr *ehdr, const char *ldso, int abi,
 				 const char *path)
 {
-	char library_path[PATH_MAX];
+	char lib_path[PATH_MAX];
 	char buf[PATH_MAX];
 	ssize_t siz;
 	int err;
@@ -1385,11 +1382,11 @@ static char *__setenv_ld_preload(Elf64_Ehdr *ehdr, const char *ldso, int abi,
 	if (err == -1)
 		return NULL;
 
-	siz = __ld_library_path(path, library_path, sizeof(library_path));
+	siz = __ld_lib_path(path, lib_path, sizeof(lib_path));
 	if (siz == -1)
 		return NULL;
 
-	err = __ldso_preload_executable(path, library_path, buf, sizeof(buf));
+	err = __ldso_preload_executable(path, lib_path, buf, sizeof(buf));
 	if (err == -1)
 		return NULL;
 
@@ -1448,7 +1445,7 @@ static int __secure_execution_mode()
  * Note: This resolves all the library path of the executable file in order to
  * prevent from loading the shared objects of the host system.
 */
-static ssize_t __ld_library_path(const char *path, char *buf, size_t bufsize)
+static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsize)
 {
 	char *ld_library_path;
 	int err, has_runpath;
@@ -1532,7 +1529,7 @@ static char *__setenv_ld_library_path(const char *path)
 	ssize_t siz;
 	int err;
 
-	siz = __ld_library_path(path, buf, sizeof(buf));
+	siz = __ld_lib_path(path, buf, sizeof(buf));
 	if (siz == -1)
 		return NULL;
 
@@ -1758,8 +1755,8 @@ static ssize_t __felf_deflib(int fd, char *buf, size_t bufsize)
 {
 	const int errno_save = errno;
 	char interp[HASHBANG_MAX];
-	const char *library_path;
 	char ldso[NAME_MAX];
+	const char *deflib;
 	int err, abi = 0;
 	Elf64_Ehdr ehdr;
 	ssize_t siz;
@@ -1800,19 +1797,19 @@ static ssize_t __felf_deflib(int fd, char *buf, size_t bufsize)
 	if (siz < 1) {
 		__warning("%s: dynamic loader not found!\n", __fpath(fd));
 		*ldso = __set_errno(errno_save, 0);
-		goto library_path;
+		goto deflib;
 	}
 
 	err = __ld_ldso_abi(interp, ldso, &abi);
 	if (err == -1)
 		return -1;
 
-library_path:
-	library_path = __getld_library_path(&ehdr, ldso, abi);
-	if (!library_path)
+deflib:
+	deflib = __getdeflib(&ehdr, ldso, abi);
+	if (!deflib)
 		return -1;
 
-	strncpy(buf, library_path, bufsize);
+	strncpy(buf, deflib, bufsize);
 
 	return strnlen(buf, bufsize);
 }
@@ -1834,7 +1831,7 @@ static ssize_t __elf_deflib(const char *path, char *buf, size_t bufsize)
 }
 
 __attribute__((visibility("hidden")))
-ssize_t __dl_library_path(const char *path, char *buf, size_t bufsize)
+ssize_t __dl_lib_path(const char *path, char *buf, size_t bufsize)
 {
 	const char *library_path;
 	char tmp[PATH_MAX];
@@ -2279,7 +2276,7 @@ static int __ld_trace_loader_objects_needed(const char *, const char *, char *,
 					    size_t);
 
 struct __ld_trace_loader_objects_needed_context {
-	const char *library_path;
+	const char *lib_path;
 	char *buf;
 	size_t bufsize;
 	FILE *f;
@@ -2295,7 +2292,7 @@ static int __ld_trace_loader_objects_needed_callback(const char *so,
 	ssize_t siz;
 	int ret;
 
-	siz = __path_access(so, F_OK, ctx->library_path, buf, sizeof(buf));
+	siz = __path_access(so, F_OK, ctx->lib_path, buf, sizeof(buf));
 	if (siz < 1)
 		fprintf(ctx->f, "\t%s => not found\n", so);
 	if (siz == -1)
@@ -2314,7 +2311,7 @@ static int __ld_trace_loader_objects_needed_callback(const char *so,
 		return 0;
 
 	/* Add the needed shared objects to buf */
-	ret = __ld_trace_loader_objects_needed(buf, ctx->library_path,
+	ret = __ld_trace_loader_objects_needed(buf, ctx->lib_path,
 					       ctx->buf, ctx->bufsize);
 
 	fprintf(ctx->f, "\t%s => %s (0x%0*zx)\n", so, __root_basepath(buf),
@@ -2324,7 +2321,7 @@ static int __ld_trace_loader_objects_needed_callback(const char *so,
 }
 
 static int __ld_trace_loader_objects_needed(const char *path,
-					    const char *library_path,
+					    const char *lib_path,
 					    char *buf,
 					    size_t bufsize)
 {
@@ -2338,7 +2335,7 @@ static int __ld_trace_loader_objects_needed(const char *path,
 		return -1;
 
 	/* Add the needed shared objects to path first */
-	ctx.library_path = library_path;
+	ctx.lib_path = lib_path;
 	ctx.buf = buf;
 	ctx.bufsize = bufsize;
 	ctx.f = stdout;
@@ -2354,7 +2351,7 @@ static int __ld_trace_loader_objects_needed(const char *path,
 }
 
 static int __ld_trace_loader_objects_executable(const char *path,
-						const char *library_path)
+						const char *lib_path)
 {
 	struct __ld_trace_loader_objects_needed_context ctx;
 	const size_t map_start = 0;
@@ -2391,7 +2388,7 @@ static int __ld_trace_loader_objects_executable(const char *path,
 	siz = __elf_needed(path, needed, sizeof(needed));
 	if (siz == -1)
 		return -1;
-	ctx.library_path = library_path;
+	ctx.lib_path = lib_path;
 	ctx.buf = buf;
 	ctx.bufsize = sizeof(buf);
 	ctx.f = f;
@@ -2407,7 +2404,7 @@ static int __ld_trace_loader_objects_executable(const char *path,
 
 static int __ld_trace_loader_objects_exec(const char *path)
 {
-	char library_path[PATH_MAX];
+	char lib_path[PATH_MAX];
 	char buf[PATH_MAX];
 	ssize_t siz;
 
@@ -2415,11 +2412,11 @@ static int __ld_trace_loader_objects_exec(const char *path)
 	if (siz == -1)
 		return -1;
 
-	siz = __ld_library_path(buf, library_path, sizeof(library_path));
+	siz = __ld_lib_path(buf, lib_path, sizeof(lib_path));
 	if (siz == -1)
 		return -1;
 
-	return __ld_trace_loader_objects_executable(buf, library_path);
+	return __ld_trace_loader_objects_executable(buf, lib_path);
 }
 
 static int __ldso_verify(const char *path)

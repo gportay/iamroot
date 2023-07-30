@@ -1833,7 +1833,7 @@ static ssize_t __elf_deflib(const char *path, char *buf, size_t bufsize)
 __attribute__((visibility("hidden")))
 ssize_t __dl_lib_path(const char *path, char *buf, size_t bufsize)
 {
-	const char *library_path;
+	const char *ld_library_path;
 	char tmp[PATH_MAX];
 	uint32_t flags_1;
 	int has_runpath;
@@ -1918,9 +1918,9 @@ ssize_t __dl_lib_path(const char *path, char *buf, size_t bufsize)
 	 *
 	 * Try the LD_LIBRARY_PATH environment variable.
 	 */
-	library_path = getenv("LD_LIBRARY_PATH");
-	if (library_path && !__secure_execution_mode())
-		__path_strncat(buf, library_path, bufsize);
+	ld_library_path = getenv("LD_LIBRARY_PATH");
+	if (ld_library_path && !__secure_execution_mode())
+		__path_strncat(buf, ld_library_path, bufsize);
 
 	/*
 	 * •  (ELF only) If the calling object contains a DT_RUNPATH tag, then

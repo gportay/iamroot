@@ -538,15 +538,29 @@ static int __dl_is_opened(const char *path)
 	return 0;
 }
 
+struct __dlopen_needed_context {
+	const char *rpath;
+	const char *ld_library_path;
+	const char *runpath;
+	const char *deflib;
+	uint32_t flags_1;
+	char *buf;
+	size_t bufsize;
+};
+
 static int __dlopen_needed_callback(const char *needed, void *user)
 {
-	char *lib_path = (char *)user;
+	struct __dlopen_needed_context *ctx =
+					(struct __dlopen_needed_context *)user;
 	char buf[PATH_MAX];
 	void *handle;
 	ssize_t siz;
 	int ret;
 
-	siz = __path_access(needed, F_OK, lib_path, buf, sizeof(buf));
+	/* Look for the shared object */
+	siz = __ldso_access(needed, F_OK, NULL, NULL, ctx->rpath,
+			    ctx->ld_library_path, ctx->runpath, ctx->deflib,
+			    ctx->flags_1, buf, sizeof(buf));
 	if (siz == -1)
 		return -1;
 
@@ -563,13 +577,15 @@ static int __dlopen_needed_callback(const char *needed, void *user)
 	return 0;
 }
 
-static ssize_t __dl_lib_path(const char *, char *, size_t);
-
 __attribute__((visibility("hidden")))
 int __dlopen_needed(const char *path)
 {
-	char lib_path[PATH_MAX];
+	char *rpath, *runpath, *ld_library_path;
+	struct __dlopen_needed_context ctx;
 	char needed[PATH_MAX];
+	char deflib[PATH_MAX];
+	char tmp[PATH_MAX];
+	uint32_t flags_1;
 	ssize_t siz;
 	int ret;
 
@@ -578,8 +594,35 @@ int __dlopen_needed(const char *path)
 	if (ret == -1 || ret == 1)
 		return ret;
 
-	siz = __dl_lib_path(path, lib_path, sizeof(lib_path));
+	/*
+	 * Get the DT_RPATH, DT_RUNPATH, LD_LIBRARY_PATH, DT_FLAGS_1, and the
+	 * default library path
+	 */
+	siz = __elf_runpath(path, tmp, sizeof(tmp));
 	if (siz == -1)
+		return -1;
+
+	runpath = siz > 0 ? tmp : NULL;
+	if (runpath) {
+		rpath = NULL; /* ignore DT_RPATH */
+	} else {
+		siz = __elf_rpath(path, tmp, sizeof(tmp));
+		if (siz == -1)
+			return -1;
+
+		rpath = siz > 0 ? tmp : NULL;
+	}
+
+	ld_library_path = getenv("LD_LIBRARY_PATH");
+	if (__secure_execution_mode())
+		ld_library_path = NULL;
+
+	siz = __elf_deflib(path, deflib, sizeof(deflib));
+	if (siz == -1)
+		return -1;
+
+	ret = __elf_flags_1(path, &flags_1);
+	if (ret == -1)
 		return -1;
 
 	siz = __elf_needed(path, needed, sizeof(needed));
@@ -587,7 +630,12 @@ int __dlopen_needed(const char *path)
 		return -1;
 
 	/* Open the needed shared objects */
-	return __path_iterate(needed, __dlopen_needed_callback, lib_path);
+	ctx.rpath = rpath;
+	ctx.ld_library_path = ld_library_path;
+	ctx.runpath = runpath;
+	ctx.deflib = deflib;
+	ctx.flags_1 = flags_1;
+	return __path_iterate(needed, __dlopen_needed_callback, &ctx);
 }
 
 static int __ld_ldso_abi(const char *path, char ldso[NAME_MAX], int *abi)
@@ -1961,149 +2009,6 @@ static ssize_t __elf_deflib(const char *path, char *buf, size_t bufsize)
 	__close(fd);
 
 	return ret;
-}
-
-static ssize_t __dl_lib_path(const char *path, char *buf, size_t bufsize)
-{
-	const char *ld_library_path;
-	char tmp[PATH_MAX];
-	uint32_t flags_1;
-	int has_runpath;
-	ssize_t ret;
-
-	if (!buf)
-		return __set_errno(EINVAL, -1);
-
-	*buf = 0;
-	/* FIXME: The executable file RPATH is looked up twice! */
-	if (!path)
-		path = __execfn();
-
-	/*
-	 * According to dlopen(3)
-	 *
-	 * •  (ELF only) If the calling object (i.e., the shared library or
-	 * executable from which dlopen() is called) contains a DT_RPATH tag,
-	 * and does not contain a DT_RUNPATH tag, then the directories listed
-	 * in the DT_RPATH tag are searched.
-	 */
-	/* The man-page is incomplete! */
-	ret = __elf_runpath(path, tmp, sizeof(tmp));
-	if (ret == -1)
-		return -1;
-
-	/*
-	 * According to glibc (elf/dl-load.c)
-	 *
-	 * When the object has the RUNPATH information we don't use any RPATHs.
-	 */
-	has_runpath = ret > 0;
-	if (!has_runpath) {
-		char rpath[PATH_MAX];
-
-		/*
-		 * According to glibc (elf/dl-load.c)
-		 *
-		 * First try the DT_RPATH of the dependent object that caused
-		 * NAME to be loaded. Then that object's dependent, and on up.
-		 */
-		ret = __elf_rpath(path, rpath, sizeof(rpath));
-		if (ret == -1)
-			return -1;
-
-		if (ret != 0)
-			__path_strncat(buf, rpath, bufsize);
-
-		/*
-		 * According to glibc (elf/dl-load.c)
-		 *
-		 * If dynamically linked, try the DT_RPATH of the executable
-		 * itself.
-		 *
-		 * According to glibc (elf/get-dynamic-info.h)
-		 *
-		 * If both RUNPATH and RPATH are given, the latter is ignored.
-		 */
-		ret = __elf_runpath(__execfn(), rpath, sizeof(rpath));
-		if (ret == -1)
-			return -1;
-
-		if (ret <= 0) {
-			ret = __elf_rpath(__execfn(), rpath, sizeof(rpath));
-			if (ret == -1)
-				return -1;
-
-			if (ret != 0)
-				__path_strncat(buf, rpath, bufsize);
-		}
-	}
-
-	/*
-	 * •  If, at the time that the program was started, the environment
-	 * variable LD_LIBRARY_PATH was defined to contain a colon-separated
-	 * list of directories, then these are searched. (As a security
-	 * measure, this variable is ignored for set-user-ID and set-group-ID
-	 * programs.)
-	 */
-	/*
-	 * According to glibc (elf/dl-load.c)
-	 *
-	 * Try the LD_LIBRARY_PATH environment variable.
-	 */
-	ld_library_path = getenv("LD_LIBRARY_PATH");
-	if (ld_library_path && !__secure_execution_mode())
-		__path_strncat(buf, ld_library_path, bufsize);
-
-	/*
-	 * •  (ELF only) If the calling object contains a DT_RUNPATH tag, then
-	 * the directories listed in that tag are searched.
-	 */
-	/*
-	 * According to glibc (elf/dl-load.c)
-	 *
-	 * Look at the RUNPATH information for this binary.
-	 */
-	if (has_runpath)
-		__path_strncat(buf, tmp, bufsize);
-
-	/*
-	 * •  The cache file /etc/ld.so.cache (maintained by ldconfig(8)) is
-	 * checked to see whether it contains an entry for filename.
-	 */
-	/*
-	 * According to glibc (elf/dl-load.c)
-	 *
-	 * Check the list of libraries in the file /etc/ld.so.cache, for
-	 * compatibility with Linux's ldconfig program.
-	 */
-	/* TODO: This is not applicable, at least for now. */
-
-	/*
-	 * •  The directories /lib and /usr/lib are searched (in that order).
-	 */
-	/*
-	 * According to glibc (elf/dl-load.c)
-	 *
-	 * Finally, try the default path.
-	 */
-	ret = __elf_flags_1(path, &flags_1);
-	if (!(flags_1 & DF_1_NODEFLIB)) {
-		ret = __elf_deflib(path, tmp, sizeof(tmp));
-		if (ret == -1)
-			return -1;
-
-		__path_strncat(buf, tmp, bufsize);
-	}
-
-	/*
-	 * If the object specified by filename has dependencies on other shared
-	 * objects, then these are also automatically loaded by the dynamic
-	 * linker using the same rules. (This process may occur recursively, if
-	 * those objects in turn have dependencies, and so on.)
-	 */
-	/* TODO: This is to be implemented, at least in a near future. */
-
-	return strnlen(buf, bufsize);
 }
 
 static char *__setenv_inhibit_rpath()

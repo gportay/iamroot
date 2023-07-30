@@ -308,11 +308,10 @@ static int __ldso_preload_needed(const char *path, const char *deflib,
 	ssize_t siz;
 	int ret;
 
+	/* Add the needed shared objects to path first */
 	siz = __elf_needed(path, needed, sizeof(needed));
 	if (siz == -1)
 		return -1;
-
-	/* Add the needed shared objects to path first */
 	ctx.deflib = deflib;
 	ctx.buf = buf;
 	ctx.bufsize = bufsize;
@@ -372,11 +371,10 @@ static int __ldso_preload_executable(const char *path, const char *deflib,
 	char needed[PATH_MAX];
 	ssize_t siz;
 
+	/* Add the needed shared objects to path only */
 	siz = __elf_needed(path, needed, sizeof(needed));
 	if (siz == -1)
 		return -1;
-
-	/* Add the needed shared objects to path only */
 	ctx.deflib = deflib;
 	ctx.buf = buf;
 	ctx.bufsize = bufsize;
@@ -625,11 +623,10 @@ int __dlopen_needed(const char *path)
 	if (ret == -1)
 		return -1;
 
+	/* Open the needed shared objects */
 	siz = __elf_needed(path, needed, sizeof(needed));
 	if (siz == -1)
 		return -1;
-
-	/* Open the needed shared objects */
 	ctx.rpath = rpath;
 	ctx.ld_library_path = ld_library_path;
 	ctx.runpath = runpath;

@@ -14,8 +14,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `ptsname()` and `ptsname_r()`
 - The internal function `path_resolution()` resolves the root directory if in
   chroot'ed environment and the resolved path is below the root directory
-- Fix the missing stripping of the root directory in the functions `ftw()`,
-  `nftw()` and `nftw64()`
 - Output some resolving shared object traces
 - Look up the [ld.so(8)] cache file `/etc/ld.so.cache`
 
@@ -26,6 +24,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Replace the environment variables `IAMROOT_LIBRARY_PATH_<ldso>_<abi>` and
   `IAMROOT_LIBRARY_PATH` by `IAMROOT_DEFLIB_<ldso>_<abi>` and `IAMROOT_DEFLIB`
 - Replace the `ish` option `--library-path` by `--deflib`
+
+### Fixed
+
+- Fix the missing stripping of the root directory in the functions `ftw()`,
+  `nftw()` and `nftw64()`
 
 ## [v11] - 2023-07-14
 
@@ -48,9 +51,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   that is unchecked yet
 - Use both ELF header and [dynamic loader][ld.so(8)] (`SONAME` and `ABI`) to
   detect the path to the library to preload
-- Look up the content of the deprecated environment variable `DT_RPATH` library
-  paths if the `DT_RUNPATH` is unset only
-- Do not look up the default library paths if the flag `DF_1_NODEFLIB` is set
+- Look up the directories specified in the deprecated dynamic section attribute
+  `DT_RPATH` if the attribute `DT_RUNPATH` is unset only
+- Do not lookup the default library paths if the flag `DF_1_NODEFLIB` is set
   in the dynamic entry `DT_FLAGS_1`
 - Do not lookup the content of the environment variable `LD_LIBRARY_PATH`
   unless executable file runs in secure execution mode
@@ -171,7 +174,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Output the directory fd for the functions `name_to_handle_at()` and
   `scandirat()`
-- Use `/lib64:/usr/local/lib64:/usr/lib64` library path for both glibc
+- Use `/lib64:/usr/local/lib64:/usr/lib64` library path for both [glibc]
   architectures x86_64 and aarch64
 - Output the full command from level 1 to 4
 - Remove the relative path warning as the `proc` file-system may return also

@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   chroot'ed environment and the resolved path is below the root directory
 - Fix the missing stripping of the root directory in the functions `ftw()`,
   `nftw()` and `nftw64()`
+- Output some resolving shared object traces
 
 ### Changed
 

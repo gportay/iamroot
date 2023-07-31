@@ -426,6 +426,8 @@ static ssize_t __ldso_access(const char *path,
 		 * First try the DT_RPATH of the dependent object that caused
 		 * NAME to be loaded. Then that object's dependent, and on up.
 		 */
+		__info("%s: trying accessing from shared object DT_RPATH %s...\n",
+		       path, rpath);
 		ret = __path_access(path, mode, rpath, buf, bufsize);
 		if (ret == -1 && errno != ENOENT)
 			return -1;
@@ -437,6 +439,8 @@ static ssize_t __ldso_access(const char *path,
 		 * If dynamically linked, try the DT_RPATH of the executable
 		 * itself.
 		 */
+		__info("%s: trying accessing from executable DT_RPATH %s...\n",
+		       path, exec_rpath);
 		ret = __path_access(path, mode, exec_rpath, buf, bufsize);
 		if (ret == -1 && errno != ENOENT)
 			return -1;
@@ -458,6 +462,8 @@ static ssize_t __ldso_access(const char *path,
 	 * which case this variable is ignored.
 	 */
 	if (ld_library_path && !__secure_execution_mode()) {
+		__info("%s: trying accessing from LD_LIBRARY_PATH %s...\n",
+		       path, ld_library_path);
 		ret = __path_access(path, mode, ld_library_path, buf, bufsize);
 		if (ret == -1 && errno != ENOENT)
 			return -1;
@@ -476,6 +482,8 @@ static ssize_t __ldso_access(const char *path,
 	 * the dependency tree.
 	 */
 	if (runpath) {
+		__info("%s: trying accessing from shared object DT_RUNPATH %s...\n",
+		       path, runpath);
 		ret = __path_access(path, mode, runpath, buf, bufsize);
 		if (ret == -1 && errno != ENOENT)
 			return -1;
@@ -501,6 +509,8 @@ static ssize_t __ldso_access(const char *path,
 	 * -z nodeflib linker option, this step is skipped.
 	 */
 	if (!(flags_1 & DF_1_NODEFLIB) && deflib) {
+		__info("%s: trying accessing from default library path %s...\n",
+		       path, deflib);
 		ret = __path_access(path, mode, deflib, buf, bufsize);
 		if (ret == -1 && errno != ENOENT)
 			return -1;
@@ -545,6 +555,7 @@ struct __dlopen_needed_context {
 	char *buf;
 	size_t bufsize;
 	int flags;
+	const char *needed_by;
 };
 
 static int __dlopen_needed_callback(const char *needed, void *user)
@@ -564,7 +575,7 @@ static int __dlopen_needed_callback(const char *needed, void *user)
 		return -1;
 
 	/* Open the needed shared objects first */
-	ret = __dlopen_needed(buf, ctx->flags);
+	ret = __dlopen_needed(buf, ctx->flags, ctx->needed_by);
 	if (ret == -1)
 		return -1;
 
@@ -573,11 +584,13 @@ static int __dlopen_needed_callback(const char *needed, void *user)
 	if (!handle)
 		return -1;
 
+	__notice("%s: dlopen'ed needed shared object \"%s\"\n", ctx->needed_by,
+		 buf);
 	return 0;
 }
 
 __attribute__((visibility("hidden")))
-int __dlopen_needed(const char *path, int flags)
+int __dlopen_needed(const char *path, int flags, const char *needed_by)
 {
 	char *rpath, *runpath, *ld_library_path;
 	struct __dlopen_needed_context ctx;
@@ -634,6 +647,7 @@ int __dlopen_needed(const char *path, int flags)
 	ctx.deflib = deflib;
 	ctx.flags_1 = flags_1;
 	ctx.flags = flags;
+	ctx.needed_by = needed_by;
 	return __path_iterate(needed, __dlopen_needed_callback, &ctx);
 }
 

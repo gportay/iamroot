@@ -72,7 +72,7 @@ void *dlopen(const char *path, int flags)
 	 * those objects in turn have dependencies, and so on.)
 	 */
 	 /* Bypass the libdl.so loading of the DT_NEEDED shared objects. */
-	err = __dlopen_needed(buf, flags, __execfn());
+	err = __dlopen_needed(buf, flags);
 	if (err == -1)
 		goto exit;
 

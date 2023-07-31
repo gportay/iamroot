@@ -637,7 +637,7 @@ extern void __pathdlperror(const char *, const char *);
 	({ __dlperror(__func__); \
 	   __set_errno(e, (r)); })
 
-int __dlopen_needed(const char *, int, const char *);
+int __dlopen_needed(const char *, int);
 
 int close(int);
 void perror(const char *);

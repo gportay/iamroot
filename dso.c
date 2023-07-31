@@ -546,36 +546,88 @@ static int __dl_is_opened(const char *path)
 	return 0;
 }
 
-struct __dlopen_needed_context {
+static int __ld_open_needed(const char *, int, const char *);
+
+struct __ld_needed_context {
 	const char *rpath;
 	const char *ld_library_path;
 	const char *runpath;
 	const char *deflib;
 	uint32_t flags_1;
-	char *buf;
-	size_t bufsize;
+	int (*callback)(const char *, const char *, const char *,
+			const char *, const char *, uint32_t, void *);
+	void *user;
+};
+
+static int __ld_needed_callback(const char *needed, void *user)
+{
+	struct __ld_needed_context *ctx = (struct __ld_needed_context *)user;
+
+	if (!ctx->callback)
+		return __set_errno(EINVAL, -1);
+
+	return ctx->callback(needed, ctx->rpath, ctx->ld_library_path,
+			     ctx->runpath, ctx->deflib, ctx->flags_1,
+			     ctx->user);
+}
+
+static int __ld_needed(const char *path,
+		       const char *rpath,
+		       const char *ld_library_path,
+		       const char *runpath,
+		       const char *deflib,
+		       uint32_t flags_1,
+		       int (*callback)(const char *, const char *,
+				       const char *, const char *,
+				       const char *, uint32_t, void *),
+		       void *user)
+{
+	struct __ld_needed_context ctx;
+	char needed[PATH_MAX];
+	ssize_t siz;
+
+	/* Iterate over the DT_NEEDED shared objects */
+	siz = __elf_needed(path, needed, sizeof(needed));
+	if (siz == -1)
+		return -1;
+	ctx.rpath = rpath;
+	ctx.ld_library_path = ld_library_path;
+	ctx.runpath = runpath;
+	ctx.deflib = deflib;
+	ctx.flags_1 = flags_1;
+	ctx.callback = callback;
+	ctx.user = user;
+	return __path_iterate(needed, __ld_needed_callback, &ctx);
+}
+
+struct __ld_open_needed_context {
 	int flags;
 	const char *needed_by;
 };
 
-static int __dlopen_needed_callback(const char *needed, void *user)
+static int __ld_open_needed_callback(const char *needed,
+				     const char *rpath,
+				     const char *ld_library_path,
+				     const char *runpath,
+				     const char *deflib,
+				     uint32_t flags_1,
+				     void *user)
 {
-	struct __dlopen_needed_context *ctx =
-					(struct __dlopen_needed_context *)user;
+	struct __ld_open_needed_context *ctx =
+				       (struct __ld_open_needed_context *)user;
 	char buf[PATH_MAX];
 	void *handle;
 	ssize_t siz;
 	int ret;
 
 	/* Look for the shared object */
-	siz = __ldso_access(needed, F_OK, NULL, NULL, ctx->rpath,
-			    ctx->ld_library_path, ctx->runpath, ctx->deflib,
-			    ctx->flags_1, buf, sizeof(buf));
+	siz = __ldso_access(needed, F_OK, NULL, NULL, rpath, ld_library_path,
+			    runpath, deflib, flags_1, buf, sizeof(buf));
 	if (siz == -1)
 		return -1;
 
 	/* Open the needed shared objects first */
-	ret = __dlopen_needed(buf, ctx->flags, ctx->needed_by);
+	ret = __ld_open_needed(buf, ctx->flags, ctx->needed_by);
 	if (ret == -1)
 		return -1;
 
@@ -589,12 +641,10 @@ static int __dlopen_needed_callback(const char *needed, void *user)
 	return 0;
 }
 
-__attribute__((visibility("hidden")))
-int __dlopen_needed(const char *path, int flags, const char *needed_by)
+static int __ld_open_needed(const char *path, int flags, const char *needed_by)
 {
 	char *rpath, *runpath, *ld_library_path;
-	struct __dlopen_needed_context ctx;
-	char needed[PATH_MAX];
+	struct __ld_open_needed_context ctx;
 	char deflib[PATH_MAX];
 	char tmp[PATH_MAX];
 	uint32_t flags_1;
@@ -638,17 +688,16 @@ int __dlopen_needed(const char *path, int flags, const char *needed_by)
 		return -1;
 
 	/* Open the needed shared objects */
-	siz = __elf_needed(path, needed, sizeof(needed));
-	if (siz == -1)
-		return -1;
-	ctx.rpath = rpath;
-	ctx.ld_library_path = ld_library_path;
-	ctx.runpath = runpath;
-	ctx.deflib = deflib;
-	ctx.flags_1 = flags_1;
 	ctx.flags = flags;
 	ctx.needed_by = needed_by;
-	return __path_iterate(needed, __dlopen_needed_callback, &ctx);
+	return __ld_needed(path, rpath, ld_library_path, runpath, deflib,
+			   flags_1, __ld_open_needed_callback, &ctx);
+}
+
+__attribute__((visibility("hidden")))
+int __dlopen_needed(const char *path, int flags)
+{
+	return __ld_open_needed(path, flags, __execfn());
 }
 
 static int __ld_ldso_abi(const char *path, char ldso[NAME_MAX], int *abi)
@@ -2384,17 +2433,17 @@ static int __ld_trace_loader_objects_needed(const char *, const char *,
 					    size_t);
 
 struct __ld_trace_loader_objects_needed_context {
-	const char *exec_rpath;
-	const char *ld_library_path;
-	const char *exec_runpath;
-	const char *deflib;
-	uint32_t flags_1;
 	char *buf;
 	size_t bufsize;
 	FILE *f;
 };
 
 static int __ld_trace_loader_objects_needed_callback(const char *so,
+						     const char *exec_rpath,
+						     const char *ld_library_path,
+						     const char *exec_runpath,
+						     const char *deflib,
+						     uint32_t flags_1,
 						     void *user)
 {
 	struct __ld_trace_loader_objects_needed_context *ctx =
@@ -2405,9 +2454,9 @@ static int __ld_trace_loader_objects_needed_callback(const char *so,
 	int ret;
 
 	/* Look for the shared object */
-	siz = __ldso_access(so, F_OK, ctx->exec_rpath, ctx->exec_runpath,
-			    NULL, ctx->ld_library_path, NULL, ctx->deflib,
-			    ctx->flags_1, buf, sizeof(buf));
+	siz = __ldso_access(so, F_OK, exec_rpath, exec_runpath, NULL,
+			    ld_library_path, exec_runpath, deflib, flags_1,
+			    buf, sizeof(buf));
 	if (siz < 1)
 		fprintf(ctx->f, "\t%s => not found\n", so);
 	if (siz == -1)
@@ -2427,11 +2476,11 @@ static int __ld_trace_loader_objects_needed_callback(const char *so,
 
 	/* Add the needed shared objects to buf */
 	ret = __ld_trace_loader_objects_needed(buf,
-					       ctx->exec_rpath,
-					       ctx->ld_library_path,
-					       ctx->exec_runpath,
-					       ctx->deflib,
-					       ctx->flags_1,
+					       exec_rpath,
+					       ld_library_path,
+					       exec_runpath,
+					       deflib,
+					       flags_1,
 					       ctx->buf,
 					       ctx->bufsize);
 
@@ -2460,16 +2509,17 @@ static int __ld_trace_loader_objects_needed(const char *path,
 		return -1;
 
 	/* Add the needed shared objects to path first */
-	ctx.exec_rpath = exec_rpath;
-	ctx.ld_library_path = ld_library_path;
-	ctx.exec_runpath = exec_runpath;
-	ctx.deflib = deflib;
-	ctx.flags_1 = flags_1;
 	ctx.buf = buf;
 	ctx.bufsize = bufsize;
 	ctx.f = stdout;
-	ret = __path_iterate(needed, __ld_trace_loader_objects_needed_callback,
-			     &ctx);
+	ret = __ld_needed(path,
+			  exec_rpath,
+			  ld_library_path,
+			  exec_runpath,
+			  deflib,
+			  flags_1,
+			  __ld_trace_loader_objects_needed_callback,
+			  &ctx);
 	if (ret == -1)
 		return -1;
 
@@ -2485,7 +2535,6 @@ static int __ld_trace_loader_objects_executable(const char *path)
 	char *exec_rpath, *exec_runpath, *ld_library_path;
 	const size_t map_start = 0;
 	char interp[HASHBANG_MAX];
-	char needed[PATH_MAX];
 	char deflib[PATH_MAX];
 	char ldso[NAME_MAX];
 	char buf[PATH_MAX];
@@ -2549,19 +2598,17 @@ static int __ld_trace_loader_objects_executable(const char *path)
 			(int)sizeof(map_start) * 2, map_start);
 
 	/* Print the DT_NEEDED shared objects */
-	siz = __elf_needed(path, needed, sizeof(needed));
-	if (siz == -1)
-		return -1;
-	ctx.exec_rpath = exec_rpath;
-	ctx.exec_runpath = exec_runpath;
-	ctx.ld_library_path = ld_library_path;
-	ctx.deflib = deflib;
-	ctx.flags_1 = flags_1;
 	ctx.buf = buf;
 	ctx.bufsize = sizeof(buf);
 	ctx.f = f;
-	ret = __path_iterate(needed, __ld_trace_loader_objects_needed_callback,
-			     &ctx);
+	ret = __ld_needed(path,
+			  exec_rpath,
+			  ld_library_path,
+			  exec_runpath,
+			  deflib,
+			  flags_1,
+			  __ld_trace_loader_objects_needed_callback,
+			  &ctx);
 
 	/* Print the PT_INTERP interpreter */
 	fprintf(f, "\t%s => %s (0x%0*zx)\n", interp, interp,

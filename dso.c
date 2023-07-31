@@ -544,6 +544,7 @@ struct __dlopen_needed_context {
 	uint32_t flags_1;
 	char *buf;
 	size_t bufsize;
+	int flags;
 };
 
 static int __dlopen_needed_callback(const char *needed, void *user)
@@ -563,12 +564,12 @@ static int __dlopen_needed_callback(const char *needed, void *user)
 		return -1;
 
 	/* Open the needed shared objects first */
-	ret = __dlopen_needed(buf);
+	ret = __dlopen_needed(buf, ctx->flags);
 	if (ret == -1)
 		return -1;
 
 	/* Open the shared object then */
-	handle = next_dlopen(buf, RTLD_LAZY);
+	handle = next_dlopen(buf, ctx->flags);
 	if (!handle)
 		return -1;
 
@@ -576,7 +577,7 @@ static int __dlopen_needed_callback(const char *needed, void *user)
 }
 
 __attribute__((visibility("hidden")))
-int __dlopen_needed(const char *path)
+int __dlopen_needed(const char *path, int flags)
 {
 	char *rpath, *runpath, *ld_library_path;
 	struct __dlopen_needed_context ctx;
@@ -632,6 +633,7 @@ int __dlopen_needed(const char *path)
 	ctx.runpath = runpath;
 	ctx.deflib = deflib;
 	ctx.flags_1 = flags_1;
+	ctx.flags = flags;
 	return __path_iterate(needed, __dlopen_needed_callback, &ctx);
 }
 

@@ -20,6 +20,10 @@
 
 #include "iamroot.h"
 
+#ifndef ELFOSABI_GNU
+#define ELFOSABI_GNU ELFOSABI_LINUX
+#endif
+
 typedef struct {
 	regex_t re;
 #ifndef JIMREGEXP_H

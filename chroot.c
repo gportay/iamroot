@@ -262,7 +262,7 @@ char *__striprootdir(char *path)
 	size = __strlen(ret);
 	len = __strlen(root);
 	if (strneq(root, ret, len))
-		memcpy(ret, &ret[len], __strlen(ret)-len+1); /* NULL-terminated */
+		_strncpy(ret, &ret[len], __strlen(ret)-len+1); /* NULL-terminated */
 
 	if (!*ret)
 		_strncpy(ret, "/", size);

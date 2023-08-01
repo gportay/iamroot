@@ -29,6 +29,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Fix the missing stripping of the root directory in the functions `ftw()`,
   `nftw()` and `nftw64()`
+- Fix the memory area overlapping if the root directory is stripped off
 
 ## [v11] - 2023-07-14
 

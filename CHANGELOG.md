@@ -709,7 +709,7 @@ Initial release.
 [passwd(1)]: https://linux.die.net/man/1/passwd
 [su(1)]: https://linux.die.net/man/1/su
 [systemd-sysusers(8)]: https://www.freedesktop.org/software/systemd/man/systemd-sysusers.html
-[unreleased]: https://github.com/gportay/iamroot/compare/v9...master
+[unreleased]: https://github.com/gportay/iamroot/compare/v11...master
 [v1]: https://github.com/gportay/iamroot/releases/tag/v1
 [v2]: https://github.com/gportay/iamroot/compare/v1...v2
 [v3]: https://github.com/gportay/iamroot/compare/v2...v3

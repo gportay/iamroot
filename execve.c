@@ -62,9 +62,67 @@ const char *__execfn()
 #endif
 
 #ifdef __OpenBSD__
+/*
+ * Stolen and hacked from OpenBSD (usr.bin/top/machine.c)
+ *
+ * SPDX-FileCopyrightText: The OpenBSD Contributors
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+#include <sys/sysctl.h>
+
+#define err(e, r) return __set_errno((e), (r))
+
+__attribute__((visibility("hidden")))
+static char **get_proc_args()
+{
+	static char **s;
+	static size_t siz = 1023;
+	int mib[4];
+
+	if (!s && !(s = malloc(siz)))
+		err(1, NULL);
+
+	mib[0] = CTL_KERN;
+	mib[1] = KERN_PROC_ARGS;
+	mib[2] = getpid();
+	mib[3] = KERN_PROC_ARGV;
+	for (;;) {
+		size_t space = siz;
+		if (sysctl(mib, 4, s, &space, NULL, 0) == 0)
+			break;
+		if (errno != ENOMEM)
+			return NULL;
+		siz *= 2;
+		if ((s = realloc(s, siz)) == NULL)
+			err(1, NULL);
+	}
+	return s;
+}
+#undef err
+
 const char *__execfn()
 {
-	return __set_errno(ENOSYS, NULL);
+	static char buf[PATH_MAX];
+	char **argv;
+	ssize_t siz; 
+
+	if (*buf)
+		return buf;
+
+	argv = get_proc_args();
+	if (!argv)
+		return NULL;
+
+	if (*argv[0] == '/')
+		siz = path_resolution(AT_FDCWD, argv[0], buf, sizeof(buf), 0);
+	else
+		siz = __path_access(argv[0], X_OK, getenv("PATH"), buf,
+				    sizeof(buf));
+	if (siz == -1)
+		return NULL;
+
+	return buf;
 }
 #endif
 

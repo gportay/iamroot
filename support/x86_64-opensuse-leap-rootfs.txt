@@ -1,1422 +1,1026 @@
 Adding repository 'openSUSE-Leap-Oss' [done]
 Warning: GPG checking is disabled in configuration of repository 'openSUSE-Leap-Oss'. Integrity and origin of packages cannot be verified.
 Repository 'openSUSE-Leap-Oss' successfully added
-
 URI         : http://download.opensuse.org/distribution/leap/15.4/repo/oss/
 Enabled     : Yes
 GPG Check   : No
 Autorefresh : Yes
 Priority    : 99 (default priority)
-
 Repository priorities are without effect. All enabled repositories share the same priority.
 Retrieving repository 'openSUSE-Leap-Oss' metadata [done]
 Building repository 'openSUSE-Leap-Oss' cache [done]
 Loading repository data...
 Reading installed packages...
 Resolving package dependencies...
-
 The following XXX recommended packages were automatically selected:
   aaa_base-extras adjtimex augeas-lenses bash-doc bash-lang branding-openSUSE ca-certificates-mozilla cpio-mt crypto-policies-scripts diffutils-lang dirmngr distribution-logos-openSUSE-Leap dracut dump-rmt glibc-extra grep-lang issue-generator kmod libfido2-1 libidn2-lang libpcre2-8-0 libtss2-esys0 libtss2-mu0 libtss2-rc0 login_defs logrotate lsof ncurses-utils net-tools net-tools-lang netcfg publicsuffix python3 python3-curses python3-dbm python3-pip readline-doc sed-lang terminfo-screen time traceroute udev which xz xz-lang zypper-log
-
 The following XXX NEW packages are going to be installed:
   aaa_base aaa_base-extras adjtimex augeas-lenses bash bash-doc bash-lang bash-sh boost-license1_66_0 branding-openSUSE ca-certificates ca-certificates-mozilla coreutils coreutils-lang cpio cpio-lang cpio-mt cracklib cracklib-dict-full crypto-policies crypto-policies-scripts dbus-1 diffutils diffutils-lang dirmngr distribution-logos-openSUSE-Leap dracut dump-rmt elfutils elfutils-lang fdupes file file-magic filesystem fillup findutils findutils-lang gawk glib2-lang glibc glibc-extra glibc-lang gpg2 gpg2-lang grep grep-lang gzip hostname info issue-generator kbd kbd-legacy kmod krb5 libacl1 libapparmor1 libargon2-1 libasm1 libassuan0 libattr1 libaudit1 libaugeas0 libblkid1 libboost_system1_66_0 libboost_thread1_66_0 libbrotlicommon1 libbrotlidec1 libbz2-1 libcap-ng0 libcap2 libcbor0 libcom_err2 libcrack2 libcrypt1 libcryptsetup12 libcurl4 libdbus-1-3 libdevmapper1_03 libdw1 libeconf0 libelf1 libexpat1 libfdisk1 libffi7 libfido2-1 libfido2-udev libgcc_s1 libgcrypt20 libgdbm4 libglib-2_0-0 libgmp10 libgnutls30 libgpg-error0 libgpgme11 libhogweed6 libidn2-0 libidn2-lang libip4tc2 libjson-c3 libkeyutils1 libkmod2 libksba8 libldap-2_4-2 libldap-data liblua5_3-5 liblz4-1 liblzma5 libmagic1 libmount1 libncurses6 libnettle8 libnghttp2-14 libnpth0 libnsl2 libopenssl1_1 libp11-kit0 libpcre1 libpcre2-8-0 libpopt0 libprocps7 libprotobuf-lite20 libproxy1 libpsl5 libpython3_6m1_0 libreadline7 libruby2_5-2_5 libsasl2-3 libseccomp2 libselinux1 libsemanage1 libsepol1 libsigc-2_0-0 libsmartcols1 libsolv-tools libsqlite3-0 libssh-config libssh4 libstdc++6 libsystemd0 libtasn1 libtasn1-6 libtirpc-netconfig libtirpc3 libtss2-esys0 libtss2-mu0 libtss2-rc0 libtss2-sys1 libudev1 libunistring2 libusb-1_0-0 libutempter0 libuuid1 libverto1 libxml2-2 libyaml-0-2 libyaml-cpp0_6 libz1 libzio1 libzstd1 libzypp lifecycle-data-openSUSE login_defs logrotate lsof ncurses-utils net-tools net-tools-lang netcfg openSUSE-build-key openSUSE-release openSUSE-release-ftp openssl-1_1 p11-kit p11-kit-tools pam pam-config patterns-base-minimal_base perl-base permissions pigz pinentry pkg-config procps publicsuffix python3 python3-appdirs python3-base python3-curses python3-dbm python3-ordered-set python3-packaging python3-pip python3-pyparsing python3-setuptools python3-six readline-doc rpm rpm-config-SUSE ruby-common ruby2.5 ruby2.5-rubygem-gem2rpm ruby2.5-stdlib sed sed-lang shadow shared-python-startup suse-module-tools system-group-hardware system-group-kvm system-user-root systemd systemd-default-settings systemd-default-settings-branding-openSUSE systemd-icon-branding-openSUSE systemd-lang systemd-presets-branding-openSUSE systemd-presets-common-SUSE systemd-rpm-macros systemd-sysvinit sysuser-shadow terminfo-base terminfo-screen time traceroute udev update-alternatives util-linux util-linux-lang util-linux-systemd which xz xz-lang zstd zypper zypper-lifecycle-plugin zypper-log zypper-needs-restarting
-
 XXX new packages to install.
 Overall download size: XXX.X MiB. Already cached: 0 B. After the operation, additional XXX.X MiB will be used.
 Continue? [y/n/v/...? shows all options] (y): y
-
 Checking for file conflicts: [done]
 Warning: XXX packages had to be excluded from file conflicts check because they are not yet downloaded.
-
     Note: Checking for file conflicts requires not installed packages to be downloaded in advance in
     order to access their file lists. See option '--download-in-advance / --dry-run --download-only'
     in the zypper manual page for details.
-
 Retrieving: boost-license1_66_0 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: boost-license1_66_0 [done]
 (XXX/XXX) Installing: boost-license1_66_0 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/boost-license1_66_0: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: branding-openSUSE (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: branding-openSUSE [done]
 (XXX/XXX) Installing: branding-openSUSE [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/branding-openSUSE: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: cracklib-dict-full (openSUSE-Leap-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: cracklib-dict-full.rpm [done]
 (XXX/XXX) Installing: cracklib-dict-full [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/cracklib-dict-full.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: distribution-logos-openSUSE-Leap (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: distribution-logos-openSUSE-Leap [done]
 (XXX/XXX) Installing: distribution-logos-openSUSE-Leap [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/distribution-logos-openSUSE-Leap: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: file-magic (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: file-magic [done]
 (XXX/XXX) Installing: file-magic [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/file-magic: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: kbd-legacy (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: kbd-legacy [done]
 (XXX/XXX) Installing: kbd-legacy [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/kbd-legacy: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libldap-data (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libldap-data [done]
 (XXX/XXX) Installing: libldap-data [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/libldap-data: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libssh-config (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libssh-config.rpm [done]
 (XXX/XXX) Installing: libssh-config [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libssh-config.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libtirpc-netconfig (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libtirpc-netconfig.rpm [done]
 (XXX/XXX) Installing: libtirpc-netconfig [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libtirpc-netconfig.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: lifecycle-data-openSUSE (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: lifecycle-data-openSUSE [done]
 (XXX/XXX) Installing: lifecycle-data-openSUSE [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/lifecycle-data-openSUSE: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: openSUSE-release-ftp (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: openSUSE-release-ftp.rpm [done]
 (XXX/XXX) Installing: openSUSE-release-ftp [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/openSUSE-release-ftp.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: publicsuffix (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: publicsuffix [done]
 (XXX/XXX) Installing: publicsuffix [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/publicsuffix: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: shared-python-startup (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: shared-python-startup [done]
 (XXX/XXX) Installing: shared-python-startup [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/shared-python-startup: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: system-user-root (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: system-user-root [done]
 (XXX/XXX) Installing: system-user-root [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/system-user-root: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: systemd-icon-branding-openSUSE (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: systemd-icon-branding-openSUSE [done]
 (XXX/XXX) Installing: systemd-icon-branding-openSUSE [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/systemd-icon-branding-openSUSE: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: filesystem (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: filesystem.rpm [done]
 (XXX/XXX) Installing: filesystem [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/filesystem.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: glibc (openSUSE-Leap-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: glibc.rpm [done]
 (XXX/XXX) Installing: glibc [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/glibc.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libpcre1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libpcre1.rpm [done]
 (XXX/XXX) Installing: libpcre1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpcre1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libselinux1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libselinux1.rpm [done]
 (XXX/XXX) Installing: libselinux1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libselinux1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: glibc-extra (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: glibc-extra.rpm [done]
 (XXX/XXX) Installing: glibc-extra [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/glibc-extra.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: update-alternatives (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: update-alternatives.rpm [done]
 (XXX/XXX) Installing: update-alternatives [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/update-alternatives.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: traceroute (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: traceroute.rpm [done]
 (XXX/XXX) Installing: traceroute [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/traceroute.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: pkg-config (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: pkg-config.rpm [done]
 (XXX/XXX) Installing: pkg-config [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/pkg-config.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: lsof (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: lsof.rpm [done]
 (XXX/XXX) Installing: lsof [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/lsof.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libzstd1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libzstd1.rpm [done]
 (XXX/XXX) Installing: libzstd1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libzstd1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libz1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libz1.rpm [done]
 (XXX/XXX) Installing: libz1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libz1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libyaml-0-2 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libyaml-0-2.rpm [done]
 (XXX/XXX) Installing: libyaml-0-2 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libyaml-0-2.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libverto1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libverto1.rpm [done]
 (XXX/XXX) Installing: libverto1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libverto1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libuuid1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libuuid1.rpm [done]
 (XXX/XXX) Installing: libuuid1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libuuid1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libunistring2 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libunistring2.rpm [done]
 (XXX/XXX) Installing: libunistring2 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libunistring2.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libudev1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libudev1.rpm [done]
 (XXX/XXX) Installing: libudev1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libudev1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libtss2-rc0 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libtss2-rc0.rpm [done]
 (XXX/XXX) Installing: libtss2-rc0 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libtss2-rc0.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libtss2-mu0 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libtss2-mu0.rpm [done]
 (XXX/XXX) Installing: libtss2-mu0 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libtss2-mu0.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libsqlite3-0 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libsqlite3-0.rpm [done]
 (XXX/XXX) Installing: libsqlite3-0 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsqlite3-0.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libsmartcols1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libsmartcols1.rpm [done]
 (XXX/XXX) Installing: libsmartcols1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsmartcols1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libsepol1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libsepol1.rpm [done]
 (XXX/XXX) Installing: libsepol1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsepol1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libseccomp2 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libseccomp2.rpm [done]
 (XXX/XXX) Installing: libseccomp2 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libseccomp2.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libsasl2-3 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libsasl2-3.rpm [done]
 (XXX/XXX) Installing: libsasl2-3 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsasl2-3.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libpopt0 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libpopt0.rpm [done]
 (XXX/XXX) Installing: libpopt0 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpopt0.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libpcre2-8-0 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libpcre2-8-0.rpm [done]
 (XXX/XXX) Installing: libpcre2-8-0 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpcre2-8-0.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libnpth0 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libnpth0.rpm [done]
 (XXX/XXX) Installing: libnpth0 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libnpth0.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libnghttp2-14 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libnghttp2-14.rpm [done]
 (XXX/XXX) Installing: libnghttp2-14 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libnghttp2-14.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libnettle8 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libnettle8.rpm [done]
 (XXX/XXX) Installing: libnettle8 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libnettle8.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: liblzma5 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: liblzma5.rpm [done]
 (XXX/XXX) Installing: liblzma5 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/liblzma5.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: liblz4-1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: liblz4-1.rpm [done]
 (XXX/XXX) Installing: liblz4-1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/liblz4-1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: liblua5_3-5 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: liblua5_3-5.rpm [done]
 (XXX/XXX) Installing: liblua5_3-5 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/liblua5_3-5.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libkeyutils1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libkeyutils1.rpm [done]
 (XXX/XXX) Installing: libkeyutils1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libkeyutils1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libjson-c3 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libjson-c3.rpm [done]
 (XXX/XXX) Installing: libjson-c3 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libjson-c3.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libip4tc2 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libip4tc2.rpm [done]
 (XXX/XXX) Installing: libip4tc2 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libip4tc2.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libgpg-error0 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libgpg-error0.rpm [done]
 (XXX/XXX) Installing: libgpg-error0 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgpg-error0.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libgmp10 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libgmp10.rpm [done]
 (XXX/XXX) Installing: libgmp10 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgmp10.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libglib-2_0-0 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libglib-2_0-0.rpm [done]
 (XXX/XXX) Installing: libglib-2_0-0 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libglib-2_0-0.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libgdbm4 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libgdbm4.rpm [done]
 (XXX/XXX) Installing: libgdbm4 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgdbm4.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libgcc_s1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libgcc_s1.rpm [done]
 (XXX/XXX) Installing: libgcc_s1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgcc_s1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libffi7 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libffi7.rpm [done]
 (XXX/XXX) Installing: libffi7 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libffi7.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libexpat1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libexpat1.rpm [done]
 (XXX/XXX) Installing: libexpat1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libexpat1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libeconf0 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libeconf0.rpm [done]
 (XXX/XXX) Installing: libeconf0 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libeconf0.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libcrypt1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libcrypt1.rpm [done]
 (XXX/XXX) Installing: libcrypt1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libcrypt1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libcom_err2 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libcom_err2.rpm [done]
 (XXX/XXX) Installing: libcom_err2 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libcom_err2.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libcbor0 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libcbor0.rpm [done]
 (XXX/XXX) Installing: libcbor0 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libcbor0.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libcap2 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libcap2.rpm [done]
 (XXX/XXX) Installing: libcap2 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libcap2.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libcap-ng0 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libcap-ng0.rpm [done]
 (XXX/XXX) Installing: libcap-ng0 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libcap-ng0.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libbz2-1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libbz2-1.rpm [done]
 (XXX/XXX) Installing: libbz2-1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libbz2-1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libbrotlicommon1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libbrotlicommon1.rpm [done]
 (XXX/XXX) Installing: libbrotlicommon1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libbrotlicommon1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libblkid1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libblkid1.rpm [done]
 (XXX/XXX) Installing: libblkid1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libblkid1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libaudit1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libaudit1.rpm [done]
 (XXX/XXX) Installing: libaudit1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libaudit1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libattr1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libattr1.rpm [done]
 (XXX/XXX) Installing: libattr1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libattr1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libargon2-1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libargon2-1.rpm [done]
 (XXX/XXX) Installing: libargon2-1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libargon2-1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libapparmor1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libapparmor1.rpm [done]
 (XXX/XXX) Installing: libapparmor1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libapparmor1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: glibc-lang (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: glibc-lang [done]
 (XXX/XXX) Installing: glibc-lang [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/glibc-lang: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: findutils (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: findutils.rpm [done]
 (XXX/XXX) Installing: findutils [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/findutils.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: fillup (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: fillup.rpm [done]
 (XXX/XXX) Installing: fillup [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/fillup.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: fdupes (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: fdupes.rpm [done]
 (XXX/XXX) Installing: fdupes [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/fdupes.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: adjtimex (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: adjtimex.rpm [done]
 (XXX/XXX) Installing: adjtimex [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/adjtimex.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: pigz (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: pigz.rpm [done]
 (XXX/XXX) Installing: pigz [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/pigz.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libmagic1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libmagic1.rpm [done]
 (XXX/XXX) Installing: libmagic1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libmagic1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libelf1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libelf1.rpm [done]
 (XXX/XXX) Installing: libelf1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libelf1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libidn2-0 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libidn2-0.rpm [done]
 (XXX/XXX) Installing: libidn2-0 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libidn2-0.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libidn2-lang (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libidn2-lang [done]
 (XXX/XXX) Installing: libidn2-lang [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/libidn2-lang: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libusb-1_0-0 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libusb-1_0-0.rpm [done]
 (XXX/XXX) Installing: libusb-1_0-0 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libusb-1_0-0.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libtss2-sys1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libtss2-sys1.rpm [done]
 (XXX/XXX) Installing: libtss2-sys1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libtss2-sys1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libxml2-2 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libxml2-2.rpm [done]
 (XXX/XXX) Installing: libxml2-2 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libxml2-2.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libksba8 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libksba8.rpm [done]
 (XXX/XXX) Installing: libksba8 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libksba8.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libgcrypt20 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libgcrypt20.rpm [done]
 (XXX/XXX) Installing: libgcrypt20 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgcrypt20.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libassuan0 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libassuan0.rpm [done]
 (XXX/XXX) Installing: libassuan0 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libassuan0.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libhogweed6 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libhogweed6.rpm [done]
 (XXX/XXX) Installing: libhogweed6 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libhogweed6.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: glib2-lang (openSUSE-Leap-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: glib2-lang [done]
 (XXX/XXX) Installing: glib2-lang [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/glib2-lang: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libstdc++6 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libstdc++6.rpm [done]
 (XXX/XXX) Installing: libstdc++6 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libstdc++6.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libp11-kit0 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libp11-kit0.rpm [done]
 (XXX/XXX) Installing: libp11-kit0 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libp11-kit0.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: perl-base (openSUSE-Leap-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: perl-base.rpm [done]
 (XXX/XXX) Installing: perl-base [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/perl-base.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libruby2_5-2_5 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libruby2_5-2_5.rpm [done]
 (XXX/XXX) Installing: libruby2_5-2_5 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libruby2_5-2_5.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libzio1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libzio1.rpm [done]
 (XXX/XXX) Installing: libzio1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libzio1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libbrotlidec1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libbrotlidec1.rpm [done]
 (XXX/XXX) Installing: libbrotlidec1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libbrotlidec1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libmount1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libmount1.rpm [done]
 (XXX/XXX) Installing: libmount1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libmount1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libfdisk1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libfdisk1.rpm [done]
 (XXX/XXX) Installing: libfdisk1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libfdisk1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libsemanage1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libsemanage1.rpm [done]
 (XXX/XXX) Installing: libsemanage1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsemanage1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libacl1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libacl1.rpm [done]
 (XXX/XXX) Installing: libacl1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libacl1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: findutils-lang (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: findutils-lang [done]
 (XXX/XXX) Installing: findutils-lang [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/findutils-lang: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: file (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: file.rpm [done]
 (XXX/XXX) Installing: file [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/file.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libdw1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libdw1.rpm [done]
 (XXX/XXX) Installing: libdw1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libdw1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libpsl5 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libpsl5.rpm [done]
 (XXX/XXX) Installing: libpsl5 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpsl5.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libaugeas0 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libaugeas0.rpm [done]
 (XXX/XXX) Installing: libaugeas0 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libaugeas0.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: augeas-lenses (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: augeas-lenses.rpm [done]
 (XXX/XXX) Installing: augeas-lenses [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/augeas-lenses.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libsystemd0 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libsystemd0.rpm [done]
 (XXX/XXX) Installing: libsystemd0 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsystemd0.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libyaml-cpp0_6 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libyaml-cpp0_6.rpm [done]
 (XXX/XXX) Installing: libyaml-cpp0_6 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libyaml-cpp0_6.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libsigc-2_0-0 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libsigc-2_0-0.rpm [done]
 (XXX/XXX) Installing: libsigc-2_0-0 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsigc-2_0-0.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libproxy1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libproxy1.rpm [done]
 (XXX/XXX) Installing: libproxy1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libproxy1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libprotobuf-lite20 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libprotobuf-lite20.rpm [done]
 (XXX/XXX) Installing: libprotobuf-lite20 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libprotobuf-lite20.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libncurses6 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libncurses6.rpm [done]
 (XXX/XXX) Installing: libncurses6 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libncurses6.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: terminfo-base (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: terminfo-base.rpm [done]
 (XXX/XXX) Installing: terminfo-base [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/terminfo-base.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: terminfo-screen (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: terminfo-screen.rpm [done]
 (XXX/XXX) Installing: terminfo-screen [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/terminfo-screen.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libboost_system1_66_0 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libboost_system1_66_0.rpm [done]
 (XXX/XXX) Installing: libboost_system1_66_0 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libboost_system1_66_0.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libasm1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libasm1.rpm [done]
 (XXX/XXX) Installing: libasm1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libasm1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libprocps7 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libprocps7.rpm [done]
 (XXX/XXX) Installing: libprocps7 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libprocps7.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libdbus-1-3 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libdbus-1-3.rpm [done]
 (XXX/XXX) Installing: libdbus-1-3 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libdbus-1-3.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: ncurses-utils (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: ncurses-utils.rpm [done]
 (XXX/XXX) Installing: ncurses-utils [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/ncurses-utils.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libboost_thread1_66_0 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libboost_thread1_66_0.rpm [done]
 (XXX/XXX) Installing: libboost_thread1_66_0 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libboost_thread1_66_0.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: procps (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: procps.rpm [done]
 (XXX/XXX) Installing: procps [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/procps.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libreadline7 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libreadline7.rpm [done]
 (XXX/XXX) Installing: libreadline7 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libreadline7.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: bash (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: bash.rpm [done]
 (XXX/XXX) Installing: bash [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/bash.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: bash-sh (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: bash-sh.rpm [done]
 (XXX/XXX) Installing: bash-sh [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/bash-sh.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: info (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: info.rpm [done]
 (XXX/XXX) Installing: info [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/info.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 install-info: No such file or directory for /dev/null
-
 Retrieving: readline-doc (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: readline-doc [done]
 (XXX/XXX) Installing: readline-doc [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/readline-doc: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 install-info: No such file or directory for /dev/null
 install-info: No such file or directory for /dev/null
 install-info: No such file or directory for /dev/null
-
 Retrieving: bash-doc (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: bash-doc [done]
 (XXX/XXX) Installing: bash-doc [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/bash-doc: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 install-info: No such file or directory for /dev/null
-
 Retrieving: zstd (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: zstd.rpm [done]
 (XXX/XXX) Installing: zstd [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/zstd.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: xz (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: xz.rpm [done]
 (XXX/XXX) Installing: xz [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/xz.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: xz-lang (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: xz-lang [done]
 (XXX/XXX) Installing: xz-lang [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/xz-lang: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: which (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: which.rpm [done]
 (XXX/XXX) Installing: which [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/which.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 install-info: No such file or directory for /dev/null
-
 Retrieving: time (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: time.rpm [done]
 (XXX/XXX) Installing: time [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/time.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 install-info: No such file or directory for /dev/null
-
 Retrieving: systemd-default-settings-branding-openSUSE (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: systemd-default-settings-branding-openSUSE [done]
 (XXX/XXX) Installing: systemd-default-settings-branding-openSUSE [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/systemd-default-settings-branding-openSUSE: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: systemd-default-settings (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: systemd-default-settings [done]
 (XXX/XXX) Installing: systemd-default-settings [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/systemd-default-settings: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: sed (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: sed.rpm [done]
 (XXX/XXX) Installing: sed [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/sed.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 install-info: No such file or directory for /dev/null
-
 Retrieving: sed-lang (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: sed-lang [done]
 (XXX/XXX) Installing: sed-lang [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/sed-lang: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: pinentry (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: pinentry.rpm [done]
 (XXX/XXX) Installing: pinentry [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/pinentry.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 install-info: No such file or directory for /dev/null
-
 Retrieving: login_defs (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: login_defs [done]
 (XXX/XXX) Installing: login_defs [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/login_defs: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libtasn1-6 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libtasn1-6.rpm [done]
 (XXX/XXX) Installing: libtasn1-6 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libtasn1-6.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libtasn1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libtasn1.rpm [done]
 (XXX/XXX) Installing: libtasn1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libtasn1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 install-info: No such file or directory for /dev/null
-
 Retrieving: libfido2-udev (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libfido2-udev [done]
 (XXX/XXX) Installing: libfido2-udev [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/libfido2-udev: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libdevmapper1_03 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libdevmapper1_03.rpm [done]
 (XXX/XXX) Installing: libdevmapper1_03 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libdevmapper1_03.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libcrack2 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libcrack2.rpm [done]
 (XXX/XXX) Installing: libcrack2 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libcrack2.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: cracklib (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: cracklib.rpm [done]
 (XXX/XXX) Installing: cracklib [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/cracklib.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: gzip (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: gzip.rpm [done]
 (XXX/XXX) Installing: gzip [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/gzip.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 install-info: No such file or directory for /dev/null
-
 Retrieving: grep (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: grep.rpm [done]
 (XXX/XXX) Installing: grep [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/grep.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 install-info: No such file or directory for /dev/null
-
 Retrieving: grep-lang (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: grep-lang [done]
 (XXX/XXX) Installing: grep-lang [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/grep-lang: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: gawk (openSUSE-Leap-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: gawk.rpm [done]
 (XXX/XXX) Installing: gawk [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/gawk.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 update-alternatives: using /usr/bin/gawk to provide /bin/awk (awk) in auto mode
 install-info: No such file or directory for /dev/null
 install-info: No such file or directory for /dev/null
-
 Retrieving: elfutils (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: elfutils.rpm [done]
 (XXX/XXX) Installing: elfutils [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/elfutils.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: diffutils (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: diffutils.rpm [done]
 (XXX/XXX) Installing: diffutils [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/diffutils.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 install-info: No such file or directory for /dev/null
-
 Retrieving: diffutils-lang (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: diffutils-lang [done]
 (XXX/XXX) Installing: diffutils-lang [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/diffutils-lang: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: crypto-policies (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: crypto-policies [done]
 (XXX/XXX) Installing: crypto-policies [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/crypto-policies: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: coreutils (openSUSE-Leap-Oss) (XXX/XXX),  XXX.X KiB    
 Retrieving: coreutils.rpm [done]
 (XXX/XXX) Installing: coreutils [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/coreutils.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: bash-lang (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: bash-lang [done]
 (XXX/XXX) Installing: bash-lang [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/bash-lang: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: p11-kit-tools (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: p11-kit-tools.rpm [done]
 (XXX/XXX) Installing: p11-kit-tools [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/p11-kit-tools.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: p11-kit (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: p11-kit.rpm [done]
 (XXX/XXX) Installing: p11-kit [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/p11-kit.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: elfutils-lang (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: elfutils-lang [done]
 (XXX/XXX) Installing: elfutils-lang [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/elfutils-lang: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: systemd-rpm-macros (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: systemd-rpm-macros [done]
 (XXX/XXX) Installing: systemd-rpm-macros [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/systemd-rpm-macros: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: permissions (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: permissions.rpm [done]
 (XXX/XXX) Installing: permissions [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/permissions.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 Updating /etc/sysconfig/security ...
 FIXME: not-running /bin/sh --system
-
 Retrieving: netcfg (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: netcfg [done]
 (XXX/XXX) Installing: netcfg [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/netcfg: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: coreutils-lang (openSUSE-Leap-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: coreutils-lang [done]
 (XXX/XXX) Installing: coreutils-lang [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/coreutils-lang: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: zypper-log (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: zypper-log [done]
 (XXX/XXX) Installing: zypper-log [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/zypper-log: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: systemd-presets-common-SUSE (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: systemd-presets-common-SUSE [done]
 (XXX/XXX) Installing: systemd-presets-common-SUSE [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/systemd-presets-common-SUSE: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: rpm-config-SUSE (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: rpm-config-SUSE [done]
 (XXX/XXX) Installing: rpm-config-SUSE [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/rpm-config-SUSE: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: rpm (openSUSE-Leap-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: rpm.rpm [done]
 (XXX/XXX) Installing: rpm [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/rpm.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Updating /etc/sysconfig/services ...
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
-
 Retrieving: issue-generator (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: issue-generator [done]
 (XXX/XXX) Installing: issue-generator [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/issue-generator: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 Updating /etc/sysconfig/issue-generator ...
-
 Retrieving: libopenssl1_1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: libopenssl1_1.rpm [done]
 (XXX/XXX) Installing: libopenssl1_1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libopenssl1_1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: openssl-1_1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: openssl-1_1.rpm [done]
 (XXX/XXX) Installing: openssl-1_1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/openssl-1_1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: ca-certificates (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: ca-certificates [done]
 (XXX/XXX) Installing: ca-certificates [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/ca-certificates: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 FIXME: not-running /bin/sh -f
-
 Retrieving: ca-certificates-mozilla (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: ca-certificates-mozilla [done]
 (XXX/XXX) Installing: ca-certificates-mozilla [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/ca-certificates-mozilla: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 FIXME: not-running /bin/sh
-
 Retrieving: systemd-presets-branding-openSUSE (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: systemd-presets-branding-openSUSE [done]
 (XXX/XXX) Installing: systemd-presets-branding-openSUSE [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/systemd-presets-branding-openSUSE: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libsolv-tools (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libsolv-tools.rpm [done]
 (XXX/XXX) Installing: libsolv-tools [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsolv-tools.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: openSUSE-release (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: openSUSE-release.rpm [done]
 (XXX/XXX) Installing: openSUSE-release [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/openSUSE-release.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: ruby2.5-stdlib (openSUSE-Leap-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: ruby2.5-stdlib.rpm [done]
 (XXX/XXX) Installing: ruby2.5-stdlib [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/ruby2.5-stdlib.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libtss2-esys0 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libtss2-esys0.rpm [done]
 (XXX/XXX) Installing: libtss2-esys0 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libtss2-esys0.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libldap-2_4-2 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libldap-2_4-2.rpm [done]
 (XXX/XXX) Installing: libldap-2_4-2 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libldap-2_4-2.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libkmod2 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libkmod2.rpm [done]
 (XXX/XXX) Installing: libkmod2 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libkmod2.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libfido2-1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libfido2-1.rpm [done]
 (XXX/XXX) Installing: libfido2-1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libfido2-1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libcryptsetup12 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libcryptsetup12.rpm [done]
 (XXX/XXX) Installing: libcryptsetup12 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libcryptsetup12.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: krb5 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: krb5.rpm [done]
 (XXX/XXX) Installing: krb5 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/krb5.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: dump-rmt (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: dump-rmt.rpm [done]
 (XXX/XXX) Installing: dump-rmt [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/dump-rmt.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 update-alternatives: using /usr/bin/ermt to provide /usr/bin/rmt (rmt) in auto mode
-
 Retrieving: libtirpc3 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libtirpc3.rpm [done]
 (XXX/XXX) Installing: libtirpc3 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libtirpc3.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libssh4 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libssh4.rpm [done]
 (XXX/XXX) Installing: libssh4 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libssh4.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: cpio (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: cpio.rpm [done]
 (XXX/XXX) Installing: cpio [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/cpio.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 install-info: No such file or directory for /dev/null
-
 Retrieving: cpio-mt (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: cpio-mt.rpm [done]
 (XXX/XXX) Installing: cpio-mt [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/cpio-mt.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 update-alternatives: using /usr/bin/gnumt to provide /usr/bin/mt (mt) in auto mode
-
 Retrieving: libnsl2 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libnsl2.rpm [done]
 (XXX/XXX) Installing: libnsl2 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libnsl2.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libcurl4 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libcurl4.rpm [done]
 (XXX/XXX) Installing: libcurl4 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libcurl4.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: cpio-lang (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: cpio-lang [done]
 (XXX/XXX) Installing: cpio-lang [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/cpio-lang: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: python3-base (openSUSE-Leap-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: python3-base.rpm [done]
 (XXX/XXX) Installing: python3-base [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python3-base.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libpython3_6m1_0 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libpython3_6m1_0.rpm [done]
 (XXX/XXX) Installing: libpython3_6m1_0 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpython3_6m1_0.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: pam (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: pam.rpm [done]
 (XXX/XXX) Installing: pam [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/pam.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 FIXME: not-running /bin/sh -n --set --system /sbin/unix_chkpwd
 FIXME: not-running /bin/sh -n --set --system /sbin/unix2_chkpwd
-
 Retrieving: hostname (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: hostname.rpm [done]
 (XXX/XXX) Installing: hostname [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/hostname.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: python3-six (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: python3-six [done]
 (XXX/XXX) Installing: python3-six [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/python3-six: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: python3-pyparsing (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: python3-pyparsing [done]
 (XXX/XXX) Installing: python3-pyparsing [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/python3-pyparsing: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: python3-ordered-set (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: python3-ordered-set [done]
 (XXX/XXX) Installing: python3-ordered-set [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/python3-ordered-set: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: python3-appdirs (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: python3-appdirs [done]
 (XXX/XXX) Installing: python3-appdirs [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/python3-appdirs: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: shadow (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: shadow.rpm [done]
 (XXX/XXX) Installing: shadow [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/shadow.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 FIXME: not-running /bin/sh -n --set --system /usr/bin/chage
 FIXME: not-running /bin/sh -n --set --system /usr/bin/chfn
@@ -1427,12 +1031,10 @@ FIXME: not-running /bin/sh -n --set --system /usr/bin/newgrp
 FIXME: not-running /bin/sh -n --set --system /usr/bin/passwd
 FIXME: not-running /bin/sh -n --set --system /usr/bin/newgidmap
 FIXME: not-running /bin/sh -n --set --system /usr/bin/newuidmap
-
 Retrieving: pam-config (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: pam-config.rpm [done]
 (XXX/XXX) Installing: pam-config [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/pam-config.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 *** write_config (account, /etc/pam.d/common-account-pc, ...)
 **** write config for pam_access.so (account, disabled)
@@ -1503,104 +1105,76 @@ warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply
 **** write config for pam_ecryptfs.so (session, disabled)
 **** write config for pam_env.so (session, enabled)
 **** write config for pam_mktemp.so (session, disabled)
-
 Retrieving: kbd (openSUSE-Leap-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: kbd.rpm [done]
 (XXX/XXX) Installing: kbd [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/kbd.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Updating /etc/sysconfig/console ...
 Updating /etc/sysconfig/keyboard ...
-
 Retrieving: net-tools (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: net-tools.rpm [done]
 (XXX/XXX) Installing: net-tools [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/net-tools.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: net-tools-lang (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: net-tools-lang [done]
 (XXX/XXX) Installing: net-tools-lang [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/net-tools-lang: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: python3-packaging (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: python3-packaging [done]
 (XXX/XXX) Installing: python3-packaging [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/python3-packaging: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: dbus-1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: dbus-1.rpm [done]
 (XXX/XXX) Installing: dbus-1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/dbus-1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 FIXME: not-running /bin/sh -n --set --system /usr/lib/dbus-1/dbus-daemon-launch-helper
 update-alternatives: using /usr/bin/dbus-launch.nox11 to provide /usr/bin/dbus-launch (dbus-launch) in auto mode
-
 Retrieving: python3-setuptools (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: python3-setuptools [done]
 (XXX/XXX) Installing: python3-setuptools [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/python3-setuptools: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: python3-pip (openSUSE-Leap-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: python3-pip [done]
 (XXX/XXX) Installing: python3-pip [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/python3-pip: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 update-alternatives: using /usr/bin/pip3.6 to provide /usr/bin/pip (pip) in auto mode
 update-alternatives: using /usr/bin/pip3.6 to provide /usr/bin/pip3 (pip3) in auto mode
-
 Retrieving: python3 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: python3.rpm [done]
 (XXX/XXX) Installing: python3 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python3.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: python3-curses (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: python3-curses.rpm [done]
 (XXX/XXX) Installing: python3-curses [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python3-curses.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: logrotate (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: logrotate.rpm [done]
 (XXX/XXX) Installing: logrotate [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/logrotate.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: aaa_base (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: aaa_base.rpm [done]
 (XXX/XXX) Installing: aaa_base [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/aaa_base.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 Updating /etc/sysconfig/language ...
 Updating /etc/sysconfig/proxy ...
 Updating /etc/sysconfig/windowmanager ...
-
 Retrieving: systemd (openSUSE-Leap-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: systemd.rpm [done]
 (XXX/XXX) Installing: systemd [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/systemd.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 warning: group systemd-journal does not exist - using root
-
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Creating group systemd-journal with gid 498.
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
@@ -1631,19 +1205,15 @@ Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: 
 Running in chroot, ignoring command 'daemon-reload'
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Running in chroot, ignoring command 'daemon-reload'
-
 Retrieving: sysuser-shadow (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: sysuser-shadow [done]
 (XXX/XXX) Installing: sysuser-shadow [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/sysuser-shadow: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: system-group-hardware (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: system-group-hardware [done]
 (XXX/XXX) Installing: system-group-hardware [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/system-group-hardware: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 /usr/sbin/groupadd -r kmem
 /usr/sbin/groupadd -r lock
@@ -1659,109 +1229,82 @@ warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply
 /usr/sbin/groupadd -r sgx
 /usr/sbin/groupadd -r tape
 /usr/sbin/groupadd -r video
-
 Retrieving: crypto-policies-scripts (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: crypto-policies-scripts [done]
 (XXX/XXX) Installing: crypto-policies-scripts [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/crypto-policies-scripts: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: python3-dbm (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: python3-dbm.rpm [done]
 (XXX/XXX) Installing: python3-dbm [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python3-dbm.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libutempter0 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libutempter0.rpm [done]
 (XXX/XXX) Installing: libutempter0 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libutempter0.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 FIXME: not-running /bin/sh -n --set --system /usr/lib/utempter/utempter
-
 Retrieving: libgnutls30 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libgnutls30.rpm [done]
 (XXX/XXX) Installing: libgnutls30 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgnutls30.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: util-linux (openSUSE-Leap-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: util-linux.rpm [done]
 (XXX/XXX) Installing: util-linux [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/util-linux.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 FIXME: not-running /bin/sh -n --set --system /usr/bin/wall /usr/bin/write /usr/bin/mount /usr/bin/umount
 FIXME: not-running /bin/sh -n --set --system /usr/bin/su
-
 Retrieving: dirmngr (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: dirmngr.rpm [done]
 (XXX/XXX) Installing: dirmngr [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/dirmngr.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: util-linux-systemd (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: util-linux-systemd.rpm [done]
 (XXX/XXX) Installing: util-linux-systemd [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/util-linux-systemd.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Running in chroot, ignoring command 'daemon-reload'
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Created symlink /etc/systemd/system/timers.target.wants/fstrim.timer -> /usr/lib/systemd/system/fstrim.timer.
-
 Retrieving: util-linux-lang (openSUSE-Leap-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: util-linux-lang [done]
 (XXX/XXX) Installing: util-linux-lang [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/util-linux-lang: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: systemd-sysvinit (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: systemd-sysvinit.rpm [done]
 (XXX/XXX) Installing: systemd-sysvinit [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/systemd-sysvinit.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: system-group-kvm (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: system-group-kvm [done]
 (XXX/XXX) Installing: system-group-kvm [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/system-group-kvm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 /usr/sbin/groupadd -r -g 36 kvm
-
 Retrieving: ruby2.5-rubygem-gem2rpm (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: ruby2.5-rubygem-gem2rpm.rpm [done]
 (XXX/XXX) Installing: ruby2.5-rubygem-gem2rpm [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/ruby2.5-rubygem-gem2rpm.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 update-alternatives: using /usr/bin/gem2rpm.ruby2.5-0.10.1 to provide /usr/bin/gem2rpm (gem2rpm) in auto mode
 update-alternatives: using /usr/bin/gem2rpm.ruby2.5-0.10.1 to provide /usr/bin/gem2rpm-0.10.1 (gem2rpm-0.10.1) in auto mode
 update-alternatives: using /usr/bin/gem2rpm.ruby2.5-0.10.1 to provide /usr/bin/gem2rpm.ruby2.5 (gem2rpm.ruby2.5) in auto mode
-
 Retrieving: ruby-common (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: ruby-common [done]
 (XXX/XXX) Installing: ruby-common [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/ruby-common: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: ruby2.5 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: ruby2.5.rpm [done]
 (XXX/XXX) Installing: ruby2.5 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/ruby2.5.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 update-alternatives: using /usr/bin/rake.ruby.ruby2.5 to provide /usr/bin/rake (rake) in auto mode
 update-alternatives: using /usr/bin/rake.ruby.ruby2.5 to provide /usr/bin/rake.ruby2.5 (rake.ruby2.5) in auto mode
@@ -1769,73 +1312,54 @@ update-alternatives: using /usr/bin/rdoc.ruby.ruby2.5 to provide /usr/bin/rdoc (
 update-alternatives: using /usr/bin/rdoc.ruby.ruby2.5 to provide /usr/bin/rdoc.ruby2.5 (rdoc.ruby2.5) in auto mode
 update-alternatives: using /usr/bin/ri.ruby.ruby2.5 to provide /usr/bin/ri (ri) in auto mode
 update-alternatives: using /usr/bin/ri.ruby.ruby2.5 to provide /usr/bin/ri.ruby2.5 (ri.ruby2.5) in auto mode
-
 Retrieving: gpg2 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: gpg2.rpm [done]
 (XXX/XXX) Installing: gpg2 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/gpg2.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: suse-module-tools (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: suse-module-tools.rpm [done]
 (XXX/XXX) Installing: suse-module-tools [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/suse-module-tools.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Running in chroot, ignoring command 'daemon-reload'
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
-
 Retrieving: kmod (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: kmod.rpm [done]
 (XXX/XXX) Installing: kmod [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/kmod.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: udev (openSUSE-Leap-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: udev.rpm [done]
 (XXX/XXX) Installing: udev [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/udev.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
-
 Retrieving: openSUSE-build-key (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: openSUSE-build-key [done]
 (XXX/XXX) Installing: openSUSE-build-key [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/openSUSE-build-key: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libgpgme11 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libgpgme11.rpm [done]
 (XXX/XXX) Installing: libgpgme11 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgpgme11.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: gpg2-lang (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: gpg2-lang [done]
 (XXX/XXX) Installing: gpg2-lang [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/gpg2-lang: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: systemd-lang (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: systemd-lang [done]
 (XXX/XXX) Installing: systemd-lang [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/systemd-lang: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: aaa_base-extras (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: aaa_base-extras.rpm [done]
 (XXX/XXX) Installing: aaa_base-extras [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/aaa_base-extras.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 Updating /etc/sysconfig/backup ...
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
@@ -1849,54 +1373,41 @@ Created symlink /etc/systemd/system/timers.target.wants/backup-sysconfig.timer -
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Created symlink /etc/systemd/system/timers.target.wants/check-battery.timer -> /usr/lib/systemd/system/check-battery.timer.
-
 Retrieving: patterns-base-minimal_base (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: patterns-base-minimal_base.rpm [done]
 (XXX/XXX) Installing: patterns-base-minimal_base [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/patterns-base-minimal_base.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: libzypp (openSUSE-Leap-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: libzypp.rpm [done]
 (XXX/XXX) Installing: libzypp [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libzypp.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: dracut (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: dracut.rpm [done]
 (XXX/XXX) Installing: dracut [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/dracut.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: zypper (openSUSE-Leap-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: zypper.rpm [done]
 (XXX/XXX) Installing: zypper [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/zypper.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: zypper-needs-restarting (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: zypper-needs-restarting [done]
 (XXX/XXX) Installing: zypper-needs-restarting [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/zypper-needs-restarting: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-
 Retrieving: zypper-lifecycle-plugin (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: zypper-lifecycle-plugin [done]
 (XXX/XXX) Installing: zypper-lifecycle-plugin [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/zypper-lifecycle-plugin: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 Updating /etc/sysconfig/lifecycle-report ...
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Running in chroot, ignoring command 'daemon-reload'
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
-
 Executing %posttrans script 'login_defs-4.8.1-150400.8.57.noarch.rpm' [done]
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Created symlink /etc/systemd/system/default.target.wants/issue-generator.path -> /usr/lib/systemd/system/issue-generator.path.
@@ -1909,12 +1420,11 @@ Created symlink /etc/systemd/system/multi-user.target.wants/remote-fs.target -> 
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Created symlink /etc/systemd/user/timers.target.wants/systemd-tmpfiles-clean.timer -> /usr/lib/systemd/user/systemd-tmpfiles-clean.timer.
 Created symlink /etc/systemd/user/basic.target.wants/systemd-tmpfiles-setup.service -> /usr/lib/systemd/user/systemd-tmpfiles-setup.service.
-
 /bin/sh: failed to remove 'var/lib/rpm': Directory not empty
 warning: %posttrans(rpm.rpm) scriptlet failed, exit status 1
 FIXME: not-running /bin/sh
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
-
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Please run "/usr/bin/dracut -f --regenerate-all" as soon as your system is complete.
-
+make[1]: *** [makefile:782: x86_64-opensuse-leap-rootfs/bin/sh] Error 107
+make[1]: Target 'x86_64-opensuse-leap-rootfs' not remade because of errors.

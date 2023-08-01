@@ -80,3 +80,5 @@
 	s,UID [[:digit:]]\+,UID XXX,
 	s,GID [[:digit:]]\+,GID XXX,
 }
+
+/^$/d

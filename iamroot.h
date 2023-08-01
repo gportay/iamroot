@@ -673,7 +673,9 @@ ssize_t __dl_access(const char *, int, char *, size_t);
 ssize_t __ldso_cache(const char *, char *, size_t);
 
 #if defined(__GLIBC__) && (defined(__aarch64__) || defined(__x86_64__))
-#define _PATH_DEFLIB "/lib64:/usr/local/lib64:/usr/lib64"
+#define _PATH_DEFLIB "/lib64:/usr/lib64"
+#elif defined(__GLIBC__)
+#define _PATH_DEFLIB "/lib:/usr/lib"
 #else
 #define _PATH_DEFLIB "/lib:/usr/local/lib:/usr/lib"
 #endif

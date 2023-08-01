@@ -1631,13 +1631,19 @@ static const char *__getdeflib(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	 *
 	 * According to ld.so(8):
 	 *
+	 * In the default path /lib, and then /usr/lib.
+	 *
 	 * On some 64-bit architectures, the default paths for 64-bit shared
 	 * objects are /lib64, and then /usr/lib64.
 	 */
+	if (__is_gnu_linux(ehdr, ldso, abi)) {
+		/* It is a 64-bits GNU/Linux */
+		if (__is_64_bits(ehdr, ldso, abi))
+			return "/lib64:/usr/lib64";
 
-	/* It is a 64-bits GNU/Linux */
-	if (__is_gnu_linux(ehdr, ldso, abi) && __is_64_bits(ehdr, ldso, abi))
-		return "/lib64:/usr/local/lib64:/usr/lib64";
+		/* It is a GNU/Linux */
+		return "/lib:/usr/lib";
+	}
 
 	/* It is something else */
 	return "/lib:/usr/local/lib:/usr/lib";

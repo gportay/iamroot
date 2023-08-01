@@ -24,6 +24,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Replace the environment variables `IAMROOT_LIBRARY_PATH_<ldso>_<abi>` and
   `IAMROOT_LIBRARY_PATH` by `IAMROOT_DEFLIB_<ldso>_<abi>` and `IAMROOT_DEFLIB`
 - Replace the `ish` option `--library-path` by `--deflib`
+- Do not lookup in `/usr/local` if [dynamic loader][ld.so(8)] is [glibc]
 
 ### Fixed
 

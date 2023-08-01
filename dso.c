@@ -528,6 +528,7 @@ static ssize_t __ldso_access(const char *path,
 	return __set_errno(ENOENT, -1);
 }
 
+#if defined(__linux__) || defined(__FreeBSD__)
 static int __dl_is_opened(const char *path)
 {
 	struct link_map *dso;
@@ -551,6 +552,21 @@ static int __dl_is_opened(const char *path)
 
 	return 0;
 }
+#else
+static int __dl_is_opened_callback(struct dl_phdr_info *info, size_t size,
+				   void *data)
+{
+	const char *path = (const char *)data;
+	(void)size;
+
+	return streq(__basename(path), __basename(info->dlpi_name));
+}
+
+static int __dl_is_opened(const char *path)
+{
+	return dl_iterate_phdr(__dl_is_opened_callback, (void *)path);
+}
+#endif
 
 static int __ld_open_needed(const char *, int, const char *);
 

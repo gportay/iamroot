@@ -729,7 +729,7 @@ int __dlopen_needed(const char *path, int flags)
 static int __ld_ldso_abi(const char *path, char ldso[NAME_MAX], int *abi)
 {
 	const char *name;
-	int ret;
+	int n;
 
 	name = __basename(path);
 	if (!name)
@@ -742,8 +742,8 @@ static int __ld_ldso_abi(const char *path, char ldso[NAME_MAX], int *abi)
 		return 0;
 	}
 
-	ret = sscanf(name, "ld-%" __xstr(NAME_MAX) "[^.].so.%i", ldso, abi);
-	if (ret < 2)
+	n = sscanf(name, "ld-%" __xstr(NAME_MAX) "[^.].so.%i", ldso, abi);
+	if (n < 2)
 		return __set_errno(ENOTSUP, -1);
 
 	return 0;

@@ -10,6 +10,7 @@
 
 #include <unistd.h>
 
+#ifndef __NetBSD__
 int main(int argc, char * const argv[])
 {
 	gid_t rgid, egid, sgid;
@@ -37,3 +38,9 @@ int main(int argc, char * const argv[])
 
 	return EXIT_SUCCESS;
 }
+#else
+int main(void)
+{
+	return EXIT_SUCCESS;
+}
+#endif

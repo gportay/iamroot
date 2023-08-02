@@ -12,7 +12,7 @@
 #ifdef __linux__
 #include <linux/limits.h>
 #endif
-#if defined __FreeBSD__ || defined __OpenBSD__
+#if defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
 #include <limits.h>
 #include <sys/syslimits.h>
 #endif

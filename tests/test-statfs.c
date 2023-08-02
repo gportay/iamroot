@@ -16,6 +16,7 @@
 #include <sys/mount.h>
 #endif
 
+#ifndef __NetBSD__
 int main(int argc, char * const argv[])
 {
 	struct statfs buf;
@@ -35,3 +36,9 @@ int main(int argc, char * const argv[])
 
 	return EXIT_SUCCESS;
 }
+#else
+int main(void)
+{
+	return EXIT_SUCCESS;
+}
+#endif

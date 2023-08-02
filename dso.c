@@ -391,7 +391,7 @@ static ssize_t __ldso_access(const char *path,
 		 * First try the DT_RPATH of the dependent object that caused
 		 * NAME to be loaded. Then that object's dependent, and on up.
 		 */
-		__info("%s: trying accessing from shared object DT_RPATH %s...\n",
+		fprintf(stderr, "%s: trying accessing from shared object DT_RPATH %s...\n",
 		       path, rpath);
 		ret = __path_access(path, mode, rpath, buf, bufsize);
 		if (ret == -1 && errno != ENOENT)
@@ -404,7 +404,7 @@ static ssize_t __ldso_access(const char *path,
 		 * If dynamically linked, try the DT_RPATH of the executable
 		 * itself.
 		 */
-		__info("%s: trying accessing from executable DT_RPATH %s...\n",
+		fprintf(stderr, "%s: trying accessing from executable DT_RPATH %s...\n",
 		       path, exec_rpath);
 		ret = __path_access(path, mode, exec_rpath, buf, bufsize);
 		if (ret == -1 && errno != ENOENT)
@@ -427,7 +427,7 @@ static ssize_t __ldso_access(const char *path,
 	 * which case this variable is ignored.
 	 */
 	if (ld_library_path && !__secure_execution_mode()) {
-		__info("%s: trying accessing from LD_LIBRARY_PATH %s...\n",
+		fprintf(stderr, "%s: trying accessing from LD_LIBRARY_PATH %s...\n",
 		       path, ld_library_path);
 		ret = __path_access(path, mode, ld_library_path, buf, bufsize);
 		if (ret == -1 && errno != ENOENT)
@@ -447,7 +447,7 @@ static ssize_t __ldso_access(const char *path,
 	 * the dependency tree.
 	 */
 	if (runpath) {
-		__info("%s: trying accessing from shared object DT_RUNPATH %s...\n",
+		fprintf(stderr, "%s: trying accessing from shared object DT_RUNPATH %s...\n",
 		       path, runpath);
 		ret = __path_access(path, mode, runpath, buf, bufsize);
 		if (ret == -1 && errno != ENOENT)
@@ -465,7 +465,7 @@ static ssize_t __ldso_access(const char *path,
 	 * skipped. Shared objects installed in hardware capability directories
 	 * are preferred to other shared objects.
 	 */
-	__info("%s: trying accessing from cache...\n", path);
+	fprintf(stderr, "%s: trying accessing from cache...\n", path);
 	ret = __ldso_cache(path, buf, bufsize);
 	if (ret == -1 && errno != ENOENT)
 		return -1;
@@ -480,7 +480,7 @@ static ssize_t __ldso_access(const char *path,
 	 * -z nodeflib linker option, this step is skipped.
 	 */
 	if (!(flags_1 & DF_1_NODEFLIB) && deflib) {
-		__info("%s: trying accessing from default library path %s...\n",
+		fprintf(stderr, "%s: trying accessing from default library path %s...\n",
 		       path, deflib);
 		ret = __path_access(path, mode, deflib, buf, bufsize);
 		if (ret == -1 && errno != ENOENT)
@@ -1605,6 +1605,11 @@ static const char *__getdeflib(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 		return "/lib:/usr/lib";
 	}
 
+	/*
+	 * According to ld.elf_so(1)
+	 *
+	 * 3.   The list of default paths which is set to /usr/lib.
+	 */
 	/* It is a NetBSD ELF or ELF */
 	if (__is_netbsd(ehdr, ldso, abi))
 		return "/lib:/usr/pkg/lib:/usr/lib";

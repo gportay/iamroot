@@ -28,6 +28,7 @@ int next_fstat(int fd, struct stat *statbuf)
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "fstat");
 
+#if defined(__linux__) || defined(__FreeBSD__)
 	if (!sym) {
 		int next___fxstat(int, int, struct stat *);
 #if defined(__arm__)
@@ -36,6 +37,10 @@ int next_fstat(int fd, struct stat *statbuf)
 		return next___fxstat(0, fd, statbuf);
 #endif
 	}
+#endif
+
+	if (!sym)
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(fd, statbuf);
 }

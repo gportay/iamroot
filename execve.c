@@ -138,6 +138,7 @@ const char *__execfn()
 		return buf;
 
 	siz = next_readlinkat(AT_FDCWD, "/proc/self/exe", buf, sizeof(buf));
+	fprintf(stderr, "%s:%i siz: %zi\n", __func__, __LINE__, siz);
 	if (siz == -1)
 		return NULL;
 	buf[siz] = 0; /* ensure NULL-terminated */

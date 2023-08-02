@@ -93,7 +93,6 @@ __attribute__((visibility("hidden")))
 int __execfd()
 {
 #ifdef __OpenBSD__
-	char buf[NAME_MAX];
 	char * const *p;
 
 	for (p = environ; *p; p++) {

@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#ifndef __NetBSD__
 #include <stdio.h>
 #include <errno.h>
 #include <limits.h>
@@ -58,4 +59,5 @@ exit:
 int __statfs (const char *__file, struct statfs *__buf)
      __THROW __nonnull ((1, 2));
 weak_alias(statfs, __statfs);
+#endif
 #endif

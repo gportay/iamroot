@@ -44,6 +44,8 @@ exit:
 
 char *__getcwd_chk(char *buf, size_t size, size_t buflen)
 {
+	(void)buflen;
+
 	__debug("%s(buf: %p, size: %zu, buflen: %zu)\n", __func__, buf, size,
 		buflen);
 

@@ -44,6 +44,8 @@ exit:
 
 char *__getwd_chk(char *buf, size_t buflen)
 {
+	(void)buflen;
+
 	__debug("%s(buf: %p, buflen: %zu)\n", __func__, buf, buflen);
 
 	/* Forward to another function */

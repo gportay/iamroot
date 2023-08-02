@@ -23,6 +23,8 @@ ssize_t readlink(const char *path, char *buf, size_t bufsize)
 ssize_t __readlink_chk(const char *path, char *buf, size_t pathlen,
 		       size_t bufsize)
 {
+	(void)pathlen;
+
 	__debug("%s(path: '%s', buf: %p, pathlen: %zu, bufsize: %zu)\n",
 		__func__, path, buf, pathlen, bufsize);
 

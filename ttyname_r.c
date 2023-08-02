@@ -48,6 +48,8 @@ exit:
 
 int __ttyname_r_chk(int fd, char *buf, size_t bufsize, size_t buflen)
 {
+	(void)buflen;
+
 	__debug("%s(fd: %i, buf: %p, bufsize: %zu, buflen: %zu)\n", __func__,
 		fd, buf, bufsize, buflen);
 

@@ -65,6 +65,8 @@ int getgroups(int listsize, gid_t list[])
 
 int __getgroups_chk(int listsize, gid_t list[], size_t listlen)
 {
+	(void)listlen;
+
 	__debug("%s(listsize: %i, list: %p, listlen: %zu)\n", __func__,
 		listsize, list, listlen);
 

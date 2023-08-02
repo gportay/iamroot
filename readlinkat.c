@@ -96,6 +96,8 @@ exit:
 ssize_t __readlinkat_chk(int fd, const char *path, char *buf, size_t pathlen,
 			 size_t bufsize)
 {
+	(void)pathlen;
+
 	__debug("%s(path: '%s', buf: %p, pathlen: %zu, bufsize: %zu)\n",
 		__func__, path, buf, pathlen, bufsize);
 

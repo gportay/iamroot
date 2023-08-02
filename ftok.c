@@ -42,7 +42,7 @@ key_t ftok(const char *path, int proj_id)
 
 exit:
 	__debug("%s(path: '%s' -> '%s', ...) -> %i\n", __func__, path, buf,
-		ret);
+		(int)ret);
 
 	return ret;
 }

@@ -39,7 +39,7 @@ ssize_t extattr_set_fd(int fd, int attrnamespace, const char *attrname,
 	const int oldattrnamespace = attrnamespace;
 	const char *oldattrname = attrname;
 	char buf[PATH_MAX];
-	int ret = -1;
+	ssize_t ret = -1;
 	ssize_t siz;
 	(void)oldattrnamespace;
 	(void)oldattrname;

@@ -31,6 +31,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   and `__isoc23_strtoul()` and forward them as is to the C2x symbol name if it
   exist or to the former symbol name `sscanf()`, `strtol()` and `strtoul()`
 - Compile for [NetBSD] 9.3
+- Intercept the [NetBSD]'s functions `paccept()`
 
 ### Changed
 

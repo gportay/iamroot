@@ -221,6 +221,7 @@ libiamroot.so: nmount.o
 libiamroot.so: open.o
 libiamroot.so: openat.o
 libiamroot.so: opendir.o
+libiamroot.so: paccept.o
 libiamroot.so: passwd.o
 libiamroot.so: path_resolution.o
 libiamroot.so: posix_spawn.o

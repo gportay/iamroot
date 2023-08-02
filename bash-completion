@@ -32,7 +32,7 @@ _ish()
 		lsetxattr lstat lstat64 lutimes mkdir mkdirat mkdtemp mkfifo
 		mkfifoat mknod mknodat mkostemp mkostemps mkostempsat mkstemp
 		mkstemps mktemp mount name_to_handle_at nftw nftw64 nmount open
-		openat opendir path_resolution posix_spawn posix_spawnp
+		openat opendir paccept path_resolution posix_spawn posix_spawnp
 		readlink readlinkat realpath remove removexattr rename renameat
 		renameat2 rmdir running_in_chroot scandir scandir64 scandir_b
 		scandirat setegid seteuid setgid setgroups setregid setresgid

@@ -65,7 +65,7 @@ void dso_init()
 {
 	static __regex_t regex_ldso, regex_lib;
 	const char *ldso = "^ld(|-[[:alnum:]._-]+)\\.so(|\\.[[:digit:]]+)$";
-	const char *lib = "^lib[[:alnum:]+._-]+.so(|.*)$";
+	const char *lib = "^lib[[:alnum:]+._-]+\\.so(|.*)$";
 	int ret;
 
 	if (re_ldso)

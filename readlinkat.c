@@ -41,7 +41,7 @@ ssize_t readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 	if (siz == -1)
 		goto exit;
 
-#if defined __linux__ || defined __FreeBSD__
+#if defined __linux__ || defined __FreeBSD__ || defined __NetBSD__
 	if (streq(tmp, "/proc/self/exe")) {
 		const char *exe;
 

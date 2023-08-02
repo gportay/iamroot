@@ -19,6 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Intercept the C2x [glibc] functions `__isoc23_sscanf()`, `__isoc23_strtol()`
   and `__isoc23_strtoul()` and forward them as is to the C2x symbol name if it
   exist or to the former symbol name `sscanf()`, `strtol()` and `strtoul()`
+- Compile for [NetBSD] 9.3
 
 ### Changed
 
@@ -694,6 +695,7 @@ Initial release.
 [Leap]: https://www.opensuse.org/#Leap
 [Manjaro]: https://manjaro.org/
 [NO_COLOR]: https://no-color.org/
+[NetBSD]: https://www.netbsd.org/
 [OpenBSD]: https://www.openbsd.org/
 [Tumbleweed]: https://www.opensuse.org/#Tumbleweed
 [Ubuntu]: https://ubuntu.com/

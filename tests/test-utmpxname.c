@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#ifdef __linux__
+#if defined __linux__ || defined __NetBSD__
 #include <utmpx.h>
 
 int main(int argc, char * const argv[])

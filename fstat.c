@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#ifndef __NetBSD__
 #include <unistd.h>
 #include <stdio.h>
 #include <errno.h>
@@ -71,4 +72,5 @@ exit:
 #ifdef __GLIBC__
 int __fstat (int __fd, struct stat *__buf) __THROW __nonnull ((2));
 weak_alias(fstat, __fstat);
+#endif
 #endif

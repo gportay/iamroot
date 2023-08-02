@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
-#ifdef __FreeBSD__
+#if defined __FreeBSD__ || defined __NetBSD__
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
@@ -17,12 +17,27 @@
 
 #include "iamroot.h"
 
-static ssize_t (*sym)(const char *, int, const char *, const void *, size_t);
+#ifndef EXTATTR_MAXNAMELEN
+#define EXTATTR_MAXNAMELEN 255
+#endif
 
+#ifdef __NetBSD__
+static int (*sym)(const char *, int, const char *, const void *, size_t);
+#else
+static ssize_t (*sym)(const char *, int, const char *, const void *, size_t);
+#endif
+
+#ifdef __NetBSD__
+__attribute__((visibility("hidden")))
+int next_extattr_set_link(const char *path, int attrnamespace,
+			  const char *attrname, const void *data,
+			  size_t nbytes)
+#else
 __attribute__((visibility("hidden")))
 ssize_t next_extattr_set_link(const char *path, int attrnamespace,
 			      const char *attrname, const void *data,
 			      size_t nbytes)
+#endif
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "extattr_set_link");
@@ -33,13 +48,23 @@ ssize_t next_extattr_set_link(const char *path, int attrnamespace,
 	return sym(path, attrnamespace, attrname, data, nbytes);
 }
 
+#ifdef __NetBSD__
+int extattr_set_link(const char *path, int attrnamespace, const char *attrname,
+		     const void *data, size_t nbytes)
+#else
 ssize_t extattr_set_link(const char *path, int attrnamespace,
 			 const char *attrname, const void *data, size_t nbytes)
+#endif
 {
 	char extbuf[EXTATTR_MAXNAMELEN+1]; /* NULL-terminated */
 	const int oldattrnamespace = attrnamespace;
 	const char *oldattrname = attrname;
-	ssize_t siz, ret = -1;
+#ifdef __NetBSD__
+	int ret = -1;
+#else
+	ssize_t ret = -1;
+#endif
+	ssize_t siz;
 	char buf[PATH_MAX];
 	(void)oldattrnamespace;
 	(void)oldattrname;

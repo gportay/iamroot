@@ -126,6 +126,26 @@ const char *__execfn()
 }
 #endif
 
+#ifdef __NetBSD__
+extern ssize_t next_readlinkat(int, const char *, char *, size_t);
+
+const char *__execfn()
+{
+	static char buf[PATH_MAX];
+	ssize_t siz; 
+
+	if (*buf)
+		return buf;
+
+	siz = next_readlinkat(AT_FDCWD, "/proc/self/exe", buf, sizeof(buf));
+	if (siz == -1)
+		return NULL;
+	buf[siz] = 0; /* ensure NULL-terminated */
+
+	return buf;
+}
+#endif
+
 __attribute__((visibility("hidden")))
 const char *__path()
 {

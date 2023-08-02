@@ -735,6 +735,7 @@ static int __ld_ldso_abi(const char *path, char ldso[NAME_MAX], int *abi)
 	if (!name)
 		return __set_errno(ENOTSUP, -1);
 
+	/* Generic dynamic loader (ld.so) */
 	if (streq(name, "ld.so")) {
 		*ldso = 0;
 		if (abi)
@@ -742,6 +743,15 @@ static int __ld_ldso_abi(const char *path, char ldso[NAME_MAX], int *abi)
 		return 0;
 	}
 
+	/* NetBSD dynamic loader (ld.<object>_so) */
+	n = sscanf(name, "ld.%" __xstr(NAME_MAX) "[^_]_so", ldso);
+	if (n == 1) {
+		if (abi)
+			*abi = -1;
+		return 0;
+	}
+
+	/* Linux or FreeBSD dynamic loader (ld-<ldso>.so.<abi> */
 	n = sscanf(name, "ld-%" __xstr(NAME_MAX) "[^.].so.%i", ldso, abi);
 	if (n < 2)
 		return __set_errno(ENOTSUP, -1);
@@ -1411,6 +1421,13 @@ static int __is_freebsd(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	       (__is_elf_ldso(ldso) && abi == 1);
 }
 
+static int __is_netbsd(Elf64_Ehdr *ehdr, const char *ldso, int abi)
+{
+	/* It is a NetBSD ELF or ELF */
+	return (ehdr && (ehdr->e_ident[EI_OSABI] == ELFOSABI_NETBSD)) ||
+	       (__is_elf_ldso(ldso) && abi == -1);
+}
+
 static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 				   int abi)
 {
@@ -1546,6 +1563,15 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 		}
 	}
 
+	/* It is a NetBSD ELF or IAMROOT_LIB_ELF */
+	if (!__is_netbsd(ehdr, ldso, abi)) {
+		/* It is an x86-64 ELF */
+		if (__is_x86_64(ehdr, ldso, abi)) {
+			ret = __xstr(PREFIX)"/local/lib/iamroot/amd64/libiamroot-elf.so";
+			goto access;
+		}
+	}
+
 	/* It is something else */
 	ret = __xstr(PREFIX)"/lib/iamroot/libiamroot.so";
 
@@ -1583,6 +1609,10 @@ static const char *__getpreload(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	/* It is a FreeBSD ELF or ELF_1 */
 	if (__is_freebsd(ehdr, ldso, abi))
 		return "libc.so.7:libdl.so.1";
+
+	/* It is a NetBSD ELF or ELF */
+	if (__is_netbsd(ehdr, ldso, abi))
+		return "libc.so.12";
 
 	/* It is something else */
 	return "";
@@ -1644,6 +1674,10 @@ static const char *__getdeflib(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 		/* It is a GNU/Linux */
 		return "/lib:/usr/lib";
 	}
+
+	/* It is a NetBSD ELF or ELF */
+	if (__is_netbsd(ehdr, ldso, abi))
+		return "/lib:/usr/pkg/lib:/usr/lib";
 
 	/* It is something else */
 	return "/lib:/usr/local/lib:/usr/lib";

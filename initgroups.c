@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
-#if defined __FreeBSD__ || defined __OpenBSD__
+#if defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
 #include <unistd.h>
 #endif
 

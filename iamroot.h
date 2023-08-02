@@ -129,7 +129,7 @@ extern char **__environ;
 #define IAMROOT_XATTRS_GID  IAMROOT_XATTRS_PREFIX "gid"
 #endif
 
-#ifdef __FreeBSD__
+#if defined __FreeBSD__ || __NetBSD__
 #define IAMROOT_EXTATTR_PREFIX "iamroot."
 #define IAMROOT_EXTATTR_MODE IAMROOT_EXTATTR_PREFIX "mode"
 #define IAMROOT_EXTATTR_UID  IAMROOT_EXTATTR_PREFIX "uid"
@@ -175,7 +175,7 @@ int __strtofd(const char *, char **);
 void __procfdname(char *, unsigned);
 
 char *__getroot();
-#if defined __linux__ || defined __FreeBSD__
+#if defined __linux__ || defined __FreeBSD__ || defined __NetBSD__
 const char *__getexe();
 #endif
 
@@ -402,16 +402,29 @@ extern int next_lremovexattr(const char *, const char *);
 	})
 #endif
 
-#ifdef __FreeBSD__
+#if defined __FreeBSD__ || defined __NetBSD__
 extern ssize_t next_extattr_get_fd(int, int, const char *, void *, size_t);
+#ifdef __NetBSD__
+extern int next_extattr_set_fd(int, int, const char *, const void *, size_t);
+#else
 extern ssize_t next_extattr_set_fd(int, int, const char *, const void *,
 				   size_t);
+#endif
 extern int next_extattr_delete_fd(int, int, const char *);
 extern ssize_t next_extattr_get_link(const char *, int, const char *, void *,
 				     size_t);
+#ifdef __NetBSD__
+extern int next_extattr_set_link(const char *, int, const char *, 
+				 const void *, size_t);
+#else
 extern ssize_t next_extattr_set_link(const char *, int, const char *,
 				     const void *, size_t);
+#endif
 extern int next_extattr_delete_link(const char *, int, const char *);
+
+#ifndef EXTATTR_NAMESPACE_USER
+#define EXTATTR_NAMESPACE_USER 0x00000001
+#endif
 
 #define __get_mode(path) \
 	({ const int errno_save = errno; \
@@ -523,7 +536,7 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 	})
 #endif
 
-#if defined __linux__ || defined __FreeBSD__
+#if defined __linux__ || defined __FreeBSD__ || defined __NetBSD__
 #define __st_mode(path, statbuf) \
 	({ mode_t m = __get_mode((path)); \
 	   if (m != (mode_t)-1) { \

@@ -272,6 +272,9 @@ then
 		IAMROOT_LIB="$IAMROOT_LIB:libc.so.97.0:libpthread.so.27.0"
 		;;
 	esac
+elif [[ "$os" == "NetBSD" ]]
+then
+	IAMROOT_LIB="$IAMROOT_LIB:/usr/lib/libc.so.12"
 fi
 
 USER="${IAMROOT_USER}"

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
-#ifdef __FreeBSD__
+#if defined __FreeBSD__ || defined __NetBSD__
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
@@ -16,6 +16,10 @@
 #include <sys/extattr.h>
 
 #include "iamroot.h"
+
+#ifndef EXTATTR_MAXNAMELEN
+#define EXTATTR_MAXNAMELEN 255
+#endif
 
 static ssize_t (*sym)(int, int, const char *, void *, size_t);
 

@@ -20,7 +20,8 @@ on [FreeBSD] (13.1) and [OpenBSD] (7.2 and 7.3) even if its usage is limited by
 some statically linked binaries (`pkg-static`, `chroot`...).
 
 The project compiles on Intel x86 and ARM 64-bit, and it runs on [Arch Linux],
-[Debian], [Alpine Linux], [FreeBSD] (13.1) and [OpenBSD] (7.2 and 7.3).
+[Debian], [Alpine Linux], [FreeBSD] (13.1), [OpenBSD] (7.2 and 7.3) and
+[NetBSD] (9.3).
 
 The [Miscellaneous Binary Format][binfmt_misc] on *Linux* allows to [chroot(2)]
 in a rootfs directory using a different architecture thanks to emulators (such
@@ -143,6 +144,7 @@ later version.
 [Arch Linux]: https://archlinux.org/
 [Debian]: https://www.debian.org/
 [FreeBSD]: https://www.freebsd.org/
+[NetBSD]: https://www.netbsd.org/
 [OpenBSD]: https://www.openbsd.org/
 [alpine-make-rootfs]: https://github.com/alpinelinux/alpine-make-rootfs/blob/master/README.adoc
 [binfmt_misc]: https://www.kernel.org/doc/html/latest/admin-guide/binfmt-misc.html

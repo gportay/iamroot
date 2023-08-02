@@ -187,7 +187,7 @@ all: test-utmpxname
 libiamnotroot.so: override LDFLAGS += -nodefaultlibs
 libiamnotroot.so: iamnotroot.o
 
-ifneq ($(OS),OpenBSD)
+ifneq (,$(findstring $(OS),GNU/Linux Linux FreeBSD))
 test-dlopen: override LDLIBS += -ldl
 test-dlmopen: override LDLIBS += -ldl
 endif
@@ -209,6 +209,9 @@ endif
 ifeq ($(KVER),7.3)
 test: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/usr/lib/libc.so.97.0:$(CURDIR)/rootfs/usr/lib/libpthread.so.27.0
 endif
+endif
+ifeq ($(OS),NetBSD)
+test: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/lib/libc.so.12
 endif
 ifeq ($(OS),GNU/Linux)
 test: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/usr/lib64/libc.so.6:$(CURDIR)/rootfs/usr/lib64/libdl.so.2:$(CURDIR)/rootfs/usr/lib64/libpthread.so.0
@@ -425,32 +428,40 @@ endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin IAMROOT_GID=1000                         test-getgid             | tee /dev/stderr | grep '^1000$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-getegid            | tee /dev/stderr | grep '^0$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin IAMROOT_EGID=1000                        test-getegid            | tee /dev/stderr | grep '^1000$$'
+ifneq ($(OS),NetBSD)
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-getresgid          | tee /dev/stderr | grep '^0:0:0$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin IAMROOT_SGID=1000                        test-getresgid          | tee /dev/stderr | grep '^0:0:1000$$'
+endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-setgid     0       | tee /dev/stderr | grep '^0$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-setegid    0       | tee /dev/stderr | grep '^0$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-setregid   0  0    | tee /dev/stderr | grep '^0:0$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-setregid   0 -1    | tee /dev/stderr | grep '^0:$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-setregid  -1  0    | tee /dev/stderr | grep '^:0$$'
+ifneq ($(OS),NetBSD)
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-setresgid  0  0  0 | tee /dev/stderr | grep '^0:0:0$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-setresgid  0  0 -1 | tee /dev/stderr | grep '^0:0:$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-setresgid  0 -1  0 | tee /dev/stderr | grep '^0::0$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-setresgid -1  0  0 | tee /dev/stderr | grep '^:0:0$$'
+endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-getuid             | tee /dev/stderr | grep '^0$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin IAMROOT_UID=1000                         test-getuid             | tee /dev/stderr | grep '^1000$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-geteuid            | tee /dev/stderr | grep '^0$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin IAMROOT_EUID=1000                        test-geteuid            | tee /dev/stderr | grep '^1000$$'
+ifneq ($(OS),NetBSD)
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-getresgid          | tee /dev/stderr | grep '^0:0:0$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin IAMROOT_SGID=1000                        test-getresgid          | tee /dev/stderr | grep '^0:0:1000$$'
+endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-setuid     0       | tee /dev/stderr | grep '^0$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-seteuid    0       | tee /dev/stderr | grep '^0$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-setreuid   0  0    | tee /dev/stderr | grep '^0:0$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-setreuid   0 -1    | tee /dev/stderr | grep '^0:$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-setreuid  -1 -1    | tee /dev/stderr | grep '^:$$'
+ifneq ($(OS),NetBSD)
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-setresuid  0  0  0 | tee /dev/stderr | grep '^0:0:0$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-setresuid  0  0 -1 | tee /dev/stderr | grep '^0:0:$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-setresuid  0 -1  0 | tee /dev/stderr | grep '^0::0$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-setresuid -1  0  0 | tee /dev/stderr | grep '^:0:0$$'
+endif
 ifeq ($(OS),GNU/Linux)
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-setfsuid   0       | tee /dev/stderr | grep '^0$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                          test-setfsgid   0       | tee /dev/stderr | grep '^0$$'
@@ -592,6 +603,15 @@ ifeq ($(KVER),7.3)
 endif
 	install -m444 /usr/libexec/ld.so $(DESTDIR)/usr/libexec
 	install -m444 libiamnotroot.so $(DESTDIR)/usr/local/lib
+endif
+ifeq ($(OS),NetBSD)
+	install -d -m755 $(DESTDIR)/libexec $(DESTDIR)/lib $(DESTDIR)/usr/libexec $(DESTDIR)/usr/pkg/lib
+	install -m444 /lib/libc.so.12.213 $(DESTDIR)/lib
+	ln -sf libc.so.12.213 $(DESTDIR)/lib/libc.so.12
+	ln -sf libc.so.12.213 $(DESTDIR)/lib/libc.so
+	install -m555 /libexec/ld.elf_so $(DESTDIR)/libexec
+	ln -sf /libexec/ld.elf_so $(DESTDIR)/usr/libexec/ld.elf_so
+	install -m444 libiamnotroot.so $(DESTDIR)/usr/pkg/lib
 endif
 ifeq ($(OS),GNU/Linux)
 ifeq ($(shell test -d /lib/$(ARCH)-linux-gnu/ && echo 1),1)

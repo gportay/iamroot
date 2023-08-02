@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
-#ifdef __linux__
+#if defined(__linux__) || defined(__NetBSD__)
 #include <stdio.h>
 #include <errno.h>
 #include <limits.h>

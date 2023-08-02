@@ -4,6 +4,9 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#ifdef __NetBSD__
+#include <unistd.h>
+#endif
 #include <errno.h>
 #include <fcntl.h>
 

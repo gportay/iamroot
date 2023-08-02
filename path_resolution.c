@@ -41,7 +41,7 @@ extern int next_scandir(const char *, struct dirent ***,
 __attribute__((visibility("hidden")))
 const char *__getfd(int fd)
 {
-#ifdef __OpenBSD__
+#if defined __OpenBSD__ || defined __NetBSD__
 	char buf[NAME_MAX];
 	char *ret;
 	int n;
@@ -67,7 +67,7 @@ const char *__getfd(int fd)
 __attribute__((visibility("hidden")))
 int __setfd(int fd, const char *path)
 {
-#ifdef __OpenBSD__
+#if defined __OpenBSD__ || defined __NetBSD__
 	char buf[NAME_MAX];
 	int n;
 
@@ -92,7 +92,7 @@ int __setfd(int fd, const char *path)
 __attribute__((visibility("hidden")))
 int __execfd()
 {
-#ifdef __OpenBSD__
+#if defined __OpenBSD__ || defined __NetBSD__
 	char * const *p;
 
 	for (p = environ; *p; p++) {
@@ -107,11 +107,9 @@ int __execfd()
 		if (err == -1)
 			__warning("%i: cannot unset fd!\n", fd);
 	}
+#endif
 
 	return 0;
-#else
-	return 0;
-#endif
 }
 
 #ifdef __OpenBSD__
@@ -150,7 +148,9 @@ char *__strchrnul(const char *s, int c)
 	for (; *s && *(unsigned char *)s != c; s++);
 	return (char *)s;
 }
+#endif
 
+#ifdef __OpenBSD__
 static ssize_t __fgetpath(int fd, char *buf, size_t bufsize)
 {
 	const char *path;
@@ -266,7 +266,7 @@ static ssize_t __fgetpath(int fd, char *buf, size_t bufsize)
 }
 #endif
 
-#ifdef __linux__
+#if defined(__NetBSD__) || defined(__linux__)
 /*
  * Stolen and hacked from musl (src/internal/procfdname.c)
  *
@@ -301,6 +301,16 @@ static ssize_t __fgetpath(int fd, char *buf, size_t bufsize)
 	}
 	__procfdname(tmp, fd);
 	ret = next_readlinkat(AT_FDCWD, tmp, buf, bufsize);
+#ifdef __NetBSD__
+	if (ret == -1 && errno == EINVAL) {
+		const char *path = __getfd(fd);
+		if (!path)
+			return __set_errno(ENOENT, -1);
+		_strncpy(buf, path, bufsize);
+		ret = strnlen(buf, bufsize);
+		return __set_errno(errno_save, ret);
+	}
+#endif
 	if (ret == -1)
 		return ret;
 	return __set_errno(errno_save, ret);

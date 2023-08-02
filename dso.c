@@ -1685,6 +1685,9 @@ static char *__setenv_ld_preload(Elf64_Ehdr *ehdr, const char *ldso, int abi,
 
 static int __secure_execution_mode()
 {
+#if defined(__NetBSD__)
+	return 0;
+#else
 	uid_t ruid, euid, suid;
 	gid_t rgid, egid, sgid;
 	int ret;
@@ -1725,6 +1728,7 @@ static int __secure_execution_mode()
 		return -1;
 
 	return ruid != euid || rgid != egid;
+#endif
 }
 
 /*

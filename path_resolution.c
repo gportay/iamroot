@@ -266,7 +266,41 @@ static ssize_t __fgetpath(int fd, char *buf, size_t bufsize)
 }
 #endif
 
-#if defined(__NetBSD__) || defined(__linux__)
+#if defined(__NetBSD__) && defined(F_GETPATH)
+#include <sys/fcntl.h>
+
+static ssize_t __fgetpath(int fd, char *buf, size_t bufsize)
+{
+	int err;
+
+	/*
+	 * According to fcntl(2):
+	 *
+	 * NOTES
+	 *
+	 * For F_GETPATH:
+	 *
+	 * ·   For vnodes, functionality is implemented using the reverse
+	 *     namei(9) cache. The implications of this are
+	 * ·   For hard links where the file descriptor can resolve to multiple
+	 *     pathnames, the first entry found in the cache is returned.
+	 * ·   F_GETPATH may fail if the corresponding entry has been evicted
+	 *     from the LRU namei(9) cache and return ENOENT.
+	 * ·   For a file descriptor created by memfd_create(2), the name
+	 *     provided at fd creation, with the prefix ``memfd:'' is used.
+	 * ·   Other types of file descriptors are not handled, as well as
+	 *     symbolic links since there is currently no way to obtain a file
+	 *     descriptor pointing to a symbolic link.
+	 */
+	err = fcntl(fd, F_GETPATH, buf);
+	if (err == -1)
+		return -1;
+
+	return strnlen(buf, bufsize);
+}
+#endif
+
+#if (defined(__NetBSD__) && !defined(F_GETPATH)) || defined(__linux__)
 /*
  * Stolen and hacked from musl (src/internal/procfdname.c)
  *

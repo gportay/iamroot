@@ -103,8 +103,7 @@ void closefrom(int fd)
 #ifdef __OpenBSD__
 	ret = next_closefrom(fd);
 
-	__debug("%s(fd: %i <-> '%s') -> %i, fds: { %s }\n", __func__, fd,
-		__fpath(fd), ret, data.buf);
+	__debug("%s(fd: %i <-> '%s') -> %i\n", __func__, fd, __fpath(fd), ret);
 
 	return ret;
 #else

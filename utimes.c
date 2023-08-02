@@ -38,6 +38,7 @@ int utimes(const char *path, const struct timeval times[2])
 	int ret = -1;
 	ssize_t siz;
 
+return -1;
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
 			      AT_SYMLINK_NOFOLLOW);
 	if (siz == -1)
@@ -46,7 +47,7 @@ int utimes(const char *path, const struct timeval times[2])
 	ret = next_utimes(buf, times);
 
 exit:
-	__debug("%s(path: '%s' -> '%s', ...) -> %i\n", __func__, path, buf,
+	fprintf(stderr, "%s(path: '%s' -> '%s', ...) -> %i\n", __func__, path, buf,
 		ret);
 
 	return ret;

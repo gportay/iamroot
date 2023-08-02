@@ -87,7 +87,7 @@ ssize_t extattr_set_fd(int fd, int attrnamespace, const char *attrname,
 exit:
 	__debug("%s(fd: %i <-> '%s', attrnamespace: %i -> %i, attrname: '%s' -> '%s', ...) -> %zi\n",
 		__func__, fd, buf, oldattrnamespace, attrnamespace,
-		oldattrname, attrname, ret);
+		oldattrname, attrname, (ssize_t)ret);
 
 	return ret;
 }

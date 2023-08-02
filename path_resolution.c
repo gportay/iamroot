@@ -682,14 +682,17 @@ ssize_t fpath(int fd, char *buf, size_t bufsiz)
 {
 	ssize_t siz;
 
+	fprintf(stderr, "%s:%i\n", __func__, __LINE__);
 	if (fd < 0 && fd != AT_FDCWD)
 		return __set_errno(EINVAL, -1);
 
+	fprintf(stderr, "%s:%i\n", __func__, __LINE__);
 	siz = __fgetpath(fd, buf, bufsiz);
 	if (siz == -1)
 		return -1;
 	buf[siz] = 0; /* ensure NULL-terminated */
 
+	fprintf(stderr, "%s:%i\n", __func__, __LINE__);
 	return siz;
 }
 
@@ -884,6 +887,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		__striprootdir(buf);
 
 exit:
+	fprintf(stderr, "%s:%i buf: %s\n", __func__, __LINE__, buf);
 	return strnlen(buf, bufsize);
 }
 

@@ -9,7 +9,7 @@
 
 #include <unistd.h>
 
-#if defined __FreeBSD__ || __OpenBSD__
+#if defined __FreeBSD__ || defined __OpenBSD__
 extern char **environ;
 #endif
 

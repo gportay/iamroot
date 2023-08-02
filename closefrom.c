@@ -15,7 +15,7 @@
 
 #include "iamroot.h"
 
-#ifdef __OpenBSD__
+#if defined(__OpenBSD__) || defined(__NetBSD__)
 static int (*sym)(int);
 
 __attribute__((visibility("hidden")))
@@ -77,7 +77,7 @@ static int __callback(const char *path, const char *filename, void *user)
 }
 #endif
 
-#ifdef __OpenBSD__
+#if defined(__OpenBSD__) || defined(__NetBSD__)
 int closefrom(int fd)
 #else
 void closefrom(int fd)
@@ -90,7 +90,7 @@ void closefrom(int fd)
 	};
 	int err;
 #endif
-#ifdef __OpenBSD__
+#if defined(__OpenBSD__) || defined(__NetBSD__)
 	int ret;
 #endif
 
@@ -100,7 +100,7 @@ void closefrom(int fd)
 		__strncpy(data.buf, "(error)");
 #endif
 
-#ifdef __OpenBSD__
+#if defined(__OpenBSD__) || defined(__NetBSD__)
 	ret = next_closefrom(fd);
 
 	__debug("%s(fd: %i <-> '%s') -> %i\n", __func__, fd, __fpath(fd), ret);

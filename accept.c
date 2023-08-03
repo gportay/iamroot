@@ -15,7 +15,7 @@
 
 #include "iamroot.h"
 
-static int (*sym)(int, const struct sockaddr *, socklen_t *);
+static int (*sym)(int, struct sockaddr *, socklen_t *);
 
 __attribute__((visibility("hidden")))
 int next_accept(int socket, struct sockaddr *addr, socklen_t *addrlen)

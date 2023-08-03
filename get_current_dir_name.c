@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#ifdef __linux__
 #include <stdio.h>
 #include <errno.h>
 #include <dlfcn.h>
@@ -41,3 +42,4 @@ exit:
 
 	return ret;
 }
+#endif

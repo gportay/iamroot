@@ -388,7 +388,7 @@ static int __ldso_preload_executable(const char *path, const char *deflib,
 static int __secure_execution_mode();
 
 /*
- * Note: This resolves the shared object as described by ld.so(8).
+ * Note: This resolves the shared object as described by ld-linux.so(8).
 */
 static ssize_t __ldso_access(const char *path,
 			     int mode,
@@ -405,7 +405,7 @@ static ssize_t __ldso_access(const char *path,
 	ssize_t ret = -1;
 
 	/*
-	 * According to ld.so(8)
+	 * According to ld-linux.so(8)
 	 *
 	 * If a shared object dependency does not contain a slash, then it is
 	 * searched for in the following order:
@@ -1629,7 +1629,7 @@ static const char *__getdeflib(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	 * to guess automagically the standard library path for the GNU/Linux
 	 * systems.
 	 *
-	 * According to ld.so(8):
+	 * According to ld-linux.so(8):
 	 *
 	 * In the default path /lib, and then /usr/lib.
 	 *
@@ -1741,7 +1741,7 @@ static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsize)
 	*buf = 0;
 
 	/*
-	 * According to ld.so(8)
+	 * According to ld-linux.so(8)
 	 *
 	 * (5)  In the default path /lib, and then /usr/lib. (On some 64-bit
 	 * architectures, the default paths for 64-bit shared objects are
@@ -2697,7 +2697,7 @@ int __ldso_execv(const char *path, char * const argv[], char * const envp[])
 	(void)envp;
 
 	/*
-	 * According to ld.so(8)
+	 * According to ld-linux.so(8)
 	 *
 	 * --verify
 	 *
@@ -2718,7 +2718,7 @@ int __ldso_execv(const char *path, char * const argv[], char * const envp[])
 		goto exit;
 
 	/*
-	 * According to ld.so(8)
+	 * According to ld-linux.so(8)
 	 *
 	 * LD_TRACE_LOADED_OBJECTS
 	 *

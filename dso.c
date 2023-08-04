@@ -2359,28 +2359,28 @@ int __loader(const char *path, char * const argv[], char *interp,
 		j = i;
 
 		ret = setenv("argv0", argv0, 1);
-		if (ret)
+		if (ret == -1)
 			goto close;
 
 		ld_library_path = __setenv_ld_library_path(path);
 		if (ld_library_path) {
 			ret = setenv("LD_LIBRARY_PATH", ld_library_path, 1);
-			if (ret)
+			if (ret == -1)
 				goto close;
 
 			ret = unsetenv("ld_library_path");
-			if (ret)
+			if (ret == -1)
 				goto close;
 		}
 
 		ld_preload = __setenv_ld_preload(&ehdr, ldso, abi, path);
 		if (ld_preload) {
 			ret = setenv("LD_PRELOAD", ld_preload, 1);
-			if (ret)
+			if (ret == -1)
 				goto close;
 
 			ret = unsetenv("ld_preload");
-			if (ret)
+			if (ret == -1)
 				goto close;
 		}
 

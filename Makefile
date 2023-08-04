@@ -102,6 +102,7 @@ libiamroot.so: chroot.o
 libiamroot.so: close.o
 libiamroot.so: close_range.o
 libiamroot.so: closefrom.o
+libiamroot.so: compat.o
 libiamroot.so: connect.o
 libiamroot.so: creat.o
 libiamroot.so: ctermid.o

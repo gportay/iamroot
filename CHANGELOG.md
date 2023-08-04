@@ -16,6 +16,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   chroot'ed environment and the resolved path is below the root directory
 - Output some resolving shared object traces
 - Look up the [ld.so(8)] cache file `/etc/ld.so.cache`
+- Intercept the C2x [glibc] functions `__isoc23_sscanf()`, `__isoc23_strtol()`
+  and `__isoc23_strtoul()` and forward them as is to the C2x symbol name if it
+  exist or to the former symbol name `sscanf()`, `strtol()` and `strtoul()`
 
 ### Changed
 

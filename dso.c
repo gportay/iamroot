@@ -2165,20 +2165,21 @@ int __loader(const char *path, char * const argv[], char *interp,
 		goto close;
 
 	/*
-	 * ... and get the dynamic loader stored in the .interp section of the
-	 * ELF linked program...
+	 * ... get the dynamic loader stored in the .interp section of the ELF
+	 * linked program...
 	 */
 	siz = __felf_interp(fd, buf, sizeof(buf));
 	if (siz < 1)
 		goto close;
 
-	/* ... and gets its LDSO-name and ABI number */
+	/* ... and get its LDSO-name and its ABI number */
 	ret = __ld_ldso_abi(buf, ldso, &abi);
 	if (ret == -1)
 		goto close;
 
 	/*
-	 * The interpreter has to preload its libiamroot.so library.
+	 * The dynamic load has to preload its libiamroot.so library, and
+	 * eventually set an in-chroot library path and disable cache.
 	 */
 	if (__is_gnu_linux(&ehdr, ldso, abi) || __is_musl(&ehdr, ldso, abi)) {
 		char *argv0, *inhibit_rpath, *ld_library_path, *ld_preload;
@@ -2188,9 +2189,9 @@ int __loader(const char *path, char * const argv[], char *interp,
 		char * const *arg;
 
 		/*
-		 * the glibc world supports --argv0 since 2.33, --preload since
-		 * 2.30, --inhibit-cache since 2.16, and --inhibit-rpath since
-		 * 2.0.94
+		 * The glibc world supports --argv0 since 2.33, --preload since
+		 * 2.30, --inhibit-cache since 2.16, --library-path since
+		 * 2.0.92, and --inhibit-rpath since 2.0.94.
 		 */
 		if (__is_gnu_linux(&ehdr, ldso, abi)) {
 			has_inhibit_rpath = 1;
@@ -2269,9 +2270,10 @@ int __loader(const char *path, char * const argv[], char *interp,
 		interparg[i++] = interp;
 
 		/*
-		 * Add --preload and interpreter's libraries:
+		 * Add --preload and the libraries to preload:
 		 *  - libiamroot.so (from host)
 		 *  - libc.so, libdl.so and libpthread.so (from chroot)
+		 *  - DT_NEEDED libraries of binary (from chroot)
 		 */
 		if (has_preload && ld_preload) {
 			interparg[i++] = "--preload";
@@ -2280,13 +2282,20 @@ int __loader(const char *path, char * const argv[], char *interp,
 			ret = unsetenv("LD_PRELOAD");
 			if (ret == -1)
 				goto close;
+		/* Or set LD_PRELOAD if --preload is not supported */
 		} else if (ld_preload) {
 			ret = setenv("LD_PRELOAD", ld_preload, 1);
 			if (ret == -1)
 				goto close;
 		}
 
-		/* Add --library-path (chroot) */
+		/*
+		 * Add --library-path and the library path:
+		 *  - DT_RPATH of binary (from chroot)
+		 *  - LD_LIBRARY_PATH of environment (from chroot)
+		 *  - DT_RUNPATH of binary (from chroot)
+		 *  - default library path of interpreter (from chroot)
+		 */
 		if (ld_library_path) {
 			interparg[i++] = "--library-path";
 			interparg[i++] = ld_library_path;

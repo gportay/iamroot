@@ -2138,7 +2138,7 @@ __attribute__((visibility("hidden")))
 int __loader(const char *path, char * const argv[], char *interp,
 	     size_t interpsiz, char *interparg[])
 {
-	int fd, abi = 0, ret = -1;
+	int fd, abi = 0, err = -1, ret = -1;
 	char buf[HASHBANG_MAX];
 	char ldso[NAME_MAX];
 	Elf64_Ehdr ehdr;
@@ -2173,8 +2173,8 @@ int __loader(const char *path, char * const argv[], char *interp,
 		goto close;
 
 	/* ... and get its LDSO-name and its ABI number */
-	ret = __ld_ldso_abi(buf, ldso, &abi);
-	if (ret == -1)
+	err = __ld_ldso_abi(buf, ldso, &abi);
+	if (err == -1)
 		goto close;
 
 	/*
@@ -2225,7 +2225,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 
 		siz = path_resolution(AT_FDCWD, buf, interp, interpsiz, 0);
 		if (siz == -1)
-			return -1;
+			goto close;
 
 		/*
 		 * Shift enough room in interparg to prepend:
@@ -2279,13 +2279,13 @@ int __loader(const char *path, char * const argv[], char *interp,
 			interparg[i++] = "--preload";
 			interparg[i++] = ld_preload;
 
-			ret = unsetenv("LD_PRELOAD");
-			if (ret == -1)
+			err = unsetenv("LD_PRELOAD");
+			if (err == -1)
 				goto close;
 		/* Or set LD_PRELOAD if --preload is not supported */
 		} else if (ld_preload) {
-			ret = setenv("LD_PRELOAD", ld_preload, 1);
-			if (ret == -1)
+			err = setenv("LD_PRELOAD", ld_preload, 1);
+			if (err == -1)
 				goto close;
 		}
 
@@ -2321,8 +2321,8 @@ int __loader(const char *path, char * const argv[], char *interp,
 			 * --argv0; the value will be set by via the function
 			 * __libc_start_main().
 			 */
-			ret = setenv("argv0", argv0, 1);
-			if (ret == -1)
+			err = setenv("argv0", argv0, 1);
+			if (err == -1)
 				goto close;
 		}
 
@@ -2358,29 +2358,29 @@ int __loader(const char *path, char * const argv[], char *interp,
 			interparg[j] = interparg[j-shift];
 		j = i;
 
-		ret = setenv("argv0", argv0, 1);
-		if (ret == -1)
+		err = setenv("argv0", argv0, 1);
+		if (err == -1)
 			goto close;
 
 		ld_library_path = __setenv_ld_library_path(path);
 		if (ld_library_path) {
-			ret = setenv("LD_LIBRARY_PATH", ld_library_path, 1);
-			if (ret == -1)
+			err = setenv("LD_LIBRARY_PATH", ld_library_path, 1);
+			if (err == -1)
 				goto close;
 
-			ret = unsetenv("ld_library_path");
-			if (ret == -1)
+			err = unsetenv("ld_library_path");
+			if (err == -1)
 				goto close;
 		}
 
 		ld_preload = __setenv_ld_preload(&ehdr, ldso, abi, path);
 		if (ld_preload) {
-			ret = setenv("LD_PRELOAD", ld_preload, 1);
-			if (ret == -1)
+			err = setenv("LD_PRELOAD", ld_preload, 1);
+			if (err == -1)
 				goto close;
 
-			ret = unsetenv("ld_preload");
-			if (ret == -1)
+			err = unsetenv("ld_preload");
+			if (err == -1)
 				goto close;
 		}
 

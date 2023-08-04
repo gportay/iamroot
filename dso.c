@@ -2176,9 +2176,13 @@ __attribute__((visibility("hidden")))
 int __loader(const char *path, char * const argv[], char *interp,
 	     size_t interpsiz, char *interparg[])
 {
+	int i, j, has_argv0 = 1, has_preload = 0, has_library_path = 0,
+	    has_inhibit_rpath = 0, has_inhibit_cache = 0, shift = 1;
+	char *argv0, *inhibit_rpath, *ld_library_path, *ld_preload;
 	int fd, abi = 0, err = -1, ret = -1;
 	char buf[HASHBANG_MAX];
 	char ldso[NAME_MAX];
+	char * const *arg;
 	Elf64_Ehdr ehdr;
 	ssize_t siz;
 	(void)argv;
@@ -2219,220 +2223,192 @@ int __loader(const char *path, char * const argv[], char *interp,
 	 * The dynamic load has to preload its libiamroot.so library, and
 	 * eventually set an in-chroot library path and disable cache.
 	 */
-	if (__is_gnu_linux(&ehdr, ldso, abi) || __is_musl(&ehdr, ldso, abi)) {
-		char *argv0, *inhibit_rpath, *ld_library_path, *ld_preload;
-		int has_argv0 = 1, has_preload = 1, has_inhibit_rpath = 0,
-		    has_inhibit_cache = 0;
-		int i, j, shift = 1;
-		char * const *arg;
 
-		/*
-		 * The glibc world supports --argv0 since 2.33, --preload since
-		 * 2.30, --inhibit-cache since 2.16, --library-path since
-		 * 2.0.92, and --inhibit-rpath since 2.0.94.
-		 */
-		if (__is_gnu_linux(&ehdr, ldso, abi)) {
-			has_inhibit_rpath = 1;
+	/*
+	 * The glibc world supports the options:
+	 *  - --argv0 since 2.33
+	 *  - --preload since 2.30
+	 *  - --inhibit-cache since 2.16
+	 *  - --inhibit-rpath since 2.0.94
+	 *  - --library-path since 2.0.92
+	 */
+	if (__is_gnu_linux(&ehdr, ldso, abi)) {
+		has_inhibit_rpath = 1;
+		has_inhibit_cache = __ld_linux_has_inhibit_cache_option(buf);
+		if (has_inhibit_cache == -1)
+			goto close;
 
-			has_inhibit_cache =
-				      __ld_linux_has_inhibit_cache_option(buf);
-			if (has_inhibit_cache == -1)
-				goto close;
+		has_argv0 = __ld_linux_has_argv0_option(buf);
+		if (has_argv0 == -1)
+			goto close;
 
-			has_argv0 = __ld_linux_has_argv0_option(buf);
-			if (has_argv0 == -1)
-				goto close;
+		has_preload = __ld_linux_has_preload_option(buf);
+		if (has_preload == -1)
+			goto close;
 
-			has_preload = __ld_linux_has_preload_option(buf);
-			if (has_preload == -1)
-				goto close;
-		}
+		has_library_path = 1;
+	}
 
+	/*
+	 * The musl world supports the options:
+	 *  - --argv0
+	 *  - --preload
+	 *  - --library-path
+	 *
+	 * It does not support neither --inhibit-cache (it has no cache support
+	 * at all) nor --inhibit-rpath.
+	 */
+	if (__is_musl(&ehdr, ldso, abi)) {
+		has_argv0 = 1;
+		has_preload = 1;
+		has_library_path = 1;
+	}
+
+	/*
+	 * The FreeBSD world supports none of them; it supports the environment
+	 * variables LD_PRELOAD and LD_LIBRARY_PATH.
+	 *
+	 * The OpenBSD world supports the environment variables LD_PRELOAD and
+	 * LD_LIBRARY_PATH.
+	 */
+
+	ld_preload = __setenv_ld_preload(&ehdr, ldso, abi, path);
+	if (!ld_preload)
+		__warning("%s: is unset!\n", __xstr(ld_preload));
+
+	ld_library_path = __setenv_ld_library_path(path);
+	if (!ld_library_path)
+		__warning("%s: is unset!\n", __xstr(ld_library_path));
+
+	if (has_inhibit_rpath) {
 		inhibit_rpath = __setenv_inhibit_rpath();
 		if (inhibit_rpath)
 			__notice("%s: %s\n", __xstr(inhibit_rpath),
 				 inhibit_rpath);
+	}
 
-		ld_library_path = __setenv_ld_library_path(path);
-		if (!ld_library_path)
-			__warning("%s: is unset!\n", __xstr(ld_library_path));
+	siz = path_resolution(AT_FDCWD, buf, interp, interpsiz, 0);
+	if (siz == -1)
+		goto close;
 
-		ld_preload = __setenv_ld_preload(&ehdr, ldso, abi, path);
-		if (!ld_preload)
-			__warning("%s: is unset!\n", __xstr(ld_preload));
+	/*
+	 * Shift enough room in interparg to prepend:
+	 *   - the path to the interpreter (i.e. the absolute path in host,
+	 *     including the chroot; argv0).
+	 *   - the option --ld-preload and its argument (i.e. the path in host
+	 *     environment to the iamroot library and the path in chroot
+	 *     environment to the interpreter's libc.so and libdl.so to
+	 *     preload).
+	 *   - the option --library-path and its argument (i.e. the path in
+	 *     chroot environment to the libraries paths).
+	 *   - the option --inhibit-rpath and its argument (i.e. the path in
+	 *     host environment to the libbraries to inhibit).
+	 *   - the option --inhibit-cache.
+	 *   - the option --argv0 and its argument (i.e. the original path in
+	 *     host to the binary).
+	 *   - the path to the binary (i.e. the full path in chroot, *not*
+	 *     including chroot; first positional argument).
+	 * Note: the binary's arguments are the original argv shifted by one
+	 *       (i.e. without argv0; following arguments).
+	 */
+	argv0 = interparg[0];
+	if (has_argv0)
+		shift += 2;
+	if (has_preload && ld_preload)
+		shift += 2;
+	if (ld_library_path)
+		shift += 2;
+	if (has_inhibit_rpath && inhibit_rpath)
+		shift += 2;
+	if (has_inhibit_cache)
+		shift++;
+	i = 0;
+	for (arg = interparg; *arg; arg++)
+		i++;
+	for (j = i+shift; j > shift; j--)
+		interparg[j] = interparg[j-shift];
+	j = i;
 
-		siz = path_resolution(AT_FDCWD, buf, interp, interpsiz, 0);
-		if (siz == -1)
+	/* Add path to interpreter (host, argv0) */
+	i = 0;
+	interparg[i++] = interp;
+
+	/*
+	 * Add --preload and the libraries to preload:
+	 *  - libiamroot.so (from host)
+	 *  - libc.so, libdl.so and libpthread.so (from chroot)
+	 *  - DT_NEEDED libraries of binary (from chroot)
+	 */
+	if (has_preload && ld_preload) {
+		interparg[i++] = "--preload";
+		interparg[i++] = ld_preload;
+
+		err = unsetenv("LD_PRELOAD");
+		if (err == -1)
 			goto close;
-
-		/*
-		 * Shift enough room in interparg to prepend:
-		 *   - the path to the interpreter (i.e. the absolute path in
-		 *     host, including the chroot; argv0).
-		 *   - the option --ld-preload and its argument (i.e. the path
-		 *     in host environment to the iamroot library and the path
-		 *     in chroot environment to the interpreter's libc.so and
-		 *     libdl.so to preload).
-		 *   - the option --library-path and its argument (i.e. the
-		 *     path in chroot environment to the libraries paths).
-		 *   - the option --inhibit-rpath and its argument (i.e. the
-		 *     path in host environment to the libbraries to inhibit).
-		 *   - the option --inhibit-cache.
-		 *   - the option --argv0 and its argument (i.e. the original
-		 *     path in host to the binary).
-		 *   - the path to the binary (i.e. the full path in chroot,
-		 *     *not* including chroot; first positional argument).
-		 * Note: the binary's arguments are the original argv shifted
-		 *       by one (i.e. without argv0; following arguments).
-		 */
-		argv0 = interparg[0];
-		if (has_argv0)
-			shift += 2;
-		if (has_preload && ld_preload)
-			shift += 2;
-		if (ld_library_path)
-			shift += 2;
-		if (has_inhibit_rpath && inhibit_rpath)
-			shift += 2;
-		if (has_inhibit_cache)
-			shift++;
-		i = 0;
-		for (arg = interparg; *arg; arg++)
-			i++;
-		for (j = i+shift; j > shift; j--)
-			interparg[j] = interparg[j-shift];
-		j = i;
-
-		/* Add path to interpreter (host, argv0) */
-		i = 0;
-		interparg[i++] = interp;
-
-		/*
-		 * Add --preload and the libraries to preload:
-		 *  - libiamroot.so (from host)
-		 *  - libc.so, libdl.so and libpthread.so (from chroot)
-		 *  - DT_NEEDED libraries of binary (from chroot)
-		 */
-		if (has_preload && ld_preload) {
-			interparg[i++] = "--preload";
-			interparg[i++] = ld_preload;
-
-			err = unsetenv("LD_PRELOAD");
-			if (err == -1)
-				goto close;
-		/* Or set LD_PRELOAD if --preload is not supported */
-		} else if (ld_preload) {
-			err = setenv("LD_PRELOAD", ld_preload, 1);
-			if (err == -1)
-				goto close;
-		}
-
-		/*
-		 * Add --library-path and the library path:
-		 *  - DT_RPATH of binary (from chroot)
-		 *  - LD_LIBRARY_PATH of environment (from chroot)
-		 *  - DT_RUNPATH of binary (from chroot)
-		 *  - default library path of interpreter (from chroot)
-		 */
-		if (ld_library_path) {
-			interparg[i++] = "--library-path";
-			interparg[i++] = ld_library_path;
-		}
-
-		/* Add --inhibit-rpath (chroot) */
-		if (has_inhibit_rpath && inhibit_rpath) {
-			interparg[i++] = "--inhibit-rpath";
-			interparg[i++] = inhibit_rpath;
-		}
-
-		/* Add --inhibit-cache */
-		if (has_inhibit_cache)
-			interparg[i++] = "--inhibit-cache";
-
-		/* Add --argv0 and original argv0 */
-		if (has_argv0) {
-			interparg[i++] = "--argv0";
-			interparg[i++] = argv0;
-		} else {
-			/*
-			 * The dynamic loader does not support for the option
-			 * --argv0; the value will be set by via the function
-			 * __libc_start_main().
-			 */
-			err = setenv("argv0", argv0, 1);
-			if (err == -1)
-				goto close;
-		}
-
-		/* Add path to binary (in chroot, first positional argument) */
-		interparg[i] = (char *)path;
-		i += j;
-		interparg[i] = NULL; /* ensure NULL-terminated */
-
-		ret = i;
-	} else {
-		char *argv0, *ld_library_path, *ld_preload;
-		int i, j, shift = 1;
-		char * const *arg;
-
-		siz = path_resolution(AT_FDCWD, buf, interp, interpsiz, 0);
-		if (siz == -1)
-			goto close;
-
-		/*
-		 * Shift enough room in interparg to prepend:
-		 *   - the path to the interpreter (i.e. the absolute path in
-		 *     host, including the chroot; argv0).
-		 *   - the path to the binary (i.e. the full path in chroot,
-		 *     *not* including chroot; first positional argument).
-		 * Note: the binary's arguments are the original argv shifted
-		 *       by one (i.e. without argv0; following arguments).
-		 */
-		argv0 = interparg[0];
-		i = 0;
-		for (arg = interparg; *arg; arg++)
-			i++;
-		for (j = i+shift; j > shift; j--)
-			interparg[j] = interparg[j-shift];
-		j = i;
-
-		err = setenv("argv0", argv0, 1);
+	/* Or set LD_PRELOAD if --preload is not supported */
+	} else if (ld_preload) {
+		err = setenv("LD_PRELOAD", ld_preload, 1);
 		if (err == -1)
 			goto close;
 
-		ld_library_path = __setenv_ld_library_path(path);
-		if (ld_library_path) {
-			err = setenv("LD_LIBRARY_PATH", ld_library_path, 1);
-			if (err == -1)
-				goto close;
-
-			err = unsetenv("ld_library_path");
-			if (err == -1)
-				goto close;
-		}
-
-		ld_preload = __setenv_ld_preload(&ehdr, ldso, abi, path);
-		if (ld_preload) {
-			err = setenv("LD_PRELOAD", ld_preload, 1);
-			if (err == -1)
-				goto close;
-
-			err = unsetenv("ld_preload");
-			if (err == -1)
-				goto close;
-		}
-
-		/* Add path to interpreter (host, argv0) */
-		i = 0;
-		interparg[i++] = interp;
-
-		/* Add path to binary (in chroot, first positional argument) */
-		interparg[i] = (char *)path;
-		i += j;
-		interparg[i] = NULL; /* ensure NULL-terminated */
-
-		ret = i;
+		err = unsetenv("ld_preload");
+		if (err == -1)
+			goto close;
 	}
+
+	/*
+	 * Add --library-path (chroot) and the library path:
+	 *  - DT_RPATH of binary (from chroot)
+	 *  - LD_LIBRARY_PATH of environment (from chroot)
+	 *  - DT_RUNPATH of binary (from chroot)
+	 *  - default library path of interpreter (from chroot)
+	 */
+	if (has_library_path && ld_library_path) {
+		interparg[i++] = "--library-path";
+		interparg[i++] = ld_library_path;
+	/* Or set LD_LIBRARY_PATH if --library-path is not supported */
+	} else if (!ld_library_path) {
+		err = setenv("LD_LIBRARY_PATH", ld_library_path, 1);
+		if (err == -1)
+			goto close;
+
+		err = unsetenv("ld_library_path");
+		if (err == -1)
+			goto close;
+	}
+
+	/* Add --inhibit-rpath (chroot) */
+	if (has_inhibit_rpath && inhibit_rpath) {
+		interparg[i++] = "--inhibit-rpath";
+		interparg[i++] = inhibit_rpath;
+	}
+
+	/* Add --inhibit-cache */
+	if (has_inhibit_cache)
+		interparg[i++] = "--inhibit-cache";
+
+	/* Add --argv0 and original argv0 */
+	if (has_argv0) {
+		interparg[i++] = "--argv0";
+		interparg[i++] = argv0;
+	} else {
+		/*
+		 * The dynamic loader does not support for the option
+		 * --argv0; the value will be set by via the function
+		 * __libc_start_main().
+		 */
+		err = setenv("argv0", argv0, 1);
+		if (err == -1)
+			goto close;
+	}
+
+	/* Add path to binary (in chroot, first positional argument) */
+	interparg[i] = (char *)path;
+	i += j;
+	interparg[i] = NULL; /* ensure NULL-terminated */
+
+	ret = i;
 
 close:
 	__close(fd);

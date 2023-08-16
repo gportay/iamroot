@@ -34,6 +34,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the missing stripping of the root directory in the functions `ftw()`,
   `nftw()` and `nftw64()`
 - Fix the memory area overlapping if the root directory is stripped off
+- Fix the interception of the `_time64` variant functions `__fstat64_time64()`,
+  `__fstatat64_time64()`, `__lstat64_time64()` and `__stat64_time64()` ([glibc]
+  only)
 
 ## [v11] - 2023-07-14
 

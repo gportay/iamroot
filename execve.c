@@ -105,7 +105,7 @@ const char *__execfn()
 {
 	static char buf[PATH_MAX];
 	char **argv;
-	ssize_t siz; 
+	ssize_t siz;
 
 	if (*buf)
 		return buf;

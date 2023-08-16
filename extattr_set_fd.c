@@ -17,7 +17,7 @@
 
 #include "iamroot.h"
 
-static int (*sym)(int, int, const char *, const void *, size_t);
+static ssize_t (*sym)(int, int, const char *, const void *, size_t);
 
 __attribute__((visibility("hidden")))
 ssize_t next_extattr_set_fd(int fd, int attrnamespace, const char *attrname,

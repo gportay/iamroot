@@ -280,6 +280,7 @@ Optional dependencies for base
 Warning: chmod: /dev/snd/seq: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/snd/timer: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/loop-control: Ignoring error 'Operation not permitted'!
+Warning: chmod: /dev/vfio/vfio: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/kvm: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/vhost-net: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/vhost-vsock: Ignoring error 'Operation not permitted'!

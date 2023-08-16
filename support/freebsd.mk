@@ -45,6 +45,7 @@ $(O)-%:
 	mkdir $@
 
 freebsd-13.1-chroot:
+freebsd-%-chroot: export SHELL = /bin/sh
 freebsd-%-chroot: $(ARCH)/libiamroot-elf.so.1 | freebsd-%-rootfs
 	bash ish -c "chroot freebsd-$*-rootfs"
 

@@ -71,6 +71,7 @@ all: test-fsetxattr
 all: test-fstat
 all: test-fstatat
 all: test-ftok
+all: test-fts
 all: test-ftw
 all: test-get_current_dir_name
 all: test-getcwd
@@ -322,6 +323,8 @@ ifeq ($(OS),GNU/Linux)
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-name_to_handle_at - /tmp/file0 0
 endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-ftok rootfs/usr/bin/test-ftok 1
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-fts rootfs 0x10
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-fts / 0x10
 ifeq ($(OS),GNU/Linux)
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs test-ftok /usr/bin/test-ftok 1
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin test-ftw rootfs/usr/bin

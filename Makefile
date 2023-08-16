@@ -156,6 +156,8 @@ libiamroot.so: fstat64.o
 libiamroot.so: fstatat.o
 libiamroot.so: fstatat64.o
 libiamroot.so: ftok.o
+libiamroot.so: fts.o
+libiamroot.so: fts64.o
 libiamroot.so: ftw.o
 libiamroot.so: futimesat.o
 libiamroot.so: get_current_dir_name.o

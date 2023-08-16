@@ -10,8 +10,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Intercept the function `__getcwd_chk()`, `__getgroups_chk()`,
   `__getwd_chk()`, `__ptsname_r_chk()`, `__readlink_chk()`,
-  `__readlinkat_chk()`, `__realpath_chk()`, `__ttyname_r_chk()`, `kill()`,
-  `ptsname()` and `ptsname_r()`
+  `__readlinkat_chk()`, `__realpath_chk()`, `__ttyname_r_chk()`,
+  `fts64_children()`, `fts64_close()`, `fts64_open()`, `fts64_read()`,
+  `fts64_set()`, `fts_children()`, `fts_close()`, `fts_open()`, `fts_read()`,
+  `fts_set()`, `kill()`, `ptsname()` and `ptsname_r()`
 - The internal function `path_resolution()` resolves the root directory if in
   chroot'ed environment and the resolved path is below the root directory
 - Output some resolving shared object traces

@@ -1295,6 +1295,6 @@ Created symlink /etc/systemd/user/basic.target.wants/systemd-tmpfiles-setup.serv
 %posttrans(rpm-4.18.0-6.2.x86_64) script output:
 rmdir: failed to remove 'var/lib/rpm': Directory not empty
 %posttrans(ca-certificates-mozilla-2.62-2.1.noarch) script output:
-/var/adm/update-scripts/posttransACg8Yi/ca-certificates-mozilla-2.62-2.1.noarchR18Htx: line 2: update-ca-certificates: command not found
+/var/adm/update-scripts/posttransXXXXXX/ca-certificates-mozillaXXXXXX: line X: update-ca-certificates: command not found
 %posttrans(pam-config-2.10-1.1.x86_64) script output:
-/var/adm/update-scripts/posttransACg8Yi/pam-config-2.10-1.1.x86_64wDTkWX: line 2: pam-config: command not found
+/var/adm/update-scripts/posttransXXXXXX/pam-configXXXXXX: line X: pam-config: command not found

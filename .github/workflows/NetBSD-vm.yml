@@ -1,0 +1,18 @@
+name: NetBSD-vm
+on: workflow_dispatch
+jobs:
+  test:
+    runs-on: macos-12
+    name: A job to run test in NetBSD
+    steps:
+    - uses: actions/checkout@v3
+    - name: Test in NetBSD
+      id: test
+      uses: vmactions/netbsd-vm@v0
+      with:
+        usesh: true
+        prepare: |
+          pkg_add bash
+          pkg_add gmake
+        run: |
+          gmake test

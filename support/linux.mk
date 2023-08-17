@@ -172,7 +172,7 @@ $(eval $(call chroot_shell,$(1),$(2),/bin/bash,pacstrap -GMC support/$(1)-$(2)-p
 
 $(1)-$(2)-rootfs: | $(1)-$(2)-rootfs/bin/sh
 $(1)-$(2)-rootfs/bin/sh: | $(call libs,linux,$(1))
-	mkdir -p $(1)-$(2)-rootfs
+	bash ish -c "mkdir -p $(1)-$(2)-rootfs"
 	bash ish -c "pacstrap -GMC support/$(1)-$(2)-pacman.conf $(1)-$(2)-rootfs $(3)"
 
 $(eval $(call log,pacstrap,$(1)-$(2)-rootfs))
@@ -206,10 +206,10 @@ $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/bash,debootstrap --keep-debootstr
 
 $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/sh
 $(1)-$(2)-$(3)-rootfs/bin/sh: | $(call libs,linux,$(1))
-	mkdir -p $(1)-$(2)-$(3)-rootfs
+	bash ish -c "mkdir -p $(1)-$(2)-$(3)-rootfs"
 	bash ish -c "debootstrap --keep-debootstrap-dir --arch=$(1) $$(DEBOOTSTRAPFLAGS) $(3) $(1)-$(2)-$(3)-rootfs $$(DEBOOTSTRAP_MIRROR) $$(DEBOOTSTRAP_SCRIPT)"
-	cat $(1)-$(2)-$(3)-rootfs/debootstrap/debootstrap.log
-	rm -Rf $(1)-$(2)-$(3)-rootfs/debootstrap/
+	bash ish -c "cat $(1)-$(2)-$(3)-rootfs/debootstrap/debootstrap.log"
+	bash ish -c "rm -Rf $(1)-$(2)-$(3)-rootfs/debootstrap/"
 
 $(eval $(call log,debootstrap,$(1)-$(2)-$(3)-rootfs))
 
@@ -228,9 +228,9 @@ $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/bash,dnf --forcearch $(1) --relea
 
 $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/sh
 $(1)-$(2)-$(3)-rootfs/bin/sh: | $(call libs,linux,$(1))
-	install -D -m644 $$(FEDORA_REPO) $(1)-$(2)-$(3)-rootfs/etc/distro.repos.d/fedora.repo
+	bash ish -c "install -D -m644 $$(FEDORA_REPO) $(1)-$(2)-$(3)-rootfs/etc/distro.repos.d/fedora.repo"
 	bash ish -c "dnf --forcearch $(1) --releasever $(3) --assumeyes --installroot $(CURDIR)/$(1)-$(2)-$(3)-rootfs group install minimal-environment"
-	rm -f $(1)-$(2)-$(3)-rootfs/etc/distro.repos.d/fedora.repo
+	bash ish -c "rm -f $(1)-$(2)-$(3)-rootfs/etc/distro.repos.d/fedora.repo"
 
 $(eval $(call log,dnf,$(1)-$(2)-$(3)-rootfs))
 
@@ -363,7 +363,7 @@ $(1)-$(2)-postrootfs:
 .PRECIOUS: $(1)-$(2)-rootfs/usr/lib/modules/$(KVER) $(1)-$(2)-rootfs/usr/lib/modules/$(VMLINUX_KVER)
 $(1)-$(2)-rootfs/usr/lib/modules/$(KVER) $(1)-$(2)-rootfs/usr/lib/modules/$(VMLINUX_KVER): | x86_64/libiamroot-linux-x86-64.so.2 $(1)-$(2)-rootfs
 	rm -Rf $$@.tmp $$@
-	mkdir -p $$(@D)
+	bash ish -c "mkdir -p $$(@D)"
 	bash ish -c "rsync -a /usr/lib/modules/$$(@F)/. $$@.tmp/."
 	mv $$@.tmp $$@
 

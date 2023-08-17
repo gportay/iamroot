@@ -6,6 +6,7 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/db94176b5c354fe7bbdf93a194064140)](https://www.codacy.com/gh/gportay/iamroot/dashboard?utm_source=github.com&utm_medium=referral&utm_content=gportay/iamroot&utm_campaign=Badge_Coverage)
 [![FreeBSD-vm](https://github.com/gportay/iamroot/actions/workflows/FreeBSD-vm.yml/badge.svg)](https://github.com/gportay/iamroot/actions/workflows/FreeBSD-vm.yml)
 [![OpenBSD-vm](https://github.com/gportay/iamroot/actions/workflows/OpenBSD-vm.yml/badge.svg)](https://github.com/gportay/iamroot/actions/workflows/OpenBSD-vm.yml)
+[![NetBSD-vm](https://github.com/gportay/iamroot/actions/workflows/NetBSD-vm.yml/badge.svg)](https://github.com/gportay/iamroot/actions/workflows/NetBSD-vm.yml)
 
 [iamroot(7)] emulates privileged syscalls such as [chroot(2)] for unprivileged
 processes in userspace.

@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [unreleased]
+
+### Changed
+
+- Link dynamically against libc on [musl] and on \*BSD systems ([FreeBSD],
+  [OpenBSD] and [NetBSD])
+- Add the `DT_NEEDED` [glibc] shared object manually via `patchelf` in order to
+  continue to not link libc at link-time and leak [glibc] symbols
+
 ## [v12] - 2023-09-15
 
 ### Added

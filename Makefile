@@ -7,6 +7,7 @@
 VERSION = 12
 PREFIX ?= /usr/local
 COVERAGE ?= 0
+OS ?= $(shell uname -o 2>/dev/null || uname -s 2>/dev/null)
 
 IAMROOT_LIB ?= $(CURDIR)/libiamroot.so
 export IAMROOT_LIB
@@ -58,7 +59,12 @@ endif
 
 %.o: override CPPFLAGS += -D_GNU_SOURCE -DVERSION=$(VERSION) -DPREFIX=$(PREFIX)
 %.o: override CFLAGS += -fPIC -Wall -Wextra
+ifeq ($(OS),GNU/Linux)
 %.so: override LDFLAGS += -nodefaultlibs
+endif
+ifeq ($(OS),FreeBSD)
+%.so: override LDFLAGS += -ldl
+endif
 
 ifneq ($(COVERAGE),0)
 %.o: override CFLAGS += -fprofile-arcs -ftest-coverage
@@ -391,7 +397,11 @@ PREPROCESS.c = $(PREPROCESS.S)
 
 %.so: override LDFLAGS += -shared
 %.so:
-	$(LINK.o) $^ $(LOADLIBES) $(LDLIBS) -o $@
+	$(LINK.o) $^ $(LOADLIBES) $(LDLIBS) -o $@.tmp
+ifeq ($(OS),GNU/Linux)
+	patchelf --add-needed libc.so.6 --add-needed libdl.so.2 --add-needed libpthread.so.0 $@.tmp
+endif
+	mv $@.tmp $@
 
 %.1: %.1.adoc
 	asciidoctor -b manpage -o $@ $<

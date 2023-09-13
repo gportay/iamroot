@@ -329,45 +329,6 @@ static int __ldso_preload_needed(const char *path, const char *deflib,
 	return 0;
 }
 
-static const char *__getlibiamroot(Elf64_Ehdr *, const char *, int);
-static const char *__getpreload(Elf64_Ehdr *, const char *, int);
-static const char *__getdeflib(Elf64_Ehdr *, const char *, int);
-
-/*
- * Note: The library libiamroot.so is **NOT** linked to any library, even the
- * libc. Therefore, it has no DT_NEEDED shared objects; the libc.so, libdl.so
- * and libpthread.so **HAVE TO** be preloaded manually.
- */
-static int __ldso_preload_libiamroot_so(Elf64_Ehdr *ehdr, const char *ldso,
-					int abi, char *buf, size_t bufsize)
-{
-	struct __ldso_preload_needed_context ctx;
-	const char *deflib;
-	const char *needed;
-	const char *path;
-
-	path = __getlibiamroot(ehdr, ldso, abi);
-	if (!path)
-		return -1;
-
-	deflib = __getdeflib(ehdr, ldso, abi);
-	if (!deflib)
-		return -1;
-
-	needed = __getpreload(ehdr, ldso, abi);
-	if (!needed)
-		return -1;
-
-	/* Add the shared object to buffer first */
-	__path_strncat(buf, path, bufsize);
-
-	/* Add the needed shared objects to buffer then */
-	ctx.deflib = deflib;
-	ctx.buf = buf;
-	ctx.bufsize = bufsize;
-	return __path_iterate(needed, __ldso_preload_needed_callback, &ctx);
-}
-
 static int __ldso_preload_executable(const char *path, const char *deflib,
 				     char *buf, size_t bufsize)
 {
@@ -1587,37 +1548,6 @@ exit:
 	return __set_errno(errno_save, getenv("IAMROOT_LIB"));
 }
 
-static const char *__getpreload(Elf64_Ehdr *ehdr, const char *ldso, int abi)
-{
-	char buf[NAME_MAX];
-	char *ret;
-	int n;
-
-	n = _snprintf(buf, sizeof(buf), "IAMROOT_PRELOAD_%s_%i", ldso, abi);
-	if (n == -1)
-		return NULL;
-	__env_sanitize(buf, 1);
-
-	ret = getenv(buf);
-	if (ret)
-		return ret;
-
-	/* LINUX_$ARCH_$ABI or it is a GNU/Linux ELF */
-	if (__is_gnu_linux(ehdr, ldso, abi))
-		return "libc.so.6:libdl.so.2:libpthread.so.0";
-
-	/* It is a FreeBSD ELF or ELF_1 */
-	if (__is_freebsd(ehdr, ldso, abi))
-		return "libc.so.7:libdl.so.1";
-
-	/* It is a NetBSD ELF or ELF */
-	if (__is_netbsd(ehdr, ldso, abi))
-		return "libc.so.12";
-
-	/* It is something else */
-	return "";
-}
-
 static const char *__getdeflib(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
 	char buf[NAME_MAX];
@@ -1694,13 +1624,15 @@ static char *__setenv_ld_preload(Elf64_Ehdr *ehdr, const char *ldso, int abi,
 {
 	char lib_path[PATH_MAX];
 	char buf[PATH_MAX];
+	const char *lib;
 	ssize_t siz;
 	int err;
 
-	*buf = 0;
-	err = __ldso_preload_libiamroot_so(ehdr, ldso, abi, buf, sizeof(buf));
-	if (err == -1)
+	lib = __getlibiamroot(ehdr, ldso, abi);
+	if (!lib)
 		return NULL;
+
+	__strncpy(buf, lib);
 
 	siz = __ld_lib_path(path, lib_path, sizeof(lib_path));
 	if (siz == -1)

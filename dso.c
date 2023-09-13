@@ -825,7 +825,7 @@ static int __ld_linux_has_preload_option(const char *path)
 	return (maj > 2) || ((maj == 2) && (min >= 30));
 }
 
-static ssize_t __elf_header(int fd, Elf64_Ehdr *ehdr)
+static ssize_t __felf_header(int fd, Elf64_Ehdr *ehdr)
 {
 	ssize_t siz;
 	int err;
@@ -1274,7 +1274,7 @@ static ssize_t __felf_interp(int fd, char *buf, size_t bufsize)
 	ssize_t siz;
 
 	/* Get the ELF header */
-	siz = __elf_header(fd, &ehdr);
+	siz = __felf_header(fd, &ehdr);
 	if (siz == -1)
 		return -1;
 
@@ -2094,7 +2094,7 @@ static ssize_t __felf_deflib(int fd, char *buf, size_t bufsize)
 	 * object is an executable file, or from the needed libc, or from the
 	 * executable file.
 	 */
-	siz = __elf_header(fd, &ehdr);
+	siz = __felf_header(fd, &ehdr);
 	if (siz == -1)
 		return -1;
 
@@ -2198,7 +2198,7 @@ int __loader(const char *path, char * const argv[], char *interp,
 		return -1;
 
 	/* ... get the ELF header... */
-	siz = __elf_header(fd, &ehdr);
+	siz = __felf_header(fd, &ehdr);
 	if (siz == -1)
 		goto close;
 

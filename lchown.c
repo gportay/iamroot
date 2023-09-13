@@ -50,7 +50,12 @@ int lchown(const char *path, uid_t owner, gid_t group)
 		goto exit;
 
 	owner = __get_uid(buf);
+	if (owner == (uid_t)-1)
+		owner = oldowner;
+
 	group = __get_gid(buf);
+	if (group == (gid_t)-1)
+		group = oldgroup;
 
 	ret = next_lchown(buf, owner, group);
 	__ignore_error_and_warn(ret, AT_FDCWD, path, 0);

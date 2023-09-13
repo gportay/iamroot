@@ -1894,6 +1894,8 @@ Creating config file /etc/rsyslog.d/50-default.conf with new version
 Adding user `syslog' to group `adm' ...
 Adding user syslog to group adm
 Done.
+Warning: chown: $ROOT/x86_64-ubuntu-bionic-rootfs/var/spool/rsyslog: Ignoring error 'Operation not permitted'!
+Warning: chown: $ROOT/x86_64-ubuntu-bionic-rootfs/var/log: Ignoring error 'Operation not permitted'!
 Created symlink /etc/systemd/system/syslog.service -> /lib/systemd/system/rsyslog.service.
 Created symlink /etc/systemd/system/multi-user.target.wants/rsyslog.service -> /lib/systemd/system/rsyslog.service.
 Running in chroot, ignoring request.

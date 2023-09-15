@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
 
-VERSION = 11
+VERSION = 12
 PREFIX ?= /usr/local
 COVERAGE ?= 0
 

@@ -47,8 +47,8 @@ int lchmod(const char *path, mode_t mode)
 	__ignore_error_and_warn(ret, AT_FDCWD, path, 0);
 
 exit:
-	__debug("%s(path: '%s' -> '%s', mode: 0%03o -> 0%03o) -> %i\n", __func__,
-		path, buf, oldmode, mode, ret);
+	__debug("%s(path: '%s' -> '%s', mode: 0%03o -> 0%03o) -> %i\n",
+		__func__, path, buf, oldmode, mode, ret);
 
 	return ret;
 }

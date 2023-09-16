@@ -11,7 +11,7 @@
 #ifdef __linux__
 #include <sys/xattr.h>
 #endif
-#ifdef __FreeBSD__
+#if defined __FreeBSD__ || defined __NetBSD__
 #include <sys/extattr.h>
 #endif
 

@@ -163,6 +163,7 @@ $(1)-$(2)-shell: libiamroot.so
 endef
 
 define pacstrap-rootfs
+.PRECIOUS: $(1)-$(2)-rootfs/bin/sh
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export EUID = 0
 
@@ -182,6 +183,7 @@ $(if $(findstring x86_64,$(1)), \
 endef
 
 define debootstrap-rootfs
+.PRECIOUS: $(1)-$(2)-$(3)-rootfs/bin/sh
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB = /lib/$(1)-linux-gnu:/lib:/usr/lib/$(1)-linux-gnu:/usr/lib
 # chfn: PAM: Critical error - immediate abort
 # adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
@@ -212,6 +214,7 @@ $(if $(findstring x86_64,$(1)), \
 endef
 
 define dnf-rootfs
+.PRECIOUS: $(1)-$(2)-$(3)-rootfs/bin/sh
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora.repo
 
@@ -232,6 +235,7 @@ $(if $(findstring x86_64,$(1)), \
 endef
 
 define zypper-rootfs
+.PRECIOUS: $(1)-$(2)-rootfs/bin/sh
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|/usr/bin/chkstat
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
 
@@ -251,6 +255,7 @@ $(if $(findstring x86_64,$(1)), \
 endef
 
 define xbps-install-rootfs
+.PRECIOUS: $(1)-$(2)-rootfs/bin/sh
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
 $(eval $(call chroot_shell,$(1),$(2),/bin/bash,xbps-install -S -r $(1)-$(2)-rootfs -R https://repo-default.voidlinux.org/current base-system))
 
@@ -264,6 +269,7 @@ $(eval $(call log,xbps-install,$(1)-$(2)-rootfs))
 endef
 
 define xbps-install-musl-rootfs
+.PRECIOUS: $(1)-$(2)-musl-rootfs/bin/sh
 $(1)-$(2)-musl-chroot $(1)-$(2)-musl-shell $(1)-$(2)-musl-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
 $(eval $(call chroot_shell,$(1),$(2)-musl,/bin/bash,xbps-install -S -r $(1)-$(2)-musl-rootfs -R https://repo-default.voidlinux.org/current base-system))
 
@@ -277,6 +283,7 @@ $(eval $(call log,xbps-install,$(1)-$(2)-musl-rootfs))
 endef
 
 define alpine-make-rootfs-rootfs
+.PRECIOUS: $(1)-$(2)-$(3)-rootfs/bin/sh
 $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export APK_OPTS = --arch $(1) --no-progress
 $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export ISH_PRESERVE_ENV := APK_OPTS
 

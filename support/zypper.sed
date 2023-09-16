@@ -70,8 +70,8 @@
 
 # /sbin/update-ca-certificates: line X: /dev/fd/X: No such file or directory
 /^\/sbin\/update-ca-certificates:/ {
-		s,line \([[:digit:]]\+\): ,line X: ,
-		s,/dev/fd/\([[:digit:]]\+\): ,/dev/fd/X: ,
+	s,line \([[:digit:]]\+\): ,line X: ,
+	s,/dev/fd/\([[:digit:]]\+\): ,/dev/fd/X: ,
 }
 
 # Creating group 'bin' with GID 1.

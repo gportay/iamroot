@@ -1426,5 +1426,5 @@ FIXME: not-running /bin/sh
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Please run "/usr/bin/dracut -f --regenerate-all" as soon as your system is complete.
-make[1]: *** [makefile:782: x86_64-opensuse-leap-rootfs/bin/sh] Error 107
+make[1]: *** [makefile:XXX: x86_64-opensuse-leap-rootfs/bin/sh] Error 107
 make[1]: Target 'x86_64-opensuse-leap-rootfs' not remade because of errors.

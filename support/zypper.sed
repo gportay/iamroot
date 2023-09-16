@@ -81,4 +81,9 @@
 	s,GID [[:digit:]]\+,GID XXX,
 }
 
+# make[1]: *** [makefile:782: x86_64-opensuse-leap-rootfs/bin/sh] Error 107
+/^make\[[[:digit:]]\]: \*\*\* \[.*\] Error /{
+	s,\*\*\* \[\(.*\):\([[:digit:]]\+\): \(.*\)] ,*** [\1:XXX: \3] ,
+}
+
 /^$/d

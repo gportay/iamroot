@@ -732,11 +732,16 @@ extra-rootfs: x86_64-devuan-rootfs
 
 .PHONY: x86_64-devuan-rootfs
 x86_64-devuan-rootfs: x86_64-devuan-chimaera-rootfs
+x86_64-devuan-rootfs: x86_64-devuan-daedalus-rootfs
 
 x86_64-devuan-chimaera-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://deb.devuan.org/merged/
 x86_64-devuan-chimaera-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= support/ceres
 x86_64-devuan-chimaera-rootfs/bin/sh: export DEBOOTSTRAPFLAGS ?= --no-check-gpg
+x86_64-devuan-daedalus-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://deb.devuan.org/merged/
+x86_64-devuan-daedalus-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= support/ceres
+x86_64-devuan-daedalus-rootfs/bin/sh: export DEBOOTSTRAPFLAGS ?= --no-check-gpg
 $(eval $(call debootstrap-rootfs,x86_64,devuan,chimaera))
+$(eval $(call debootstrap-rootfs,x86_64,devuan,daedalus))
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)
@@ -1213,11 +1218,13 @@ extra-support: devuan-support
 
 .PHONY: devuan-support
 devuan-support: support/x86_64-devuan-chimaera-rootfs.txt
+devuan-support: support/x86_64-devuan-daedalus-rootfs.txt
 
 log: devuan-log
 
 .PHONY: devuan-log
 devuan-log: x86_64-devuan-chimaera-rootfs.log
+devuan-log: x86_64-devuan-daedalus-rootfs.log
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)

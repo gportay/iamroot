@@ -36,6 +36,7 @@ int next_fchmodat(int dfd, const char *path, mode_t mode, int atflags)
 
 int fchmodat(int dfd, const char *path, mode_t mode, int atflags)
 {
+	const int errno_save = errno;
 	const mode_t oldmode = mode;
 	char buf[PATH_MAX];
 	int ret = -1;
@@ -52,7 +53,7 @@ int fchmodat(int dfd, const char *path, mode_t mode, int atflags)
 	__ignore_error_and_warn(ret, dfd, path, atflags);
 	/* Force ignoring EPERM error if not chroot'ed */
 	if ((ret == -1) && (errno == EPERM))
-		ret = __set_errno(0, 0);
+		ret = __set_errno(errno_save, 0);
 	__set_mode(buf, oldmode, mode);
 
 exit:

@@ -36,6 +36,7 @@ int next_lchmod(const char *path, mode_t mode)
 
 int lchmod(const char *path, mode_t mode)
 {
+	const int errno_save = errno;
 	const mode_t oldmode = mode;
 	char buf[PATH_MAX];
 	int ret = -1;
@@ -53,7 +54,7 @@ int lchmod(const char *path, mode_t mode)
 	__ignore_error_and_warn(ret, AT_FDCWD, path, 0);
 	/* Force ignoring EPERM error if not chroot'ed */
 	if ((ret == -1) && (errno == EPERM))
-		ret = __set_errno(0, 0);
+		ret = __set_errno(errno_save, 0);
 	__set_mode(buf, oldmode, mode);
 
 exit:

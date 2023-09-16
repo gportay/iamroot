@@ -37,6 +37,7 @@ int next_fchownat(int dfd, const char *path, uid_t owner, gid_t group,
 
 int fchownat(int dfd, const char *path, uid_t owner, gid_t group, int atflags)
 {
+	const int errno_save = errno;
 	const uid_t oldowner = owner;
 	const uid_t oldgroup = group;
 	char buf[PATH_MAX];
@@ -61,7 +62,7 @@ int fchownat(int dfd, const char *path, uid_t owner, gid_t group, int atflags)
 	__ignore_error_and_warn(ret, dfd, path, atflags);
 	/* Force ignoring EPERM error if not chroot'ed */
 	if ((ret == -1) && (errno == EPERM))
-		ret = __set_errno(0, 0);
+		ret = __set_errno(errno_save, 0);
 	__set_uid(buf, oldowner, owner);
 	__set_gid(buf, oldgroup, group);
 

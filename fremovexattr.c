@@ -35,7 +35,7 @@ int fremovexattr(int fd, const char *name)
 {
 	char xbuf[XATTR_NAME_MAX+1]; /* NULL-terminated */
 	char buf[PATH_MAX];
-	int ret = 1;
+	int ret = -1;
 	ssize_t siz;
 
 	siz = fpath(fd, buf, sizeof(buf));

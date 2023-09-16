@@ -39,7 +39,7 @@ int chown(const char *path, uid_t owner, gid_t group)
 	const uid_t oldowner = owner;
 	const uid_t oldgroup = group;
 	char buf[PATH_MAX];
-	int ret = 1;
+	int ret = -1;
 	ssize_t siz;
 	(void)oldowner;
 	(void)oldgroup;

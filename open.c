@@ -39,7 +39,7 @@ int next_open(const char *path, int oflags, mode_t mode)
 int open(const char *path, int oflags, ...)
 {
 	mode_t oldmode = 0, mode = 0;
-	int atflags = 0, ret = 1;
+	int atflags = 0, ret = -1;
 	char buf[PATH_MAX];
 	ssize_t siz;
 	(void)oldmode;

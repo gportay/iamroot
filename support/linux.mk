@@ -1235,7 +1235,7 @@ devuan-log: x86_64-devuan-daedalus-rootfs.log
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)
-support: fedora-support
+fixme-support: fedora-support
 
 .PHONY: fedora-support
 fedora-support: support/x86_64-fedora-32-rootfs.txt
@@ -1246,7 +1246,7 @@ fedora-support: support/x86_64-fedora-36-rootfs.txt
 fedora-support: support/x86_64-fedora-37-rootfs.txt
 fedora-support: support/x86_64-fedora-38-rootfs.txt
 
-log: fedora-log
+fixme-log: fedora-log
 
 .PHONY: fedora-log
 fedora-log: x86_64-fedora-32-rootfs.log

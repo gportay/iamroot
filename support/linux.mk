@@ -665,15 +665,19 @@ ifneq ($(shell command -v debootstrap 2>/dev/null),)
 rootfs: x86_64-debian-rootfs
 
 .PHONY: x86_64-debian-rootfs
+x86_64-debian-rootfs: x86_64-debian-oldoldstable-rootfs
 x86_64-debian-rootfs: x86_64-debian-oldstable-rootfs
 x86_64-debian-rootfs: x86_64-debian-stable-rootfs
 x86_64-debian-rootfs: x86_64-debian-testing-rootfs
 x86_64-debian-rootfs: x86_64-debian-unstable-rootfs
 
+$(eval $(call debootstrap-rootfs,x86_64,debian,oldoldstable))
 $(eval $(call debootstrap-rootfs,x86_64,debian,oldstable))
 $(eval $(call debootstrap-rootfs,x86_64,debian,stable))
 $(eval $(call debootstrap-rootfs,x86_64,debian,testing))
 $(eval $(call debootstrap-rootfs,x86_64,debian,unstable))
+x86_64-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+x86_64-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 
 .PHONY: x86_64-ubuntu-rootfs
 x86_64-ubuntu-rootfs: x86_64-ubuntu-trusty-rootfs
@@ -1170,6 +1174,7 @@ ifneq ($(shell command -v debootstrap 2>/dev/null),)
 support: debian-support
 
 .PHONY: debian-support
+debian-support: support/x86_64-debian-oldoldstable-rootfs.txt
 debian-support: support/x86_64-debian-oldstable-rootfs.txt
 debian-support: support/x86_64-debian-stable-rootfs.txt
 debian-support: support/x86_64-debian-testing-rootfs.txt
@@ -1178,6 +1183,7 @@ debian-support: support/x86_64-debian-unstable-rootfs.txt
 log: debian-log
 
 .PHONY: debian-log
+debian-log: x86_64-debian-oldoldstable-rootfs.log
 debian-log: x86_64-debian-oldstable-rootfs.log
 debian-log: x86_64-debian-stable-rootfs.log
 debian-log: x86_64-debian-testing-rootfs.log

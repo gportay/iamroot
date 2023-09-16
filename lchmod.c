@@ -9,6 +9,12 @@
 #include <limits.h>
 #include <fcntl.h>
 #include <dlfcn.h>
+#ifdef __linux__
+#include <sys/xattr.h>
+#endif
+#if defined __FreeBSD__ || defined __NetBSD__
+#include <sys/extattr.h>
+#endif
 
 #include <sys/stat.h>
 
@@ -45,6 +51,10 @@ int lchmod(const char *path, mode_t mode)
 
 	ret = next_lchmod(buf, mode);
 	__ignore_error_and_warn(ret, AT_FDCWD, path, 0);
+	/* Force ignoring EPERM error if not chroot'ed */
+	if ((ret == -1) && (errno == EPERM))
+		ret = __set_errno(0, 0);
+	__set_mode(buf, oldmode, mode);
 
 exit:
 	__debug("%s(path: '%s' -> '%s', mode: 0%03o -> 0%03o) -> %i\n",

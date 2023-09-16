@@ -681,7 +681,6 @@ x86_64-ubuntu-rootfs: x86_64-ubuntu-xenial-rootfs
 x86_64-ubuntu-rootfs: x86_64-ubuntu-bionic-rootfs
 x86_64-ubuntu-rootfs: x86_64-ubuntu-focal-rootfs
 x86_64-ubuntu-rootfs: x86_64-ubuntu-jammy-rootfs
-x86_64-ubuntu-rootfs: x86_64-ubuntu-kinetic-rootfs
 x86_64-ubuntu-rootfs: x86_64-ubuntu-lunar-rootfs
 
 x86_64-ubuntu-trusty-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
@@ -689,14 +688,12 @@ x86_64-ubuntu-xenial-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.
 x86_64-ubuntu-bionic-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
 x86_64-ubuntu-focal-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
 x86_64-ubuntu-jammy-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
-x86_64-ubuntu-kinetic-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
 x86_64-ubuntu-lunar-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.ubuntu.com/ubuntu
 $(eval $(call debootstrap-rootfs,x86_64,ubuntu,trusty))
 $(eval $(call debootstrap-rootfs,x86_64,ubuntu,xenial))
 $(eval $(call debootstrap-rootfs,x86_64,ubuntu,bionic))
 $(eval $(call debootstrap-rootfs,x86_64,ubuntu,focal))
 $(eval $(call debootstrap-rootfs,x86_64,ubuntu,jammy))
-$(eval $(call debootstrap-rootfs,x86_64,ubuntu,kinetic))
 $(eval $(call debootstrap-rootfs,x86_64,ubuntu,lunar))
 # chmod: cannot access '/dev/tty[0-9]*': No such file or directory
 # dpkg: error processing package makedev (--configure):
@@ -724,8 +721,6 @@ x86_64-ubuntu-focal-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV
 x86_64-ubuntu-focal-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
 x86_64-ubuntu-jammy-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
 x86_64-ubuntu-jammy-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
-x86_64-ubuntu-kinetic-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
-x86_64-ubuntu-kinetic-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
 x86_64-ubuntu-lunar-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
 x86_64-ubuntu-lunar-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
 
@@ -1196,7 +1191,6 @@ ubuntu-support: support/x86_64-ubuntu-xenial-rootfs.txt
 ubuntu-support: support/x86_64-ubuntu-bionic-rootfs.txt
 ubuntu-support: support/x86_64-ubuntu-focal-rootfs.txt
 ubuntu-support: support/x86_64-ubuntu-jammy-rootfs.txt
-ubuntu-support: support/x86_64-ubuntu-kinetic-rootfs.txt
 ubuntu-support: support/x86_64-ubuntu-lunar-rootfs.txt
 
 log: ubuntu-log
@@ -1207,7 +1201,6 @@ ubuntu-log: x86_64-ubuntu-xenial-rootfs.log
 ubuntu-log: x86_64-ubuntu-bionic-rootfs.log
 ubuntu-log: x86_64-ubuntu-focal-rootfs.log
 ubuntu-log: x86_64-ubuntu-jammy-rootfs.log
-ubuntu-log: x86_64-ubuntu-kinetic-rootfs.log
 ubuntu-log: x86_64-ubuntu-lunar-rootfs.log
 	
 extra-support: devuan-support

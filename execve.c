@@ -562,7 +562,7 @@ int __exec_sh(const char *path, char * const *argv, char *interparg[],
 					*/
 	interparg[i] = NULL; /* ensure NULL-terminated */
 
-	ret = setenv("argv0", *argv, 1);
+	ret = setenv("_argv0", *argv, 1);
 	if (ret)
 		return -1;
 

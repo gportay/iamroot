@@ -821,7 +821,7 @@ Retrieving: permissions.rpm [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/permissions.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 Updating /etc/sysconfig/security ...
-FIXME: not-running /bin/sh --system
+FIXME: not-running /usr/bin/chkstat --system
 Retrieving: netcfg (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: netcfg [done]
 (XXX/XXX) Installing: netcfg [done]
@@ -875,13 +875,13 @@ Retrieving: ca-certificates [done]
 (XXX/XXX) Installing: ca-certificates [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/ca-certificates: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-FIXME: not-running /bin/sh -f
+FIXME: not-running /usr/sbin/update-ca-certificates -f
 Retrieving: ca-certificates-mozilla (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: ca-certificates-mozilla [done]
 (XXX/XXX) Installing: ca-certificates-mozilla [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/ca-certificates-mozilla: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-FIXME: not-running /bin/sh
+FIXME: not-running /usr/sbin/update-ca-certificates
 Retrieving: systemd-presets-branding-openSUSE (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: systemd-presets-branding-openSUSE [done]
 (XXX/XXX) Installing: systemd-presets-branding-openSUSE [done]
@@ -990,8 +990,8 @@ Retrieving: pam.rpm [done]
 (XXX/XXX) Installing: pam [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/pam.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-FIXME: not-running /bin/sh -n --set --system /sbin/unix_chkpwd
-FIXME: not-running /bin/sh -n --set --system /sbin/unix2_chkpwd
+FIXME: not-running /usr/bin/chkstat -n --set --system /sbin/unix_chkpwd
+FIXME: not-running /usr/bin/chkstat -n --set --system /sbin/unix2_chkpwd
 Retrieving: hostname (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: hostname.rpm [done]
 (XXX/XXX) Installing: hostname [done]
@@ -1022,15 +1022,15 @@ Retrieving: shadow.rpm [done]
 (XXX/XXX) Installing: shadow [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/shadow.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-FIXME: not-running /bin/sh -n --set --system /usr/bin/chage
-FIXME: not-running /bin/sh -n --set --system /usr/bin/chfn
-FIXME: not-running /bin/sh -n --set --system /usr/bin/chsh
-FIXME: not-running /bin/sh -n --set --system /usr/bin/expiry
-FIXME: not-running /bin/sh -n --set --system /usr/bin/gpasswd
-FIXME: not-running /bin/sh -n --set --system /usr/bin/newgrp
-FIXME: not-running /bin/sh -n --set --system /usr/bin/passwd
-FIXME: not-running /bin/sh -n --set --system /usr/bin/newgidmap
-FIXME: not-running /bin/sh -n --set --system /usr/bin/newuidmap
+FIXME: not-running /usr/bin/chkstat -n --set --system /usr/bin/chage
+FIXME: not-running /usr/bin/chkstat -n --set --system /usr/bin/chfn
+FIXME: not-running /usr/bin/chkstat -n --set --system /usr/bin/chsh
+FIXME: not-running /usr/bin/chkstat -n --set --system /usr/bin/expiry
+FIXME: not-running /usr/bin/chkstat -n --set --system /usr/bin/gpasswd
+FIXME: not-running /usr/bin/chkstat -n --set --system /usr/bin/newgrp
+FIXME: not-running /usr/bin/chkstat -n --set --system /usr/bin/passwd
+FIXME: not-running /usr/bin/chkstat -n --set --system /usr/bin/newgidmap
+FIXME: not-running /usr/bin/chkstat -n --set --system /usr/bin/newuidmap
 Retrieving: pam-config (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: pam-config.rpm [done]
 (XXX/XXX) Installing: pam-config [done]
@@ -1132,7 +1132,7 @@ Retrieving: dbus-1.rpm [done]
 (XXX/XXX) Installing: dbus-1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/dbus-1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-FIXME: not-running /bin/sh -n --set --system /usr/lib/dbus-1/dbus-daemon-launch-helper
+FIXME: not-running /usr/bin/chkstat -n --set --system /usr/lib/dbus-1/dbus-daemon-launch-helper
 update-alternatives: using /usr/bin/dbus-launch.nox11 to provide /usr/bin/dbus-launch (dbus-launch) in auto mode
 Retrieving: python3-setuptools (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: python3-setuptools [done]
@@ -1244,7 +1244,7 @@ Retrieving: libutempter0.rpm [done]
 (XXX/XXX) Installing: libutempter0 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libutempter0.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-FIXME: not-running /bin/sh -n --set --system /usr/lib/utempter/utempter
+FIXME: not-running /usr/bin/chkstat -n --set --system /usr/lib/utempter/utempter
 Retrieving: libgnutls30 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libgnutls30.rpm [done]
 (XXX/XXX) Installing: libgnutls30 [done]
@@ -1255,8 +1255,8 @@ Retrieving: util-linux.rpm [done]
 (XXX/XXX) Installing: util-linux [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/util-linux.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-FIXME: not-running /bin/sh -n --set --system /usr/bin/wall /usr/bin/write /usr/bin/mount /usr/bin/umount
-FIXME: not-running /bin/sh -n --set --system /usr/bin/su
+FIXME: not-running /usr/bin/chkstat -n --set --system /usr/bin/wall /usr/bin/write /usr/bin/mount /usr/bin/umount
+FIXME: not-running /usr/bin/chkstat -n --set --system /usr/bin/su
 Retrieving: dirmngr (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: dirmngr.rpm [done]
 (XXX/XXX) Installing: dirmngr [done]
@@ -1422,7 +1422,7 @@ Created symlink /etc/systemd/user/timers.target.wants/systemd-tmpfiles-clean.tim
 Created symlink /etc/systemd/user/basic.target.wants/systemd-tmpfiles-setup.service -> /usr/lib/systemd/user/systemd-tmpfiles-setup.service.
 /bin/sh: failed to remove 'var/lib/rpm': Directory not empty
 warning: %posttrans(rpm.rpm) scriptlet failed, exit status 1
-FIXME: not-running /bin/sh
+FIXME: not-running /usr/sbin/update-ca-certificates
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Please run "/usr/bin/dracut -f --regenerate-all" as soon as your system is complete.

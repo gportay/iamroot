@@ -67,7 +67,7 @@ fi
 
 path="$1"
 inchroot_path="$(path_resolution "$path")"
-argv0="${argv0:-$path}"
+argv0="${_argv0:-$path}"
 shift
 
 case "${path##*/}" in

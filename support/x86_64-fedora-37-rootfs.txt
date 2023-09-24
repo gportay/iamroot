@@ -725,8 +725,6 @@ Created symlink /etc/systemd/system/sysinit.target.wants/selinux-autorelabel-mar
   Running scriptlet: selinux-policy-targeted XXX/XXX
   Installing       : selinux-policy-targeted XXX/XXX
   Running scriptlet: selinux-policy-targeted XXX/XXX
-Executed with unrecognized name (ldconfig), defaulting to restorecon behavior.
-
   Installing       : libblockdev XXX/XXX
   Installing       : libblockdev-fs XXX/XXX
   Installing       : libblockdev-loop XXX/XXX
@@ -872,9 +870,7 @@ Created symlink /etc/systemd/system/multi-user.target.wants/sshd.service → /us
   Installing       : ncurses XXX/XXX
   Installing       : fedora-repos-modular XXX/XXX
   Installing       : rootfiles XXX/XXX
-  Running scriptlet: filesystem                      367/367Executed with unrecognized name (ldconfig), defaulting to restorecon behavior.
-Executed with unrecognized name (ldconfig), defaulting to restorecon behavior.
- 
+  Running scriptlet: filesystem XXX/XXX
   Running scriptlet: grub2-common XXX/XXX
   Running scriptlet: crypto-policies-scripts XXX/XXX
   Running scriptlet: ca-certificates XXX/XXX
@@ -884,9 +880,6 @@ Executed with unrecognized name (ldconfig), defaulting to restorecon behavior.
 '/etc/resolv.conf' -> '../run/systemd/resolve/stub-resolv.conf'
 
   Running scriptlet: selinux-policy-targeted XXX/XXX
-Executed with unrecognized name (ldconfig), defaulting to restorecon behavior.
-Executed with unrecognized name (ldconfig), defaulting to restorecon behavior.
-
   Running scriptlet: nss XXX/XXX
   Running scriptlet: sssd-common XXX/XXX
   Running scriptlet: firewalld XXX/XXX

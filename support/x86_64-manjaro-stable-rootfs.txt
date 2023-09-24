@@ -171,9 +171,10 @@ installing perl...
 installing libnsl...
 installing python...
 Optional dependencies for python
-    python-setuptools
-    python-pip
-    sqlite [installed]
+    python-setuptools: for building Python packages using tooling that is usually bundled with Python
+    python-pip: for installing Python packages using tooling that is usually bundled with Python
+    python-pipx: for installing Python software not packaged on Arch Linux
+    sqlite: for a default database integration [installed]
     mpdecimal: for decimal
     xz: for lzma [installed]
     tk: for tkinter
@@ -280,6 +281,8 @@ Creating group 'systemd-oom' with GID XXX.
 Creating user 'systemd-oom' (systemd Userspace OOM Killer) with UID XXX and GID XXX.
 Creating group 'systemd-journal-remote' with GID XXX.
 Creating user 'systemd-journal-remote' (systemd Journal Remote) with UID XXX and GID XXX.
+Creating group 'systemd-journal-upload' with GID XXX.
+Creating user 'systemd-journal-upload' (systemd Journal Upload) with UID XXX and GID XXX.
 Creating group 'systemd-resolve' with GID XXX.
 Creating user 'systemd-resolve' (systemd Resolver) with UID XXX and GID XXX.
 Creating group 'systemd-timesync' with GID XXX.

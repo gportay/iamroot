@@ -763,9 +763,6 @@ fedora-rootfs: x86_64-fedora-36-rootfs
 fedora-rootfs: x86_64-fedora-37-rootfs
 fedora-rootfs: x86_64-fedora-38-rootfs
 
-# Warning: $ROOT/x86_64-fedora-38-rootfs/etc: contains root directory '$ROOT/x86_64-fedora-38-rootfs'
-x86_64-fedora-38-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_WARNING_IGNORE = /var/log/dnf.rpm.log|/etc
-
 x86_64-fedora-32-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 x86_64-fedora-33-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 x86_64-fedora-34-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo

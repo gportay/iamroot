@@ -110,20 +110,24 @@ ldconfig|ldconfig.real)
 		do
 			if [ "$prev" = "-r" ]
 			then
-				args+=("$IAMROOT_ROOT$cur")
+				args+=("$(path_resolution "$cur")")
 				r="${args[-1]}"
 			elif [ "$prev" = "-f" ]
 			then
-				args+=("$IAMROOT_ROOT$cur")
+				args+=("$(path_resolution "$cur")")
 				f="${args[-1]}"
+			elif [ "${cur:0:1}" != "-" ]
+			then
+				args+=("$(path_resolution "$cur")")
 			else
-				args+=("$IAMROOT_ROOT$cur")
+				args+=("$cur")
 			fi
+			prev="$cur"
 		done
 
 		if [ ! "$r" ]
 		then
-			set -- "$@" -r "$IAMROOT_ROOT"
+			args+=(-r "$IAMROOT_ROOT")
 		fi
 
 		if [ ! "$f" ]
@@ -137,6 +141,8 @@ ldconfig|ldconfig.real)
 			sed -e 's,include ld.so.conf.d/\*.conf,include /etc/ld.so.conf.d/*.conf,' \
 			    -i "$f"
 		fi
+
+		set -- "${args[@]}"
 	fi
 
 	notice "running" "$inchroot_path" "$@"

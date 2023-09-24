@@ -87,6 +87,7 @@ mountpoint)
 		fi
 	done
 	set -- "${args[@]}"
+	unset args
 
 	notice "running" "$inchroot_path" "$@"
 	exec "$inchroot_path" "$@"
@@ -124,16 +125,19 @@ ldconfig|ldconfig.real)
 			fi
 			prev="$cur"
 		done
+		unset prev
 
 		if [ ! "$r" ]
 		then
 			args+=(-r "$IAMROOT_ROOT")
 		fi
+		unset r
 
 		if [ ! "$f" ]
 		then
 			f="$IAMROOT_ROOT/etc/ld.so.conf"
 		fi
+		unset f
 
 		# Fixes: $IAMROOT_ROOT/usr/sbin/ldconfig: need absolute file name for configuration file when using -r
 		if [ -r "$f" ]
@@ -143,6 +147,7 @@ ldconfig|ldconfig.real)
 		fi
 
 		set -- "${args[@]}"
+		unset args
 	fi
 
 	notice "running" "$inchroot_path" "$@"

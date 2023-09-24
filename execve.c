@@ -566,11 +566,11 @@ int __exec_sh(const char *path, char * const *argv, char *interparg[],
 	if (ret)
 		return -1;
 
-	ret = setenv("ld_preload", getenv("LD_PRELOAD") ?: "", 1);
+	ret = setenv("_preload", getenv("LD_PRELOAD") ?: "", 1);
 	if (ret)
 		return -1;
 
-	ret = setenv("ld_library_path", getenv("LD_LIBRARY_PATH") ?: "", 1);
+	ret = setenv("_library_path", getenv("LD_LIBRARY_PATH") ?: "", 1);
 	if (ret)
 		return -1;
 

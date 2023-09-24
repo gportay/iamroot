@@ -12,6 +12,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   [OpenBSD] and [NetBSD])
 - Add the `DT_NEEDED` [glibc] shared object manually via `patchelf` in order to
   continue to not link libc at link-time and leak [glibc] symbols
+- Replace the `exec.sh`'s dynamic loader environment variables `ld_preload` and
+  `ld_library_path` by `_preload` and `_library_path`
 
 ## [v12] - 2023-09-15
 

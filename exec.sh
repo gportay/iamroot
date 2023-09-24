@@ -137,7 +137,6 @@ ldconfig|ldconfig.real)
 		then
 			f="$IAMROOT_ROOT/etc/ld.so.conf"
 		fi
-		unset f
 
 		# Fixes: $IAMROOT_ROOT/usr/sbin/ldconfig: need absolute file name for configuration file when using -r
 		if [ -r "$f" ]
@@ -145,6 +144,7 @@ ldconfig|ldconfig.real)
 			sed -e 's,include ld.so.conf.d/\*.conf,include /etc/ld.so.conf.d/*.conf,' \
 			    -i "$f"
 		fi
+		unset f
 
 		set -- "${args[@]}"
 		unset args

@@ -155,7 +155,7 @@ int __path_setenv(const char *, const char *, const char *, int);
 int __execve(const char *, char * const [], char * const []);
 int __exec_ignored(const char *);
 int __issuid(const char *);
-int __loader(const char *, char * const [], char *, size_t, char *[]);
+int __ldso(const char *, char * const [], char *, size_t, char *[]);
 int __exec_sh(const char *, char * const *, char *[], char *, size_t);
 int __hashbang(const char *, char * const [], char *, size_t, char *[]);
 

@@ -688,7 +688,7 @@ loader:
 		return next_execve(buf, argv, envp);
 	}
 
-	ret = __loader(program, argv, loaderbuf, sizeof(loaderbuf), interparg);
+	ret = __ldso(program, argv, loaderbuf, sizeof(loaderbuf), interparg);
 	if ((ret == -1) && (errno != ENOEXEC))
 		return -1;
 	if (ret != -1)

@@ -2105,8 +2105,8 @@ static char *__setenv_inhibit_rpath()
 }
 
 __attribute__((visibility("hidden")))
-int __loader(const char *path, char * const argv[], char *interp,
-	     size_t interpsiz, char *interparg[])
+int __ldso(const char *path, char * const argv[], char *interp,
+	   size_t interpsiz, char *interparg[])
 {
 	int i, j, has_argv0 = 1, has_preload = 0, has_library_path = 0,
 	    has_inhibit_rpath = 0, has_inhibit_cache = 0, shift = 1;

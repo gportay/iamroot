@@ -44,8 +44,8 @@ int mkostemps(char *path, int suffixlen, int oflags)
 	if (ret == -1)
 		goto exit;
 
-	len = __strlen(path);
-	memcpy(path, buf+__strlen(buf)-len, len);
+	len = __strlen(__basename(path));
+	strncpy(&path[__strlen(path)-len], &buf[__strlen(buf)-len], len);
 
 exit:
 	__debug("%s(path: '%s' -> '%s', ..., oflags: 0%o) -> %i\n", __func__,

@@ -40,8 +40,8 @@ char *mktemp(char *path)
 	if (!*ret)
 		goto exit;
 
-	len = __strlen(path);
-	memcpy(path, buf+__strlen(buf)-len, len);
+	len = __strlen(__basename(path));
+	strncpy(&path[__strlen(path)-len], &buf[__strlen(buf)-len], len);
 
 exit:
 	__debug("%s(path: '%s') -> '%s'\n", __func__, path, ret);

@@ -15,6 +15,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Replace the `exec.sh`'s environment variables `argv0`, `ld_preload` and
   `ld_library_path` by `_argv0`, `_preload` and `_library_path`
 
+### Fixed
+
+- Fix the copying back of the generated temporary filename to the template for
+  the functions `mkdtemp()`, `mkostemp()`, `mkostempsat()`, `mkostemps()`,
+  `mkstemp()`, `mkstemps()` and `mktemp()`
+
 ## [v12] - 2023-09-15
 
 ### Added

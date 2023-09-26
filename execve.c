@@ -551,13 +551,18 @@ int __hashbang(const char *path, char * const argv[], char *interp,
 }
 
 __attribute__((visibility("hidden")))
-int __exec_sh(const char *path, char * const *argv, char *interparg[],
-	      char *buf, size_t bufsize)
+int __exec_sh(const char *path, char * const *argv)
 {
-	int ret, i;
+	char *interparg[2+1] = { NULL }; /* 0 IAMROOT_EXEC
+					  * 1 path
+					  * 2 NULL-terminated
+					  */
+	char buf[PATH_MAX];
+	char * const *arg;
+	int ret, argc, i;
 
 	i = 0;
-	interparg[i++] = _strncpy(buf, __getexec(), bufsize);
+	interparg[i++] = __strncpy(buf, __getexec());
 	interparg[i++] = (char *)path; /* original path as first positional
 					* argument
 					*/
@@ -587,7 +592,33 @@ int __exec_sh(const char *path, char * const *argv, char *interparg[],
 	if (ret)
 		return -1;
 
-	return i;
+	argc = 1;
+	arg = interparg;
+	while (*arg++)
+		argc++;
+	arg = argv+1; /* skip original-argv0 */
+	while (*arg++)
+		argc++;
+
+	if ((argc > 0) && (argc < ARG_MAX)) {
+		char *nargv[argc+1]; /* NULL-terminated */
+		char **narg;
+
+		narg = nargv;
+		arg = interparg;
+		while (*arg)
+			*narg++ = *arg++;
+
+		arg = argv+1; /* skip original-argv0 */
+		while (*arg)
+			*narg++ = *arg++;
+		*narg++ = NULL; /* ensure NULL-terminated */
+
+		__verbose_exec(*nargv, nargv, __environ);
+		return next_execve(*nargv, nargv, __environ);
+	}
+
+	return __set_errno(EINVAL, -1);
 }
 
 int execve(const char *path, char * const argv[], char * const envp[])
@@ -728,35 +759,5 @@ loader:
 	return __set_errno(EINVAL, -1);
 
 exec_sh:
-	ret = __exec_sh(path, argv, interparg, buf, sizeof(buf));
-	if (ret == -1)
-		return -1;
-
-	argc = 1;
-	arg = interparg;
-	while (*arg++)
-		argc++;
-	arg = argv+1; /* skip original-argv0 */
-	while (*arg++)
-		argc++;
-
-	if ((argc > 0) && (argc < ARG_MAX)) {
-		char *nargv[argc+1]; /* NULL-terminated */
-		char **narg;
-
-		narg = nargv;
-		arg = interparg;
-		while (*arg)
-			*narg++ = *arg++;
-		arg = argv+1; /* skip original-argv0 */
-		while (*arg)
-			*narg++ = *arg++;
-		*narg++ = NULL; /* ensure NULL-terminated */
-
-		__execfd();
-		__verbose_exec(*nargv, nargv, __environ);
-		return next_execve(*nargv, nargv, __environ);
-	}
-
-	return __set_errno(EINVAL, -1);
+	return __exec_sh(path, argv);
 }

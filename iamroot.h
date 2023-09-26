@@ -677,7 +677,7 @@ const char *__path();
 
 const char *__deflib();
 
-int __ldso_execv(const char *, char * const[], char * const[]);
+int __ldso_execve(const char *, char * const[], char * const[]);
 
 int __is_ldso(const char *path);
 

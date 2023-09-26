@@ -677,7 +677,7 @@ loader:
 	if (ret == 1) {
 		int err;
 
-		err = __ldso_execv(path, argv, envp);
+		err = __ldso_execve(path, argv, envp);
 		if (err == -1 && errno != EAGAIN)
 			return -1;
 	}

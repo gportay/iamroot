@@ -2645,7 +2645,7 @@ static int __ldso_verify(const char *path)
 }
 
 __attribute__((visibility("hidden")))
-int __ldso_execv(const char *path, char * const argv[], char * const envp[])
+int __ldso_execve(const char *path, char * const argv[], char * const envp[])
 {
 	int ret;
 	(void)path;

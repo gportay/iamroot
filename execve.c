@@ -563,6 +563,10 @@ int __exec_sh(const char *path, char * const *argv, char *interparg[],
 					*/
 	interparg[i] = NULL; /* ensure NULL-terminated */
 
+	ret = setenv("IAMROOT_VERSION", __xstr(VERSION), 1);
+	if (ret)
+		return -1;
+
 	ret = setenv("_argv0", *argv, 1);
 	if (ret)
 		return -1;
@@ -701,10 +705,6 @@ exec_sh:
 		return -1;
 
 execve:
-	ret = setenv("IAMROOT_VERSION", __xstr(VERSION), 1);
-	if (ret)
-		return -1;
-
 	argc = 1;
 	arg = interparg;
 	while (*arg++)

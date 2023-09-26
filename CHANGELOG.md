@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   continue to not link libc at link-time and leak [glibc] symbols
 - Replace the `exec.sh`'s environment variables `argv0`, `ld_preload` and
   `ld_library_path` by `_argv0`, `_preload` and `_library_path`
+- Restrict the environment variable `IAMROOT_VERSION` to the script `exec.sh`
 
 ### Fixed
 

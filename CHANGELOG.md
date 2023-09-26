@@ -25,6 +25,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   32-bit architectures ([glibc] on x86, ARM and ARM hard-float)
 - Fix the segmentation fault if the [dynamic loader][ld.so(8)] is run with no
   argument from within a chroot environment
+- Fix the no-doing environment functions in [glibc] world by setting a bare
+  minimal environment instead of `__environ` to run the script `exec.sh`
 
 ## [v13] - 2023-10-11
 

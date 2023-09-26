@@ -17,6 +17,14 @@
 
 #include "iamroot.h"
 
+extern int __ldso_posix_spawn(pid_t *,
+			      const char *,
+			      const posix_spawn_file_actions_t *,
+			      const posix_spawnattr_t *,
+			      char * const[],
+			      char * const[]);
+
+
 int (*sym)(pid_t *, const char *, const posix_spawn_file_actions_t *,
 		   const posix_spawnattr_t *, char * const [], char * const []);
 
@@ -123,12 +131,20 @@ int posix_spawn(pid_t *pid, const char *path,
 	program = hashbangbuf;
 
 loader:
-	/*
-	 * Run the dynamic loader directly
-	 */
+	/* It is the dynamic loader */
 	ret = __is_ldso(__basename(path));
 	if (ret == -1)
 		return -1;
+	/* Try to run the dynamic loader internaly... */
+	if (ret == 1) {
+		int err;
+
+		err = __ldso_posix_spawn(pid, buf, file_actions, attrp, argv,
+					 envp);
+		if (err == -1 && errno != EAGAIN)
+			return -1;
+	}
+	/* ... or run it directly! */
 	if (ret == 1) {
 		__execfd();
 		__verbose_exec(buf, argv, envp);

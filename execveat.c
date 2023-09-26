@@ -16,6 +16,8 @@
 
 #include "iamroot.h"
 
+extern int __ldso_execveat(int, const char *, char * const[], char * const[]);
+
 static int (*sym)(int, const char *, char * const[], char * const[], int);
 
 __attribute__((visibility("hidden")))
@@ -117,12 +119,19 @@ int execveat(int dfd, const char *path, char * const argv[],
 	program = hashbangbuf;
 
 loader:
-	/*
-	 * Run the dynamic loader directly
-	 */
+	/* It is the dynamic loader */
 	ret = __is_ldso(__basename(path));
 	if (ret == -1)
 		return -1;
+	/* Try to run the dynamic loader internaly... */
+	if (ret == 1) {
+		int err;
+
+		err = __ldso_execveat(dfd, path, argv, envp);
+		if (err == -1 && errno != EAGAIN)
+			return -1;
+	}
+	/* ... or run it directly! */
 	if (ret == 1) {
 		__execfd();
 		__verbose_exec(buf, argv, envp);

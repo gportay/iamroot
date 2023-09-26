@@ -17,6 +17,7 @@
 #include <link.h>
 #include <elf.h>
 #include <regex.h>
+#include <spawn.h>
 
 #include "iamroot.h"
 
@@ -2694,4 +2695,33 @@ int __ldso_execve(const char *path, char * const argv[], char * const envp[])
 
 exit:
 	return __set_errno(EAGAIN, -1);
+}
+
+__attribute__((visibility("hidden")))
+int __ldso_execveat(int dfd, const char *path, char * const argv[],
+		    char * const envp[])
+{
+	(void)dfd;
+	(void)path;
+	(void)argv;
+	(void)envp;
+
+	return __set_errno(ENOSYS, -1);
+}
+__attribute__((visibility("hidden")))
+int __ldso_posix_spawn(pid_t *pid,
+		       const char *path,
+		       const posix_spawn_file_actions_t *file_actions,
+		       const posix_spawnattr_t *attrp,
+		       char * const argv[],
+		       char * const envp[])
+{
+	(void)pid;
+	(void)path;
+	(void)file_actions;
+	(void)attrp;
+	(void)argv;
+	(void)envp;
+
+	return __set_errno(ENOSYS, -1);
 }

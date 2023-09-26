@@ -34,6 +34,7 @@ typedef struct {
 
 extern int next_open(const char *, int, mode_t);
 extern int next_fstatat(int, const char *, struct stat *, int);
+extern int __ldso_execve(const char *, char * const[], char * const[]);
 
 #ifdef __linux__
 static int __secure()

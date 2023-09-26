@@ -155,15 +155,43 @@ loader:
 	ret = __ldso(program, argv, loaderbuf, sizeof(loaderbuf), interparg);
 	if ((ret == -1) && (errno != ENOEXEC))
 		return -1;
-	if (ret != -1)
-		goto posix_spawn;
+	if (ret == -1)
+		goto exec_sh;
+
+	argc = 1;
+	arg = interparg;
+	while (*arg++)
+		argc++;
+	arg = argv+1; /* skip original-argv0 */
+	while (*arg++)
+		argc++;
+
+	if ((argc > 0) && (argc < ARG_MAX)) {
+		char *nargv[argc+1]; /* NULL-terminated */
+		char **narg;
+
+		narg = nargv;
+		arg = interparg;
+		while (*arg)
+			*narg++ = *arg++;
+		arg = argv+1; /* skip original-argv0 */
+		while (*arg)
+			*narg++ = *arg++;
+		*narg++ = NULL; /* ensure NULL-terminated */
+
+		__execfd();
+		__verbose_exec(*nargv, nargv, __environ);
+		return next_posix_spawn(pid, *nargv, file_actions, attrp,
+					nargv, __environ);
+	}
+
+	return __set_errno(EINVAL, -1);
 
 exec_sh:
 	ret = __exec_sh(path, argv, interparg, buf, sizeof(buf));
 	if (ret == -1)
 		return -1;
 
-posix_spawn:
 	argc = 1;
 	arg = interparg;
 	while (*arg++)

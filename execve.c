@@ -555,15 +555,42 @@ int __hashbang(const char *path, char * const argv[], char *interp,
 }
 
 __attribute__((visibility("hidden")))
+char *__env(const char *name)
+{
+	char **env = __environ;
+
+	if (!env)
+		return NULL;
+
+	while (*env) {
+		if (__strleq(*env, name))
+			return *env;
+		env++;
+	}
+
+	return NULL;
+}
+
+__attribute__((visibility("hidden")))
 int __exec_sh(const char *path, char * const *argv)
 {
 	char *interparg[2+1] = { NULL }; /* 0 IAMROOT_EXEC
 					  * 1 path
 					  * 2 NULL-terminated
 					  */
+#ifdef __GLIBC__
+	char *envp[3+1] = { NULL }; /* 0 _argv0
+				     * 1 IAMROOT_VERSION
+				     * 2 IAMROOT_ROOT
+				     * 3 IAMROOT_DEBUG
+				     */
+#endif
 	char buf[PATH_MAX];
 	char * const *arg;
-	int ret, argc, i;
+	int argc, i;
+#ifdef __GLIBC__
+	int ret;
+#endif
 
 	i = 0;
 	interparg[i++] = __strncpy(buf, __getexec());
@@ -572,29 +599,32 @@ int __exec_sh(const char *path, char * const *argv)
 					*/
 	interparg[i] = NULL; /* ensure NULL-terminated */
 
-	ret = setenv("IAMROOT_VERSION", __xstr(VERSION), 1);
-	if (ret)
+#ifdef __GLIBC__
+	/* FIXME: For a reason that is still unknown, in the GNU C Library
+	 * world, the three environment functions putenv(), setenv() and
+	 * unsetenv() do nothing in the execve() context call: the two global
+	 * variables environ and __environ remain unchanged. However, the
+	 * function clearenv() clears the environ and set the two globals to
+	 * NULL.
+	 *
+	 * It is mandatory to reset the environment variable LD_PRELOAD before
+	 * calling the script exec.sh from the host.
+	 */
+	/* Clear the environment... */
+	ret = clearenv();
+	if (ret == -1)
 		return -1;
+	if (__environ == NULL)
+		return __set_errno(EINVAL, -1);
 
-	ret = setenv("_argv0", *argv, 1);
-	if (ret)
-		return -1;
-
-	ret = setenv("_preload", getenv("LD_PRELOAD") ?: "", 1);
-	if (ret)
-		return -1;
-
-	ret = setenv("_library_path", getenv("LD_LIBRARY_PATH") ?: "", 1);
-	if (ret)
-		return -1;
-
-	ret = unsetenv("LD_PRELOAD");
-	if (ret)
-		return -1;
-
-	ret = unsetenv("LD_LIBRARY_PATH");
-	if (ret)
-		return -1;
+	/* ... and copy a bare minimal environment to run the script exec.sh */
+	i = 0;
+	envp[i++] = "IAMROOT_VERSION=" __xstr(VERSION);
+	envp[i++] = __env("IAMROOT_ROOT=");
+	envp[i++] = __env("IAMROOT_DEBUG=");
+	envp[i++] = NULL;
+	__environ = envp;
+#endif
 
 	argc = 1;
 	arg = interparg;

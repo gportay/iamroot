@@ -21,6 +21,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the copying back of the generated temporary filename to the template for
   the functions `mkdtemp()`, `mkostemp()`, `mkostempsat()`, `mkostemps()`,
   `mkstemp()`, `mkstemps()` and `mktemp()`
+- Fix the no-doing environment functions in [glibc] world by clearing and
+  copying a bare minimal environment to run the script `exec.sh`
 
 ## [v12] - 2023-09-15
 

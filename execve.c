@@ -423,12 +423,14 @@ void __verbose_exec(const char *path, char * const argv[], char * const envp[])
 		dprintf(fd, "running");
 
 		p = envp;
-		while (*p)
-			dprintf(fd, " \"%s\"", *p++);
+		if (p)
+			while (*p)
+				dprintf(fd, " \"%s\"", *p++);
 
 		p = argv;
-		while (*p)
-			dprintf(fd, " \"%s\"", *p++);
+		if (p)
+			while (*p)
+				dprintf(fd, " \"%s\"", *p++);
 		dprintf(fd, "\n");
 	} else {
 		char * const *p;
@@ -436,16 +438,18 @@ void __verbose_exec(const char *path, char * const argv[], char * const envp[])
 		dprintf(fd, "execve(path: '%s', argv: {", path);
 
 		p = argv;
-		while (*p)
-			dprintf(fd, " '%s',", *p++);
+		if (p)
+			while (*p)
+				dprintf(fd, " '%s',", *p++);
 		dprintf(fd, " NULL }, ");
 		if (debug < 5) {
 			dprintf(fd, "envp: %p)\n", envp);
 		} else {
 			dprintf(fd, "envp: %p {", envp);
 			p = envp;
-			while (*p)
-				dprintf(fd, " %s", *p++);
+			if (p)
+				while (*p)
+					dprintf(fd, " %s", *p++);
 			dprintf(fd, " }\n");
 		}
 	}

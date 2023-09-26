@@ -2108,7 +2108,7 @@ __attribute__((visibility("hidden")))
 int __ldso(const char *path, char * const argv[], char *interp,
 	   size_t interpsiz, char *interparg[])
 {
-	int i, j, has_argv0 = 1, has_preload = 0, has_library_path = 0,
+	int i, j, has_argv0 = 0, has_preload = 0, has_library_path = 0,
 	    has_inhibit_rpath = 0, has_inhibit_cache = 0, shift = 1;
 	char *argv0, *inhibit_rpath, *ld_library_path, *ld_preload;
 	int fd, abi = 0, err = -1, ret = -1;
@@ -2300,7 +2300,7 @@ int __ldso(const char *path, char * const argv[], char *interp,
 		interparg[i++] = "--library-path";
 		interparg[i++] = ld_library_path;
 	/* Or set LD_LIBRARY_PATH if --library-path is not supported */
-	} else if (!ld_library_path) {
+	} else if (ld_library_path) {
 		err = setenv("LD_LIBRARY_PATH", ld_library_path, 1);
 		if (err == -1)
 			goto close;

@@ -99,19 +99,6 @@ extern "C" {
 #define __strleq(s1, s2) (__strlcmp((s1), (s2)) == 0)
 #define __strneq(s1, s2) (__strncmp((s1), (s2)) == 0)
 
-/*
- * According to man execve(2):
- *
- * Interpreter scripts
- *
- * The kernel imposes a maximum length on the text that follows the "#!"
- * characters at the start of a script; characters beyond the limit are
- * ignored. Before Linux 5.1, the limit is 127 characters. Since Linux 5.1, the
- * limit is 255 characters.
- */
-/* See https://www.in-ulm.de/~mascheck/various/shebang/#results */
-#define HASHBANG_MAX NAME_MAX
-
 #ifdef __OpenBSD__
 char *strchrnul(const char *, int);
 #endif

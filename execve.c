@@ -515,7 +515,19 @@ int execve(const char *path, char * const argv[], char * const envp[])
 					   * 14 script.sh
 					   * 15 NULL-terminated
 					   */
-	char hashbang[HASHBANG_MAX];
+
+	/*
+	 * According to man execve(2):
+	 *
+	 * Interpreter scripts
+	 *
+	 * The kernel imposes a maximum length on the text that follows the
+	 * "#!" characters at the start of a script; characters beyond the
+	 * limit are ignored. Before Linux 5.1, the limit is 127 characters.
+	 * Since Linux 5.1, the limit is 255 characters.
+	 */
+	/* See https://www.in-ulm.de/~mascheck/various/shebang/#results */
+	char hashbang[NAME_MAX];
 	char hashbangbuf[PATH_MAX];
 	char loaderbuf[PATH_MAX];
 	char *program = NULL;

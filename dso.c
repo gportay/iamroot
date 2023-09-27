@@ -1970,7 +1970,7 @@ static int __getld_linux_so_callback(const char *needed, void *user)
 	if (__strneq(needed, "ld-linux") == 0)
 		return 0;
 
-	_strncpy(interp, needed, HASHBANG_MAX);
+	_strncpy(interp, needed, NAME_MAX);
 
 	return 1;
 }
@@ -2011,7 +2011,7 @@ static ssize_t __getld_linux_so(int fd, char *buf, size_t bufsize)
 static ssize_t __felf_deflib(int fd, char *buf, size_t bufsize)
 {
 	const int errno_save = errno;
-	char interp[HASHBANG_MAX];
+	char interp[NAME_MAX];
 	char ldso[NAME_MAX];
 	const char *deflib;
 	int err, abi = 0;
@@ -2113,7 +2113,7 @@ int __ldso(const char *path, char * const argv[], char *interp,
 	    has_inhibit_rpath = 0, has_inhibit_cache = 0, shift = 1;
 	char *argv0, *inhibit_rpath, *ld_library_path, *ld_preload;
 	int fd, abi = 0, err = -1, ret = -1;
-	char buf[HASHBANG_MAX];
+	char buf[NAME_MAX];
 	char ldso[NAME_MAX];
 	char * const *arg;
 	Elf64_Ehdr ehdr;
@@ -2533,7 +2533,7 @@ static int __ld_trace_loader_objects_executable(const char *path)
 	struct __ld_trace_loader_objects_needed_context ctx;
 	char *exec_rpath, *exec_runpath, *ld_library_path;
 	const size_t map_start = 0;
-	char interp[HASHBANG_MAX];
+	char interp[NAME_MAX];
 	char deflib[PATH_MAX];
 	char ldso[NAME_MAX];
 	char buf[PATH_MAX];
@@ -2630,7 +2630,7 @@ static int __ld_trace_loader_objects_exec(const char *path)
 
 static int __ldso_verify(const char *path)
 {
-	char interp[HASHBANG_MAX];
+	char interp[NAME_MAX];
 	char buf[PATH_MAX];
 	ssize_t siz;
 

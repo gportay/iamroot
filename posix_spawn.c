@@ -108,14 +108,15 @@ int posix_spawn(pid_t *pid, const char *path,
 					envp);
 	}
 
-	ret = __hashbang(program, argv, hashbang, sizeof(hashbang), interparg);
+	ret = __interpreter_script(program, argv, hashbang, sizeof(hashbang),
+				   interparg);
 	if ((ret == -1) && (errno != ENOEXEC))
 		return -1;
 	if (ret < 1)
 		goto loader;
 
-	/* FIXME: __hashbang() should do the following; it must have original
-	 * and resolved path. */
+	/* FIXME: __interpreter_scrtip() should do the following; it must have
+	 * original and resolved path. */
 	interparg[ret-1] = (char *)path; /* original program path as first
 					  * positional argument */
 

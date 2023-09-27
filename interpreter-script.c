@@ -115,8 +115,8 @@ close:
 }
 
 __attribute__((visibility("hidden")))
-int __hashbang(const char *path, char * const argv[], char *interp,
-	       size_t interpsiz, char *interparg[])
+int __interpreter_script(const char *path, char * const argv[], char *interp,
+			 size_t interpsiz, char *interparg[])
 {
 	ssize_t siz;
 	size_t len;

@@ -153,7 +153,8 @@ Optional dependencies for libsecret
 installing pinentry...
 Optional dependencies for pinentry
     gtk2: gtk2 backend
-    qt5-base: qt backend
+    qt5-x11extras: qt backend
+    kwayland: qt backend
     gcr: gnome3 backend
 installing sqlite...
 installing gnupg...

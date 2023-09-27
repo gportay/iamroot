@@ -580,10 +580,6 @@ rootfs:
 	install -m644 passwd $(DESTDIR)/etc/
 	install -m644 group  $(DESTDIR)/etc/
 	install -m600 shadow $(DESTDIR)/etc/
-ifneq ($(OS),Linux)
-	install -d -m755 $(DESTDIR)/usr/lib/nls/msg/$$LANG/
-	gencat $(DESTDIR)/usr/lib/nls/msg/$$LANG/test.cat test.msg
-endif
 	install -d -m755 $(DESTDIR)/usr/bin
 	for i in *.c; do \
 		test -e $${i%.c} || continue; \
@@ -655,6 +651,10 @@ ifeq ($(OS),FreeBSD)
 endif
 ifeq ($(OS),GNU/Linux)
 	ln -sf /run $(DESTDIR)/var/run
+endif
+ifneq ($(OS),Linux)
+	install -d -m755 $(DESTDIR)/usr/lib/nls/msg/$$LANG/
+	gencat $(DESTDIR)/usr/lib/nls/msg/$$LANG/test.cat test.msg
 endif
 
 .PHONY: clean

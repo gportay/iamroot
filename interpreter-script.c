@@ -15,7 +15,8 @@
 
 extern int next_open(const char *, int, mode_t);
 
-static ssize_t __gethashbang(const char *path, char *buf, size_t bufsize)
+static ssize_t __interpreter_script_hashbang(const char *path, char *buf,
+					     size_t bufsize)
 {
 	ssize_t ret;
 	char *d, *s;
@@ -124,7 +125,7 @@ int __interpreter_script(const char *path, char * const argv[], char *interp,
 	(void)argv;
 
 	/* Get the interpeter directive stored after the hashbang */
-	siz = __gethashbang(path, interp, interpsiz);
+	siz = __interpreter_script_hashbang(path, interp, interpsiz);
 	if (siz < 1)
 		return siz;
 

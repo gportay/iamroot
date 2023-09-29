@@ -745,6 +745,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 {
 	int is_atrootfd = 0;
 	const char *root;
+	ssize_t ret;
 	size_t len;
 
 	if (!path)
@@ -774,7 +775,10 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		__notice("%s: ignoring path resolution '%s'\n", __func__,
 			 path);
 		_strncpy(buf, "/", bufsize);
-		goto exit;
+		ret = strnlen(buf, bufsize);
+		if ((size_t)ret != __strnlen("/"))
+			return __set_errno(ENAMETOOLONG, -1);
+		return ret;
 	}
 
 	/*
@@ -784,7 +788,10 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 	 */
 	if (ignore(path)) {
 		_strncpy(buf, path, bufsize);
-		goto exit;
+		ret = strnlen(buf, bufsize);
+		if ((size_t)ret != __strlen(path))
+			return __set_errno(ENAMETOOLONG, -1);
+		return ret;
 	}
 
 	/* Get the root directory and its length */
@@ -810,6 +817,8 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		}
 
 		n = _snprintf(buf, bufsize, "%s%s", root, path);
+		if (n == -1 && n == ENOSPC)
+			return __set_errno(ENAMETOOLONG, -1);
 		if (n == -1)
 			return -1;
 	/*
@@ -836,7 +845,10 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 			__warning("%i: ignore non absolute path '%s'\n", dfd,
 				  dirbuf);
 			_strncpy(buf, path, bufsize);
-			goto exit;
+			ret = strnlen(buf, bufsize);
+			if ((size_t)ret != __strlen(path))
+				return __set_errno(ENAMETOOLONG, -1);
+			return ret;
 		}
 
 		/*
@@ -844,6 +856,8 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		 */
 		is_atrootfd = streq(root, dirbuf);
 		n = _snprintf(buf, bufsize, "%s/%s", dirbuf, path);
+		if (n == 1 && n == ENOSPC)
+			return __set_errno(ENAMETOOLONG, -1);
 		if (n == -1)
 			return -1;
 	/*
@@ -883,7 +897,6 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 	if (*root && __strleq(buf, root) && ignore(buf+len))
 		__striprootdir(buf);
 
-exit:
 	return strnlen(buf, bufsize);
 }
 

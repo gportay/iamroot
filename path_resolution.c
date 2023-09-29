@@ -810,7 +810,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		}
 
 		n = _snprintf(buf, bufsize, "%s%s", root, path);
-		if (n < 0)
+		if (n == -1)
 			return -1;
 	/*
 	 * The path is a relative to dfd.
@@ -844,7 +844,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		 */
 		is_atrootfd = streq(root, dirbuf);
 		n = _snprintf(buf, bufsize, "%s/%s", dirbuf, path);
-		if (n < 0)
+		if (n == -1)
 			return -1;
 	/*
 	 * The path is a relative path to cwd.

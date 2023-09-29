@@ -355,7 +355,7 @@ __ldso_cache (const char *soname, char *buf, size_t bufsize)
             root = "";
 
           int n = _snprintf (buf, bufsize, "%s%s", root, path);
-          if (n < 0)
+          if (n == -1)
             goto munmap;
 
           ret = n;

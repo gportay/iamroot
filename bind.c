@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
@@ -43,6 +44,19 @@ int bind(int socket, const struct sockaddr *addr, socklen_t addrlen)
 
 	siz = path_resolution(AT_FDCWD, addrun->sun_path, buf.sun_path,
 			      sizeof(buf.sun_path), 0);
+	if (siz == -1 && errno == ENAMETOOLONG) {
+		char *path;
+
+		path = getenv("IAMROOT_PATH_RESOLUTION_AF_UNIX");
+		if (path) {
+			int n = _snprintf(buf.sun_path, sizeof(buf.sun_path),
+					  "%s/%s", path, buf.sun_path);
+			if (n == -1)
+				return -1;
+
+			siz = n;
+		}
+	}
 	if (siz == -1)
 		goto exit;
 

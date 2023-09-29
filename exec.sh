@@ -5,6 +5,9 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
 
+unset LD_PRELOAD
+unset LD_LIBRARY_PATH
+
 log() {
 	level="$1"
 	shift

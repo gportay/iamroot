@@ -23,10 +23,10 @@ __attribute__((visibility("hidden")))
 int __setumask(mode_t mask)
 {
 	char buf[4];
-	int ret;
+	int n;
 
-	ret = _snprintf(buf, sizeof(buf), "%o", mask);
-	if (ret == -1)
+	n = _snprintf(buf, sizeof(buf), "%o", mask);
+	if (n == -1)
 		return -1;
 
 	return setenv("IAMROOT_UMASK", buf, 1);

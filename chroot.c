@@ -58,10 +58,10 @@ __attribute__((visibility("hidden")))
 int __setenv(const char *name, const char *value, int overwrite)
 {
 	char buf[BUFSIZ];
-	int ret;
+	int n;
 
-	ret = _snprintf(buf, sizeof(buf), "IAMROOT_%s", name);
-	if (ret == -1)
+	n = _snprintf(buf, sizeof(buf), "IAMROOT_%s", name);
+	if (n == -1)
 		return -1;
 
 	return setenv(buf, value, overwrite);

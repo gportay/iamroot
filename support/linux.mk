@@ -89,12 +89,13 @@ vars:
 
 define libs
 $(strip libiamroot.so \
-	$(if $(findstring :$(2):,:x86_64:                        ),$(if $(findstring :$(1):,:musl:),x86_64/libiamroot-musl-x86_64.so.1  ,x86_64/libiamroot-linux-x86-64.so.2        ), \
-	$(if $(findstring :$(2):,:armhf: :arm: :armv7hl: :armv7h:),$(if $(findstring :$(1):,:musl:),armhf/libiamroot-musl-armhf.so.1    ,armhf/libiamroot-linux-armhf.so.3          ), \
-	$(if $(findstring :$(2):,:x86: :i386: :i686:             ),$(if $(findstring :$(1):,:musl:),i686/libiamroot-musl-i386.so.1      ,i686/libiamroot-linux.so.2                 ), \
-	$(if $(findstring :$(2):,:aarch64:                       ),$(if $(findstring :$(1):,:musl:),aarch64/libiamroot-musl-aarch64.so.1,aarch64/libiamroot-linux-aarch64.so.1      ), \
-	$(if $(findstring :$(2):,:riscv64:                       ),$(if $(findstring :$(1):,:musl:),riscv64/libiamroot-musl-riscv64.so.1,riscv64/libiamroot-linux-riscv64-lp64d.so.1), \
-	$(error $(1)-$(2): No such library)))))) \
+	$(if $(findstring :$(2):,:x86_64:                  ),$(if $(findstring :$(1):,:musl:),x86_64/libiamroot-musl-x86_64.so.1  ,x86_64/libiamroot-linux-x86-64.so.2        ), \
+	$(if $(findstring :$(2):,:arm:                     ),$(if $(findstring :$(1):,:musl:),arm/libiamroot-musl-arm.so.1        ,arm/libiamroot-linux.so.3                  ), \
+	$(if $(findstring :$(2):,:armhf: :armv7hl: :armv7h:),$(if $(findstring :$(1):,:musl:),armhf/libiamroot-musl-armhf.so.1    ,armhf/libiamroot-linux-armhf.so.3          ), \
+	$(if $(findstring :$(2):,:x86: :i386: :i686:       ),$(if $(findstring :$(1):,:musl:),i686/libiamroot-musl-i386.so.1      ,i686/libiamroot-linux.so.2                 ), \
+	$(if $(findstring :$(2):,:aarch64:                 ),$(if $(findstring :$(1):,:musl:),aarch64/libiamroot-musl-aarch64.so.1,aarch64/libiamroot-linux-aarch64.so.1      ), \
+	$(if $(findstring :$(2):,:riscv64:                 ),$(if $(findstring :$(1):,:musl:),riscv64/libiamroot-musl-riscv64.so.1,riscv64/libiamroot-linux-riscv64-lp64d.so.1), \
+	$(error $(1)-$(2): No such library))))))) \
 )
 endef
 
@@ -539,6 +540,11 @@ endif
 ifneq ($(shell command -v musl-gcc 2>/dev/null),)
 $(O)-x86_64-musl-x86_64/libiamroot.so: override CC = musl-gcc
 $(eval $(call libiamroot_so,x86_64,musl-x86_64,1))
+endif
+
+ifneq ($(shell command -v arm-linux-musleabi-gcc 2>/dev/null),)
+$(O)-arm-musl-arm/libiamroot.so: override CC = arm-linux-musleabi-gcc
+$(eval $(call libiamroot_so,arm,musl-arm,1))
 endif
 
 ifneq ($(shell command -v arm-linux-musleabihf-gcc 2>/dev/null),)

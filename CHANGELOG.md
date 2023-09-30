@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Add the environment variable `IAMROOT_PATH_RESOLUTION_AF_UNIX` to reduce the
   path resolution of an in-chroot Unix socket if it exceeds the limitation of
   108 characters
+- Chroot to a musl arm world; untested
 
 ### Changed
 

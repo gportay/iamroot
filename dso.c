@@ -1487,6 +1487,13 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 			goto access;
 		}	
 
+		/* It is an ARM ELF or IAMROOT_LIB_MUSL_ARM_1 */
+		if (__is_arm(ehdr, ldso, abi) ||
+		    (streq(ldso, "musl-arm") && abi == 1)) {
+			ret = __xstr(PREFIX)"/lib/iamroot/arm/libiamroot-musl-arm.so.1";
+			goto access;
+		}
+
 		/* It is an ARM ELF or IAMROOT_LIB_MUSL_ARMHF_1 */
 		if (__is_arm(ehdr, ldso, abi) ||
 		    (streq(ldso, "musl-armhf") && abi == 1)) {

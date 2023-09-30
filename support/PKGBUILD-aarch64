@@ -37,8 +37,8 @@ prepare() {
 
 build() {
 	cd "$srcdir/$pkgname"
-	make CFLAGS= PREFIX= aarch64/libiamroot-linux-aarch64.so.1
-	make CFLAGS= PREFIX= aarch64/libiamroot-musl-aarch64.so.1
+	make CFLAGS= PREFIX=/usr aarch64/libiamroot-linux-aarch64.so.1
+	make CFLAGS= PREFIX=/usr aarch64/libiamroot-musl-aarch64.so.1
 }
 
 check() {

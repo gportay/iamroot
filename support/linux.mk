@@ -89,7 +89,7 @@ vars:
 
 define libs
 $(strip libiamroot.so \
-	$(if $(findstring :$(2):,:x86_64:                  ),$(if $(findstring :$(1):,:musl:),x86_64/libiamroot-musl-x86_64.so.1  ,x86_64/libiamroot-linux-x86-64.so.2        ), \
+	$(if $(findstring :$(2):,:x86_64: :amd64:          ),$(if $(findstring :$(1):,:musl:),x86_64/libiamroot-musl-x86_64.so.1  ,x86_64/libiamroot-linux-x86-64.so.2        ), \
 	$(if $(findstring :$(2):,:arm:                     ),$(if $(findstring :$(1):,:musl:),arm/libiamroot-musl-arm.so.1        ,arm/libiamroot-linux.so.3                  ), \
 	$(if $(findstring :$(2):,:armhf: :armv7hl: :armv7h:),$(if $(findstring :$(1):,:musl:),armhf/libiamroot-musl-armhf.so.1    ,armhf/libiamroot-linux-armhf.so.3          ), \
 	$(if $(findstring :$(2):,:x86: :i386: :i686:       ),$(if $(findstring :$(1):,:musl:),i686/libiamroot-musl-i386.so.1      ,i686/libiamroot-linux.so.2                 ), \
@@ -185,7 +185,7 @@ endef
 
 define debootstrap-rootfs
 .PRECIOUS: $(1)-$(2)-$(3)-rootfs/bin/sh
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB = /lib/$(1)-linux-gnu:/lib:/usr/lib/$(1)-linux-gnu:/usr/lib
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB = /lib/x86_64-linux-gnu:/lib:/usr/lib/x64_64-linux-gnu:/usr/lib
 # chfn: PAM: Critical error - immediate abort
 # adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn
@@ -202,7 +202,7 @@ $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/bash,debootstrap --keep-debootstr
 $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/sh
 $(1)-$(2)-$(3)-rootfs/bin/sh: | $(call libs,linux,$(1))
 	mkdir -p $(1)-$(2)-$(3)-rootfs
-	bash ish -c "debootstrap --keep-debootstrap-dir $$(DEBOOTSTRAPFLAGS) $(3) $(1)-$(2)-$(3)-rootfs $$(DEBOOTSTRAP_MIRROR) $$(DEBOOTSTRAP_SCRIPT)"
+	bash ish -c "debootstrap --keep-debootstrap-dir --arch=$(1) $$(DEBOOTSTRAPFLAGS) $(3) $(1)-$(2)-$(3)-rootfs $$(DEBOOTSTRAP_MIRROR) $$(DEBOOTSTRAP_SCRIPT)"
 	cat $(1)-$(2)-$(3)-rootfs/debootstrap/debootstrap.log
 	rm -Rf $(1)-$(2)-$(3)-rootfs/debootstrap/
 
@@ -675,65 +675,65 @@ $(eval $(call pacstrap-rootfs,x86_64,manjaro-stable,base))
 endif
 
 ifneq ($(shell command -v debootstrap 2>/dev/null),)
-rootfs: x86_64-debian-rootfs
+rootfs: amd64-debian-rootfs
 
-.PHONY: x86_64-debian-rootfs
-x86_64-debian-rootfs: x86_64-debian-oldoldstable-rootfs
-x86_64-debian-rootfs: x86_64-debian-oldstable-rootfs
-x86_64-debian-rootfs: x86_64-debian-stable-rootfs
-x86_64-debian-rootfs: x86_64-debian-testing-rootfs
-x86_64-debian-rootfs: x86_64-debian-unstable-rootfs
+.PHONY: amd64-debian-rootfs
+amd64-debian-rootfs: amd64-debian-oldoldstable-rootfs
+amd64-debian-rootfs: amd64-debian-oldstable-rootfs
+amd64-debian-rootfs: amd64-debian-stable-rootfs
+amd64-debian-rootfs: amd64-debian-testing-rootfs
+amd64-debian-rootfs: amd64-debian-unstable-rootfs
 
-$(eval $(call debootstrap-rootfs,x86_64,debian,oldoldstable))
-$(eval $(call debootstrap-rootfs,x86_64,debian,oldstable))
-$(eval $(call debootstrap-rootfs,x86_64,debian,stable))
-$(eval $(call debootstrap-rootfs,x86_64,debian,testing))
-$(eval $(call debootstrap-rootfs,x86_64,debian,unstable))
-x86_64-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
-x86_64-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
+$(eval $(call debootstrap-rootfs,amd64,debian,oldoldstable))
+$(eval $(call debootstrap-rootfs,amd64,debian,oldstable))
+$(eval $(call debootstrap-rootfs,amd64,debian,stable))
+$(eval $(call debootstrap-rootfs,amd64,debian,testing))
+$(eval $(call debootstrap-rootfs,amd64,debian,unstable))
+amd64-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+amd64-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 
-.PHONY: x86_64-ubuntu-rootfs
-x86_64-ubuntu-rootfs: x86_64-ubuntu-trusty-rootfs
-x86_64-ubuntu-rootfs: x86_64-ubuntu-xenial-rootfs
-x86_64-ubuntu-rootfs: x86_64-ubuntu-bionic-rootfs
-x86_64-ubuntu-rootfs: x86_64-ubuntu-focal-rootfs
-x86_64-ubuntu-rootfs: x86_64-ubuntu-groovy-rootfs
-x86_64-ubuntu-rootfs: x86_64-ubuntu-hirsute-rootfs
-x86_64-ubuntu-rootfs: x86_64-ubuntu-impish-rootfs
-x86_64-ubuntu-rootfs: x86_64-ubuntu-jammy-rootfs
-x86_64-ubuntu-rootfs: x86_64-ubuntu-kinetic-rootfs
-x86_64-ubuntu-rootfs: x86_64-ubuntu-lunar-rootfs
-x86_64-ubuntu-rootfs: x86_64-ubuntu-mantic-rootfs
+.PHONY: amd64-ubuntu-rootfs
+amd64-ubuntu-rootfs: amd64-ubuntu-trusty-rootfs
+amd64-ubuntu-rootfs: amd64-ubuntu-xenial-rootfs
+amd64-ubuntu-rootfs: amd64-ubuntu-bionic-rootfs
+amd64-ubuntu-rootfs: amd64-ubuntu-focal-rootfs
+amd64-ubuntu-rootfs: amd64-ubuntu-groovy-rootfs
+amd64-ubuntu-rootfs: amd64-ubuntu-hirsute-rootfs
+amd64-ubuntu-rootfs: amd64-ubuntu-impish-rootfs
+amd64-ubuntu-rootfs: amd64-ubuntu-jammy-rootfs
+amd64-ubuntu-rootfs: amd64-ubuntu-kinetic-rootfs
+amd64-ubuntu-rootfs: amd64-ubuntu-lunar-rootfs
+amd64-ubuntu-rootfs: amd64-ubuntu-mantic-rootfs
 
-x86_64-ubuntu-trusty-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
-x86_64-ubuntu-xenial-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
-x86_64-ubuntu-bionic-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
-x86_64-ubuntu-focal-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
-x86_64-ubuntu-groovy-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://old-releases.ubuntu.com/ubuntu
-x86_64-ubuntu-hirsute-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://old-releases.ubuntu.com/ubuntu
-x86_64-ubuntu-impish-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://old-releases.ubuntu.com/ubuntu
-x86_64-ubuntu-jammy-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
-x86_64-ubuntu-kinetic-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://old-releases.ubuntu.com/ubuntu
-x86_64-ubuntu-lunar-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
-x86_64-ubuntu-mantic-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
-x86_64-ubuntu-mantic-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= gutsy
-$(eval $(call debootstrap-rootfs,x86_64,ubuntu,trusty))
-$(eval $(call debootstrap-rootfs,x86_64,ubuntu,xenial))
-$(eval $(call debootstrap-rootfs,x86_64,ubuntu,bionic))
-$(eval $(call debootstrap-rootfs,x86_64,ubuntu,focal))
-$(eval $(call debootstrap-rootfs,x86_64,ubuntu,hirsute))
-$(eval $(call debootstrap-rootfs,x86_64,ubuntu,groovy))
-$(eval $(call debootstrap-rootfs,x86_64,ubuntu,impish))
-$(eval $(call debootstrap-rootfs,x86_64,ubuntu,jammy))
-$(eval $(call debootstrap-rootfs,x86_64,ubuntu,kinetic))
-$(eval $(call debootstrap-rootfs,x86_64,ubuntu,lunar))
-$(eval $(call debootstrap-rootfs,x86_64,ubuntu,mantic))
+amd64-ubuntu-trusty-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
+amd64-ubuntu-xenial-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
+amd64-ubuntu-bionic-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
+amd64-ubuntu-focal-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
+amd64-ubuntu-groovy-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://old-releases.ubuntu.com/ubuntu
+amd64-ubuntu-hirsute-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://old-releases.ubuntu.com/ubuntu
+amd64-ubuntu-impish-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://old-releases.ubuntu.com/ubuntu
+amd64-ubuntu-jammy-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
+amd64-ubuntu-kinetic-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://old-releases.ubuntu.com/ubuntu
+amd64-ubuntu-lunar-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
+amd64-ubuntu-mantic-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
+amd64-ubuntu-mantic-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= gutsy
+$(eval $(call debootstrap-rootfs,amd64,ubuntu,trusty))
+$(eval $(call debootstrap-rootfs,amd64,ubuntu,xenial))
+$(eval $(call debootstrap-rootfs,amd64,ubuntu,bionic))
+$(eval $(call debootstrap-rootfs,amd64,ubuntu,focal))
+$(eval $(call debootstrap-rootfs,amd64,ubuntu,hirsute))
+$(eval $(call debootstrap-rootfs,amd64,ubuntu,groovy))
+$(eval $(call debootstrap-rootfs,amd64,ubuntu,impish))
+$(eval $(call debootstrap-rootfs,amd64,ubuntu,jammy))
+$(eval $(call debootstrap-rootfs,amd64,ubuntu,kinetic))
+$(eval $(call debootstrap-rootfs,amd64,ubuntu,lunar))
+$(eval $(call debootstrap-rootfs,amd64,ubuntu,mantic))
 # chmod: cannot access '/dev/tty[0-9]*': No such file or directory
 # dpkg: error processing package makedev (--configure):
 #  subprocess installed post-installation script returned error exit status 1
-x86_64-ubuntu-trusty-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|/var/lib/dpkg/info/(initscripts|initramfs-tools|makedev).postinst
-x86_64-ubuntu-xenial-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/(initramfs-tools|makedev).postinst
-x86_64-ubuntu-bionic-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/initramfs-tools.postinst
+amd64-ubuntu-trusty-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|/var/lib/dpkg/info/(initscripts|initramfs-tools|makedev).postinst
+amd64-ubuntu-xenial-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/(initramfs-tools|makedev).postinst
+amd64-ubuntu-bionic-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/initramfs-tools.postinst
 # Processing triggers for libc-bin ...
 # dpkg: cycle found while processing triggers:
 #  chain of packages whose triggers are or may be responsible:
@@ -744,43 +744,43 @@ x86_64-ubuntu-bionic-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-
 #  triggers looping, abandoned
 # Errors were encountered while processing:
 #  libc-bin
-x86_64-ubuntu-trusty-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
-x86_64-ubuntu-trusty-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
-x86_64-ubuntu-xenial-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
-x86_64-ubuntu-xenial-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
-x86_64-ubuntu-bionic-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
-x86_64-ubuntu-bionic-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
-x86_64-ubuntu-focal-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
-x86_64-ubuntu-focal-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
-x86_64-ubuntu-hirsute-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
-x86_64-ubuntu-hirsute-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
-x86_64-ubuntu-groovy-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
-x86_64-ubuntu-groovy-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
-x86_64-ubuntu-impish-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
-x86_64-ubuntu-impish-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
-x86_64-ubuntu-jammy-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
-x86_64-ubuntu-jammy-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
-x86_64-ubuntu-kinetic-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
-x86_64-ubuntu-kinetic-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
-x86_64-ubuntu-lunar-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
-x86_64-ubuntu-lunar-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
-x86_64-ubuntu-mantic-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
-x86_64-ubuntu-mantic-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
+amd64-ubuntu-trusty-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
+amd64-ubuntu-trusty-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
+amd64-ubuntu-xenial-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
+amd64-ubuntu-xenial-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
+amd64-ubuntu-bionic-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
+amd64-ubuntu-bionic-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
+amd64-ubuntu-focal-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
+amd64-ubuntu-focal-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
+amd64-ubuntu-hirsute-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
+amd64-ubuntu-hirsute-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
+amd64-ubuntu-groovy-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
+amd64-ubuntu-groovy-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
+amd64-ubuntu-impish-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
+amd64-ubuntu-impish-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
+amd64-ubuntu-jammy-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
+amd64-ubuntu-jammy-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
+amd64-ubuntu-kinetic-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
+amd64-ubuntu-kinetic-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
+amd64-ubuntu-lunar-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
+amd64-ubuntu-lunar-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
+amd64-ubuntu-mantic-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):LDCONFIG_NOTRIGGER
+amd64-ubuntu-mantic-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
 
-extra-rootfs: x86_64-devuan-rootfs
+extra-rootfs: amd64-devuan-rootfs
 
-.PHONY: x86_64-devuan-rootfs
-x86_64-devuan-rootfs: x86_64-devuan-chimaera-rootfs
-x86_64-devuan-rootfs: x86_64-devuan-daedalus-rootfs
+.PHONY: amd64-devuan-rootfs
+amd64-devuan-rootfs: amd64-devuan-chimaera-rootfs
+amd64-devuan-rootfs: amd64-devuan-daedalus-rootfs
 
-x86_64-devuan-chimaera-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://deb.devuan.org/merged/
-x86_64-devuan-chimaera-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= support/ceres
-x86_64-devuan-chimaera-rootfs/bin/sh: export DEBOOTSTRAPFLAGS ?= --no-check-gpg
-x86_64-devuan-daedalus-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://deb.devuan.org/merged/
-x86_64-devuan-daedalus-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= support/ceres
-x86_64-devuan-daedalus-rootfs/bin/sh: export DEBOOTSTRAPFLAGS ?= --no-check-gpg
-$(eval $(call debootstrap-rootfs,x86_64,devuan,chimaera))
-$(eval $(call debootstrap-rootfs,x86_64,devuan,daedalus))
+amd64-devuan-chimaera-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://deb.devuan.org/merged/
+amd64-devuan-chimaera-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= support/ceres
+amd64-devuan-chimaera-rootfs/bin/sh: export DEBOOTSTRAPFLAGS ?= --no-check-gpg
+amd64-devuan-daedalus-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://deb.devuan.org/merged/
+amd64-devuan-daedalus-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= support/ceres
+amd64-devuan-daedalus-rootfs/bin/sh: export DEBOOTSTRAPFLAGS ?= --no-check-gpg
+$(eval $(call debootstrap-rootfs,amd64,devuan,chimaera))
+$(eval $(call debootstrap-rootfs,amd64,devuan,daedalus))
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)
@@ -1218,62 +1218,62 @@ ifneq ($(shell command -v debootstrap 2>/dev/null),)
 support: debian-support
 
 .PHONY: debian-support
-debian-support: support/x86_64-debian-oldoldstable-rootfs.txt
-debian-support: support/x86_64-debian-oldstable-rootfs.txt
-debian-support: support/x86_64-debian-stable-rootfs.txt
-debian-support: support/x86_64-debian-testing-rootfs.txt
-debian-support: support/x86_64-debian-unstable-rootfs.txt
+debian-support: support/amd64-debian-oldoldstable-rootfs.txt
+debian-support: support/amd64-debian-oldstable-rootfs.txt
+debian-support: support/amd64-debian-stable-rootfs.txt
+debian-support: support/amd64-debian-testing-rootfs.txt
+debian-support: support/amd64-debian-unstable-rootfs.txt
 
 log: debian-log
 
 .PHONY: debian-log
-debian-log: x86_64-debian-oldoldstable-rootfs.log
-debian-log: x86_64-debian-oldstable-rootfs.log
-debian-log: x86_64-debian-stable-rootfs.log
-debian-log: x86_64-debian-testing-rootfs.log
-debian-log: x86_64-debian-unstable-rootfs.log
+debian-log: amd64-debian-oldoldstable-rootfs.log
+debian-log: amd64-debian-oldstable-rootfs.log
+debian-log: amd64-debian-stable-rootfs.log
+debian-log: amd64-debian-testing-rootfs.log
+debian-log: amd64-debian-unstable-rootfs.log
 
 support: ubuntu-support
 
 .PHONY: ubuntu-support
-ubuntu-support: support/x86_64-ubuntu-trusty-rootfs.txt
-ubuntu-support: support/x86_64-ubuntu-xenial-rootfs.txt
-ubuntu-support: support/x86_64-ubuntu-bionic-rootfs.txt
-ubuntu-support: support/x86_64-ubuntu-focal-rootfs.txt
-ubuntu-support: support/x86_64-ubuntu-hirsute-rootfs.txt
-ubuntu-support: support/x86_64-ubuntu-groovy-rootfs.txt
-ubuntu-support: support/x86_64-ubuntu-impish-rootfs.txt
-ubuntu-support: support/x86_64-ubuntu-jammy-rootfs.txt
-ubuntu-support: support/x86_64-ubuntu-kinetic-rootfs.txt
-ubuntu-support: support/x86_64-ubuntu-lunar-rootfs.txt
-ubuntu-support: support/x86_64-ubuntu-mantic-rootfs.txt
+ubuntu-support: support/amd64-ubuntu-trusty-rootfs.txt
+ubuntu-support: support/amd64-ubuntu-xenial-rootfs.txt
+ubuntu-support: support/amd64-ubuntu-bionic-rootfs.txt
+ubuntu-support: support/amd64-ubuntu-focal-rootfs.txt
+ubuntu-support: support/amd64-ubuntu-hirsute-rootfs.txt
+ubuntu-support: support/amd64-ubuntu-groovy-rootfs.txt
+ubuntu-support: support/amd64-ubuntu-impish-rootfs.txt
+ubuntu-support: support/amd64-ubuntu-jammy-rootfs.txt
+ubuntu-support: support/amd64-ubuntu-kinetic-rootfs.txt
+ubuntu-support: support/amd64-ubuntu-lunar-rootfs.txt
+ubuntu-support: support/amd64-ubuntu-mantic-rootfs.txt
 
 log: ubuntu-log
 
 .PHONY: ubuntu-log
-ubuntu-log: x86_64-ubuntu-trusty-rootfs.log
-ubuntu-log: x86_64-ubuntu-xenial-rootfs.log
-ubuntu-log: x86_64-ubuntu-bionic-rootfs.log
-ubuntu-log: x86_64-ubuntu-focal-rootfs.log
-ubuntu-log: x86_64-ubuntu-hirsute-rootfs.log
-ubuntu-log: x86_64-ubuntu-groovy-rootfs.log
-ubuntu-log: x86_64-ubuntu-impish-rootfs.log
-ubuntu-log: x86_64-ubuntu-jammy-rootfs.log
-ubuntu-log: x86_64-ubuntu-kinetic-rootfs.log
-ubuntu-log: x86_64-ubuntu-lunar-rootfs.log
-ubuntu-log: x86_64-ubuntu-mantic-rootfs.log
+ubuntu-log: amd64-ubuntu-trusty-rootfs.log
+ubuntu-log: amd64-ubuntu-xenial-rootfs.log
+ubuntu-log: amd64-ubuntu-bionic-rootfs.log
+ubuntu-log: amd64-ubuntu-focal-rootfs.log
+ubuntu-log: amd64-ubuntu-hirsute-rootfs.log
+ubuntu-log: amd64-ubuntu-groovy-rootfs.log
+ubuntu-log: amd64-ubuntu-impish-rootfs.log
+ubuntu-log: amd64-ubuntu-jammy-rootfs.log
+ubuntu-log: amd64-ubuntu-kinetic-rootfs.log
+ubuntu-log: amd64-ubuntu-lunar-rootfs.log
+ubuntu-log: amd64-ubuntu-mantic-rootfs.log
 	
 extra-support: devuan-support
 
 .PHONY: devuan-support
-devuan-support: support/x86_64-devuan-chimaera-rootfs.txt
-devuan-support: support/x86_64-devuan-daedalus-rootfs.txt
+devuan-support: support/amd64-devuan-chimaera-rootfs.txt
+devuan-support: support/amd64-devuan-daedalus-rootfs.txt
 
 log: devuan-log
 
 .PHONY: devuan-log
-devuan-log: x86_64-devuan-chimaera-rootfs.log
-devuan-log: x86_64-devuan-daedalus-rootfs.log
+devuan-log: amd64-devuan-chimaera-rootfs.log
+devuan-log: amd64-devuan-daedalus-rootfs.log
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)

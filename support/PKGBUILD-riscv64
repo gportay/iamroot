@@ -7,9 +7,8 @@ pkgdesc='Emulating the syscall chroot(2) in an unpriviliged process (riscv64)'
 arch=('x86_64')
 url="https://github.com/gportay/${pkgname%-riscv64-git}"
 license=('GPL')
-makedepends=('riscv64-linux-musl'
-             'riscv64-linux-gnu-gcc'
-             'riscv64-linux-musl-linux-api-headers'
+makedepends=('riscv64-lp64d-glibc-bleeding-edge-toolchain'
+             'riscv64-lp64d-musl-bleeding-edge-toolchain'
              'git'
              'asciidoctor')
 checkdepends=('shellcheck')

@@ -7,9 +7,8 @@ pkgdesc='Emulating the syscall chroot(2) in an unpriviliged process (arm)'
 arch=('x86_64')
 url="https://github.com/gportay/${pkgname%-arm-git}"
 license=('GPL')
-makedepends=('arm-musl'
-             'arm-linux-gnueabi-gcc'
-             'kernel-headers-musl-arm'
+makedepends=('armv5-eabi-glibc-bleeding-edge-toolchain'
+             'armv5-eabi-musl-bleeding-edge-toolchain'
              'git'
              'asciidoctor')
 checkdepends=('shellcheck')

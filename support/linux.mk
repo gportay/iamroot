@@ -511,23 +511,23 @@ $(O)-i686-linux/libiamroot.so: override CC += -m32
 $(O)-i686-linux/libiamroot.so: override CFLAGS += -fno-stack-protector
 $(eval $(call libiamroot_so,i686,linux,2))
 
-ifneq ($(shell command -v arm-linux-gnueabi-gcc 2>/dev/null),)
-$(O)-arm-linux/libiamroot.so: override CC = arm-linux-gnueabi-gcc
+ifneq ($(shell command -v arm-buildroot-linux-gnueabi-gcc 2>/dev/null),)
+$(O)-arm-linux/libiamroot.so: override CC = arm-buildroot-linux-gnueabi-gcc
 $(eval $(call libiamroot_so,arm,linux,3))
 endif
 
-ifneq ($(shell command -v arm-linux-gnueabihf-gcc 2>/dev/null),)
-$(O)-armhf-linux-armhf/libiamroot.so: override CC = arm-linux-gnueabihf-gcc
+ifneq ($(shell command -v arm-buildroot-linux-gnueabihf-gcc 2>/dev/null),)
+$(O)-armhf-linux-armhf/libiamroot.so: override CC = arm-buildroot-linux-gnueabihf-gcc
 $(eval $(call libiamroot_so,armhf,linux-armhf,3))
 endif
 
-ifneq ($(shell command -v aarch64-linux-gnu-gcc 2>/dev/null),)
-$(O)-aarch64-linux-aarch64/libiamroot.so: override CC = aarch64-linux-gnu-gcc
+ifneq ($(shell command -v aarch64-buildroot-linux-gnu-gcc 2>/dev/null),)
+$(O)-aarch64-linux-aarch64/libiamroot.so: override CC = aarch64-buildroot-linux-gnu-gcc
 $(eval $(call libiamroot_so,aarch64,linux-aarch64,1))
 endif
 
-ifneq ($(shell command -v riscv64-linux-gnu-gcc 2>/dev/null),)
-$(O)-riscv64-linux-riscv64-lp64d/libiamroot.so: override CC = riscv64-linux-gnu-gcc
+ifneq ($(shell command -v riscv64-buildroot-linux-gnu-gcc 2>/dev/null),)
+$(O)-riscv64-linux-riscv64-lp64d/libiamroot.so: override CC = riscv64-buildroot-linux-gnu-gcc
 $(eval $(call libiamroot_so,riscv64,linux-riscv64-lp64d,1))
 endif
 
@@ -542,23 +542,23 @@ $(O)-x86_64-musl-x86_64/libiamroot.so: override CC = musl-gcc
 $(eval $(call libiamroot_so,x86_64,musl-x86_64,1))
 endif
 
-ifneq ($(shell command -v arm-linux-musleabi-gcc 2>/dev/null),)
-$(O)-arm-musl-arm/libiamroot.so: override CC = arm-linux-musleabi-gcc
+ifneq ($(shell command -v arm-buildroot-linux-musleabi-gcc 2>/dev/null),)
+$(O)-arm-musl-arm/libiamroot.so: override CC = arm-buildroot-linux-musleabi-gcc
 $(eval $(call libiamroot_so,arm,musl-arm,1))
 endif
 
-ifneq ($(shell command -v arm-linux-musleabihf-gcc 2>/dev/null),)
-$(O)-armhf-musl-armhf/libiamroot.so: override CC = arm-linux-musleabihf-gcc
+ifneq ($(shell command -v arm-buildroot-linux-musleabihf-gcc 2>/dev/null),)
+$(O)-armhf-musl-armhf/libiamroot.so: override CC = arm-buildroot-linux-musleabihf-gcc
 $(eval $(call libiamroot_so,armhf,musl-armhf,1))
 endif
 
-ifneq ($(shell command -v aarch64-linux-musl-gcc 2>/dev/null),)
-$(O)-aarch64-musl-aarch64/libiamroot.so: override CC = aarch64-linux-musl-gcc
+ifneq ($(shell command -v aarch64-buildroot-linux-musl-gcc 2>/dev/null),)
+$(O)-aarch64-musl-aarch64/libiamroot.so: override CC = aarch64-buildroot-linux-musl-gcc
 $(eval $(call libiamroot_so,aarch64,musl-aarch64,1))
 endif
 
-ifneq ($(shell command -v riscv64-linux-musl-gcc 2>/dev/null),)
-$(O)-riscv64-musl-riscv64/libiamroot.so: override CC = riscv64-linux-musl-gcc
+ifneq ($(shell command -v riscv64-buildroot-linux-musl-gcc 2>/dev/null),)
+$(O)-riscv64-musl-riscv64/libiamroot.so: override CC = riscv64-buildroot-linux-musl-gcc
 $(eval $(call libiamroot_so,riscv64,musl-riscv64,1))
 endif
 endif
@@ -858,7 +858,7 @@ $(eval $(call alpine-mini-rootfs,x86_64,3.17))
 
 $(eval $(call alpine-mini-rootfs,x86,3.17))
 
-ifneq ($(shell command -v arm-linux-musleabihf-gcc 2>/dev/null),)
+ifneq ($(shell command -v arm-buildroot-linux-musleabihf-gcc 2>/dev/null),)
 arm-rootfs: armhf-alpine-rootfs
 
 $(eval $(call alpine-mini-rootfs,armhf,3.17))
@@ -951,7 +951,7 @@ endif
 endif
 
 ifneq ($(shell command -v pacstrap 2>/dev/null),)
-ifneq ($(shell command -v aarch64-linux-gnu-gcc 2>/dev/null),)
+ifneq ($(shell command -v aarch64-buildroot-linux-gnu-gcc 2>/dev/null),)
 aarch64-rootfs: aarch64-archlinuxarm-rootfs
 
 .PHONY: aarch64-archlinuxarm-rootfs
@@ -961,7 +961,7 @@ $(eval $(call pacstrap-rootfs,aarch64,archlinuxarm,base))
 aarch64-archlinuxarm-chroot aarch64-archlinuxarm-shell aarch64-archlinuxarm-rootfs/bin/sh: export IAMROOT_DEFLIB = /lib:/usr/lib
 endif
 
-ifneq ($(shell command -v arm-linux-gnueabihf-gcc 2>/dev/null),)
+ifneq ($(shell command -v arm-buildroot-linux-gnueabihf-gcc 2>/dev/null),)
 arm-rootfs: armv7h-archlinuxarm-rootfs
 
 .PHONY: armv7h-archlinuxarm-rootfs
@@ -970,7 +970,7 @@ armv7h-archlinuxarm-rootfs: | armv7h-archlinuxarm-rootfs/bin/sh
 $(eval $(call pacstrap-rootfs,armv7h,archlinuxarm,base))
 endif
 
-ifneq ($(shell command -v riscv64-linux-gnu-gcc 2>/dev/null),)
+ifneq ($(shell command -v riscv64-buildroot-linux-gnu-gcc 2>/dev/null),)
 riscv64-rootfs: riscv64-archlinuxriscv-rootfs
 
 .PHONY: riscv64-archlinuxriscv-rootfs
@@ -982,7 +982,7 @@ endif
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)
-ifneq ($(shell command -v aarch64-linux-gnu-gcc 2>/dev/null),)
+ifneq ($(shell command -v aarch64-buildroot-linux-gnu-gcc 2>/dev/null),)
 aarch64-rootfs: aarch64-fedora-rootfs
 
 .PHONY: aarch64-fedora-rootfs
@@ -1012,7 +1012,7 @@ $(eval $(call dnf-rootfs,aarch64,fedora,37))
 $(eval $(call dnf-rootfs,aarch64,fedora,38))
 endif
 
-ifneq ($(shell command -v arm-linux-gnueabihf-gcc 2>/dev/null),)
+ifneq ($(shell command -v arm-buildroot-linux-gnueabihf-gcc 2>/dev/null),)
 arm-rootfs: armv7hl-fedora-rootfs
 
 .PHONY: armv7hl-fedora-rootfs
@@ -1037,7 +1037,7 @@ $(eval $(call dnf-rootfs,armv7hl,fedora,36))
 endif
 endif
 
-ifneq ($(shell command -v aarch64-linux-musl-gcc 2>/dev/null),)
+ifneq ($(shell command -v aarch64-buildroot-linux-musl-gcc 2>/dev/null),)
 aarch64-rootfs: aarch64-alpine-rootfs
 
 $(eval $(call alpine-mini-rootfs,aarch64,3.17))
@@ -1059,7 +1059,7 @@ $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpine,edge))
 endif
 endif
 
-ifneq ($(shell command -v riscv64-linux-musl-gcc 2>/dev/null),)
+ifneq ($(shell command -v riscv64-buildroot-linux-musl-gcc 2>/dev/null),)
 riscv64-rootfs: riscv64-alpine-rootfs
 
 ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)

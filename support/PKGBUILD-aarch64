@@ -7,9 +7,8 @@ pkgdesc='Emulating the syscall chroot(2) in an unpriviliged process (aarch64)'
 arch=('x86_64')
 url="https://github.com/gportay/${pkgname%-aarch64-git}"
 license=('GPL')
-makedepends=('aarch64-linux-musl'
-             'aarch64-linux-gnu-gcc'
-             'kernel-headers-musl-aarch64'
+makedepends=('aarch64-glibc-bleeding-edge-toolchain'
+             'aarch64-musl-bleeding-edge-toolchain'
              'git'
              'asciidoctor')
 checkdepends=('shellcheck')

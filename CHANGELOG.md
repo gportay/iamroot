@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - Chroot to a [Debian] armel world; tested on [Debian ARM EABI Port]
+- Chroot to a [Debian] armhf world; tested on [Debian ARM hard-float Port]
 
 ### Fixed
 
@@ -730,6 +731,7 @@ Initial release.
 [Arch Linux ARM]: https://archlinuxarm.org/
 [Arch Linux RISC-V]: https://archriscv.felixc.at/
 [Debian ARM EABI Port]: https://wiki.debian.org/ArmEabiPort
+[Debian ARM hard-float Port]: https://wiki.debian.org/ArmHardFloatPort
 [Debian]: https://www.debian.org/
 [Fedora ARM]: https://arm.fedoraproject.org/
 [Fedora]: https://getfedora.org/

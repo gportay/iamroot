@@ -187,6 +187,7 @@ define debootstrap-rootfs
 .PRECIOUS: $(1)-$(2)-$(3)-rootfs/bin/sh
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_LINUX_X86_64_2 = /lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/lib:/usr/lib
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_LINUX_3 = /lib/arm-linux-gnueabi:/usr/lib/arm-linux-gnueabi:/lib:/usr/lib
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_LINUX_ARMHF_3 = /lib/arm-linux-gnueabihf:/usr/lib/arm-linux-gnueabihf:/lib:/usr/lib
 # chfn: PAM: Critical error - immediate abort
 # adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn
@@ -1000,6 +1001,25 @@ $(eval $(call debootstrap-rootfs,armel,debian,testing))
 $(eval $(call debootstrap-rootfs,armel,debian,unstable))
 armel-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 armel-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
+endif
+
+ifneq ($(shell command -v arm-buildroot-linux-gnueabihf-gcc 2>/dev/null),)
+arm-rootfs: armhf-debian-rootfs
+
+.PHONY: armhf-debian-rootfs
+armhf-debian-rootfs: armhf-debian-oldoldstable-rootfs
+armhf-debian-rootfs: armhf-debian-oldstable-rootfs
+armhf-debian-rootfs: armhf-debian-stable-rootfs
+armhf-debian-rootfs: armhf-debian-testing-rootfs
+armhf-debian-rootfs: armhf-debian-unstable-rootfs
+
+$(eval $(call debootstrap-rootfs,armhf,debian,oldoldstable))
+$(eval $(call debootstrap-rootfs,armhf,debian,oldstable))
+$(eval $(call debootstrap-rootfs,armhf,debian,stable))
+$(eval $(call debootstrap-rootfs,armhf,debian,testing))
+$(eval $(call debootstrap-rootfs,armhf,debian,unstable))
+armhf-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+armhf-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 endif
 

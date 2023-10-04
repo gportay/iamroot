@@ -157,18 +157,6 @@ const char *__path()
 	return ret;
 }
 
-__attribute__((visibility("hidden")))
-const char *__deflib()
-{
-	const char *ret;
-
-	ret = getenv("IAMROOT_DEFLIB");
-	if (!ret)
-		ret = _PATH_DEFLIB;
-
-	return ret;
-}
-
 static int __strtok(const char *str, const char *delim,
 		    int (*callback)(const char *, void *), void *user)
 {

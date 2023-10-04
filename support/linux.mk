@@ -90,7 +90,7 @@ vars:
 define libs
 $(strip libiamroot.so \
 	$(if $(findstring :$(2):,:x86_64: :amd64:          ),$(if $(findstring :$(1):,:musl:),x86_64/libiamroot-musl-x86_64.so.1  ,x86_64/libiamroot-linux-x86-64.so.2        ), \
-	$(if $(findstring :$(2):,:arm:                     ),$(if $(findstring :$(1):,:musl:),arm/libiamroot-musl-arm.so.1        ,arm/libiamroot-linux.so.3                  ), \
+	$(if $(findstring :$(2):,:arm: :armel:             ),$(if $(findstring :$(1):,:musl:),arm/libiamroot-musl-arm.so.1        ,arm/libiamroot-linux.so.3                  ), \
 	$(if $(findstring :$(2):,:armhf: :armv7hl: :armv7h:),$(if $(findstring :$(1):,:musl:),armhf/libiamroot-musl-armhf.so.1    ,armhf/libiamroot-linux-armhf.so.3          ), \
 	$(if $(findstring :$(2):,:x86: :i386: :i686:       ),$(if $(findstring :$(1):,:musl:),i686/libiamroot-musl-i386.so.1      ,i686/libiamroot-linux.so.2                 ), \
 	$(if $(findstring :$(2):,:aarch64:                 ),$(if $(findstring :$(1):,:musl:),aarch64/libiamroot-musl-aarch64.so.1,aarch64/libiamroot-linux-aarch64.so.1      ), \
@@ -185,7 +185,8 @@ endef
 
 define debootstrap-rootfs
 .PRECIOUS: $(1)-$(2)-$(3)-rootfs/bin/sh
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB = /lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/lib:/usr/lib
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_LINUX_X86_64_2 = /lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/lib:/usr/lib
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_LINUX_3 = /lib/arm-linux-gnueabi:/usr/lib/arm-linux-gnueabi:/lib:/usr/lib
 # chfn: PAM: Critical error - immediate abort
 # adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn
@@ -978,6 +979,27 @@ riscv64-archlinuxriscv-rootfs: | riscv64-archlinuxriscv-rootfs/bin/sh
 
 $(eval $(call pacstrap-rootfs,riscv64,archlinuxriscv,base))
 riscv64-archlinuxriscv-chroot riscv64-archlinuxriscv-shell riscv64-archlinuxriscv-rootfs/bin/sh: export IAMROOT_DEFLIB = /lib:/usr/lib
+endif
+endif
+
+ifneq ($(shell command -v debootstrap 2>/dev/null),)
+ifneq ($(shell command -v arm-buildroot-linux-gnueabi-gcc 2>/dev/null),)
+arm-rootfs: armel-debian-rootfs
+
+.PHONY: armel-debian-rootfs
+armel-debian-rootfs: armel-debian-oldoldstable-rootfs
+armel-debian-rootfs: armel-debian-oldstable-rootfs
+armel-debian-rootfs: armel-debian-stable-rootfs
+armel-debian-rootfs: armel-debian-testing-rootfs
+armel-debian-rootfs: armel-debian-unstable-rootfs
+
+$(eval $(call debootstrap-rootfs,armel,debian,oldoldstable))
+$(eval $(call debootstrap-rootfs,armel,debian,oldstable))
+$(eval $(call debootstrap-rootfs,armel,debian,stable))
+$(eval $(call debootstrap-rootfs,armel,debian,testing))
+$(eval $(call debootstrap-rootfs,armel,debian,unstable))
+armel-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+armel-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 endif
 

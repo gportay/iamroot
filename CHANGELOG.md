@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [unreleased]
 
+### Added
+
+- Chroot to a [Debian] armel world; tested on [Debian ARM EABI Port]
+
 ### Fixed
 
 - Fix the interception of the `_time64` variant functions `__fstat64_time64()`,
@@ -725,6 +729,7 @@ Initial release.
 [Arch Linux 32]: https://archlinux32.org/
 [Arch Linux ARM]: https://archlinuxarm.org/
 [Arch Linux RISC-V]: https://archriscv.felixc.at/
+[Debian ARM EABI Port]: https://wiki.debian.org/ArmEabiPort
 [Debian]: https://www.debian.org/
 [Fedora ARM]: https://arm.fedoraproject.org/
 [Fedora]: https://getfedora.org/

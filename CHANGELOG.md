@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Chroot to a [Debian] armel world; tested on [Debian ARM EABI Port]
 - Chroot to a [Debian] armhf world; tested on [Debian ARM hard-float Port]
 - Chroot to a [Debian] arm64 world; tested on [Debian ARM 64 Port]
+- Chroot to a [Debian] riscv64 world; tested on [Debian RISC-V 64 Port]
 
 ### Fixed
 
@@ -734,6 +735,7 @@ Initial release.
 [Debian ARM 64 Port]: https://wiki.debian.org/Arm64Port
 [Debian ARM EABI Port]: https://wiki.debian.org/ArmEabiPort
 [Debian ARM hard-float Port]: https://wiki.debian.org/ArmHardFloatPort
+[Debian RISC-V 64 Port]: https://wiki.debian.org/Ports/riscv64
 [Debian]: https://www.debian.org/
 [Fedora ARM]: https://arm.fedoraproject.org/
 [Fedora]: https://getfedora.org/

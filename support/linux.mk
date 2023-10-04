@@ -189,6 +189,7 @@ $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export 
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_LINUX_3 = /lib/arm-linux-gnueabi:/usr/lib/arm-linux-gnueabi:/lib:/usr/lib
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_LINUX_ARMHF_3 = /lib/arm-linux-gnueabihf:/usr/lib/arm-linux-gnueabihf:/lib:/usr/lib
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu:/usr/lib/aarch64-linux-gnu:/lib:/usr/lib
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_LINUX_RISCV64_LP64D_1 = /lib/riscv64-linux-gnu:/usr/lib/riscv64-linux-gnu:/lib:/usr/lib
 # chfn: PAM: Critical error - immediate abort
 # adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn
@@ -1040,6 +1041,25 @@ $(eval $(call debootstrap-rootfs,arm64,debian,testing))
 $(eval $(call debootstrap-rootfs,arm64,debian,unstable))
 arm64-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 arm64-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
+endif
+
+ifneq ($(shell command -v riscv64-buildroot-linux-gnu-gcc 2>/dev/null),)
+riscv64-rootfs: riscv64-debian-rootfs
+
+.PHONY: riscv64-debian-rootfs
+riscv64-debian-rootfs: riscv64-debian-oldoldstable-rootfs
+riscv64-debian-rootfs: riscv64-debian-oldstable-rootfs
+riscv64-debian-rootfs: riscv64-debian-stable-rootfs
+riscv64-debian-rootfs: riscv64-debian-testing-rootfs
+riscv64-debian-rootfs: riscv64-debian-unstable-rootfs
+
+$(eval $(call debootstrap-rootfs,riscv64,debian,oldoldstable))
+$(eval $(call debootstrap-rootfs,riscv64,debian,oldstable))
+$(eval $(call debootstrap-rootfs,riscv64,debian,stable))
+$(eval $(call debootstrap-rootfs,riscv64,debian,testing))
+$(eval $(call debootstrap-rootfs,riscv64,debian,unstable))
+riscv64-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+riscv64-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 endif
 

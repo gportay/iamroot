@@ -186,6 +186,7 @@ endef
 define debootstrap-rootfs
 .PRECIOUS: $(1)-$(2)-$(3)-rootfs/bin/sh
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_LINUX_X86_64_2 = /lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/lib:/usr/lib
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_LINUX_2 = /lib/i386-linux-gnu:/usr/lib/i386-linux-gnu:/lib:/usr/lib
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_LINUX_3 = /lib/arm-linux-gnueabi:/usr/lib/arm-linux-gnueabi:/lib:/usr/lib
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_LINUX_ARMHF_3 = /lib/arm-linux-gnueabihf:/usr/lib/arm-linux-gnueabihf:/lib:/usr/lib
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu:/usr/lib/aarch64-linux-gnu:/lib:/usr/lib
@@ -695,6 +696,23 @@ $(eval $(call debootstrap-rootfs,amd64,debian,testing))
 $(eval $(call debootstrap-rootfs,amd64,debian,unstable))
 amd64-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 amd64-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
+
+i686-rootfs: i386-debian-rootfs
+
+.PHONY: i386-debian-rootfs
+i386-debian-rootfs: i386-debian-oldoldstable-rootfs
+i386-debian-rootfs: i386-debian-oldstable-rootfs
+i386-debian-rootfs: i386-debian-stable-rootfs
+i386-debian-rootfs: i386-debian-testing-rootfs
+i386-debian-rootfs: i386-debian-unstable-rootfs
+
+$(eval $(call debootstrap-rootfs,i386,debian,oldoldstable))
+$(eval $(call debootstrap-rootfs,i386,debian,oldstable))
+$(eval $(call debootstrap-rootfs,i386,debian,stable))
+$(eval $(call debootstrap-rootfs,i386,debian,testing))
+$(eval $(call debootstrap-rootfs,i386,debian,unstable))
+i386-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+i386-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 
 .PHONY: amd64-ubuntu-rootfs
 amd64-ubuntu-rootfs: amd64-ubuntu-trusty-rootfs

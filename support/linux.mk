@@ -93,7 +93,7 @@ $(strip libiamroot.so \
 	$(if $(findstring :$(2):,:arm: :armel:             ),$(if $(findstring :$(1):,:musl:),arm/libiamroot-musl-arm.so.1        ,arm/libiamroot-linux.so.3                  ), \
 	$(if $(findstring :$(2):,:armhf: :armv7hl: :armv7h:),$(if $(findstring :$(1):,:musl:),armhf/libiamroot-musl-armhf.so.1    ,armhf/libiamroot-linux-armhf.so.3          ), \
 	$(if $(findstring :$(2):,:x86: :i386: :i686:       ),$(if $(findstring :$(1):,:musl:),i686/libiamroot-musl-i386.so.1      ,i686/libiamroot-linux.so.2                 ), \
-	$(if $(findstring :$(2):,:aarch64:                 ),$(if $(findstring :$(1):,:musl:),aarch64/libiamroot-musl-aarch64.so.1,aarch64/libiamroot-linux-aarch64.so.1      ), \
+	$(if $(findstring :$(2):,:aarch64: :arm64:         ),$(if $(findstring :$(1):,:musl:),aarch64/libiamroot-musl-aarch64.so.1,aarch64/libiamroot-linux-aarch64.so.1      ), \
 	$(if $(findstring :$(2):,:riscv64:                 ),$(if $(findstring :$(1):,:musl:),riscv64/libiamroot-musl-riscv64.so.1,riscv64/libiamroot-linux-riscv64-lp64d.so.1), \
 	$(error $(1)-$(2): No such library))))))) \
 )
@@ -188,6 +188,7 @@ define debootstrap-rootfs
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_LINUX_X86_64_2 = /lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/lib:/usr/lib
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_LINUX_3 = /lib/arm-linux-gnueabi:/usr/lib/arm-linux-gnueabi:/lib:/usr/lib
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_LINUX_ARMHF_3 = /lib/arm-linux-gnueabihf:/usr/lib/arm-linux-gnueabihf:/lib:/usr/lib
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu:/usr/lib/aarch64-linux-gnu:/lib:/usr/lib
 # chfn: PAM: Critical error - immediate abort
 # adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn
@@ -1020,6 +1021,25 @@ $(eval $(call debootstrap-rootfs,armhf,debian,testing))
 $(eval $(call debootstrap-rootfs,armhf,debian,unstable))
 armhf-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 armhf-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
+endif
+
+ifneq ($(shell command -v aarch64-buildroot-linux-gnu-gcc 2>/dev/null),)
+arm-rootfs: arm64-debian-rootfs
+
+.PHONY: arm64-debian-rootfs
+arm64-debian-rootfs: arm64-debian-oldoldstable-rootfs
+arm64-debian-rootfs: arm64-debian-oldstable-rootfs
+arm64-debian-rootfs: arm64-debian-stable-rootfs
+arm64-debian-rootfs: arm64-debian-testing-rootfs
+arm64-debian-rootfs: arm64-debian-unstable-rootfs
+
+$(eval $(call debootstrap-rootfs,arm64,debian,oldoldstable))
+$(eval $(call debootstrap-rootfs,arm64,debian,oldstable))
+$(eval $(call debootstrap-rootfs,arm64,debian,stable))
+$(eval $(call debootstrap-rootfs,arm64,debian,testing))
+$(eval $(call debootstrap-rootfs,arm64,debian,unstable))
+arm64-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+arm64-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 endif
 

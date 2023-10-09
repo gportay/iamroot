@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -17,30 +17,26 @@
 
 #include "iamroot.h"
 
+#ifdef __GLIBC__
 #ifdef _LARGEFILE64_SOURCE
+#if __TIMESIZE == 32
 static int (*sym)(int, const char *, struct stat64 *, int);
 
 __attribute__((visibility("hidden")))
-int next_fstatat64(int dfd, const char *path, struct stat64 *statbuf,
-		   int atflags)
+int next___fstatat64_time64(int dfd, const char *path, struct stat64 *statbuf,
+			    int atflags)
 {
 	if (!sym)
-		sym = dlsym(RTLD_NEXT, "fstatat64");
+		sym = dlsym(RTLD_NEXT, "__fstatat64_time64");
 
-	if (!sym) {
-		int next___fxstatat64(int, int, const char *, struct stat64 *,
-				      int);
-#if defined(__arm__)
-		return next___fxstatat64(3, dfd, path, statbuf, atflags);
-#else
-		return next___fxstatat64(0, dfd, path, statbuf, atflags);
-#endif
-	}
+	if (!sym)
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(dfd, path, statbuf, atflags);
 }
 
-int fstatat64(int dfd, const char *path, struct stat64 *statbuf, int atflags)
+int __fstatat64_time64(int dfd, const char *path, struct stat64 *statbuf,
+		       int atflags)
 {
 	char buf[PATH_MAX];
 	int ret = -1;
@@ -52,7 +48,7 @@ int fstatat64(int dfd, const char *path, struct stat64 *statbuf, int atflags)
 	if (siz == -1)
 		goto exit;
 
-	ret = next_fstatat64(dfd, buf, statbuf, atflags);
+	ret = next___fstatat64_time64(dfd, buf, statbuf, atflags);
 	if (ret == -1)
 		goto exit;
 
@@ -75,9 +71,7 @@ exit:
 	return ret;
 }
 
-int __fstatat64 (int __fd, const char *__restrict __file,
-		 struct stat64 *__restrict __buf, int __flag)
-     __THROW __nonnull ((2, 3));
-weak_alias(fstatat64, __fstatat64);
+#endif
+#endif
 #endif
 #endif

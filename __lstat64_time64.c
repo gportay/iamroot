@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -13,17 +13,20 @@
 
 #include "iamroot.h"
 
+#ifdef __GLIBC__
 #ifdef _LARGEFILE64_SOURCE
-int stat64(const char *path, struct stat64 *statbuf)
+#if __TIMESIZE == 32
+extern int __fstatat64_time64(int, const char *, struct stat64 *, int);
+
+int __lstat64_time64(const char *path, struct stat64 *statbuf)
 {
 	__debug("%s(path: '%s', ...)\n", __func__, path);
 
 	/* Forward to another function */
-	return fstatat64(AT_FDCWD, path, statbuf, 0);
+	return __fstatat64_time64(AT_FDCWD, path, statbuf,
+				  AT_SYMLINK_NOFOLLOW);
 }
-
-int __stat64 (const char *__restrict __file,
-	      struct stat64 *__restrict __buf) __THROW __nonnull ((1, 2));
-weak_alias(stat64, __stat64);
+#endif
+#endif
 #endif
 #endif

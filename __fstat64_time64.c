@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2023 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -16,34 +16,30 @@
 
 #include "iamroot.h"
 
+#ifdef __GLIBC__
 #ifdef _LARGEFILE64_SOURCE
+#if __TIMESIZE == 32
 static int (*sym)(int, struct stat64 *);
 
 __attribute__((visibility("hidden")))
-int next_fstat64(int fd, struct stat64 *statbuf)
+int next___fstat64_time64(int fd, struct stat64 *statbuf)
 {
 	if (!sym)
-		sym = dlsym(RTLD_NEXT, "fstat64");
+		sym = dlsym(RTLD_NEXT, "__fstat64_time64");
 
-	if (!sym) {
-		int next___fxstat64(int, int, struct stat64 *);
-#if defined(__arm__)
-		return next___fxstat64(3, fd, statbuf);
-#else
-		return next___fxstat64(0, fd, statbuf);
-#endif
-	}
+	if (!sym)
+		return __dl_set_errno_and_perror(ENOSYS, -1);
 
 	return sym(fd, statbuf);
 }
 
-int fstat64(int fd, struct stat64 *statbuf)
+int __fstat64_time64(int fd, struct stat64 *statbuf)
 {
 	uid_t uid;
 	gid_t gid;
 	int ret;
 
-	ret = next_fstat64(fd, statbuf);
+	ret = next___fstat64_time64(fd, statbuf);
 	if (ret == -1)
 		goto exit;
 
@@ -66,7 +62,7 @@ exit:
 	return ret;
 }
 
-int __fstat64 (int __fd, struct stat64 *__buf) __THROW __nonnull ((2));
-weak_alias(fstat64, __fstat64);
+#endif
+#endif
 #endif
 #endif

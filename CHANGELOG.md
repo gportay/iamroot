@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [unreleased]
+
+### Fixed
+
+- Fix the interception of the `_time64` variant functions `__fstat64_time64()`,
+  `__fstatat64_time64()`, `__lstat64_time64()` and `__stat64_time64()` on
+  32-bit architectures ([glibc] on x86, ARM and ARM hard-float)
+
 ## [v13] - 2023-10-11
 
 ### Added

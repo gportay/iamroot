@@ -26,9 +26,5 @@ int __lstat64 (const char *__restrict __file,
 	       struct stat64 *__restrict __buf)
      __THROW __nonnull ((1, 2));
 weak_alias(lstat64, __lstat64);
-int __lstat64_time64 (const char *__restrict __file,
-		      struct stat64 *__restrict __buf)
-     __THROW __nonnull ((1, 2));
-weak_alias(lstat64, __lstat64_time64);
 #endif
 #endif

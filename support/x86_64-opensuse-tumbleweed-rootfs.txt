@@ -15,7 +15,7 @@ Resolving package dependencies...
 The following XXX recommended packages were automatically selected:
   aaa_base-extras augeas-lenses ca-certificates-mozilla cpio-mt cracklib-dict-full crypto-policies-scripts dbus-1-daemon dirmngr dump-rmt glibc-extra iproute2 iputils libldap-data libpcre2-8-0 login_defs logrotate lsof ncurses-utils netcfg pam-manpages pam_pwquality perl-Bootloader publicsuffix python311 python311-curses python311-dbm python311-pip sound-theme-freedesktop terminfo-screen timezone zypper-log
 The following XXX NEW packages are going to be installed:
-  aaa_base aaa_base-extras adobe-sourcecodepro-fonts alts augeas-lenses bash bash-sh boost-license1_82_0 branding-openSUSE busybox busybox-gawk busybox-grep busybox-sed busybox-xz ca-certificates ca-certificates-mozilla cantarell-fonts chkstat compat-usrmerge-tools coreutils cpio cpio-mt cracklib cracklib-dict-full crypto-policies crypto-policies-scripts dbus-1 dbus-1-common dbus-1-daemon dbus-1-tools dconf diffutils dirmngr dump-rmt file-magic filesystem fillup findutils gio-branding-openSUSE glib-networking glib2-tools glibc glibc-extra gpg2 gsettings-backend-dconf gsettings-desktop-schemas iproute2 iputils kbd kbd-legacy krb5 libabsl2308_0_0 libacl1 libalternatives1 libapparmor1 libassuan0 libattr1 libaudit1 libaugeas0 libblkid1 libboost_thread1_82_0 libboost_thread1_82_0-x86-64-v3 libbpf1 libbrotlicommon1 libbrotlicommon1-x86-64-v3 libbrotlidec1 libbrotlidec1-x86-64-v3 libbz2-1 libbz2-1-x86-64-v3 libcap-ng0 libcap2 libcom_err2 libcrack2 libcrypt1 libcurl4 libdb-4_8 libdb-4_8-x86-64-v3 libdbus-1-3 libdconf1 libduktape207 libeconf0 libelf1 libexpat1 libfa1 libfdisk1 libffi8 libgcc_s1 libgcrypt20 libgcrypt20-x86-64-v3 libgdbm6 libgdbm_compat4 libgio-2_0-0 libglib-2_0-0 libgmodule-2_0-0 libgmp10 libgnutls30 libgobject-2_0-0 libgpg-error0 libgpgme11 libhogweed6 libhogweed6-x86-64-v3 libidn2-0 libip4tc2 libjitterentropy3 libkeyutils1 libkmod2 libksba8 libldap-data libldap2 liblua5_4-5 liblz4-1 liblz4-1-x86-64-v3 liblzma5 liblzma5-x86-64-v3 libmagic1 libmnl0 libmount1 libmpdec3 libncurses6 libnettle8 libnettle8-x86-64-v3 libnghttp2-14 libnpth0 libnss_usrfiles2 libopenssl3 libopenssl3-x86-64-v3 libp11-kit0 libpcre2-8-0 libpkgconf3 libpopt0 libproc2-0 libprotobuf-lite23_4_0 libproxy1 libpsl5 libpwquality1 libpxbackend-1_0 libpython3_11-1_0 libpython3_11-1_0-x86-64-v3 libreadline8 libsasl2-3 libseccomp2 libselinux1 libsepol2 libsigc-2_0-0 libsmartcols1 libsolv-tools libsqlite3-0 libsqlite3-0-x86-64-v3 libssh-config libssh4 libstdc++6 libsystemd0 libtasn1-6 libudev1 libunistring5 libusb-1_0-0 libuuid1 libverto1 libxml2-2 libxtables12 libyaml-cpp0_8 libz-ng-compat1 libzck1 libzstd1 libzstd1-x86-64-v3 libzypp login_defs logrotate lsof ncurses-utils netcfg openSUSE-build-key openSUSE-release openSUSE-release-appliance-custom p11-kit p11-kit-tools pam pam-config pam-manpages pam_pwquality patterns-base-minimal_base patterns-glibc-hwcaps-x86_64_v3 perl perl-Bootloader perl-base permissions permissions-config pinentry pkgconf pkgconf-m4 pkgconf-pkg-config procps4 publicsuffix python311 python311-base python311-base-x86-64-v3 python311-curses python311-dbm python311-pip python311-setuptools python311-x86-64-v3 rpm rpm-config-SUSE shared-mime-info shared-python-startup sound-theme-freedesktop system-user-root systemd systemd-default-settings systemd-default-settings-branding-openSUSE systemd-presets-branding-openSUSE systemd-presets-common-SUSE sysuser-shadow terminfo-base terminfo-screen timezone update-alternatives util-linux zypper zypper-log zypper-needs-restarting
+  aaa_base aaa_base-extras adobe-sourcecodepro-fonts alts augeas-lenses bash bash-sh boost-license1_83_0 branding-openSUSE busybox busybox-gawk busybox-grep busybox-sed busybox-xz ca-certificates ca-certificates-mozilla cantarell-fonts chkstat compat-usrmerge-tools coreutils cpio cpio-mt cracklib cracklib-dict-full crypto-policies crypto-policies-scripts dbus-1 dbus-1-common dbus-1-daemon dbus-1-tools dconf diffutils dirmngr dump-rmt file-magic filesystem fillup findutils gio-branding-openSUSE glib-networking glib2-tools glibc glibc-extra gpg2 gsettings-backend-dconf gsettings-desktop-schemas iproute2 iputils kbd kbd-legacy krb5 libabsl2308_0_0 libacl1 libalternatives1 libapparmor1 libassuan0 libattr1 libaudit1 libaugeas0 libblkid1 libboost_thread1_83_0 libboost_thread1_83_0-x86-64-v3 libbpf1 libbrotlicommon1 libbrotlicommon1-x86-64-v3 libbrotlidec1 libbrotlidec1-x86-64-v3 libbz2-1 libbz2-1-x86-64-v3 libcap-ng0 libcap2 libcom_err2 libcrack2 libcrypt1 libcurl4 libdb-4_8 libdb-4_8-x86-64-v3 libdbus-1-3 libdconf1 libduktape207 libeconf0 libelf1 libexpat1 libfa1 libfdisk1 libffi8 libgcc_s1 libgcrypt20 libgcrypt20-x86-64-v3 libgdbm6 libgdbm_compat4 libgio-2_0-0 libglib-2_0-0 libgmodule-2_0-0 libgmp10 libgnutls30 libgobject-2_0-0 libgpg-error0 libgpgme11 libhogweed6 libhogweed6-x86-64-v3 libidn2-0 libip4tc2 libjitterentropy3 libkeyutils1 libkmod2 libksba8 libldap-data libldap2 liblua5_4-5 liblz4-1 liblz4-1-x86-64-v3 liblzma5 liblzma5-x86-64-v3 libmagic1 libmnl0 libmount1 libmpdec3 libncurses6 libnettle8 libnettle8-x86-64-v3 libnghttp2-14 libnpth0 libnss_usrfiles2 libopenssl3 libopenssl3-x86-64-v3 libp11-kit0 libpcre2-8-0 libpkgconf3 libpopt0 libproc2-0 libprotobuf-lite23_4_0 libproxy1 libpsl5 libpwquality1 libpxbackend-1_0 libpython3_11-1_0 libpython3_11-1_0-x86-64-v3 libreadline8 libsasl2-3 libseccomp2 libselinux1 libsepol2 libsigc-2_0-0 libsmartcols1 libsolv-tools libsqlite3-0 libsqlite3-0-x86-64-v3 libssh-config libssh4 libstdc++6 libsystemd0 libtasn1-6 libudev1 libunistring5 libusb-1_0-0 libuuid1 libverto1 libxml2-2 libxtables12 libyaml-cpp0_8 libz-ng-compat1 libzck1 libzstd1 libzstd1-x86-64-v3 libzypp login_defs logrotate lsof ncurses-utils netcfg openSUSE-build-key openSUSE-release openSUSE-release-appliance-custom p11-kit p11-kit-tools pam pam-config pam-manpages pam_pwquality patterns-base-minimal_base patterns-glibc-hwcaps-x86_64_v3 perl perl-Bootloader perl-base permissions permissions-config pinentry pkgconf pkgconf-m4 pkgconf-pkg-config procps4 publicsuffix python311 python311-base python311-base-x86-64-v3 python311-curses python311-dbm python311-pip python311-setuptools python311-x86-64-v3 rpm rpm-config-SUSE shared-mime-info shared-python-startup sound-theme-freedesktop system-user-root systemd systemd-default-settings systemd-default-settings-branding-openSUSE systemd-presets-branding-openSUSE systemd-presets-common-SUSE sysuser-shadow terminfo-base terminfo-screen timezone update-alternatives util-linux zypper zypper-log zypper-needs-restarting
 XXX new packages to install.
 Overall download size: XXX.X MiB. Already cached: 0 B. After the operation, additional XXX.X MiB will be used.
 Continue? [y/n/v/...? shows all options] (y): y
@@ -24,10 +24,10 @@ Warning: XXX packages had to be excluded from file conflicts check because they 
     Note: Checking for file conflicts requires not installed packages to be downloaded in advance in
     order to access their file lists. See option '--download-in-advance / --dry-run --download-only'
     in the zypper manual page for details.
-Retrieving: boost-license1_82_0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: boost-license1_82_0 [done]
-(XXX/XXX) Installing: boost-license1_82_0 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/boost-license1_82_0: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+Retrieving: boost-license1_83_0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: boost-license1_83_0 [done]
+(XXX/XXX) Installing: boost-license1_83_0 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/boost-license1_83_0: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 Retrieving: branding-openSUSE (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: branding-openSUSE [done]
@@ -624,10 +624,10 @@ Retrieving: libdb-4_8.rpm [done]
 (XXX/XXX) Installing: libdb-4_8 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libdb-4_8.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-Retrieving: libboost_thread1_82_0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libboost_thread1_82_0.rpm [done]
-(XXX/XXX) Installing: libboost_thread1_82_0 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libboost_thread1_82_0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+Retrieving: libboost_thread1_83_0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libboost_thread1_83_0.rpm [done]
+(XXX/XXX) Installing: libboost_thread1_83_0 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libboost_thread1_83_0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 Retrieving: libabsl2308_0_0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libabsl2308_0_0.rpm [done]
@@ -749,10 +749,10 @@ Retrieving: libbrotlicommon1-x86-64-v3.rpm [done]
 (XXX/XXX) Installing: libbrotlicommon1-x86-64-v3 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libbrotlicommon1-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-Retrieving: libboost_thread1_82_0-x86-64-v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libboost_thread1_82_0-x86-64-v3.rpm [done]
-(XXX/XXX) Installing: libboost_thread1_82_0-x86-64-v3 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libboost_thread1_82_0-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+Retrieving: libboost_thread1_83_0-x86-64-v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libboost_thread1_83_0-x86-64-v3.rpm [done]
+(XXX/XXX) Installing: libboost_thread1_83_0-x86-64-v3 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libboost_thread1_83_0-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 Retrieving: iproute2 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: iproute2.rpm [done]
@@ -915,6 +915,7 @@ ERROR: module /lib64/security/pam_pwquality.so is not installed.
 **** write config for pam_nam.so (auth, disabled)
 **** write config for pam_winbind.so (auth, disabled)
 **** write config for pam_himmelblau.so (auth, disabled)
+**** write config for pam_kanidm.so (auth, disabled)
 *** write_config (password, /etc/pam.d/common-password-pc, ...)
 **** write config for pam_winbind.so (password, disabled)
 **** write config for pam_pwcheck.so (password, disabled)
@@ -1368,6 +1369,7 @@ rmdir: failed to remove 'var/lib/rpm': Directory not empty
 **** write config for pam_nam.so (auth, disabled)
 **** write config for pam_winbind.so (auth, disabled)
 **** write config for pam_himmelblau.so (auth, disabled)
+**** write config for pam_kanidm.so (auth, disabled)
 *** write_config (password, /etc/pam.d/common-password-pc, ...)
 **** write config for pam_winbind.so (password, disabled)
 **** write config for pam_pwcheck.so (password, disabled)

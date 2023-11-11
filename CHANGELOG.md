@@ -759,5 +759,5 @@ Initial release.
 [v10]: https://github.com/gportay/iamroot/compare/v10...v11
 [v11]: https://github.com/gportay/iamroot/compare/v11...v12
 [v12]: https://github.com/gportay/iamroot/compare/v12...v13
-[v12]: https://github.com/gportay/iamroot/compare/v13...master
+[v13]: https://github.com/gportay/iamroot/compare/v13...master
 [zypper(8)]: https://en.opensuse.org/SDB:Zypper_manual_(plain)

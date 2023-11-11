@@ -19,6 +19,7 @@
 
 #ifdef _LARGEFILE64_SOURCE
 static int (*sym)(int, const char *, struct stat64 *, int);
+
 __attribute__((visibility("hidden")))
 int next_fstatat64(int dfd, const char *path, struct stat64 *statbuf,
 		   int atflags)

@@ -11,9 +11,9 @@ ARG uid
 ARG groups
 ARG home
 
-RUN groupadd --non-unique --gid $groups $user
-RUN useradd  --non-unique --gid $groups --uid $uid --create-home --home-dir $home --shell $SHELL $user
-RUN echo "%$user ALL=(ALL) NOPASSWD: /usr/bin/pacman" >/etc/sudoers.d/$user
+RUN groupadd --non-unique --gid "$groups" "$user"
+RUN useradd  --non-unique --gid "$groups" --uid "$uid" --create-home --home-dir "$home" --shell "$SHELL" $user"
+RUN echo "%$user ALL=(ALL) NOPASSWD: /usr/bin/pacman" >"/etc/sudoers.d/$user"
 
 ENV VISUAL cat
 ENV EDITOR cat
@@ -25,11 +25,11 @@ RUN echo 'MAKEFLAGS="-j$(nproc)"' >>~/.makepkg.conf
 RUN echo 'OPTIONS+=(!strip)' >>~/.makepkg.conf
 RUN mkdir -p ~/.cache/pacaur
 
-RUN git clone https://aur.archlinux.org/auracle-git.git $home/.cache/pacaur/auracle-git
+RUN git clone https://aur.archlinux.org/auracle-git.git "$home/.cache/pacaur/auracle-git"
 WORKDIR $home/.cache/pacaur/auracle-git
 RUN makepkg --syncdeps --install --noconfirm
 
-RUN git clone https://aur.archlinux.org/pacaur.git $home/.cache/pacaur/pacaur
+RUN git clone https://aur.archlinux.org/pacaur.git "$home/.cache/pacaur/pacaur"
 WORKDIR $home/.cache/pacaur/pacaur
 RUN makepkg --syncdeps --install --noconfirm
 

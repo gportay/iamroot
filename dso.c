@@ -1728,6 +1728,8 @@ static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsize)
 	 * -z nodeflib linker option, this step is skipped.
 	 */
 	err = __elf_flags_1(path, &flags_1);
+	if (err == -1)
+		return -1;
 	if (!(flags_1 & DF_1_NODEFLIB)) {
 		err = __elf_deflib(path, tmp, sizeof(tmp));
 		if (err == -1)

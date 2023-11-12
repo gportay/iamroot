@@ -14,6 +14,7 @@
 
 int setresgid(gid_t rgid, gid_t egid, gid_t sgid)
 {
+	const int errno_save = errno;
 	int ret;
 
 	ret = setregid(rgid, egid);
@@ -28,10 +29,12 @@ int setresgid(gid_t rgid, gid_t egid, gid_t sgid)
 			goto exit;
 
 		ret = __setenv("SGID", buf, 1);
+		if (ret == -1)
+			goto exit;
 	}
 
 	/* Not forwarding function */
-	ret = 0;
+	ret = __set_errno(errno_save, 0);
 
 exit:
 	__debug("%s(rgid: %u, egid: %u, sgid: %u) -> %i\n", __func__, rgid,

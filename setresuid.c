@@ -14,6 +14,7 @@
 
 int setresuid(uid_t ruid, uid_t euid, uid_t suid)
 {
+	const int errno_save = errno;
 	int ret;
 
 	ret = setreuid(ruid, euid);
@@ -28,10 +29,12 @@ int setresuid(uid_t ruid, uid_t euid, uid_t suid)
 			goto exit;
 
 		ret = __setenv("SUID", buf, 1);
+		if (ret == -1)
+			goto exit;
 	}
 
 	/* Not forwarding function */
-	ret = 0;
+	ret = __set_errno(errno_save, 0);
 
 exit:
 	__debug("%s(ruid: %u, euid: %u, suid: %u) -> %i\n", __func__, ruid,

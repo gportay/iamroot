@@ -3,7 +3,7 @@
 # --build-arg user=$USER --build-arg uid=$UID --build-arg groups=$GROUPS --build-arg home=$HOME
 FROM archlinux/archlinux:latest
 RUN pacman -Syu --noconfirm base-devel sudo
-RUN pacman -Syu --noconfirm aarch64-linux-gnu-gcc asciidoctor git kernel-headers-musl lib32-glibc musl shellcheck
+RUN pacman -Syu --noconfirm aarch64-linux-gnu-gcc asciidoctor git kernel-headers-musl lib32-glibc musl patchelf shellcheck
 RUN pacman -Syu --noconfirm arch-install-scripts
 
 ARG user

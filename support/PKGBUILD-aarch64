@@ -10,6 +10,7 @@ license=('GPL')
 makedepends=('aarch64-glibc-bleeding-edge-toolchain'
              'aarch64-musl-bleeding-edge-toolchain'
              'git'
+             'patchelf'
              'asciidoctor')
 checkdepends=('shellcheck')
 provides=("${pkgname%-git}")

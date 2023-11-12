@@ -10,6 +10,7 @@ license=('GPL')
 makedepends=('riscv64-lp64d-glibc-bleeding-edge-toolchain'
              'riscv64-lp64d-musl-bleeding-edge-toolchain'
              'git'
+             'patchelf'
              'asciidoctor')
 checkdepends=('shellcheck')
 provides=("${pkgname%-git}")

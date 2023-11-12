@@ -13,6 +13,7 @@ makedepends=('lib32-glibc'
              'musl'
              'kernel-headers-musl'
              'git'
+             'patchelf'
              'asciidoctor')
 checkdepends=('shellcheck')
 provides=("${pkgname%-git}")

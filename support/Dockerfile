@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 # Requires the docker build options:
-# --build-arg user=$USER --build-arg uid=$UID --build-arg groups=$GROUPS --build-arg home=$HOME
+# --build-arg "user=$USER" --build-arg "uid=$UID" --build-arg "groups=$GROUPS" --build-arg "home=$HOME"
 FROM archlinux/archlinux:latest
 RUN pacman -Syu --noconfirm base-devel sudo
 RUN pacman -Syu --noconfirm aarch64-linux-gnu-gcc asciidoctor git kernel-headers-musl lib32-glibc musl patchelf shellcheck
@@ -12,7 +12,7 @@ ARG groups
 ARG home
 
 RUN groupadd --non-unique --gid "$groups" "$user"
-RUN useradd  --non-unique --gid "$groups" --uid "$uid" --create-home --home-dir "$home" --shell "$SHELL" $user"
+RUN useradd  --non-unique --gid "$groups" --uid "$uid" --create-home --home-dir "$home" --shell "$SHELL" "$user"
 RUN echo "%$user ALL=(ALL) NOPASSWD: /usr/bin/pacman" >"/etc/sudoers.d/$user"
 
 ENV VISUAL cat

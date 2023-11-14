@@ -2123,8 +2123,8 @@ int __ldso(const char *path, char * const argv[], char *interp,
 	    has_inhibit_rpath = 0, has_inhibit_cache = 0, shift = 1;
 	char *argv0, *inhibit_rpath, *ld_library_path, *ld_preload;
 	int fd, abi = 0, err = -1, ret = -1;
-	char buf[NAME_MAX];
 	char ldso[NAME_MAX];
+	char buf[NAME_MAX];
 	char * const *arg;
 	Elf64_Ehdr ehdr;
 	ssize_t siz;

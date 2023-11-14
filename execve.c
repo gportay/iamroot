@@ -422,7 +422,7 @@ int __exec_sh(const char *path, char * const *argv)
 					  */
 	char buf[PATH_MAX];
 	char * const *arg;
-	int ret, argc, i;
+	int argc, err, i;
 
 	i = 0;
 	interparg[i++] = __strncpy(buf, __getexec());
@@ -431,28 +431,28 @@ int __exec_sh(const char *path, char * const *argv)
 					*/
 	interparg[i] = NULL; /* ensure NULL-terminated */
 
-	ret = setenv("IAMROOT_VERSION", __xstr(VERSION), 1);
-	if (ret)
+	err = setenv("IAMROOT_VERSION", __xstr(VERSION), 1);
+	if (err)
 		return -1;
 
-	ret = setenv("_argv0", *argv, 1);
-	if (ret)
+	err = setenv("_argv0", *argv, 1);
+	if (err)
 		return -1;
 
-	ret = setenv("_preload", getenv("LD_PRELOAD") ?: "", 1);
-	if (ret)
+	err = setenv("_preload", getenv("LD_PRELOAD") ?: "", 1);
+	if (err)
 		return -1;
 
-	ret = setenv("_library_path", getenv("LD_LIBRARY_PATH") ?: "", 1);
-	if (ret)
+	err = setenv("_library_path", getenv("LD_LIBRARY_PATH") ?: "", 1);
+	if (err)
 		return -1;
 
-	ret = unsetenv("LD_PRELOAD");
-	if (ret)
+	err = unsetenv("LD_PRELOAD");
+	if (err)
 		return -1;
 
-	ret = unsetenv("LD_LIBRARY_PATH");
-	if (ret)
+	err = unsetenv("LD_LIBRARY_PATH");
+	if (err)
 		return -1;
 
 	argc = 1;

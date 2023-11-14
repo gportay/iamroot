@@ -126,7 +126,7 @@ int posix_spawn(pid_t *pid, const char *path,
 	if (ret < 1)
 		goto loader;
 
-	/* FIXME: __interpreter_scrtip() should do the following; it must have
+	/* FIXME: __interpreter_script() should do the following; it must have
 	 * original and resolved path. */
 	interparg[ret-1] = (char *)path; /* original program path as first
 					  * positional argument */

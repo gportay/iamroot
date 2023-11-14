@@ -2661,6 +2661,9 @@ int __ldso_execve(const char *path, char * const argv[], char * const envp[])
 	(void)path;
 	(void)envp;
 
+	if (!argv[1])
+		goto exit;
+
 	/*
 	 * According to ld-linux.so(8)
 	 *
@@ -2678,9 +2681,6 @@ int __ldso_execve(const char *path, char * const argv[], char * const envp[])
 
 		_exit(0);
 	}
-
-	if (!argv[1])
-		goto exit;
 
 	/*
 	 * According to ld-linux.so(8)

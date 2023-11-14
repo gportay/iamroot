@@ -23,6 +23,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the interception of the `_time64` variant functions `__fstat64_time64()`,
   `__fstatat64_time64()`, `__lstat64_time64()` and `__stat64_time64()` on
   32-bit architectures ([glibc] on x86, ARM and ARM hard-float)
+- Fix the segmentation fault if the [dynamic loader][ld.so(8)] is run with no
+  argument from within a chroot environment
 
 ## [v13] - 2023-10-11
 

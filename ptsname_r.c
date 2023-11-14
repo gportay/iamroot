@@ -15,7 +15,7 @@
 static int (*sym)(int, char *, size_t);
 
 __attribute__((visibility("hidden")))
-int next_ptsname_r(int fd, char *buf, size_t bufsize)
+int next_ptsname_r(int fd, char *buf, size_t bufsiz)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "ptsname_r");
@@ -23,15 +23,15 @@ int next_ptsname_r(int fd, char *buf, size_t bufsize)
 	if (!sym)
 		return __set_errno(ENOSYS, -1);
 
-	return sym(fd, buf, bufsize);
+	return sym(fd, buf, bufsiz);
 }
 
-int ptsname_r(int fd, char *buf, size_t bufsize)
+int ptsname_r(int fd, char *buf, size_t bufsiz)
 {
 	char *s;
 	int ret;
 
-	ret = next_ptsname_r(fd, buf, bufsize);
+	ret = next_ptsname_r(fd, buf, bufsiz);
 	if (ret == -1)
 		goto exit;
 
@@ -46,13 +46,13 @@ exit:
 	return ret;
 }
 
-int __ptsname_r_chk(int fd, char *buf, size_t bufsize, size_t buflen)
+int __ptsname_r_chk(int fd, char *buf, size_t bufsiz, size_t buflen)
 {
 	(void)buflen;
 
-	__debug("%s(fd: %i, buf: %p, bufsize: %zu, buflen: %zu)\n", __func__,
-		fd, buf, bufsize, buflen);
+	__debug("%s(fd: %i, buf: %p, bufsiz: %zu, buflen: %zu)\n", __func__,
+		fd, buf, bufsiz, buflen);
 
 	/* Forward to another function */
-	return ptsname_r(fd, buf, bufsize);
+	return ptsname_r(fd, buf, bufsiz);
 }

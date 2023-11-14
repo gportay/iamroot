@@ -298,7 +298,7 @@ cache_extension_load (const struct cache_file_new *cache,
 #include "iamroot.h"
 
 ssize_t
-__ldso_cache (const char *soname, char *buf, size_t bufsize)
+__ldso_cache (const char *soname, char *buf, size_t bufsiz)
 {
   int fd = open (LD_SO_CACHE, O_RDONLY);
   if (fd == -1)
@@ -354,7 +354,7 @@ __ldso_cache (const char *soname, char *buf, size_t bufsize)
           if (streq (root, "/"))
             root = "";
 
-          int n = _snprintf (buf, bufsize, "%s%s", root, path);
+          int n = _snprintf (buf, bufsiz, "%s%s", root, path);
           if (n == -1)
             goto munmap;
 

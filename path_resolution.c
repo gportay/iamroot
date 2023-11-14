@@ -151,7 +151,7 @@ char *__strchrnul(const char *s, int c)
 #endif
 
 #ifdef __OpenBSD__
-static ssize_t __fgetpath(int fd, char *buf, size_t bufsize)
+static ssize_t __fgetpath(int fd, char *buf, size_t bufsiz)
 {
 	const char *path;
 
@@ -159,8 +159,8 @@ static ssize_t __fgetpath(int fd, char *buf, size_t bufsize)
 	if (!path)
 		return __set_errno(ENOENT, -1);
 
-	_strncpy(buf, path, bufsize);
-	return strnlen(buf, bufsize);
+	_strncpy(buf, path, bufsiz);
+	return strnlen(buf, bufsiz);
 }
 #endif
 
@@ -243,7 +243,7 @@ struct kinfo_file *kinfo_getfile(pid_t pid, int *cntp)
 	return (kif);	/* Caller must free() return value */
 }
 
-static ssize_t __fgetpath(int fd, char *buf, size_t bufsize)
+static ssize_t __fgetpath(int fd, char *buf, size_t bufsiz)
 {
 	struct kinfo_file *kif;
 	ssize_t ret = -1;
@@ -257,7 +257,7 @@ static ssize_t __fgetpath(int fd, char *buf, size_t bufsize)
 		if (kif[i].kf_fd != fd)
 			continue;
 
-		ret = strlcpy(buf, kif[i].kf_path, bufsize);
+		ret = strlcpy(buf, kif[i].kf_path, bufsiz);
 		break;
 	}
 
@@ -289,7 +289,7 @@ void __procfdname(char *buf, unsigned fd)
 	for (; fd; fd/=10) buf[--i] = '0' + fd%10;
 }
 
-static ssize_t __fgetpath(int fd, char *buf, size_t bufsize)
+static ssize_t __fgetpath(int fd, char *buf, size_t bufsiz)
 {
 	char tmp[sizeof("/proc/self/fd/") + 3*sizeof(int) + 2]; /* sign + NULL-terminated */
 	const int errno_save = errno;
@@ -300,14 +300,14 @@ static ssize_t __fgetpath(int fd, char *buf, size_t bufsize)
 		return 1;
 	}
 	__procfdname(tmp, fd);
-	ret = next_readlinkat(AT_FDCWD, tmp, buf, bufsize);
+	ret = next_readlinkat(AT_FDCWD, tmp, buf, bufsiz);
 #ifdef __NetBSD__
 	if (ret == -1 && errno == EINVAL) {
 		const char *path = __getfd(fd);
 		if (!path)
 			return __set_errno(ENOENT, -1);
-		_strncpy(buf, path, bufsize);
-		ret = strnlen(buf, bufsize);
+		_strncpy(buf, path, bufsiz);
+		ret = strnlen(buf, bufsiz);
 		return __set_errno(errno_save, ret);
 	}
 #endif
@@ -643,14 +643,14 @@ static int warning_ignore(const char *path)
  * Sanitize the given path from its starting, and make it relative to / (does
  * not handle parent directories ../).
  */
-char *__path_sanitize(char *path, size_t bufsize)
+char *__path_sanitize(char *path, size_t bufsiz)
 {
 	ssize_t len;
 
 	if (!*path)
 		return path;
 
-	len = strnlen(path, bufsize);
+	len = strnlen(path, bufsiz);
 	/* Strip leading ./ */
 	while ((len > 3) && __strneq(path, "./") && path[2] != '/') {
 		char *s;
@@ -740,7 +740,7 @@ int __path_ignored(int dfd, const char *path)
 	return ignore(path);
 }
 
-ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
+ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsiz,
 			int atflags)
 {
 	int is_atrootfd = 0;
@@ -774,8 +774,8 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 	if (streq(path, "/proc/1/root")) {
 		__notice("%s: ignoring path resolution '%s'\n", __func__,
 			 path);
-		_strncpy(buf, "/", bufsize);
-		ret = strnlen(buf, bufsize);
+		_strncpy(buf, "/", bufsiz);
+		ret = strnlen(buf, bufsiz);
 		if ((size_t)ret != __strnlen("/"))
 			return __set_errno(ENAMETOOLONG, -1);
 		return ret;
@@ -787,8 +787,8 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 	 * The path is copied as is.
 	 */
 	if (ignore(path)) {
-		_strncpy(buf, path, bufsize);
-		ret = strnlen(buf, bufsize);
+		_strncpy(buf, path, bufsiz);
+		ret = strnlen(buf, bufsiz);
 		if ((size_t)ret != __strlen(path))
 			return __set_errno(ENAMETOOLONG, -1);
 		return ret;
@@ -816,7 +816,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 			path = &path[len]; /* strip root directory */
 		}
 
-		n = _snprintf(buf, bufsize, "%s%s", root, path);
+		n = _snprintf(buf, bufsiz, "%s%s", root, path);
 		if (n == -1 && n == ENOSPC)
 			return __set_errno(ENAMETOOLONG, -1);
 		if (n == -1)
@@ -844,8 +844,8 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		if (*dirbuf != '/') {
 			__warning("%i: ignore non absolute path '%s'\n", dfd,
 				  dirbuf);
-			_strncpy(buf, path, bufsize);
-			ret = strnlen(buf, bufsize);
+			_strncpy(buf, path, bufsiz);
+			ret = strnlen(buf, bufsiz);
 			if ((size_t)ret != __strlen(path))
 				return __set_errno(ENAMETOOLONG, -1);
 			return ret;
@@ -855,7 +855,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 		 * The directory fd is the root directory.
 		 */
 		is_atrootfd = streq(root, dirbuf);
-		n = _snprintf(buf, bufsize, "%s/%s", dirbuf, path);
+		n = _snprintf(buf, bufsiz, "%s/%s", dirbuf, path);
 		if (n == 1 && n == ENOSPC)
 			return __set_errno(ENAMETOOLONG, -1);
 		if (n == -1)
@@ -866,17 +866,17 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 	 * The path is left unresolved, and it is copied as is.
 	 */
 	} else {
-		_strncpy(buf, path, bufsize);
+		_strncpy(buf, path, bufsiz);
 	}
 
 	/* Sanitize the resolved path if it is touched */
-	__path_sanitize(buf, bufsize);
+	__path_sanitize(buf, bufsiz);
 
 	/* Follow the symlink unless the AT_SYMLINK_NOFOLLOW is given */
 	if (follow_symlink(atflags)) {
 		char tmp[PATH_MAX];
 
-		_strncpy(tmp, buf, bufsize);
+		_strncpy(tmp, buf, bufsiz);
 		__realpath(tmp, buf);
 	}
 
@@ -887,7 +887,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 	 * The resolved path is the root directory.
 	 */
 	if (*root && is_atrootfd && !__strleq(buf, root))
-		_strncpy(buf, root, bufsize);
+		_strncpy(buf, root, bufsiz);
 
 	/*
 	 * The path after the symlinks are followed is to be ignored.
@@ -897,7 +897,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
 	if (*root && __strleq(buf, root) && ignore(buf+len))
 		__striprootdir(buf);
 
-	return strnlen(buf, bufsize);
+	return strnlen(buf, bufsiz);
 }
 
 __attribute__((visibility("hidden")))

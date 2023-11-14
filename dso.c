@@ -270,7 +270,7 @@ static int __ldso_preload_needed(const char *, const char *, char *, size_t);
 struct __ldso_preload_needed_context {
 	const char *deflib;
 	char *buf;
-	size_t bufsize;
+	size_t bufsiz;
 };
 
 static int __ldso_preload_needed_callback(const char *needed, void *user)
@@ -302,11 +302,11 @@ static int __ldso_preload_needed_callback(const char *needed, void *user)
 		return 0;
 
 	/* Add the needed shared objects to buf */
-	return __ldso_preload_needed(buf, ctx->deflib, ctx->buf, ctx->bufsize);
+	return __ldso_preload_needed(buf, ctx->deflib, ctx->buf, ctx->bufsiz);
 }
 
 static int __ldso_preload_needed(const char *path, const char *deflib,
-				 char *buf, size_t bufsize)
+				 char *buf, size_t bufsiz)
 {
 	struct __ldso_preload_needed_context ctx;
 	char needed[PATH_MAX];
@@ -319,19 +319,19 @@ static int __ldso_preload_needed(const char *path, const char *deflib,
 		return -1;
 	ctx.deflib = deflib;
 	ctx.buf = buf;
-	ctx.bufsize = bufsize;
+	ctx.bufsiz = bufsiz;
 	ret = __path_iterate(needed, __ldso_preload_needed_callback, &ctx);
 	if (ret == -1)
 		return -1;
 
 	/* Add the shared object to path then */
-	__path_strncat(buf, path, bufsize);
+	__path_strncat(buf, path, bufsiz);
 
 	return 0;
 }
 
 static int __ldso_preload_executable(const char *path, const char *deflib,
-				     char *buf, size_t bufsize)
+				     char *buf, size_t bufsiz)
 {
 	struct __ldso_preload_needed_context ctx;
 	char needed[PATH_MAX];
@@ -343,7 +343,7 @@ static int __ldso_preload_executable(const char *path, const char *deflib,
 		return -1;
 	ctx.deflib = deflib;
 	ctx.buf = buf;
-	ctx.bufsize = bufsize;
+	ctx.bufsiz = bufsiz;
 	return __path_iterate(needed, __ldso_preload_needed_callback, &ctx);
 }
 
@@ -362,7 +362,7 @@ static ssize_t __ldso_access(const char *path,
 			     const char *deflib,
 			     uint32_t flags_1,
 			     char *buf,
-			     size_t bufsize)
+			     size_t bufsiz)
 {
 	ssize_t ret = -1;
 
@@ -373,9 +373,9 @@ static ssize_t __ldso_access(const char *path,
 	 * searched for in the following order:
 	 */
 	if (strchr(path, '/')) {
-		strncpy(buf, path, bufsize);
+		strncpy(buf, path, bufsiz);
 
-		return strnlen(buf, bufsize);
+		return strnlen(buf, bufsiz);
 	}
 
 	/* Search for NAME in several places. */
@@ -394,7 +394,7 @@ static ssize_t __ldso_access(const char *path,
 		 */
 		__info("%s: trying accessing from shared object DT_RPATH %s...\n",
 		       path, rpath);
-		ret = __path_access(path, mode, rpath, buf, bufsize);
+		ret = __path_access(path, mode, rpath, buf, bufsiz);
 		if (ret == -1 && errno != ENOENT)
 			return -1;
 
@@ -407,7 +407,7 @@ static ssize_t __ldso_access(const char *path,
 		 */
 		__info("%s: trying accessing from executable DT_RPATH %s...\n",
 		       path, exec_rpath);
-		ret = __path_access(path, mode, exec_rpath, buf, bufsize);
+		ret = __path_access(path, mode, exec_rpath, buf, bufsiz);
 		if (ret == -1 && errno != ENOENT)
 			return -1;
 
@@ -430,7 +430,7 @@ static ssize_t __ldso_access(const char *path,
 	if (ld_library_path && !__secure_execution_mode()) {
 		__info("%s: trying accessing from LD_LIBRARY_PATH %s...\n",
 		       path, ld_library_path);
-		ret = __path_access(path, mode, ld_library_path, buf, bufsize);
+		ret = __path_access(path, mode, ld_library_path, buf, bufsiz);
 		if (ret == -1 && errno != ENOENT)
 			return -1;
 
@@ -450,7 +450,7 @@ static ssize_t __ldso_access(const char *path,
 	if (runpath) {
 		__info("%s: trying accessing from shared object DT_RUNPATH %s...\n",
 		       path, runpath);
-		ret = __path_access(path, mode, runpath, buf, bufsize);
+		ret = __path_access(path, mode, runpath, buf, bufsiz);
 		if (ret == -1 && errno != ENOENT)
 			return -1;
 
@@ -467,7 +467,7 @@ static ssize_t __ldso_access(const char *path,
 	 * are preferred to other shared objects.
 	 */
 	__info("%s: trying accessing from cache...\n", path);
-	ret = __ldso_cache(path, buf, bufsize);
+	ret = __ldso_cache(path, buf, bufsiz);
 	if (ret == -1 && errno != ENOENT)
 		return -1;
 
@@ -483,7 +483,7 @@ static ssize_t __ldso_access(const char *path,
 	if (!(flags_1 & DF_1_NODEFLIB) && deflib) {
 		__info("%s: trying accessing from default library path %s...\n",
 		       path, deflib);
-		ret = __path_access(path, mode, deflib, buf, bufsize);
+		ret = __path_access(path, mode, deflib, buf, bufsiz);
 		if (ret == -1 && errno != ENOENT)
 			return -1;
 
@@ -821,7 +821,7 @@ static ssize_t __felf_header(int fd, Elf64_Ehdr *ehdr)
 }
 
 static ssize_t __elf_interp32(int fd, Elf32_Ehdr *ehdr, char *buf,
-			      size_t bufsize)
+			      size_t bufsiz)
 {
 	ssize_t ret = -1;
 	int i, num;
@@ -847,7 +847,7 @@ static ssize_t __elf_interp32(int fd, Elf32_Ehdr *ehdr, char *buf,
 		if (phdr.p_type != PT_INTERP)
 			continue;
 
-		if (bufsize < phdr.p_filesz) {
+		if (bufsiz < phdr.p_filesz) {
 			ret = __set_errno(EIO, -1);
 			goto exit;
 		}
@@ -872,7 +872,7 @@ exit:
 }
 
 static ssize_t __elf_interp64(int fd, Elf64_Ehdr *ehdr, char *buf,
-			     size_t bufsize)
+			     size_t bufsiz)
 {
 	ssize_t ret = -1;
 	int i, num;
@@ -898,7 +898,7 @@ static ssize_t __elf_interp64(int fd, Elf64_Ehdr *ehdr, char *buf,
 		if (phdr.p_type != PT_INTERP)
 			continue;
 
-		if (bufsize < phdr.p_filesz) {
+		if (bufsiz < phdr.p_filesz) {
 			ret = __set_errno(EIO, -1);
 			goto exit;
 		}
@@ -1230,7 +1230,7 @@ static int __elf_iterate_shared_object(int fd, int d_tag,
 	return __set_errno(ENOEXEC, -1);
 }
 
-static ssize_t __felf_interp(int fd, char *buf, size_t bufsize)
+static ssize_t __felf_interp(int fd, char *buf, size_t bufsiz)
 {
 	Elf64_Ehdr ehdr;
 	ssize_t siz;
@@ -1242,16 +1242,16 @@ static ssize_t __felf_interp(int fd, char *buf, size_t bufsize)
 
 	/* It is a 32-bits ELF */
 	if (ehdr.e_ident[EI_CLASS] == ELFCLASS32)
-		return __elf_interp32(fd, (Elf32_Ehdr *)&ehdr, buf, bufsize);
+		return __elf_interp32(fd, (Elf32_Ehdr *)&ehdr, buf, bufsiz);
 	/* It is a 64-bits ELF */
 	else if (ehdr.e_ident[EI_CLASS] == ELFCLASS64)
-		return __elf_interp64(fd, (Elf64_Ehdr *)&ehdr, buf, bufsize);
+		return __elf_interp64(fd, (Elf64_Ehdr *)&ehdr, buf, bufsiz);
 
 	/* It is an invalid ELF */
 	return __set_errno(ENOEXEC, -1);
 }
 
-static ssize_t __elf_interp(const char *path, char *buf, size_t bufsize)
+static ssize_t __elf_interp(const char *path, char *buf, size_t bufsiz)
 {
 	ssize_t ret;
 	int fd;
@@ -1260,7 +1260,7 @@ static ssize_t __elf_interp(const char *path, char *buf, size_t bufsize)
 	if (fd == -1)
 		return -1;
 
-	ret = __felf_interp(fd, buf, bufsize);
+	ret = __felf_interp(fd, buf, bufsiz);
 
 	__close(fd);
 
@@ -1709,7 +1709,7 @@ static int __secure_execution_mode()
  * Note: This resolves all the library path of the executable file in order to
  * prevent from loading the shared objects of the host system.
 */
-static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsize)
+static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsiz)
 {
 	char *ld_library_path;
 	int err, has_runpath;
@@ -1734,7 +1734,7 @@ static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsize)
 		if (err == -1)
 			return -1;
 
-		__path_strncat(buf, tmp, bufsize);
+		__path_strncat(buf, tmp, bufsiz);
 	}
 
 	/*
@@ -1756,13 +1756,13 @@ static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsize)
 	 * unlike DT_RPATH, which is applied to searches for all children in
 	 * the dependency tree.
 	 */
-	err = __elf_runpath(path, tmp, bufsize);
+	err = __elf_runpath(path, tmp, bufsiz);
 	if (err == -1)
 		return -1;
 
 	has_runpath = err > 0;
 	if (has_runpath)
-		__path_strncat(buf, tmp, bufsize);
+		__path_strncat(buf, tmp, bufsiz);
 
 	/*
 	 * (2)  Using the environment variable LD_LIBRARY_PATH, unless the
@@ -1771,7 +1771,7 @@ static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsize)
 	 */
 	ld_library_path = getenv("LD_LIBRARY_PATH");
 	if (ld_library_path && !__secure_execution_mode())
-		__path_strncat(buf, ld_library_path, bufsize);
+		__path_strncat(buf, ld_library_path, bufsiz);
 
 	/*
 	 * (1)  Using the directories specified in the DT_RPATH dynamic section
@@ -1783,10 +1783,10 @@ static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsize)
 		if (err == -1)
 			return -1;
 
-		__path_strncat(buf, tmp, bufsize);
+		__path_strncat(buf, tmp, bufsiz);
 	}
 
-	return strnlen(buf, bufsize);
+	return strnlen(buf, bufsiz);
 }
 
 static char *__setenv_ld_library_path(const char *path)
@@ -1856,7 +1856,7 @@ static int __path_callback(const void *data, size_t size, void *user)
 	return 0;
 }
 
-static ssize_t __felf_needed(int fd, char *buf, size_t bufsize)
+static ssize_t __felf_needed(int fd, char *buf, size_t bufsiz)
 {
 	int err;
 
@@ -1865,10 +1865,10 @@ static ssize_t __felf_needed(int fd, char *buf, size_t bufsize)
 	if (err == -1)
 		return -1;
 
-	return strnlen(buf, bufsize);
+	return strnlen(buf, bufsiz);
 }
 
-static ssize_t __elf_needed(const char *path, char *buf, size_t bufsize)
+static ssize_t __elf_needed(const char *path, char *buf, size_t bufsiz)
 {
 	ssize_t ret;
 	int fd;
@@ -1877,14 +1877,14 @@ static ssize_t __elf_needed(const char *path, char *buf, size_t bufsize)
 	if (fd == -1)
 		return -1;
 
-	ret = __felf_needed(fd, buf, bufsize);
+	ret = __felf_needed(fd, buf, bufsiz);
 
 	__close(fd);
 
 	return ret;
 }
 
-static ssize_t __felf_rpath(int fd, char *buf, size_t bufsize)
+static ssize_t __felf_rpath(int fd, char *buf, size_t bufsiz)
 {
 	int err, n;
 
@@ -1898,10 +1898,10 @@ static ssize_t __felf_rpath(int fd, char *buf, size_t bufsize)
 		__warning("%s: RPATH has dynamic %i string token(s): %s\n",
 			  __fpath(fd), n, buf);
 
-	return strnlen(buf, bufsize);
+	return strnlen(buf, bufsiz);
 }
 
-static ssize_t __elf_rpath(const char *path, char *buf, size_t bufsize)
+static ssize_t __elf_rpath(const char *path, char *buf, size_t bufsiz)
 {
 	ssize_t ret;
 	int fd;
@@ -1910,14 +1910,14 @@ static ssize_t __elf_rpath(const char *path, char *buf, size_t bufsize)
 	if (fd == -1)
 		return -1;
 
-	ret = __felf_rpath(fd, buf, bufsize);
+	ret = __felf_rpath(fd, buf, bufsiz);
 
 	__close(fd);
 
 	return ret;
 }
 
-static ssize_t __felf_runpath(int fd, char *buf, size_t bufsize)
+static ssize_t __felf_runpath(int fd, char *buf, size_t bufsiz)
 {
 	int err, n;
 
@@ -1932,10 +1932,10 @@ static ssize_t __felf_runpath(int fd, char *buf, size_t bufsize)
 		__warning("%s: RUNPATH has dynamic %i string token(s): %s\n",
 			  __fpath(fd), n, buf);
 
-	return strnlen(buf, bufsize);
+	return strnlen(buf, bufsiz);
 }
 
-static ssize_t __elf_runpath(const char *path, char *buf, size_t bufsize)
+static ssize_t __elf_runpath(const char *path, char *buf, size_t bufsiz)
 {
 	ssize_t ret;
 	int fd;
@@ -1944,7 +1944,7 @@ static ssize_t __elf_runpath(const char *path, char *buf, size_t bufsize)
 	if (fd == -1)
 		return -1;
 
-	ret = __felf_runpath(fd, buf, bufsize);
+	ret = __felf_runpath(fd, buf, bufsiz);
 
 	__close(fd);
 
@@ -1984,7 +1984,7 @@ static int __getld_linux_so_callback(const char *needed, void *user)
 	return 1;
 }
 
-static ssize_t __getld_linux_so(int fd, char *buf, size_t bufsize)
+static ssize_t __getld_linux_so(int fd, char *buf, size_t bufsiz)
 {
 	const char *libc_so_6 = "libc.so.6";
 	char needed[PATH_MAX];
@@ -2014,10 +2014,10 @@ static ssize_t __getld_linux_so(int fd, char *buf, size_t bufsize)
 	if (err == 0)
 		return __set_errno(ENOENT, -1);
 
-	return strnlen(buf, bufsize);
+	return strnlen(buf, bufsiz);
 }
 
-static ssize_t __felf_deflib(int fd, char *buf, size_t bufsize)
+static ssize_t __felf_deflib(int fd, char *buf, size_t bufsiz)
 {
 	const int errno_save = errno;
 	char interp[NAME_MAX];
@@ -2075,12 +2075,12 @@ deflib:
 	if (!deflib)
 		return -1;
 
-	strncpy(buf, deflib, bufsize);
+	strncpy(buf, deflib, bufsiz);
 
-	return strnlen(buf, bufsize);
+	return strnlen(buf, bufsiz);
 }
 
-static ssize_t __elf_deflib(const char *path, char *buf, size_t bufsize)
+static ssize_t __elf_deflib(const char *path, char *buf, size_t bufsiz)
 {
 	ssize_t ret;
 	int fd;
@@ -2089,7 +2089,7 @@ static ssize_t __elf_deflib(const char *path, char *buf, size_t bufsize)
 	if (fd == -1)
 		return -1;
 
-	ret = __felf_deflib(fd, buf, bufsize);
+	ret = __felf_deflib(fd, buf, bufsiz);
 
 	__close(fd);
 
@@ -2359,7 +2359,7 @@ close:
 }
 
 __attribute__((visibility("hidden")))
-ssize_t __dl_access(const char *path, int mode, char *buf, size_t bufsize)
+ssize_t __dl_access(const char *path, int mode, char *buf, size_t bufsiz)
 {
 	char *exec_rpath, *exec_runpath, *ld_library_path;
 	char deflib[PATH_MAX];
@@ -2411,7 +2411,7 @@ ssize_t __dl_access(const char *path, int mode, char *buf, size_t bufsize)
 	/* Look for the shared object */
 	return __ldso_access(path, mode, exec_rpath, exec_runpath, NULL,
 			     ld_library_path, NULL, deflib, flags_1, buf,
-			     bufsize);
+			     bufsiz);
 }
 
 static const char *__root_basepath(const char *path)
@@ -2442,7 +2442,7 @@ static int __ld_trace_loader_objects_needed(const char *, const char *,
 
 struct __ld_trace_loader_objects_needed_context {
 	char *buf;
-	size_t bufsize;
+	size_t bufsiz;
 	FILE *f;
 };
 
@@ -2490,7 +2490,7 @@ static int __ld_trace_loader_objects_needed_callback(const char *so,
 					       deflib,
 					       flags_1,
 					       ctx->buf,
-					       ctx->bufsize);
+					       ctx->bufsiz);
 
 	fprintf(ctx->f, "\t%s => %s (0x%0*zx)\n", so, __root_basepath(buf),
 		(int)sizeof(map_start) * 2, map_start);
@@ -2505,7 +2505,7 @@ static int __ld_trace_loader_objects_needed(const char *path,
 					    const char *deflib,
 					    uint32_t flags_1,
 					    char *buf,
-					    size_t bufsize)
+					    size_t bufsiz)
 {
 	struct __ld_trace_loader_objects_needed_context ctx;
 	char needed[PATH_MAX];
@@ -2518,7 +2518,7 @@ static int __ld_trace_loader_objects_needed(const char *path,
 
 	/* Add the needed shared objects to path first */
 	ctx.buf = buf;
-	ctx.bufsize = bufsize;
+	ctx.bufsiz = bufsiz;
 	ctx.f = stdout;
 	ret = __ld_needed(path,
 			  exec_rpath,
@@ -2532,7 +2532,7 @@ static int __ld_trace_loader_objects_needed(const char *path,
 		return -1;
 
 	/* Add the shared object to path then */
-	__path_strncat(buf, path, bufsize);
+	__path_strncat(buf, path, bufsiz);
 
 	return 0;
 }
@@ -2607,7 +2607,7 @@ static int __ld_trace_loader_objects_executable(const char *path)
 
 	/* Print the DT_NEEDED shared objects */
 	ctx.buf = buf;
-	ctx.bufsize = sizeof(buf);
+	ctx.bufsiz = sizeof(buf);
 	ctx.f = f;
 	ret = __ld_needed(path,
 			  exec_rpath,

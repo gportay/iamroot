@@ -29,13 +29,13 @@ int __path_setenv(const char *root, const char *name, const char *value,
 	return __set_errno(ENOSYS, -1);
 }
 
-ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsize,
+ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsiz,
 			int atflags)
 {
 	(void)dfd;
 	(void)path;
 	(void)buf;
-	(void)bufsize;
+	(void)bufsiz;
 	(void)atflags;
 
 	return __set_errno(ENOSYS, -1);

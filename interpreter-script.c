@@ -16,7 +16,7 @@
 extern int next_open(const char *, int, mode_t);
 
 static ssize_t __interpreter_script_hashbang(const char *path, char *buf,
-					     size_t bufsize)
+					     size_t bufsiz)
 {
 	ssize_t ret;
 	char *d, *s;
@@ -59,7 +59,7 @@ static ssize_t __interpreter_script_hashbang(const char *path, char *buf,
 	if (fd == -1)
 		return -1;
 
-	ret = read(fd, buf, bufsize-1); /* NULL-terminated */
+	ret = read(fd, buf, bufsiz-1); /* NULL-terminated */
 	if (ret == -1) {
 		goto close;
 	}

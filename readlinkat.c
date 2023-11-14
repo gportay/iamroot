@@ -17,7 +17,7 @@
 static ssize_t (*sym)(int, const char *, char *, size_t);
 
 __attribute__((visibility("hidden")))
-ssize_t next_readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
+ssize_t next_readlinkat(int dfd, const char *path, char *buf, size_t bufsiz)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "readlinkat");
@@ -25,10 +25,10 @@ ssize_t next_readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 	if (!sym)
 		return __dl_set_errno_and_perror(ENOSYS, -1);
 
-	return sym(dfd, path, buf, bufsize);
+	return sym(dfd, path, buf, bufsiz);
 }
 
-ssize_t readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
+ssize_t readlinkat(int dfd, const char *path, char *buf, size_t bufsiz)
 {
 	ssize_t siz, ret = -1;
 	char tmp2[PATH_MAX+1]; /* NULL-terminated */
@@ -48,8 +48,8 @@ ssize_t readlinkat(int dfd, const char *path, char *buf, size_t bufsize)
 		exe = __getexe();
 		if (exe) {
 			ret = __strlen(exe);
-			if ((size_t)ret > bufsize)
-				ret = bufsize;
+			if ((size_t)ret > bufsiz)
+				ret = bufsiz;
 			memcpy(tmp2, exe, ret);
 
 			__notice("%s: resolving to '%s'\n", path, exe);
@@ -84,8 +84,8 @@ exit:
 		__func__, dfd, __fpath(dfd), path, tmp, ret);
 
 	if (buf && ret >= 0) {
-		if ((size_t)ret > bufsize)
-			ret = bufsize;
+		if ((size_t)ret > bufsiz)
+			ret = bufsiz;
 
 		memcpy(buf, tmp2, ret);
 	}
@@ -94,13 +94,13 @@ exit:
 }
 
 ssize_t __readlinkat_chk(int fd, const char *path, char *buf, size_t pathlen,
-			 size_t bufsize)
+			 size_t bufsiz)
 {
 	(void)pathlen;
 
-	__debug("%s(path: '%s', buf: %p, pathlen: %zu, bufsize: %zu)\n",
-		__func__, path, buf, pathlen, bufsize);
+	__debug("%s(path: '%s', buf: %p, pathlen: %zu, bufsiz: %zu)\n",
+		__func__, path, buf, pathlen, bufsiz);
 
 	/* Forward to another function */
-	return readlinkat(fd, path, buf, bufsize);
+	return readlinkat(fd, path, buf, bufsiz);
 }

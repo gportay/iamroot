@@ -23,19 +23,19 @@ extern int next_fstat(int, struct stat *);
 extern int next_fstatat(int, const char *, struct stat *, int);
 
 __attribute__((visibility("hidden")))
-int _snprintf(char *buf, size_t bufsize, const char *fmt, ...)
+int _snprintf(char *buf, size_t bufsiz, const char *fmt, ...)
 {
 	va_list ap;
 	int ret;
 
 	va_start(ap, fmt);
-	ret = vsnprintf(buf, bufsize, fmt, ap);
+	ret = vsnprintf(buf, bufsiz, fmt, ap);
 	va_end(ap);
 
 	if (ret == -1)
 		return -1;
 
-	if ((size_t)ret < bufsize)
+	if ((size_t)ret < bufsiz)
 		return ret;
 
 	return __set_errno(ENOSPC, -1);

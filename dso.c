@@ -302,8 +302,7 @@ static int __ldso_preload_needed_callback(const char *needed, void *user)
 		return 0;
 
 	/* Add the needed shared objects to buf */
-	return __ldso_preload_needed(buf, ctx->deflib, ctx->buf,
-				     ctx->bufsize);
+	return __ldso_preload_needed(buf, ctx->deflib, ctx->buf, ctx->bufsize);
 }
 
 static int __ldso_preload_needed(const char *path, const char *deflib,

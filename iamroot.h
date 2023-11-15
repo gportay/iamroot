@@ -663,7 +663,7 @@ static inline void __close(int fd)
 
 const char *__path();
 
-int __is_ldso(const char *path);
+int __is_ldso(const char *);
 
 ssize_t __dl_access(const char *, int, char *, size_t);
 

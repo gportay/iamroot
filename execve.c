@@ -426,8 +426,9 @@ static char *__getexec()
  *	/usr/bin/env: /usr/lib64/libc-2.29.so: version `GLIBC_2.34' not found (required by /usr/bin/env)
  *	/usr/bin/env: /usr/lib64/libc-2.29.so: version `GLIBC_ABI_DT_RELR' not found (required by /usr/lib/libpthread.so.0)
  */
-static char **__glibc_workaround(char *buf, size_t bufsiz, char *argv0,
-				 char *envp[7+1])
+__attribute__((visibility("hidden")))
+char **__glibc_workaround(char *buf, size_t bufsiz, char *argv0,
+			  char *envp[7+1])
 {
 	ssize_t siz;
 	off_t off;
@@ -519,26 +520,10 @@ exit:
 }
 
 __attribute__((visibility("hidden")))
-int __exec_sh(const char *path, char * const *argv)
+int __exec_sh(const char *path, char * const *argv, char *interparg[],
+	      char *buf, size_t bufsize)
 {
-	char *glibc_workaround_envp[7+1] = { NULL }; /* 0 PATH
-						      * 1 IAMROOT_ROOT
-						      * 2 IAMROOT_DEBUG
-						      * 3 IAMROOT_VERSION
-						      * 4 _argv0
-						      * 5 _preload
-						      * 6 _library_path
-						      * 7 NULL-terminated
-						      */
-	char *interparg[2+1] = { NULL }; /* 0 IAMROOT_EXEC
-					  * 1 path
-					  * 2 NULL-terminated
-					  */
-	char **envp = __environ;
-	char buf[PATH_MAX];
-	char * const *arg;
-	char *ld_preload;
-	int argc, err, i;
+	int i, err;
 
 	/*
 	 * Run exec.sh from the host system.
@@ -557,27 +542,11 @@ int __exec_sh(const char *path, char * const *argv)
 	 * support for option --preload and the LD_PRELOAD is used instead.
 	 */
 	i = 0;
-	interparg[i++] = __strncpy(buf, __getexec());
+	interparg[i++] = _strncpy(buf, __getexec(), bufsize);
 	interparg[i++] = (char *)path; /* original path as first positional
 					* argument
 					*/
 	interparg[i] = NULL; /* ensure NULL-terminated */
-
-	/* LD_PRELOAD is set */
-	ld_preload = getenv("LD_PRELOAD");
-	if (ld_preload) {
-		__info("%s: preloading shared object: LD_PRELOAD=%s\n", *argv,
-		       ld_preload);
-
-		envp = __glibc_workaround(buf, sizeof(buf), *argv,
-					  glibc_workaround_envp);
-		if (!envp)
-			return -1;
-		if (envp == glibc_workaround_envp) {
-			__notice("%s: glibc: environment is reset!\n", *argv);
-			goto execve;
-		}
-	}
 
 	/* Set library version for future API compatibility. */
 	err = setenv("IAMROOT_VERSION", __xstr(VERSION), 1);
@@ -612,40 +581,20 @@ int __exec_sh(const char *path, char * const *argv)
 	if (err)
 		return -1;
 
-	envp = __environ;
-
-execve:
-	argc = 1;
-	arg = interparg;
-	while (*arg++)
-		argc++;
-	arg = argv+1; /* skip original-argv0 */
-	while (*arg++)
-		argc++;
-
-	if ((argc > 0) && (argc < ARG_MAX)) {
-		char *nargv[argc+1]; /* NULL-terminated */
-		char **narg;
-
-		narg = nargv;
-		arg = interparg;
-		while (*arg)
-			*narg++ = *arg++;
-
-		arg = argv+1; /* skip original-argv0 */
-		while (*arg)
-			*narg++ = *arg++;
-		*narg++ = NULL; /* ensure NULL-terminated */
-
-		__verbose_exec(*nargv, nargv, envp);
-		return next_execve(*nargv, nargv, envp);
-	}
-
-	return __set_errno(EINVAL, -1);
+	return i;
 }
 
 int execve(const char *path, char * const argv[], char * const envp[])
 {
+	char *glibc_workaround_envp[7+1] = { NULL }; /* 0 PATH
+						      * 1 IAMROOT_ROOT
+						      * 2 IAMROOT_DEBUG
+						      * 3 IAMROOT_VERSION
+						      * 4 _argv0
+						      * 5 _preload
+						      * 6 _library_path
+						      * 7 NULL-terminated
+						      */
 	char *interparg[14+1] = { NULL }; /*  0 ARGV0
 					   *  1 /lib/ld.so
 					   *  2 LD_LINUX_ARGV1
@@ -677,6 +626,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	char hashbang[NAME_MAX];
 	char hashbangbuf[PATH_MAX];
 	char loaderbuf[PATH_MAX];
+	int is_ld_preload_set;
 	char *program = NULL;
 	char buf[PATH_MAX];
 	char * const *arg;
@@ -794,5 +744,51 @@ loader:
 	return __set_errno(EINVAL, -1);
 
 exec_sh:
-	return __exec_sh(path, argv);
+	is_ld_preload_set = getenv("LD_PRELOAD") != NULL;
+	if (is_ld_preload_set)
+		__info("%s: preloading shared object: LD_PRELOAD=%s\n", *argv,
+		       getenv("LD_PRELOAD"));
+
+	ret = __exec_sh(path, argv, interparg, buf, sizeof(buf));
+	if (ret == -1)
+		return -1;
+
+	if (is_ld_preload_set) {
+		envp = __glibc_workaround(buf, sizeof(buf), *argv,
+					  glibc_workaround_envp);
+		if (!envp)
+			return -1;
+		if (envp == glibc_workaround_envp)
+			__notice("%s: glibc: environment is reset!\n", *argv);
+	} else {
+		envp = __environ;
+	}
+
+	argc = 1;
+	arg = interparg;
+	while (*arg++)
+		argc++;
+	arg = argv+1; /* skip original-argv0 */
+	while (*arg++)
+		argc++;
+
+	if ((argc > 0) && (argc < ARG_MAX)) {
+		char *nargv[argc+1]; /* NULL-terminated */
+		char **narg;
+
+		narg = nargv;
+		arg = interparg;
+		while (*arg)
+			*narg++ = *arg++;
+		arg = argv+1; /* skip original-argv0 */
+		while (*arg)
+			*narg++ = *arg++;
+		*narg++ = NULL; /* ensure NULL-terminated */
+
+		__execfd();
+		__verbose_exec(*nargv, nargv, envp);
+		return next_execve(*nargv, nargv, envp);
+	}
+
+	return __set_errno(EINVAL, -1);
 }

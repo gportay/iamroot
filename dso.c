@@ -2720,6 +2720,7 @@ int __ldso_execveat(int dfd, const char *path, char * const argv[],
 
 	return __set_errno(ENOSYS, -1);
 }
+
 __attribute__((visibility("hidden")))
 int __ldso_posix_spawn(pid_t *pid,
 		       const char *path,

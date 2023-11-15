@@ -741,50 +741,53 @@ static int __ld_linux_version(const char *path, int *major, int *minor)
 
 static int __ld_linux_has_inhibit_cache_option(const char *path)
 {
+	const int errno_save = errno;
 	int ret, maj = 0, min = 0;
 
 	ret = __ld_linux_version(path, &maj, &min);
 	if ((ret == -1) && (errno != ENOTSUP))
 		return -1;
 
-	errno = 0;
 	if (ret == -1)
-		return 1;
+		return __set_errno(errno_save, 1);
 
 	/* --inhibit-cache is supported since glibc 2.16 */
-	return (maj > 2) || ((maj == 2) && (min >= 16));
+	ret = (maj > 2) || ((maj == 2) && (min >= 16));
+	return __set_errno(errno_save, ret);
 }
 
 static int __ld_linux_has_argv0_option(const char *path)
 {
+	const int errno_save = errno;
 	int ret, maj = 0, min = 0;
 
 	ret = __ld_linux_version(path, &maj, &min);
 	if ((ret == -1) && (errno != ENOTSUP))
 		return -1;
 
-	errno = 0;
 	if (ret == -1)
-		return 1;
+		return __set_errno(errno_save, 1);
 
 	/* --argv0 is supported since glibc 2.33 */
-	return (maj > 2) || ((maj == 2) && (min >= 33));
+	ret = (maj > 2) || ((maj == 2) && (min >= 33));
+	return __set_errno(errno_save, ret);
 }
 
 static int __ld_linux_has_preload_option(const char *path)
 {
+	const int errno_save = errno;
 	int ret, maj = 0, min = 0;
 
 	ret = __ld_linux_version(path, &maj, &min);
 	if ((ret == -1) && (errno != ENOTSUP))
 		return -1;
 
-	errno = 0;
 	if (ret == -1)
-		return 1;
+		return __set_errno(errno_save, 1);
 
 	/* --preload is supported since glibc 2.30 */
-	return (maj > 2) || ((maj == 2) && (min >= 30));
+	ret = (maj > 2) || ((maj == 2) && (min >= 30));
+	return __set_errno(errno_save, ret);
 }
 
 static ssize_t __felf_header(int fd, Elf64_Ehdr *ehdr)

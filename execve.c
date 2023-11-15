@@ -663,7 +663,6 @@ int execve(const char *path, char * const argv[], char * const envp[])
 					   * 14 script.sh
 					   * 15 NULL-terminated
 					   */
-
 	/*
 	 * According to man execve(2):
 	 *

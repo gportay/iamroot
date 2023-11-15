@@ -725,15 +725,15 @@ static int __ld_linux_version(const char *path, int *major, int *minor)
 {
 	char buf[PATH_MAX];
 	ssize_t siz;
-	int ret;
+	int n;
 
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
 			      AT_SYMLINK_FOLLOW);
 	if (siz == -1)
 		return -1;
 
-	ret = sscanf(__basename(buf), "ld-%i.%i.so", major, minor);
-	if (ret < 2)
+	n = sscanf(__basename(buf), "ld-%i.%i.so", major, minor);
+	if (n < 2)
 		return __set_errno(ENOTSUP, -1);
 
 	return 0;

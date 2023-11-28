@@ -23,6 +23,13 @@ source=("$pkgname::git+https://github.com/gportay/${pkgname%-git}.git")
 sha256sums=('SKIP')
 validpgpkeys=('8F3491E60E62695ED780AC672FA122CA0501CA71')
 
+# Fixes:
+#
+# 	$ ish
+#	/bin/bash: symbol lookup error: /usr/lib/iamroot/libiamroot.so: undefined symbol: _Unwind_Resume
+CFLAGS="${CFLAGS//-fexceptions/}"
+export CFLAGS
+
 pkgver() {
 	cd "$srcdir/$pkgname"
 	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"

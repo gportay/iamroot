@@ -35,6 +35,10 @@ static int __nftw_callback(const char *path, const struct stat *statbuf,
 	return fn(buf, statbuf, flags, ftwbuf);
 }
 
+#ifndef __clang__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
 #define fn(p, st, f, b) __nftw_callback(p, st, f, b, fn)
 
 /*
@@ -189,3 +193,6 @@ int nftw(const char *path, int (*fn)(const char *, const struct stat *, int, str
 }
 
 #undef fn
+#ifndef __clang__
+#pragma GCC diagnostic pop
+#endif

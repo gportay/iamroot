@@ -106,6 +106,9 @@ static void cleanup(void *p)
 	fclose(p);
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wclobbered"
+
 int getspnam_r(const char *name, struct spwd *sp, char *buf, size_t size, struct spwd **res)
 {
 	char path[20+NAME_MAX];
@@ -171,6 +174,8 @@ int getspnam_r(const char *name, struct spwd *sp, char *buf, size_t size, struct
 	errno = rv ? rv : orig_errno;
 	return rv;
 }
+
+#pragma GCC diagnostic pop
 
 /*
  * Stolen from musl (src/passwd/getspnam.c)

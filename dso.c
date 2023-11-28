@@ -2123,8 +2123,9 @@ int __ldso(const char *path, char * const argv[], char *interp,
 {
 	int i, j, has_argv0 = 0, has_preload = 0, has_library_path = 0,
 	    has_inhibit_rpath = 0, has_inhibit_cache = 0, shift = 1;
-	char *argv0, *inhibit_rpath, *ld_library_path, *ld_preload;
+	char *argv0, *ld_library_path, *ld_preload;
 	int fd, abi = 0, err = -1, ret = -1;
+	char *inhibit_rpath = NULL;
 	char ldso[NAME_MAX];
 	char buf[NAME_MAX];
 	char * const *arg;

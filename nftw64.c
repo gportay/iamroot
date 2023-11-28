@@ -35,6 +35,8 @@ static int __nftw64_callback(const char *path, const struct stat64 *statbuf,
 	return fn(buf, statbuf, flags, ftwbuf);
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
 #define nftw nftw64
 #define stat stat64
 #define lstat lstat64
@@ -195,4 +197,5 @@ int nftw(const char *path, int (*fn)(const char *, const struct stat *, int, str
 #undef lstat
 #undef stat
 #undef nftw
+#pragma GCC diagnostic pop
 #endif

@@ -408,7 +408,7 @@ PREPROCESS.c = $(PREPROCESS.S)
 %.so:
 	$(LINK.o) $^ $(LOADLIBES) $(LDLIBS) -o $@.tmp
 ifeq ($(OS),GNU/Linux)
-	patchelf --add-needed libc.so.6 --add-needed libdl.so.2 --add-needed libpthread.so.0 $@.tmp
+	patchelf --add-needed libc.so.6 --add-needed libdl.so.2 --add-needed libpthread.so.0 --add-needed libgcc_s.so.1 $@.tmp
 endif
 	mv $@.tmp $@
 

@@ -2282,7 +2282,7 @@ int __ldso(const char *path, char * const argv[], char *interp,
 	/*
 	 * Add --preload and the libraries to preload:
 	 *  - libiamroot.so (from host)
-	 *  - libc.so, libdl.so and libpthread.so (from chroot)
+	 *  - libc.so, libdl.so, libpthread.so, libgcc_s.so (from chroot)
 	 *  - DT_NEEDED libraries of binary (from chroot)
 	 */
 	if (has_preload && ld_preload) {

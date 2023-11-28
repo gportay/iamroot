@@ -6,10 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [unreleased]
 
+### Added
+
+- Add the shared-object `libgcc_so.so.1` to the `DT_NEEDED` manually via
+  `patchelf` if [glibc] world
+
 ### Fixed
 
 - Fix the memory area overlapping if the root directory is stripped off once
   again
+- Fix the misloading of the symbol `_Unwind_Resume()` in a [glibc] world
 
 ## [v14] - 2023-11-15
 

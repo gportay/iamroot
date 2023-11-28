@@ -9,20 +9,12 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <sys/stat.h>
+#include <errno.h>
 
 #ifdef _LARGEFILE64_SOURCE
+extern int reallocarr(void *, size_t, size_t);
+
 #define _DIAGASSERT(e)
-
-static inline int reallocarr(void *ptr, size_t nmemb, size_t size)
-{
-	void *p;
-
-	p = reallocarray(ptr, nmemb, size);
-	if (!p)
-		return -1;
-
-	return 0;
-}
 
 /*
  * Stolen from NetBSD (include/fts.h)

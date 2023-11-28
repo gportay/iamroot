@@ -9,19 +9,38 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <sys/stat.h>
+#include <errno.h>
 
-#define _DIAGASSERT(e)
-
-static inline int reallocarr(void *ptr, size_t nmemb, size_t size)
+/*
+ * Based from musl (src/malloc/reallocarray.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+int reallocarr(void *ptr, size_t m, size_t n)
 {
 	void *p;
 
-	p = reallocarray(ptr, nmemb, size);
+	if (!ptr) {
+		errno = EINVAL;
+		return -1;
+	}
+
+	if (n && m > -1 / n) {
+		errno = ENOMEM;
+		return -1;
+	}
+
+	p = realloc(ptr, m * n);
 	if (!p)
 		return -1;
 
+	ptr = p;
 	return 0;
 }
+
+#define _DIAGASSERT(e)
 
 /*
  * Stolen from NetBSD (include/fts.h)

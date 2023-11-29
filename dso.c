@@ -1407,7 +1407,7 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 	const int errno_save = errno;
 	char var[NAME_MAX];
 	int n, err;
-	char *ret;
+	char *lib;
 
 	/*
 	 * Use the library set by the environment variable
@@ -1418,8 +1418,8 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 		return NULL;
 	__env_sanitize(var, 1);
 
-	ret = getenv(var);
-	if (ret)
+	lib = getenv(var);
+	if (lib)
 		goto exit;
 
 	/* The variable is unset, keep going... */
@@ -1427,8 +1427,8 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 	/*
 	 * Use the library set by the environment variable IAMROOT_LIB  if set.
 	 */
-	ret = getenv("IAMROOT_LIB");
-	if (ret)
+	lib = getenv("IAMROOT_LIB");
+	if (lib)
 		goto exit;
 
 	/*
@@ -1441,35 +1441,35 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 		/* It is an x86 ELF or IAMROOT_LIB_LINUX_2 */
 		if (__is_x86(ehdr, ldso, abi) ||
 		    (streq(ldso, "linux") && abi == 2)) {
-			ret = __xstr(PREFIX)"/lib/iamroot/i686/libiamroot-linux.so.2";
+			lib = __xstr(PREFIX)"/lib/iamroot/i686/libiamroot-linux.so.2";
 			goto access;
 		}
 
 		/* It is an x86-64 ELF or IAMROOT_LIB_LINUX_X86_64_2 */
 		if (__is_x86_64(ehdr, ldso, abi) ||
 		    (streq(ldso, "linux-x86-64") && abi == 2)) {
-			ret = __xstr(PREFIX)"/lib/iamroot/x86_64/libiamroot-linux-x86-64.so.2";
+			lib = __xstr(PREFIX)"/lib/iamroot/x86_64/libiamroot-linux-x86-64.so.2";
 			goto access;
 		}
 
 		/* It is an ARM ELF or IAMROOT_LIB_LINUX_3 */
 		if (__is_arm(ehdr, ldso, abi) ||
 		    (streq(ldso, "linux") && abi == 3)) {
-			ret = __xstr(PREFIX)"/lib/iamroot/arm/libiamroot-linux.so.3";
+			lib = __xstr(PREFIX)"/lib/iamroot/arm/libiamroot-linux.so.3";
 			goto access;
 		}
 
 		/* It is an ARM ELF or IAMROOT_LIB_LINUX_ARMHF_3 */
 		if (__is_arm(ehdr, ldso, abi) ||
 		    (streq(ldso, "linux-armhf") && abi == 3)) {
-			ret = __xstr(PREFIX)"/lib/iamroot/armhf/libiamroot-linux-armhf.so.3";
+			lib = __xstr(PREFIX)"/lib/iamroot/armhf/libiamroot-linux-armhf.so.3";
 			goto access;
 		}
 
 		/* It is an AArch64 ELF or IAMROOT_LIB_LINUX_AARCH64_1 */
 		if (__is_aarch64(ehdr, ldso, abi) ||
 		    (streq(ldso, "linux-aarch64") && abi == 1)) {
-			ret = __xstr(PREFIX)"/lib/iamroot/aarch64/libiamroot-linux-aarch64.so.1";
+			lib = __xstr(PREFIX)"/lib/iamroot/aarch64/libiamroot-linux-aarch64.so.1";
 			goto access;
 		}
 
@@ -1477,7 +1477,7 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 		if ((__is_riscv(ehdr, ldso, abi) &&
 		     __is_64_bits(ehdr, ldso, abi)) ||
 		    (streq(ldso, "linux-riscv64-lp64d") && abi == 1)) {
-			ret = __xstr(PREFIX)"/lib/iamroot/riscv64/libiamroot-linux-riscv64-lp64d.so.1";
+			lib = __xstr(PREFIX)"/lib/iamroot/riscv64/libiamroot-linux-riscv64-lp64d.so.1";
 			goto access;
 		}
 	}
@@ -1487,35 +1487,35 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 		/* It is an x86 ELF or IAMROOT_LIB_MUSL_I386_1 */
 		if (__is_x86(ehdr, ldso, abi) ||
 		    (streq(ldso, "musl-i386") && abi == 1)) {
-			ret = __xstr(PREFIX)"/lib/iamroot/i686/libiamroot-musl-i386.so.1";
+			lib = __xstr(PREFIX)"/lib/iamroot/i686/libiamroot-musl-i386.so.1";
 			goto access;
 		}
 
 		/* It is an x86-64 ELF or IAMROOT_LIB_MUSL_X86_64_1 */
 		if (__is_x86_64(ehdr, ldso, abi) ||
 		    (streq(ldso, "musl-x86_64") && abi == 1)) {
-			ret = __xstr(PREFIX)"/lib/iamroot/x86_64/libiamroot-musl-x86_64.so.1";
+			lib = __xstr(PREFIX)"/lib/iamroot/x86_64/libiamroot-musl-x86_64.so.1";
 			goto access;
 		}	
 
 		/* It is an ARM ELF or IAMROOT_LIB_MUSL_ARM_1 */
 		if (__is_arm(ehdr, ldso, abi) ||
 		    (streq(ldso, "musl-arm") && abi == 1)) {
-			ret = __xstr(PREFIX)"/lib/iamroot/arm/libiamroot-musl-arm.so.1";
+			lib = __xstr(PREFIX)"/lib/iamroot/arm/libiamroot-musl-arm.so.1";
 			goto access;
 		}
 
 		/* It is an ARM ELF or IAMROOT_LIB_MUSL_ARMHF_1 */
 		if (__is_arm(ehdr, ldso, abi) ||
 		    (streq(ldso, "musl-armhf") && abi == 1)) {
-			ret = __xstr(PREFIX)"/lib/iamroot/armhf/libiamroot-musl-armhf.so.1";
+			lib = __xstr(PREFIX)"/lib/iamroot/armhf/libiamroot-musl-armhf.so.1";
 			goto access;
 		}
 
 		/* It is an AArch64 ELF or IAMROOT_LIB_MUSL_AARCH64_1 */
 		if (__is_aarch64(ehdr, ldso, abi) ||
 		    (streq(ldso, "musl-aarch64") && abi == 1)) {
-			ret = __xstr(PREFIX)"/lib/iamroot/aarch64/libiamroot-musl-aarch64.so.1";
+			lib = __xstr(PREFIX)"/lib/iamroot/aarch64/libiamroot-musl-aarch64.so.1";
 			goto access;
 		}
 
@@ -1523,7 +1523,7 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 		if ((__is_riscv(ehdr, ldso, abi) &&
 		     __is_64_bits(ehdr, ldso, abi)) ||
 		    (streq(ldso, "musl-riscv64") && abi == 1)) {
-			ret = __xstr(PREFIX)"/lib/iamroot/riscv64/libiamroot-musl-riscv64.so.1";
+			lib = __xstr(PREFIX)"/lib/iamroot/riscv64/libiamroot-musl-riscv64.so.1";
 			goto access;
 		}
 	}
@@ -1532,13 +1532,13 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 	if (!__is_freebsd(ehdr, ldso, abi)) {
 		/* It is an x86-64 ELF */
 		if (__is_x86_64(ehdr, ldso, abi)) {
-			ret = __xstr(PREFIX)"/lib/iamroot/amd64/libiamroot-elf.so.1";
+			lib = __xstr(PREFIX)"/lib/iamroot/amd64/libiamroot-elf.so.1";
 			goto access;
 		}
 		
 		/* It is an AArch64 ELF */
 		if (__is_aarch64(ehdr, ldso, abi)) {
-			ret = __xstr(PREFIX)"/lib/iamroot/arm64/libiamroot-elf.so.1";
+			lib = __xstr(PREFIX)"/lib/iamroot/arm64/libiamroot-elf.so.1";
 			goto access;
 		}
 	}
@@ -1547,21 +1547,21 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 	if (!__is_netbsd(ehdr, ldso, abi)) {
 		/* It is an x86-64 ELF */
 		if (__is_x86_64(ehdr, ldso, abi)) {
-			ret = __xstr(PREFIX)"/lib/iamroot/amd64/libiamroot-elf.so";
+			lib = __xstr(PREFIX)"/lib/iamroot/amd64/libiamroot-elf.so";
 			goto access;
 		}
 	}
 
 	/* It is something else */
-	ret = __xstr(PREFIX)"/lib/iamroot/libiamroot.so";
+	lib = __xstr(PREFIX)"/lib/iamroot/libiamroot.so";
 
 access:
-	err = next_faccessat(AT_FDCWD, ret, X_OK, AT_EACCESS);
+	err = next_faccessat(AT_FDCWD, lib, X_OK, AT_EACCESS);
 	if (err == -1)
-		ret = __xstr(PREFIX)"/lib/iamroot/libiamroot.so";
+		lib = __xstr(PREFIX)"/lib/iamroot/libiamroot.so";
 
 exit:
-	err = setenv("IAMROOT_LIB", ret, 1);
+	err = setenv("IAMROOT_LIB", lib, 1);
 	if (err == -1)
 		return NULL;
 

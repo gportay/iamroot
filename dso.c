@@ -1810,11 +1810,11 @@ static char *__setenv_ld_library_path(const char *path)
 	return getenv("ld_library_path");
 }
 
-static int __flags_callback(const void *data, size_t size, void *user)
+static int __flags_callback(const void *data, size_t datasiz, void *user)
 {
 	uint32_t *flags = (uint32_t *)data;
 	uint32_t *f = (uint32_t *)user;
-	(void)size;
+	(void)datasiz;
 
 	if (!data || !user)
 		return __set_errno(EINVAL, -1);
@@ -1846,11 +1846,11 @@ static int __elf_flags_1(const char *path, uint32_t *flags)
 	return ret;
 }
 
-static int __path_callback(const void *data, size_t size, void *user)
+static int __path_callback(const void *data, size_t datasiz, void *user)
 {
 	const char *path = (const char *)data;
 	char *p = (char *)user;
-	(void)size;
+	(void)datasiz;
 
 	if (!data || !user)
 		return __set_errno(EINVAL, -1);

@@ -1405,7 +1405,7 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 				   int abi)
 {
 	const int errno_save = errno;
-	char buf[NAME_MAX];
+	char var[NAME_MAX];
 	int n, err;
 	char *ret;
 
@@ -1413,12 +1413,12 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 	 * Use the library set by the environment variable
 	 * IAMROOT_LIB_<LDSO>_<ABI> if set.
 	 */
-	n = _snprintf(buf, sizeof(buf), "IAMROOT_LIB_%s_%i", ldso, abi);
+	n = _snprintf(var, sizeof(var), "IAMROOT_LIB_%s_%i", ldso, abi);
 	if (n == -1)
 		return NULL;
-	__env_sanitize(buf, 1);
+	__env_sanitize(var, 1);
 
-	ret = getenv(buf);
+	ret = getenv(var);
 	if (ret)
 		goto exit;
 

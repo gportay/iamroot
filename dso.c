@@ -2133,10 +2133,9 @@ int __ldso(const char *path, char * const argv[], char *interp,
 	int i, j, has_argv0 = 0, has_preload = 0, has_library_path = 0,
 	    has_inhibit_rpath = 0, has_inhibit_cache = 0, shift = 1;
 	char *argv0, *ld_library_path, *ld_preload;
+	char pt_interp[NAME_MAX], ldso[NAME_MAX];
 	int fd, abi = 0, err = -1, ret = -1;
 	char *inhibit_rpath = NULL;
-	char ldso[NAME_MAX];
-	char buf[NAME_MAX];
 	char * const *arg;
 	Elf64_Ehdr ehdr;
 	ssize_t siz;
@@ -2165,12 +2164,12 @@ int __ldso(const char *path, char * const argv[], char *interp,
 	 * ... get the dynamic loader stored in the .interp section of the ELF
 	 * linked program...
 	 */
-	siz = __felf_interp(fd, buf, sizeof(buf));
+	siz = __felf_interp(fd, pt_interp, sizeof(pt_interp));
 	if (siz < 1)
 		goto close;
 
 	/* ... and get its LDSO-name and its ABI number */
-	err = __ld_ldso_abi(buf, ldso, &abi);
+	err = __ld_ldso_abi(pt_interp, ldso, &abi);
 	if (err == -1)
 		goto close;
 
@@ -2189,15 +2188,16 @@ int __ldso(const char *path, char * const argv[], char *interp,
 	 */
 	if (__is_gnu_linux(&ehdr, ldso, abi)) {
 		has_inhibit_rpath = 1;
-		has_inhibit_cache = __ld_linux_has_inhibit_cache_option(buf);
+		has_inhibit_cache =
+				__ld_linux_has_inhibit_cache_option(pt_interp);
 		if (has_inhibit_cache == -1)
 			goto close;
 
-		has_argv0 = __ld_linux_has_argv0_option(buf);
+		has_argv0 = __ld_linux_has_argv0_option(pt_interp);
 		if (has_argv0 == -1)
 			goto close;
 
-		has_preload = __ld_linux_has_preload_option(buf);
+		has_preload = __ld_linux_has_preload_option(pt_interp);
 		if (has_preload == -1)
 			goto close;
 
@@ -2242,7 +2242,7 @@ int __ldso(const char *path, char * const argv[], char *interp,
 				 inhibit_rpath);
 	}
 
-	siz = path_resolution(AT_FDCWD, buf, interp, interpsiz, 0);
+	siz = path_resolution(AT_FDCWD, pt_interp, interp, interpsiz, 0);
 	if (siz == -1)
 		goto close;
 

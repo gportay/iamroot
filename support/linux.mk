@@ -1290,6 +1290,9 @@ mnt:
 .PHONY: support
 support: all
 
+.PHONY: stable-support
+stable-support: all
+
 .PHONY: extra-support
 extra-support: all
 
@@ -1301,6 +1304,9 @@ fixme-support: all
 
 .PHONY: log
 log: all
+
+.PHONY: stable-log
+statble-log: all
 
 .PHONY: extra-log
 extra-log: all
@@ -1333,6 +1339,11 @@ extra-log: manjaro-log
 
 .PHONY: manjaro-log
 manjaro-log: x86_64-manjaro-stable-rootfs.log
+
+stable-support: support/x86_64-archlinux-rootfs.txt
+stable-support: support/i686-archlinux32-rootfs.txt
+stable-log: x86_64-archlinux-rootfs.log
+stable-log: i686-archlinux32-rootfs.log
 endif
 
 ifneq ($(shell command -v debootstrap 2>/dev/null),)
@@ -1395,6 +1406,9 @@ log: devuan-log
 .PHONY: devuan-log
 devuan-log: amd64-devuan-chimaera-rootfs.log
 devuan-log: amd64-devuan-daedalus-rootfs.log
+
+stable-support: support/amd64-debian-stable-rootfs.txt
+stable-log: amd64-debian-stable-rootfs.txt
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)
@@ -1427,6 +1441,13 @@ fedora-log: x86_64-fedora-36-rootfs.log
 fedora-log: x86_64-fedora-37-rootfs.log
 fedora-log: x86_64-fedora-38-rootfs.log
 fedora-log: x86_64-fedora-39-rootfs.log
+# FIXME:
+#
+#	$ make stable-support
+#	(...)
+# 	make[1]: *** [makefile:846: x86_64-fedora-39-rootfs/bin/sh] Broken pipe
+# stable-support: support/x86_64-fedora-39-rootfs.txt
+# stable-log: x86_64-fedora-39-rootfs.log
 endif
 
 ifneq ($(shell command -v zypper 2>/dev/null),)
@@ -1480,6 +1501,9 @@ alpine-log: x86_64-alpine-3.17-rootfs.log
 alpine-log: x86_64-alpine-3.18-rootfs.log
 alpine-log: x86_64-alpine-3.19-rootfs.log
 alpine-log: x86_64-alpine-edge-rootfs.log
+
+stable-support: support/x86_64-alpine-3.18-rootfs.txt
+stable-log: x86_64-alpine-3.18-rootfs.log
 endif
 endif
 

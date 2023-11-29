@@ -521,7 +521,7 @@ exit:
 
 __attribute__((visibility("hidden")))
 int __exec_sh(const char *path, char * const *argv, char *interparg[],
-	      char *buf, size_t bufsize)
+	      char *buf, size_t bufsiz)
 {
 	int i, err;
 
@@ -542,7 +542,7 @@ int __exec_sh(const char *path, char * const *argv, char *interparg[],
 	 * support for option --preload and the LD_PRELOAD is used instead.
 	 */
 	i = 0;
-	interparg[i++] = _strncpy(buf, __getexec(), bufsize);
+	interparg[i++] = _strncpy(buf, __getexec(), bufsiz);
 	interparg[i++] = (char *)path; /* original path as first positional
 					* argument
 					*/

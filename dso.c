@@ -33,7 +33,7 @@ typedef struct {
 #endif
 } __regex_t;
 
-extern int next_faccessat(int, const char *, int);
+extern int next_faccessat(int, const char *, int, int);
 extern int next_open(const char *, int, mode_t);
 extern void *next_dlopen(const char *, int);
 
@@ -1524,13 +1524,13 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 	if (!__is_freebsd(ehdr, ldso, abi)) {
 		/* It is an x86-64 ELF */
 		if (__is_x86_64(ehdr, ldso, abi)) {
-			ret = __xstr(PREFIX)"/local/lib/iamroot/amd64/libiamroot-elf.so.1";
+			ret = __xstr(PREFIX)"/lib/iamroot/amd64/libiamroot-elf.so.1";
 			goto access;
 		}
 		
 		/* It is an AArch64 ELF */
 		if (__is_aarch64(ehdr, ldso, abi)) {
-			ret = __xstr(PREFIX)"/local/lib/iamroot/arm64/libiamroot-elf.so.1";
+			ret = __xstr(PREFIX)"/lib/iamroot/arm64/libiamroot-elf.so.1";
 			goto access;
 		}
 	}
@@ -1539,7 +1539,7 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 	if (!__is_netbsd(ehdr, ldso, abi)) {
 		/* It is an x86-64 ELF */
 		if (__is_x86_64(ehdr, ldso, abi)) {
-			ret = __xstr(PREFIX)"/local/lib/iamroot/amd64/libiamroot-elf.so";
+			ret = __xstr(PREFIX)"/lib/iamroot/amd64/libiamroot-elf.so";
 			goto access;
 		}
 	}
@@ -1548,7 +1548,7 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 	ret = __xstr(PREFIX)"/lib/iamroot/libiamroot.so";
 
 access:
-	err = next_faccessat(AT_FDCWD, ret, X_OK);
+	err = next_faccessat(AT_FDCWD, ret, X_OK, AT_EACCESS);
 	if (err == -1)
 		ret = __xstr(PREFIX)"/lib/iamroot/libiamroot.so";
 

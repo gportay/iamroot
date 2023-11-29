@@ -93,6 +93,7 @@ int posix_spawn(pid_t *pid, const char *path,
 	char buf[PATH_MAX];
 	char * const *arg;
 	int argc, ret;
+	off_t off = 0;
 	ssize_t siz;
 
 	/* Run exec.sh script */
@@ -102,6 +103,7 @@ int posix_spawn(pid_t *pid, const char *path,
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
 		return -1;
+	off += siz+1; /* NULL-terminated */
 
 	__debug("%s(path: '%s' -> '%s', ..., argv: { '%s', '%s', ... }, envp: %p)\n",
 		__func__, path, buf, argv[0], argv[1], envp);
@@ -174,7 +176,8 @@ loader:
 					envp);
 	}
 
-	ret = __ldso(program, argv, loaderbuf, sizeof(loaderbuf), interparg);
+	ret = __ldso(program, argv, loaderbuf, sizeof(loaderbuf), interparg,
+		     buf, sizeof(buf), off);
 	if ((ret == -1) && (errno != ENOEXEC))
 		return -1;
 	if (ret == -1)

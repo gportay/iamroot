@@ -143,13 +143,11 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	 * Since Linux 5.1, the limit is 255 characters.
 	 */
 	/* See https://www.in-ulm.de/~mascheck/various/shebang/#results */
-	char hashbang[NAME_MAX];
-	char hashbangbuf[PATH_MAX];
-	char loaderbuf[PATH_MAX];
-	char *program = NULL;
-	char buf[PATH_MAX];
+	char *hashbang = NULL, *program = NULL;
+	char buf[2*PATH_MAX];
 	char * const *arg;
-	int argc, ret;
+	int argc, i, ret;
+	off_t off = 0;
 	ssize_t siz;
 
 	/* Run exec.sh script */
@@ -159,12 +157,13 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
 	if (siz == -1)
 		return -1;
+	program = buf;
+	off += siz+1; /* NULL-terminated */
 
 	__debug("%s(path: '%s' -> '%s', argv: { '%s', '%s', ... }, envp: %p)\n",
 		__func__, path, buf, argv[0], argv[1], envp);
 
 	interparg[0] = *argv; /* original argv0 as argv0 */
-	program = buf;
 
 	/*
 	 * In secure-execution mode, preload pathnames containing slashes are
@@ -186,12 +185,16 @@ int execve(const char *path, char * const argv[], char * const envp[])
 		return next_execve(path, argv, envp);
 	}
 
-	ret = __interpreter_script(program, argv, hashbang, sizeof(hashbang),
+	ret = __interpreter_script(program, argv, buf, sizeof(buf), off,
 				   interparg);
 	if ((ret == -1) && (errno != ENOEXEC))
 		return -1;
 	if (ret < 1)
 		goto loader;
+
+	hashbang = &buf[off];
+	for (i = 1; i < ret; i++)
+		off += strnlen(&buf[off], sizeof(buf)-off)+1; /* NULL-terminated */
 
 	/* FIXME: __interpreter_script() should do the following; it must have
 	 * original and resolved path. */
@@ -202,12 +205,12 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	 * Preserve original path in argv0 and set the interpreter and its
 	 * optional argument (if any).
 	 */
-	siz = path_resolution(AT_FDCWD, hashbang, hashbangbuf,
-			      sizeof(hashbangbuf), 0);
+	siz = path_resolution(AT_FDCWD, hashbang, &buf[off], sizeof(buf)-off,
+			      0);
 	if (siz == -1)
 		return -1;
-
-	program = hashbangbuf;
+	program = &buf[off];
+	off += siz+1; /* NULL-terminated */
 
 loader:
 	/* It is the dynamic loader */
@@ -229,7 +232,7 @@ loader:
 		return next_execve(buf, argv, envp);
 	}
 
-	ret = __ldso(program, argv, loaderbuf, sizeof(loaderbuf), interparg);
+	ret = __ldso(program, argv, interparg, buf, sizeof(buf), off);
 	if ((ret == -1) && (errno != ENOEXEC))
 		return -1;
 	if (ret == -1)

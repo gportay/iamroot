@@ -130,7 +130,6 @@ all: test-nftw64
 all: test-openat
 all: test-opendir
 all: test-path_resolution
-all: test-path_setenv
 all: test-putgrent
 all: test-putpwent
 all: test-putspent
@@ -195,9 +194,6 @@ endif
 
 test-path_resolution: libiamnotroot.so
 test-path_resolution: override LDLIBS += libiamnotroot.so
-
-test-path_setenv: libiamnotroot.so
-test-path_setenv: override LDLIBS += libiamnotroot.so
 
 .PHONY: test
 ifeq ($(OS),FreeBSD)
@@ -312,8 +308,6 @@ ifeq ($(OS),FreeBSD)
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/local/lib IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution      /dev/                                                 | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/dev\$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/local/lib IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution      /run                                                  | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/run\$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/local/lib IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution      /var/run                                              | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/var/run\$$"
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)                                                                  test-path_setenv LD_LIBRARY_PATH /lib:/usr/local/lib:/usr/lib                   | tee /dev/stderr | grep -q "^/lib:/usr/local/lib:/usr/lib$$"
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/local/lib IAMROOT_ROOT=$(CURDIR)/rootfs test-path_setenv LD_LIBRARY_PATH /lib:/usr/local/lib:/usr/lib                   | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/lib:$(CURDIR)/rootfs/usr/local/lib:$(CURDIR)/rootfs/usr/lib$$"
 endif
 ifeq ($(OS),GNU/Linux)
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)                                                                  test-path_resolution      /                                                     | tee /dev/stderr | grep -q "^/\$$"
@@ -324,8 +318,6 @@ ifeq ($(OS),GNU/Linux)
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib64/iar IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution      /run                                                  | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/run\$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib64/iar IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution      /var/run                                              | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/run\$$"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib64/iar IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution      /sys/                                                 | tee /dev/stderr | grep -q "^/sys/\$$"
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)                                                                  test-path_setenv LD_LIBRARY_PATH /lib64:/usr/local/lib64:/usr/lib64             | tee /dev/stderr | grep -q "^/lib64:/usr/local/lib64:/usr/lib64$$"
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib64/iar IAMROOT_ROOT=$(CURDIR)/rootfs test-path_setenv LD_LIBRARY_PATH /lib64:/usr/local/lib64:/usr/lib64             | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/lib64:$(CURDIR)/rootfs/usr/local/lib64:$(CURDIR)/rootfs/usr/lib64$$"
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                                                                            test-name_to_handle_at  . rootfs/tmp/file0         0
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                test-name_to_handle_at  - /tmp/file0               0
 endif

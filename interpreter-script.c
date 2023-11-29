@@ -17,7 +17,7 @@ extern int next_open(const char *, int, mode_t);
 
 __attribute__((visibility("hidden")))
 ssize_t __interpreter_script_hashbang(const char *path, char *buf,
-				      size_t bufsiz)
+				      size_t bufsiz, off_t offset)
 {
 	ssize_t ret;
 	char *d, *s;
@@ -60,19 +60,19 @@ ssize_t __interpreter_script_hashbang(const char *path, char *buf,
 	if (fd == -1)
 		return -1;
 
-	ret = read(fd, buf, bufsiz-1); /* NULL-terminated */
+	ret = read(fd, &buf[offset], bufsiz-offset-1); /* NULL-terminated */
 	if (ret == -1)
 		goto close;
-	buf[ret] = 0; /* ensure NULL-terminated */
+	buf[offset+ret] = 0; /* ensure NULL-terminated */
 
 	/* Not an hashbang interpreter directive */
-	if ((ret < 2) || (buf[0] != '#') || (buf[1] != '!')) {
+	if ((ret < 2) || (buf[offset+0] != '#') || (buf[offset+1] != '!')) {
 		ret = __set_errno(ENOEXEC, -1);
 		goto close;
 	}
 
-	s = buf+2;
-	d = buf;
+	s = buf+offset+2;
+	d = buf+offset;
 
 	/* skip leading blanks */
 	while (isblank(*s))
@@ -107,7 +107,7 @@ ssize_t __interpreter_script_hashbang(const char *path, char *buf,
 		*d++ = 0;
 	}
 
-	ret = d-buf-1;
+	ret = d-buf-offset-1;
 
 close:
 	__close(fd);
@@ -117,7 +117,7 @@ close:
 
 __attribute__((visibility("hidden")))
 int __interpreter_script(const char *path, char * const argv[], char *buf,
-			 size_t bufsiz, char *interparg[])
+			 size_t bufsiz, off_t offset, char *interparg[])
 {
 	ssize_t siz;
 	size_t len;
@@ -125,17 +125,17 @@ int __interpreter_script(const char *path, char * const argv[], char *buf,
 	(void)argv;
 
 	/* Get the interpeter directive stored after the hashbang */
-	siz = __interpreter_script_hashbang(path, buf, bufsiz);
+	siz = __interpreter_script_hashbang(path, buf, bufsiz, offset);
 	if (siz < 1)
 		return -1;
 
 	/* Reset argv0 */
-	interparg[i++] = buf; /* hashbang as argv0 */
+	interparg[i++] = &buf[offset]; /* hashbang as argv0 */
 
 	/* Add optional argument */
-	len = strnlen(buf, bufsiz);
-	if (len < (size_t)siz && buf[len+1])
-		interparg[i++] = &buf[len+1];
+	len = strnlen(&buf[offset], bufsiz-offset);
+	if (len < (size_t)siz && buf[offset+len+1])
+		interparg[i++] = &buf[offset+len+1];
 	interparg[i++] = (char *)path; /* FIXME: original program path as first
 					* positional argument */
 	interparg[i] = NULL; /* ensure NULL-terminated */

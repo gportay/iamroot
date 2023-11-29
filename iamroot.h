@@ -170,15 +170,16 @@ int __fisfileat(int, const char *, int);
 int __fisfile(int);
 int __isfile(const char *);
 const char *__basename(const char *);
-int __path_setenv(const char *, const char *, const char *, int);
+char *__getenv(const char *);
+int __setenv(const char *, const char *, int);
 
 int __execve(const char *, char * const [], char * const []);
 int __exec_ignored(const char *);
 int __issuid(const char *);
-int __ldso(const char *, char * const [], char *, size_t, char *[]);
+int __ldso(const char *, char * const [], char *[], char *, size_t, off_t);
 int __exec_sh(const char *, char * const *, char *[], char *, size_t);
-ssize_t __interpreter_script_hashbang(const char *, char *, size_t);
-int __interpreter_script(const char *, char * const [], char *, size_t,
+ssize_t __interpreter_script_hashbang(const char *, char *, size_t, off_t);
+int __interpreter_script(const char *, char * const [], char *, size_t, off_t,
 			 char *[]);
 
 char *__path_sanitize(char *, size_t);

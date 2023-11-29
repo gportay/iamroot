@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [unreleased]
 
+### Removed
+
+- Remove the environment variables `ld_preload`, `ld_library_path` and
+  `inhibit_rpath`
+
 ### Fixed
 
 - Fix the out-of root directory creation of temporary files or directories for

@@ -277,12 +277,14 @@ static ssize_t __elf_runpath(const char *, char *, size_t);
 static int __elf_flags_1(const char *, uint32_t *);
 static ssize_t __elf_deflib(const char *, char *, size_t);
 
-static int __ldso_preload_needed(const char *, const char *, char *, size_t);
+static int __ldso_preload_needed(const char *, const char *, char *, size_t,
+				 off_t);
 
 struct __ldso_preload_needed_context {
 	const char *deflib;
 	char *buf;
 	size_t bufsiz;
+	off_t offset;
 };
 
 static int __ldso_preload_needed_callback(const char *needed, void *user)
@@ -312,16 +314,17 @@ static int __ldso_preload_needed_callback(const char *needed, void *user)
 		return 0;
 
 	/* The shared object is already in the buffer */
-	ret = __is_in_path(buf, ctx->buf);
+	ret = __is_in_path(buf, &ctx->buf[ctx->offset]);
 	if (ret == -1 || ret == 1)
 		return 0;
 
 	/* Add the needed shared objects to buf */
-	return __ldso_preload_needed(buf, ctx->deflib, ctx->buf, ctx->bufsiz);
+	return __ldso_preload_needed(buf, ctx->deflib, ctx->buf, ctx->bufsiz,
+				     ctx->offset);
 }
 
 static int __ldso_preload_needed(const char *path, const char *deflib,
-				 char *buf, size_t bufsiz)
+				 char *buf, size_t bufsiz, off_t offset)
 {
 	struct __ldso_preload_needed_context ctx;
 	char needed[PATH_MAX];
@@ -332,7 +335,7 @@ static int __ldso_preload_needed(const char *path, const char *deflib,
 	 * Add the shared object to path first to avoid circular dependencies,
 	 * if a needed shared object needs this one.
 	 */
-	str = __path_strncat(buf, path, bufsiz);
+	str = __path_strncat(buf+offset, path, bufsiz-offset);
 	if (!str)
 		return -1;
 	/* Add the needed shared objects to path then */
@@ -342,11 +345,12 @@ static int __ldso_preload_needed(const char *path, const char *deflib,
 	ctx.deflib = deflib;
 	ctx.buf = buf;
 	ctx.bufsiz = bufsiz;
+	ctx.offset = offset;
 	return __path_iterate(needed, __ldso_preload_needed_callback, &ctx);
 }
 
 static int __ldso_preload_executable(const char *path, const char *deflib,
-				     char *buf, size_t bufsiz)
+				     char *buf, size_t bufsiz, off_t offset)
 {
 	struct __ldso_preload_needed_context ctx;
 	char needed[PATH_MAX];
@@ -359,6 +363,7 @@ static int __ldso_preload_executable(const char *path, const char *deflib,
 	ctx.deflib = deflib;
 	ctx.buf = buf;
 	ctx.bufsiz = bufsiz;
+	ctx.offset = offset;
 	return __path_iterate(needed, __ldso_preload_needed_callback, &ctx);
 }
 
@@ -1975,23 +1980,23 @@ ssize_t __getvariable(Elf64_Ehdr *ehdr, const char *ldso, int abi,
 	return n;
 }
 
-static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
-				   int abi)
+static ssize_t __getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso, int abi,
+			       char *buf, size_t bufsiz, off_t offset)
 {
 	const int errno_save = errno;
-	char buf[NAME_MAX];
-	ssize_t siz;
+	char var[NAME_MAX];
+	ssize_t ret;
 	char *lib;
 	int err;
 
 	/*
 	 * Use the library set by the environment variable if set.
 	 */
-	siz = __getvariable(ehdr, ldso, abi, "IAMROOT_LIB", buf, sizeof(buf));
-	if (siz == -1)
-		return NULL;
+	ret = __getvariable(ehdr, ldso, abi, "IAMROOT_LIB", var, sizeof(var));
+	if (ret == -1)
+		return -1;
 
-	lib = _getenv(buf);
+	lib = _getenv(var);
 	if (lib)
 		goto exit;
 
@@ -2223,18 +2228,20 @@ access:
 exit:
 	err = _setenv("IAMROOT_LIB", lib, 1);
 	if (err == -1)
-		return NULL;
+		return -1;
 
-	lib = _getenv("IAMROOT_LIB");
+	_strncpy(buf+offset, lib, bufsiz-offset);
+	ret = strnlen(buf, bufsiz);
 
-	return __set_errno(errno_save, lib);
+	return __set_errno(errno_save, ret);
 }
 
 __attribute__((visibility("hidden")))
 int __is_preloading_libiamroot()
 {
-	char hashbang[NAME_MAX], interp[NAME_MAX], ldso[NAME_MAX];
-	const char *ld_preload, *lib, *path;
+	char buf[PATH_MAX], hashbang[NAME_MAX], interp[NAME_MAX],
+	     ldso[NAME_MAX];
+	const char *ld_preload, *path;
 	int fd, abi = -1, ret = -1;
 	Elf64_Ehdr ehdr;
 	ssize_t siz;
@@ -2249,7 +2256,8 @@ int __is_preloading_libiamroot()
 	if (!path)
 		return -1;
 
-	siz = __interpreter_script_hashbang(path, hashbang, sizeof(hashbang));
+	siz = __interpreter_script_hashbang(path, hashbang, sizeof(hashbang),
+					    0);
 	if ((siz == -1) && (errno != ENOEXEC))
 		return -1;
 	if (siz < 1)
@@ -2282,12 +2290,12 @@ open:
 		goto close;
 
 	/* Get the iamroot library */
-	lib = __getlibiamroot(&ehdr, ldso, abi);
-	if (!lib)
+	siz = __getlibiamroot(&ehdr, ldso, abi, buf, sizeof(buf), 0);
+	if (siz == -1)
 		goto close;
 
 	/* Search for the iamroot library in LD_PRELOAD */
-	ret = __is_in_path(lib, _getenv("LD_PRELOAD") ?: "");
+	ret = __is_in_path(buf, _getenv("LD_PRELOAD") ?: "");
 
 close:
 	__close(fd);
@@ -2355,40 +2363,38 @@ static const char *__getdeflib(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	return __set_errno(errno_save, "/lib:/usr/local/lib:/usr/lib");
 }
 
-static ssize_t __ld_lib_path(const char *, char *, size_t);
+static const char *__getinhibit_rpath()
+{
+	return getenv("IAMROOT_INHIBIT_RPATH") ?: "";
+}
+
+static ssize_t __ld_lib_path(const char *, char *, size_t, off_t);
 
 /*
  * Note: This resolves all the needed shared objects to preload in order to
  * prevent from loading the shared objects from the host system.
 */
-static char *__setenv_ld_preload(Elf64_Ehdr *ehdr, const char *ldso, int abi,
-				 const char *path)
+static ssize_t __ld_preload(Elf64_Ehdr *ehdr, const char *ldso, int abi,
+			    const char *path, char *buf, size_t bufsiz,
+			    off_t offset)
 {
 	char lib_path[PATH_MAX];
-	char buf[PATH_MAX];
-	const char *lib;
 	ssize_t siz;
 	int err;
 
-	lib = __getlibiamroot(ehdr, ldso, abi);
-	if (!lib)
-		return NULL;
-
-	__strncpy(buf, lib);
-
-	siz = __ld_lib_path(path, lib_path, sizeof(lib_path));
+	siz = __getlibiamroot(ehdr, ldso, abi, buf, bufsiz, offset);
 	if (siz == -1)
-		return NULL;
+		return -1;
 
-	err = __ldso_preload_executable(path, lib_path, buf, sizeof(buf));
+	siz = __ld_lib_path(path, lib_path, sizeof(lib_path), 0);
+	if (siz == -1)
+		return -1;
+
+	err = __ldso_preload_executable(path, lib_path, buf, bufsiz, offset);
 	if (err == -1)
-		return NULL;
+		return -1;
 
-	err = _setenv("ld_preload", buf, 1);
-	if (err == -1)
-		return NULL;
-
-	return _getenv("ld_preload");
+	return strnlen(buf+offset, bufsiz-offset);
 }
 
 static int __secure_execution_mode()
@@ -2443,14 +2449,15 @@ static int __secure_execution_mode()
  * Note: This resolves all the library path of the executable file in order to
  * prevent from loading the shared objects of the host system.
 */
-static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsiz)
+static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsiz,
+			     off_t offset)
 {
 	char *ld_library_path, *str;
 	int err, has_runpath;
 	char tmp[PATH_MAX];
 	uint32_t flags_1;
 
-	*buf = 0;
+	buf[offset] = 0;
 
 	/*
 	 * According to ld-linux.so(8)
@@ -2468,7 +2475,7 @@ static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsiz)
 		if (err == -1)
 			return -1;
 
-		str = __path_strncat(buf, tmp, bufsiz);
+		str = __path_strncat(buf+offset, tmp, bufsiz-offset);
 		if (!str)
 			return -1;
 	}
@@ -2498,7 +2505,7 @@ static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsiz)
 
 	has_runpath = err > 0;
 	if (has_runpath) {
-		str = __path_strncat(buf, tmp, bufsiz);
+		str = __path_strncat(buf+offset, tmp, bufsiz-offset);
 		if (!str)
 			return -1;
 	}
@@ -2510,7 +2517,7 @@ static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsiz)
 	 */
 	ld_library_path = __getld_library_path();
 	if (ld_library_path && *ld_library_path && !__secure_execution_mode()) {
-		str = __path_strncat(buf, ld_library_path, bufsiz);
+		str = __path_strncat(buf+offset, ld_library_path, bufsiz-offset);
 		if (!str)
 			return -1;
 	}
@@ -2525,29 +2532,63 @@ static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsiz)
 		if (err == -1)
 			return -1;
 
-		str = __path_strncat(buf, tmp, bufsiz);
+		str = __path_strncat(buf+offset, tmp, bufsiz-offset);
 		if (!str)
 			return -1;
 	}
 
-	return strnlen(buf, bufsiz);
+	return strnlen(buf+offset, bufsiz-offset);
 }
 
-static char *__setenv_ld_library_path(const char *path)
+struct __ldso_library_path_context {
+	const char *root;
+	char *buf;
+	size_t bufsiz;
+	off_t offset;
+};
+
+static int __ldso_library_path_callback(const char *path, void *user)
 {
+	struct __ldso_library_path_context *ctx =
+				    (struct __ldso_library_path_context *)user;
 	char buf[PATH_MAX];
+	char *str;
+	int n;
+
+	/* Prepend the root directory to path first */
+	n = _snprintf(buf, sizeof(buf), "%s%s", ctx->root, path);
+	if (n == -1)
+		return -1;
+
+	/* Add the chroot'ed path to buf then */
+	str = __path_strncat(ctx->buf+ctx->offset, buf, ctx->bufsiz-ctx->offset);
+	if (!str)
+		return -1;
+
+	return 0;
+}
+
+static ssize_t __ld_library_path(const char *path, char *buf, size_t bufsiz,
+				 off_t offset)
+{
+	struct __ldso_library_path_context ctx;
+	char lib_path[PATH_MAX];
 	ssize_t siz;
 	int err;
 
-	siz = __ld_lib_path(path, buf, sizeof(buf));
+	/* Prepend the path from the library path by the root directory */
+	siz = __ld_lib_path(path, lib_path, sizeof(lib_path), 0);
 	if (siz == -1)
-		return NULL;
-
-	err = __path_setenv(__getrootdir(), "ld_library_path", buf, 1);
+		return -1;
+	ctx.root = __getrootdir();
+	ctx.buf = buf;
+	ctx.bufsiz = bufsiz;
+	ctx.offset = offset;
+	err = __path_iterate(lib_path, __ldso_library_path_callback, &ctx);
 	if (err == -1)
-		return NULL;
+		return -1;
 
-	return _getenv("ld_library_path");
+	return strnlen(buf+offset, bufsiz-offset);
 }
 
 static int __flags_callback(const void *data, size_t datasiz, void *user)
@@ -2842,34 +2883,24 @@ static ssize_t __elf_deflib(const char *path, char *buf, size_t bufsiz)
 	return ret;
 }
 
-static char *__setenv_inhibit_rpath()
+static ssize_t __inhibit_rpath(char *buf, size_t bufsiz, off_t offset)
 {
-	char *inhibit_rpath;
-	char val[PATH_MAX];
-
-	inhibit_rpath = _getenv("IAMROOT_INHIBIT_RPATH");
-	if (inhibit_rpath) {
-		int ret;
-
-		__strncpy(val, inhibit_rpath);
-		ret = __path_setenv(__getrootdir(), "inhibit_rpath", val, 1);
-		if (ret == -1)
-			return NULL;
-	}
-
-	return _getenv("inhibit_rpath");
+	_strncpy(buf+offset, __getinhibit_rpath(), bufsiz-offset);
+	return strnlen(buf+offset, bufsiz-offset);
 }
 
 __attribute__((visibility("hidden")))
-int __ldso(const char *path, char * const argv[], char *interp,
-	   size_t interpsiz, char *interparg[])
+int __ldso(const char *path, char * const argv[], char *interparg[], char *buf,
+	   size_t bufsiz, off_t offset)
 {
 	int i, j, has_argv0 = 0, has_preload = 0, has_library_path = 0,
 	    has_inhibit_rpath = 0, has_inhibit_cache = 0, shift = 1;
-	char *argv0, *ld_library_path, *ld_preload;
+	char *argv0 = NULL, *inhibit_rpath = NULL, *ld_library_path = NULL,
+	     *ld_preload = NULL;
 	char pt_interp[NAME_MAX], ldso[NAME_MAX];
 	int fd, abi = 0, err = -1, ret = -1;
-	char *inhibit_rpath = NULL;
+	char *interp = NULL;
+	off_t off = offset;
 	char * const *arg;
 	Elf64_Ehdr ehdr;
 	ssize_t siz;
@@ -2961,23 +2992,30 @@ int __ldso(const char *path, char * const argv[], char *interp,
 	 * LD_LIBRARY_PATH.
 	 */
 
-	ld_preload = __setenv_ld_preload(&ehdr, ldso, abi, path);
-	if (!ld_preload) {
-		__warning("%s: is unset!\n", __xstr(ld_preload));
+	siz = __ld_preload(&ehdr, ldso, abi, path, buf, bufsiz, off);
+	if (siz == -1)
 		goto close;
+	if (siz > 0) {
+		ld_preload = buf+off;
+		off += siz+1; /* NULL-terminated */
 	}
 
-	ld_library_path = __setenv_ld_library_path(path);
-	if (!ld_library_path) {
-		__warning("%s: is unset!\n", __xstr(ld_library_path));
+	siz = __ld_library_path(path, buf, bufsiz, off);
+	if (siz == -1)
 		goto close;
+	if (siz > 0) {
+		ld_library_path = buf+off;
+		off += siz+1; /* NULL-terminated */
 	}
 
 	if (has_inhibit_rpath) {
-		inhibit_rpath = __setenv_inhibit_rpath();
-		if (inhibit_rpath)
-			__notice("%s: %s\n", __xstr(inhibit_rpath),
-				 inhibit_rpath);
+		siz = __inhibit_rpath(buf, bufsiz, off);
+		if (siz == -1)
+			goto close;
+		if (siz > 0) {
+			inhibit_rpath = buf+off;
+			off += siz+1; /* NULL-terminated */
+		}
 	}
 
 	/*
@@ -2992,19 +3030,11 @@ int __ldso(const char *path, char * const argv[], char *interp,
 	if (err == -1)
 		goto close;
 
-	/*
-	 * Warning: The calls above to _unsetenv() have probably modified the
-	 * __environ.
-	 *
-	 * As a consequence, both dangling pointers ld_library_path and
-	 * ld_preload are to be considered as flags only as they probably point
-	 * to a deallocated memory area. Use _getenv() instead to read and use
-	 * their value passed that point!
-	 */
-
-	siz = path_resolution(AT_FDCWD, pt_interp, interp, interpsiz, 0);
+	siz = path_resolution(AT_FDCWD, pt_interp, &buf[off], bufsiz-off, 0);
 	if (siz == -1)
 		goto close;
+	interp = &buf[off];
+	off += siz+1; /* NULL-terminated */
 
 	/*
 	 * Shift enough room in interparg to prepend:
@@ -3056,10 +3086,10 @@ int __ldso(const char *path, char * const argv[], char *interp,
 	 */
 	if (has_preload && ld_preload) {
 		interparg[i++] = "--preload";
-		interparg[i++] = _getenv("ld_preload");
+		interparg[i++] = ld_preload;
 	/* Or set LD_PRELOAD if --preload is not supported */
 	} else if (ld_preload) {
-		err = _setenv("LD_PRELOAD", _getenv("ld_preload"), 1);
+		err = _setenv("LD_PRELOAD", ld_preload, 1);
 		if (err == -1)
 			goto close;
 	}
@@ -3073,11 +3103,10 @@ int __ldso(const char *path, char * const argv[], char *interp,
 	 */
 	if (has_library_path && ld_library_path) {
 		interparg[i++] = "--library-path";
-		interparg[i++] = _getenv("ld_library_path");
+		interparg[i++] = ld_library_path;
 	/* Or set LD_LIBRARY_PATH if --library-path is not supported */
 	} else if (ld_library_path) {
-		err = _setenv("LD_LIBRARY_PATH", _getenv("ld_library_path"),
-			      1);
+		err = _setenv("LD_LIBRARY_PATH", ld_library_path, 1);
 		if (err == -1)
 			goto close;
 	}
@@ -3085,7 +3114,7 @@ int __ldso(const char *path, char * const argv[], char *interp,
 	/* Add --inhibit-rpath (chroot) */
 	if (has_inhibit_rpath && inhibit_rpath) {
 		interparg[i++] = "--inhibit-rpath";
-		interparg[i++] = _getenv("inhibit_rpath");
+		interparg[i++] = inhibit_rpath;
 	}
 
 	/* Add --inhibit-cache */

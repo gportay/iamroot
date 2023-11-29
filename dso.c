@@ -381,7 +381,7 @@ static ssize_t __ldso_access(const char *path,
 	 * searched for in the following order:
 	 */
 	if (strchr(path, '/')) {
-		strncpy(buf, path, bufsiz);
+		_strncpy(buf, path, bufsiz);
 
 		return strnlen(buf, bufsiz);
 	}
@@ -2087,7 +2087,7 @@ deflib:
 	if (!deflib)
 		return -1;
 
-	strncpy(buf, deflib, bufsiz);
+	_strncpy(buf, deflib, bufsiz);
 
 	return strnlen(buf, bufsiz);
 }

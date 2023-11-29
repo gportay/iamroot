@@ -144,12 +144,12 @@ static int __is_lib(const char *path)
 	return !ret;
 }
 
-static char *__path_strncat(char *dst, const char *src, size_t siz)
+static char *__path_strncat(char *dst, const char *src, size_t dstsiz)
 {
 	if (*dst)
-		_strncat(dst, ":", siz);
+		_strncat(dst, ":", dstsiz);
 
-	return _strncat(dst, src, siz);
+	return _strncat(dst, src, dstsiz);
 }
 
 int __path_setenv(const char *root, const char *name, const char *value,

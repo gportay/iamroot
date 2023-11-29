@@ -1553,7 +1553,8 @@ access:
 		ret = __xstr(PREFIX)"/lib/iamroot/libiamroot.so";
 
 exit:
-	if (setenv("IAMROOT_LIB", ret, 1))
+	err = setenv("IAMROOT_LIB", ret, 1);
+	if (err == -1)
 		return NULL;
 
 	return __set_errno(errno_save, getenv("IAMROOT_LIB"));

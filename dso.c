@@ -1460,19 +1460,7 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 	if (lib)
 		goto exit;
 
-	/* The variable is unset, keep going... */
-
-	/*
-	 * Use the library set by the environment variable IAMROOT_LIB  if set.
-	 */
-	lib = getenv("IAMROOT_LIB");
-	if (lib)
-		goto exit;
-
-	/*
-	 * Neither IAMROOT_LIB_<LDSO>_<ABI> nor IAMROOT_LIB are set; try to
-	 * guess automagically the library.
-	 */
+	/* The variable is unset, try to guess automagically the library. */
 
 	/* IAMROOT_LIB_LINUX_$ARCH_$ABI */
 	if (__is_gnu_linux(ehdr, ldso, abi)) {
@@ -1595,15 +1583,36 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 
 access:
 	err = next_faccessat(AT_FDCWD, lib, X_OK, AT_EACCESS);
-	if (err == -1)
-		lib = __xstr(PREFIX)"/lib/iamroot/libiamroot.so";
+	if (err != -1)
+		goto setenv;
 
-exit:
+	/* The library is not found. */
+
+	/*
+	 * Use the library set by the environment variable IAMROOT_LIB if set.
+	 */
+	lib = getenv("IAMROOT_LIB");
+	if (lib)
+		goto exit;
+
+	/* The variable is unset, keep going... */
+
+	/*
+	 * Neither IAMROOT_LIB_<LDSO>_<ABI> nor IAMROOT_LIB are set; use the
+	 * default value.
+	 */
+
+	lib = __xstr(PREFIX)"/lib/iamroot/libiamroot.so";
+
+setenv:
 	err = setenv("IAMROOT_LIB", lib, 1);
 	if (err == -1)
 		return NULL;
 
-	return __set_errno(errno_save, getenv("IAMROOT_LIB"));
+	lib = getenv("IAMROOT_LIB");
+
+exit:
+	return __set_errno(errno_save, lib);
 }
 
 static const char *__getdeflib(Elf64_Ehdr *ehdr, const char *ldso, int abi)

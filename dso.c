@@ -47,6 +47,7 @@ const char *__basename(const char *path)
 	return s+1; /* trailing-slash */
 }
 
+static regex_t *re_libso;
 static regex_t *re_ldso;
 static regex_t *re_lib;
 
@@ -65,11 +66,24 @@ static void __regex_perror(const char *s, regex_t *regex, int err)
 __attribute__((constructor,visibility("hidden")))
 void dso_init()
 {
-	static __regex_t regex_ldso, regex_lib;
+	static __regex_t regex_libso, regex_ldso, regex_lib;
+	const char *libso = "^libiamroot(|-[[:alnum:]._-]+)\\.so(|\\.[[:digit:]]+)$";
 	const char *ldso = "^ld(|-[[:alnum:]._-]+)\\.so(|\\.[[:digit:]]+)$";
 	const char *lib = "^lib[[:alnum:]+._-]+\\.so(|.*)$";
 	int ret;
 
+	if (re_libso)
+		goto ldso;
+
+	ret = regcomp(&regex_libso.re, libso, REG_NOSUB|REG_EXTENDED);
+	if (ret == -1) {
+		__regex_perror("regcomp", &regex_libso.re, ret);
+		return;
+	}
+
+	re_libso = &regex_libso.re;
+
+ldso:
 	if (re_ldso)
 		goto lib;
 
@@ -105,10 +119,34 @@ void dso_fini()
 
 ldso:
 	if (!re_ldso)
-		return;
+		goto libso;
 
 	regfree(re_ldso);
 	re_ldso = NULL;
+
+libso:
+	if (!re_libso)
+		return;
+
+	regfree(re_libso);
+	re_libso = NULL;
+}
+
+__attribute__((visibility("hidden")))
+int __is_libiamroot_so(const char *path)
+{
+	int ret = 0;
+
+	if (!re_libso)
+		return 0;
+
+	ret = regexec(re_libso, path, 0, NULL, 0);
+	if (ret == -1) {
+		__regex_perror("regexec", re_libso, ret);
+		return 0;
+	}
+
+	return !ret;
 }
 
 __attribute__((visibility("hidden")))

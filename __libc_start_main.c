@@ -56,6 +56,10 @@ static int __dl_iterate_phdr_callback(struct dl_phdr_info *info, size_t size,
 	if (__is_ldso(info->dlpi_name))
 		return 0;
 
+	/* is a iamroot library? */
+	if (__is_libiamroot_so(__basename(info->dlpi_name)))
+		return 0;
+
 	/* is an IAMROOT_LIB? */
 	val = getenv("IAMROOT_LIB");
 	if (!val)

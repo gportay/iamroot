@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the memory area overlapping if the root directory is stripped off once
   again
 - Fix the detection of the path to the library to preload
+- Fix the mis-completion of the option `--deflib`
 
 ## [v14] - 2023-11-15
 

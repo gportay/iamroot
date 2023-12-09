@@ -45,7 +45,7 @@ _ish()
 	COMMON_PATH=(/bin /sbin /usr/bin /usr/sbin /usr/local/bin
 		/usr/local/sbin)
 
-	COMMON_LIBRARY_PATH=(/usr/lib /usr/local/lib /usr/lib)
+	COMMON_DEFLIB=(/usr/lib /usr/local/lib /usr/lib)
 
 	case "$prev" in
 	--user)
@@ -99,11 +99,11 @@ _ish()
 		COMPREPLY=($(compgen -P "$prefix" -W "${wordlist[*]}" -S '\:' -- "$realcur"))
 		return 0
 		;;
-	--library-path)
+	--deflib)
 		local prefix realcur wordlist
 		realcur="${cur##*\:}"
 		prefix="${cur%$realcur}"
-		for WORD in "${COMMON_LIBRARY_PATH[@]}"
+		for WORD in "${COMMON_DEFLIB[@]}"
 		do
 			if ! [[ $prefix == *"$WORD"* ]]
 			then
@@ -186,7 +186,7 @@ _ish()
 
 	if [[ "$shell" != 1 ]]
 	then
-		COMPREPLY+=($(compgen -W "--user --root --profile-file --rc-file --preserve-env --path --library-path --exec --library --shell --no-color --fatal --debug --debug-fd --debug-ignore --exec-ignore --path-resolution-ignore --version" -- "$cur"))
+		COMPREPLY+=($(compgen -W "--user --root --profile-file --rc-file --preserve-env --path --deflib --exec --library --shell --no-color --fatal --debug --debug-fd --debug-ignore --exec-ignore --path-resolution-ignore --version" -- "$cur"))
 	fi
 } &&
 complete -F _ish ish

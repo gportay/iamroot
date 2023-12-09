@@ -7,7 +7,7 @@
 
 set -e
 
-VERSION=14
+VERSION=15
 
 usage() {
 	cat <<EOF

@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [unreleased]
+## [v15] - 2023-12-09
 
 ### Fixed
 
@@ -788,7 +788,7 @@ Initial release.
 [passwd(1)]: https://linux.die.net/man/1/passwd
 [su(1)]: https://linux.die.net/man/1/su
 [systemd-sysusers(8)]: https://www.freedesktop.org/software/systemd/man/systemd-sysusers.html
-[unreleased]: https://github.com/gportay/iamroot/compare/v14...master
+[unreleased]: https://github.com/gportay/iamroot/compare/v15...master
 [v1]: https://github.com/gportay/iamroot/releases/tag/v1
 [v2]: https://github.com/gportay/iamroot/compare/v1...v2
 [v3]: https://github.com/gportay/iamroot/compare/v2...v3
@@ -802,5 +802,6 @@ Initial release.
 [v11]: https://github.com/gportay/iamroot/compare/v11...v12
 [v12]: https://github.com/gportay/iamroot/compare/v12...v13
 [v13]: https://github.com/gportay/iamroot/compare/v13...v14
-[v14]: https://github.com/gportay/iamroot/compare/v14...master
+[v14]: https://github.com/gportay/iamroot/compare/v14...v15
+[v14]: https://github.com/gportay/iamroot/compare/v15...master
 [zypper(8)]: https://en.opensuse.org/SDB:Zypper_manual_(plain)

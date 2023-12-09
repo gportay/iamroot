@@ -18,6 +18,7 @@ Executing alpine-baselayout.post-install
 (X/X) Installing scanelf
 (X/X) Installing musl-utils
 (X/X) Installing ifupdown-ng
+(X/X) Installing ifupdown-ng-openrc
 (X/X) Installing libcap2
 (X/X) Installing openrc
 Executing openrc.post-install

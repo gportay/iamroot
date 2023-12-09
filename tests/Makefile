@@ -635,6 +635,7 @@ ifeq ($(OS),Linux)
 	install -D -m755 /lib/ld-musl-x86_64.so.1 --target-directory=$(DESTDIR)/lib
 	install -D -m755 libiamnotroot.so --target-directory=$(DESTDIR)/usr/lib
 endif
+	install -d 755 $(DESTDIR)/usr/lib/
 	install -m 644 os-release $(DESTDIR)/usr/lib/
 	ln -sf ../usr/lib/os-release $(DESTDIR)/etc/os-release
 	install -d -m755 $(DESTDIR)/proc

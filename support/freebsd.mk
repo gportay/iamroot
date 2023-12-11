@@ -1,5 +1,5 @@
 #
-# Copyright 2022 Gaël PORTAY
+# Copyright 2022-2023 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -7,16 +7,16 @@
 O ?= output
 ARCH ?= $(shell uname -m 2>/dev/null)
 
-IAMROOT_LIB = $(CURDIR)/$(ARCH)/libiamroot-elf.so.1
+IAMROOT_LIB ?= $(CURDIR)/$(ARCH)/libiamroot-elf.so.1
 export IAMROOT_LIB
 
-IAMROOT_LIB_ELF_1 = $(CURDIR)/$(ARCH)/libiamroot-elf.so.1
+IAMROOT_LIB_ELF_1 ?= $(CURDIR)/$(ARCH)/libiamroot-elf.so.1
 export IAMROOT_LIB_ELF_1
 
-IAMROOT_PATH_RESOLUTION_IGNORE = ^/dev/|^/etc/resolv.conf
+IAMROOT_PATH_RESOLUTION_IGNORE ?= ^/dev/|^/etc/resolv.conf
 export IAMROOT_PATH_RESOLUTION_IGNORE
 
-IAMROOT_EXEC = $(CURDIR)/exec.sh
+IAMROOT_EXEC ?= $(CURDIR)/exec.sh
 export IAMROOT_EXEC
 
 -include local.mk

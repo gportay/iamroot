@@ -18,21 +18,21 @@ COVERAGE ?= 0
 NVERBOSE ?= 0
 export NVERBOSE
 
-IAMROOT_EXEC = $(CURDIR)/exec.sh
+IAMROOT_EXEC ?= $(CURDIR)/exec.sh
 export IAMROOT_EXEC
 
 ifeq ($(ARCH),x86_64)
 ifeq ($(LIBC),musl)
-IAMROOT_LIB = $(IAMROOT_LIB_MUSL_X86_64_1)
+IAMROOT_LIB ?= $(IAMROOT_LIB_MUSL_X86_64_1)
 export IAMROOT_LIB
 else
-IAMROOT_LIB = $(IAMROOT_LIB_LINUX_X86_64_2)
+IAMROOT_LIB ?= $(IAMROOT_LIB_LINUX_X86_64_2)
 export IAMROOT_LIB
 endif
 endif
 
 ifeq ($(ARCH),aarch64)
-IAMROOT_LIB = $(IAMROOT_LIB_LINUX_AARCH64_1)
+IAMROOT_LIB ?= $(IAMROOT_LIB_LINUX_AARCH64_1)
 export IAMROOT_LIB
 endif
 
@@ -101,7 +101,7 @@ endef
 
 define libiamroot_so =
 iamroot_lib_$(2)_$(3) = $(1)/libiamroot-$(2).so.$(3)
-IAMROOT_LIB_$(call UPPERCASE,$(2))_$(3) = $(CURDIR)/$(1)/libiamroot-$(2).so.$(3)
+IAMROOT_LIB_$(call UPPERCASE,$(2))_$(3) ?= $(CURDIR)/$(1)/libiamroot-$(2).so.$(3)
 export IAMROOT_LIB_$(call UPPERCASE,$(2))_$(3)
 
 vars: iamroot_lib_$(2)_$(3)

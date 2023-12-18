@@ -270,7 +270,7 @@ mapfile -t envs < <(env)
 for env in "${envs[@]}"
 do
 	var="${env%%=*}"
-	if [[ "$var" =~ ^(IAMROOT_.*|ISH.*|LD_.*|PATH|HOME|SHELL|USER)$ ]]
+	if [[ "$var" =~ ^(IAMROOT_.*|ISH.*|LD_.*|PATH|HOME|SHELL|USER|TERM)$ ]]
 	then
 		continue
 	elif [[ $ISH_PRESERVE_ENV ]] &&

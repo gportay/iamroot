@@ -313,12 +313,12 @@ ifeq ($(OS),GNU/Linux)
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)                                                                  test-path_resolution      /run/                                                 | tee /dev/stderr | grep -q "^/run\$$"
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)                                                                  test-path_resolution      /var/run/                                             | tee /dev/stderr | grep -q "^/run\$$"
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)                                                                  test-path_resolution      /proc/                                                | tee /dev/stderr | grep -q "^/proc/\$$"
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib64 IAMROOT_ROOT=$(CURDIR)/rootfs     test-path_resolution      /dev/                                                 | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/dev\$$"
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib64 IAMROOT_ROOT=$(CURDIR)/rootfs     test-path_resolution      /run                                                  | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/run\$$"
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib64 IAMROOT_ROOT=$(CURDIR)/rootfs     test-path_resolution      /var/run                                              | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/run\$$"
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib64 IAMROOT_ROOT=$(CURDIR)/rootfs     test-path_resolution      /sys/                                                 | tee /dev/stderr | grep -q "^/sys/\$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib64/iar IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution      /dev/                                                 | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/dev\$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib64/iar IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution      /run                                                  | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/run\$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib64/iar IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution      /var/run                                              | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/run\$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib64/iar IAMROOT_ROOT=$(CURDIR)/rootfs test-path_resolution      /sys/                                                 | tee /dev/stderr | grep -q "^/sys/\$$"
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)                                                                  test-path_setenv LD_LIBRARY_PATH /lib64:/usr/local/lib64:/usr/lib64             | tee /dev/stderr | grep -q "^/lib64:/usr/local/lib64:/usr/lib64$$"
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib64 IAMROOT_ROOT=$(CURDIR)/rootfs     test-path_setenv LD_LIBRARY_PATH /lib64:/usr/local/lib64:/usr/lib64             | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/lib64:$(CURDIR)/rootfs/usr/local/lib64:$(CURDIR)/rootfs/usr/lib64$$"
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib64/iar IAMROOT_ROOT=$(CURDIR)/rootfs test-path_setenv LD_LIBRARY_PATH /lib64:/usr/local/lib64:/usr/lib64             | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/lib64:$(CURDIR)/rootfs/usr/local/lib64:$(CURDIR)/rootfs/usr/lib64$$"
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                                                                            test-name_to_handle_at  . rootfs/tmp/file0         0
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                test-name_to_handle_at  - /tmp/file0               0
 endif
@@ -418,12 +418,14 @@ endif
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                test-unlinkat           - /dev/dev2                0
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/usr/bin                                                                                   test-unshare              whoami
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)                                                                  test-dlopen               libiamnotroot.so
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                test-dlopen               libiamnotroot.so
+	cd rootfs/ && ! env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                              test-dlopen               libiamnotroot.so
+	cd rootfs/ &&   env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs LD_LIBRARY_PATH=/usr/lib64/iar
 ifeq ($(OS),GNU/Linux)
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)                                                                  test-dlmopen              libiamnotroot.so
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                test-dlmopen              libiamnotroot.so
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)                                                                  test-dlmopen              rootfs/usr/lib64/libiamnotroot.so
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                test-dlmopen              /usr/lib64/libiamnotroot.so
+	cd rootfs/ && ! env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                              test-dlmopen              libiamnotroot.so
+	cd rootfs/ &&   env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs LD_LIBRARY_PATH=/usr/lib64/iar
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)                                                                  test-dlmopen              rootfs/usr/lib64/iar/libiamnotroot.so
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                test-dlmopen              /usr/lib64/iar/libiamnotroot.so
 endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                                                                            test-dl_iterate_phdr                                                            | grep '$(CURDIR)/rootfs'
 	cd rootfs/ && ! env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                              test-dl_iterate_phdr                                                            | grep '$(CURDIR)/rootfs'
@@ -629,11 +631,11 @@ ifeq ($(ARCH),aarch64)
 	install -D -m755 /lib/ld-linux-aarch64.so.1 --target-directory=$(DESTDIR)/lib
 	ln -sf lib $(DESTDIR)/lib64
 endif
-	install -D -m755 libiamnotroot.so --target-directory=$(DESTDIR)/usr/lib64
+	install -D -m755 libiamnotroot.so --target-directory=$(DESTDIR)/usr/lib64/iar
 endif
 ifeq ($(OS),Linux)
 	install -D -m755 /lib/ld-musl-x86_64.so.1 --target-directory=$(DESTDIR)/lib
-	install -D -m755 libiamnotroot.so --target-directory=$(DESTDIR)/usr/lib
+	install -D -m755 libiamnotroot.so --target-directory=$(DESTDIR)/usr/lib/iar
 endif
 	install -d 755 $(DESTDIR)/usr/lib/
 	install -m 644 os-release $(DESTDIR)/usr/lib/

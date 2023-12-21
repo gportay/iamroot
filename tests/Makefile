@@ -418,12 +418,12 @@ endif
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                test-unlinkat           - /dev/dev2                0
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/usr/bin                                                                                   test-unshare              whoami
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)                                                                  test-dlopen               libiamnotroot.so
-	cd rootfs/ && ! env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                              test-dlopen               libiamnotroot.so
-	cd rootfs/ &&   env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs LD_LIBRARY_PATH=/usr/lib64/iar
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                test-dlopen               libiamnotroot.so
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs LD_LIBRARY_PATH=/usr/lib64/iar                 test-dlopen               libiamnotroot.so
 ifeq ($(OS),GNU/Linux)
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)                                                                  test-dlmopen              libiamnotroot.so
-	cd rootfs/ && ! env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                              test-dlmopen              libiamnotroot.so
-	cd rootfs/ &&   env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs LD_LIBRARY_PATH=/usr/lib64/iar
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                test-dlmopen              libiamnotroot.so
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs LD_LIBRARY_PATH=/usr/lib64/iar                 test-dlmopen              libiamnotroot.so
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)                                                                  test-dlmopen              rootfs/usr/lib64/iar/libiamnotroot.so
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                test-dlmopen              /usr/lib64/iar/libiamnotroot.so
 endif
@@ -636,6 +636,10 @@ endif
 ifeq ($(OS),Linux)
 	install -D -m755 /lib/ld-musl-x86_64.so.1 --target-directory=$(DESTDIR)/lib
 	install -D -m755 libiamnotroot.so --target-directory=$(DESTDIR)/usr/lib/iar
+endif
+ifeq ($(OS),GNU/Linux)
+	echo "/usr/lib64/iar" >$(DESTDIR)/etc/ld.so.conf
+	ldconfig -v -r $(DESTDIR)
 endif
 	install -d 755 $(DESTDIR)/usr/lib/
 	install -m 644 os-release $(DESTDIR)/usr/lib/

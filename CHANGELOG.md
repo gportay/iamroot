@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Preserve the environment variable `TERM` in `ish`
 
+### Fixed
+
+- Fix the soname lookup from the cache file `/etc/ld.so.cache`
+
 ## [v15] - 2023-12-09
 
 ### Fixed

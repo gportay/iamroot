@@ -348,7 +348,7 @@ __ldso_cache (const char *soname, char *buf, size_t bufsiz)
   for (uint32_t i = 0; i < cache_new->nlibs; i++)
     {
       const char *path = &string_table[cache_new->libs[i].value];
-      if (streq (soname, path))
+      if (streq (soname, __basename(path)))
         {
           const char *root = __getrootdir ();
           if (streq (root, "/"))

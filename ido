@@ -1,0 +1,297 @@
+#!/usr/bin/env bash
+#
+# Copyright 2020-2023 Gaël PORTAY
+#
+# SPDX-License-Identifier: LGPL-2.1-or-later
+#
+
+set -e
+
+VERSION=15
+
+usage() {
+	cat <<EOF
+Usage: ${0##*/} [OPTIONS] [--]    [SCRIPT_FILE  [ARGS...]]
+       ${0##*/} [OPTIONS] [--] -c COMMAND [NAME [ARGS...]]
+       ${0##*/} [OPTIONS] [--] -s [ARGS...]
+
+Runs the command process in an iamroot environment ready to emulate the
+chroot(2) syscall for unprivileged users.
+
+For a more thorough description of sh(1), bash(1), zsh(1) or any other shells,
+please refers to their manuals.
+
+POSIX Shell related options:
+      -c                        Read commands from command-line.
+      -i                        Set interactive.
+      -s                        Read commands from standard-input.
+
+iamroot specific options:
+      --user USER               Login name of the user to usurp the identity.
+      --root DIR                Absolute path to the root directory to chroot
+                                in.
+      --profile-file FILE       Execute initialization file from FILE.
+      --rc-file FILE            Execute commands from FILE.
+      --preserve-env ENV        Preserve environment variables.
+      --path PATH               PATH to use in chroot.
+      --deflib PATH             Default library path to use in chroot.
+      --exec FILE               Absolute path to the iamroot exec script to
+                                use.
+      --library LIB             Absolute path to the iamroot library to use.
+      --shell SHELL             Set shell interpretor.
+                                Equivalent to set ISH=<SHELL>.
+      --no-color                Turn off color.
+      --fatal                   Abort on error.
+      --debug                   Turn on debug mode.
+      --debug-fd FD             Set debug fd.
+      --debug-ignore REGEX      Regular expression of functions to ignore in
+                                debug mode.
+                                Does not imply --debug.
+      --exec-ignore REGEX       Regular expression of executable path to ignore
+                                at execve().
+      --path-resolution-ignore  REGEX
+                                Regular expression of path to ignore for path
+                                resolution in chroot.
+      --version                 Print version.
+      --help                    Print usage.
+
+Environment variables:
+      SHELL                     The shell interpreter to use.
+
+      ISHLVL                    Incremented by one each time an instance of
+                                ish is started.
+
+      ISH_COMMAND               Set to the command run by ish, including any
+                                args.
+
+      ISH_GID                   Set to the group-ID of the user who invoked
+                                ish.
+
+      ISH_UID                   Set to the user-ID of the user who invoked
+                                ish.
+
+      ISH_USER                  Set to the login name of the user who invoked
+                                ish.
+
+      IAMROOT_USER              Set user login name to usurp the identity.
+                                Equivalent to --user USER.
+
+      IAMROOT_ROOT              Set absolute path to root directory to chroot
+                                in. Equivalent to --root DIR.
+
+      ISH_PROFILE_FILE          Set path to initialization file.
+                                Equivalent to --profile-file FILE.
+
+      ISH_RC_FILE               Set path to command file.
+                                Equivalent to --rc-file FILE.
+
+      ISH_PRESERVE_ENV          Set environment to preserve.
+                                Equivalent to --preserve-env ENV.
+
+      IAMROOT_PATH              Set PATH to use in chroot.
+                                Equivalent to --path PATH.
+
+      IAMROOT_DEFLIB            Set default library path to use in chroot.
+                                Equivalent to --deflib PATH.
+
+      IAMROOT_EXEC              Set absolute path to exec script to use.
+                                Equivalent to --exec EXEC.
+
+      IAMROOT_LIB               Set absolute path to library to use.
+                                Equivalent to --library LIB.
+
+      ISH                       Set shell interpretor to use.
+                                Equivalent to --shell.
+
+      IAMROOT_FATAL             Set abort on error.
+                                Equivalent to --fatal.
+
+      IAMROOT_DEBUG             Turn on debug mode.
+                                Equivalent to --debug.
+
+      IAMROOT_DEBUG_FD          Set debug fd.
+                                Equivalent to --debug-fd.
+
+      IAMROOT_DEBUG_IGNORE      Set functions to ignore in debug mode.
+                                Equivalent to --debug-ignore.
+
+      IAMROOT_EXEC_IGNORE       Set executable path to ignore in execve().
+                                Equivalent to --exec-ignore.
+
+      IAMROOT_PATH_RESOLUTION_IGNORE
+                                Set path to ignore for path resolution in
+                                chroot.
+                                Equivalent to --path-resolution-ignore.
+EOF
+}
+
+IAMROOT_LIB="${IAMROOT_LIB:-/usr/local/lib/iamroot/libiamroot.so}"
+export IAMROOT_LIB
+
+IAMROOT_EXEC="${IAMROOT_EXEC:-/usr/local/lib/iamroot/exec.sh}"
+export IAMROOT_EXEC
+
+IAMROOT_USER="${IAMROOT_USER:-root}"
+export IAMROOT_USER
+
+argv=()
+while [[ "$#" -ne 0 ]]
+do
+	if [[ "$1" == "--help" ]]
+	then
+		usage
+		exit 0
+	elif [[ "$1" == "--version" ]]
+	then
+		echo "$VERSION"
+		exit 0
+	elif [[ "$1" == "--path-resolution-ignore" ]]
+	then
+		shift
+		IAMROOT_PATH_RESOLUTION_IGNORE="$1"
+		export IAMROOT_PATH_RESOLUTION_IGNORE
+	elif [[ "$1" == "--exec-ignore" ]]
+	then
+		shift
+		IAMROOT_EXEC_IGNORE="$1"
+		export IAMROOT_EXEC_IGNORE
+	elif [[ "$1" == "--debug-ignore" ]]
+	then
+		shift
+		IAMROOT_DEBUG_IGNORE="$1"
+		export IAMROOT_DEBUG_IGNORE
+	elif [[ "$1" == "--debug-fd" ]]
+	then
+		shift
+		IAMROOT_DEBUG_FD="$1"
+		export IAMROOT_DEBUG_FD
+	elif [[ "$1" == "--debug" ]]
+	then
+		IAMROOT_DEBUG="$((IAMROOT_DEBUG+1))"
+		export IAMROOT_DEBUG
+	elif [[ "$1" == "--fatal" ]]
+	then
+		IAMROOT_FATAL="1"
+		export IAMROOT_FATAL
+	elif [[ "$1" == "--no-color" ]]
+	then
+		NO_COLOR=1
+		export NO_COLOR
+	elif [[ "$1" == "--shell" ]]
+	then
+		shift
+		ISH="$1"
+		export ISH
+	elif [[ "$1" == "--library" ]]
+	then
+		shift
+		IAMROOT_LIB="$1"
+		export IAMROOT_LIB
+	elif [[ "$1" == "--exec" ]]
+	then
+		shift
+		IAMROOT_EXEC="$1"
+		export IAMROOT_EXEC
+	elif [[ "$1" == "--deflib" ]]
+	then
+		shift
+		IAMROOT_DEFLIB="$1"
+		export IAMROOT_DEFLIB
+	elif [[ "$1" == "--path" ]]
+	then
+		shift
+		IAMROOT_PATH="$1"
+		export IAMROOT_PATH
+	elif [[ "$1" == "--preserve-env" ]]
+	then
+		shift
+		ISH_PRESERVE_ENV="$1"
+		export ISH_PRESERVE_ENV
+	elif [[ "$1" == "--rc-file" ]]
+	then
+		shift
+		ISH_RC_FILE="$1"
+		export ISH_RC_FILE
+	elif [[ "$1" == "--profile-file" ]]
+	then
+		shift
+		ISH_PROFILE_FILE="$1"
+		export ISH_PROFILE_FILE
+	elif [[ "$1" == "--root" ]]
+	then
+		shift
+		IAMROOT_ROOT="$1"
+		export IAMROOT_ROOT
+	elif [[ "$1" == "--user" ]]
+	then
+		shift
+		IAMROOT_USER="$1"
+		export IAMROOT_USER
+	elif [[ "$1" == "--" ]]
+	then
+		shift
+		break
+	else
+		break
+	fi
+	shift
+done
+
+if [[ "${IAMROOT_DEBUG_FD:-}" ]] && [[ ! -e "/proc/$$/$IAMROOT_DEBUG_FD" ]]
+then
+	exec {IAMROOT_DEBUG_FD}>&2
+fi
+
+for i in "${ISH_PROFILE_FILE:-}" "${ISH_RC_FILE:-}"
+do
+	if [[ ! "$i" ]]
+	then
+		continue
+	fi
+
+	cd "${i%/*}"
+	PWD="$OLDPWD" source "${i##*/}"
+	cd "$OLDPWD"
+done
+
+USER="${IAMROOT_USER}"
+export USER
+
+IAMROOT_UID="$(id -u "$IAMROOT_USER")"
+export IAMROOT_UID
+
+IAMROOT_GID="$(id -g "$IAMROOT_USER")"
+export IAMROOT_GID
+
+IAMROOT_GROUPS="$(id -G "$IAMROOT_USER")"
+export IAMROOT_GROUPS
+
+mapfile -t envs < <(env)
+for env in "${envs[@]}"
+do
+	var="${env%%=*}"
+	if [[ "$var" =~ ^(IAMROOT_.*|ISH.*|LD_.*|PATH|HOME|SHELL|USER)$ ]]
+	then
+		continue
+	elif [[ $ISH_PRESERVE_ENV ]] &&
+	     [[ "$var" =~ ^(${ISH_PRESERVE_ENV//:/|})$ ]]
+	then
+		if [ "${IAMROOT_DEBUG:-0}" -gt 1 ]
+		then
+			echo "Info: Preserving $env" >&2
+		fi
+		continue
+	else
+		unset "$var"
+	fi
+done
+
+command=("${SHELL:-/bin/sh}" "${argv[@]}" "$@")
+
+ISH_USER="$USER" \
+ISH_UID="$UID" \
+ISH_GID="${GROUPS[0]}" \
+ISH_COMMAND="${command[*]}" \
+ISHLVL="$((ISHLVL+1))" \
+LD_PRELOAD="$IAMROOT_LIB${LD_PRELOAD+:$LD_PRELOAD}" \
+exec "${command[@]}"

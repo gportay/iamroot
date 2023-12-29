@@ -2,13 +2,13 @@ name: NetBSD-vm
 on: workflow_dispatch
 jobs:
   test:
-    runs-on: macos-12
+    runs-on: ubuntu-latest
     name: A job to run test in NetBSD
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Test in NetBSD
       id: test
-      uses: vmactions/netbsd-vm@v0
+      uses: vmactions/netbsd-vm@v1
       with:
         usesh: true
         prepare: |

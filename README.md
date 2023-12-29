@@ -53,6 +53,17 @@ Of course, [iamroot(7)] cannot substitute itself to the superuser permissions,
 and commands will end with `EACCESS` or `EPERM` as of reading or writing files
 in `/proc`, `/sys`, `/dev` or `/run`, to name but a few.
 
+## HELPER SCRIPTS
+
+[iamroot(7)] is configurable via environment variables to overcome specific
+situations of the whole variety of operation-systems (i.e. GNU/Linux, musl,
+\*BSD...).
+
+It comes with two shell scripts [ido(1)] and [ish(1)] to make the configuration
+easy via specific command line options. They are frontends to standard CLIs to
+either open an interactive shell or switch user. [ish(1)] provides a shell like
+[sh(1)], and [ido(1)] switches user like [sudo(8)].
+
 ## BUILD ROOTFS
 
 [iamroot(7)] aims to create any Linux rootfs using the package manager of the
@@ -82,11 +93,13 @@ and absolute symlink resolution in short).
 Build the documentation using *make(1)*
 
 	$ make doc
+	asciidoctor -b manpage -o ido.1 ido.1.adoc
+	gzip -c ido.1 >ido.1.gz
 	asciidoctor -b manpage -o ish.1 ish.1.adoc
 	gzip -c ish.1 >ish.1.gz
 	asciidoctor -b manpage -o iamroot.7 iamroot.7.adoc
 	gzip -c iamroot.7 >iamroot.7.gz
-	rm iamroot.7 ish.1
+	rm iamroot.7 ish.1 ido.1
 
 ## BUILD
 
@@ -130,7 +143,7 @@ Written by Gaël PORTAY *gael.portay@gmail.com*
 
 ## COPYRIGHT
 
-Copyright (c) 2021-2023 Gaël PORTAY
+Copyright (c) 2021-2024 Gaël PORTAY
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU Lesser General Public License as published by the Free
@@ -139,8 +152,8 @@ later version.
 
 ## SEE ALSO
 
-[iamroot(7)], [ish(1)], [chroot(2)], [path_resolution(7)], [fakechroot(1)],
-[fakeroot(1)], [binfmt_misc], [qemu]
+[iamroot(7)], [ido(1)], [ish(1)], [chroot(2)], [path_resolution(7)],
+[fakechroot(1)], [fakeroot(1)], [binfmt_misc], [qemu]
 
 [Alpine Linux]: https://www.alpinelinux.org/
 [Arch Linux]: https://archlinux.org/
@@ -161,6 +174,7 @@ later version.
 [fopen(3)]: https://linux.die.net/man/3/fopen
 [glibc]: https://www.gnu.org/software/libc/
 [iamroot(7)]: iamroot.7.adoc
+[ido(1)]: ido.1.adoc
 [ish(1)]: ish.1.adoc
 [musl]: https://www.musl-libc.org/
 [open(2)]: https://linux.die.net/man/2/open
@@ -168,6 +182,8 @@ later version.
 [path_resolution(7)]: https://linux.die.net/man/7/path_resolution
 [qemu]: https://www.qemu.org/
 [readlink(2)]: https://linux.die.net/man/2/readlink
+[sh(1)]: https://linux.die.net/man/1/sh
 [stat(2)]: https://linux.die.net/man/2/stat
+[sudo(8)]: https://linux.die.net/man/8/sudo
 [xbps-install(1)]: https://man.voidlinux.org/xbps-install.1
 [zypper(8)]: https://en.opensuse.org/SDB:Zypper_manual_(plain)

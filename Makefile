@@ -293,7 +293,7 @@ libiamroot.so: utmpname.o
 libiamroot.so: utmpxname.o
 
 .PHONY: doc
-doc: ish.1.gz iamroot.7.gz
+doc: ido.1.gz ish.1.gz iamroot.7.gz
 
 .PHONY: install
 install: install-exec install-doc install-bash-completion
@@ -317,6 +317,7 @@ install-lib:
 .PHONY: install-doc
 install-doc:
 	install -d -m755 $(DESTDIR)$(PREFIX)/share/man/man1/ $(DESTDIR)$(PREFIX)/share/man/man7/
+	install -m644 ido.1.gz $(DESTDIR)$(PREFIX)/share/man/man1/ido.1.gz
 	install -m644 ish.1.gz $(DESTDIR)$(PREFIX)/share/man/man1/ish.1.gz
 	install -m644 iamroot.7.gz $(DESTDIR)$(PREFIX)/share/man/man7/iamroot.7.gz
 
@@ -327,7 +328,8 @@ install-bash-completion:
 	                             bash-completion 2>/dev/null)}; \
 	if [ -n "$$completionsdir" ]; then \
 		install -d -m755 $(DESTDIR)$$completionsdir/; \
-		install -m644 bash-completion $(DESTDIR)$$completionsdir/ish; \
+		install -m644 completions/ido $(DESTDIR)$$completionsdir/ido; \
+		install -m644 completions/ish $(DESTDIR)$$completionsdir/ish; \
 	fi
 
 .PHONY: uninstall
@@ -335,12 +337,14 @@ uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/ish
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/exec.sh
+	rm -f $(DESTDIR)$(PREFIX)/share/man/man1/ido.1.gz
 	rm -f $(DESTDIR)$(PREFIX)/share/man/man1/ish.1.gz
 	rm -f $(DESTDIR)$(PREFIX)/share/man/man7/iamroot.7.gz
 	completionsdir=$${BASHCOMPLETIONSDIR:-$$(pkg-config --define-variable=prefix=$(PREFIX) \
 	                             --variable=completionsdir \
 	                             bash-completion)}; \
 	if [ -n "$$completionsdir" ]; then \
+		rm -f $(DESTDIR)$$completionsdir/ido; \
 		rm -f $(DESTDIR)$$completionsdir/ish; \
 	fi
 
@@ -356,7 +360,7 @@ ci: check test
 
 .PHONY: check
 check:
-	shellcheck -e SC1090 -e SC3037 ish exec.sh
+	shellcheck -e SC1090 -e SC3037 ido ish exec.sh
 
 .PHONY: test
 test: libiamroot.so
@@ -367,9 +371,9 @@ test: libiamroot.so
 multiarch-ish: export IAMROOT_DEFLIB_LINUX_X86_64_2 = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
 multiarch-ish: ish
 
-.PHONY: ish
-ish: libiamroot.so
-	bash ish
+.PHONY: ido ish
+ido ish: libiamroot.so
+	bash $@
 
 .PHONY: sh bash zsh
 sh bash zsh csh ksh: PATH := $(CURDIR):$(PATH)

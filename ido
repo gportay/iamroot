@@ -1,0 +1,438 @@
+#!/usr/bin/env bash
+#
+# Copyright 2023 Gaël PORTAY
+#
+# SPDX-License-Identifier: LGPL-2.1-or-later
+#
+
+set -e
+
+VERSION=15
+
+usage() {
+	cat <<EOF
+ido - execute a command as another user in an iamroot environment
+
+usage: ido -h | -V
+usage: ido [-EH] [-C=num] [-D=directory] [-g=group] [-R=directory] [-T=timeout]
+           [-u=user] [VAR=value] [-i | -s] [command [arg ...]]
+EOF
+}
+
+help() {
+	usage
+
+	cat <<EOF
+
+Options:
+  -C, --close-from=num          close all file descriptors >= num
+  -D, --chdir=directory         change the working directory before running
+                                command
+  -E, --preserve-env            preserve user environment when running command
+      --preserve-env=list       preserve specific environment variables
+  -g, --group=group             run command as the specified group name or ID
+  -H, --set-home                set HOME variable to target user's home dir
+  -h, --help                    display help message and exit
+  -i, --login                   run login shell as the target user; a command
+                                may also be specified
+  -P, --preserve-groups         preserve group vector instead of setting to
+                                target's
+  -R, --chroot=directory        change the root directory before running command
+  -s, --shell                   run shell as the target user; a command may
+                                also be specified
+  -T, --command-timeout=timeout terminate command after the specified time limit
+  -u, --user=user               run command (or edit file) as specified user
+                                name or ID
+  -V, --version                 display version information and exit
+  --                            stop processing command line arguments
+
+iamroot specific options:
+  --deflib=path                 default library path to use in chroot
+  --exec=file                   absolute path to the iamroot exec script to use
+  --library=lib                 absolute path to the iamroot library to use
+  --no-color                    turn off color
+  --fatal                       abort on error
+  --debug                       turn on debug mode
+  --debug-fd=fd                 set debug fd
+  --debug-ignore=regex          regular expression of functions to ignore in
+                                debug mode; does not imply --debug
+  --exec-ignore=regex           regular expression of executable path to ignore
+                                at execve()
+  --path-resolution-ignore=regex
+                                regular expression of path to ignore for path
+                                resolution in chroot
+EOF
+}
+
+clear_and_preserve_env() {
+	local preserve_env
+	local envs
+
+	preserve_env="$*"
+	preserve_env="${preserve_env// /,}"
+	mapfile -t envs < <(env)
+	for env in "${envs[@]}"
+	do
+		local var="${env%%=*}"
+		if [[ "$var" =~ ^(IAMROOT_.*|IDO.*|LD_.*|PATH|LOGNAME|USER|HOME|SHELL)$ ]] ||
+		   [[ "$var" =~ ^(TERM|PWD|NO_COLOR)$ ]]
+		then
+			continue
+		elif [[ "$1" ]] && [[ "$var" =~ ^(${preserve_env//,/|})$ ]]
+		then
+			continue
+		fi
+		unset "$var"
+	done
+}
+
+IAMROOT_LIB="${IAMROOT_LIB:-/usr/local/lib/iamroot/libiamroot.so}"
+export IAMROOT_LIB
+
+IAMROOT_EXEC="${IAMROOT_EXEC:-/usr/local/lib/iamroot/exec.sh}"
+export IAMROOT_EXEC
+
+vars=()
+opt_u="${IDO_USER:-root}"
+opt_preserve_env=()
+while [[ "$#" -ne 0 ]]
+do
+	if [[ "$1" =~ ^(-C|--close-from)$ ]]
+	then
+		shift
+		opt_C="$1"
+	elif [[ "$1" =~ ^(-C|--close-from)=.*$ ]]
+	then
+	        opt_C="${1#*=}"
+	elif [[ "$1" =~ ^(-D|--chdir)$ ]]
+	then
+		shift
+		opt_D="$1"
+	elif [[ "$1" =~ ^(-D|--chdir)=.*$ ]]
+	then
+	        opt_D="${1#*=}"
+	elif [[ "$1" =~ ^(-E|--preserve-env)$ ]]
+	then
+		opt_E="1"
+	elif [[ "$1" =~ ^--preserve-env=.*$ ]]
+	then
+		read -r -a __ <<<"${1#*=}"
+		opt_preserve_env+=("${__[@]}")
+	elif [[ "$1" =~ ^(-g|--group)$ ]]
+	then
+		shift
+		opt_g="$1"
+	elif [[ "$1" =~ ^(-g|--group)=.*$ ]]
+	then
+	        opt_g="${1#*=}"
+	elif [[ "$1" =~ ^(-h|--help)$ ]]
+	then
+		help
+		exit 0
+	elif [[ "$1" =~ ^(-H|--set-home)$ ]]
+	then
+		opt_H=1
+	elif [[ "$1" =~ ^(-i|--login)$ ]]
+	then
+		opt_i=1
+	elif [[ "$1" =~ ^(-P|--preserve-groups)$ ]]
+	then
+		opt_P=1
+	elif [[ "$1" =~ ^(-R|--chroot)$ ]]
+	then
+		shift
+		opt_R="$1"
+	elif [[ "$1" =~ ^(-R|--chroot)=.*$ ]]
+	then
+	        opt_R="${1#*=}"
+	elif [[ "$1" =~ ^(-s|--shell)$ ]]
+	then
+		opt_s=1
+	elif [[ "$1" =~ ^(-T|--timeout)$ ]]
+	then
+		shift
+		opt_T="$1"
+	elif [[ "$1" =~ ^(-T|--command-timeout)=.*$ ]]
+	then
+	        opt_T="${1#*=}"
+	elif [[ "$1" =~ ^(-u|--user)$ ]]
+	then
+		shift
+		opt_u="$1"
+	elif [[ "$1" =~ ^(-u|--user)=.*$ ]]
+	then
+	        opt_u="${1#*=}"
+	elif [[ "$1" =~ ^(-V|--version)$ ]]
+	then
+		echo "$VERSION"
+		exit 0
+	elif [[ "$1" =~ ^[a-zA-Z_][a-zA-Z0-9_]*= ]]
+	then
+		vars+=("$1")
+	elif [[ "$1" =~ ^(-A|--askpass)$ ]] ||
+	     [[ "$1" =~ ^(-B|--bell)$ ]] ||
+	     [[ "$1" =~ ^(-b|--background)$ ]] ||
+	     [[ "$1" =~ ^(-h|--host)=.*$ ]] ||
+	     [[ "$1" =~ ^(-K|--remove-timestamp)$ ]] ||
+	     [[ "$1" =~ ^(-k|--reset-timestamp)$ ]] ||
+	     [[ "$1" =~ ^(-N|--no-update)$ ]] ||
+	     [[ "$1" =~ ^(-n|--non-interactive)$ ]] ||
+	     [[ "$1" =~ ^(-p|--prompt)=.*$ ]] ||
+	     [[ "$1" =~ ^(-S|--stdin)$ ]] ||
+	     [[ "$1" =~ ^(-U|--other-user)=.*$ ]]
+	then
+		echo "Info: Ignoring $1" >&2
+	elif [[ "$1" =~ ^(-h|--host)$ ]] ||
+	     [[ "$1" =~ ^(-p|--prompt)$ ]] ||
+	     [[ "$1" =~ ^(-U|--other-user)$ ]]
+	then
+		echo "Info: Ignoring $1=$2" >&2
+		shift
+	elif [[ "$1" =~ ^(-e|--edit)$ ]] ||
+	     [[ "$1" =~ ^(-l|--list|-ll)$ ]] ||
+	     [[ "$1" =~ ^(-v|--validate)$ ]]
+	then
+		echo "Error: Not supporting $1" >&2
+	elif [[ "$1" == "--" ]]
+	then
+		shift
+		break
+	elif [[ "$1" =~ ^--deflib$ ]]
+	then
+		shift
+		IAMROOT_DEFLIB="$1"
+		export IAMROOT_DEFLIB
+	elif [[ "$1" =~ ^--deflib=.*$ ]]
+	then
+		IAMROOT_DEFLIB="${1#*=}"
+		export IAMROOT_DEFLIB
+	elif [[ "$1" =~ ^--exec$ ]]
+	then
+		shift
+		IAMROOT_EXEC="$1"
+		export IAMROOT_EXEC
+	elif [[ "$1" =~ ^--exec=.*$ ]]
+	then
+		IAMROOT_EXEC="${1#*=}"
+		export IAMROOT_EXEC
+	elif [[ "$1" =~ ^--library$ ]]
+	then
+		shift
+		IAMROOT_LIB="$1"
+		export IAMROOT_LIB
+	elif [[ "$1" =~ ^--library=.*$ ]]
+	then
+		IAMROOT_LIB="${1#*=}"
+		export IAMROOT_LIB
+	elif [[ "$1" == "--no-color" ]]
+	then
+		NO_COLOR=1
+		export NO_COLOR
+	elif [[ "$1" == "--fatal" ]]
+	then
+		IAMROOT_FATAL="1"
+		export IAMROOT_FATAL
+	elif [[ "$1" == "--debug" ]]
+	then
+		IAMROOT_DEBUG="$((IAMROOT_DEBUG+1))"
+		export IAMROOT_DEBUG
+	elif [[ "$1" =~ ^--debug-fd$ ]]
+	then
+		shift
+		IAMROOT_DEBUG_FD="$1"
+		export IAMROOT_DEBUG_FD
+	elif [[ "$1" =~ ^--debug-fd=.*$ ]]
+	then
+		IAMROOT_DEBUG_FD="${1#*=}"
+		export IAMROOT_DEBUG_FD
+	elif [[ "$1" =~ ^--debug-ignore$ ]]
+	then
+		shift
+		IAMROOT_DEBUG_IGNORE="$1"
+		export IAMROOT_DEBUG_IGNORE
+	elif [[ "$1" =~ ^--debug-ignore=.*$ ]]
+	then
+		IAMROOT_DEBUG_IGNORE="${1#*=}"
+		export IAMROOT_DEBUG_IGNORE
+	elif [[ "$1" =~ ^--exec-ignore$ ]]
+	then
+		shift
+		IAMROOT_EXEC_IGNORE="$1"
+		export IAMROOT_EXEC_IGNORE
+	elif [[ "$1" =~ ^--exec-ignore=.*$ ]]
+	then
+		IAMROOT_EXEC_IGNORE="${1#*=}"
+		export IAMROOT_EXEC_IGNORE
+	elif [[ "$1" =~ ^--path-resolution-ignore$ ]]
+	then
+		shift
+		IAMROOT_PATH_RESOLUTION_IGNORE="$1"
+		export IAMROOT_PATH_RESOLUTION_IGNORE
+	elif [[ "$1" =~ ^--path-resolution-ignore=.*$ ]]
+	then
+		IAMROOT_PATH_RESOLUTION_IGNORE="${1#*=}"
+		export IAMROOT_PATH_RESOLUTION_IGNORE
+	else
+		break
+	fi
+	shift
+done
+
+if [[ "$#" -eq 0 ]] && [[ ! "$opt_i" ]] && [[ ! "$opt_s" ]]
+then
+	usage
+	exit 1
+fi
+
+if [[ "$opt_i" ]] && [[ "$opt_s" ]]
+then
+	echo "ido: you may not specify both the -i and -s options" >&2
+	usage
+	exit 1
+fi
+
+if [[ "$opt_i" ]] && [[ "$opt_E" ]]
+then
+	echo "ido: you may not specify both the -i and -E options" >&2
+	usage
+	exit 1
+fi
+
+if [[ "$opt_C" ]]
+then
+	if [[ "$opt_C" -lt 3 ]]
+	then
+		echo "ido: the argument to -C must be a number greater than or equal to 3" >&2
+		exit 1
+	fi
+
+	for i in "/proc/$$/fd/"*
+	do
+		fd="${i##*/}"
+		if [[ "$fd" -ge "$opt_C" ]] && [[ "$fd" -ne 255 ]]
+		then
+			exec {fd}>&-
+		fi
+	done
+fi
+
+if [[ "${opt_u:0}" =~ ^# ]]
+then
+	opt_u="${opt_u:1}"
+fi
+
+if ! IFS=: read -r -a passwd < <(getent passwd "$opt_u")
+then
+	echo "ido: unknown user $opt_u" >&2
+	exit 1
+fi
+
+opt_g="${opt_g:-${passwd[3]}}"
+if [[ "${opt_g:0}" =~ ^# ]]
+then
+	opt_g="${opt_g:1}"
+fi
+
+if ! IFS=: read -r -a group < <(getent group "$opt_g")
+then
+	echo "ido: unknown group $opt_g" >&2
+	exit 1
+fi
+
+groups="${group[2]}"
+shell="${passwd[6]}"
+
+if [[ "$opt_D" ]]
+then
+	cd "$opt_D"
+fi
+
+if [[ "${opt_E:-0}" -eq 0 ]] || [[ "${#opt_preserve_env[*]}" -gt 0 ]]
+then
+	clear_and_preserve_env "${opt_preserve_env[@]}"
+fi
+
+if [[ "${opt_H:-0}" -eq 1 ]]
+then
+	HOME="${passwd[5]}"
+	export HOME
+fi
+
+if [[ "${opt_P:-0}" -eq 1 ]]
+then
+	groups="${GROUPS[*]}"
+	groups="${groups// /:}"
+fi
+
+if [[ "$opt_R" ]]
+then
+	IAMROOT_ROOT="$opt_R"
+	export IAMROOT_ROOT
+fi
+
+if [[ "${opt_s:-0}" -eq 1 ]]
+then
+	shell="$SHELL"
+fi
+
+if [[ "${opt_T}" ]]
+then
+	command_timeout=(timeout "${opt_T}")
+fi
+
+if [[ "${IAMROOT_DEBUG_FD:-}" ]] && [[ ! -e "/proc/$$/fd/$IAMROOT_DEBUG_FD" ]]
+then
+	eval "exec $IAMROOT_DEBUG_FD>&2"
+fi
+
+IAMROOT_UID="${passwd[2]}"
+export IAMROOT_UID
+
+IAMROOT_GID="${group[2]}"
+export IAMROOT_GID
+
+IAMROOT_GROUPS="${groups[*]/ /:}"
+export IAMROOT_GROUPS
+
+if [[ "${#vars[@]}" -gt 0 ]]
+then
+	set -- "${vars[@]}" "$@"
+fi
+
+if [[ "$IAMROOT_ROOT" ]]
+then
+	cd "$IAMROOT_ROOT"
+
+	IFS=: read -r -a __ <<<"${LD_LIBRARY_PATH:-/usr/lib:/lib}"
+	LD_LIBRARY_PATH="$IAMROOT_ROOT${__[0]}"
+	for i in "${__[@]:1}"
+	do
+		LD_LIBRARY_PATH+=":$IAMROOT_ROOT${__[0]}"
+	done
+fi
+
+command=("${shell:-/bin/sh}")
+if [[ "${opt_i:-}" ]]
+then
+	command+=(-l)
+fi
+if [[ "$#" -gt 0 ]]
+then
+	command_string="${*@Q}"
+	command+=(-c "$command_string")
+fi
+
+exec /usr/bin/env \
+IDO_USER="$USER" \
+IDO_UID="$UID" \
+IDO_GID="${GROUPS[0]}" \
+IDO_COMMAND="${command[*]}" \
+LOGNAME="${passwd[0]}" \
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
+USER="${passwd[0]}" \
+HOME="${HOME:-${passwd[5]}}" \
+SHELL="${shell:-${passwd[6]}}" \
+TERM="${TERM:-unknown}" \
+LD_PRELOAD="$IAMROOT_LIB${LD_PRELOAD+:$LD_PRELOAD}" \
+LD_LIBRARY_PATH="$LD_LIBRARY_PATH" \
+"${command_timeout[@]}" "${command[@]}"

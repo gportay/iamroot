@@ -1,0 +1,60 @@
+#
+# Copyright 2023 Gaël PORTAY
+#
+# SPDX-License-Identifier: LGPL-2.1-or-later
+#
+
+#
+# Stolen and simplified from bash-completion (completions/sudo)
+#
+# SPDX-FileCopyrightText: The Bash Completion Maintainers
+#
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# bash completion for ido(1)                               -*- shell-script -*-
+
+_ido()
+{
+    local cur prev words cword split
+    _init_completion -s || return
+
+    local i
+
+    for ((i = 1; i <= cword; i++)); do
+        if [[ ${words[i]} != -* ]]; then
+            local PATH=$PATH:/sbin:/usr/sbin:/usr/local/sbin
+            local root_command=${words[i]}
+            _command_offset $i
+            return
+        fi
+        [[ ${words[i]} == \
+        -@(user|group|close-from|!(-*)[ugC]) ]] &&
+            ((i++))
+    done
+
+    case "$prev" in
+        --user | -!(-*)u)
+            COMPREPLY=($(compgen -u -- "$cur"))
+            return
+            ;;
+        --group | -!(-*)g)
+            COMPREPLY=($(compgen -g -- "$cur"))
+            return
+            ;;
+        --close-from | --prompt | -!(-*)[Cp])
+            return
+            ;;
+    esac
+
+    $split && return
+
+    if [[ $cur == -* ]]; then
+        local opts=$(_parse_help "$1")
+        COMPREPLY=($(compgen -W '${opts:-$(_parse_usage "$1")}' -- "$cur"))
+        [[ ${COMPREPLY-} == *= ]] && compopt -o nospace
+        return
+    fi
+} &&
+    complete -F _ido ido
+
+# ex: filetype=sh

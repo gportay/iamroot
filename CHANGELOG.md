@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - Preserve the environment variable `NO_COLOR` in `ish`
+- Add `ido`, the `sudo(8)` CLI for `iamroot(7)`
 
 ### Changed
 

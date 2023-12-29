@@ -1,0 +1,219 @@
+= ido(1)
+:doctype: manpage
+:author: Gaël PORTAY
+:email: gael.portay@gmail.com
+:lang: en
+:man manual: ish Manual
+:man source: iamroot 16
+
+== NAME
+
+ido - execute a command as another user in an iamroot environment
+
+== SYNOPSIS
+
+*ido* *-h* | *-V*
+
+*ido* [*-EH*] [*-C* _num_] [*-D* _directory_] [*-g* _group_] [*-R* _directory_]
+      [*-T* _timeout_] [*-u* _user_] [_VAR_=_value_] [*-i* | *-s*]
+      [_command_ [_arg_ ...]]
+
+== DESCRIPTION
+
+*ido* executes a _command_ as the superuser or another user, in an _iamroot(7)_
+environment ready to emulate the _chroot(2)_ syscall for unprivileged users.
+
+For a more thorough description of _sudo(1)_, please refers to its manuals.
+
+The options are as follows:
+
+*-C* _num_, *--close-from*=_num_::
+	Close all file descriptors greater than or equal to _num_ before
+	executing a _command_. Values less than three are not permitted. By
+	default, *ido* will close all open file descriptors other than standard
+	input, standard output, and standard error when executing a command.
+
+*-D* _directory_, *--chdir*=_directory_::
+	Run the _command_ in the specified _directory_ instead of the current
+	working directory.
+
+*-E*, *--preserve-env*::
+	Indicates that the user wishes to preserve their existing environment
+	variables.
+
+*--preserve-env*=_list_::
+	Indicates that the user wishes to add the comma-separated list of
+	environment variables to those preserved from the user's environment.
+	This option may be specified multiple times.
+
+*-g*, *--group*=_group_::
+	Run the _command_ with the primary group set to _group_ instead of the
+	primary group specified by the target user's password database entry.
+	The _group_ may be either a group name or a numeric group-ID (GID)
+	prefixed with the ‘#’ character (e.g., ‘#0’ for GID 0). When running a
+	_command_ as a GID, many shells require that the ‘#’ be escaped with a
+	backslash (‘\’). If no *-u* option is specified, the _command_ will be
+	run as the invoking user. In either case, the primary group will be set
+	to group. The idoers policy permits any of the target user's groups to
+	be specified via the *-g* option as long as the *-P* option is not in
+	use.
+
+*-H*, *--set-home*::
+	Set the HOME environment variable to the home directory specified by
+	the target user's password database entry.
+
+*-h*, *--help*::
+	Display a short help message to the standard output and exit.
+
+*-i*, *--login*::
+	Run the shell specified by the target user's password database entry as
+	a login shell. This means that login-specific resource files such as
+	_.profile_, _.bash_profile_, or _.login_ will be read by the shell. If
+	a _command_ is specified, it is passed to the shell as a simple
+	_command_ using the *-c* option. The _command_ and any _args_ are
+	concatenated, separated by spaces, after escaping each character
+	(including white space) with a backslash (‘\’) except for
+	alphanumerics, underscores, hyphens, and dollar signs. If no _command_
+	is specified, an interactive shell is executed. *ido* attempts to
+	change to that user's home directory before running the shell. The
+	_command_ is run with an environment similar to the one a user would
+	receive at log in. Most shells behave differently when a _command_ is
+	specified as compared to an interactive session; consult the shell's
+	manual for details.
+
+*-P*, *--preserve-groups*::
+	Preserve the invoking user's group vector unaltered. By default, the
+	*idoers* policy will initialize the group vector to the list of groups
+	the target user is a member of. The real and effective group-IDs,
+	however, are still set to match the target user.
+
+*-R*, *--chroot*=_directory_::
+	Change to the specified root _directory_ (see _chroot(8)_) before
+	running the _command_.
+
+*-s*, *--shell*::
+	Run the shell specified by the SHELL environment variable if it is set
+	or the shell specified by the invoking user's password database entry.
+	If a _command_ is specified, it is passed to the shell as a simple
+	_command_ using the *-c* option. The _command_ and any *args* are
+	concatenated, separated by spaces, after escaping each character
+	(including white space) with a backslash (‘\’) except for
+	alphanumerics, underscores, hyphens, and dollar signs. If no _command_
+	is specified, an interactive shell is executed. Most shells behave
+	differently when a _command_ is specified as compared to an interactive
+	session; consult the shell's manual for details.
+
+*-T*, *--command-timeout*=_timeout_::
+	Used to set a timeout for the _command_. If the timeout expires before
+	the _command_ has exited, the _command_ will be terminated.
+
+*-u*, *--user*=_user_::
+	Run the _command_ as a user other than the default target user (usually
+	*root*). The _user_ may be either a user name or a numeric user-ID
+	(UID) prefixed with the ‘#’ character (e.g., ‘#0’ for UID 0). When
+	running commands as a UID, many shells require that the ‘#’ be escaped
+	with a backslash (‘\’). Some security policies may restrict UIDs to
+	those listed in the password database. The _idoers* policy allows UIDs
+	that are not in the password database as long as the targetpw option is
+	not set.
+
+*-V*, *--version*::
+	Print the *ido* version string as well as the version string of any
+	configured plugins.
+
+*--*::
+	The **--** is used to delimit the end of the *ido* options. Subsequent
+	options are passed to the _command_.
+
+*iamroot specific options*
+
+*--deflib*=_list_::
+	Default library path to use in chroot.
+
+*--exec*=_file_::
+	Absolute path to the iamroot exec script to use.
+
+*--library*=_file_::
+	Absolute path to the iamroot library to use.
+
+*--fatal*::
+	Abort on error.
+
+*--no-color*::
+	Turn off color.
+
+**--debug**::
+	Turn on debug mode.
+
+*--debug-fd*=_num_::
+	Set debug fd.
+
+*--debug-ignore*=_regex_::
+	Regular expression of functions to ignore in debug mode.
+	Does not imply --debug.
+
+*--exec-ignore*=_regex_::
+	Regular expression of executable path to ignore at execve().
+
+*--path-resolution-ignore*=_regex_::
+	Regular expression of path to ignore for path resolution in chroot.
+
+Environment variables to be set for the _command_ may also be passed as options
+to *ido* in the form _VAR_=_value_.
+
+== EXIT VALUE
+
+Upon successful execution of a _command_, the exit status from *ido* will be
+the exit status of the program that was executed.
+
+== ENVIRONMENT
+
+*ido* utilizes the following environment variables.
+
+HOME::
+	Set to the home directory of the target user when the *-i* or *-H*
+	options are specified, or when the *-s* option is specified.
+
+LOGNAME::
+	Set to the login name of the target user when the *-i* option is
+	specified.
+
+SHELL::
+	Used to determine shell to run with *-s* option.
+
+
+IDO_COMMAND::
+	Set to the _command_ run by ido, including any _args_.
+
+IDO_GID::
+	Set to the group-ID of the user who invoked ido.
+
+IDO_UID::
+	Set to the user-ID of the user who invoked ido.
+
+IDO_USER::
+	Set to the login name of the user who invoked ido.
+
+USER::
+	Set to the same value as LOGNAME, described above.
+
+== BUGS
+
+Report bugs at *https://github.com/gportay/iamroot/issues*
+
+== AUTHOR
+
+Written by Gaël PORTAY *gael.portay@gmail.com*
+
+== COPYRIGHT
+
+Copyright (c) 2023-2024 Gaël PORTAY
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free
+Software Foundation, either version 2.1 of the License, or (at your option) any
+later version.
+
+== SEE ALSO
+
+*iamroot(7)*, *ish(1)*, *sudo(8)*, *chroot(2)*

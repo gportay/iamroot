@@ -11,10 +11,9 @@ VERSION=15
 
 usage() {
 	cat <<EOF
-Usage: ${0##*/} -h | -K | -k | -V
-       ${0##*/} -v [-AknS] [-g group name | #gid] [-p prompt] [-u user name | #uid]
-       ${0##*/} -l[l] [-AknS] [-g group name | #gid] [-p prompt] [-U user name] [-u user name | #uid] [command]
-       ${0##*/} [-AbEHnPS] [-C fd] [-g group name | #gid] [-p prompt] [-r role] [-t type] [-u user name | #uid] [VAR=value] -i | -s [command]
+Usage: ${0##*/} -h | -V
+       ${0##*/} [-g group name | #gid] [-p prompt] [-u user name | #uid]
+       ${0##*/} [-bEHP] [-C fd] [-g group name | #gid] [-p prompt] [-u user name | #uid] [VAR=value] -i | -s [command]
 
 Execute a command as the superuser or another user, in an iamroot environment
 ready to emulate the chroot(2) syscall for unprivileged users.

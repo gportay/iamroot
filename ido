@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2020-2023 Gaël PORTAY
+# Copyright 2023 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -11,15 +11,13 @@ VERSION=15
 
 usage() {
 	cat <<EOF
-Usage: ${0##*/} [OPTIONS] [--]    [SCRIPT_FILE  [ARGS...]]
-       ${0##*/} [OPTIONS] [--] -c COMMAND [NAME [ARGS...]]
-       ${0##*/} [OPTIONS] [--] -s [ARGS...]
+Usage: ${0##*/} -h | -K | -k | -V
+       ${0##*/} -v [-AknS] [-g group name | #gid] [-p prompt] [-u user name | #uid]
+       ${0##*/} -l[l] [-AknS] [-g group name | #gid] [-p prompt] [-U user name] [-u user name | #uid] [command]
+       ${0##*/} [-AbEHnPS] [-C fd] [-g group name | #gid] [-p prompt] [-r role] [-t type] [-u user name | #uid] [VAR=value] -i | -s [command]
 
-Runs the command process in an iamroot environment ready to emulate the
-chroot(2) syscall for unprivileged users.
-
-For a more thorough description of sh(1), bash(1), zsh(1) or any other shells,
-please refers to their manuals.
+Execute a command as the superuser or another user, in an iamroot environment
+ready to emulate the chroot(2) syscall for unprivileged users.
 
 POSIX Shell related options:
       -c                        Read commands from command-line.
@@ -30,10 +28,7 @@ iamroot specific options:
       --user USER               Login name of the user to usurp the identity.
       --root DIR                Absolute path to the root directory to chroot
                                 in.
-      --profile-file FILE       Execute initialization file from FILE.
-      --rc-file FILE            Execute commands from FILE.
       --preserve-env ENV        Preserve environment variables.
-      --path PATH               PATH to use in chroot.
       --deflib PATH             Default library path to use in chroot.
       --exec FILE               Absolute path to the iamroot exec script to
                                 use.
@@ -58,38 +53,26 @@ iamroot specific options:
 Environment variables:
       SHELL                     The shell interpreter to use.
 
-      ISHLVL                    Incremented by one each time an instance of
-                                ish is started.
-
-      ISH_COMMAND               Set to the command run by ish, including any
+      IDO_COMMAND               Set to the command run by ish, including any
                                 args.
 
-      ISH_GID                   Set to the group-ID of the user who invoked
-                                ish.
+      IDO_GID                   Set to the group-ID of the user who invoked
+                                ido.
 
-      ISH_UID                   Set to the user-ID of the user who invoked
-                                ish.
+      IDO_UID                   Set to the user-ID of the user who invoked
+                                ido.
 
-      ISH_USER                  Set to the login name of the user who invoked
-                                ish.
+      IDO_USER                  Set to the login name of the user who invoked
+                                ido.
 
-      IAMROOT_USER              Set user login name to usurp the identity.
-                                Equivalent to --user USER.
+      IDOSHELL                  Set shell interpretor to use.
+                                Equivalent to --shell.
+
+      IDO_PRESERVE_ENV          Set environment to preserve.
+                                Equivalent to --preserve-env ENV.
 
       IAMROOT_ROOT              Set absolute path to root directory to chroot
                                 in. Equivalent to --root DIR.
-
-      ISH_PROFILE_FILE          Set path to initialization file.
-                                Equivalent to --profile-file FILE.
-
-      ISH_RC_FILE               Set path to command file.
-                                Equivalent to --rc-file FILE.
-
-      ISH_PRESERVE_ENV          Set environment to preserve.
-                                Equivalent to --preserve-env ENV.
-
-      IAMROOT_PATH              Set PATH to use in chroot.
-                                Equivalent to --path PATH.
 
       IAMROOT_DEFLIB            Set default library path to use in chroot.
                                 Equivalent to --deflib PATH.
@@ -99,9 +82,6 @@ Environment variables:
 
       IAMROOT_LIB               Set absolute path to library to use.
                                 Equivalent to --library LIB.
-
-      ISH                       Set shell interpretor to use.
-                                Equivalent to --shell.
 
       IAMROOT_FATAL             Set abort on error.
                                 Equivalent to --fatal.
@@ -131,8 +111,8 @@ export IAMROOT_LIB
 IAMROOT_EXEC="${IAMROOT_EXEC:-/usr/local/lib/iamroot/exec.sh}"
 export IAMROOT_EXEC
 
-IAMROOT_USER="${IAMROOT_USER:-root}"
-export IAMROOT_USER
+IDO_USER="${IDO_USER:-root}"
+export IDO_USER
 
 argv=()
 while [[ "$#" -ne 0 ]]
@@ -180,8 +160,8 @@ do
 	elif [[ "$1" == "--shell" ]]
 	then
 		shift
-		ISH="$1"
-		export ISH
+		IDOSHELL="$1"
+		export IDOSHELL
 	elif [[ "$1" == "--library" ]]
 	then
 		shift
@@ -205,18 +185,8 @@ do
 	elif [[ "$1" == "--preserve-env" ]]
 	then
 		shift
-		ISH_PRESERVE_ENV="$1"
-		export ISH_PRESERVE_ENV
-	elif [[ "$1" == "--rc-file" ]]
-	then
-		shift
-		ISH_RC_FILE="$1"
-		export ISH_RC_FILE
-	elif [[ "$1" == "--profile-file" ]]
-	then
-		shift
-		ISH_PROFILE_FILE="$1"
-		export ISH_PROFILE_FILE
+		IDO_PRESERVE_ENV="$1"
+		export IDO_PRESERVE_ENV
 	elif [[ "$1" == "--root" ]]
 	then
 		shift
@@ -225,8 +195,8 @@ do
 	elif [[ "$1" == "--user" ]]
 	then
 		shift
-		IAMROOT_USER="$1"
-		export IAMROOT_USER
+		IDO_USER="$1"
+		export IDO_USER
 	elif [[ "$1" == "--" ]]
 	then
 		shift
@@ -242,39 +212,27 @@ then
 	exec {IAMROOT_DEBUG_FD}>&2
 fi
 
-for i in "${ISH_PROFILE_FILE:-}" "${ISH_RC_FILE:-}"
-do
-	if [[ ! "$i" ]]
-	then
-		continue
-	fi
-
-	cd "${i%/*}"
-	PWD="$OLDPWD" source "${i##*/}"
-	cd "$OLDPWD"
-done
-
-USER="${IAMROOT_USER}"
+USER="${IDO_USER}"
 export USER
 
-IAMROOT_UID="$(id -u "$IAMROOT_USER")"
+IAMROOT_UID="$(id -u "$IDO_USER")"
 export IAMROOT_UID
 
-IAMROOT_GID="$(id -g "$IAMROOT_USER")"
+IAMROOT_GID="$(id -g "$IDO_USER")"
 export IAMROOT_GID
 
-IAMROOT_GROUPS="$(id -G "$IAMROOT_USER")"
+IAMROOT_GROUPS="$(id -G "$IDO_USER")"
 export IAMROOT_GROUPS
 
 mapfile -t envs < <(env)
 for env in "${envs[@]}"
 do
 	var="${env%%=*}"
-	if [[ "$var" =~ ^(IAMROOT_.*|ISH.*|LD_.*|PATH|HOME|SHELL|USER)$ ]]
+	if [[ "$var" =~ ^(IAMROOT_.*|IDO.*|LD_.*|PATH|HOME|SHELL|USER)$ ]]
 	then
 		continue
-	elif [[ $ISH_PRESERVE_ENV ]] &&
-	     [[ "$var" =~ ^(${ISH_PRESERVE_ENV//:/|})$ ]]
+	elif [[ $IDO_PRESERVE_ENV ]] &&
+	     [[ "$var" =~ ^(${IDO_PRESERVE_ENV//:/|})$ ]]
 	then
 		if [ "${IAMROOT_DEBUG:-0}" -gt 1 ]
 		then
@@ -286,12 +244,11 @@ do
 	fi
 done
 
-command=("${SHELL:-/bin/sh}" "${argv[@]}" "$@")
+command=(iamroot-shell --shell "${SHELL:-/bin/sh}" "${argv[@]}" "$@")
 
-ISH_USER="$USER" \
-ISH_UID="$UID" \
-ISH_GID="${GROUPS[0]}" \
-ISH_COMMAND="${command[*]}" \
-ISHLVL="$((ISHLVL+1))" \
+IDO_USER="$USER" \
+IDO_UID="$UID" \
+IDO_GID="${GROUPS[0]}" \
+IDO_COMMAND="${command[*]}" \
 LD_PRELOAD="$IAMROOT_LIB${LD_PRELOAD+:$LD_PRELOAD}" \
 exec "${command[@]}"

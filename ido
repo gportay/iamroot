@@ -411,6 +411,12 @@ export IDO_USER
 USER="$IDO_USER"
 export USER
 
+if [[ "${opt_i:-}" ]]
+then
+	LOGNAME="$USER"
+	export LOGNAME
+fi
+
 IAMROOT_UID="${passwd[2]}"
 export IAMROOT_UID
 
@@ -423,6 +429,7 @@ export IAMROOT_GROUPS
 if [[ "${opt_H:-0}" -eq 1 ]]
 then
 	HOME="${passwd[6]}"
+	export HOME
 fi
 
 if [[ "${opt_s:-0}" -eq 1 ]]
@@ -446,7 +453,7 @@ mapfile -t envs < <(env)
 for env in "${envs[@]}"
 do
 	var="${env%%=*}"
-	if [[ "$var" =~ ^(IAMROOT_.*|IDO.*|LD_.*|PATH|HOME|SHELL|USER)$ ]]
+	if [[ "$var" =~ ^(IAMROOT_.*|IDO.*|LD_.*|PATH|HOME|SHELL|USER|LOGNAME)$ ]]
 	then
 		continue
 	elif [[ $IDO_PRESERVE_ENV ]] &&

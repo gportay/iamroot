@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+u#!/usr/bin/env bash
 #
 # Copyright 2023 Gaël PORTAY
 #
@@ -13,7 +13,7 @@ usage() {
 	cat <<EOF
 Usage: ${0##*/} -h | -V
        ${0##*/} [-g group name | #gid] [-p prompt] [-u user name | #uid]
-       ${0##*/} [-bEHP] [-C fd] [-D directory] [-g group name | #gid] [-p prompt] [-u user name | #uid] [VAR=value] -i | -s [command]
+       ${0##*/} [-bEHP] [-C fd] [-D directory] [-g group name | #gid] [-p prompt] [-R directory] [-u user name | #uid] [VAR=value] -i | -s [command]
 
 Execute a command as the superuser or another user, in an iamroot environment
 ready to emulate the chroot(2) syscall for unprivileged users.
@@ -81,7 +81,7 @@ iamroot specific options:
                                 (e.g., ‘#0’ for GID 0). When running a command as
                                 a GID, many shells require that the ‘#’ be
                                 escaped with a backslash (‘\’).
-      -R DIR, --root DIR        Change to the specified root directory (see
+      -R DIR, --chroot DIR      Change to the specified root directory (see
                                 chroot(8)) before running the command.
       -D DIR, --chdir DIR       Run the command in the specified directory instead
                                 of the current working directory.
@@ -251,11 +251,10 @@ do
 		shift
 		opt_D="$1"
 	elif [[ "$1" == "-R" ]] ||
-             [[ "$1" == "--root" ]]
+             [[ "$1" == "--chroot" ]]
 	then
 		shift
-		IAMROOT_ROOT="$1"
-		export IAMROOT_ROOT
+		opt_R="$1"
 	elif [[ "$1" == "-g" ]] ||
              [[ "$1" == "--group" ]]
 	then
@@ -281,6 +280,12 @@ done
 if [[ "${opt_D:-}" ]]
 then
 	cd "${opt_D}"
+fi
+
+if [[ "${opt_D:-}" ]]
+then
+	IAMROOT_ROOT="${opt_R}"
+	export IAMROOT_ROOT
 fi
 
 if [[ "${IAMROOT_DEBUG_FD:-}" ]] && [[ ! -e "/proc/$$/$IAMROOT_DEBUG_FD" ]]

@@ -1,4 +1,4 @@
-p#!/usr/bin/env bash
+#!/usr/bin/env bash
 #
 # Copyright 2023 Gaël PORTAY
 #
@@ -311,7 +311,7 @@ do
 	     [[ "$1" == "-v" ]] ||
 	     [[ "$1" == "--validate" ]]
 	then
-		echo "$1: option is ignored!" >&2
+		echo "Info: Ignoring $1" >&2
 	elif [[ "$1" == "-C" ]] ||
 	     [[ "$1" == "--close-from" ]] ||
 	     [[ "$1" == "-h" ]] ||
@@ -323,7 +323,7 @@ do
 	     [[ "$1" == "-T" ]] ||
 	     [[ "$1" == "--command-timeout" ]]
 	then
-		echo "$1=$2: option is ignored!" >&2
+		echo "Info: Ignoring $1=$2" >&2
 		shift
 	elif [[ "$1" == "--" ]]
 	then

@@ -30,7 +30,6 @@ The options are as follows:
              policy allows UIDs that are not in the password database as
              long as the targetpw option is not set.  Other security
              policies may not support this.
-
      -g group, --group=group
              Run the command with the primary group set to group instead
              of the primary group specified by the target user's
@@ -55,6 +54,11 @@ The options are as follows:
              policy may return an error if the user does not have
              permission to preserve the environment.  This option may be
              specified multiple times.
+     -R directory, --chroot=directory
+             Change to the specified root directory (see chroot(8))
+             before running the command.  The security policy may return
+             an error if the user does not have permission to specify
+             the root directory.
 
 iamroot specific options:
       -u USER, --user USER      Run the command as a user other than the default
@@ -72,8 +76,8 @@ iamroot specific options:
                                 (e.g., ‘#0’ for GID 0). When running a command as
                                 a GID, many shells require that the ‘#’ be
                                 escaped with a backslash (‘\’).
-      --root DIR                Absolute path to the root directory to chroot
-                                in.
+      -R DIR, --root DIR        Change to the specified root directory (see
+                                chroot(8)) before running the command.
       -E, --preserve-env ENV    Preserve the comma-separated list of environment
                                 variables.
       --deflib PATH             Default library path to use in chroot.
@@ -234,7 +238,8 @@ do
 		shift
 		IDO_PRESERVE_ENV="$1"
 		export IDO_PRESERVE_ENV
-	elif [[ "$1" == "--root" ]]
+	elif [[ "$1" == "-R" ]] ||
+             [[ "$1" == "--root" ]]
 	then
 		shift
 		IAMROOT_ROOT="$1"

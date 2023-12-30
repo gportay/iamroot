@@ -402,25 +402,19 @@ then
 	exec {IAMROOT_DEBUG_FD}>&2
 fi
 
-if [[ "${opt_u:-}" ]]
-then
-	IDO_USER="$opt_u"
-	export IDO_USER
-fi
+IFS=: read -a passwd < <(getent passwd "${opt_u:-0}")
+IFS=: read -a group < <(getent group "${opt_g:-${passwd[3]}}")
 
-if [[ "${opt_g:-}" ]]
-then
-	IDO_GROUP="$opt_g"
-	export IDO_GROUP
-fi
+IDO_USER="${passwd[0]}"
+export IDO_USER
 
 USER="$IDO_USER"
 export USER
 
-IAMROOT_UID="$(id -u "$IDO_USER")"
+IAMROOT_UID="${passwd[2]}"
 export IAMROOT_UID
 
-IAMROOT_GID="$(id -g "$IDO_USER")"
+IAMROOT_GID="${group[2]}"
 export IAMROOT_GID
 
 IAMROOT_GROUPS="$(id -G "$IDO_USER")"
@@ -428,13 +422,12 @@ export IAMROOT_GROUPS
 
 if [[ "${opt_H:-0}" -eq 1 ]]
 then
-	IFS=: read -a passwd < <(getent passwd 1000)
-	HOME="${passwd[-1]}"
+	HOME="${passwd[6]}"
 fi
 
 if [[ "${opt_s:-0}" -eq 1 ]]
 then
-	IDOSHELL="${SHELL:-/bin/sh}"
+	IDOSHELL="${SHELL:-${passwd[7]:-/bin/sh}}"
 	export IDOSHELL
 fi
 

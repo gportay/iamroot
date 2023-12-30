@@ -42,6 +42,11 @@ The options are as follows:
              the primary group will be set to group.  The sudoers policy
              permits any of the target user's groups to be specified via
              the -g option as long as the -P option is not in use.
+     -D directory, --chdir=directory
+             Run the command in the specified directory instead of the
+             current working directory.  The security policy may return
+             an error if the user does not have permission to specify
+             the working directory.
      -E, --preserve-env
              Indicates to the security policy that the user wishes to
              preserve their existing environment variables.  The
@@ -78,6 +83,8 @@ iamroot specific options:
                                 escaped with a backslash (‘\’).
       -R DIR, --root DIR        Change to the specified root directory (see
                                 chroot(8)) before running the command.
+      -D DIR, --chdir DIR       Run the command in the specified directory instead
+                                of the current working directory.
       -E, --preserve-env ENV    Preserve the comma-separated list of environment
                                 variables.
       --deflib PATH             Default library path to use in chroot.
@@ -238,6 +245,11 @@ do
 		shift
 		IDO_PRESERVE_ENV="$1"
 		export IDO_PRESERVE_ENV
+	elif [[ "$1" == "-D" ]] ||
+             [[ "$1" == "--chdir" ]]
+	then
+		shift
+		opt_D="$1"
 	elif [[ "$1" == "-R" ]] ||
              [[ "$1" == "--root" ]]
 	then
@@ -265,6 +277,11 @@ do
 	fi
 	shift
 done
+
+if [[ "${opt_D:-}" ]]
+then
+	cd "${opt_D}"
+fi
 
 if [[ "${IAMROOT_DEBUG_FD:-}" ]] && [[ ! -e "/proc/$$/$IAMROOT_DEBUG_FD" ]]
 then

@@ -19,6 +19,19 @@ Execute a command as the superuser or another user, in an iamroot environment
 ready to emulate the chroot(2) syscall for unprivileged users.
 
 The options are as follows:
+     -s, --shell
+             Run the shell specified by the SHELL environment variable
+             if it is set or the shell specified by the invoking user's
+             password database entry.  If a command is specified, it is
+             passed to the shell as a simple command using the -c
+             option.  The command and any args are concatenated,
+             separated by spaces, after escaping each character
+             (including white space) with a backslash (‘\’) except for
+             alphanumerics, underscores, hyphens, and dollar signs.  If
+             no command is specified, an interactive shell is executed.
+             Most shells behave differently when a command is specified
+             as compared to an interactive session; consult the shell's
+             manual for details.
      -u user, --user=user
              Run the command as a user other than the default target
              user (usually root).  The user may be either a user name or
@@ -91,8 +104,11 @@ iamroot specific options:
       --exec FILE               Absolute path to the iamroot exec script to
                                 use.
       --library LIB             Absolute path to the iamroot library to use.
-      --shell SHELL             Set shell interpretor.
-                                Equivalent to set ISH=<SHELL>.
+      -s, --shell               Run the shell specified by the SHELL environment
+                                variable if it is set or the shell specified by
+                                the invoking user's password database entry. If a
+                                command is specified, it is passed to the shell as
+                                a simple command using the -c option. 
       --no-color                Turn off color.
       --fatal                   Abort on error.
       --debug                   Turn on debug mode.
@@ -219,7 +235,7 @@ do
 	     [[ "$1" == "--shell" ]]
 	then
 		shift
-		opt_s="$1"
+		opt_s=1
 	elif [[ "$1" == "--library" ]]
 	then
 		shift
@@ -356,9 +372,9 @@ export IAMROOT_GID
 IAMROOT_GROUPS="$(id -G "$IDO_USER")"
 export IAMROOT_GROUPS
 
-if [[ "${opt_s:-}" ]]
+if [[ "${opt_s:-0}" -eq 1 ]]
 then
-	IDOSHELL="$opt_s"
+	IDOSHELL="${SHELL:-/bin/sh}"
 	export IDOSHELL
 fi
 
@@ -387,7 +403,7 @@ do
 	fi
 done
 
-command=(iamroot-shell --shell "${SHELL:-/bin/sh}" "${argv[@]}" "$@")
+command=(iamroot-shell --shell "${IDOSHELL:-/bin/sh}" "${argv[@]}" "$@")
 
 IDO_USER="$USER" \
 IDO_UID="$UID" \

@@ -279,12 +279,12 @@ done
 
 if [[ "${opt_D:-}" ]]
 then
-	cd "${opt_D}"
+	cd "$opt_D"
 fi
 
-if [[ "${opt_D:-}" ]]
+if [[ "${opt_R:-}" ]]
 then
-	IAMROOT_ROOT="${opt_R}"
+	IAMROOT_ROOT="$opt_R"
 	export IAMROOT_ROOT
 fi
 

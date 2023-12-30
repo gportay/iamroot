@@ -169,10 +169,9 @@ export IAMROOT_LIB
 IAMROOT_EXEC="${IAMROOT_EXEC:-/usr/local/lib/iamroot/exec.sh}"
 export IAMROOT_EXEC
 
-IDO_USER="${IDO_USER:-root}"
-export IDO_USER
-
 argv=()
+opt_u="${IDO_USER:-root}"
+opt_g="${IDO_USER:-root}"
 while [[ "$#" -ne 0 ]]
 do
 	if [[ "$1" == "--help" ]]
@@ -260,14 +259,12 @@ do
              [[ "$1" == "--group" ]]
 	then
 		shift
-		IDO_GROUP="$1"
-		export IDO_GROUP
+		opt_g="$1"
 	elif [[ "$1" == "-u" ]] ||
              [[ "$1" == "--user" ]]
 	then
 		shift
-		IDO_USER="$1"
-		export IDO_USER
+		opt_u="$1"
 	elif [[ "$1" == "-A" ]] ||
 	     [[ "$1" == "--askpass" ]] ||
 	     [[ "$1" == "-B" ]] ||
@@ -333,6 +330,18 @@ fi
 if [[ "${IAMROOT_DEBUG_FD:-}" ]] && [[ ! -e "/proc/$$/$IAMROOT_DEBUG_FD" ]]
 then
 	exec {IAMROOT_DEBUG_FD}>&2
+fi
+
+if [[ "${opt_u:-}" ]]
+then
+	IDO_USER="$opt_u"
+	export IDO_USER
+fi
+
+if [[ "${opt_g:-}" ]]
+then
+	IDO_GROUP="$opt_g"
+	export IDO_GROUP
 fi
 
 USER="$IDO_USER"

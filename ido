@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+p#!/usr/bin/env bash
 #
 # Copyright 2023 Gaël PORTAY
 #
@@ -387,6 +387,12 @@ then
 	export IDO_PRESERVE_ENV
 fi
 
+if [[ "${#argv[@]}" -gt 0 ]]
+then
+	IDO_PRESERVE_ENV="$opt_E"
+	set -- "${argv[@]}" "$@"
+fi
+
 mapfile -t envs < <(env)
 for env in "${envs[@]}"
 do
@@ -407,7 +413,11 @@ do
 	fi
 done
 
-command=(iamroot-shell --shell "${IDOSHELL:-/bin/sh}" "${argv[@]}" "$@")
+command=("${IDOSHELL:-/bin/sh}")
+if [[ "$#" -gt 0 ]]
+then
+	command+=(-c "${@@Q}")
+fi
 
 IDO_USER="$USER" \
 IDO_UID="$UID" \

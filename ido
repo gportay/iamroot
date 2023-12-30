@@ -18,13 +18,49 @@ Usage: ${0##*/} -h | -V
 Execute a command as the superuser or another user, in an iamroot environment
 ready to emulate the chroot(2) syscall for unprivileged users.
 
-POSIX Shell related options:
-      -c                        Read commands from command-line.
-      -i                        Set interactive.
-      -s                        Read commands from standard-input.
+
+The options are as follows:
+     -u user, --user=user
+             Run the command as a user other than the default target
+             user (usually root).  The user may be either a user name or
+             a numeric user-ID (UID) prefixed with the ‘#’ character
+             (e.g., ‘#0’ for UID 0).  When running commands as a UID,
+             many shells require that the ‘#’ be escaped with a
+             backslash (‘\’).  Some security policies may restrict UIDs
+             to those listed in the password database.  The sudoers
+             policy allows UIDs that are not in the password database as
+             long as the targetpw option is not set.  Other security
+             policies may not support this.
+
+     -g group, --group=group
+             Run the command with the primary group set to group instead
+             of the primary group specified by the target user's
+             password database entry.  The group may be either a group
+             name or a numeric group-ID (GID) prefixed with the ‘#’
+             character (e.g., ‘#0’ for GID 0).  When running a command
+             as a GID, many shells require that the ‘#’ be escaped with
+             a backslash (‘\’).  If no -u option is specified, the
+             command will be run as the invoking user.  In either case,
+             the primary group will be set to group.  The sudoers policy
+             permits any of the target user's groups to be specified via
+             the -g option as long as the -P option is not in use.
 
 iamroot specific options:
-      --user USER               Login name of the user to usurp the identity.
+      -u USER, --user USER      Run the command as a user other than the default
+                                target user (usually root). The user may be either
+                                a user name or a numeric user-ID (UID) prefixed
+                                with the ‘#’ character (e.g., ‘#0’ for UID 0).
+                                When running commands as a UID, many shells
+                                require that the ‘#’ be escaped with a backslash
+                                (‘\’).
+      -g GROUP, --group GROUP   Run the command with the primary group set to
+                                group instead of the primary group specified by
+                                the target user's password database entry. The
+                                group may be either a group name or a numeric
+                                group-ID (GID) prefixed with the ‘#’ character
+                                (e.g., ‘#0’ for GID 0). When running a command as
+                                a GID, many shells require that the ‘#’ be
+                                escaped with a backslash (‘\’).
       --root DIR                Absolute path to the root directory to chroot
                                 in.
       --preserve-env ENV        Preserve environment variables.
@@ -191,7 +227,14 @@ do
 		shift
 		IAMROOT_ROOT="$1"
 		export IAMROOT_ROOT
-	elif [[ "$1" == "--user" ]]
+	elif [[ "$1" == "-g" ]] ||
+             [[ "$1" == "--group" ]]
+	then
+		shift
+		IDO_GROUP="$1"
+		export IDO_GROUP
+	elif [[ "$1" == "-u" ]] ||
+             [[ "$1" == "--user" ]]
 	then
 		shift
 		IDO_USER="$1"
@@ -211,7 +254,7 @@ then
 	exec {IAMROOT_DEBUG_FD}>&2
 fi
 
-USER="${IDO_USER}"
+USER="$IDO_USER"
 export USER
 
 IAMROOT_UID="$(id -u "$IDO_USER")"

@@ -331,5 +331,6 @@ IDO_USER="$USER" \
 IDO_UID="$UID" \
 IDO_GID="${GROUPS[0]}" \
 IDO_COMMAND="${command[*]}" \
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
 LD_PRELOAD="$IAMROOT_LIB${LD_PRELOAD+:$LD_PRELOAD}" \
 exec "${command[@]}"

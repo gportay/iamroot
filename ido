@@ -344,9 +344,7 @@ do
 	     [[ "$1" == "-P" ]] ||
 	     [[ "$1" == "--preserve-groups" ]] ||
 	     [[ "$1" == "-S" ]] ||
-	     [[ "$1" == "--stdin" ]] ||
-	     [[ "$1" == "-v" ]] ||
-	     [[ "$1" == "--validate" ]]
+	     [[ "$1" == "--stdin" ]]
 	then
 		echo "Info: Ignoring $1" >&2
 	elif [[ "$1" == "-C" ]] ||
@@ -362,6 +360,12 @@ do
 	then
 		echo "Info: Ignoring $1=$2" >&2
 		shift
+	elif [[ "$1" == "-l" ]] ||
+	     [[ "$1" == "--list" ]] ||
+	     [[ "$1" == "-v" ]] ||
+	     [[ "$1" == "--validate" ]]
+	then
+		echo "Error: Not supporting $1" >&2
 	elif [[ "$1" == "--" ]]
 	then
 		shift

@@ -55,6 +55,23 @@ The options are as follows:
              the primary group will be set to group.  The sudoers policy
              permits any of the target user's groups to be specified via
              the -g option as long as the -P option is not in use.
+    -i, --login
+             Run the shell specified by the target user's password
+             database entry as a login shell.  This means that login-
+             specific resource files such as .profile, .bash_profile, or
+             .login will be read by the shell.  If a command is
+             specified, it is passed to the shell as a simple command
+             using the -c option.  The command and any args are
+             concatenated, separated by spaces, after escaping each
+             character (including white space) with a backslash (‘\’)
+             except for alphanumerics, underscores, hyphens, and dollar
+             signs.  If no command is specified, an interactive shell is
+             executed.  sudo attempts to change to that user's home
+             directory before running the shell.  The command is run
+             with an environment similar to the one a user would receive
+             at log in.  Most shells behave differently when a command
+             is specified as compared to an interactive session; consult
+             the shell's manual for details.
      -D directory, --chdir=directory
              Run the command in the specified directory instead of the
              current working directory.  The security policy may return
@@ -108,7 +125,26 @@ iamroot specific options:
                                 variable if it is set or the shell specified by
                                 the invoking user's password database entry. If a
                                 command is specified, it is passed to the shell as
-                                a simple command using the -c option. 
+                                a simple command using the -c option.
+      -i, --login               Run the shell specified by the target user's
+                                password database entry as a login shell. This
+                                means that login-specific resource files such as
+                                .profile, .bash_profile, or .login will be read by
+                                the shell. If a command is specified, it is passed
+                                to the shell as a simple command using the -c
+                                option. The command and any args are concatenated,
+                                separated by spaces, after escaping each character
+                                (including white space) with a backslash (‘\’)
+                                except for alphanumerics, underscores, hyphens,
+                                and dollar signs. If no command is specified, an
+                                interactive shell is executed. ido attempts to
+                                change to that user's home directory before
+                                running the shell. The command is run with an
+                                environment similar to the one a user would
+                                receive at log in. Most shells behave differently
+                                when a command is specified as compared to an
+                                interactive session; consult the shell's manual
+                                for details.
       --no-color                Turn off color.
       --fatal                   Abort on error.
       --debug                   Turn on debug mode.
@@ -234,8 +270,11 @@ do
 	elif [[ "$1" == "-s" ]] ||
 	     [[ "$1" == "--shell" ]]
 	then
-		shift
 		opt_s=1
+	elif [[ "$1" == "-i" ]] ||
+	     [[ "$1" == "--login" ]]
+	then
+		opt_i=1
 	elif [[ "$1" == "--library" ]]
 	then
 		shift
@@ -294,8 +333,6 @@ do
 	     [[ "$1" == "--edit" ]] ||
 	     [[ "$1" == "-H" ]] ||
 	     [[ "$1" == "--set-home" ]] ||
-	     [[ "$1" == "-i" ]] ||
-	     [[ "$1" == "--login" ]] ||
 	     [[ "$1" == "-K" ]] ||
 	     [[ "$1" == "--remove-timestamp" ]] ||
 	     [[ "$1" == "-k" ]] ||
@@ -413,6 +450,10 @@ do
 done
 
 command=("${IDOSHELL:-/bin/sh}")
+if [[ "${opt_i:-}" ]]
+then
+	command+=(-l)
+fi
 if [[ "$#" -gt 0 ]]
 then
 	command+=(-c "${@@Q}")

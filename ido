@@ -389,7 +389,6 @@ fi
 
 if [[ "${#argv[@]}" -gt 0 ]]
 then
-	IDO_PRESERVE_ENV="$opt_E"
 	set -- "${argv[@]}" "$@"
 fi
 

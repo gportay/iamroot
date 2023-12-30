@@ -382,6 +382,7 @@ then
 fi
 
 if [[ "${opt_E:-}" ]]
+then
 	IDO_PRESERVE_ENV="$opt_E"
 	export IDO_PRESERVE_ENV
 fi

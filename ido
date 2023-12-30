@@ -12,8 +12,8 @@ VERSION=15
 usage() {
 	cat <<EOF
 Usage: ${0##*/} -h | -V
-       ${0##*/} [-g group name | #gid] [-p prompt] [-u user name | #uid]
-       ${0##*/} [-bEHP] [-C fd] [-D directory] [-g group name | #gid] [-p prompt] [-R directory] [-u user name | #uid] [VAR=value] -i | -s [command]
+       ${0##*/} [-g group name | #gid] [-u user name | #uid]
+       ${0##*/} [-E list] [-D directory] [-g group name | #gid] [-R directory] [-u user name | #uid] [VAR=value] -i | -s [command]
 
 Execute a command as the superuser or another user, in an iamroot environment
 ready to emulate the chroot(2) syscall for unprivileged users.
@@ -179,7 +179,8 @@ do
 	then
 		usage
 		exit 0
-	elif [[ "$1" == "--version" ]]
+	elif [[ "$1" == "-V" ]] ||
+	     [[ "$1" == "--version" ]]
 	then
 		echo "$VERSION"
 		exit 0
@@ -215,11 +216,11 @@ do
 	then
 		NO_COLOR=1
 		export NO_COLOR
-	elif [[ "$1" == "--shell" ]]
+	elif [[ "$1" == "-s" ]] ||
+	     [[ "$1" == "--shell" ]]
 	then
 		shift
-		IDOSHELL="$1"
-		export IDOSHELL
+		opt_s="$1"
 	elif [[ "$1" == "--library" ]]
 	then
 		shift
@@ -267,6 +268,47 @@ do
 		shift
 		IDO_USER="$1"
 		export IDO_USER
+	elif [[ "$1" == "-A" ]] ||
+	     [[ "$1" == "--askpass" ]] ||
+	     [[ "$1" == "-B" ]] ||
+	     [[ "$1" == "--bell" ]] ||
+	     [[ "$1" == "-b" ]] ||
+	     [[ "$1" == "--background" ]] ||
+	     [[ "$1" == "-e" ]] ||
+	     [[ "$1" == "--edit" ]] ||
+	     [[ "$1" == "-H" ]] ||
+	     [[ "$1" == "--set-home" ]] ||
+	     [[ "$1" == "-i" ]] ||
+	     [[ "$1" == "--login" ]] ||
+	     [[ "$1" == "-K" ]] ||
+	     [[ "$1" == "--remove-timestamp" ]] ||
+	     [[ "$1" == "-k" ]] ||
+	     [[ "$1" == "--reset-timestamp" ]] ||
+	     [[ "$1" == "-N" ]] ||
+	     [[ "$1" == "--no-update" ]] ||
+	     [[ "$1" == "-n" ]] ||
+	     [[ "$1" == "--non-interactive" ]] ||
+	     [[ "$1" == "-P" ]] ||
+	     [[ "$1" == "--preserve-groups" ]] ||
+	     [[ "$1" == "-S" ]] ||
+	     [[ "$1" == "--stdin" ]] ||
+	     [[ "$1" == "-v" ]] ||
+	     [[ "$1" == "--validate" ]]
+	then
+		echo "$1: option is ignored!" >&2
+	elif [[ "$1" == "-C" ]] ||
+	     [[ "$1" == "--close-from" ]] ||
+	     [[ "$1" == "-h" ]] ||
+	     [[ "$1" == "--host" ]] ||
+	     [[ "$1" == "-p" ]] ||
+	     [[ "$1" == "--prompt" ]] ||
+	     [[ "$1" == "-U" ]] ||
+	     [[ "$1" == "--other-user" ]] ||
+	     [[ "$1" == "-T" ]] ||
+	     [[ "$1" == "--command-timeout" ]]
+	then
+		echo "$1=$2: option is ignored!" >&2
+		shift
 	elif [[ "$1" == "--" ]]
 	then
 		shift
@@ -304,6 +346,12 @@ export IAMROOT_GID
 
 IAMROOT_GROUPS="$(id -G "$IDO_USER")"
 export IAMROOT_GROUPS
+
+if [[ "${opt_s:-}" ]]
+then
+	IDOSHELL="$opt_s"
+	export IDOSHELL
+fi
 
 if [[ "${opt_E:-}" ]]
 	IDO_PRESERVE_ENV="$opt_E"

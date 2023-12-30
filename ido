@@ -13,7 +13,7 @@ usage() {
 	cat <<EOF
 Usage: ${0##*/} -h | -V
        ${0##*/} [-g group name | #gid] [-p prompt] [-u user name | #uid]
-       ${0##*/} [-bEHP] [-C fd] [-g group name | #gid] [-p prompt] [-u user name | #uid] [VAR=value] -i | -s [command]
+       ${0##*/} [-bEHP] [-C fd] [-D directory] [-g group name | #gid] [-p prompt] [-u user name | #uid] [VAR=value] -i | -s [command]
 
 Execute a command as the superuser or another user, in an iamroot environment
 ready to emulate the chroot(2) syscall for unprivileged users.

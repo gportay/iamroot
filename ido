@@ -82,6 +82,11 @@ The options are as follows:
              preserve their existing environment variables.  The
              security policy may return an error if the user does not
              have permission to preserve the environment.
+     -H, --set-home
+             Request that the security policy set the HOME environment
+             variable to the home directory specified by the target
+             user's password database entry.  Depending on the policy,
+             this may be the default behavior.
      --preserve-env=list
              Indicates to the security policy that the user wishes to
              add the comma-separated list of environment variables to
@@ -111,6 +116,9 @@ iamroot specific options:
                                 (e.g., ‘#0’ for GID 0). When running a command as
                                 a GID, many shells require that the ‘#’ be
                                 escaped with a backslash (‘\’).
+      -H, --set-home.           Set the HOME environment variable to the home
+                                directory specified by the target user's password
+                                database entry.
       -R DIR, --chroot DIR      Change to the specified root directory (see
                                 chroot(8)) before running the command.
       -D DIR, --chdir DIR       Run the command in the specified directory instead
@@ -310,6 +318,10 @@ do
 	then
 		shift
 		opt_R="$1"
+	elif [[ "$1" == "-H" ]] ||
+	     [[ "$1" == "--set-home" ]] ||
+	then
+		opt_H=1
 	elif [[ "$1" == "-g" ]] ||
              [[ "$1" == "--group" ]]
 	then
@@ -331,8 +343,6 @@ do
 	     [[ "$1" == "--background" ]] ||
 	     [[ "$1" == "-e" ]] ||
 	     [[ "$1" == "--edit" ]] ||
-	     [[ "$1" == "-H" ]] ||
-	     [[ "$1" == "--set-home" ]] ||
 	     [[ "$1" == "-K" ]] ||
 	     [[ "$1" == "--remove-timestamp" ]] ||
 	     [[ "$1" == "-k" ]] ||
@@ -415,6 +425,12 @@ export IAMROOT_GID
 
 IAMROOT_GROUPS="$(id -G "$IDO_USER")"
 export IAMROOT_GROUPS
+
+if [[ "${opt_H:-0}" -eq 1 ]]
+then
+	IFS=: read -a passwd < <(getent passwd 1000)
+	HOME="${passwd[-1]}"
+fi
 
 if [[ "${opt_s:-0}" -eq 1 ]]
 then

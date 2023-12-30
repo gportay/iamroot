@@ -281,6 +281,9 @@ do
 	then
 		shift
 		opt_u="$1"
+	elif [[ "$1" =~ ^[a-zA-Z_][a-zA-Z0-9_]*= ]]
+	then
+		argv+=("$1")
 	elif [[ "$1" == "-A" ]] ||
 	     [[ "$1" == "--askpass" ]] ||
 	     [[ "$1" == "-B" ]] ||

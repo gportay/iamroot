@@ -240,11 +240,11 @@ do
 		shift
 		IAMROOT_PATH="$1"
 		export IAMROOT_PATH
-	elif [[ "$1" == "--preserve-env" ]]
+	elif [[ "$1" == "-E" ]] ||
+             [[ "$1" == "--preserve-env" ]]
 	then
 		shift
-		IDO_PRESERVE_ENV="$1"
-		export IDO_PRESERVE_ENV
+		opt_E="$1"
 	elif [[ "$1" == "-D" ]] ||
              [[ "$1" == "--chdir" ]]
 	then
@@ -304,6 +304,11 @@ export IAMROOT_GID
 
 IAMROOT_GROUPS="$(id -G "$IDO_USER")"
 export IAMROOT_GROUPS
+
+if [[ "${opt_E:-}" ]]
+	IDO_PRESERVE_ENV="$opt_E"
+	export IDO_PRESERVE_ENV
+fi
 
 mapfile -t envs < <(env)
 for env in "${envs[@]}"

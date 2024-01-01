@@ -79,7 +79,11 @@ The table below lists the distributions and its tool that work with.
 
 [dnf(8)] enters and exits the "chroot jail" to run the packages scriptlets but [fakechroot(1)] does not support exiting if [chdir(2)]'ing out of the chroot directory. Moreover, the function [fchdir(2)] is not intercepted.
 
-Besides, the [GNU C Library][glibc] leaks symbols in the dynamically linked binaries. Therefore, the binaries *MUST* load the same or any later version of the libc. [fakechroot(1)] runs the host wide dynamic loader, hence, it cannot runs binaries linked against newer version of glibc with extra new symbols, even setting the environment variable `FAKECHROOT_ELFLOADER`.
+Besides, the [GNU C Library][glibc] leaks symbols in the dynamically linked binaries. Therefore, the binaries *MUST* load the same or any later version of the libc. [fakechroot(1)] runs the host wide dynamic loader, hence, it cannot run binaries or load libraries linked against newer version of glibc with extra new symbols, even setting the environment variable `FAKECHROOT_ELFLOADER` or using the option `--use-system-libs`. And this includes the library `libfakechroot.so` itself.
+
+It is even worse if considering running binaries for another architecture, as the appropriate dynamic loader *MUST* get installed on the host system to get run by the kernel. Additionnaly, the library `libfakechroot.so` *MUST* get installed alongside the rootfs. However, [fakechroot(1)] does not compile in a [musl] world.
+
+[fakechroot(1)] blindly trusts the environment variable `LD_PRELOAD` is set and preserved across the processes, although, [dracut(8)] unset the dynamic loader environments and shoots itself in the foot.
 
 ## DOCUMENTATION
 
@@ -159,6 +163,7 @@ later version.
 [chroot(2)]: https://linux.die.net/man/2/chroot
 [debootstrap(8)]: https://linux.die.net/man/8/debootstrap
 [dnf(8)]: https://dnf.readthedocs.io/en/latest/command_ref.html
+[dracut(8)]: https://linux.die.net/man/8/dracut
 [fakechroot(1)]: https://linux.die.net/man/1/fakechroot
 [fakeroot(1)]: https://linux.die.net/man/1/fakeroot-sysv
 [fchdir(2)]: https://linux.die.net/man/2/fchdir

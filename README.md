@@ -79,6 +79,8 @@ The table below lists the distributions and its tool that work with.
 
 [dnf(8)] enters and exits the "chroot jail" to run the packages scriptlets but [fakechroot(1)] does not support exiting if [chdir(2)]'ing out of the chroot directory. Moreover, the function [fchdir(2)] is not intercepted.
 
+Besides, the [GNU C Library][glibc] leaks symbols in the dynamically linked binaries. Therefore, the binaries *MUST* load the same or any later version of the libc. [fakechroot(1)] runs the host wide dynamic loader, hence, it cannot runs binaries linked against newer version of glibc with extra new symbols, even setting the environment variable `FAKECHROOT_ELFLOADER`.
+
 ## DOCUMENTATION
 
 Build the documentation using *make(1)*

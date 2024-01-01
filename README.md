@@ -73,7 +73,7 @@ The table below lists the distributions and its tool that work with.
 
 ## FAKECHROOT
 
-[fakechroot(1)] is perfectible to create rootfs. There are several issues to get addressed.
+[fakechroot(1)] is perfectible to create rootfs. There are several issues to address to make a rootfs.
 
 [fakechroot(1)] does not strip de chroot directory in the absolute symlink targets and, consequently, leaks the chroot directory in the alternate rootfs. Either, it does not resolves and follows the symlinks correctly.
 

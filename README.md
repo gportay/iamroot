@@ -73,9 +73,11 @@ The table below lists the distributions and its tool that work with.
 
 ## FAKECHROOT
 
-[fakechroot(1)] does not run well for creating rootfs. It has to be hacked to
-address the rootfs-creation related issues (i.e. fixing entering-exiting chroot
-and absolute symlink resolution in short).
+[fakechroot(1)] is perfectible to create rootfs. There are several issues to get addressed.
+
+[fakechroot(1)] does not strip de chroot directory in the absolute symlink targets and, consequently, leaks the chroot directory in the alternate rootfs. Either, it does not resolves and follows the symlinks correctly.
+
+[dnf(8)] enters and exits the "chroot jail" to run the packages scriptlets but [fakechroot(1)] does not support exiting if [chdir(2)]'ing out of the chroot directory. Moreover, the function [fchdir(2)] is not intercepted.
 
 ## DOCUMENTATION
 
@@ -130,7 +132,7 @@ Written by Gaël PORTAY *gael.portay@gmail.com*
 
 ## COPYRIGHT
 
-Copyright (c) 2021-2023 Gaël PORTAY
+Copyright (c) 2021-2024 Gaël PORTAY
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU Lesser General Public License as published by the Free

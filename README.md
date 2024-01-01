@@ -85,6 +85,8 @@ It is even worse if considering running binaries for another architecture, as th
 
 [fakechroot(1)] blindly trusts the environment variable `LD_PRELOAD` is set and preserved across the processes, although, [dracut(8)] unset the dynamic loader environments and shoots itself in the foot.
 
+For all those latter reasons, and since the *Linux* [ld.so(8)] can execute binaries, then [iamroot(7)] rewrites the whole command line to overcome all these limitations mention above.
+
 ## DOCUMENTATION
 
 Build the documentation using *make(1)*
@@ -171,6 +173,7 @@ later version.
 [glibc]: https://www.gnu.org/software/libc/
 [iamroot(7)]: iamroot.7.adoc
 [ish(1)]: ish.1.adoc
+[ld.so(8)]: https://linux.die.net/man/8/ld.so
 [musl]: https://www.musl-libc.org/
 [open(2)]: https://linux.die.net/man/2/open
 [pacstrap(8)]: https://man.archlinux.org/man/pacstrap.8

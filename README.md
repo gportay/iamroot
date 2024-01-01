@@ -87,6 +87,10 @@ It is even worse if considering running binaries for another architecture, as th
 
 For all those latter reasons, and since the *Linux* [ld.so(8)] can execute binaries, then [iamroot(7)] rewrites the whole command line to overcome all these limitations mention above.
 
+## PSEUDO
+
+[pseudo(1)] is another alternative to both [fakeroot(1)] and [fakechroot(1)]. It is used by [The Yocto Project]. 
+
 ## DOCUMENTATION
 
 Build the documentation using *make(1)*
@@ -158,6 +162,7 @@ later version.
 [FreeBSD]: https://www.freebsd.org/
 [NetBSD]: https://www.netbsd.org/
 [OpenBSD]: https://www.openbsd.org/
+[The Yocto Project]: https://www.yoctoproject.org/software-item/poky/
 [alpine-make-rootfs]: https://github.com/alpinelinux/alpine-make-rootfs/blob/master/README.adoc
 [binfmt_misc]: https://www.kernel.org/doc/html/latest/admin-guide/binfmt-misc.html
 [chdir(2)]: https://linux.die.net/man/2/chdir
@@ -178,6 +183,7 @@ later version.
 [open(2)]: https://linux.die.net/man/2/open
 [pacstrap(8)]: https://man.archlinux.org/man/pacstrap.8
 [path_resolution(7)]: https://linux.die.net/man/7/path_resolution
+[pseudo(1)]: https://git.yoctoproject.org/pseudo
 [qemu]: https://www.qemu.org/
 [readlink(2)]: https://linux.die.net/man/2/readlink
 [stat(2)]: https://linux.die.net/man/2/stat

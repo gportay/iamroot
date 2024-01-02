@@ -79,6 +79,23 @@ The table below lists the distributions and its tool that work with.
 
 \*: Works with hacks.
 
+## GLIBC
+
+The C library [glibc] leaks symbols in the dynamically linked binaries and shared libraries.
+
+As a consequence, the binaries or the shared libraries need to run along of the same or any later version of the [glibc].
+
+For this reason, the [iamroot(7)] is not linked against the [default libraries][-nodefaultlibs] by the [dynamic linker][ld(1)] at link-time.
+
+Instead, the libraries `libc.so.6`, `libdl.so.2`, `libpthread.so.0`, and `libgcc_s.so.1` are `patchelf`-ed manually afterward.
+
+This works around for the missing symbols raised by the [dynamic loader][ld.so(8)] at run-time.
+
+However, it does not solve for the missing symbols leaked in the binaries and shared libraries loaded from within the [chroot(2)]-ed directory. The symbols must be implemented in the [iamroot(7)] library or loaded from a third-party library (such as the [gcompat] library to run [glibc]-binaries from a [musl]-system).
+
+This distribution contains the implementation of gcompat, a library which
+provides glibc-compatible APIs for use on musl libc systems.
+
 ## FAKECHROOT
 
 [fakechroot(1)] is perfectible to create rootfs. There are several issues to address to make a rootfs.
@@ -166,6 +183,7 @@ later version.
 [iamroot(7)], [ish(1)], [chroot(2)], [path_resolution(7)], [fakechroot(1)],
 [fakeroot(1)], [pseudo(1)], [binfmt_misc], [qemu]
 
+[-nodefaultlibs]: https://gcc.gnu.org/onlinedocs/gcc/Link-Options.html#index-nodefaultlibs
 [Alpine Linux]: https://www.alpinelinux.org/
 [Arch Linux]: https://archlinux.org/
 [Debian]: https://www.debian.org/
@@ -185,9 +203,11 @@ later version.
 [fakeroot(1)]: https://linux.die.net/man/1/fakeroot-sysv
 [fchdir(2)]: https://linux.die.net/man/2/fchdir
 [fopen(3)]: https://linux.die.net/man/3/fopen
+[gcompat]: https://gcompat.org/
 [glibc]: https://www.gnu.org/software/libc/
 [iamroot(7)]: iamroot.7.adoc
 [ish(1)]: ish.1.adoc
+[ld(1)]: https://linux.die.net/man/1/ld
 [ld.so(8)]: https://linux.die.net/man/8/ld.so
 [musl]: https://www.musl-libc.org/
 [open(2)]: https://linux.die.net/man/2/open

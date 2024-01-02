@@ -32,10 +32,14 @@ as the [QEMU user-mode emulation][qemu] static binaries). The architectures
 
 ## HOW IT WORKS
 
+### PRELOAD
+
 It consists of an ELF shim library which is preloaded using the environment
 variable `LD_PRELOAD`. It intercepts the calls to the libc functions with a
 `filename` or `pathname` in parameter (i.e. [open(2)], [fopen(3)], [stat(2)],
 [readlink(2)], [chown(2)], [chdir(2)], [chroot(2)]...).
+
+### ROOT DIRECTORY
 
 The syscall [chroot(2)] changes a small ingredient in the pathname resolution
 process; it is visible via each process's symlink `/proc/self/root`. The
@@ -43,11 +47,15 @@ environment variable `IAMROOT_ROOT` implements that behaviour in the world of
 [iamroot(7)]. Basically, it replaces the leading `/` of an absolute pathname
 with the alternate root directory path.
 
+### MAGIC
+
 For the curious, the magic operates in files [chroot.c](chroot.c) for entering
 in chroot, in [chdir.c](chdir.c) and [fchdir.c](fchdir.c) for exiting "chroot
 jail", in [path_resolution.c](path_resolution.c) for resolving pathnames, and
 in [execve.c](execve.c) and [dso.c](dso.c) for exec'ing executable files from
 chroot by rewriting the whole command-line using the [dynamic loader][ld.so(8)] and it's options (i.e. `--preload`, `--library-path`, `--argv0`...).
+
+### PERMISSION DENIED
 
 Of course, [iamroot(7)] cannot substitute itself to the superuser permissions,
 and commands will end with `EACCESS` or `EPERM` as of reading or writing files

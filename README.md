@@ -164,7 +164,7 @@ later version.
 ## SEE ALSO
 
 [iamroot(7)], [ish(1)], [chroot(2)], [path_resolution(7)], [fakechroot(1)],
-[fakeroot(1)], [binfmt_misc], [qemu]
+[fakeroot(1)], [pseudo(1)], [binfmt_misc], [qemu]
 
 [Alpine Linux]: https://www.alpinelinux.org/
 [Arch Linux]: https://archlinux.org/

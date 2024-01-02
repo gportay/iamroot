@@ -99,6 +99,8 @@ For all those latter reasons, and since the *Linux* [ld.so(8)] can execute binar
 
 [pseudo(1)] is another alternative to both [fakeroot(1)] and [fakechroot(1)]. It is used by [The Yocto Project]. 
 
+It appears [pseudo(1)] is compiled and linked against the host libc, accordingly, [pseudo(1)] would fail to [chroot(2)] and run a binary linked against former version of glibc with missing new symbols.
+
 ## DOCUMENTATION
 
 Build the documentation using *make(1)*

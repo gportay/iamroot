@@ -167,6 +167,14 @@ Or
 
 	$ make install DESTDIR=$PWD/pkg PREFIX=/usr
 
+## KNOWN BUGS
+
+### LIBPAM-RUNTIME
+
+There is an issue while running the [libpam-runtime] `postinst` package script and [debconf].
+
+The [post-installation](https://salsa.debian.org/ah/pam/-/blob/1.1.8-4/debian/libpam-runtime.postinst?ref_type=tags#L32) script runs `pam-auth-update --package --force` and outputs the debconf data to the tty instead of the file-descriptor opened for communicating with the `debconf` module.
+
 ## BUGS
 
 Report bugs at *https://github.com/gportay/iamroot/issues*
@@ -202,6 +210,7 @@ later version.
 [chdir(2)]: https://linux.die.net/man/2/chdir
 [chown(2)]: https://linux.die.net/man/2/chown
 [chroot(2)]: https://linux.die.net/man/2/chroot
+[debconf]: https://packages.debian.org/sid/debconf
 [debootstrap(8)]: https://linux.die.net/man/8/debootstrap
 [dnf(8)]: https://dnf.readthedocs.io/en/latest/command_ref.html
 [dracut(8)]: https://linux.die.net/man/8/dracut
@@ -215,6 +224,7 @@ later version.
 [ish(1)]: ish.1.adoc
 [ld(1)]: https://linux.die.net/man/1/ld
 [ld.so(8)]: https://linux.die.net/man/8/ld.so
+[libpam-runtime]: https://packages.debian.org/sid/libpam-runtime
 [musl]: https://www.musl-libc.org/
 [open(2)]: https://linux.die.net/man/2/open
 [pacstrap(8)]: https://man.archlinux.org/man/pacstrap.8

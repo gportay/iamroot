@@ -289,6 +289,8 @@ libiamroot.so: utimes.o
 libiamroot.so: utmpname.o
 libiamroot.so: utmpxname.o
 
+ld-iamroot.so: ld.o
+
 .PHONY: doc
 doc: ish.1.gz iamroot.7.gz
 
@@ -305,6 +307,8 @@ install-bin:
 	chmod a+x $(DESTDIR)$(PREFIX)/bin/ish
 	install -d -m755 $(DESTDIR)$(PREFIX)/lib/iamroot/
 	install -m755 exec.sh $(DESTDIR)$(PREFIX)/lib/iamroot/exec.sh
+	install -m755 ld-iamroot.so $(DESTDIR)$(PREFIX)/lib/iamroot/ld-iamroot.so
+	ln -sf $(PREFIX)/lib/iamroot/ld-iamroot.so $(PREFIX)/bin/ld-iamroot.so
 
 .PHONY: install-lib
 install-lib:
@@ -404,13 +408,16 @@ PREPROCESS.c = $(PREPROCESS.S)
 %.i: %.c
 	$(PREPROCESS.c) $(OUTPUT_OPTION) $<
 
-%.so: override LDFLAGS += -shared
-%.so:
+lib%.so: override LDFLAGS += -shared
+lib%.so:
 	$(LINK.o) $^ $(LOADLIBES) $(LDLIBS) -o $@.tmp
 ifeq ($(OS),GNU/Linux)
 	patchelf --add-needed libc.so.6 --add-needed libdl.so.2 --add-needed libpthread.so.0 --add-needed libgcc_s.so.1 $@.tmp
 endif
 	mv $@.tmp $@
+
+ld%.so:
+	$(LINK.o) $^ $(LOADLIBES) $(LDLIBS) -o $@
 
 %.1: %.1.adoc
 	asciidoctor -b manpage -o $@ $<

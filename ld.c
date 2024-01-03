@@ -10,6 +10,9 @@
 #include <errno.h>
 #include <getopt.h>
 
+#define __xstr(s) __str(s)
+#define __str(s) #s
+
 const char *argv0;
 const char *preload;
 const char *library_path;
@@ -158,10 +161,8 @@ int main(int argc, char * const argv[])
 		nargv[i++] = argv[0];
 		nargv[i++] = "--argv0";
 		nargv[i++] = argv0 ?: program;
-		if (preload) {
-			nargv[i++] = "--preload";
-			nargv[i++] = preload;
-		}
+		nargv[i++] = "--preload";
+		nargv[i++] = preload ?: __xstr(PREFIX)"/lib/iamroot/ld-iamroot.so";
 		if (library_path) {
 			nargv[i++] = "--library-path";
 			nargv[i++] = library_path;

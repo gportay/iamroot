@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Preload the iamroot library if `LD_PRELOAD` is unset and not in a chroot'ed
   environment
+- Add `ld-iamroot.so`, the [ld.so(8)] CLI for `iamroot(7)`
 
 ### Removed
 

@@ -66,10 +66,10 @@ endif
 %.o: override CPPFLAGS += -D_GNU_SOURCE -DVERSION=$(VERSION) -DPREFIX=$(PREFIX)
 %.o: override CFLAGS += -fPIC -Wall -Wextra
 ifeq ($(OS),GNU/Linux)
-%.so: override LDFLAGS += -nodefaultlibs
+lib%.so: override LDFLAGS += -nodefaultlibs
 endif
 ifeq ($(OS),FreeBSD)
-%.so: override LDFLAGS += -ldl
+lib%.so: override LDFLAGS += -ldl
 endif
 
 ifneq ($(COVERAGE),0)
@@ -79,7 +79,32 @@ ifneq ($(COVERAGE),0)
 endif
 
 .PHONY: all
+all: ld-iamroot.so
 all: libiamroot.so
+
+ld-iamroot.so: __fxstat.o
+ld-iamroot.so: __fxstatat.o
+ld-iamroot.so: dlopen.o
+ld-iamroot.so: dso.o
+ld-iamroot.so: env.o
+ld-iamroot.so: execve.o
+ld-iamroot.so: faccessat.o
+ld-iamroot.so: fgetxattr.o
+ld-iamroot.so: fstat.o
+ld-iamroot.so: fstatat.o
+ld-iamroot.so: getcwd.o
+ld-iamroot.so: iamroot.o
+ld-iamroot.so: interpreter-script.o
+ld-iamroot.so: ld.o
+ld-iamroot.so: ldso-cache.o
+ld-iamroot.so: lgetxattr.o
+ld-iamroot.so: lremovexattr.o
+ld-iamroot.so: lsetxattr.o
+ld-iamroot.so: open.o
+ld-iamroot.so: path_resolution.o
+ld-iamroot.so: readlinkat.o
+ld-iamroot.so: realpath.o
+ld-iamroot.so: scandir.o
 
 libiamroot.so: __fstat64_time64.o
 libiamroot.so: __fstatat64_time64.o
@@ -295,7 +320,7 @@ libiamroot.so: utmpname.o
 libiamroot.so: utmpxname.o
 
 .PHONY: doc
-doc: ido.1.gz ish.1.gz iamroot.7.gz
+doc: ido.1.gz ish.1.gz iamroot.7.gz ld-iamroot.so.8.gz
 
 .PHONY: install
 install: install-exec install-doc install-bash-completion
@@ -312,6 +337,8 @@ install-bin:
 	chmod a+x $(DESTDIR)$(PREFIX)/bin/ish
 	install -d -m755 $(DESTDIR)$(PREFIX)/lib/iamroot/
 	install -m755 exec.sh $(DESTDIR)$(PREFIX)/lib/iamroot/exec.sh
+	install -m755 ld-iamroot.so $(DESTDIR)$(PREFIX)/lib/iamroot/ld-iamroot.so
+	ln -sf $(PREFIX)/lib/iamroot/ld-iamroot.so $(DESTDIR)$(PREFIX)/bin/ld-iamroot.so
 
 .PHONY: install-lib
 install-lib:
@@ -422,7 +449,7 @@ cleanall: clean
 
 .PHONY: clean
 clean:
-	rm -Rf libiamroot.so fuzzer *.o *.i
+	rm -Rf ld-iamroot.so libiamroot.so fuzzer *.o *.i
 	$(MAKE) -C tests $@
 
 .PHONY: mrproper
@@ -456,13 +483,16 @@ PREPROCESS.c = $(PREPROCESS.S)
 %.i: %.c
 	$(PREPROCESS.c) $(OUTPUT_OPTION) $<
 
-%.so: override LDFLAGS += -shared
-%.so:
+lib%.so: override LDFLAGS += -shared
+lib%.so:
 	$(LINK.o) $^ $(LOADLIBES) $(LDLIBS) -o $@.tmp
 ifeq ($(OS),GNU/Linux)
 	patchelf --add-needed libc.so.6 --add-needed libdl.so.2 --add-needed libpthread.so.0 $@.tmp
 endif
 	mv $@.tmp $@
+
+ld%.so:
+	$(LINK.o) $^ $(LOADLIBES) $(LDLIBS) -o $@
 
 .PHONY: fuzzing
 fuzzing: PATH := $(CURDIR):$(PATH)
@@ -494,6 +524,9 @@ fuzzer: fuzzer.o __fxstat.o __fxstatat.o env.o fgetxattr.o fstat.o fstatat.o get
 	asciidoctor -b manpage -o $@ $<
 
 %.7: %.7.adoc
+	asciidoctor -b manpage -o $@ $<
+
+%.8: %.8.adoc
 	asciidoctor -b manpage -o $@ $<
 
 %.gz: %

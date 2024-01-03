@@ -79,6 +79,7 @@ $(eval $(call caseconvert-helper,UPPERCASE,$(join $(addsuffix :,$([FROM])),$([TO
 MAKEFLAGS += --no-print-directory
 
 .PHONY: all
+all: ld-iamroot.so
 all: libiamroot.so
 
 .PHONY: vars
@@ -543,6 +544,15 @@ endef
 export CC
 export CFLAGS
 
+ld-iamroot.so: $(ARCH)/ld-iamroot.so
+	install -D -m755 $< $@
+
+$(ARCH)/ld-iamroot.so: output-$(ARCH)/libiamroot.so
+	install -D -m755 $< $@
+
+output-$(ARCH)/ld-iamroot.so: $(wildcard *.c) | output-$(ARCH)
+	$(MAKE) -f $(CURDIR)/Makefile -C $(O)-$* ld-iamroot.so VPATH=$(CURDIR)
+
 ifeq ($(ARCH),x86_64)
 ifeq ($(LIBC),musl)
 libiamroot.so: x86_64/libiamroot-musl-x86_64.so.1
@@ -675,6 +685,10 @@ libiamroot.so: aarch64/libiamroot-linux-aarch64.so.1
 
 $(eval $(call libiamroot_ldso_so_abi,aarch64,linux-aarch64,1))
 endif
+
+.PRECIOUS: ld-iamroot.so
+$(O)-%/ld-iamroot.so: $(wildcard *.c) | $(O)-%
+	$(MAKE) -f $(CURDIR)/Makefile -C $(O)-$* ld-iamroot.so VPATH=$(CURDIR)
 
 .PRECIOUS: $(O)-%/libiamroot.so
 $(O)-%/libiamroot.so: $(wildcard *.c) | $(O)-%

@@ -100,19 +100,21 @@ Build the documentation using *make(1)*
 	gzip -c ish.1 >ish.1.gz
 	asciidoctor -b manpage -o iamroot.7 iamroot.7.adoc
 	gzip -c iamroot.7 >iamroot.7.gz
-	rm iamroot.7 ish.1 ido.1
+	asciidoctor -b manpage -o ld-iamroot.so.8 ld-iamroot.so.8.adoc
+	gzip -c ld-iamroot.so.8 >ld-iamroot.so.8.gz
+	rm iamroot.7 ish.1 ido.1 ld-iamroot.so.8
 
 ## BUILD
 
-Run the following command to build *libiamroot.so*
+Run the following command to build *ld-iamroot.so* and *libiamroot.so*
 
 For your home directory (i.e. your user only)
 
-	$ make libiamroot.so PREFIX=$HOME/.local
+	$ make ld-iamroot.so libiamroot.so PREFIX=$HOME/.local
 
 Or, for your system (i.e. every users)
 
-	$ make libiamroot.so
+	$ make ld-iamroot.so libiamroot.so
 
 ## INSTALL
 
@@ -153,8 +155,8 @@ later version.
 
 ## SEE ALSO
 
-[iamroot(7)], [ido(1)], [ish(1)], [chroot(2)], [path_resolution(7)],
-[fakechroot(1)], [fakeroot(1)], [binfmt_misc], [qemu]
+[iamroot(7)], [ido(1)], [ish(1)], [ld-iamroot.so(8)], [chroot(2)],
+[path_resolution(7)], [fakechroot(1)], [fakeroot(1)], [binfmt_misc], [qemu]
 
 [Alpine Linux]: https://www.alpinelinux.org/
 [Alpine Linux]: https://www.alpinelinux.org/
@@ -187,6 +189,7 @@ later version.
 [iamroot(7)]: iamroot.7.adoc
 [ido(1)]: ido.1.adoc
 [ish(1)]: ish.1.adoc
+[ld-iamroot.so(8)]: ld-iamroot.so.8.adoc
 [musl]: https://www.musl-libc.org/
 [open(2)]: https://linux.die.net/man/2/open
 [openSUSE]: https://www.opensuse.org/

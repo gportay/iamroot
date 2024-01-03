@@ -53,6 +53,7 @@ build() {
 	make PREFIX=/usr i686/libiamroot-musl-i386.so.1
 	make PREFIX=/usr x86_64/libiamroot-linux-x86-64.so.2
 	make PREFIX=/usr x86_64/libiamroot-musl-x86_64.so.1
+	make PREFIX=/usr ld-iamroot.so
 	make PREFIX=/usr doc
 }
 

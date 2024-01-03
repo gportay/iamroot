@@ -61,6 +61,12 @@ Of course, [iamroot(7)] cannot substitute itself to the superuser permissions,
 and commands will end with `EACCESS` or `EPERM` as of reading or writing files
 in `/proc`, `/sys`, `/dev` or `/run`, to name but a few.
 
+### HELPER SCRIPT
+
+[iamroot(7)] is configurable via environment variables to handle the specific situation and works with the variety of operation systems.
+
+It comes with the shell script [ish(1)] to make the configuration easy via long options. It opens an interactive shell ready to emulate the syscall chroot(2) for unprivileged users.
+
 ## BUILD ROOTFS
 
 [iamroot(7)] aims to create any Linux rootfs using the package manager of the

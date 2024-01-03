@@ -10,13 +10,11 @@
 #include <errno.h>
 #include <getopt.h>
 
-struct options {
-	const char *argv0;
-	const char *preload;
-	const char *library_path;
-	const char *root;
-	const int debug;
-};
+const char *argv0;
+const char *preload;
+const char *library_path;
+const char *root;
+const int debug;
 
 static inline const char *applet(const char *arg0)
 {
@@ -43,7 +41,7 @@ void usage(FILE * f, char * const arg0)
 		   "", applet(arg0));
 }
 
-int getoptions(struct options *opts, int argc, char * const argv[])
+int main(int argc, char * const argv[])
 {
 	static const struct option long_options[] = {
 		{ "argv0",        required_argument, NULL, 'A' },
@@ -55,6 +53,7 @@ int getoptions(struct options *opts, int argc, char * const argv[])
 		{ "help",         no_argument,       NULL, 'h' },
 		{ NULL,           no_argument,       NULL, 0   }
 	};
+	int err;
 
 	for (;;) {
 		int index;
@@ -64,27 +63,27 @@ int getoptions(struct options *opts, int argc, char * const argv[])
 
 		switch (c) {
 		case 'A':
-			opts->argv0 = optarg;
+			argv0 = optarg;
 			break;
 
 		case 'P':
-			opts->preload = optarg;
+			preload = optarg;
 			break;
 
 		case 'L':
-			opts->library_path = optarg;
+			library_path = optarg;
 			break;
 
 		case 'R':
-			opts->root = optarg;
+			root = optarg;
 			break;
 
 		case 'C':
-			opts->cwd = optarg;
+			cwd = optarg;
 			break;
 
 		case 'D':
-			opts->debug++;
+			debug++;
 			break;
 
 		case 'V':
@@ -107,45 +106,33 @@ int getoptions(struct options *opts, int argc, char * const argv[])
 		}
 	}
 
-	return optind;
-}
-
-int main(int argc, char * const argv[])
-{
-	static struct options options;
-	int argi, err;
-
-	argi = getoptions(&options, argc, argv);
-	if (argi < 0) {
-		fprintf(stderr, "Error: Invalid argument!\n");
-		exit(EXIT_FAILURE);
-	} else if (argc - argi == 0) {
+	if (argc - optind == 0) {
 		usage(stdout, argv[0]);
 		fprintf(stderr, "Error: Too few arguments!\n");
 		exit(EXIT_FAILURE);
 	}
 
-	if (options.cwd) {
-		err = chdir(options.cwd);
+	if (cwd) {
+		err = chdir(cwd);
 		if (err == -1) {
 			perror("chdir");
 			exit(EXIT_FAILURE);
 		}
 	}
 
-	if (options.root) {
-		err = setenv("IAMROOT_ROOT", options.root, 1);
+	if (root) {
+		err = setenv("IAMROOT_ROOT", root, 1);
 		if (err == -1) {
 			perror("setenv");
 			exit(EXIT_FAILURE);
 		}
 	}
 
-	if (options.debug > 0) {
+	if (debug > 0) {
 		char buf[BUFSIZ];
 		int n;
 
-		n = snprintf(buf, sizeof(buf), "%d", options.debug);
+		n = snprintf(buf, sizeof(buf), "%d", debug);
 		if (n == -1) {
 			perror("snprintf");
 			exit(EXIT_FAILURE);
@@ -162,22 +149,22 @@ int main(int argc, char * const argv[])
 		}
 	}
 
-	if (argc - argi > -1) {	
-		char * const nargv[argc-argi+7+1]; /* NULL-terminated */
-		const char *program = argv[argi];
+	if (argc - optind > -1) {	
+		char * const nargv[argc-optind+7+1]; /* NULL-terminated */
+		const char *program = argv[optind];
 		int i, j;
 
 		i = 0;
 		nargv[i++] = argv[0];
 		nargv[i++] = "--argv0";
-		nargv[i++] = options.argv0 ?: program;
-		if (options.preload) {
+		nargv[i++] = argv0 ?: program;
+		if (preload) {
 			nargv[i++] = "--preload";
-			nargv[i++] = options.preload;
+			nargv[i++] = preload;
 		}
-		if (options.library_path) {
+		if (library_path) {
 			nargv[i++] = "--library-path";
-			nargv[i++] = options.library_path;
+			nargv[i++] = library_path;
 		}
 		nargv[i++] = "--";
 		for (j = 1; j < argc; j++)

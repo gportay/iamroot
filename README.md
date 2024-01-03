@@ -175,6 +175,10 @@ There is an issue while running the [libpam-runtime] `postinst` package script a
 
 The [post-installation](https://salsa.debian.org/ah/pam/-/blob/1.1.8-4/debian/libpam-runtime.postinst?ref_type=tags#L32) script runs `pam-auth-update --package --force` and outputs the debconf data to the tty instead of the file-descriptor opened for communicating with the `debconf` module.
 
+### tty(1) AND isatty(3)
+
+[tty(1)] is able to print the file name of the terminal connected to standard input in an [iamroot(7)] environment without the path `/proc` ignored.
+
 ## BUGS
 
 Report bugs at *https://github.com/gportay/iamroot/issues*
@@ -221,6 +225,7 @@ later version.
 [gcompat]: https://gcompat.org/
 [glibc]: https://www.gnu.org/software/libc/
 [iamroot(7)]: iamroot.7.adoc
+[isatty(3)]: https://linux.die.net/man/3/isatty
 [ish(1)]: ish.1.adoc
 [ld(1)]: https://linux.die.net/man/1/ld
 [ld.so(8)]: https://linux.die.net/man/8/ld.so
@@ -233,5 +238,6 @@ later version.
 [qemu]: https://www.qemu.org/
 [readlink(2)]: https://linux.die.net/man/2/readlink
 [stat(2)]: https://linux.die.net/man/2/stat
+[tty(1)]: https://linux.die.net/man/1/tt
 [xbps-install(1)]: https://man.voidlinux.org/xbps-install.1
 [zypper(8)]: https://en.opensuse.org/SDB:Zypper_manual_(plain)

@@ -614,8 +614,8 @@ aarch64-rootfs:
 .PHONY: arm-rootfs
 arm-rootfs:
 
-.PHONY: test ci
-test ci: libiamroot.so
+.PHONY: test ci ish multiarch-ish
+test ci ish multiarch-ish: libiamroot.so
 	$(MAKE) -f Makefile $@
 
 .PHONY: coverage

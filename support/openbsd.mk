@@ -1,5 +1,5 @@
 #
-# Copyright 2023 Gaël PORTAY
+# Copyright 2023-2024 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -52,8 +52,8 @@ openbsd-73-rootfs: | $(ARCH)/libiamroot.so base-73.tgz
 base-73.tgz:
 	wget https://cdn.openbsd.org/pub/OpenBSD/7.3/amd64/base73.tgz -O $@
 
-.PHONY: test ci
-test ci: libiamroot.so
+.PHONY: test ci ish
+test ci ish: libiamroot.so
 	$(MAKE) -f Makefile $@
 
 .PHONY: cleanall

@@ -1,5 +1,5 @@
 #
-# Copyright 2022-2023 Gaël PORTAY
+# Copyright 2022-2024 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -58,8 +58,8 @@ FreeBSD-13.1-RELEASE-base-$(ARCH).txz:
 FreeBSD-%-RELEASE-base-$(ARCH).txz:
 	wget https://download.freebsd.org/releases/$(ARCH)/$*-RELEASE/base.txz -O $@
 
-.PHONY: test ci
-test ci: libiamroot.so
+.PHONY: test ci ish
+test ci ish: libiamroot.so
 	$(MAKE) -f Makefile $@
 
 .PHONY: cleanall

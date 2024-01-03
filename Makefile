@@ -1,5 +1,5 @@
 #
-# Copyright 2020-2023 Gaël PORTAY
+# Copyright 2020-2024 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -363,12 +363,12 @@ test: libiamroot.so
 	$(MAKE) -C tests
 	$(MAKE) -C tests $@
 
-.PHONY: multiarch-shell
-multiarch-shell: export IAMROOT_DEFLIB_LINUX_X86_64_2 = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
-multiarch-shell: shell
+.PHONY: multiarch-ish
+multiarch-ish: export IAMROOT_DEFLIB_LINUX_X86_64_2 = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+multiarch-ish: ish
 
-.PHONY: shell
-shell: libiamroot.so
+.PHONY: ish
+ish: libiamroot.so
 	bash ish
 
 .PHONY: clean

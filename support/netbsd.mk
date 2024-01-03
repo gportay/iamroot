@@ -1,5 +1,5 @@
 #
-# Copyright 2023 Gaël PORTAY
+# Copyright 2023-2024 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -58,8 +58,8 @@ netbsd-9.3-rootfs: | $(ARCH)/libiamroot.elf_so base.tar.xz
 base.tar.xz:
 	wget https://cdn.netbsd.org/pub/NetBSD/NetBSD-9.3/amd64/binary/sets/base.tar.xz -O $@
 
-.PHONY: test ci
-test ci: libiamroot.so
+.PHONY: test ci ish
+test ci ish: libiamroot.so
 	$(MAKE) -f Makefile $@
 
 .PHONY: cleanall

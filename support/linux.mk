@@ -1444,7 +1444,8 @@ opensuse-log: x86_64-opensuse-tumbleweed-rootfs.log
 endif
 
 ifneq ($(shell command -v xbps-install 2>/dev/null),)
-extra-support: voidlinux-support
+extra-support: support/x86_64-voidlinux-rootfs.txt
+fixme-support: support/x86_64-voidlinux-musl-rootfs.txt
 
 .PHONY: voidlinux-support
 voidlinux-support: support/x86_64-voidlinux-rootfs.txt

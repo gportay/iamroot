@@ -319,6 +319,7 @@ static int __ldso_preload_needed(const char *path, const char *deflib,
 	struct __ldso_preload_needed_context ctx;
 	char needed[PATH_MAX];
 	ssize_t siz;
+	char *str;
 	int ret;
 
 	/* Add the needed shared objects to path first */
@@ -333,7 +334,9 @@ static int __ldso_preload_needed(const char *path, const char *deflib,
 		return -1;
 
 	/* Add the shared object to path then */
-	__path_strncat(buf, path, bufsiz);
+	str = __path_strncat(buf, path, bufsiz);
+	if (!str)
+		return -1;
 
 	return 0;
 }
@@ -1731,7 +1734,7 @@ static int __secure_execution_mode()
 */
 static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsiz)
 {
-	char *ld_library_path;
+	char *ld_library_path, *str;
 	int err, has_runpath;
 	char tmp[PATH_MAX];
 	uint32_t flags_1;
@@ -1754,7 +1757,9 @@ static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsiz)
 		if (err == -1)
 			return -1;
 
-		__path_strncat(buf, tmp, bufsiz);
+		str = __path_strncat(buf, tmp, bufsiz);
+		if (!str)
+			return -1;
 	}
 
 	/*
@@ -1781,8 +1786,11 @@ static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsiz)
 		return -1;
 
 	has_runpath = err > 0;
-	if (has_runpath)
-		__path_strncat(buf, tmp, bufsiz);
+	if (has_runpath) {
+		str = __path_strncat(buf, tmp, bufsiz);
+		if (!str)
+			return -1;
+	}
 
 	/*
 	 * (2)  Using the environment variable LD_LIBRARY_PATH, unless the
@@ -1790,8 +1798,11 @@ static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsiz)
 	 * which case this variable is ignored.
 	 */
 	ld_library_path = getenv("LD_LIBRARY_PATH");
-	if (ld_library_path && !__secure_execution_mode())
-		__path_strncat(buf, ld_library_path, bufsiz);
+	if (ld_library_path && !__secure_execution_mode()) {
+		str = __path_strncat(buf, ld_library_path, bufsiz);
+		if (!str)
+			return -1;
+	}
 
 	/*
 	 * (1)  Using the directories specified in the DT_RPATH dynamic section
@@ -1803,7 +1814,9 @@ static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsiz)
 		if (err == -1)
 			return -1;
 
-		__path_strncat(buf, tmp, bufsiz);
+		str = __path_strncat(buf, tmp, bufsiz);
+		if (!str)
+			return -1;
 	}
 
 	return strnlen(buf, bufsiz);
@@ -1865,13 +1878,15 @@ static int __elf_flags_1(const char *path, uint32_t *flags)
 static int __path_callback(const void *data, size_t datasiz, void *user)
 {
 	const char *path = (const char *)data;
-	char *p = (char *)user;
+	char *str, *p = (char *)user;
 	(void)datasiz;
 
 	if (!data || !user)
 		return __set_errno(EINVAL, -1);
 
-	__path_strncat(p, path, PATH_MAX);
+	str = __path_strncat(p, path, PATH_MAX);
+	if (!str)
+		return -1;
 
 	return 0;
 }
@@ -2531,6 +2546,7 @@ static int __ld_trace_loader_objects_needed(const char *path,
 	struct __ld_trace_loader_objects_needed_context ctx;
 	char needed[PATH_MAX];
 	ssize_t siz;
+	char *str;
 	int ret;
 
 	siz = __elf_needed(path, needed, sizeof(needed));
@@ -2553,7 +2569,9 @@ static int __ld_trace_loader_objects_needed(const char *path,
 		return -1;
 
 	/* Add the shared object to path then */
-	__path_strncat(buf, path, bufsiz);
+	str = __path_strncat(buf, path, bufsiz);
+	if (!str)
+		return -1;
 
 	return 0;
 }

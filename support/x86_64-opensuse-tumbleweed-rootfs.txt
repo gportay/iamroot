@@ -15,7 +15,7 @@ Resolving package dependencies...
 The following XXX recommended packages were automatically selected:
   aaa_base-extras augeas-lenses ca-certificates-mozilla cpio-mt cracklib-dict-full crypto-policies-scripts dbus-1-daemon dirmngr dump-rmt glibc-extra iproute2 iputils libldap-data libpcre2-8-0 login_defs logrotate lsof ncurses-utils netcfg pam-manpages pam_pwquality perl-Bootloader publicsuffix python311 python311-curses python311-dbm python311-pip sound-theme-freedesktop terminfo-screen timezone zypper-log
 The following XXX NEW packages are going to be installed:
-  aaa_base aaa_base-extras adobe-sourcecodepro-fonts alts augeas-lenses bash bash-sh boost-license1_83_0 branding-openSUSE busybox busybox-gawk busybox-grep busybox-sed busybox-xz ca-certificates ca-certificates-mozilla cantarell-fonts chkstat compat-usrmerge-tools coreutils cpio cpio-mt cracklib cracklib-dict-full crypto-policies crypto-policies-scripts dbus-1 dbus-1-common dbus-1-daemon dbus-1-tools dconf diffutils dirmngr dump-rmt file-magic filesystem fillup findutils gio-branding-openSUSE glib-networking glib2-tools glibc glibc-extra gpg2 gsettings-backend-dconf gsettings-desktop-schemas iproute2 iputils kbd kbd-legacy krb5 libabsl2308_0_0 libacl1 libalternatives1 libapparmor1 libassuan0 libattr1 libaudit1 libaugeas0 libblkid1 libboost_thread1_83_0 libboost_thread1_83_0-x86-64-v3 libbpf1 libbrotlicommon1 libbrotlicommon1-x86-64-v3 libbrotlidec1 libbrotlidec1-x86-64-v3 libbz2-1 libbz2-1-x86-64-v3 libcap-ng0 libcap2 libcom_err2 libcrack2 libcrypt1 libcurl4 libdb-4_8 libdb-4_8-x86-64-v3 libdbus-1-3 libdconf1 libduktape207 libeconf0 libelf1 libexpat1 libfa1 libfdisk1 libffi8 libgcc_s1 libgcrypt20 libgcrypt20-x86-64-v3 libgdbm6 libgdbm_compat4 libgio-2_0-0 libglib-2_0-0 libgmodule-2_0-0 libgmp10 libgnutls30 libgobject-2_0-0 libgpg-error0 libgpgme11 libhogweed6 libhogweed6-x86-64-v3 libidn2-0 libip4tc2 libjitterentropy3 libkeyutils1 libkmod2 libksba8 libldap-data libldap2 liblua5_4-5 liblz4-1 liblz4-1-x86-64-v3 liblzma5 liblzma5-x86-64-v3 libmagic1 libmnl0 libmount1 libmpdec3 libncurses6 libnettle8 libnettle8-x86-64-v3 libnghttp2-14 libnpth0 libnss_usrfiles2 libopenssl3 libopenssl3-x86-64-v3 libp11-kit0 libpcre2-8-0 libpkgconf3 libpopt0 libproc2-0 libprotobuf-lite23_4_0 libproxy1 libpsl5 libpwquality1 libpxbackend-1_0 libpython3_11-1_0 libpython3_11-1_0-x86-64-v3 libreadline8 libsasl2-3 libseccomp2 libselinux1 libsepol2 libsigc-2_0-0 libsmartcols1 libsolv-tools libsqlite3-0 libsqlite3-0-x86-64-v3 libssh-config libssh4 libstdc++6 libsystemd0 libtasn1-6 libudev1 libunistring5 libusb-1_0-0 libuuid1 libverto1 libxml2-2 libxtables12 libyaml-cpp0_8 libz-ng-compat1 libzck1 libzstd1 libzstd1-x86-64-v3 libzypp login_defs logrotate lsof ncurses-utils netcfg openSUSE-build-key openSUSE-release openSUSE-release-appliance-custom p11-kit p11-kit-tools pam pam-config pam-manpages pam_pwquality patterns-base-minimal_base patterns-glibc-hwcaps-x86_64_v3 perl perl-Bootloader perl-base permissions permissions-config pinentry pkgconf pkgconf-m4 pkgconf-pkg-config procps4 publicsuffix python311 python311-base python311-base-x86-64-v3 python311-curses python311-dbm python311-pip python311-setuptools python311-x86-64-v3 rpm rpm-config-SUSE shared-mime-info shared-python-startup sound-theme-freedesktop system-user-root systemd systemd-default-settings systemd-default-settings-branding-openSUSE systemd-presets-branding-openSUSE systemd-presets-common-SUSE sysuser-shadow terminfo-base terminfo-screen timezone update-alternatives util-linux zypper zypper-log zypper-needs-restarting
+  aaa_base aaa_base-extras adobe-sourcecodepro-fonts alts augeas-lenses bash bash-sh boost-license1_84_0 branding-openSUSE busybox busybox-diffutils busybox-gawk busybox-grep busybox-sed busybox-xz ca-certificates ca-certificates-mozilla cantarell-fonts chkstat compat-usrmerge-tools coreutils cpio cpio-mt cracklib cracklib-dict-full crypto-policies crypto-policies-scripts dbus-1 dbus-1-common dbus-1-daemon dbus-1-tools dconf dirmngr dump-rmt file-magic filesystem fillup findutils gio-branding-openSUSE glib-networking glib2-tools glibc glibc-extra gpg2 gsettings-backend-dconf gsettings-desktop-schemas iproute2 iputils kbd kbd-legacy krb5 libabsl2308_0_0 libacl1 libalternatives1 libapparmor1 libassuan0 libattr1 libaudit1 libaugeas0 libblkid1 libboost_thread1_84_0 libboost_thread1_84_0-x86-64-v3 libbpf1 libbrotlicommon1 libbrotlicommon1-x86-64-v3 libbrotlidec1 libbrotlidec1-x86-64-v3 libbz2-1 libbz2-1-x86-64-v3 libcap-ng0 libcap2 libcom_err2 libcrack2 libcrypt1 libcurl4 libdb-4_8 libdb-4_8-x86-64-v3 libdbus-1-3 libdconf1 libduktape207 libeconf0 libelf1 libexpat1 libfa1 libfdisk1 libffi8 libgcc_s1 libgcrypt20 libgcrypt20-x86-64-v3 libgdbm6 libgdbm_compat4 libgio-2_0-0 libglib-2_0-0 libgmodule-2_0-0 libgmp10 libgnutls30 libgobject-2_0-0 libgpg-error0 libgpgme11 libhogweed6 libhogweed6-x86-64-v3 libidn2-0 libip4tc2 libjitterentropy3 libkeyutils1 libkmod2 libksba8 libldap-data libldap2 liblua5_4-5 liblz4-1 liblz4-1-x86-64-v3 liblzma5 liblzma5-x86-64-v3 libmagic1 libmnl0 libmount1 libmpdec3 libncurses6 libnettle8 libnettle8-x86-64-v3 libnghttp2-14 libnpth0 libnss_usrfiles2 libopenssl3 libopenssl3-x86-64-v3 libp11-kit0 libpcre2-8-0 libpkgconf3 libpopt0 libproc2-0 libprotobuf-lite23_4_0 libproxy1 libpsl5 libpwquality1 libpxbackend-1_0 libpython3_11-1_0 libpython3_11-1_0-x86-64-v3 libreadline8 libsasl2-3 libseccomp2 libselinux1 libsepol2 libsigc-2_0-0 libsmartcols1 libsolv-tools libsqlite3-0 libsqlite3-0-x86-64-v3 libssh-config libssh4 libstdc++6 libsystemd0 libtasn1-6 libtirpc-netconfig libtirpc3 libudev1 libunistring5 libusb-1_0-0 libuuid1 libverto1 libxml2-2 libxtables12 libyaml-cpp0_8 libz-ng-compat1 libzck1 libzstd1 libzstd1-x86-64-v3 libzypp login_defs logrotate lsof ncurses-utils netcfg openSUSE-build-key openSUSE-release openSUSE-release-ftp p11-kit p11-kit-tools pam pam-config pam-manpages pam_pwquality patterns-base-minimal_base patterns-glibc-hwcaps-x86_64_v3 perl perl-Bootloader perl-base permissions permissions-config pinentry pkgconf pkgconf-m4 pkgconf-pkg-config procps4 publicsuffix python311 python311-base python311-base-x86-64-v3 python311-curses python311-dbm python311-pip python311-setuptools python311-x86-64-v3 rpm rpm-config-SUSE shared-mime-info shared-python-startup sound-theme-freedesktop system-user-root systemd systemd-default-settings systemd-default-settings-branding-openSUSE systemd-presets-branding-openSUSE systemd-presets-common-SUSE sysuser-shadow terminfo-base terminfo-screen timezone update-alternatives util-linux zypper zypper-log zypper-needs-restarting
 XXX new packages to install.
 Overall download size: XXX.X MiB. Already cached: 0 B. After the operation, additional XXX.X MiB will be used.
 Continue? [y/n/v/...? shows all options] (y): y
@@ -24,10 +24,10 @@ Warning: XXX packages had to be excluded from file conflicts check because they 
     Note: Checking for file conflicts requires not installed packages to be downloaded in advance in
     order to access their file lists. See option '--download-in-advance / --dry-run --download-only'
     in the zypper manual page for details.
-Retrieving: boost-license1_83_0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: boost-license1_83_0 [done]
-(XXX/XXX) Installing: boost-license1_83_0 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/boost-license1_83_0: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+Retrieving: boost-license1_84_0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: boost-license1_84_0 [done]
+(XXX/XXX) Installing: boost-license1_84_0 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/boost-license1_84_0: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 Retrieving: branding-openSUSE (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: branding-openSUSE [done]
@@ -64,15 +64,20 @@ Retrieving: libssh-config.rpm [done]
 (XXX/XXX) Installing: libssh-config [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libssh-config.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+Retrieving: libtirpc-netconfig (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libtirpc-netconfig.rpm [done]
+(XXX/XXX) Installing: libtirpc-netconfig [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libtirpc-netconfig.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 Retrieving: openSUSE-build-key (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: openSUSE-build-key.rpm [done]
 (XXX/XXX) Installing: openSUSE-build-key [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/openSUSE-build-key.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-Retrieving: openSUSE-release-appliance-custom (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: openSUSE-release-appliance-custom.rpm [done]
-(XXX/XXX) Installing: openSUSE-release-appliance-custom [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/openSUSE-release-appliance-custom.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+Retrieving: openSUSE-release-ftp (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: openSUSE-release-ftp.rpm [done]
+(XXX/XXX) Installing: openSUSE-release-ftp [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/openSUSE-release-ftp.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 Retrieving: pam-manpages (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: pam-manpages [done]
@@ -133,11 +138,6 @@ Retrieving: patterns-glibc-hwcaps-x86_64_v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX),
 Retrieving: patterns-glibc-hwcaps-x86_64_v3.rpm [done]
 (XXX/XXX) Installing: patterns-glibc-hwcaps-x86_64_v3 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/patterns-glibc-hwcaps-x86_64_v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-Retrieving: lsof (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: lsof.rpm [done]
-(XXX/XXX) Installing: lsof [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/lsof.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 Retrieving: libzstd1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libzstd1.rpm [done]
@@ -389,11 +389,6 @@ Retrieving: fillup.rpm [done]
 (XXX/XXX) Installing: fillup [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/fillup.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-Retrieving: diffutils (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: diffutils.rpm [done]
-(XXX/XXX) Installing: diffutils [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/diffutils.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 Retrieving: libelf1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libelf1.rpm [done]
 (XXX/XXX) Installing: libelf1 [done]
@@ -594,6 +589,11 @@ Retrieving: busybox-gawk [done]
 (XXX/XXX) Installing: busybox-gawk [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/busybox-gawk: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+Retrieving: busybox-diffutils (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: busybox-diffutils [done]
+(XXX/XXX) Installing: busybox-diffutils [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/busybox-diffutils: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 Retrieving: libusb-1_0-0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libusb-1_0-0.rpm [done]
 (XXX/XXX) Installing: libusb-1_0-0 [done]
@@ -624,10 +624,10 @@ Retrieving: libdb-4_8.rpm [done]
 (XXX/XXX) Installing: libdb-4_8 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libdb-4_8.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-Retrieving: libboost_thread1_83_0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libboost_thread1_83_0.rpm [done]
-(XXX/XXX) Installing: libboost_thread1_83_0 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libboost_thread1_83_0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+Retrieving: libboost_thread1_84_0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libboost_thread1_84_0.rpm [done]
+(XXX/XXX) Installing: libboost_thread1_84_0 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libboost_thread1_84_0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 Retrieving: libabsl2308_0_0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libabsl2308_0_0.rpm [done]
@@ -749,10 +749,10 @@ Retrieving: libbrotlicommon1-x86-64-v3.rpm [done]
 (XXX/XXX) Installing: libbrotlicommon1-x86-64-v3 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libbrotlicommon1-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-Retrieving: libboost_thread1_83_0-x86-64-v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libboost_thread1_83_0-x86-64-v3.rpm [done]
-(XXX/XXX) Installing: libboost_thread1_83_0-x86-64-v3 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libboost_thread1_83_0-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+Retrieving: libboost_thread1_84_0-x86-64-v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libboost_thread1_84_0-x86-64-v3.rpm [done]
+(XXX/XXX) Installing: libboost_thread1_84_0-x86-64-v3 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libboost_thread1_84_0-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 Retrieving: iproute2 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: iproute2.rpm [done]
@@ -892,6 +892,8 @@ ERROR: module /lib64/security/pam_pwquality.so is not installed.
 **** write config for pam_nam.so (account, disabled)
 **** write config for pam_winbind.so (account, disabled)
 **** write config for pam_time.so (account, disabled)
+**** write config for pam_himmelblau.so (account, disabled)
+**** write config for pam_kanidm.so (account, disabled)
 *** write_config (auth, /etc/pam.d/common-auth-pc, ...)
 **** write config for pam_env.so (auth, enabled)
 **** write config for pam_faildelay.so (auth, disabled)
@@ -960,6 +962,8 @@ ERROR: module /lib64/security/pam_pwquality.so is not installed.
 **** write config for pam_fscrypt.so (session, disabled)
 **** write config for pam_env.so (session, enabled)
 **** write config for pam_mktemp.so (session, disabled)
+**** write config for pam_himmelblau.so (session, disabled)
+**** write config for pam_kanidm.so (session, disabled)
 *** write_config (session, /etc/pam.d/common-session-nonlogin-pc, ...)
 **** write config for pam_selinux.so (session, disabled)
 **** write config for pam_mkhomedir.so (session, disabled)
@@ -1072,6 +1076,11 @@ Retrieving: logrotate.rpm [done]
 (XXX/XXX) Installing: logrotate [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/logrotate.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+Retrieving: libtirpc3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libtirpc3.rpm [done]
+(XXX/XXX) Installing: libtirpc3 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libtirpc3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 Retrieving: libssh4 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libssh4.rpm [done]
 (XXX/XXX) Installing: libssh4 [done]
@@ -1092,6 +1101,11 @@ Retrieving: python311-curses (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB
 Retrieving: python311-curses.rpm [done]
 (XXX/XXX) Installing: python311-curses [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python311-curses.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+Retrieving: lsof (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: lsof.rpm [done]
+(XXX/XXX) Installing: lsof [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/lsof.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 Retrieving: libcurl4 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libcurl4.rpm [done]
@@ -1269,7 +1283,8 @@ Retrieving: zypper-needs-restarting [done]
 (XXX/XXX) Installing: zypper-needs-restarting [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/zypper-needs-restarting: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-Executing %posttrans script 'openSUSE-release-YYYYMMDD-X.1.x86_64.rpm' [done]
+Running post-transaction scripts [done]
+%posttrans(systemd-presets-common-SUSE-15-31.1.noarch) script output:
 Created symlink /etc/systemd/system/default.target.wants/ca-certificates.path -> /usr/lib/systemd/system/ca-certificates.path.
 Created symlink /etc/systemd/system/multi-user.target.wants/kbdsettings.service -> /usr/lib/systemd/system/kbdsettings.service.
 Created symlink /etc/systemd/system/timers.target.wants/logrotate.timer -> /usr/lib/systemd/system/logrotate.timer.
@@ -1277,169 +1292,9 @@ Created symlink /etc/systemd/system/getty.target.wants/getty@tty1.service -> /us
 Created symlink /etc/systemd/system/multi-user.target.wants/remote-fs.target -> /usr/lib/systemd/system/remote-fs.target.
 Created symlink /etc/systemd/user/timers.target.wants/systemd-tmpfiles-clean.timer -> /usr/lib/systemd/user/systemd-tmpfiles-clean.timer.
 Created symlink /etc/systemd/user/basic.target.wants/systemd-tmpfiles-setup.service -> /usr/lib/systemd/user/systemd-tmpfiles-setup.service.
+%posttrans(rpm-4.18.0-6.2.x86_64) script output:
 rmdir: failed to remove 'var/lib/rpm': Directory not empty
-/usr/sbin/update-ca-certificates: line 112: /dev/fd/63: No such file or directory
-*** load_config (common-account-pc, account, ...)
-**** Trying /etc/pam.d/common-account-pc...
-*** Using config file /etc/pam.d/common-account-pc
-**** [account, required, pam_unix.so, try_first_pass ]
-**** def_parse_config [pam_unix.so] (account): 'try_first_pass '
-*** load_config (common-auth-pc, auth, ...)
-**** Trying /etc/pam.d/common-auth-pc...
-*** Using config file /etc/pam.d/common-auth-pc
-**** [auth, required, pam_env.so, ]
-**** def_parse_config [pam_env.so] (auth): ''
-**** [auth, required, pam_unix.so, try_first_pass ]
-**** def_parse_config [pam_unix.so] (auth): 'try_first_pass '
-*** load_config (common-password-pc, password, ...)
-**** Trying /etc/pam.d/common-password-pc...
-*** Using config file /etc/pam.d/common-password-pc
-**** [password, requisite, pam_pwquality.so, ]
-**** def_parse_config [pam_pwquality.so] (password): ''
-**** [password, required, pam_unix.so, nullok shadow try_first_pass ]
-**** def_parse_config [pam_unix.so] (password): 'nullok shadow try_first_pass '
-*** load_config (common-session-pc, session, ...)
-**** Trying /etc/pam.d/common-session-pc...
-*** Using config file /etc/pam.d/common-session-pc
-**** [session, optional, pam_systemd.so, ]
-**** parse_config_pam_systemd.so (session): ''
-**** [session, required, pam_limits.so, ]
-**** def_parse_config [pam_limits.so] (session): ''
-**** [session, required, pam_unix.so, try_first_pass ]
-**** def_parse_config [pam_unix.so] (session): 'try_first_pass '
-**** [session, optional, pam_umask.so, ]
-**** def_parse_config [pam_umask.so] (session): ''
-**** [session, optional, pam_env.so, ]
-**** def_parse_config [pam_env.so] (session): ''
-*** load_config (common-session-nonlogin-pc, session, ...)
-**** Trying /etc/pam.d/common-session-nonlogin-pc...
-*** Using config file /etc/pam.d/common-session-nonlogin-pc
-**** [session, required, pam_limits.so, ]
-**** def_parse_config [pam_limits.so] (session): ''
-**** [session, required, pam_unix.so, try_first_pass ]
-**** def_parse_config [pam_unix.so] (session): 'try_first_pass '
-**** [session, optional, pam_umask.so, ]
-**** def_parse_config [pam_umask.so] (session): ''
-**** [session, optional, pam_env.so, ]
-**** def_parse_config [pam_env.so] (session): ''
-*** load_config (postlogin-account-pc, account, ...)
-**** Trying /etc/pam.d/postlogin-account-pc...
-*** Using config file /etc/pam.d/postlogin-account-pc
-*** load_config (postlogin-auth-pc, auth, ...)
-**** Trying /etc/pam.d/postlogin-auth-pc...
-*** Using config file /etc/pam.d/postlogin-auth-pc
-*** load_config (postlogin-password-pc, password, ...)
-**** Trying /etc/pam.d/postlogin-password-pc...
-*** Using config file /etc/pam.d/postlogin-password-pc
-*** load_config (postlogin-session-pc, session, ...)
-**** Trying /etc/pam.d/postlogin-session-pc...
-*** Using config file /etc/pam.d/postlogin-session-pc
-*** write_config (account, /etc/pam.d/common-account-pc, ...)
-**** write config for pam_access.so (account, disabled)
-**** write config for pam_systemd_home.so (account, disabled)
-**** write config for pam_unix2.so (account, disabled)
-**** write config for pam_unix.so (account, enabled)
-**** write config for pam_krb5.so (account, disabled)
-**** write config for pam_localuser.so (account, disabled)
-**** write config for pam_sss.so (account, disabled)
-**** write config for pam_ldap.so (account, disabled)
-**** write config for pam_nam.so (account, disabled)
-**** write config for pam_winbind.so (account, disabled)
-**** write config for pam_time.so (account, disabled)
-*** write_config (auth, /etc/pam.d/common-auth-pc, ...)
-**** write config for pam_env.so (auth, enabled)
-**** write config for pam_faildelay.so (auth, disabled)
-**** write config for pam_group.so (auth, disabled)
-**** write config for pam_pkcs11.so (auth, disabled)
-**** write config for pam_fp.so (auth, disabled)
-**** write config for pam_fprint.so (auth, disabled)
-**** write config for pam_fprintd.so (auth, disabled)
-**** write config for pam_thinkfinger.so (auth, disabled)
-**** write config for pam_gnome_keyring.so (auth, disabled)
-**** write config for pam_kwallet5.so (auth, disabled)
-**** write config for pam_systemd_home.so (auth, disabled)
-**** write config for pam_ssh.so (auth, disabled)
-**** write config for pam_unix2.so (auth, disabled)
-**** write config for pam_unix.so (auth, enabled)
-**** write config for pam_ecryptfs.so (auth, disabled)
-**** write config for pam_fscrypt.so (auth, disabled)
-**** write config for pam_krb5.so (auth, disabled)
-**** write config for pam_sss.so (auth, disabled)
-**** write config for pam_ldap.so (auth, disabled)
-**** write config for pam_nam.so (auth, disabled)
-**** write config for pam_winbind.so (auth, disabled)
-**** write config for pam_himmelblau.so (auth, disabled)
-**** write config for pam_kanidm.so (auth, disabled)
-*** write_config (password, /etc/pam.d/common-password-pc, ...)
-**** write config for pam_winbind.so (password, disabled)
-**** write config for pam_pwcheck.so (password, disabled)
-**** write config for pam_passwdqc.so (password, disabled)
-**** write config for pam_pwquality.so (password, enabled)
-**** write config for pam_cracklib.so (password, disabled)
-**** write config for pam_pwhistory.so (password, disabled)
-**** write config for pam_gnome_keyring.so (password, disabled)
-**** write config for pam_kwallet5.so (password, disabled)
-**** write config for pam_ecryptfs.so (password, disabled)
-**** write config for pam_systemd_home.so (password, disabled)
-**** write config for pam_unix2.so (password, disabled)
-**** write config for pam_unix.so (password, enabled)
-**** write config for pam_fscrypt.so (password, disabled)
-**** write config for pam_make.so (password, disabled)
-**** write config for pam_exec.so (password, disabled)
-**** write config for pam_krb5.so (password, disabled)
-**** write config for pam_sss.so (password, disabled)
-**** write config for pam_ldap.so (password, disabled)
-**** write config for pam_nam.so (password, disabled)
-*** write_config (session, /etc/pam.d/common-session-pc, ...)
-**** write config for pam_selinux.so (session, disabled)
-**** write config for pam_mkhomedir.so (session, disabled)
-**** write config for pam_systemd_home.so (session, disabled)
-**** write config for pam_systemd.so (session, enabled)
-**** write config for pam_limits.so (session, enabled)
-**** write config for pam_unix2.so (session, disabled)
-**** write config for pam_unix.so (session, enabled)
-**** write config for pam_apparmor.so (session, disabled)
-**** write config for pam_krb5.so (session, disabled)
-**** write config for pam_sss.so (session, disabled)
-**** write config for pam_ldap.so (session, disabled)
-**** write config for pam_winbind.so (session, disabled)
-**** write config for pam_nam.so (session, disabled)
-**** write config for pam_umask.so (session, enabled)
-**** write config for pam_ssh.so (session, disabled)
-**** write config for pam_selinux.so (session, disabled)
-**** write config for pam_gnome_keyring.so (session, disabled)
-**** write config for pam_kwallet5.so (session, disabled)
-**** write config for pam_exec.so (session, disabled)
-**** write config for pam_ecryptfs.so (session, disabled)
-**** write config for pam_fscrypt.so (session, disabled)
-**** write config for pam_env.so (session, enabled)
-**** write config for pam_mktemp.so (session, disabled)
-*** write_config (session, /etc/pam.d/common-session-nonlogin-pc, ...)
-**** write config for pam_selinux.so (session, disabled)
-**** write config for pam_mkhomedir.so (session, disabled)
-**** write config for pam_systemd_home.so (session, disabled)
-**** write config for pam_limits.so (session, enabled)
-**** write config for pam_unix2.so (session, disabled)
-**** write config for pam_unix.so (session, enabled)
-**** write config for pam_apparmor.so (session, disabled)
-**** write config for pam_krb5.so (session, disabled)
-**** write config for pam_sss.so (session, disabled)
-**** write config for pam_ldap.so (session, disabled)
-**** write config for pam_winbind.so (session, disabled)
-**** write config for pam_nam.so (session, disabled)
-**** write config for pam_umask.so (session, enabled)
-**** write config for pam_ssh.so (session, disabled)
-**** write config for pam_selinux.so (session, disabled)
-**** write config for pam_gnome_keyring.so (session, disabled)
-**** write config for pam_kwallet5.so (session, disabled)
-**** write config for pam_exec.so (session, disabled)
-**** write config for pam_ecryptfs.so (session, disabled)
-**** write config for pam_fscrypt.so (session, disabled)
-**** write config for pam_env.so (session, enabled)
-**** write config for pam_mktemp.so (session, disabled)
-*** write_config (account, /etc/pam.d/postlogin-account-pc, ...)
-*** write_config (auth, /etc/pam.d/postlogin-auth-pc, ...)
-*** write_config (password, /etc/pam.d/postlogin-password-pc, ...)
-*** write_config (session, /etc/pam.d/postlogin-session-pc, ...)
-**** write config for pam_wtmpdb.so (session, disabled)
-**** write config for pam_lastlog2.so (session, disabled)
+%posttrans(ca-certificates-mozilla-2.62-2.1.noarch) script output:
+/var/adm/update-scripts/posttransACg8Yi/ca-certificates-mozilla-2.62-2.1.noarchR18Htx: line 2: update-ca-certificates: command not found
+%posttrans(pam-config-2.10-1.1.x86_64) script output:
+/var/adm/update-scripts/posttransACg8Yi/pam-config-2.10-1.1.x86_64wDTkWX: line 2: pam-config: command not found

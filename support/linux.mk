@@ -268,6 +268,7 @@ $(eval $(call chroot_shell,$(1),$(2),/bin/bash,xbps-install -S -r $(1)-$(2)-root
 
 $(1)-$(2)-rootfs: | $(1)-$(2)-rootfs/bin/sh
 $(1)-$(2)-rootfs/bin/sh: export XBPS_ARCH=$(1)
+$(1)-$(2)-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):XBPS_ARCH
 $(1)-$(2)-rootfs/bin/sh: | $(call libs,linux,$(1))
 	bash ish -c "install -D -t $(1)-$(2)-rootfs/var/db/xbps/keys/ /var/db/xbps/keys/*"
 	bash ish -c "xbps-install -S -y -r $(1)-$(2)-rootfs -R http://repo-default.voidlinux.org/current base-system"
@@ -282,6 +283,7 @@ $(eval $(call chroot_shell,$(1),$(2)-musl,/bin/bash,xbps-install -S -r $(1)-$(2)
 
 $(1)-$(2)-musl-rootfs: | $(1)-$(2)-musl-rootfs/bin/sh
 $(1)-$(2)-musl-rootfs/bin/sh: export XBPS_ARCH=$(1)-musl
+$(1)-$(2)-musl-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):XBPS_ARCH
 $(1)-$(2)-musl-rootfs/bin/sh: | $(call libs,musl,$(1))
 	bash ish -c "install -D -t $(1)-$(2)-musl-rootfs/var/db/xbps/keys/ /var/db/xbps/keys/*"
 	bash ish -c "xbps-install -S -y -r $(1)-$(2)-musl-rootfs -R http://repo-default.voidlinux.org/current base-system"

@@ -87,12 +87,11 @@ static int __dl_iterate_phdr_callback(struct dl_phdr_info *info, size_t size,
 		return 0;
 
 	/* is an host interpreter? */
-	if (__strneq(info->dlpi_name, "/lib/ld") ||
-	    __strneq(info->dlpi_name, "/lib64/ld"))
+	if (__strneq(path, "/lib/ld") || __strneq(path, "/lib64/ld"))
 		return 0;
 
 	/* is an iamroot library? */
-	if (__strneq(__basename(info->dlpi_name), "libiamroot"))
+	if (__strneq(__basename(path), "libiamroot"))
 		return 0;
 
 	__warn_or_fatal("%s: is not in root directory '%s'\n", path, root);

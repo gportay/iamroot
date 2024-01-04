@@ -196,7 +196,7 @@ $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export 
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^/dev/(null|zero|full|random|urandom|tty|console|pts|shm|ptmx)|^$(CURDIR)/.*\.gcda
 # debconf: PERL_DL_NONLAZY is not set, if debconf is running from a preinst script, this is not safe
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export ISH_PRESERVE_ENV = PERL_DL_NONLAZY
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export ISH_PRESERVE_ENV = $(ISH_PRESERVE_ENV):PERL_DL_NONLAZY
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export PERL_DL_NONLAZY = 1
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/debian
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= $(3)
@@ -294,7 +294,7 @@ endef
 define alpine-make-rootfs-rootfs
 .PRECIOUS: $(1)-$(2)-$(3)-rootfs/bin/sh
 $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export APK_OPTS = --arch $(1) --no-progress
-$(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export ISH_PRESERVE_ENV := APK_OPTS
+$(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):APK_OPTS
 
 $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/ash,alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --mirror-uri http://mirrors.edge.kernel.org/alpine --branch $(3)))
 

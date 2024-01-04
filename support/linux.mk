@@ -264,7 +264,7 @@ endef
 define xbps-install-rootfs
 .PRECIOUS: $(1)-$(2)-rootfs/bin/sh
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
-$(eval $(call chroot_shell,$(1),$(2),/bin/bash,xbps-install -S -r $(1)-$(2)-rootfs -R https://repo-default.voidlinux.org/current base-system))
+$(eval $(call chroot_shell,$(1),$(2),/bin/bash,xbps-install -S -r $(1)-$(2)-rootfs -R http://repo-default.voidlinux.org/current base-system))
 
 $(1)-$(2)-rootfs: | $(1)-$(2)-rootfs/bin/sh
 $(1)-$(2)-rootfs/bin/sh: export XBPS_ARCH=$(1)
@@ -278,7 +278,7 @@ endef
 define xbps-install-musl-rootfs
 .PRECIOUS: $(1)-$(2)-musl-rootfs/bin/sh
 $(1)-$(2)-musl-chroot $(1)-$(2)-musl-shell $(1)-$(2)-musl-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
-$(eval $(call chroot_shell,$(1),$(2)-musl,/bin/bash,xbps-install -S -r $(1)-$(2)-musl-rootfs -R https://repo-default.voidlinux.org/current base-system))
+$(eval $(call chroot_shell,$(1),$(2)-musl,/bin/bash,xbps-install -S -r $(1)-$(2)-musl-rootfs -R http://repo-default.voidlinux.org/current base-system))
 
 $(1)-$(2)-musl-rootfs: | $(1)-$(2)-musl-rootfs/bin/sh
 $(1)-$(2)-musl-rootfs/bin/sh: export XBPS_ARCH=$(1)-musl

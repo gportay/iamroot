@@ -77,8 +77,6 @@ static int __dl_iterate_phdr_callback(struct dl_phdr_info *info, size_t size,
 {
 	const char *root = (void *)data;
 	const char *path = info->dlpi_name;
-	char *val, *token, *saveptr;
-	char buf[PATH_MAX];
 	(void)size;
 
 	__debug("%s(info: %p { .info->dlpi_name: '%s' }, ...)\n", __func__,
@@ -93,21 +91,9 @@ static int __dl_iterate_phdr_callback(struct dl_phdr_info *info, size_t size,
 	    __strneq(info->dlpi_name, "/lib64/ld"))
 		return 0;
 
-	/* is an IAMROOT_LIB? */
-	val = _getenv("IAMROOT_LIB");
-	if (!val)
+	/* is an iamroot library? */
+	if (__strneq(__basename(info->dlpi_name), "libiamroot"))
 		return 0;
-	val = __strncpy(buf, val);
-	token = strtok_r(val, ":", &saveptr);
-	if (!token) {
-		if (__strleq(val, info->dlpi_name))
-			return 0;
-	} else if (*token) {
-		do {
-			if (__strleq(token, info->dlpi_name))
-				return 0;
-		} while ((token = strtok_r(NULL, ":", &saveptr)));
-	}
 
 	__warn_or_fatal("%s: is not in root directory '%s'\n", path, root);
 	return 0;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -161,7 +161,7 @@ loader:
 	if (ret == 1) {
 		int err;
 
-		err = __ldso_posix_spawn(pid, buf, file_actions, attrp, argv,
+		err = __ldso_posix_spawn(pid, path, file_actions, attrp, argv,
 					 envp);
 		if (err == -1 && errno != EAGAIN)
 			return -1;

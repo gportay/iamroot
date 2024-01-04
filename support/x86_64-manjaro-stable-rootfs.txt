@@ -283,8 +283,6 @@ Creating group 'systemd-oom' with GID XXX.
 Creating user 'systemd-oom' (systemd Userspace OOM Killer) with UID XXX and GID XXX.
 Creating group 'systemd-journal-remote' with GID XXX.
 Creating user 'systemd-journal-remote' (systemd Journal Remote) with UID XXX and GID XXX.
-Creating group 'systemd-journal-upload' with GID XXX.
-Creating user 'systemd-journal-upload' (systemd Journal Upload) with UID XXX and GID XXX.
 Creating group 'systemd-resolve' with GID XXX.
 Creating user 'systemd-resolve' (systemd Resolver) with UID XXX and GID XXX.
 Creating group 'systemd-timesync' with GID XXX.

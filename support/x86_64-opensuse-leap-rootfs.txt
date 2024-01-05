@@ -1409,7 +1409,7 @@ Running in chroot, ignoring command 'daemon-reload'
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Running post-transaction scripts [done]
-%posttrans(systemd-presets-common-SUSE-15-150100.8.12.1.noarch) script output:
+%posttrans(systemd-presets-common-SUSE) script output:
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Created symlink /etc/systemd/system/default.target.wants/issue-generator.path -> /usr/lib/systemd/system/issue-generator.path.
 Created symlink /etc/systemd/system/default.target.wants/issue-generator.service -> /usr/lib/systemd/system/issue-generator.service.
@@ -1421,15 +1421,15 @@ Created symlink /etc/systemd/system/multi-user.target.wants/remote-fs.target -> 
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Created symlink /etc/systemd/user/timers.target.wants/systemd-tmpfiles-clean.timer -> /usr/lib/systemd/user/systemd-tmpfiles-clean.timer.
 Created symlink /etc/systemd/user/basic.target.wants/systemd-tmpfiles-setup.service -> /usr/lib/systemd/user/systemd-tmpfiles-setup.service.
-%posttrans(rpm-4.14.3-150300.46.1.x86_64) script output:
+%posttrans(rpm) script output:
 /bin/sh: failed to remove 'var/lib/rpm': Directory not empty
 warning: %posttrans(rpm) scriptlet failed, exit status 1
-%posttrans(ca-certificates-mozilla-2.44-21.1.noarch) script output:
+%posttrans(ca-certificates-mozilla) script output:
 /var/adm/update-scripts/posttransXXXXXX/ca-certificates-mozillaXXXXXX: line X: update-ca-certificates: command not found
-%posttrans(systemd-presets-branding-openSUSE-12.2-lp154.2.1.noarch) script output:
+%posttrans(systemd-presets-branding-openSUSE) script output:
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
-%posttrans(openSUSE-release-15.4-lp154.153.1.x86_64) script output:
+%posttrans(openSUSE-release) script output:
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
-%posttrans(kbd-2.4.0-150400.3.5.x86_64) script output:
+%posttrans(kbd) script output:
 Please run "/usr/bin/dracut -f --regenerate-all" as soon as your system is complete.
 make[1]: *** [makefile:XXX: x86_64-opensuse-leap-rootfs/bin/sh] Error 107

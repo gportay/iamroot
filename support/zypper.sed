@@ -27,7 +27,6 @@
 	s,\[\.\+done.*\],[done],
 }
 
-# Executing %posttrans script 'openSUSE-release-YYYYMMDD-X.1.x86_64.rpm' [done]
 # (...)
 # .
 # (...)
@@ -35,10 +34,6 @@
 / \[\.*$/s, \[\.*$, [done],g
 /^\.\+$/s,\.\+,,g
 /^\.*done]$/s,\.*done],,g
-/^Executing %posttrans script 'openSUSE-release-[[:digit:]]\{8,8\}/{
-	s,[[:digit:]]\{8\,8\},YYYYMMDD,
-	s,[[:digit:]]\+,X,
-}
 
 # Retrieving: filesystem-84.87-12.1.x86_64 (openSUSE-Tumbleweed-Oss) (X/XXX),  XX.X KiB
 # Retrieving: filesystem-84.87-3.2.x86_64.rpm [done]
@@ -51,6 +46,11 @@
 # ( XX/XXX) Installing: filesystem-84.87-3.2.x86_64 [............done]
 /^([[:digit:] ]\+\/[[:digit:] ]\+) Installing:/{
 	s,^([[:digit:] ]\+\/[[:digit:] ]\+),(XXX/XXX),
+	s,\([[:lower:][:upper:][:digit:]._+-]\+\)-\([[:digit:]]\+:[[:alnum:]._~^+-]\+\|[[:alnum:]._~^+-]\+\)-\([[:alnum:].%{?}-]\+\)\.\([[:lower:][:digit:]]\+\.[[:alnum:]_]\+\|[[:alnum:]_]\+\),\1,
+}
+
+# %posttrans(ca-certificates-mozilla-2.44-21.1.noarch) script output:
+/^%posttrans(.*) script output:/ {
 	s,\([[:lower:][:upper:][:digit:]._+-]\+\)-\([[:digit:]]\+:[[:alnum:]._~^+-]\+\|[[:alnum:]._~^+-]\+\)-\([[:alnum:].%{?}-]\+\)\.\([[:lower:][:digit:]]\+\.[[:alnum:]_]\+\|[[:alnum:]_]\+\),\1,
 }
 

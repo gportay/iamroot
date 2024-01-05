@@ -1284,7 +1284,7 @@ Retrieving: zypper-needs-restarting [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/zypper-needs-restarting: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 warning: Unable to get systemd shutdown inhibition lock: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
 Running post-transaction scripts [done]
-%posttrans(systemd-presets-common-SUSE-15-31.1.noarch) script output:
+%posttrans(systemd-presets-common-SUSE) script output:
 Created symlink /etc/systemd/system/default.target.wants/ca-certificates.path -> /usr/lib/systemd/system/ca-certificates.path.
 Created symlink /etc/systemd/system/multi-user.target.wants/kbdsettings.service -> /usr/lib/systemd/system/kbdsettings.service.
 Created symlink /etc/systemd/system/timers.target.wants/logrotate.timer -> /usr/lib/systemd/system/logrotate.timer.
@@ -1292,9 +1292,9 @@ Created symlink /etc/systemd/system/getty.target.wants/getty@tty1.service -> /us
 Created symlink /etc/systemd/system/multi-user.target.wants/remote-fs.target -> /usr/lib/systemd/system/remote-fs.target.
 Created symlink /etc/systemd/user/timers.target.wants/systemd-tmpfiles-clean.timer -> /usr/lib/systemd/user/systemd-tmpfiles-clean.timer.
 Created symlink /etc/systemd/user/basic.target.wants/systemd-tmpfiles-setup.service -> /usr/lib/systemd/user/systemd-tmpfiles-setup.service.
-%posttrans(rpm-4.18.0-6.2.x86_64) script output:
+%posttrans(rpm) script output:
 rmdir: failed to remove 'var/lib/rpm': Directory not empty
-%posttrans(ca-certificates-mozilla-2.62-2.1.noarch) script output:
+%posttrans(ca-certificates-mozilla) script output:
 /var/adm/update-scripts/posttransXXXXXX/ca-certificates-mozillaXXXXXX: line X: update-ca-certificates: command not found
-%posttrans(pam-config-2.10-1.1.x86_64) script output:
+%posttrans(pam-config) script output:
 /var/adm/update-scripts/posttransXXXXXX/pam-configXXXXXX: line X: pam-config: command not found

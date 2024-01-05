@@ -126,7 +126,7 @@ int __interpreter_script(const char *path, char * const argv[], char *buf,
 	/* Get the interpeter directive stored after the hashbang */
 	siz = __interpreter_script_hashbang(path, buf, bufsiz);
 	if (siz < 1)
-		return siz;
+		return -1;
 
 	/* Reset argv0 */
 	interparg[i++] = buf; /* hashbang as argv0 */

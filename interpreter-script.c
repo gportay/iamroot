@@ -115,8 +115,8 @@ close:
 }
 
 __attribute__((visibility("hidden")))
-int __interpreter_script(const char *path, char * const argv[], char *interp,
-			 size_t interpsiz, char *interparg[])
+int __interpreter_script(const char *path, char * const argv[], char *buf,
+			 size_t bufsiz, char *interparg[])
 {
 	ssize_t siz;
 	size_t len;
@@ -124,17 +124,17 @@ int __interpreter_script(const char *path, char * const argv[], char *interp,
 	(void)argv;
 
 	/* Get the interpeter directive stored after the hashbang */
-	siz = __interpreter_script_hashbang(path, interp, interpsiz);
+	siz = __interpreter_script_hashbang(path, buf, bufsiz);
 	if (siz < 1)
 		return siz;
 
 	/* Reset argv0 */
-	interparg[i++] = interp; /* hashbang as argv0 */
+	interparg[i++] = buf; /* hashbang as argv0 */
 
 	/* Add optional argument */
-	len = strnlen(interp, interpsiz);
-	if (len < (size_t)siz && interp[len+1])
-		interparg[i++] = &interp[len+1];
+	len = strnlen(buf, bufsiz);
+	if (len < (size_t)siz && buf[len+1])
+		interparg[i++] = &buf[len+1];
 	interparg[i++] = (char *)path; /* FIXME: original program path as first
 					* positional argument */
 	interparg[i] = NULL; /* ensure NULL-terminated */

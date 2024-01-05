@@ -680,17 +680,17 @@ char *__path_sanitize(char *path, size_t bufsiz)
 __attribute__((visibility("hidden")))
 ssize_t fpath(int fd, char *buf, size_t bufsiz)
 {
-	ssize_t siz;
+	ssize_t ret;
 
 	if (fd < 0 && fd != AT_FDCWD)
 		return __set_errno(EINVAL, -1);
 
-	siz = __fgetpath(fd, buf, bufsiz);
-	if (siz == -1)
+	ret = __fgetpath(fd, buf, bufsiz);
+	if (ret == -1)
 		return -1;
-	buf[siz] = 0; /* ensure NULL-terminated */
+	buf[ret] = 0; /* ensure NULL-terminated */
 
-	return siz;
+	return ret;
 }
 
 __attribute__((visibility("hidden")))

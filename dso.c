@@ -726,10 +726,10 @@ static int __ld_ldso_abi(const char *path, char ldso[NAME_MAX], int *abi)
 
 	/* Linux or FreeBSD dynamic loader (ld-<ldso>.so.<abi>) */
 	n = sscanf(name, "ld-%" __xstr(NAME_MAX) "[^.].so.%i", ldso, abi);
-	if (n < 2)
-		return __set_errno(ENOTSUP, -1);
+	if (n == 2)
+		return 0;
 
-	return 0;
+	return __set_errno(ENOTSUP, -1);
 }
 
 static int __ld_linux_version(const char *path, int *major, int *minor)

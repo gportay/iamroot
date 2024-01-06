@@ -724,7 +724,7 @@ static int __ld_ldso_abi(const char *path, char ldso[NAME_MAX], int *abi)
 		return 0;
 	}
 
-	/* Linux or FreeBSD dynamic loader (ld-<ldso>.so.<abi> */
+	/* Linux or FreeBSD dynamic loader (ld-<ldso>.so.<abi>) */
 	n = sscanf(name, "ld-%" __xstr(NAME_MAX) "[^.].so.%i", ldso, abi);
 	if (n < 2)
 		return __set_errno(ENOTSUP, -1);

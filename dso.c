@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Gaël PORTAY
+ * Copyright 2023-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -1366,6 +1366,15 @@ static ssize_t __is_elf_ldso(const char *ldso)
 	return streq(ldso, "elf");
 }
 
+static int __is_32_bits(Elf64_Ehdr *ehdr, const char *ldso, int abi)
+{
+	(void)ldso;
+	(void)abi;
+
+	/* It is a 32-bits ELF */
+	return ehdr && (ehdr->e_ident[EI_CLASS] == ELFCLASS32);
+}
+
 static int __is_64_bits(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
 	(void)ldso;
@@ -1429,6 +1438,16 @@ static int __is_riscv(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 
 	/* It is a RISC-V ELF */
 	return ehdr && (ehdr->e_machine == EM_RISCV);
+}
+
+static int __is_mipsle(Elf64_Ehdr *ehdr, const char *ldso, int abi)
+{
+	(void)ldso;
+	(void)abi;
+
+	/* It is a MIPS LSB ELF */
+	return ehdr && (ehdr->e_machine == EM_MIPS) &&
+	       (ehdr->e_ident[EI_DATA] == ELFDATA2LSB);
 }
 
 static int __is_linux(Elf64_Ehdr *ehdr, const char *ldso, int abi)
@@ -1503,6 +1522,8 @@ static const char *__machine(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 
 		/* Assuming it is a *BSD */
 		return "riscv";
+	} else if (__is_mipsle(ehdr, ldso, abi)) {
+		return "mipsle";
 	}
 
 	/* Unsupported yet! */
@@ -1621,6 +1642,14 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 		}
 	}
 
+	/* It is an MIPS LSB ELF and IAMROOT_LIB_MIPSLE_1 */
+	if (__is_mipsle(ehdr, ldso, abi) && (*ldso == 0 && abi == 1)) {
+		if (__is_32_bits(ehdr, ldso, abi)) {
+			lib = __xstr(PREFIX)"/lib/iamroot/mipsle/libiamroot.so.1";
+			goto access;
+		}
+	}
+
 	/* IAMROOT_LIB_$MACHINE_MUSL_$ARCH_$ABI */
 	if (__is_musl(ehdr, ldso, abi)) {
 		/* It is an x86 ELF or IAMROOT_LIB_I686_MUSL_I386_1 */
@@ -1663,6 +1692,13 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 		     __is_64_bits(ehdr, ldso, abi)) ||
 		    (streq(ldso, "musl-riscv64") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/riscv64/libiamroot-musl-riscv64.so.1";
+			goto access;
+		}
+
+		/* It is a MIPS LSB ELF or IAMROOT_LIB_MIPSLE_MUSL_MIPSEL_1 */
+		if (__is_mipsle(ehdr, ldso, abi) &&
+		    (streq(ldso, "musl-mipsel") && abi == 1)) {
+			lib = __xstr(PREFIX)"/lib/iamroot/mipsle/libiamroot-musl-mipsel.so.1";
 			goto access;
 		}
 	}

@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Chroot to a musl armhf world; tested on [Alpine Linux]
 - Fixup the content of `LD_LIBRARY_PATH` used by `ld.so(8)`, `ldd(1)` and
   `dlopen()` for \*BSD and unrecognized [dynamic loaders][ld.so(8)]
+- Chroot to a [Debian] mipsel world; tested on [Debian MIPS Port]
 
 ### Changed
 
@@ -812,6 +813,7 @@ Initial release.
 [Debian ARM 64 Port]: https://wiki.debian.org/Arm64Port
 [Debian ARM EABI Port]: https://wiki.debian.org/ArmEabiPort
 [Debian ARM hard-float Port]: https://wiki.debian.org/ArmHardFloatPort
+[Debian MIPS Port]: https://wiki.debian.org/MIPSPort
 [Debian RISC-V 64 Port]: https://wiki.debian.org/Ports/riscv64
 [Debian i386 Port]: https://www.debian.org/ports/i386/
 [Debian]: https://www.debian.org/

@@ -95,17 +95,57 @@ $(strip libiamroot.so \
 	$(if $(findstring :$(2):,:x86: :i386: :i686:       ),$(if $(findstring :$(1):,:musl:),i686/libiamroot-musl-i386.so.1      ,i686/libiamroot-linux.so.2                 ), \
 	$(if $(findstring :$(2):,:aarch64: :arm64:         ),$(if $(findstring :$(1):,:musl:),aarch64/libiamroot-musl-aarch64.so.1,aarch64/libiamroot-linux-aarch64.so.1      ), \
 	$(if $(findstring :$(2):,:riscv64:                 ),$(if $(findstring :$(1):,:musl:),riscv64/libiamroot-musl-riscv64.so.1,riscv64/libiamroot-linux-riscv64-lp64d.so.1), \
-	$(error $(1)-$(2): No such library))))))) \
+	$(if $(findstring :$(2):,:mipsle: :mipsel:         ),$(if $(findstring :$(1):,:musl:),mipsle/libiamroot-musl-mipsel.so.1  ,mipsle/libiamroot.so.1                     ), \
+	$(error $(1)-$(2): No such library)))))))) \
 )
 endef
 
-define libiamroot_so =
-iamroot_lib_$(2)_$(3) = $(1)/libiamroot-$(2).so.$(3)
+define libiamroot_so_abi =
+iamroot_lib_$(1)_$(2) = $(1)/libiamroot.so.$(2)
+IAMROOT_LIB_$(call UPPERCASE,$(1))_$(2) ?= $(CURDIR)/$(1)/libiamroot.so.$(2)
+export IAMROOT_LIB_$(call UPPERCASE,$(1))_$(2)
+
+vars: iamroot_lib_$(1)_$(2)
+iamroot_lib_$(1)_$(2):
+	@echo export "IAMROOT_LIB_$(call UPPERCASE,$(1))_$(2)=\"$$(IAMROOT_LIB_$(call UPPERCASE,$(1))_$(2))\""
+
+all: $(1)/libiamroot.so.$(2)
+
+.PRECIOUS: $(1)/libiamroot.so.$(2)
+$(1)/libiamroot.so.$(2): $(O)-$(1)/libiamroot.so
+	install -D -m755 $$< $$@
+
+$(O)-$(1)/libiamroot.so:
+
+install: install-exec-$(1).$(2)
+
+.PHONY: install-exec-$(1).$(2)
+install-exec-$(1).$(2):
+	install -D -m755 $(1)/libiamroot.so.$(2) $(DESTDIR)$(PREFIX)/lib/iamroot/$(1)/libiamroot.so.$(2)
+	ln -sf libiamroot.so.$(2) $(DESTDIR)$(PREFIX)/lib/iamroot/$(1)/libiamroot.so
+
+uninstall: uninstall-$(1).$(2)
+
+.PHONY: uninstall-$(1).$(2)
+uninstall-$(1).$(2):
+	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/$(1)/libiamroot.so.$(2)
+	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/$(1)/libiamroot.so
+
+clean: clean-$(1).$(2)
+
+.PHONY: clean-$(1).$(2)
+clean-$(1).$(2):
+	rm -Rf $(O)-$(1)/
+	rm -Rf $(1)/
+endef
+
+define libiamroot_ldso_so_abi =
+iamroot_lib_$(1)_$(2)_$(3) = $(1)/libiamroot-$(2).so.$(3)
 IAMROOT_LIB_$(call UPPERCASE,$(1)_$(2))_$(3) ?= $(CURDIR)/$(1)/libiamroot-$(2).so.$(3)
 export IAMROOT_LIB_$(call UPPERCASE,$(1)_$(2))_$(3)
 
-vars: iamroot_lib_$(2)_$(3)
-iamroot_lib_$(2)_$(3):
+vars: iamroot_lib_$(1)_$(2)_$(3)
+iamroot_lib_$(1)_$(2)_$(3):
 	@echo export "IAMROOT_LIB_$(call UPPERCASE,$(1)_$(2))_$(3)=\"$$(IAMROOT_LIB_$(call UPPERCASE,$(1)_$(2))_$(3))\""
 
 all: $(1)/libiamroot-$(2).so.$(3)
@@ -190,6 +230,7 @@ $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export 
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_ARMHF_LINUX_ARMHF_3 = /lib/arm-linux-gnueabihf:/usr/lib/arm-linux-gnueabihf:/lib:/usr/lib
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_AARCH64_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu:/usr/lib/aarch64-linux-gnu:/lib:/usr/lib
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_RISCV64_LINUX_RISCV64_LP64D_1 = /lib/riscv64-linux-gnu:/usr/lib/riscv64-linux-gnu:/lib:/usr/lib
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_MIPSLE_1 = /usr/lib/mipsel-linux-gnu:/lib/mipsel-linux-gnu:/usr/lib:/lib
 # chfn: PAM: Critical error - immediate abort
 # adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn
@@ -507,73 +548,83 @@ ifeq ($(LIBC),musl)
 libiamroot.so: x86_64/libiamroot-musl-x86_64.so.1
 	install -D -m755 $< $@
 
-$(eval $(call libiamroot_so,x86_64,musl-x86_64,1))
+$(eval $(call libiamroot_ldso_so_abi,x86_64,musl-x86_64,1))
 else
 libiamroot.so: x86_64/libiamroot-linux-x86-64.so.2
 	install -D -m755 $< $@
 
-$(eval $(call libiamroot_so,x86_64,linux-x86-64,2))
+$(eval $(call libiamroot_ldso_so_abi,x86_64,linux-x86-64,2))
 
 $(O)-i686-linux/libiamroot.so: override CC += -m32
 $(O)-i686-linux/libiamroot.so: override CFLAGS += -fno-stack-protector
-$(eval $(call libiamroot_so,i686,linux,2))
+$(eval $(call libiamroot_ldso_so_abi,i686,linux,2))
 
 ifneq ($(shell command -v arm-buildroot-linux-gnueabi-gcc 2>/dev/null),)
 $(O)-arm-linux/libiamroot.so: override CC = arm-buildroot-linux-gnueabi-gcc
-$(eval $(call libiamroot_so,arm,linux,3))
+$(eval $(call libiamroot_ldso_so_abi,arm,linux,3))
 endif
 
 ifneq ($(shell command -v arm-buildroot-linux-gnueabihf-gcc 2>/dev/null),)
 $(O)-armhf-linux-armhf/libiamroot.so: override CC = arm-buildroot-linux-gnueabihf-gcc
-$(eval $(call libiamroot_so,armhf,linux-armhf,3))
+$(eval $(call libiamroot_ldso_so_abi,armhf,linux-armhf,3))
 endif
 
 ifneq ($(shell command -v aarch64-buildroot-linux-gnu-gcc 2>/dev/null),)
 $(O)-aarch64-linux-aarch64/libiamroot.so: override CC = aarch64-buildroot-linux-gnu-gcc
-$(eval $(call libiamroot_so,aarch64,linux-aarch64,1))
+$(eval $(call libiamroot_ldso_so_abi,aarch64,linux-aarch64,1))
 endif
 
 ifneq ($(shell command -v riscv64-buildroot-linux-gnu-gcc 2>/dev/null),)
 $(O)-riscv64-linux-riscv64-lp64d/libiamroot.so: override CC = riscv64-buildroot-linux-gnu-gcc
-$(eval $(call libiamroot_so,riscv64,linux-riscv64-lp64d,1))
+$(eval $(call libiamroot_ldso_so_abi,riscv64,linux-riscv64-lp64d,1))
 endif
 
 ifneq ($(shell command -v i386-musl-gcc 2>/dev/null),)
 $(O)-i686-musl-i386/libiamroot.so: override CC = i386-musl-gcc
 $(O)-i686-musl-i386/libiamroot.so: override CFLAGS += -fno-stack-protector
-$(eval $(call libiamroot_so,i686,musl-i386,1))
+$(eval $(call libiamroot_ldso_so_abi,i686,musl-i386,1))
 endif
 
 ifneq ($(shell command -v musl-gcc 2>/dev/null),)
 $(O)-x86_64-musl-x86_64/libiamroot.so: override CC = musl-gcc
-$(eval $(call libiamroot_so,x86_64,musl-x86_64,1))
+$(eval $(call libiamroot_ldso_so_abi,x86_64,musl-x86_64,1))
 endif
 
 ifneq ($(shell command -v arm-buildroot-linux-musleabi-gcc 2>/dev/null),)
 $(O)-arm-musl-arm/libiamroot.so: override CC = arm-buildroot-linux-musleabi-gcc
-$(eval $(call libiamroot_so,arm,musl-arm,1))
+$(eval $(call libiamroot_ldso_so_abi,arm,musl-arm,1))
 endif
 
 ifneq ($(shell command -v arm-buildroot-linux-musleabihf-gcc 2>/dev/null),)
 $(O)-armhf-musl-armhf/libiamroot.so: override CC = arm-buildroot-linux-musleabihf-gcc
-$(eval $(call libiamroot_so,armhf,musl-armhf,1))
+$(eval $(call libiamroot_ldso_so_abi,armhf,musl-armhf,1))
 endif
 
 ifneq ($(shell command -v aarch64-buildroot-linux-musl-gcc 2>/dev/null),)
 $(O)-aarch64-musl-aarch64/libiamroot.so: override CC = aarch64-buildroot-linux-musl-gcc
-$(eval $(call libiamroot_so,aarch64,musl-aarch64,1))
+$(eval $(call libiamroot_ldso_so_abi,aarch64,musl-aarch64,1))
 endif
 
 ifneq ($(shell command -v riscv64-buildroot-linux-musl-gcc 2>/dev/null),)
 $(O)-riscv64-musl-riscv64/libiamroot.so: override CC = riscv64-buildroot-linux-musl-gcc
-$(eval $(call libiamroot_so,riscv64,musl-riscv64,1))
+$(eval $(call libiamroot_ldso_so_abi,riscv64,musl-riscv64,1))
+endif
+
+ifneq ($(shell command -v mipsel-buildroot-linux-gnu-gcc 2>/dev/null),)
+$(O)-mipsle/libiamroot.so: override CC = mipsel-buildroot-linux-gnu-gcc -march=mips32r2
+$(eval $(call libiamroot_so_abi,mipsle,1))
+endif
+
+ifneq ($(shell command -v mipsel-buildroot-linux-musl-gcc 2>/dev/null),)
+$(O)-mipsle-musl-mipsel/libiamroot.so: override CC = mipsel-buildroot-linux-musl-gcc -march=mips32r2
+$(eval $(call libiamroot_ldso_so_abi,mipsle,musl-mipsel,1))
 endif
 endif
 
 ifneq ($(CLANG),0)
 ifneq ($(shell command -v clang 2>/dev/null),)
 $(O)-clang-linux-x86-64/libiamroot.so: override CC = clang
-$(eval $(call libiamroot_so,clang,linux-x86-64,2))
+$(eval $(call libiamroot_ldso_so_abi,clang,linux-x86-64,2))
 endif
 endif
 endif
@@ -582,7 +633,7 @@ ifeq ($(ARCH),aarch64)
 libiamroot.so: aarch64/libiamroot-linux-aarch64.so.1
 	install -D -m755 $< $@
 
-$(eval $(call libiamroot_so,aarch64,linux-aarch64,1))
+$(eval $(call libiamroot_ldso_so_abi,aarch64,linux-aarch64,1))
 endif
 
 .PRECIOUS: $(O)-%/libiamroot.so
@@ -619,6 +670,9 @@ arm-rootfs:
 
 .PHONY: riscv64-rootfs
 riscv64-rootfs:
+
+.PHONY: mips-rootfs
+mips-rootfs:
 
 .PHONY: test ci ish multiarch-ish
 test ci ish multiarch-ish: libiamroot.so
@@ -1098,6 +1152,21 @@ $(eval $(call debootstrap-rootfs,riscv64,debian,testing))
 $(eval $(call debootstrap-rootfs,riscv64,debian,unstable))
 riscv64-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 riscv64-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
+endif
+
+ifneq ($(shell command -v mipsel-buildroot-linux-gnu-gcc 2>/dev/null),)
+mips-rootfs: mipsel-debian-rootfs
+
+.PHONY: mipsel-debian-rootfs
+mipsel-debian-rootfs: mipsel-debian-oldoldstable-rootfs
+mipsel-debian-rootfs: mipsel-debian-oldstable-rootfs
+mipsel-debian-rootfs: mipsel-debian-stable-rootfs
+
+$(eval $(call debootstrap-rootfs,mipsel,debian,oldoldstable))
+$(eval $(call debootstrap-rootfs,mipsel,debian,oldstable))
+$(eval $(call debootstrap-rootfs,mipsel,debian,stable))
+mipsel-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+mipsel-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 endif
 

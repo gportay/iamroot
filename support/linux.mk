@@ -1,5 +1,5 @@
 #
-# Copyright 2021-2023 Gaël PORTAY
+# Copyright 2021-2024 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -109,7 +109,6 @@ iamroot_lib_$(2)_$(3):
 	@echo export "IAMROOT_LIB_$(call UPPERCASE,$(2))_$(3)=\"$$(IAMROOT_LIB_$(call UPPERCASE,$(2))_$(3))\""
 
 all: $(1)/libiamroot-$(2).so.$(3)
-test: $(1)/libiamroot-$(2).so.$(3)
 
 .PRECIOUS: $(1)/libiamroot-$(2).so.$(3)
 $(1)/libiamroot-$(2).so.$(3): $(O)-$(1)-$(2)/libiamroot.so
@@ -615,12 +614,8 @@ aarch64-rootfs:
 .PHONY: arm-rootfs
 arm-rootfs:
 
-.PHONY: ci
-ci: test
-	$(MAKE) -f Makefile $@
-
-.PHONY: test
-test:
+.PHONY: test ci
+test ci: libiamroot.so
 	$(MAKE) -f Makefile $@
 
 .PHONY: coverage

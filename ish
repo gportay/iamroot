@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2020-2023 Gaël PORTAY
+# Copyright 2020-2024 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -130,7 +130,6 @@ export IAMROOT_EXEC
 IAMROOT_USER="${IAMROOT_USER:-root}"
 export IAMROOT_USER
 
-argv=()
 while [[ "$#" -ne 0 ]]
 do
 	if [[ "$1" == "--help" ]]
@@ -277,7 +276,7 @@ do
 	fi
 done
 
-command=("${SHELL:-/bin/sh}" "${argv[@]}" "$@")
+command=("${SHELL:-/bin/sh}" "$@")
 
 ISH_USER="$USER" \
 ISH_UID="$UID" \

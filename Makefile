@@ -371,6 +371,16 @@ multiarch-ish: ish
 ish: libiamroot.so
 	bash ish
 
+.PHONY: sh bash zsh
+sh bash zsh csh ksh: PATH := $(CURDIR):$(PATH)
+sh bash zsh csh ksh:
+	$@
+
+.PHONY: shell
+shell: PATH := $(CURDIR):$(PATH)
+shell:
+	$(SHELL)
+
 .PHONY: clean
 clean:
 	rm -Rf libiamroot.so *.o *.i

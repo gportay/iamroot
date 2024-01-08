@@ -1425,7 +1425,7 @@ Created symlink /etc/systemd/user/basic.target.wants/systemd-tmpfiles-setup.serv
 /bin/sh: failed to remove 'var/lib/rpm': Directory not empty
 warning: %posttrans(rpm) scriptlet failed, exit status 1
 %posttrans(ca-certificates-mozilla) script output:
-/var/adm/update-scripts/posttransXXXXXX/ca-certificates-mozillaXXXXXX: line X: update-ca-certificates: command not found
+FIXME: not-running /usr/sbin/update-ca-certificates
 %posttrans(systemd-presets-branding-openSUSE) script output:
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 %posttrans(openSUSE-release) script output:

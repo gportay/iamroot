@@ -19,7 +19,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Removed
 
-- Remove the `ish`'s option `--path and its environment variable `IAMROOT_PATH`
+- Remove the `ish`'s option `--path` and its environment variable
+  `IAMROOT_PATH`
 
 ### Fixed
 

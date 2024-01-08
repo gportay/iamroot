@@ -70,7 +70,7 @@
 
 # /sbin/update-ca-certificates: line X: /dev/fd/X: No such file or directory
 # /var/adm/update-scripts/posttransXXXXXX/ca-certificates-mozilla-2.44-21.1.noarchXXXXXX: line 2: update-ca-certificates: command not found
-/^\(\/sbin\/update-ca-certificates:\|\/var\/adm\/update-scripts\/posttrans\)/ {
+/^\(\/sbin\/update-ca-certificates:\|\/usr\/sbin\/update-ca-certificates:\|\/var\/adm\/update-scripts\/posttrans\)/ {
 	s,/posttrans[[:alnum:]]\{6\,6\}/\([[:lower:][:upper:][:digit:]._+-]\+\)-\([[:digit:]]\+:[[:alnum:]._~^+-]\+\|[[:alnum:]._~^+-]\+\)-\([[:alnum:].%{?}-]\+\)\.\([[:lower:][:digit:]]\+\.[[:alnum:]_]\+\|[[:alnum:]_]\+\)[[:alnum:]]\{6\,6\}: ,/posttransXXXXXX/\1XXXXXX: ,
 	s,line \([[:digit:]]\+\): ,line X: ,
 	s,/dev/fd/\([[:digit:]]\+\): ,/dev/fd/X: ,

@@ -1,5 +1,5 @@
 #
-# Copyright 2021-2023 Gaël PORTAY
+# Copyright 2021-2024 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -572,6 +572,9 @@ ifeq ($(OS),GNU/Linux)
 	- env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                                                                          test-lremovexattr         rootfs/etc/os-release user.two
 	- env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                                                                          test-lremovexattr         rootfs/etc/os-release user.one
 endif
+ifeq ($(OS),GNU/Linux)
+	bash tests.bash
+endif
 	@echo "Completed!"
 
 rootfs: DESTDIR = $(CURDIR)/rootfs
@@ -583,6 +586,7 @@ rootfs:
 	install -m644 group  $(DESTDIR)/etc/
 	install -m600 shadow $(DESTDIR)/etc/
 	install -d -m755 $(DESTDIR)/usr/bin
+	ln -sf usr/bin $(DESTDIR)/bin
 	for i in *.c; do \
 		test -e $${i%.c} || continue; \
 		install -m755 $${i%.c} $(DESTDIR)/usr/bin/; \
@@ -662,6 +666,10 @@ endif
 ifneq ($(OS),Linux)
 	install -d -m755 $(DESTDIR)/usr/lib/nls/msg/$$LANG/
 	gencat $(DESTDIR)/usr/lib/nls/msg/$$LANG/test.cat test.msg
+endif
+ifeq ($(OS),GNU/Linux)
+	bash install-bin bash $(DESTDIR)
+	bash install-bin env $(DESTDIR)
 endif
 
 .PHONY: clean

@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+#
+# Copyright 2024 Gaël PORTAY
+#
+# SPDX-License-Identifier: LGPL-2.1-or-later
+#
+
+set -e
+
+if [[ "$#" -ne 2 ]]
+then
+	echo "Usage: ${0##*/} BINARY DESTDIR"
+	exit 1
+fi
+
+bin="$(command -v "$1")"
+mapfile -t objects < <(LD_TRACE_LOADED_OBJECTS=1 "$bin")
+for i in "${objects[@]}"
+do
+	read -a words <<<"$i"
+
+	# Install the dynamic loader:
+	#
+	# It is the dynamic loader if the line has two arguments and if the
+	# first word if an host-existing file (it is the virtual dynamic shared
+	# object otherwise).
+	#
+	# linux-vdso.so.1 (0x00007fff3e564000)
+	# /lib64/ld-linux-x86-64.so.2 (0x00007fc10fd28000)
+	if [[ "${#words[*]}" -eq 2 ]] && [[ -x "${words[0]}" ]] &&
+	   [[ ! -x "$2${words[0]}" ]]
+	then
+		file="${words[0]}"
+	# Install the needed shared objects:
+	#
+	# It is a shared object if line has four arguments.
+	#
+	# libc.so.6 => /usr/lib/libc.so.6 (0x0123456789abcdef)
+	elif [[ "${#words[*]}" -eq 4 ]] && [[ -x "${words[2]}" ]]
+	then
+		file="${words[2]}"
+	# Ignoring other lines.
+	else
+		continue
+	fi
+
+	# Install file to DESTDIR if it is not already installed.
+	if [[ ! -x "$2$file" ]]
+	then
+		install -D -m755 "$file" "$2$file"
+	fi
+done
+
+# Install binary file to DESTDIR if it is not already installed.
+if [[ ! -x "$2$bin" ]]
+then
+	install -D -m755 "$bin" "$2$bin"
+fi

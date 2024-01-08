@@ -70,6 +70,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Preload the iamroot library not using `IAMROOT_LIB` if `LD_PRELOAD` is unset
   and not in a chroot'ed environment
 - Strip leading `ld_library_path` from the content of `LD_LIBRARY_PATH`
+- `ido(1)` is now using `ish(1)`
 
 ### Fixed
 

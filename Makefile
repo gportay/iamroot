@@ -386,10 +386,12 @@ multiarch-ish: ISHFLAGS += --multiarch
 multiarch-ish: ish
 
 .PHONY: ido
+ido: PATH := $(CURDIR):$(PATH)
 ido: libiamroot.so
 	bash ido $(IDOFLAGS) -i
 
 .PHONY: ish
+ish: PATH := $(CURDIR):$(PATH)
 ish: libiamroot.so
 	bash ish $(ISHFLAGS)
 

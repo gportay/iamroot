@@ -139,13 +139,15 @@ endef
 
 define chroot_shell
 .PHONY: $(1)-$(2)-chroot
+$(1)-$(2)-chroot: PATH := $(CURDIR):$(PATH)
 $(1)-$(2)-chroot: | $(1)-$(2)-rootfs
-	bash ido $$(IDOFLAGS) chroot $(1)-$(2)-rootfs $(3)
+	ido $$(IDOFLAGS) chroot $(1)-$(2)-rootfs $(3)
 
 .PHONY: $(1)-$(2)-shell
+$(1)-$(2)-shell: PATH := $(CURDIR):$(PATH)
 $(1)-$(2)-shell: libiamroot.so
 	@echo $(4)
-	bash ish
+	ish
 endef
 
 define pacstrap-rootfs
@@ -156,9 +158,10 @@ $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export EUID = 0
 $(eval $(call chroot_shell,$(1),$(2),/bin/bash,pacstrap -GMC support/$(1)-$(2)-pacman.conf $(1)-$(2)-rootfs $(3)))
 
 $(1)-$(2)-rootfs: | $(1)-$(2)-rootfs/bin/sh
+$(1)-$(2)-rootfs/bin/sh: PATH := $(CURDIR):$(PATH)
 $(1)-$(2)-rootfs/bin/sh: | $(call libs,linux,$(1))
-	bash ido $$(IDOFLAGS) mkdir -p $(1)-$(2)-rootfs
-	bash ido $$(IDOFLAGS) pacstrap -GMC support/$(1)-$(2)-pacman.conf $(1)-$(2)-rootfs $(3)
+	ido $$(IDOFLAGS) mkdir -p $(1)-$(2)-rootfs
+	ido $$(IDOFLAGS) pacstrap -GMC support/$(1)-$(2)-pacman.conf $(1)-$(2)-rootfs $(3)
 
 $(eval $(call log,pacstrap,$(1)-$(2)-rootfs))
 
@@ -185,11 +188,12 @@ $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export 
 $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/bash,debootstrap --keep-debootstrap-dir $$(DEBOOTSTRAPFLAGS) $(3) $(1)-$(2)-$(3)-rootfs $$(DEBOOTSTRAP_MIRROR) $$(DEBOOTSTRAP_SCRIPT)))
 
 $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/sh
+$(1)-$(2)-$(3)-rootfs/bin/sh: PATH := $(CURDIR):$(PATH)
 $(1)-$(2)-$(3)-rootfs/bin/sh: | $(call libs,linux,$(1))
-	bash ido $$(IDOFLAGS) mkdir -p $(1)-$(2)-$(3)-rootfs
-	bash ido $$(IDOFLAGS) debootstrap --keep-debootstrap-dir --arch=$(1) $$(DEBOOTSTRAPFLAGS) $(3) $(1)-$(2)-$(3)-rootfs $$(DEBOOTSTRAP_MIRROR) $$(DEBOOTSTRAP_SCRIPT)
-	bash ido $$(IDOFLAGS) cat $(1)-$(2)-$(3)-rootfs/debootstrap/debootstrap.log
-	bash ido $$(IDOFLAGS) rm -Rf $(1)-$(2)-$(3)-rootfs/debootstrap/
+	ido $$(IDOFLAGS) mkdir -p $(1)-$(2)-$(3)-rootfs
+	ido $$(IDOFLAGS) debootstrap --keep-debootstrap-dir --arch=$(1) $$(DEBOOTSTRAPFLAGS) $(3) $(1)-$(2)-$(3)-rootfs $$(DEBOOTSTRAP_MIRROR) $$(DEBOOTSTRAP_SCRIPT)
+	ido $$(IDOFLAGS) cat $(1)-$(2)-$(3)-rootfs/debootstrap/debootstrap.log
+	ido $$(IDOFLAGS) rm -Rf $(1)-$(2)-$(3)-rootfs/debootstrap/
 
 $(eval $(call log,debootstrap,$(1)-$(2)-$(3)-rootfs))
 
@@ -207,10 +211,11 @@ $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export 
 $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/bash,dnf --forcearch $(1) --releasever $(3) --assumeyes --installroot $(CURDIR)/$(1)-$(2)-$(3)-rootfs group install minimal-environment))
 
 $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/sh
+$(1)-$(2)-$(3)-rootfs/bin/sh: PATH := $(CURDIR):$(PATH)
 $(1)-$(2)-$(3)-rootfs/bin/sh: | $(call libs,linux,$(1))
-	bash ido $$(IDOFLAGS) install -D -m644 $$(FEDORA_REPO) $(1)-$(2)-$(3)-rootfs/etc/distro.repos.d/fedora.repo
-	bash ido $$(IDOFLAGS) dnf --forcearch $(1) --releasever $(3) --assumeyes --installroot $(CURDIR)/$(1)-$(2)-$(3)-rootfs group install minimal-environment
-	bash ido $$(IDOFLAGS) rm -f $(1)-$(2)-$(3)-rootfs/etc/distro.repos.d/fedora.repo
+	ido $$(IDOFLAGS) install -D -m644 $$(FEDORA_REPO) $(1)-$(2)-$(3)-rootfs/etc/distro.repos.d/fedora.repo
+	ido $$(IDOFLAGS) dnf --forcearch $(1) --releasever $(3) --assumeyes --installroot $(CURDIR)/$(1)-$(2)-$(3)-rootfs group install minimal-environment
+	ido $$(IDOFLAGS) rm -f $(1)-$(2)-$(3)-rootfs/etc/distro.repos.d/fedora.repo
 
 $(eval $(call log,dnf,$(1)-$(2)-$(3)-rootfs))
 
@@ -229,9 +234,10 @@ $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export PATH = /usr/bin
 $(eval $(call chroot_shell,$(1),$(2),/bin/bash,zypper --root $(CURDIR)/$(1)-$(2)-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd))
 
 $(1)-$(2)-rootfs: | $(1)-$(2)-rootfs/bin/sh
+$(1)-$(2)-rootfs/bin/sh: PATH := $(CURDIR):$(PATH)
 $(1)-$(2)-rootfs/bin/sh: | $(call libs,linux,$(1))
-	bash ido $$(IDOFLAGS) zypper --root $(CURDIR)/$(1)-$(2)-rootfs addrepo --no-gpgcheck support/$(2)-repo-oss.repo
-	bash ido $$(IDOFLAGS) zypper --root $(CURDIR)/$(1)-$(2)-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd
+	ido $$(IDOFLAGS) zypper --root $(CURDIR)/$(1)-$(2)-rootfs addrepo --no-gpgcheck support/$(2)-repo-oss.repo
+	ido $$(IDOFLAGS) zypper --root $(CURDIR)/$(1)-$(2)-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd
 
 $(eval $(call log,zypper,$(1)-$(2)-rootfs))
 
@@ -249,9 +255,10 @@ $(eval $(call chroot_shell,$(1),$(2),/bin/bash,xbps-install -S -r $(1)-$(2)-root
 $(1)-$(2)-rootfs: | $(1)-$(2)-rootfs/bin/sh
 $(1)-$(2)-rootfs/bin/sh: export XBPS_ARCH=$(1)
 $(1)-$(2)-rootfs/bin/sh: IDOFLAGS += --preserve-env=XBPS_ARCH
+$(1)-$(2)-rootfs/bin/sh: PATH := $(CURDIR):$(PATH)
 $(1)-$(2)-rootfs/bin/sh: | $(call libs,linux,$(1))
-	bash ido $$(IDOFLAGS) install -D -t $(1)-$(2)-rootfs/var/db/xbps/keys/ /var/db/xbps/keys/*
-	bash ido $$(IDOFLAGS) xbps-install -S -y -r $(1)-$(2)-rootfs -R http://repo-default.voidlinux.org/current base-system
+	ido $$(IDOFLAGS) install -D -t $(1)-$(2)-rootfs/var/db/xbps/keys/ /var/db/xbps/keys/*
+	ido $$(IDOFLAGS) xbps-install -S -y -r $(1)-$(2)-rootfs -R http://repo-default.voidlinux.org/current base-system
 
 $(eval $(call log,xbps-install,$(1)-$(2)-rootfs))
 endef
@@ -264,9 +271,10 @@ $(eval $(call chroot_shell,$(1),$(2)-musl,/bin/bash,xbps-install -S -r $(1)-$(2)
 $(1)-$(2)-musl-rootfs: | $(1)-$(2)-musl-rootfs/bin/sh
 $(1)-$(2)-musl-rootfs/bin/sh: export XBPS_ARCH=$(1)-musl
 $(1)-$(2)-musl-rootfs/bin/sh: IDOFLAGS += --preserve-env=XBPS_ARCH
+$(1)-$(2)-musl-rootfs/bin/sh: PATH := $(CURDIR):$(PATH)
 $(1)-$(2)-musl-rootfs/bin/sh: | $(call libs,musl,$(1))
-	bash ido $$(IDOFLAGS) install -D -t $(1)-$(2)-musl-rootfs/var/db/xbps/keys/ /var/db/xbps/keys/*
-	bash ido $$(IDOFLAGS) xbps-install -S -y -r $(1)-$(2)-musl-rootfs -R http://repo-default.voidlinux.org/current/musl base-system
+	ido $$(IDOFLAGS) install -D -t $(1)-$(2)-musl-rootfs/var/db/xbps/keys/ /var/db/xbps/keys/*
+	ido $$(IDOFLAGS) xbps-install -S -y -r $(1)-$(2)-musl-rootfs -R http://repo-default.voidlinux.org/current/musl base-system
 
 $(eval $(call log,xbps-install,$(1)-$(2)-musl-rootfs))
 endef
@@ -280,8 +288,9 @@ $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export ALPINE_MAKE_ROOTF
 $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/ash,alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --mirror-uri http://mirrors.edge.kernel.org/alpine --branch $(3)))
 
 $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/busybox
+$(1)-$(2)-$(3)-rootfs/bin/busybox: PATH := $(CURDIR):$(PATH)
 $(1)-$(2)-$(3)-rootfs/bin/busybox: | $(call libs,musl,$(1))
-	bash ido $$(IDOFLAGS) alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --mirror-uri http://mirrors.edge.kernel.org/alpine --branch $(3) $$(ALPINE_MAKE_ROOTFSFLAGS)
+	ido $$(IDOFLAGS) alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --mirror-uri http://mirrors.edge.kernel.org/alpine --branch $(3) $$(ALPINE_MAKE_ROOTFSFLAGS)
 
 $(eval $(call log,alpine-make-rootfs,$(1)-$(2)-$(3)-rootfs))
 
@@ -331,21 +340,23 @@ endif
 ifneq ($(VMLINUX_KVER),)
 MODULESDIRS_$(1)-$(2) += $(1)-$(2)-rootfs/usr/lib/modules/$(VMLINUX_KVER)
 endif
+$(1)-$(2).ext4: PATH := $(CURDIR):$(PATH)
 $(1)-$(2).ext4: | x86_64/libiamroot-linux-x86-64.so.2 $(1)-$(2)-rootfs $$(MODULESDIRS_$(1)-$(2))
 	$(MAKE) $(1)-$(2)-postrootfs
 	rm -f $$@.tmp
 	fallocate --length 2G $$@.tmp
-	bash ido $$(IDOFLAGS) mkfs.ext4 -d $(1)-$(2)-rootfs $$@.tmp
+	ido $$(IDOFLAGS) mkfs.ext4 -d $(1)-$(2)-rootfs $$@.tmp
 	mv $$@.tmp $$@
 
 .PHONY: $(1)-$(2)-postrootfs
 $(1)-$(2)-postrootfs:
 
 .PRECIOUS: $(1)-$(2)-rootfs/usr/lib/modules/$(KVER) $(1)-$(2)-rootfs/usr/lib/modules/$(VMLINUX_KVER)
+$(1)-$(2)-rootfs/usr/lib/modules/$(KVER) $(1)-$(2)-rootfs/usr/lib/modules/$(VMLINUX_KVER): PATH := $(CURDIR):$(PATH)
 $(1)-$(2)-rootfs/usr/lib/modules/$(KVER) $(1)-$(2)-rootfs/usr/lib/modules/$(VMLINUX_KVER): | x86_64/libiamroot-linux-x86-64.so.2 $(1)-$(2)-rootfs
 	rm -Rf $$@.tmp $$@
-	bash ido $$(IDOFLAGS) mkdir -p $$(@D)
-	bash ido $$(IDOFLAGS) rsync -a /usr/lib/modules/$$(@F)/. $$@.tmp/.
+	ido $$(IDOFLAGS) mkdir -p $$(@D)
+	ido $$(IDOFLAGS) rsync -a /usr/lib/modules/$$(@F)/. $$@.tmp/.
 	mv $$@.tmp $$@
 
 .PHONY: chroot-$(1)-$(2)
@@ -364,6 +375,7 @@ umount-$(1)-$(2): | mnt
 endef
 
 define pacstrap-postrootfs
+$(1)-$(2)-postrootfs: PATH := $(CURDIR):$(PATH)
 $(1)-$(2)-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i $(1)-$(2)-rootfs/etc/passwd
@@ -371,11 +383,12 @@ $(1)-$(2)-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	    -i $(1)-$(2)-rootfs/etc/shadow
 	mkdir -p $(1)-$(2)-rootfs/var/lib/systemd/linger
 	rm -f $(1)-$(2)-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
-	bash ido $$(IDOFLAGS) chroot $(1)-$(2)-rootfs systemctl enable getty@tty0.service
+	ido $$(IDOFLAGS) chroot $(1)-$(2)-rootfs systemctl enable getty@tty0.service
 endef
 
 define debootstrap-postrootfs
 $(1)-$(2)-postrootfs: IDOFLAGS += --multiarch
+$(1)-$(2)-postrootfs: PATH := $(CURDIR):$(PATH)
 $(1)-$(2)-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i $(1)-$(2)-rootfs/etc/passwd
@@ -383,19 +396,20 @@ $(1)-$(2)-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	    -i $(1)-$(2)-rootfs/etc/shadow
 	if test -e $(1)-$(2)-rootfs/lib/systemd/systemd; then \
 		rm -f $(1)-$(2)-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service; \
-		bash ido $$(IDOFLAGS) chroot $(1)-$(2)-rootfs systemctl enable getty@tty0.service; \
+		ido $$(IDOFLAGS) chroot $(1)-$(2)-rootfs systemctl enable getty@tty0.service; \
 		rm -f $(1)-$(2)-rootfs/etc/systemd/system/multi-user.target.wants/sshd.service; \
-		bash ido $$(IDOFLAGS) chroot $(1)-$(2)-rootfs systemctl disable sshd.service; \
+		ido $$(IDOFLAGS) chroot $(1)-$(2)-rootfs systemctl disable sshd.service; \
 	else \
 		sed -e '/^1:/i0:2345:respawn:/sbin/getty --noclear 38400 tty0' \
 		    -e '/^[1-9]:/s,^,#,' \
 		    -e '/^#T0:/s,^#,,g' \
 		    -i $(1)-$(2)-rootfs/etc/inittab; \
 	fi
-	bash ido $$(IDOFLAGS) chroot $(1)-$(2)-rootfs pam-auth-update
+	ido $$(IDOFLAGS) chroot $(1)-$(2)-rootfs pam-auth-update
 endef
 
 define dnf-postrootfs
+$(1)-$(2)-postrootfs: PATH := $(CURDIR):$(PATH)
 $(1)-$(2)-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i $(1)-$(2)-rootfs/etc/passwd
@@ -404,23 +418,24 @@ $(1)-$(2)-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	touch $(1)-$(2)-rootfs/etc/systemd/zram-generator.conf
 	mkdir -p $(1)-$(2)-rootfs/var/lib/systemd/linger
 	rm -f $(1)-$(2)-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
-	bash ido $$(IDOFLAGS) chroot $(1)-$(2)-rootfs systemctl enable getty@tty0.service
+	ido $$(IDOFLAGS) chroot $(1)-$(2)-rootfs systemctl enable getty@tty0.service
 	rm -f $(1)-$(2)-rootfs/etc/systemd/system/multi-user.target.wants/sshd.service
-	bash ido $$(IDOFLAGS) chroot $(1)-$(2)-rootfs systemctl disable sshd.service
+	ido $$(IDOFLAGS) chroot $(1)-$(2)-rootfs systemctl disable sshd.service
 endef
 
 define zypper-postrootfs
+$(1)-$(2)-postrootfs: PATH := $(CURDIR):$(PATH)
 $(1)-$(2)-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i $(1)-$(2)-rootfs/etc/passwd
 	sed -e '/^root:\*:/s,^root:\*:,root:x:,' \
 	    -i $(1)-$(2)-rootfs/etc/shadow
-	bash ido $$(IDOFLAGS) chroot $(1)-$(2)-rootfs pam-config -a --nullok
+	ido $$(IDOFLAGS) chroot $(1)-$(2)-rootfs pam-config -a --nullok
 	mkdir -p $(1)-$(2)-rootfs/var/lib/systemd/linger
 	rm -f $(1)-$(2)-rootfs/etc/systemd/system/getty.target.wants/getty@tty0.service
-	bash ido $$(IDOFLAGS) chroot $(1)-$(2)-rootfs systemctl enable getty@tty0.service
+	ido $$(IDOFLAGS) chroot $(1)-$(2)-rootfs systemctl enable getty@tty0.service
 	rm -f $(1)-$(2)-rootfs/etc/systemd/system/getty.target.wants/getty@ttyS0.service
-	bash ido $$(IDOFLAGS) chroot $(1)-$(2)-rootfs systemctl enable getty@ttyS0.service
+	ido $$(IDOFLAGS) chroot $(1)-$(2)-rootfs systemctl enable getty@ttyS0.service
 endef
 
 define alpinelinux-postrootfs
@@ -774,8 +789,8 @@ ifneq ($(shell command -v pacstrap 2>/dev/null),)
 archlinux-test: | x86_64-archlinux-rootfs/usr/bin/shebang.sh
 archlinux-test: | x86_64-archlinux-rootfs/usr/bin/shebang-arg.sh
 archlinux-test: $(subst $(CURDIR)/,,$(IAMROOT_LIB)) | x86_64-archlinux-rootfs
-	bash ido $(IDOFLAGS) chroot x86_64-archlinux-rootfs shebang.sh one two three
-	bash ido $(IDOFLAGS) chroot x86_64-archlinux-rootfs shebang-arg.sh one two three
+	ido $(IDOFLAGS) chroot x86_64-archlinux-rootfs shebang.sh one two three
+	ido $(IDOFLAGS) chroot x86_64-archlinux-rootfs shebang-arg.sh one two three
 
 x86_64-archlinux-rootfs/usr/bin/%: support/% | x86_64-archlinux-rootfs
 	cp $< $@
@@ -1058,14 +1073,14 @@ alpine-test: | x86_64-alpine-mini-rootfs/usr/bin/shebang.sh
 alpine-test: | x86_64-alpine-mini-rootfs/usr/bin/shebang-arg.sh
 alpine-test: | x86_64-alpine-mini-rootfs/usr/bin/shebang-busybox.sh
 alpine-test: $(call libs,musl,x86_64) | x86_64-alpine-mini-rootfs
-	bash ido $(IDOFLAGS) chroot x86_64-alpine-mini-rootfs pwd                          | tee /dev/stderr | grep -q "^/\$$"
-	bash ido $(IDOFLAGS) chroot x86_64-alpine-mini-rootfs cat /etc/os-release          | tee /dev/stderr | grep 'NAME="Alpine Linux"'
-	bash ido $(IDOFLAGS) chroot x86_64-alpine-mini-rootfs chroot . cat /etc/os-release | tee /dev/stderr | grep 'NAME="Alpine Linux"'
-	bash ido $(IDOFLAGS) chroot x86_64-alpine-mini-rootfs /bin/busybox
-	bash ido $(IDOFLAGS) chroot x86_64-alpine-mini-rootfs shebang.sh one two three
-	bash ido $(IDOFLAGS) chroot x86_64-alpine-mini-rootfs shebang-arg.sh one two three
-	bash ido $(IDOFLAGS) chroot x86_64-alpine-mini-rootfs shebang-busybox.sh one two three
-	bash ido $(IDOFLAGS) chroot x86_64-alpine-mini-rootfs /lib/ld-musl-x86_64.so.1 --preload "$$PWD/x86_64/libiamroot-musl-x86_64.so.1" bin/busybox
+	ido $(IDOFLAGS) chroot x86_64-alpine-mini-rootfs pwd                          | tee /dev/stderr | grep -q "^/\$$"
+	ido $(IDOFLAGS) chroot x86_64-alpine-mini-rootfs cat /etc/os-release          | tee /dev/stderr | grep 'NAME="Alpine Linux"'
+	ido $(IDOFLAGS) chroot x86_64-alpine-mini-rootfs chroot . cat /etc/os-release | tee /dev/stderr | grep 'NAME="Alpine Linux"'
+	ido $(IDOFLAGS) chroot x86_64-alpine-mini-rootfs /bin/busybox
+	ido $(IDOFLAGS) chroot x86_64-alpine-mini-rootfs shebang.sh one two three
+	ido $(IDOFLAGS) chroot x86_64-alpine-mini-rootfs shebang-arg.sh one two three
+	ido $(IDOFLAGS) chroot x86_64-alpine-mini-rootfs shebang-busybox.sh one two three
+	ido $(IDOFLAGS) chroot x86_64-alpine-mini-rootfs /lib/ld-musl-x86_64.so.1 --preload "$$PWD/x86_64/libiamroot-musl-x86_64.so.1" bin/busybox
 
 rootfs: alpinelinux-rootfs
 
@@ -1652,7 +1667,7 @@ endif
 
 .PHONY: static-chroot
 static-chroot: x86_64/libiamroot-linux-x86-64.so.2 | static-rootfs
-	bash ido $(IDOFLAGS) chroot static-rootfs /bin/sh
+	ido $(IDOFLAGS) chroot static-rootfs /bin/sh
 
 .PHONY: static-rootfs
 static-rootfs: static-rootfs/usr/bin/sh

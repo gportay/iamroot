@@ -416,17 +416,9 @@ then
 	set -- "${vars[@]}" "$@"
 fi
 
-if [[ "$IAMROOT_ROOT" ]]
+if ! ish="$(command -v ish 2>/dev/null)"
 then
-	cd "$IAMROOT_ROOT"
-	PWD="/"
-
-	IFS=: read -r -a __ <<<"${LD_LIBRARY_PATH:-/usr/lib:/lib}"
-	LD_LIBRARY_PATH="$IAMROOT_ROOT${__[0]}"
-	for i in "${__[@]:1}"
-	do
-		LD_LIBRARY_PATH+=":$IAMROOT_ROOT${__[0]}"
-	done
+	ish="/usr/local/bin/ish"
 fi
 
 command=("${shell:-/bin/sh}")
@@ -451,6 +443,4 @@ USER="${passwd[0]}" \
 HOME="${HOME:-${passwd[5]}}" \
 SHELL="${shell:-${passwd[6]}}" \
 TERM="${TERM:-unknown}" \
-LD_PRELOAD="${IAMROOT_LIB:-${IAMROOT_ORIGIN:-/usr/local/lib/iamroot}/libiamroot.so}${LD_PRELOAD+:$LD_PRELOAD}" \
-LD_LIBRARY_PATH="$LD_LIBRARY_PATH" \
-"${command_timeout[@]}" "${command[@]}"
+"${command_timeout[@]}" "${ish:-/usr/local/bin/ish}" --shell "${command[@]}"

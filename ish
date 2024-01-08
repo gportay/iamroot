@@ -276,6 +276,11 @@ do
 	fi
 done
 
+if [[ "$IAMROOT_ROOT" ]]
+then
+	cd "$IAMROOT_ROOT"
+fi
+
 command=("${SHELL:-/bin/sh}" "$@")
 
 exec /usr/bin/env \

@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [unreleased]
+
+### Changed
+
+- Chage the working directory to `IAMROOT_ROOT` in `ish` if the option `--root`
+  is set before running shell
+
 ## [v16] - 2024-01-04
 
 ### Added

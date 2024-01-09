@@ -14,6 +14,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set the environment variable `IAMROOT_ORIGIN` using `DT_RUNPATH` if set in
   `ld-iamroot.so(8)`
 
+### Deprecated
+
+- Replace the environment variables `IAMROOT_LIB` by the environment variable
+  `IAMROOT_ORIGIN`
+
 ### Fixed
 
 - Fix the segmentation fault if the iamroot library is preloaded more than once

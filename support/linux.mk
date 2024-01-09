@@ -21,6 +21,9 @@ export NVERBOSE
 IAMROOT_EXEC ?= $(CURDIR)/exec.sh
 export IAMROOT_EXEC
 
+IAMROOT_ORIGIN ?= $(CURDIR)
+export IAMROOT_ORIGIN
+
 ifeq ($(ARCH),x86_64)
 ifeq ($(LIBC),musl)
 IAMROOT_LIB ?= $(IAMROOT_LIB_X86_64_MUSL_X86_64_1)
@@ -36,44 +39,6 @@ IAMROOT_LIB ?= $(IAMROOT_LIB_AARCH64_LINUX_AARCH64_1)
 export IAMROOT_LIB
 endif
 
-#
-# Stolen from buildroot (support/misc/utils.mk)
-#
-# SPDX-FileCopyrightText: The musl Contributors
-#
-# SPDX-License-Identifier: MIT
-#
-# Case conversion macros. This is inspired by the 'up' macro from gmsl
-# (http://gmsl.sf.net). It is optimised very heavily because these macros
-# are used a lot. It is about 5 times faster than forking a shell and tr.
-#
-# The caseconvert-helper creates a definition of the case conversion macro.
-# After expansion by the outer $(eval ), the UPPERCASE macro is defined as:
-# $(strip $(eval __tmp := $(1))  $(eval __tmp := $(subst a,A,$(__tmp))) ... )
-# In other words, every letter is substituted one by one.
-#
-# The caseconvert-helper allows us to create this definition out of the
-# [FROM] and [TO] lists, so we don't need to write down every substition
-# manually. The uses of $ and $$ quoting are chosen in order to do as
-# much expansion as possible up-front.
-#
-# Note that it would be possible to conceive a slightly more optimal
-# implementation that avoids the use of __tmp, but that would be even
-# more unreadable and is not worth the effort.
-
-[FROM] := a b c d e f g h i j k l m n o p q r s t u v w x y z - .
-[TO]   := A B C D E F G H I J K L M N O P Q R S T U V W X Y Z _ _
-
-define caseconvert-helper
-$(1) = $$(strip \
-	$$(eval __tmp := $$(1))\
-	$(foreach c, $(2),\
-		$$(eval __tmp := $$(subst $(word 1,$(subst :, ,$c)),$(word 2,$(subst :, ,$c)),$$(__tmp))))\
-	$$(__tmp))
-endef
-
-$(eval $(call caseconvert-helper,UPPERCASE,$(join $(addsuffix :,$([FROM])),$([TO]))))
-
 -include local.mk
 
 MAKEFLAGS += --no-print-directory
@@ -84,7 +49,6 @@ all: libiamroot.so
 
 .PHONY: vars
 vars:
-	@echo export "IAMROOT_LIB=\"$(IAMROOT_LIB)\""
 	@echo export "IAMROOT_EXEC=\"$(IAMROOT_EXEC)\""
 	@echo export "IAMROOT_EXEC_IGNORE=\"$(IAMROOT_EXEC_IGNORE)\""
 
@@ -107,14 +71,6 @@ $(strip libiamroot.so \
 endef
 
 define libiamroot_so_abi =
-iamroot_lib_$(1)_$(2) = $(1)/libiamroot.so.$(2)
-IAMROOT_LIB_$(call UPPERCASE,$(1))_$(2) ?= $(CURDIR)/$(1)/libiamroot.so.$(2)
-export IAMROOT_LIB_$(call UPPERCASE,$(1))_$(2)
-
-vars: iamroot_lib_$(1)_$(2)
-iamroot_lib_$(1)_$(2):
-	@echo export "IAMROOT_LIB_$(call UPPERCASE,$(1))_$(2)=\"$$(IAMROOT_LIB_$(call UPPERCASE,$(1))_$(2))\""
-
 all: $(1)/libiamroot.so.$(2)
 
 .PRECIOUS: $(1)/libiamroot.so.$(2)
@@ -146,14 +102,6 @@ clean-$(1).$(2):
 endef
 
 define libiamroot_ldso_so_abi =
-iamroot_lib_$(1)_$(2)_$(3) = $(1)/libiamroot-$(2).so.$(3)
-IAMROOT_LIB_$(call UPPERCASE,$(1)_$(2))_$(3) ?= $(CURDIR)/$(1)/libiamroot-$(2).so.$(3)
-export IAMROOT_LIB_$(call UPPERCASE,$(1)_$(2))_$(3)
-
-vars: iamroot_lib_$(1)_$(2)_$(3)
-iamroot_lib_$(1)_$(2)_$(3):
-	@echo export "IAMROOT_LIB_$(call UPPERCASE,$(1)_$(2))_$(3)=\"$$(IAMROOT_LIB_$(call UPPERCASE,$(1)_$(2))_$(3))\""
-
 all: $(1)/libiamroot-$(2).so.$(3)
 
 .PRECIOUS: $(1)/libiamroot-$(2).so.$(3)

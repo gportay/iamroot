@@ -91,9 +91,6 @@ clear_and_preserve_env() {
 	done
 }
 
-IAMROOT_LIB="${IAMROOT_LIB:-/usr/local/lib/iamroot/libiamroot.so}"
-export IAMROOT_LIB
-
 IAMROOT_EXEC="${IAMROOT_EXEC:-/usr/local/lib/iamroot/exec.sh}"
 export IAMROOT_EXEC
 
@@ -457,6 +454,6 @@ USER="${passwd[0]}" \
 HOME="${HOME:-${passwd[5]}}" \
 SHELL="${shell:-${passwd[6]}}" \
 TERM="${TERM:-unknown}" \
-LD_PRELOAD="$IAMROOT_LIB${LD_PRELOAD+:$LD_PRELOAD}" \
+LD_PRELOAD="${IAMROOT_LIB:-${IAMROOT_ORIGIN:-/usr/local/lib/iamroot}/libiamroot.so}${LD_PRELOAD+:$LD_PRELOAD}" \
 LD_LIBRARY_PATH="$LD_LIBRARY_PATH" \
 "${command_timeout[@]}" "${command[@]}"

@@ -7,14 +7,14 @@
 O ?= output
 ARCH ?= $(shell uname -p 2>/dev/null)
 
-IAMROOT_LIB ?= $(CURDIR)/$(ARCH)/libiamroot.so
-export IAMROOT_LIB
-
 IAMROOT_PATH_RESOLUTION_IGNORE ?= ^/dev/|^/etc/resolv.conf
 export IAMROOT_PATH_RESOLUTION_IGNORE
 
 IAMROOT_EXEC ?= $(CURDIR)/exec.sh
 export IAMROOT_EXEC
+
+IAMROOT_ORIGIN ?= $(CURDIR)
+export IAMROOT_ORIGIN
 
 -include local.mk
 

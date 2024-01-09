@@ -98,6 +98,7 @@ extern "C" {
 	   (char *)(s1); })
 #define __strleq(s1, s2) (__strlcmp((s1), (s2)) == 0)
 #define __strneq(s1, s2) (__strncmp((s1), (s2)) == 0)
+#define __snprintf(s, fmt, ...) _snprintf((s), sizeof((s))-1, fmt, __VA_ARGS__)
 
 #ifndef _STAT_VER
 #if defined(__arm__) || defined(__mips__) || defined(__i386__)

@@ -336,7 +336,7 @@ static int __preload_so(const char *so)
 {
 	int err;
 
-	err = __is_preloading_so(__xstr(PREFIX)"/lib/iamroot/libiamroot.so");
+	err = __is_preloading_so("libiamroot.so");
 	if (err == -1)
 		return -1;
 	if (err == 1)
@@ -2068,11 +2068,106 @@ ssize_t __getvariable(Elf64_Ehdr *ehdr, const char *ldso, int abi,
 	return __set_errno(errno_save, n);
 }
 
+static const char *__getdeflib(Elf64_Ehdr *, const char *, int);
+
+/*
+ * Stolen and hacked from musl (src/process/execvp.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+hidden ssize_t __host_path_access(const char *file, int mode, const char *path,
+				  char *buf, size_t bufsiz, off_t offset)
+{
+	const char *p, *z;
+	size_t l, k;
+	int seen_eacces = 0;
+
+	errno = ENOENT;
+	if (!*file) return -1;
+
+	if (!path) return -1;
+	k = strnlen(file, NAME_MAX+1);
+	if (k > NAME_MAX) {
+		errno = ENAMETOOLONG;
+		return -1;
+	}
+	l = strnlen(path, PATH_MAX-1)+1;
+
+	for(p=path; ; p=z) {
+		char b[l+k+1];
+		z = __strchrnul(p, ':');
+		if ((size_t)(z-p) >= l) {
+			if (!*z++) break;
+			continue;
+		}
+		memcpy(b, p, z-p);
+		b[z-p] = '/';
+		memcpy(b+(z-p)+(z>p), file, k+1);
+
+		if (next_faccessat(AT_FDCWD, b, mode, 0) != -1) {
+			errno = 0;
+			_strncpy(&buf[offset], b, bufsiz-offset);
+			return strnlen(&buf[offset], bufsiz-offset);
+		}
+		switch (errno) {
+		case EACCES:
+			seen_eacces = 1;
+		case ENOENT:
+		case ENOTDIR:
+			break;
+		default:
+			return -1;
+		}
+		if (!*z++) break;
+	}
+	if (seen_eacces) errno = EACCES;
+	return -1;
+}
+
+static ssize_t __libiamroot_access(Elf64_Ehdr *ehdr, const char *ldso, int abi,
+				   int mode, const char *path, char *buf,
+				   size_t bufsiz, off_t offset)
+{
+	char file[PATH_MAX];
+	const char *machine;
+	ssize_t siz;
+	int n;
+
+	machine = __machine(ehdr, ldso, abi);
+	/* The machine is not supported; use the host */
+	if (!machine)
+		goto host;
+
+	/* Generic dynamic loader (ld.so) */
+	if (!*ldso && abi == -1)
+		n = __snprintf(file, "%s/libiamroot.so", machine);
+	/* NetBSD dynamic loader (ld.<object>_so) */
+	else if (*ldso && abi == -1)
+		n = __snprintf(file, "%s/libiamroot.elf_so", machine);
+	/* Linux or FreeBSD dynamic loader (ld-<ldso>.so.<abi>) */
+	else
+		n = __snprintf(file, "%s/libiamroot-%s.so.%i", machine, ldso,
+			       abi);
+	if (n == -1)
+		return -1;
+
+	siz = __host_path_access(file, mode, path, buf, bufsiz, offset);
+	if (siz != -1)
+		return siz;
+
+host:
+	__strncpy(file, "libiamroot.so");
+	return __host_path_access(file, mode, path, buf, bufsiz, offset);
+}
+
 static ssize_t __getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso, int abi,
 			       char *buf, size_t bufsiz, off_t offset)
 {
 	const int errno_save = errno;
-	char var[NAME_MAX];
+	const char *deflib, *origin;
+	char var[PATH_MAX];
 	ssize_t ret;
 	char *lib;
 	int err;
@@ -2089,6 +2184,40 @@ static ssize_t __getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso, int abi,
 		goto exit;
 
 	/* The variable is unset, try to guess automagically the library. */
+
+	/*
+	 * Try in the iamroot directory set by the environment variable
+	 * IAMROOT_ORIGIN if set, and in the iamroot library directory then.
+	 */
+	origin = getenv("IAMROOT_ORIGIN");
+	if (origin) {
+		ssize_t siz;
+
+		siz = __libiamroot_access(ehdr, ldso, abi, F_OK, origin, buf,
+					  bufsiz, offset);
+		if (siz > 0)
+			lib = &buf[offset];
+		if (lib && *lib)
+			goto exit;
+	}
+	deflib = __xstr(PREFIX)"/lib/iamroot";
+	if (deflib) {
+		ssize_t siz;
+
+		siz = __libiamroot_access(ehdr, ldso, abi, F_OK, deflib, buf,
+					  bufsiz, offset);
+		if (siz > 0)
+			lib = &buf[offset];
+		if (lib && *lib)
+			goto exit;
+	}
+
+	/*
+	 * The library is neither found in the iamroot origin library nor in
+	 * the iamroot library directory.
+	 *
+	 * Use hard coded path by architecture and system.
+	 */
 
 	/* IAMROOT_LIB_$MACHINE_LINUX_$ARCH_$ABI */
 	if (__is_gnu_linux(ehdr, ldso, abi) == 1) {

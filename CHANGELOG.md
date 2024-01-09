@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [unreleased]
 
+### Added
+
+- Look up the iamroot libraries in the directory specified in the environment
+  variable `IAMROOT_ORIGIN` if set first and in the iamroot library directory
+  then
+
 ### Fixed
 
 - Fix the segmentation fault if the iamroot library is preloaded more than once

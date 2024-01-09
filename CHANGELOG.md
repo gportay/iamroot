@@ -11,6 +11,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Chage the working directory to `IAMROOT_ROOT` in `ish` if the option `--root`
   is set before running shell
 
+### Removed
+
+- Remove the `ish`'s environment variable `ISH`
+
+### Fixed
+
+- Fix the behaviour of the `ish`'s option `--shell` that does not sets the
+  shell interpretor
+
 ## [v16] - 2024-01-04
 
 ### Added

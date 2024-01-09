@@ -96,9 +96,6 @@ Environment variables:
       IAMROOT_LIB               Set absolute path to library to use.
                                 Equivalent to --library LIB.
 
-      ISH                       Set shell interpretor to use.
-                                Equivalent to --shell.
-
       IAMROOT_FATAL             Set abort on error.
                                 Equivalent to --fatal.
 
@@ -175,8 +172,8 @@ do
 	elif [[ "$1" == "--shell" ]]
 	then
 		shift
-		ISH="$1"
-		export ISH
+		SHELL="$1"
+		export SHELL
 	elif [[ "$1" == "--library" ]]
 	then
 		shift

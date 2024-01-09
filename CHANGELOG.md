@@ -23,6 +23,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Fix the behaviour of the `ish`'s option `--shell` that does not sets the
   shell interpretor
+- Fix the behaviour of the `ish`'s option `--debug-fd` that does not duplicate
+  stderr to the given fd if it exists and always duplicates stderr to new fd
+  instead
 
 ## [v16] - 2024-01-04
 

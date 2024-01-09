@@ -224,9 +224,9 @@ do
 	shift
 done
 
-if [[ "${IAMROOT_DEBUG_FD:-}" ]] && [[ ! -e "/proc/$$/$IAMROOT_DEBUG_FD" ]]
+if [[ "${IAMROOT_DEBUG_FD:-}" ]] && [[ ! -e "/proc/$$/fd/$IAMROOT_DEBUG_FD" ]]
 then
-	exec {IAMROOT_DEBUG_FD}>&2
+	eval "exec $IAMROOT_DEBUG_FD>&2"
 fi
 
 for i in "${ISH_PROFILE_FILE:-}" "${ISH_RC_FILE:-}"

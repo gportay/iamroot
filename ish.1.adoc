@@ -65,9 +65,6 @@ shells, please refers to their manuals.
 **--deflib PATH**::
 	Default library path to use in chroot.
 
-**--library-path PATH**::
-	LD_LIBRARY_PATH to use in chroot.
-
 **--exec FILE**::
 	Absolute path to the iamroot exec script to use.
 

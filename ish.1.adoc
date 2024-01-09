@@ -171,7 +171,7 @@ shells, please refers to their manuals.
 
 **IAMROOT_DEBUG_IGNORE**::
 	Set functions to ignore in debug mode.
-	Equivalent to --debug-ignore.
+	Equivalent to --debug-ignore REGEX.
 
 **IAMROOT_EXEC_IGNORE**::
 	Set executable path to ignore in execve().

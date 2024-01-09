@@ -74,9 +74,8 @@ shells, please refers to their manuals.
 **--library LIB**::
 	Absolute path to the iamroot library to use.
 
-**shell SHELL**::
+**--shell SHELL**::
 	Set shell interpretor.
-	Equivalent to set ISH=<SHELL>.
 
 **--fatal**::
 	Abort on error.

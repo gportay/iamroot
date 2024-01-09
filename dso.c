@@ -2070,62 +2070,6 @@ ssize_t __getvariable(Elf64_Ehdr *ehdr, const char *ldso, int abi,
 
 static const char *__getdeflib(Elf64_Ehdr *, const char *, int);
 
-/*
- * Stolen and hacked from musl (src/process/execvp.c)
- *
- * SPDX-FileCopyrightText: The musl Contributors
- *
- * SPDX-License-Identifier: MIT
- */
-hidden ssize_t __host_path_access(const char *file, int mode, const char *path,
-				  char *buf, size_t bufsiz, off_t offset)
-{
-	const char *p, *z;
-	size_t l, k;
-	int seen_eacces = 0;
-
-	errno = ENOENT;
-	if (!*file) return -1;
-
-	if (!path) return -1;
-	k = strnlen(file, NAME_MAX+1);
-	if (k > NAME_MAX) {
-		errno = ENAMETOOLONG;
-		return -1;
-	}
-	l = strnlen(path, PATH_MAX-1)+1;
-
-	for(p=path; ; p=z) {
-		char b[l+k+1];
-		z = __strchrnul(p, ':');
-		if ((size_t)(z-p) >= l) {
-			if (!*z++) break;
-			continue;
-		}
-		memcpy(b, p, z-p);
-		b[z-p] = '/';
-		memcpy(b+(z-p)+(z>p), file, k+1);
-
-		if (next_faccessat(AT_FDCWD, b, mode, 0) != -1) {
-			errno = 0;
-			_strncpy(&buf[offset], b, bufsiz-offset);
-			return strnlen(&buf[offset], bufsiz-offset);
-		}
-		switch (errno) {
-		case EACCES:
-			seen_eacces = 1;
-		case ENOENT:
-		case ENOTDIR:
-			break;
-		default:
-			return -1;
-		}
-		if (!*z++) break;
-	}
-	if (seen_eacces) errno = EACCES;
-	return -1;
-}
-
 static ssize_t __libiamroot_access(Elf64_Ehdr *ehdr, const char *ldso, int abi,
 				   int mode, const char *path, char *buf,
 				   size_t bufsiz, off_t offset)

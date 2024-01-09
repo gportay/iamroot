@@ -9,9 +9,6 @@ PREFIX ?= /usr/local
 COVERAGE ?= 0
 OS ?= $(shell uname -o 2>/dev/null || uname -s 2>/dev/null)
 
-IAMROOT_EXEC ?= $(CURDIR)/exec.sh
-export IAMROOT_EXEC
-
 IAMROOT_ORIGIN ?= $(CURDIR)
 export IAMROOT_ORIGIN
 

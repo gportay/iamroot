@@ -13,9 +13,6 @@ ARCH ?= $(shell uname -p 2>/dev/null)
 IAMROOT_PATH_RESOLUTION_IGNORE ?= ^/dev/|^/proc/
 export IAMROOT_PATH_RESOLUTION_IGNORE
 
-IAMROOT_EXEC ?= $(CURDIR)/exec.sh
-export IAMROOT_EXEC
-
 IAMROOT_ORIGIN ?= $(CURDIR)
 export IAMROOT_ORIGIN
 

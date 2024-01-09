@@ -36,6 +36,8 @@ typedef struct {
 #endif
 } __regex_t;
 
+extern int next_faccessat(int, const char *, int, int);
+
 extern int __ldso_execve(const char *, char * const[], char * const[]);
 
 static regex_t *re_ignore;

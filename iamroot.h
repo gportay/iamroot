@@ -191,6 +191,8 @@ ssize_t fpath(int, char *, size_t);
 int __path_ignored(int, const char *);
 ssize_t path_resolution(int, const char *, char *, size_t, int);
 char *__getpath(int, const char *, int);
+ssize_t __host_path_access(const char *, int, const char *, char *, size_t,
+			   off_t);
 ssize_t __path_access(const char *, int, const char *, char *, size_t);
 int __path_iterate(const char *, int (*)(const char *, void *), void *);
 int __group_iterate(const char *, int (*)(const char *, void *), void *);

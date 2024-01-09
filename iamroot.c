@@ -40,6 +40,7 @@
 #define SSCRIPTMAG 2
 
 extern char *next_getcwd(char *, size_t);
+extern int next_faccessat(int, const char *, int, int);
 #ifdef __NetBSD__
 #define next_fstat next___fstat50
 extern int next___fstat50(int, struct stat *);
@@ -396,7 +397,34 @@ static char *__getexec()
 hidden int __exec_sh(const char *path, char * const *argv, char *interparg[],
 	      char *buf, size_t bufsiz)
 {
+	char *exec_sh = NULL;
+	const char *origin;
 	int i, err;
+
+	/*
+	 * Try in the iamroot origin path directory set by the environment
+	 * variable IAMROOT_ORIGIN if set first, and in the iamroot library
+	 * directory then.
+	 */
+	origin = getenv("IAMROOT_ORIGIN");
+	if (origin) {
+		ssize_t siz;
+
+		siz = __host_path_access("exec.sh", F_OK, origin, buf, bufsiz,
+					 0);
+		if (siz > 0)
+			exec_sh = buf;
+	}
+	if (!exec_sh) {
+		exec_sh = _strncpy(buf, __getexec(), bufsiz);
+
+		err = next_faccessat(AT_FDCWD, exec_sh, F_OK, AT_EACCESS);
+		if (err == -1)
+			return -1;
+	}
+	/* Paranoid */
+	if (!exec_sh)
+		return __set_errno(ENOENT, -1);
 
 	/*
 	 * Run exec.sh from the host system.
@@ -406,7 +434,7 @@ hidden int __exec_sh(const char *path, char * const *argv, char *interparg[],
 	 * script exec.sh is not necessarily part of the chroot environment.
 	 */
 	i = 0;
-	interparg[i++] = _strncpy(buf, __getexec(), bufsiz);
+	interparg[i++] = exec_sh;
 	interparg[i++] = (char *)path; /* original path as first positional
 					* argument
 					*/
@@ -669,6 +697,62 @@ hidden char *__fpath2(int fd)
 		return __set_errno(errno_save, NULL);
 
 	return buf;
+}
+
+/*
+ * Stolen and hacked from musl (src/process/execvp.c)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+hidden ssize_t __host_path_access(const char *file, int mode, const char *path,
+				  char *buf, size_t bufsiz, off_t offset)
+{
+	const char *p, *z;
+	size_t l, k;
+	int seen_eacces = 0;
+
+	errno = ENOENT;
+	if (!*file) return -1;
+
+	if (!path) return -1;
+	k = strnlen(file, NAME_MAX+1);
+	if (k > NAME_MAX) {
+		errno = ENAMETOOLONG;
+		return -1;
+	}
+	l = strnlen(path, PATH_MAX-1)+1;
+
+	for(p=path; ; p=z) {
+		char b[l+k+1];
+		z = __strchrnul(p, ':');
+		if ((size_t)(z-p) >= l) {
+			if (!*z++) break;
+			continue;
+		}
+		memcpy(b, p, z-p);
+		b[z-p] = '/';
+		memcpy(b+(z-p)+(z>p), file, k+1);
+
+		if (next_faccessat(AT_FDCWD, b, mode, 0) != -1) {
+			errno = 0;
+			_strncpy(&buf[offset], b, bufsiz-offset);
+			return strnlen(&buf[offset], bufsiz-offset);
+		}
+		switch (errno) {
+		case EACCES:
+			seen_eacces = 1;
+		case ENOENT:
+		case ENOTDIR:
+			break;
+		default:
+			return -1;
+		}
+		if (!*z++) break;
+	}
+	if (seen_eacces) errno = EACCES;
+	return -1;
 }
 
 /*

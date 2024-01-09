@@ -91,9 +91,6 @@ clear_and_preserve_env() {
 	done
 }
 
-IAMROOT_EXEC="${IAMROOT_EXEC:-/usr/local/lib/iamroot/exec.sh}"
-export IAMROOT_EXEC
-
 vars=()
 opt_u="${IDO_USER:-root}"
 opt_preserve_env=()

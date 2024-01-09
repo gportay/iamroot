@@ -18,9 +18,6 @@ COVERAGE ?= 0
 NVERBOSE ?= 0
 export NVERBOSE
 
-IAMROOT_EXEC ?= $(CURDIR)/exec.sh
-export IAMROOT_EXEC
-
 IAMROOT_ORIGIN ?= $(CURDIR)
 export IAMROOT_ORIGIN
 
@@ -49,7 +46,6 @@ all: libiamroot.so
 
 .PHONY: vars
 vars:
-	@echo export "IAMROOT_EXEC=\"$(IAMROOT_EXEC)\""
 	@echo export "IAMROOT_EXEC_IGNORE=\"$(IAMROOT_EXEC_IGNORE)\""
 
 define libs

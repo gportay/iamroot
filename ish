@@ -241,9 +241,6 @@ do
 	cd "$OLDPWD"
 done
 
-USER="${IAMROOT_USER}"
-export USER
-
 IAMROOT_UID="$(id -u "$IAMROOT_USER")"
 export IAMROOT_UID
 

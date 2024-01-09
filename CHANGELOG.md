@@ -26,6 +26,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the behaviour of the `ish`'s option `--debug-fd` that does not duplicate
   stderr to the given fd if it exists and always duplicates stderr to new fd
   instead
+- Fix the setting of the `ish`'s environment variable `ISH_USER` to mismatch
+  `USER` iamroot's value instead of `USER` user's value
 
 ## [v16] - 2024-01-04
 

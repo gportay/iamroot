@@ -34,7 +34,7 @@ WORKDIR $home/.cache/pacaur/pacaur
 RUN makepkg --syncdeps --install --noconfirm
 
 RUN gpg --recv-keys 56BCDB593020450F
-RUN pacaur -Syu --noconfirm i386-musl kernel-headers-musl-i386 
+RUN pacaur -Syu --noconfirm i386-musl kernel-headers-musl-i386
 RUN pacaur -Syu --noconfirm aarch64-glibc-bleeding-edge-toolchain aarch64-musl-bleeding-edge-toolchain
 RUN pacaur -Syu --noconfirm armv7-eabihf-glibc-bleeding-edge-toolchain armv7-eabihf-musl-bleeding-edge-toolchain
 RUN pacaur -Syu --noconfirm armv5-eabi-glibc-bleeding-edge-toolchain armv5-eabi-musl-bleeding-edge-toolchain

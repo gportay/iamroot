@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -403,7 +403,7 @@ extern int next_extattr_delete_fd(int, int, const char *);
 extern ssize_t next_extattr_get_link(const char *, int, const char *, void *,
 				     size_t);
 #ifdef __NetBSD__
-extern int next_extattr_set_link(const char *, int, const char *, 
+extern int next_extattr_set_link(const char *, int, const char *,
 				 const void *, size_t);
 #else
 extern ssize_t next_extattr_set_link(const char *, int, const char *,

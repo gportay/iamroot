@@ -1,6 +1,6 @@
 #!/bin/sed -f
 #
-# Copyright 2023 Gaël PORTAY
+# Copyright 2023-2024 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -12,7 +12,7 @@
 	s,[[:digit:]]\+,XXX,g
 }
 
-#   base-files-0.143_3 
+#   base-files-0.143_3
 # base-files-0.143_3.x86_64.xbps.sig: [512B 100%] 7576KB/s ETA: 00m00s
 # base-files-0.143_3.x86_64.xbps.sig: 512B [avg rate: 7576KB/s]
 # base-files-0.143_3.x86_64.xbps: [61KB 6%] 135MB/s ETA: 00m00s

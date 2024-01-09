@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2023 Gaël PORTAY
+ * Copyright 2020-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -146,7 +146,7 @@ extern ssize_t next_readlinkat(int, const char *, char *, size_t);
 const char *__execfn()
 {
 	static char buf[PATH_MAX];
-	ssize_t siz; 
+	ssize_t siz;
 
 	if (*buf)
 		return buf;

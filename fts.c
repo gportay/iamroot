@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Gaël PORTAY
+ * Copyright 2023-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -616,9 +616,9 @@ next:
 	/* Move to the next node on this level. */
 	tmp = p;
 
-	/* 
-	 * We are going to free sp->fts_cur, set it to NULL so 
-	 * that fts_close() does not attempt to free it again 
+	/*
+	 * We are going to free sp->fts_cur, set it to NULL so
+	 * that fts_close() does not attempt to free it again
 	 * if we exit without setting it to a new value because
 	 * FCHDIR() failed below.
 	 */

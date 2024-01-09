@@ -62,6 +62,9 @@ shells, please refers to their manuals.
 **--preserve-env ENV**::
 	Preserve environment variables.
 
+**--deflib PATH**::
+	Default library path to use in chroot.
+
 **--library-path PATH**::
 	LD_LIBRARY_PATH to use in chroot.
 

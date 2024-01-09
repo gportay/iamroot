@@ -273,6 +273,13 @@ done
 if [[ "$IAMROOT_ROOT" ]]
 then
 	cd "$IAMROOT_ROOT"
+
+	IFS=: read -r -a __ <<<"${LD_LIBRARY_PATH:-/usr/lib:/lib}"
+	LD_LIBRARY_PATH="$IAMROOT_ROOT${__[0]}"
+	for i in "${__[@]:1}"
+	do
+		LD_LIBRARY_PATH+=":$IAMROOT_ROOT${__[0]}"
+	done
 fi
 
 command=("${SHELL:-/bin/sh}" "$@")
@@ -285,4 +292,5 @@ ISH_COMMAND="${command[*]}" \
 ISHLVL="$((ISHLVL+1))" \
 PATH="${PATH:-/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin}" \
 LD_PRELOAD="$IAMROOT_LIB${LD_PRELOAD+:$LD_PRELOAD}" \
+LD_LIBRARY_PATH="$LD_LIBRARY_PATH" \
 "${command[@]}"

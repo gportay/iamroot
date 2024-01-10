@@ -12,7 +12,7 @@ jobs:
       with:
         usesh: true
         prepare: |
-          pkg_add bash
-          pkg_add gmake
+          /usr/sbin/pkg_add bash
+          /usr/sbin/pkg_add gmake
         run: |
           gmake test

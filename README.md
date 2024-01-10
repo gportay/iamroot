@@ -17,12 +17,12 @@ processes in userspace.
 [fakeroot(1)] and [fakechroot(1)].
 
 The project targets the *Linux* userlands [glibc] and [musl]. However, it works
-on [FreeBSD] (13.1), [OpenBSD] (7.2 and 7.3) and [NetBSD] (9.3) even if its
+on [FreeBSD] (13.1), [OpenBSD] (7.2, 7.3, 7.4) and [NetBSD] (9.3) even if its
 usage is limited by some statically linked binaries (such as `pkg-static`,
 `chroot`...) and by none-executable dynamic loaders.
 
 The project compiles on Intel x86 and ARM 64-bit, and it runs on [Arch Linux],
-[Debian], [Alpine Linux], [FreeBSD] (13.1), [OpenBSD] (7.2 and 7.3) and
+[Debian], [Alpine Linux], [FreeBSD] (13.1), [OpenBSD] (7.2, 7.4, 7.3) and
 [NetBSD] (9.3).
 
 The [Miscellaneous Binary Format][binfmt_misc] on *Linux* allows to [chroot(2)]

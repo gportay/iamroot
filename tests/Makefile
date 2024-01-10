@@ -210,6 +210,9 @@ endif
 ifeq ($(KVER),7.3)
 test: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/usr/lib/libc.so.97.0:$(CURDIR)/rootfs/usr/lib/libpthread.so.27.0
 endif
+ifeq ($(KVER),7.4)
+test: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/usr/lib/libc.so.97.1:$(CURDIR)/rootfs/usr/lib/libpthread.so.27.1
+endif
 endif
 ifeq ($(OS),NetBSD)
 test: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/lib/libc.so.12
@@ -605,6 +608,9 @@ ifeq ($(KVER),7.2)
 endif
 ifeq ($(KVER),7.3)
 	install -m444 /usr/lib/libc.so.97.0 /usr/lib/libpthread.so.27.0 $(DESTDIR)/usr/lib
+endif
+ifeq ($(KVER),7.4)
+	install -m444 /usr/lib/libc.so.97.1 /usr/lib/libpthread.so.27.1 $(DESTDIR)/usr/lib
 endif
 	install -m444 /usr/libexec/ld.so $(DESTDIR)/usr/libexec
 	install -m444 libiamnotroot.so $(DESTDIR)/usr/local/lib

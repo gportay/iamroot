@@ -40,7 +40,7 @@
 	}
 }
 
-/^:: Synchronizing package databases\.\.\./,/^:: / {
+/^:: Synchronizing package databases\.\.\./,/^:: Proceed with installation? i\[Y\/n\]/ {
 	#  core downloading...
 	/^ .\+ downloading\.\.\.$/d
 

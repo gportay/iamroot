@@ -387,13 +387,8 @@ static char *__getexec()
 	char *ret;
 
 	ret = getenv("IAMROOT_EXEC");
-#ifdef __linux__
 	if (!ret)
-		return "/usr/lib/iamroot/exec.sh";
-#else
-	if (!ret)
-		return "/usr/local/lib/iamroot/exec.sh";
-#endif
+		return __xstr(PREFIX)"/lib/iamroot/exec.sh";
 
 	return ret;
 }

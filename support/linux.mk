@@ -97,10 +97,11 @@ $(strip libiamroot.so \
 	$(if $(findstring :$(2):,:aarch64_be:                     ),$(if $(findstring :$(1):,:musl:),aarch64_be/libiamroot-musl-aarch64_be.so.1  ,aarch64_be/libiamroot-linux-aarch64_be.so.1), \
 	$(if $(findstring :$(2):,:riscv64:                        ),$(if $(findstring :$(1):,:musl:),riscv64/libiamroot-musl-riscv64.so.1        ,riscv64/libiamroot-linux-riscv64-lp64d.so.1), \
 	$(if $(findstring :$(2):,:mipsle: :mipsel:                ),$(if $(findstring :$(1):,:musl:),mipsle/libiamroot-musl-mipsel.so.1          ,mipsle/libiamroot.so.1                     ), \
+	$(if $(findstring :$(2):,:mips64le: :mips64el:            ),$(if $(findstring :$(1):,:musl:),mips64le/libiamroot-musl-mips64el.so.1      ,mips64le/libiamroot.so.1                   ), \
 	$(if $(findstring :$(2):,:powerpc64:                      ),$(if $(findstring :$(1):,:musl:),powerpc64/libiamroot-musl-powerpc64.so.1    ,powerpc64/libiamroot.so.2                  ), \
 	$(if $(findstring :$(2):,:powerpc64le: :ppc64le: :ppc64el:),$(if $(findstring :$(1):,:musl:),powerpc64le/libiamroot-musl-powerpc64le.so.1,powerpc64le/libiamroot.so.2                ), \
 	$(if $(findstring :$(2):,:s390x:                          ),$(if $(findstring :$(1):,:musl:),s390x/libiamroot-musl-s390x.so.1            ,s390x/libiamroot.so.1                      ), \
-	$(error $(1)-$(2): No such library)))))))))))) \
+	$(error $(1)-$(2): No such library))))))))))))) \
 )
 endef
 
@@ -627,6 +628,11 @@ endif
 ifneq ($(shell command -v mipsel-buildroot-linux-musl-gcc 2>/dev/null),)
 $(O)-mipsle-musl-mipsel/libiamroot.so: override CC = mipsel-buildroot-linux-musl-gcc -march=mips32r2
 $(eval $(call libiamroot_ldso_so_abi,mipsle,musl-mipsel,1))
+endif
+
+ifneq ($(shell command -v mips64el-buildroot-linux-gnu-gcc 2>/dev/null),)
+$(O)-mips64le/libiamroot.so: override CC = mips64el-buildroot-linux-gnu-gcc
+$(eval $(call libiamroot_so_abi,mips64le,1))
 endif
 
 ifneq ($(shell command -v powerpc64-buildroot-linux-gnu-gcc 2>/dev/null),)
@@ -1237,6 +1243,25 @@ $(eval $(call debootstrap-rootfs,mipsel,debian,oldstable))
 $(eval $(call debootstrap-rootfs,mipsel,debian,stable))
 mipsel-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 mipsel-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
+endif
+
+ifneq ($(shell command -v mips64el-buildroot-linux-gnu-gcc 2>/dev/null),)
+mips-rootfs: mips64el-debian-rootfs
+
+.PHONY: mips64el-debian-rootfs
+mips64el-debian-rootfs: mips64el-debian-oldoldstable-rootfs
+mips64el-debian-rootfs: mips64el-debian-oldstable-rootfs
+mips64el-debian-rootfs: mips64el-debian-stable-rootfs
+mips64el-debian-rootfs: mips64el-debian-testing-rootfs
+mips64el-debian-rootfs: mips64el-debian-unstable-rootfs
+
+$(eval $(call debootstrap-rootfs,mips64el,debian,oldoldstable))
+$(eval $(call debootstrap-rootfs,mips64el,debian,oldstable))
+$(eval $(call debootstrap-rootfs,mips64el,debian,stable))
+$(eval $(call debootstrap-rootfs,mips64el,debian,testing))
+$(eval $(call debootstrap-rootfs,mips64el,debian,unstable))
+mips64el-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+mips64el-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 
 ifneq ($(shell command -v powerpc64le-buildroot-linux-gnu-gcc 2>/dev/null),)

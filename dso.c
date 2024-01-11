@@ -1742,6 +1742,12 @@ static int __is_gnu_linux_ext(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	if (ret)
 		return ret;
 
+	/* It is an MIPS64 LSB ELF and IAMROOT_LIB_MIPSLE_1 */
+	ret = __is_mipsle(ehdr, ldso, abi) && (*ldso == 0 && abi == 1) &&
+	      __is_64_bits(ehdr, ldso, abi);
+	if (ret)
+		return ret;
+
 	/* It is a PowerPC64 ELF and IAMROOT_LIB_POWERPC64_2 */
 	ret = __is_powerpc64(ehdr, ldso, abi) && (*ldso == 0 && abi == 2);
 	if (ret)
@@ -1822,8 +1828,12 @@ static const char *__machine(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 
 		/* Assuming it is a *BSD */
 		return __set_errno(errno_save, "riscv");
-	} else if (__is_mipsle(ehdr, ldso, abi)) {
+	} else if (__is_mipsle(ehdr, ldso, abi) &&
+		   __is_32_bits(ehdr, ldso, abi)) {
 		return __set_errno(errno_save, "mipsle");
+	} else if (__is_mipsle(ehdr, ldso, abi) &&
+		   __is_64_bits(ehdr, ldso, abi)) {
+		return __set_errno(errno_save, "mips64le");
 	} else if (__is_powerpc64(ehdr, ldso, abi)) {
 		return __set_errno(errno_save, "powerpc64");
 	} else if (__is_powerpc64le(ehdr, ldso, abi)) {
@@ -1868,6 +1878,10 @@ static const char *__multiarch(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	/* It is an MIPS LSB ELF */
 	if (__is_mipsle(ehdr, ldso, abi) && __is_32_bits(ehdr, ldso, abi))
 		return "/usr/lib/mipsel-linux-gnu:/lib/mipsel-linux-gnu:/usr/lib:/lib";
+
+	/* It is an MIPS64 LSB ELF */
+	if (__is_mipsle(ehdr, ldso, abi) && __is_64_bits(ehdr, ldso, abi))
+		return "/usr/lib/mips64el-linux-gnuabi64:/lib/mips64el-linux-gnuabi64:/usr/lib:/lib";
 
 	/* It is a PowerPC64 ELF */
 	if (__is_powerpc64(ehdr, ldso, abi))
@@ -2004,10 +2018,16 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 		}
 	}
 
-	/* It is an MIPS LSB ELF and IAMROOT_LIB_MIPSLE_1 */
 	if (__is_mipsle(ehdr, ldso, abi) && (*ldso == 0 && abi == 1)) {
+		/* It is an MIPS LSB ELF and IAMROOT_LIB_MIPSLE_1 */
 		if (__is_32_bits(ehdr, ldso, abi)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/mipsle/libiamroot.so.1";
+			goto access;
+		}
+
+		/* It is an MIPS64 LSB ELF and IAMROOT_LIB_MIPS64LE_1 */
+		if (__is_64_bits(ehdr, ldso, abi)) {
+			lib = __xstr(PREFIX)"/lib/iamroot/mips64le/libiamroot.so.1";
 			goto access;
 		}
 	}
@@ -2084,8 +2104,17 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 
 		/* It is a MIPS LSB ELF or IAMROOT_LIB_MIPSLE_MUSL_MIPSEL_1 */
 		if (__is_mipsle(ehdr, ldso, abi) &&
+		    __is_32_bits(ehdr, ldso, abi) &&
 		    (streq(ldso, "musl-mipsel") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/mipsle/libiamroot-musl-mipsel.so.1";
+			goto access;
+		}
+
+		/* It is a MIPS64 LSB ELF or IAMROOT_LIB_MIPS64LE_MUSL_MIPS64EL_1 */
+		if (__is_mipsle(ehdr, ldso, abi) &&
+		    __is_64_bits(ehdr, ldso, abi) &&
+		    (streq(ldso, "musl-mips64el") && abi == 1)) {
+			lib = __xstr(PREFIX)"/lib/iamroot/mips64le/libiamroot-musl-mips64el.so.1";
 			goto access;
 		}
 

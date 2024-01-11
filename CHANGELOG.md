@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   environment variable `IAMROOT_MULTIARCH` to use [Debian multiarch] library
   path in chroot
 - Chroot to a PowerPC64 glibc world; tested on [Arch Linux Power]
+- Chroot to a [Debian] mips64el world; tested on [Debian MIPS Port]
 
 ### Removed
 

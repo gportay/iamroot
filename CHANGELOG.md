@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Chroot to a musl s390x world; tested on [Alpine Linux]
 - Chroot to a musl ppc64le world; tested on [Alpine Linux]
+- Output a warning if a library is not found in the library-path
 
 ### Fixed
 

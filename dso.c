@@ -298,6 +298,9 @@ static int __ldso_preload_needed_callback(const char *needed, void *user)
 		return 0;
 
 	siz = __path_access(needed, F_OK, ctx->deflib, buf, sizeof(buf));
+	if (siz == -1 && errno == ENOENT)
+		__warning("%s: needed library not found in library-path %s\n",
+			  needed, ctx->deflib);
 	if (siz == -1)
 		return -1;
 

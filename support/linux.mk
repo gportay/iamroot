@@ -614,6 +614,9 @@ aarch64-rootfs:
 .PHONY: arm-rootfs
 arm-rootfs:
 
+.PHONY: riscv64-rootfs
+riscv64-rootfs:
+
 .PHONY: test ci ish multiarch-ish
 test ci ish multiarch-ish: libiamroot.so
 	$(MAKE) -f Makefile $@

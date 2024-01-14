@@ -2209,6 +2209,10 @@ access:
 
 	/* The library is not found. */
 
+	__warning("%s: No such ELF%i iamroot library for machine %i! Trying the default...\n",
+		  lib, __is_64_bits(ehdr, ldso, abi) ? 64 : 32,
+		  ehdr->e_machine);
+
 	/*
 	 * Use the library set by the environment variable IAMROOT_LIB if set.
 	 */

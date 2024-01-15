@@ -18,6 +18,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set or prefix the path directories in variable `LD_LIBRARY_PATH` by the
   content of the variable `IAMROOT_ROOT` variable in `ish` before the running
   the shell
+- Add the environment variables `IAMROOT_LIB_<ldso>`, `IAMROOT_LIB_<abi>`,
+  `IAMROOT_DEFLIB_<ldso>` and `IAMROOT_DEFLIB_<abi>` if the
+  [dynamic loader][ld.so(8)] ldso or abi are not part of the filename.
 
 ### Removed
 

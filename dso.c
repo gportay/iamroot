@@ -716,6 +716,13 @@ static int __ld_ldso_abi(const char *path, char ldso[NAME_MAX], int *abi)
 		return 0;
 	}
 
+	/* Linux dynamic loader (ld.so.<abi>) */
+	n = sscanf(name, "ld.so.%i", abi);
+	if (n == 1) {
+		*ldso = 0;
+		return 0;
+	}
+
 	/* NetBSD dynamic loader (ld.<object>_so) */
 	n = sscanf(name, "ld.%" __xstr(NAME_MAX) "[^_]_so", ldso);
 	if (n == 2) {
@@ -1413,10 +1420,21 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 	char *lib;
 
 	/*
-	 * Use the library set by the environment variable
-	 * IAMROOT_LIB_<LDSO>_<ABI> if set.
+	 * Use the library set by the environment variable if set.
 	 */
-	n = _snprintf(var, sizeof(var), "IAMROOT_LIB_%s_%i", ldso, abi);
+	/* IAMROOT_LIB_<LDSO>_<ABI> */
+	if (ldso && *ldso && abi != -1)
+		n = _snprintf(var, sizeof(var), "IAMROOT_LIB_%s_%i", ldso,
+			      abi);
+	/* IAMROOT_LIB_<LDSO> */
+	else if (ldso && *ldso && abi == -1)
+		n = _snprintf(var, sizeof(var), "IAMROOT_LIB_%s", ldso);
+	/* IAMROOT_LIB_<ABI> */
+	else if (abi != -1)
+		n = _snprintf(var, sizeof(var), "IAMROOT_LIB_%i", abi);
+	/* IAMROOT_LIB */
+	else
+		n = _snprintf(var, sizeof(var), "IAMROOT_LIB");
 	if (n == -1)
 		return NULL;
 	__env_sanitize(var, 1);
@@ -1560,13 +1578,7 @@ access:
 	if (lib)
 		goto exit;
 
-	/* The variable is unset, keep going... */
-
-	/*
-	 * Neither IAMROOT_LIB_<LDSO>_<ABI> nor IAMROOT_LIB are set; use the
-	 * default value.
-	 */
-
+	/* The variable is unset; use the default value. */
 	lib = __xstr(PREFIX)"/lib/iamroot/libiamroot.so";
 
 exit:
@@ -1583,42 +1595,35 @@ static const char *__getdeflib(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
 	char buf[NAME_MAX];
 	char *ret;
+	int n;
 
 	/*
-	 * The shared object is an executable file.
+ 	 * Use the default library path set by the environment variable if set.
 	 */
-	if (ldso && *ldso && abi != -1) {
-		int n;
-
-		/*
-		 * Use the default library path set by the environment variable
-		 * IAMROOT_DEFLIB_<LDSO>_<ABI> if set.
-		 */
-		n = _snprintf(buf, sizeof(buf), "IAMROOT_DEFLIB_%s_%d", ldso,
+	/* IAMROOT_DEFLIB_<LDSO>_<ABI> */
+	if (ldso && *ldso && abi != -1)
+		n = _snprintf(buf, sizeof(buf), "IAMROOT_DEFLIB_%s_%i", ldso,
 			      abi);
-		if (n == -1)
-			return NULL;
-		__env_sanitize(buf, 1);
+	/* IAMROOT_DEFLIB_<LDSO> */
+	else if (ldso && *ldso && abi == -1)
+		n = _snprintf(buf, sizeof(buf), "IAMROOT_DEFLIB_%s", ldso);
+	/* IAMROOT_DEFLIB_<ABI> */
+	else if (abi != -1)
+		n = _snprintf(buf, sizeof(buf), "IAMROOT_DEFLIB_%i", abi);
+	/* IAMROOT_DEFLIB */
+	else
+		n = _snprintf(buf, sizeof(buf), "IAMROOT_DEFLIB");
+	if (n == -1)
+		return NULL;
+	__env_sanitize(buf, 1);
 
-		ret = getenv(buf);
-		if (ret)
-			return ret;
-
-		/* The variable is unset, keep going... */
-	}
-
-	/*
-	 * Use the default library path set by the environment variable
-	 * IAMROOT_DEFLIB if set.
-	 */
-	ret = getenv("IAMROOT_DEFLIB");
+	ret = getenv(buf);
 	if (ret)
 		return ret;
 
 	/*
-	 * Neither IAMROOT_DEFLIB_<LDSO>_<ABI> nor IAMROOT_DEFLIB are set; try
-	 * to guess automagically the standard library path for the GNU/Linux
-	 * systems.
+	 * The variable is unset, try to guess automagically the standard
+	 * library path for the GNU/Linux systems.
 	 *
 	 * According to ld-linux.so(8):
 	 *

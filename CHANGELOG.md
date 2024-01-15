@@ -21,6 +21,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Add the environment variables `IAMROOT_LIB_<ldso>`, `IAMROOT_LIB_<abi>`,
   `IAMROOT_DEFLIB_<ldso>` and `IAMROOT_DEFLIB_<abi>` if the
   [dynamic loader][ld.so(8)] ldso or abi are not part of the filename.
+- Replace the environment variables `IAMROOT_LIB` and `IAMROOT_DEFLIB` by
+  `IAMROOT_LIB_<machine>` and `IAMROOT_DEFLIB_<machine>`
 
 ### Removed
 

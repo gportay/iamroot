@@ -23,16 +23,16 @@ export IAMROOT_EXEC
 
 ifeq ($(ARCH),x86_64)
 ifeq ($(LIBC),musl)
-IAMROOT_LIB ?= $(IAMROOT_LIB_MUSL_X86_64_1)
+IAMROOT_LIB ?= $(IAMROOT_LIB_X86_64_MUSL_X86_64_1)
 export IAMROOT_LIB
 else
-IAMROOT_LIB ?= $(IAMROOT_LIB_LINUX_X86_64_2)
+IAMROOT_LIB ?= $(IAMROOT_LIB_X86_64_LINUX_X86_64_2)
 export IAMROOT_LIB
 endif
 endif
 
 ifeq ($(ARCH),aarch64)
-IAMROOT_LIB ?= $(IAMROOT_LIB_LINUX_AARCH64_1)
+IAMROOT_LIB ?= $(IAMROOT_LIB_AARCH64_LINUX_AARCH64_1)
 export IAMROOT_LIB
 endif
 
@@ -101,12 +101,12 @@ endef
 
 define libiamroot_so =
 iamroot_lib_$(2)_$(3) = $(1)/libiamroot-$(2).so.$(3)
-IAMROOT_LIB_$(call UPPERCASE,$(2))_$(3) ?= $(CURDIR)/$(1)/libiamroot-$(2).so.$(3)
-export IAMROOT_LIB_$(call UPPERCASE,$(2))_$(3)
+IAMROOT_LIB_$(call UPPERCASE,$(1)_$(2))_$(3) ?= $(CURDIR)/$(1)/libiamroot-$(2).so.$(3)
+export IAMROOT_LIB_$(call UPPERCASE,$(1)_$(2))_$(3)
 
 vars: iamroot_lib_$(2)_$(3)
 iamroot_lib_$(2)_$(3):
-	@echo export "IAMROOT_LIB_$(call UPPERCASE,$(2))_$(3)=\"$$(IAMROOT_LIB_$(call UPPERCASE,$(2))_$(3))\""
+	@echo export "IAMROOT_LIB_$(call UPPERCASE,$(1)_$(2))_$(3)=\"$$(IAMROOT_LIB_$(call UPPERCASE,$(1)_$(2))_$(3))\""
 
 all: $(1)/libiamroot-$(2).so.$(3)
 
@@ -184,12 +184,12 @@ endef
 
 define debootstrap-rootfs
 .PRECIOUS: $(1)-$(2)-$(3)-rootfs/bin/sh
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_LINUX_X86_64_2 = /lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/lib:/usr/lib
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_LINUX_2 = /lib/i386-linux-gnu:/usr/lib/i386-linux-gnu:/lib:/usr/lib
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_LINUX_3 = /lib/arm-linux-gnueabi:/usr/lib/arm-linux-gnueabi:/lib:/usr/lib
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_LINUX_ARMHF_3 = /lib/arm-linux-gnueabihf:/usr/lib/arm-linux-gnueabihf:/lib:/usr/lib
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu:/usr/lib/aarch64-linux-gnu:/lib:/usr/lib
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_LINUX_RISCV64_LP64D_1 = /lib/riscv64-linux-gnu:/usr/lib/riscv64-linux-gnu:/lib:/usr/lib
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_X86_64_LINUX_X86_64_2 = /lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/lib:/usr/lib
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_I686_LINUX_2 = /lib/i386-linux-gnu:/usr/lib/i386-linux-gnu:/lib:/usr/lib
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_ARM_LINUX_3 = /lib/arm-linux-gnueabi:/usr/lib/arm-linux-gnueabi:/lib:/usr/lib
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_ARMHF_LINUX_ARMHF_3 = /lib/arm-linux-gnueabihf:/usr/lib/arm-linux-gnueabihf:/lib:/usr/lib
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_AARCH64_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu:/usr/lib/aarch64-linux-gnu:/lib:/usr/lib
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_RISCV64_LINUX_RISCV64_LP64D_1 = /lib/riscv64-linux-gnu:/usr/lib/riscv64-linux-gnu:/lib:/usr/lib
 # chfn: PAM: Critical error - immediate abort
 # adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn
@@ -960,7 +960,7 @@ x86_64-alpine-3.19-rootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgc
 x86_64-alpine-edge-shell: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-alpine-edge-chroot: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-alpine-edge-rootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-IAMROOT_LIB_MUSL_X86_64_1 := $(IAMROOT_LIB_MUSL_X86_64_1):$(CURDIR)/gcompat/libgcompat.so.0
+IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(IAMROOT_LIB_X86_64_MUSL_X86_64_1):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64/libiamroot-musl-x86_64.so.1: | gcompat/libgcompat.so.0
 endif
 

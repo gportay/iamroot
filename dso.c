@@ -1411,78 +1411,148 @@ static int __is_netbsd(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	       (__is_elf_ldso(ldso) && abi == -1);
 }
 
+static const char *__machine(Elf64_Ehdr *ehdr, const char *ldso, int abi)
+{
+	if (__is_x86(ehdr, ldso, abi)) {
+		if (__is_gnu_linux(ehdr, ldso, abi) ||
+		    __is_musl(ehdr, ldso, abi))
+			return "i686";
+
+		/* Assuming it is a *BSD */
+		return "i386";
+	} else if (__is_x86_64(ehdr, ldso, abi)) {
+		if (__is_gnu_linux(ehdr, ldso, abi) ||
+		    __is_musl(ehdr, ldso, abi))
+			return "x86_64";
+
+		/* Assuming it is a *BSD */
+		return "amd64";
+	} else if (__is_arm(ehdr, ldso, abi)) {
+		return "arm";
+	} else if (__is_aarch64(ehdr, ldso, abi)) {
+		if (__is_gnu_linux(ehdr, ldso, abi) ||
+		    __is_musl(ehdr, ldso, abi))
+			return "aarch64";
+
+		/* Assuming it is a *BSD */
+		return "arm64";
+	} else if (__is_riscv(ehdr, ldso, abi)) {
+		if (__is_gnu_linux(ehdr, ldso, abi) ||
+		    __is_musl(ehdr, ldso, abi))
+			return "riscv64";
+
+		/* Assuming it is a *BSD */
+		return "riscv";
+	}
+
+	/* Unsupported yet! */
+	return __set_errno(ENOTSUP, NULL);
+}
+
+ssize_t __getvariable(Elf64_Ehdr *ehdr, const char *ldso, int abi,
+		      const char *name, char *buf, ssize_t bufsiz)
+{
+	const char *machine;
+	int n;
+
+	/* Get machine name */
+	machine = __machine(ehdr, ldso, abi);
+	if (!machine)
+		__warning("%i: ELF's machine is not supported yet!\n",
+			  ehdr->e_machine);
+
+	/* <VARNAME>_<MACHINE>_<LDSO>_<ABI> */
+	if (machine && ldso && *ldso && abi != -1)
+		n = _snprintf(buf, bufsiz, "%s_%s_%s_%i", name, machine, ldso,
+			      abi);
+	/* <VARNAME>_<MACHINE>_<LDSO> */
+	else if (machine && ldso && *ldso && abi == -1)
+		n = _snprintf(buf, bufsiz, "%s_%s_%s", name, machine, ldso);
+	/* <VARNAME>_<MACHINE>_<ABI> */
+	else if (machine && abi != -1)
+		n = _snprintf(buf, bufsiz, "%s_%s_%i", name, machine, abi);
+	/* <VARNAME>_<MACHINE> */
+	else if (machine)
+		n = _snprintf(buf, bufsiz, "%s_%s", name, machine);
+	/* <VARNAME>_<LDSO>_<ABI> */
+	else if (ldso && *ldso && abi != -1)
+		n = _snprintf(buf, bufsiz, "%s_%s_%i", name, ldso, abi);
+	/* <VARNAME>_<LDSO> */
+	else if (ldso && *ldso && abi == -1)
+		n = _snprintf(buf, bufsiz, "%s_%s", name, ldso);
+	/* <VARNAME>_<ABI> */
+	else if (abi != -1)
+		n = _snprintf(buf, bufsiz, "%s_%i", name, abi);
+	/* <VARNAME> */
+	else
+		n = _snprintf(buf, bufsiz, "%s", name);
+	if (n == -1)
+		return -1;
+
+	__env_sanitize(buf, 1);
+	return n;
+}
+
 static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 				   int abi)
 {
 	const int errno_save = errno;
-	char var[NAME_MAX];
-	int n, err;
+	char buf[NAME_MAX];
+	ssize_t siz;
 	char *lib;
+	int err;
 
 	/*
 	 * Use the library set by the environment variable if set.
 	 */
-	/* IAMROOT_LIB_<LDSO>_<ABI> */
-	if (ldso && *ldso && abi != -1)
-		n = _snprintf(var, sizeof(var), "IAMROOT_LIB_%s_%i", ldso,
-			      abi);
-	/* IAMROOT_LIB_<LDSO> */
-	else if (ldso && *ldso && abi == -1)
-		n = _snprintf(var, sizeof(var), "IAMROOT_LIB_%s", ldso);
-	/* IAMROOT_LIB_<ABI> */
-	else if (abi != -1)
-		n = _snprintf(var, sizeof(var), "IAMROOT_LIB_%i", abi);
-	/* IAMROOT_LIB */
-	else
-		n = _snprintf(var, sizeof(var), "IAMROOT_LIB");
-	if (n == -1)
+	siz = __getvariable(ehdr, ldso, abi, "IAMROOT_LIB", buf, sizeof(buf));
+	if (siz == -1)
 		return NULL;
-	__env_sanitize(var, 1);
 
-	lib = getenv(var);
+	lib = getenv(buf);
 	if (lib)
 		goto exit;
 
 	/* The variable is unset, try to guess automagically the library. */
 
-	/* IAMROOT_LIB_LINUX_$ARCH_$ABI */
+	/* IAMROOT_LIB_$MACHINE_LINUX_$ARCH_$ABI */
 	if (__is_gnu_linux(ehdr, ldso, abi)) {
-		/* It is an x86 ELF or IAMROOT_LIB_LINUX_2 */
+		/* It is an x86 ELF or IAMROOT_LIB_I686_LINUX_2 */
 		if (__is_x86(ehdr, ldso, abi) ||
 		    (streq(ldso, "linux") && abi == 2)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/i686/libiamroot-linux.so.2";
 			goto access;
 		}
 
-		/* It is an x86-64 ELF or IAMROOT_LIB_LINUX_X86_64_2 */
+		/* It is an x86-64 ELF or IAMROOT_LIB_X86_64_LINUX_X86_64_2 */
 		if (__is_x86_64(ehdr, ldso, abi) ||
 		    (streq(ldso, "linux-x86-64") && abi == 2)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/x86_64/libiamroot-linux-x86-64.so.2";
 			goto access;
 		}
 
-		/* It is an ARM ELF or IAMROOT_LIB_LINUX_3 */
+		/* It is an ARM ELF or IAMROOT_LIB_ARM_LINUX_3 */
 		if (__is_arm(ehdr, ldso, abi) ||
 		    (streq(ldso, "linux") && abi == 3)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/arm/libiamroot-linux.so.3";
 			goto access;
 		}
 
-		/* It is an ARM ELF or IAMROOT_LIB_LINUX_ARMHF_3 */
+		/* It is an ARM ELF or IAMROOT_LIB_ARMHF_LINUX_ARMHF_3 */
 		if (__is_arm(ehdr, ldso, abi) ||
 		    (streq(ldso, "linux-armhf") && abi == 3)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/armhf/libiamroot-linux-armhf.so.3";
 			goto access;
 		}
 
-		/* It is an AArch64 ELF or IAMROOT_LIB_LINUX_AARCH64_1 */
+		/* It is an AArch64 ELF or IAMROOT_LIB_AARCH64_LINUX_AARCH64_1 */
 		if (__is_aarch64(ehdr, ldso, abi) ||
 		    (streq(ldso, "linux-aarch64") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/aarch64/libiamroot-linux-aarch64.so.1";
 			goto access;
 		}
 
-		/* It is an RISC-V lp64d ELF or IAMROOT_LIB_LINUX_RISCV64_LP64D_1 */
+		/* It is an RISC-V lp64d ELF or IAMROOT_LIB_RISCV64_LINUX_RISCV64_LP64D_1 */
 		if ((__is_riscv(ehdr, ldso, abi) &&
 		     __is_64_bits(ehdr, ldso, abi)) ||
 		    (streq(ldso, "linux-riscv64-lp64d") && abi == 1)) {
@@ -1491,44 +1561,44 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 		}
 	}
 
-	/* IAMROOT_LIB_MUSL_$ARCH_$ABI */
+	/* IAMROOT_LIB_$MACHINE_MUSL_$ARCH_$ABI */
 	if (__is_musl(ehdr, ldso, abi)) {
-		/* It is an x86 ELF or IAMROOT_LIB_MUSL_I386_1 */
+		/* It is an x86 ELF or IAMROOT_LIB_I686_MUSL_I386_1 */
 		if (__is_x86(ehdr, ldso, abi) ||
 		    (streq(ldso, "musl-i386") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/i686/libiamroot-musl-i386.so.1";
 			goto access;
 		}
 
-		/* It is an x86-64 ELF or IAMROOT_LIB_MUSL_X86_64_1 */
+		/* It is an x86-64 ELF or IAMROOT_LIB_X86_64_MUSL_X86_64_1 */
 		if (__is_x86_64(ehdr, ldso, abi) ||
 		    (streq(ldso, "musl-x86_64") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/x86_64/libiamroot-musl-x86_64.so.1";
 			goto access;
 		}	
 
-		/* It is an ARM ELF or IAMROOT_LIB_MUSL_ARM_1 */
+		/* It is an ARM ELF or IAMROOT_LIB_ARM_MUSL_ARM_1 */
 		if (__is_arm(ehdr, ldso, abi) ||
 		    (streq(ldso, "musl-arm") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/arm/libiamroot-musl-arm.so.1";
 			goto access;
 		}
 
-		/* It is an ARM ELF or IAMROOT_LIB_MUSL_ARMHF_1 */
+		/* It is an ARM ELF or IAMROOT_LIB_ARMHF_MUSL_ARMHF_1 */
 		if (__is_arm(ehdr, ldso, abi) ||
 		    (streq(ldso, "musl-armhf") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/armhf/libiamroot-musl-armhf.so.1";
 			goto access;
 		}
 
-		/* It is an AArch64 ELF or IAMROOT_LIB_MUSL_AARCH64_1 */
+		/* It is an AArch64 ELF or IAMROOT_LIB_AARCH64_MUSL_AARCH64_1 */
 		if (__is_aarch64(ehdr, ldso, abi) ||
 		    (streq(ldso, "musl-aarch64") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/aarch64/libiamroot-musl-aarch64.so.1";
 			goto access;
 		}
 
-		/* It is an RISC-V ELF or IAMROOT_LIB_MUSL_RISCV64_1 */
+		/* It is an RISC-V ELF or IAMROOT_LIB_RISCV64_MUSL_RISCV64_1 */
 		if ((__is_riscv(ehdr, ldso, abi) &&
 		     __is_64_bits(ehdr, ldso, abi)) ||
 		    (streq(ldso, "musl-riscv64") && abi == 1)) {
@@ -1537,7 +1607,7 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 		}
 	}
 
-	/* It is a FreeBSD ELF or IAMROOT_LIB_ELF_1 */
+	/* It is a FreeBSD ELF or IAMROOT_LIB_$MACHINE_ELF_1 */
 	if (!__is_freebsd(ehdr, ldso, abi)) {
 		/* It is an x86-64 ELF */
 		if (__is_x86_64(ehdr, ldso, abi)) {
@@ -1552,7 +1622,7 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 		}
 	}
 
-	/* It is a NetBSD ELF or IAMROOT_LIB_ELF */
+	/* It is a NetBSD ELF or IAMROOT_LIB_AMD64_ELF */
 	if (!__is_netbsd(ehdr, ldso, abi)) {
 		/* It is an x86-64 ELF */
 		if (__is_x86_64(ehdr, ldso, abi)) {
@@ -1593,33 +1663,23 @@ exit:
 
 static const char *__getdeflib(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
+	const int errno_save = errno;
 	char buf[NAME_MAX];
+	ssize_t siz;
 	char *ret;
-	int n;
 
 	/*
- 	 * Use the default library path set by the environment variable if set.
+	 * Use the default library path set by the environment variable
+	 * IAMROOT_DEFLIB if set.
 	 */
-	/* IAMROOT_DEFLIB_<LDSO>_<ABI> */
-	if (ldso && *ldso && abi != -1)
-		n = _snprintf(buf, sizeof(buf), "IAMROOT_DEFLIB_%s_%i", ldso,
-			      abi);
-	/* IAMROOT_DEFLIB_<LDSO> */
-	else if (ldso && *ldso && abi == -1)
-		n = _snprintf(buf, sizeof(buf), "IAMROOT_DEFLIB_%s", ldso);
-	/* IAMROOT_DEFLIB_<ABI> */
-	else if (abi != -1)
-		n = _snprintf(buf, sizeof(buf), "IAMROOT_DEFLIB_%i", abi);
-	/* IAMROOT_DEFLIB */
-	else
-		n = _snprintf(buf, sizeof(buf), "IAMROOT_DEFLIB");
-	if (n == -1)
+	siz = __getvariable(ehdr, ldso, abi, "IAMROOT_DEFLIB", buf,
+			    sizeof(buf));
+	if (siz == -1)
 		return NULL;
-	__env_sanitize(buf, 1);
 
 	ret = getenv(buf);
 	if (ret)
-		return ret;
+		return __set_errno(errno_save, ret);
 
 	/*
 	 * The variable is unset, try to guess automagically the standard
@@ -1635,18 +1695,18 @@ static const char *__getdeflib(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	if (__is_gnu_linux(ehdr, ldso, abi)) {
 		/* It is a 64-bits GNU/Linux */
 		if (__is_64_bits(ehdr, ldso, abi))
-			return "/lib64:/usr/lib64";
+			return __set_errno(errno_save, "/lib64:/usr/lib64");
 
 		/* It is a GNU/Linux */
-		return "/lib:/usr/lib";
+		return __set_errno(errno_save, "/lib:/usr/lib");
 	}
 
 	/* It is a NetBSD ELF or ELF */
 	if (__is_netbsd(ehdr, ldso, abi))
-		return "/lib:/usr/pkg/lib:/usr/lib";
+		return __set_errno(errno_save, "/lib:/usr/pkg/lib:/usr/lib");
 
 	/* It is something else */
-	return "/lib:/usr/local/lib:/usr/lib";
+	return __set_errno(errno_save, "/lib:/usr/local/lib:/usr/lib");
 }
 
 static ssize_t __ld_lib_path(const char *, char *, size_t);

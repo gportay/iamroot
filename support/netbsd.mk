@@ -13,8 +13,11 @@ ARCH ?= $(shell uname -m 2>/dev/null)
 IAMROOT_LIB ?= $(CURDIR)/$(ARCH)/libiamroot.elf_so
 export IAMROOT_LIB
 
-IAMROOT_LIB_ELF ?= $(CURDIR)/$(ARCH)/libiamroot.elf_so
-export IAMROOT_LIB_ELF
+IAMROOT_LIB_X86_64_ELF ?= $(CURDIR)/$(ARCH)/libiamroot.elf_so
+export IAMROOT_LIB_X86_64_ELF
+
+IAMROOT_LIB_AMD64_ELF ?= $(CURDIR)/$(ARCH)/libiamroot.elf_so
+export IAMROOT_LIB_AMD64_ELF
 
 IAMROOT_PATH_RESOLUTION_IGNORE ?= ^/dev/|^/proc/
 export IAMROOT_PATH_RESOLUTION_IGNORE

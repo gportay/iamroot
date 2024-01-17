@@ -1863,7 +1863,7 @@ static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsiz)
 	 * which case this variable is ignored.
 	 */
 	ld_library_path = getenv("LD_LIBRARY_PATH");
-	if (ld_library_path && !__secure_execution_mode()) {
+	if (ld_library_path && *ld_library_path && !__secure_execution_mode()) {
 		str = __path_strncat(buf, ld_library_path, bufsiz);
 		if (!str)
 			return -1;

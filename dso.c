@@ -2359,7 +2359,7 @@ int __ldso(const char *path, char * const argv[], char *interp,
 		shift += 2;
 	if (has_preload && ld_preload)
 		shift += 2;
-	if (ld_library_path)
+	if (has_library_path && ld_library_path)
 		shift += 2;
 	if (has_inhibit_rpath && inhibit_rpath)
 		shift += 2;

@@ -38,6 +38,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the setting of the `ish`'s environment variable `ISH_USER` to mismatch
   `USER` iamroot's value instead of `USER` user's value
 - Fix the detection of the [NetBSD]'s [dynamic loader][ld.so(8)]
+- Fix the regression on rewriting the command-line with interpreter scripts on
+  non-[glibc] and non-[musl] worlds since [v13] (i.e. on \*BSD systems)
 
 ## [v16] - 2024-01-04
 

@@ -1729,6 +1729,16 @@ static int __is_mipsle(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	       (ehdr->e_ident[EI_DATA] == ELFDATA2LSB);
 }
 
+static int __is_powerpc64le(Elf64_Ehdr *ehdr, const char *ldso, int abi)
+{
+	(void)ldso;
+	(void)abi;
+
+	/* It is a PowerPC64 LSB ELF */
+	return ehdr && (ehdr->e_machine == EM_PPC64) &&
+	       (ehdr->e_ident[EI_DATA] == ELFDATA2LSB);
+}
+
 static int __is_s390(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
 	(void)ldso;
@@ -1814,6 +1824,8 @@ static const char *__machine(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 		return "riscv";
 	} else if (__is_mipsle(ehdr, ldso, abi)) {
 		return "mipsle";
+	} else if (__is_powerpc64le(ehdr, ldso, abi)) {
+		return "powerpc64le";
 	} else if (__is_s390(ehdr, ldso, abi)) {
 		return "s390x";
 	}
@@ -1949,6 +1961,12 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 		}
 	}
 
+	/* It is a PowerPC64 LSB ELF and IAMROOT_LIB_POWERPC64LE_2 */
+	if (__is_powerpc64le(ehdr, ldso, abi) && (*ldso == 0 && abi == 2)) {
+		lib = __xstr(PREFIX)"/lib/iamroot/powerpc64le/libiamroot.so.2";
+		goto access;
+	}
+
 	/* It is an IBM S/390 ELF and IAMROOT_LIB_S390X_1 */
 	if (__is_s390(ehdr, ldso, abi) && (*ldso == 0 && abi == 1)) {
 		lib = __xstr(PREFIX)"/lib/iamroot/s390x/libiamroot.so.1";
@@ -2011,6 +2029,12 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 		if (__is_mipsle(ehdr, ldso, abi) &&
 		    (streq(ldso, "musl-mipsel") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/mipsle/libiamroot-musl-mipsel.so.1";
+			goto access;
+		}
+
+		/* It is a PowerPC64 LSB ELF and IAMROOT_LIB_POWERPC64LE_MUSL_POWERPC64LE_1 */
+		if (__is_powerpc64le(ehdr, ldso, abi) && (*ldso == 0 && abi == 2)) {
+			lib = __xstr(PREFIX)"/lib/iamroot/powerpc64le/libiamroot-musl-powerpc64le.so.1";
 			goto access;
 		}
 

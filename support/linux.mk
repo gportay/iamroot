@@ -89,16 +89,17 @@ vars:
 
 define libs
 $(strip libiamroot.so \
-	$(if $(findstring :$(2):,:x86_64: :amd64:          ),$(if $(findstring :$(1):,:musl:),x86_64/libiamroot-musl-x86_64.so.1        ,x86_64/libiamroot-linux-x86-64.so.2        ), \
-	$(if $(findstring :$(2):,:arm: :armel:             ),$(if $(findstring :$(1):,:musl:),arm/libiamroot-musl-arm.so.1              ,arm/libiamroot-linux.so.3                  ), \
-	$(if $(findstring :$(2):,:armhf: :armv7hl: :armv7h:),$(if $(findstring :$(1):,:musl:),armhf/libiamroot-musl-armhf.so.1          ,armhf/libiamroot-linux-armhf.so.3          ), \
-	$(if $(findstring :$(2):,:x86: :i386: :i686:       ),$(if $(findstring :$(1):,:musl:),i686/libiamroot-musl-i386.so.1            ,i686/libiamroot-linux.so.2                 ), \
-	$(if $(findstring :$(2):,:aarch64: :arm64:         ),$(if $(findstring :$(1):,:musl:),aarch64/libiamroot-musl-aarch64.so.1      ,aarch64/libiamroot-linux-aarch64.so.1      ), \
-	$(if $(findstring :$(2):,:aarch64_be:              ),$(if $(findstring :$(1):,:musl:),aarch64_be/libiamroot-musl-aarch64_be.so.1,aarch64_be/libiamroot-linux-aarch64_be.so.1), \
-	$(if $(findstring :$(2):,:riscv64:                 ),$(if $(findstring :$(1):,:musl:),riscv64/libiamroot-musl-riscv64.so.1      ,riscv64/libiamroot-linux-riscv64-lp64d.so.1), \
-	$(if $(findstring :$(2):,:mipsle: :mipsel:         ),$(if $(findstring :$(1):,:musl:),mipsle/libiamroot-musl-mipsel.so.1        ,mipsle/libiamroot.so.1                     ), \
-	$(if $(findstring :$(2):,:s390x:                   ),$(if $(findstring :$(1):,:musl:),s390x/libiamroot-musl-s390x.so.1          ,s390x/libiamroot.so.1                      ), \
-	$(error $(1)-$(2): No such library)))))))))) \
+	$(if $(findstring :$(2):,:x86_64: :amd64:                 ),$(if $(findstring :$(1):,:musl:),x86_64/libiamroot-musl-x86_64.so.1          ,x86_64/libiamroot-linux-x86-64.so.2        ), \
+	$(if $(findstring :$(2):,:arm: :armel:                    ),$(if $(findstring :$(1):,:musl:),arm/libiamroot-musl-arm.so.1                ,arm/libiamroot-linux.so.3                  ), \
+	$(if $(findstring :$(2):,:armhf: :armv7hl: :armv7h:       ),$(if $(findstring :$(1):,:musl:),armhf/libiamroot-musl-armhf.so.1            ,armhf/libiamroot-linux-armhf.so.3          ), \
+	$(if $(findstring :$(2):,:x86: :i386: :i686:              ),$(if $(findstring :$(1):,:musl:),i686/libiamroot-musl-i386.so.1              ,i686/libiamroot-linux.so.2                 ), \
+	$(if $(findstring :$(2):,:aarch64: :arm64:                ),$(if $(findstring :$(1):,:musl:),aarch64/libiamroot-musl-aarch64.so.1        ,aarch64/libiamroot-linux-aarch64.so.1      ), \
+	$(if $(findstring :$(2):,:aarch64_be:                     ),$(if $(findstring :$(1):,:musl:),aarch64_be/libiamroot-musl-aarch64_be.so.1  ,aarch64_be/libiamroot-linux-aarch64_be.so.1), \
+	$(if $(findstring :$(2):,:riscv64:                        ),$(if $(findstring :$(1):,:musl:),riscv64/libiamroot-musl-riscv64.so.1        ,riscv64/libiamroot-linux-riscv64-lp64d.so.1), \
+	$(if $(findstring :$(2):,:mipsle: :mipsel:                ),$(if $(findstring :$(1):,:musl:),mipsle/libiamroot-musl-mipsel.so.1          ,mipsle/libiamroot.so.1                     ), \
+	$(if $(findstring :$(2):,:powerpc64le: :ppc64le: :ppc64el:),$(if $(findstring :$(1):,:musl:),powerpc64le/libiamroot-musl-powerpc64le.so.1,powerpc64le/libiamroot.so.2                ), \
+	$(if $(findstring :$(2):,:s390x:                          ),$(if $(findstring :$(1):,:musl:),s390x/libiamroot-musl-s390x.so.1            ,s390x/libiamroot.so.1                      ), \
+	$(error $(1)-$(2): No such library))))))))))) \
 )
 endef
 
@@ -233,6 +234,7 @@ $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export 
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_AARCH64_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu:/usr/lib/aarch64-linux-gnu:/lib:/usr/lib
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_RISCV64_LINUX_RISCV64_LP64D_1 = /lib/riscv64-linux-gnu:/usr/lib/riscv64-linux-gnu:/lib:/usr/lib
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_MIPSLE_1 = /usr/lib/mipsel-linux-gnu:/lib/mipsel-linux-gnu:/usr/lib:/lib
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_POWERPC64LE_2 = /usr/lib/powerpc64le-linux-gnu:/lib/powerpc64le-linux-gnu:/usr/lib:/lib
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_S390X_1 = /usr/lib/s390x-linux-gnu:/lib/s390x-linux-gnu:/usr/lib:/lib
 # chfn: PAM: Critical error - immediate abort
 # adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
@@ -634,6 +636,16 @@ $(O)-mipsle-musl-mipsel/libiamroot.so: override CC = mipsel-buildroot-linux-musl
 $(eval $(call libiamroot_ldso_so_abi,mipsle,musl-mipsel,1))
 endif
 
+ifneq ($(shell command -v powerpc64le-buildroot-linux-gnu-gcc 2>/dev/null),)
+$(O)-powerpc64le/libiamroot.so: override CC = powerpc64le-buildroot-linux-gnu-gcc
+$(eval $(call libiamroot_so_abi,powerpc64le,2))
+endif
+
+ifneq ($(shell command -v powerpc64le-buildroot-linux-musl-gcc 2>/dev/null),)
+$(O)-powerpc64le-musl-powerpc64le/libiamroot.so: override CC = powerpc64le-buildroot-linux-musl-gcc
+$(eval $(call libiamroot_ldso_so_abi,powerpc64le,musl-powerpc64le,1))
+endif
+
 ifneq ($(shell command -v s390x-buildroot-linux-gnu-gcc 2>/dev/null),)
 $(O)-s390x/libiamroot.so: override CC = s390x-buildroot-linux-gnu-gcc
 $(eval $(call libiamroot_so_abi,s390x,1))
@@ -695,6 +707,9 @@ riscv64-rootfs:
 
 .PHONY: mips-rootfs
 mips-rootfs:
+
+.PHONY: powerpc64le-rootfs
+powerpc64le-rootfs:
 
 .PHONY: test ci ish multiarch-ish
 test ci ish multiarch-ish: libiamroot.so
@@ -1206,6 +1221,25 @@ mipsel-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mount
 mipsel-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 
+ifneq ($(shell command -v mipsel-buildroot-linux-gnu-gcc 2>/dev/null),)
+powerpc64le-rootfs: ppc64el-debian-rootfs
+
+.PHONY: ppc64el-debian-rootfs
+ppc64el-debian-rootfs: ppc64el-debian-oldoldstable-rootfs
+ppc64el-debian-rootfs: ppc64el-debian-oldstable-rootfs
+ppc64el-debian-rootfs: ppc64el-debian-stable-rootfs
+ppc64el-debian-rootfs: ppc64el-debian-testing-rootfs
+ppc64el-debian-rootfs: ppc64el-debian-unstable-rootfs
+
+$(eval $(call debootstrap-rootfs,ppc64el,debian,oldoldstable))
+$(eval $(call debootstrap-rootfs,ppc64el,debian,oldstable))
+$(eval $(call debootstrap-rootfs,ppc64el,debian,stable))
+$(eval $(call debootstrap-rootfs,ppc64el,debian,testing))
+$(eval $(call debootstrap-rootfs,ppc64el,debian,unstable))
+ppc64el-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+ppc64el-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
+endif
+
 ifneq ($(shell command -v s390x-buildroot-linux-gnu-gcc 2>/dev/null),)
 s390x-rootfs: s390x-debian-rootfs
 
@@ -1326,6 +1360,27 @@ $(eval $(call alpine-make-rootfs-rootfs,armhf,alpinelinux,3.17))
 $(eval $(call alpine-make-rootfs-rootfs,armhf,alpinelinux,3.18))
 $(eval $(call alpine-make-rootfs-rootfs,armhf,alpinelinux,3.19))
 $(eval $(call alpine-make-rootfs-rootfs,armhf,alpinelinux,edge))
+endif
+
+ifneq ($(shell command -v powerpc64le-buildroot-linux-musl-gcc 2>/dev/null),)
+ppc64le-rootfs: ppc64le-alpinelinux-rootfs
+
+.PHONY: ppc64le-alpinelinux-rootfs
+ppc64le-alpinelinux-rootfs: ppc64le-alpinelinux-3.14-rootfs
+ppc64le-alpinelinux-rootfs: ppc64le-alpinelinux-3.15-rootfs
+ppc64le-alpinelinux-rootfs: ppc64le-alpinelinux-3.16-rootfs
+ppc64le-alpinelinux-rootfs: ppc64le-alpinelinux-3.17-rootfs
+ppc64le-alpinelinux-rootfs: ppc64le-alpinelinux-3.18-rootfs
+ppc64le-alpinelinux-rootfs: ppc64le-alpinelinux-3.19-rootfs
+ppc64le-alpinelinux-rootfs: ppc64le-alpinelinux-edge-rootfs
+
+$(eval $(call alpine-make-rootfs-rootfs,ppc64le,alpinelinux,3.14))
+$(eval $(call alpine-make-rootfs-rootfs,ppc64le,alpinelinux,3.15))
+$(eval $(call alpine-make-rootfs-rootfs,ppc64le,alpinelinux,3.16))
+$(eval $(call alpine-make-rootfs-rootfs,ppc64le,alpinelinux,3.17))
+$(eval $(call alpine-make-rootfs-rootfs,ppc64le,alpinelinux,3.18))
+$(eval $(call alpine-make-rootfs-rootfs,ppc64le,alpinelinux,3.19))
+$(eval $(call alpine-make-rootfs-rootfs,ppc64le,alpinelinux,edge))
 endif
 endif
 

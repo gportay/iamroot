@@ -17,6 +17,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Support different endianness; tested on s390x from x86_64
 - Chroot to a [Debian] s390x world; tested on [Debian S/390 Port]
 - Chroot to an AArch64 BE; untested
+- Chroot to a [Debian] ppc64el world; tested on [Debian PowerPC64 LE Port]
+- Chroot to a musl ppc64le world; tested on [Alpine Linux]
 
 ### Changed
 
@@ -817,6 +819,7 @@ Initial release.
 [Debian ARM EABI Port]: https://wiki.debian.org/ArmEabiPort
 [Debian ARM hard-float Port]: https://wiki.debian.org/ArmHardFloatPort
 [Debian MIPS Port]: https://wiki.debian.org/MIPSPort
+[Debian PowerPC64 Port]: https://wiki.debian.org/ppc64el
 [Debian RISC-V 64 Port]: https://wiki.debian.org/Ports/riscv64
 [Debian S/390 Port]: https://www.debian.org/ports/s390/
 [Debian i386 Port]: https://www.debian.org/ports/i386/

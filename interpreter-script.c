@@ -55,7 +55,7 @@ static ssize_t __interpreter_script_hashbang(const char *path, char *buf,
 	 * of four recursions, so that the interpreter may be a script which is
 	 * interpreted by a script, and so on.
 	 */
-	fd = next_open(path, O_RDONLY, 0);
+	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
 	if (fd == -1)
 		return -1;
 

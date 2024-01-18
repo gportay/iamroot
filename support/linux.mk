@@ -674,9 +674,6 @@ $(eval $(call pacstrap-rootfs,i686,archlinux32,base))
 
 extra-rootfs: x86_64-manjaro-stable-rootfs
 
-.PHONY: x86_64-manjaro-stable-rootfs
-x86_64-manjaro-stable-rootfs: | x86_64-manjaro-stable-rootfs/bin/sh
-
 $(eval $(call pacstrap-rootfs,x86_64,manjaro-stable,base))
 endif
 

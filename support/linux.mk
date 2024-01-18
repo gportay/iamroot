@@ -738,6 +738,7 @@ i686-rootfs: i686-archlinux32-rootfs
 $(eval $(call pacstrap-rootfs,i686,archlinux32,base))
 
 extra-rootfs: x86_64-manjaro-stable-rootfs
+stable-rootfs: x86_64-manjaro-stable-rootfs
 unstable-rootfs: x86_64-manjaro-unstable-rootfs
 
 $(eval $(call pacstrap-rootfs,x86_64,manjaro-stable,base))
@@ -1474,8 +1475,10 @@ manjaro-log: x86_64-manjaro-unstable-rootfs.log
 
 stable-support: support/x86_64-archlinux-rootfs.txt
 stable-support: support/i686-archlinux32-rootfs.txt
+stable-support: support/x86_64-manjaro-stable-rootfs.txt
 stable-log: x86_64-archlinux-rootfs.log
 stable-log: i686-archlinux32-rootfs.log
+stable-log: x86_64-manjaro-stable-rootfs.log
 
 unstable-support: support/x86_64-manjaro-unstable-rootfs.txt
 unstable-log: x86_64-manjaro-unstable-rootfs.log

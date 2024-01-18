@@ -755,6 +755,8 @@ amd64-debian-rootfs: amd64-debian-stable-rootfs
 amd64-debian-rootfs: amd64-debian-testing-rootfs
 amd64-debian-rootfs: amd64-debian-unstable-rootfs
 
+stable-rootfs: amd64-debian-stable-rootfs
+
 $(eval $(call debootstrap-rootfs,amd64,debian,oldoldstable))
 $(eval $(call debootstrap-rootfs,amd64,debian,oldstable))
 $(eval $(call debootstrap-rootfs,amd64,debian,stable))
@@ -792,6 +794,8 @@ amd64-ubuntu-rootfs: amd64-ubuntu-jammy-rootfs
 amd64-ubuntu-rootfs: amd64-ubuntu-kinetic-rootfs
 amd64-ubuntu-rootfs: amd64-ubuntu-lunar-rootfs
 amd64-ubuntu-rootfs: amd64-ubuntu-mantic-rootfs
+
+stable-rootfs: amd64-ubuntu-mantic-rootfs
 
 amd64-ubuntu-trusty-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
 amd64-ubuntu-xenial-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
@@ -861,6 +865,8 @@ extra-rootfs: amd64-devuan-rootfs
 amd64-devuan-rootfs: amd64-devuan-chimaera-rootfs
 amd64-devuan-rootfs: amd64-devuan-daedalus-rootfs
 
+stable-rootfs: amd64-devuan-daedalus-rootfs
+
 amd64-devuan-chimaera-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://deb.devuan.org/merged/
 amd64-devuan-chimaera-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= support/ceres
 amd64-devuan-chimaera-rootfs/bin/sh: export DEBOOTSTRAPFLAGS ?= --no-check-gpg
@@ -886,6 +892,8 @@ fedora-rootfs: x86_64-fedora-36-rootfs
 fedora-rootfs: x86_64-fedora-37-rootfs
 fedora-rootfs: x86_64-fedora-38-rootfs
 fedora-rootfs: x86_64-fedora-39-rootfs
+
+stable-rootfs: x86_64-fedora-39-rootfs
 
 x86_64-fedora-20-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 x86_64-fedora-30-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
@@ -916,6 +924,8 @@ extra-rootfs: opensuse-rootfs
 
 .PHONY: opensuse-rootfs
 opensuse-rootfs: x86_64-opensuse-tumbleweed-rootfs
+
+stable-rootfs: x86_64-opensuse-tumbleweed-rootfs
 
 $(eval $(call zypper-rootfs,x86_64,opensuse-leap))
 $(eval $(call zypper-rootfs,x86_64,opensuse-tumbleweed))

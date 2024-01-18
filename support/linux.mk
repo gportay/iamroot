@@ -599,6 +599,9 @@ rootfs: i686-rootfs
 .PHONY: extra-rootfs
 extra-rootfs:
 
+.PHONY: stable-rootfs
+stable-rootfs:
+
 .PHONY: broken-rootfs
 broken-rootfs:
 
@@ -1327,7 +1330,7 @@ fixme-support: all
 log: all
 
 .PHONY: stable-log
-statble-log: all
+stable-log: all
 
 .PHONY: extra-log
 extra-log: all

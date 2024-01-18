@@ -667,9 +667,6 @@ $(eval $(call pacstrap-rootfs,x86_64,archlinux,base))
 
 i686-rootfs: i686-archlinux32-rootfs
 
-.PHONY: i686-archlinux32-rootfs
-i686-archlinux32-rootfs: | i686-archlinux32-rootfs/bin/sh
-
 $(eval $(call pacstrap-rootfs,i686,archlinux32,base))
 
 extra-rootfs: x86_64-manjaro-stable-rootfs

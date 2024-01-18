@@ -11,6 +11,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Preserve the environment variable `NO_COLOR` in `ish`
 - Add `ido`, the `sudo(8)` CLI for `iamroot(7)`
 - Chroot to a musl armhf world; tested on [Alpine Linux]
+- Fixup the content of `LD_LIBRARY_PATH` used by `ld.so(8)`, `ldd(1)` and
+  `dlopen()` for \*BSD and unrecognized [dynamic loaders][ld.so(8)]
 
 ### Changed
 

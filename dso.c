@@ -37,6 +37,53 @@ extern int next_faccessat(int, const char *, int, int);
 extern int next_open(const char *, int, mode_t);
 extern void *next_dlopen(const char *, int);
 
+static char *__getld_library_path()
+{
+	char *curr, *prev;
+
+	/* LD_LIBRARY_PATH is unset; return NULL directly! */
+	curr = getenv("LD_LIBRARY_PATH");
+	if (!curr)
+		return NULL;
+
+	/*
+	 * ld_library_path is unset; i.e. ld.so has --library-path or bootstrap
+	 * environment.
+	 *
+	 * Return LD_LIBRARY_PATH's value.
+	 */
+	prev = getenv("ld_library_path");
+	if (!prev)
+		return curr;
+
+	/*
+	 * Both values are identicals; i.e. ld.so does not have --library-path,
+	 * and LD_LIBRARY_PATH is left untouched; it is "empty" with no initial
+	 * value!
+	 *
+	 * Return NULL.
+	 */
+	if (streq(curr, prev))
+		return NULL;
+
+	/*
+	 * Both values are differents; i.e. ld.so does not have --library-path,
+	 * and LD_LIBRARY_PATH **WAS** touched!
+	 *
+	 * Do nothing for now; return LD_LIBRARY_PATH's value.
+	 */ 
+
+	/*
+	 * ld_library_path is a substring of LD_LIBRARY_PATH; i.e. it has been
+	 * touched!
+	 */
+	if (strstr(curr, prev))
+		__warning("LD_LIBRARY_PATH: '%s' contains '%s'\n", curr, prev);
+
+	/* TODO: Strip off ld_library_path from LD_LIBRARY_PATH! */
+	return curr;
+}
+
 __attribute__((visibility("hidden")))
 const char *__basename(const char *path)
 {
@@ -674,7 +721,7 @@ static int __ld_open_needed(const char *path, int flags, const char *needed_by)
 		rpath = siz > 0 ? tmp : NULL;
 	}
 
-	ld_library_path = getenv("LD_LIBRARY_PATH");
+	ld_library_path = __getld_library_path();
 	if (__secure_execution_mode())
 		ld_library_path = NULL;
 
@@ -1875,7 +1922,7 @@ static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsiz)
 	 * executable is being run in secure-execution mode (see below), in
 	 * which case this variable is ignored.
 	 */
-	ld_library_path = getenv("LD_LIBRARY_PATH");
+	ld_library_path = __getld_library_path();
 	if (ld_library_path && *ld_library_path && !__secure_execution_mode()) {
 		str = __path_strncat(buf, ld_library_path, bufsiz);
 		if (!str)
@@ -2520,7 +2567,7 @@ ssize_t __dl_access(const char *path, int mode, char *buf, size_t bufsiz)
 		exec_rpath = siz > 0 ? tmp : NULL;
 	}
 
-	ld_library_path = getenv("LD_LIBRARY_PATH");
+	ld_library_path = __getld_library_path();
 	if (__secure_execution_mode())
 		ld_library_path = NULL;
 
@@ -2699,7 +2746,7 @@ static int __ld_trace_loader_objects_executable(const char *path)
 		exec_rpath = siz > 0 ? tmp : NULL;
 	}
 
-	ld_library_path = getenv("LD_LIBRARY_PATH");
+	ld_library_path = __getld_library_path();
 	if (__secure_execution_mode())
 		ld_library_path = NULL;
 

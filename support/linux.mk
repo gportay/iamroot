@@ -844,7 +844,7 @@ x86_64-opensuse-leap-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_WARNING_IGNOR
 extra-rootfs: opensuse-rootfs
 
 .PHONY: opensuse-rootfs
-opensuse-rootfs: | x86_64-opensuse-tumbleweed-rootfs
+opensuse-rootfs: x86_64-opensuse-tumbleweed-rootfs
 
 $(eval $(call zypper-rootfs,x86_64,opensuse-leap))
 $(eval $(call zypper-rootfs,x86_64,opensuse-tumbleweed))
@@ -994,7 +994,7 @@ ifneq ($(shell command -v aarch64-buildroot-linux-gnu-gcc 2>/dev/null),)
 aarch64-rootfs: aarch64-archlinuxarm-rootfs
 
 .PHONY: aarch64-archlinuxarm-rootfs
-aarch64-archlinuxarm-rootfs: | aarch64-archlinuxarm-rootfs/bin/sh
+aarch64-archlinuxarm-rootfs: aarch64-archlinuxarm-rootfs/bin/sh
 
 $(eval $(call pacstrap-rootfs,aarch64,archlinuxarm,base))
 aarch64-archlinuxarm-chroot aarch64-archlinuxarm-shell aarch64-archlinuxarm-rootfs/bin/sh: export IAMROOT_DEFLIB = /lib:/usr/lib
@@ -1004,7 +1004,7 @@ ifneq ($(shell command -v arm-buildroot-linux-gnueabihf-gcc 2>/dev/null),)
 arm-rootfs: armv7h-archlinuxarm-rootfs
 
 .PHONY: armv7h-archlinuxarm-rootfs
-armv7h-archlinuxarm-rootfs: | armv7h-archlinuxarm-rootfs/bin/sh
+armv7h-archlinuxarm-rootfs: armv7h-archlinuxarm-rootfs/bin/sh
 
 $(eval $(call pacstrap-rootfs,armv7h,archlinuxarm,base))
 endif
@@ -1013,7 +1013,7 @@ ifneq ($(shell command -v riscv64-buildroot-linux-gnu-gcc 2>/dev/null),)
 riscv64-rootfs: riscv64-archlinuxriscv-rootfs
 
 .PHONY: riscv64-archlinuxriscv-rootfs
-riscv64-archlinuxriscv-rootfs: | riscv64-archlinuxriscv-rootfs/bin/sh
+riscv64-archlinuxriscv-rootfs: riscv64-archlinuxriscv-rootfs/bin/sh
 
 $(eval $(call pacstrap-rootfs,riscv64,archlinuxriscv,base))
 riscv64-archlinuxriscv-chroot riscv64-archlinuxriscv-shell riscv64-archlinuxriscv-rootfs/bin/sh: export IAMROOT_DEFLIB = /lib:/usr/lib
@@ -1111,13 +1111,13 @@ aarch64-fedora-rootfs: aarch64-fedora-37-rootfs
 aarch64-fedora-rootfs: aarch64-fedora-38-rootfs
 aarch64-fedora-rootfs: aarch64-fedora-39-rootfs
 
-aarch64-fedora-33-rootfs: | aarch64-fedora-33-rootfs/bin/sh
-aarch64-fedora-34-rootfs: | aarch64-fedora-34-rootfs/bin/sh
-aarch64-fedora-35-rootfs: | aarch64-fedora-35-rootfs/bin/sh
-aarch64-fedora-36-rootfs: | aarch64-fedora-36-rootfs/bin/sh
-aarch64-fedora-37-rootfs: | aarch64-fedora-37-rootfs/bin/sh
-aarch64-fedora-38-rootfs: | aarch64-fedora-38-rootfs/bin/sh
-aarch64-fedora-39-rootfs: | aarch64-fedora-39-rootfs/bin/sh
+aarch64-fedora-33-rootfs: aarch64-fedora-33-rootfs/bin/sh
+aarch64-fedora-34-rootfs: aarch64-fedora-34-rootfs/bin/sh
+aarch64-fedora-35-rootfs: aarch64-fedora-35-rootfs/bin/sh
+aarch64-fedora-36-rootfs: aarch64-fedora-36-rootfs/bin/sh
+aarch64-fedora-37-rootfs: aarch64-fedora-37-rootfs/bin/sh
+aarch64-fedora-38-rootfs: aarch64-fedora-38-rootfs/bin/sh
+aarch64-fedora-39-rootfs: aarch64-fedora-39-rootfs/bin/sh
 
 aarch64-fedora-33-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 aarch64-fedora-34-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
@@ -1141,10 +1141,10 @@ armv7hl-fedora-rootfs: armv7hl-fedora-34-rootfs
 armv7hl-fedora-rootfs: armv7hl-fedora-35-rootfs
 armv7hl-fedora-rootfs: armv7hl-fedora-36-rootfs
 
-armv7hl-fedora-33-rootfs: | armv7hl-fedora-33-rootfs/bin/sh
-armv7hl-fedora-34-rootfs: | armv7hl-fedora-34-rootfs/bin/sh
-armv7hl-fedora-35-rootfs: | armv7hl-fedora-35-rootfs/bin/sh
-armv7hl-fedora-36-rootfs: | armv7hl-fedora-36-rootfs/bin/sh
+armv7hl-fedora-33-rootfs: armv7hl-fedora-33-rootfs/bin/sh
+armv7hl-fedora-34-rootfs: armv7hl-fedora-34-rootfs/bin/sh
+armv7hl-fedora-35-rootfs: armv7hl-fedora-35-rootfs/bin/sh
+armv7hl-fedora-36-rootfs: armv7hl-fedora-36-rootfs/bin/sh
 
 armv7hl-fedora-33-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 armv7hl-fedora-34-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo

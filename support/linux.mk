@@ -661,6 +661,9 @@ extra-rootfs:
 .PHONY: stable-rootfs
 stable-rootfs:
 
+.PHONY: unstable-rootfs
+unstable-rootfs:
+
 .PHONY: broken-rootfs
 broken-rootfs:
 
@@ -735,8 +738,10 @@ i686-rootfs: i686-archlinux32-rootfs
 $(eval $(call pacstrap-rootfs,i686,archlinux32,base))
 
 extra-rootfs: x86_64-manjaro-stable-rootfs
+unstable-rootfs: x86_64-manjaro-unstable-rootfs
 
 $(eval $(call pacstrap-rootfs,x86_64,manjaro-stable,base))
+$(eval $(call pacstrap-rootfs,x86_64,manjaro-unstable,base))
 endif
 
 ifneq ($(shell command -v debootstrap 2>/dev/null),)
@@ -1412,6 +1417,9 @@ support: all
 .PHONY: stable-support
 stable-support: all
 
+.PHONY: unstable-support
+unstable-support: all
+
 .PHONY: extra-support
 extra-support: all
 
@@ -1426,6 +1434,9 @@ log: all
 
 .PHONY: stable-log
 stable-log: all
+
+.PHONY: unstable-log
+unstable-log: all
 
 .PHONY: extra-log
 extra-log: all
@@ -1447,6 +1458,7 @@ extra-support: manjaro-support
 
 .PHONY: manjaro-support
 manjaro-support: support/x86_64-manjaro-stable-rootfs.txt
+manjaro-support: support/x86_64-manjaro-unstable-rootfs.txt
 
 log: archlinux-log
 
@@ -1458,11 +1470,15 @@ extra-log: manjaro-log
 
 .PHONY: manjaro-log
 manjaro-log: x86_64-manjaro-stable-rootfs.log
+manjaro-log: x86_64-manjaro-unstable-rootfs.log
 
 stable-support: support/x86_64-archlinux-rootfs.txt
 stable-support: support/i686-archlinux32-rootfs.txt
 stable-log: x86_64-archlinux-rootfs.log
 stable-log: i686-archlinux32-rootfs.log
+
+unstable-support: support/x86_64-manjaro-unstable-rootfs.txt
+unstable-log: x86_64-manjaro-unstable-rootfs.log
 endif
 
 ifneq ($(shell command -v debootstrap 2>/dev/null),)

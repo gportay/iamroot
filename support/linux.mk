@@ -976,6 +976,8 @@ alpinelinux-rootfs: x86_64-alpinelinux-3.18-rootfs
 alpinelinux-rootfs: x86_64-alpinelinux-3.19-rootfs
 alpinelinux-rootfs: x86_64-alpinelinux-edge-rootfs
 
+unstable-rootfs: x86_64-alpinelinux-edge-rootfs
+
 $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpinelinux,3.14))
 $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpinelinux,3.15))
 $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpinelinux,3.16))
@@ -1642,6 +1644,9 @@ alpinelinux-log: x86_64-alpinelinux-edge-rootfs.log
 
 stable-support: support/x86_64-alpinelinux-3.18-rootfs.txt
 stable-log: x86_64-alpinelinux-3.18-rootfs.log
+
+unstable-support: support/x86_64-alpinelinux-edge-rootfs.txt
+unstable-log: x86_64-alpinelinux-edge-rootfs.log
 endif
 endif
 

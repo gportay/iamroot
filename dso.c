@@ -2343,6 +2343,28 @@ int __ldso(const char *path, char * const argv[], char *interp,
 				 inhibit_rpath);
 	}
 
+	/*
+	 * Clear the dynamic loader environment variables.
+	 */
+
+	err = unsetenv("LD_PRELOAD");
+	if (err == -1)
+		goto close;
+
+	err = unsetenv("LD_LIBRARY_PATH");
+	if (err == -1)
+		goto close;
+
+	/*
+	 * Warning: The calls above to unsetenv() have probably modified the
+	 * __environ.
+	 *
+	 * As a consequence, both dangling pointers ld_library_path and
+	 * ld_preload are to be considered as flags only as they probably point
+	 * to a deallocated memory area. Use getenv() instead to read and use
+	 * their value passed that point!
+	 */
+
 	siz = path_resolution(AT_FDCWD, pt_interp, interp, interpsiz, 0);
 	if (siz == -1)
 		goto close;
@@ -2397,18 +2419,10 @@ int __ldso(const char *path, char * const argv[], char *interp,
 	 */
 	if (has_preload && ld_preload) {
 		interparg[i++] = "--preload";
-		interparg[i++] = ld_preload;
-
-		err = unsetenv("LD_PRELOAD");
-		if (err == -1)
-			goto close;
+		interparg[i++] = getenv("ld_preload");
 	/* Or set LD_PRELOAD if --preload is not supported */
 	} else if (ld_preload) {
-		err = setenv("LD_PRELOAD", ld_preload, 1);
-		if (err == -1)
-			goto close;
-
-		err = unsetenv("ld_preload");
+		err = setenv("LD_PRELOAD", getenv("ld_preload"), 1);
 		if (err == -1)
 			goto close;
 	}
@@ -2422,14 +2436,10 @@ int __ldso(const char *path, char * const argv[], char *interp,
 	 */
 	if (has_library_path && ld_library_path) {
 		interparg[i++] = "--library-path";
-		interparg[i++] = ld_library_path;
+		interparg[i++] = getenv("ld_library_path");
 	/* Or set LD_LIBRARY_PATH if --library-path is not supported */
 	} else if (ld_library_path) {
-		err = setenv("LD_LIBRARY_PATH", ld_library_path, 1);
-		if (err == -1)
-			goto close;
-
-		err = unsetenv("ld_library_path");
+		err = setenv("LD_LIBRARY_PATH", getenv("ld_library_path"), 1);
 		if (err == -1)
 			goto close;
 	}
@@ -2437,7 +2447,7 @@ int __ldso(const char *path, char * const argv[], char *interp,
 	/* Add --inhibit-rpath (chroot) */
 	if (has_inhibit_rpath && inhibit_rpath) {
 		interparg[i++] = "--inhibit-rpath";
-		interparg[i++] = inhibit_rpath;
+		interparg[i++] = getenv("inhibit_rpath");
 	}
 
 	/* Add --inhibit-cache */

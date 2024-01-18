@@ -24,6 +24,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   [dynamic loader][ld.so(8)] ldso or abi are not part of the filename.
 - Replace the environment variables `IAMROOT_LIB` and `IAMROOT_DEFLIB` by
   `IAMROOT_LIB_<machine>` and `IAMROOT_DEFLIB_<machine>`
+- Keep environment variables `ld_preload` and `ld_library_path` if \*BSD and
+  unrecognized [dynamic loaders][ld.so(8)]
 
 ### Removed
 

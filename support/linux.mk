@@ -962,6 +962,7 @@ x86_64-alpinelinux-3.17-rootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/
 x86_64-alpinelinux-3.18-shell: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-alpinelinux-3.18-chroot: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-alpinelinux-3.18-rootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-3.19-shell: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-alpinelinux-3.19-chroot: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-alpinelinux-3.19-rootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-alpinelinux-edge-shell: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
@@ -1180,6 +1181,7 @@ $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpinelinux,3.15))
 $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpinelinux,3.16))
 $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpinelinux,3.17))
 $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpinelinux,3.18))
+$(eval $(call alpine-make-rootfs-rootfs,aarch64,alpinelinux,3.19))
 $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpinelinux,edge))
 endif
 endif

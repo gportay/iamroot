@@ -1410,7 +1410,7 @@ stable-log: amd64-debian-stable-rootfs.txt
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)
-fixme-support: fedora-support
+support: fedora-support
 
 .PHONY: fedora-support
 fedora-support: support/x86_64-fedora-20-rootfs.txt
@@ -1425,7 +1425,7 @@ fedora-support: support/x86_64-fedora-37-rootfs.txt
 fedora-support: support/x86_64-fedora-38-rootfs.txt
 fedora-support: support/x86_64-fedora-39-rootfs.txt
 
-fixme-log: fedora-log
+log: fedora-log
 
 .PHONY: fedora-log
 fedora-log: x86_64-fedora-20-rootfs.log

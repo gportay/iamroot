@@ -1352,7 +1352,18 @@ static int __is_arm(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	(void)abi;
 
 	/* It is an ARM ELF */
-	return ehdr && (ehdr->e_machine == EM_ARM);
+	return ehdr && (ehdr->e_machine == EM_ARM) &&
+	       (((Elf32_Ehdr *)ehdr)->e_flags & EF_ARM_ABI_FLOAT_SOFT);
+}
+
+static int __is_armhf(Elf64_Ehdr *ehdr, const char *ldso, int abi)
+{
+	(void)ldso;
+	(void)abi;
+
+	/* It is an ARMHF ELF */
+	return ehdr && (ehdr->e_machine == EM_ARM) &&
+	       (((Elf32_Ehdr *)ehdr)->e_flags & EF_ARM_ABI_FLOAT_HARD);
 }
 
 static int __is_aarch64(Elf64_Ehdr *ehdr, const char *ldso, int abi)
@@ -1429,6 +1440,8 @@ static const char *__machine(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 		return "amd64";
 	} else if (__is_arm(ehdr, ldso, abi)) {
 		return "arm";
+	} else if (__is_armhf(ehdr, ldso, abi)) {
+		return "armhf";
 	} else if (__is_aarch64(ehdr, ldso, abi)) {
 		if (__is_gnu_linux(ehdr, ldso, abi) ||
 		    __is_musl(ehdr, ldso, abi))

@@ -1163,10 +1163,10 @@ $(eval $(call dnf-rootfs,armv7hl,fedora,36))
 endif
 endif
 
+ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
 ifneq ($(shell command -v aarch64-buildroot-linux-musl-gcc 2>/dev/null),)
 aarch64-rootfs: aarch64-alpinelinux-rootfs
 
-ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
 .PHONY: aarch64-alpinelinux-rootfs
 aarch64-alpinelinux-rootfs: aarch64-alpinelinux-3.14-rootfs
 aarch64-alpinelinux-rootfs: aarch64-alpinelinux-3.15-rootfs
@@ -1183,6 +1183,27 @@ $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpinelinux,3.17))
 $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpinelinux,3.18))
 $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpinelinux,3.19))
 $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpinelinux,edge))
+endif
+
+ifneq ($(shell command -v arm-buildroot-linux-musleabihf-gcc 2>/dev/null),)
+arm-rootfs: armhf-alpinelinux-rootfs
+
+.PHONY: armhf-alpinelinux-rootfs
+armhf-alpinelinux-rootfs: armhf-alpinelinux-3.14-rootfs
+armhf-alpinelinux-rootfs: armhf-alpinelinux-3.15-rootfs
+armhf-alpinelinux-rootfs: armhf-alpinelinux-3.16-rootfs
+armhf-alpinelinux-rootfs: armhf-alpinelinux-3.17-rootfs
+armhf-alpinelinux-rootfs: armhf-alpinelinux-3.18-rootfs
+armhf-alpinelinux-rootfs: armhf-alpinelinux-3.19-rootfs
+armhf-alpinelinux-rootfs: armhf-alpinelinux-edge-rootfs
+
+$(eval $(call alpine-make-rootfs-rootfs,armhf,alpinelinux,3.14))
+$(eval $(call alpine-make-rootfs-rootfs,armhf,alpinelinux,3.15))
+$(eval $(call alpine-make-rootfs-rootfs,armhf,alpinelinux,3.16))
+$(eval $(call alpine-make-rootfs-rootfs,armhf,alpinelinux,3.17))
+$(eval $(call alpine-make-rootfs-rootfs,armhf,alpinelinux,3.18))
+$(eval $(call alpine-make-rootfs-rootfs,armhf,alpinelinux,3.19))
+$(eval $(call alpine-make-rootfs-rootfs,armhf,alpinelinux,edge))
 endif
 endif
 

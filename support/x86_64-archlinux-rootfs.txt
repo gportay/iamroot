@@ -246,6 +246,7 @@ Creating group 'uuidd' with GID XXX.
 Creating user 'uuidd' (n/a) with UID XXX and GID XXX.
 Created symlink /etc/systemd/system/getty.target.wants/getty@tty1.service → /usr/lib/systemd/system/getty@.service.
 Created symlink /etc/systemd/system/multi-user.target.wants/remote-fs.target → /usr/lib/systemd/system/remote-fs.target.
+Created symlink /etc/systemd/system/sockets.target.wants/systemd-userdbd.socket → /usr/lib/systemd/system/systemd-userdbd.socket.
 Optional dependencies for systemd
     libmicrohttpd: systemd-journal-gatewayd and systemd-journal-remote
     quota-tools: kernel-level quota management

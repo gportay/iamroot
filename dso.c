@@ -1859,7 +1859,7 @@ static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsiz)
 	 * unlike DT_RPATH, which is applied to searches for all children in
 	 * the dependency tree.
 	 */
-	err = __elf_runpath(path, tmp, bufsiz);
+	err = __elf_runpath(path, tmp, sizeof(tmp));
 	if (err == -1)
 		return -1;
 

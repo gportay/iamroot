@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Chroot to a [Debian] mipsel world; tested on [Debian MIPS Port]
 - Support different endianness; tested on s390x from x86_64
 - Chroot to a [Debian] s390x world; tested on [Debian S/390 Port]
+- Chroot to an AArch64 BE; untested
 
 ### Changed
 

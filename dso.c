@@ -1695,8 +1695,19 @@ static int __is_aarch64(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	(void)ldso;
 	(void)abi;
 
-	/* It is an AArch64 ELF */
-	return ehdr && (ehdr->e_machine == EM_AARCH64);
+	/* It is an AArch64 LSB ELF */
+	return ehdr && (ehdr->e_machine == EM_AARCH64) &&
+	       (ehdr->e_ident[EI_DATA] == ELFDATA2LSB);
+}
+
+static int __is_aarch64_be(Elf64_Ehdr *ehdr, const char *ldso, int abi)
+{
+	(void)ldso;
+	(void)abi;
+
+	/* It is an AArch64 MSB ELF */
+	return ehdr && (ehdr->e_machine == EM_AARCH64) &&
+	       (ehdr->e_ident[EI_DATA] == ELFDATA2MSB);
 }
 
 static int __is_riscv(Elf64_Ehdr *ehdr, const char *ldso, int abi)
@@ -1792,6 +1803,8 @@ static const char *__machine(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 
 		/* Assuming it is a *BSD */
 		return "arm64";
+	} else if (__is_aarch64_be(ehdr, ldso, abi)) {
+		return "aarch64_be";
 	} else if (__is_riscv(ehdr, ldso, abi)) {
 		if (__is_gnu_linux(ehdr, ldso, abi) ||
 		    __is_musl(ehdr, ldso, abi))
@@ -1905,10 +1918,17 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 			goto access;
 		}
 
-		/* It is an AArch64 ELF or IAMROOT_LIB_AARCH64_LINUX_AARCH64_1 */
+		/* It is an AArch64 LSB ELF or IAMROOT_LIB_AARCH64_LINUX_AARCH64_1 */
 		if (__is_aarch64(ehdr, ldso, abi) ||
 		    (streq(ldso, "linux-aarch64") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/aarch64/libiamroot-linux-aarch64.so.1";
+			goto access;
+		}
+
+		/* It is an AArch64 MSB ELF or IAMROOT_LIB_AARCH64_BE_LINUX_AARCH64_BE_1 */
+		if (__is_aarch64_be(ehdr, ldso, abi) ||
+		    (streq(ldso, "linux-aarch64_be") && abi == 1)) {
+			lib = __xstr(PREFIX)"/lib/iamroot/aarch64_be/libiamroot-linux-aarch64_be.so.1";
 			goto access;
 		}
 
@@ -1965,10 +1985,17 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 			goto access;
 		}
 
-		/* It is an AArch64 ELF or IAMROOT_LIB_AARCH64_MUSL_AARCH64_1 */
+		/* It is an AArch64 LSB ELF or IAMROOT_LIB_AARCH64_MUSL_AARCH64_1 */
 		if (__is_aarch64(ehdr, ldso, abi) ||
 		    (streq(ldso, "musl-aarch64") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/aarch64/libiamroot-musl-aarch64.so.1";
+			goto access;
+		}
+
+		/* It is an AArch64 MSB ELF or IAMROOT_LIB_AARCH64_BE_MUSL_AARCH64_BE_1 */
+		if (__is_aarch64(ehdr, ldso, abi) ||
+		    (streq(ldso, "musl-aarch64_be") && abi == 1)) {
+			lib = __xstr(PREFIX)"/lib/iamroot/aarch64_be/libiamroot-musl-aarch64_be.so.1";
 			goto access;
 		}
 

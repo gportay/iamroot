@@ -37,6 +37,28 @@ extern int next_faccessat(int, const char *, int, int);
 extern int next_open(const char *, int, mode_t);
 extern void *next_dlopen(const char *, int);
 
+/*
+ * Stolen from musl (include/byteswap.h)
+ *
+ * SPDX-FileCopyrightText: The musl Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+static uint16_t __bswap_16__(uint16_t __x)
+{
+	return __x<<8 | __x>>8;
+}
+
+static uint32_t __bswap_32__(uint32_t __x)
+{
+	return __x>>24 | (__x>>8&0xff00) | (__x<<8&0xff0000) | __x<<24;
+}
+
+static uint64_t __bswap_64__(uint64_t __x)
+{
+	return (__bswap_32__(__x)+0ULL)<<32 | __bswap_32__(__x>>32);
+}
+
 static char *__getld_library_path()
 {
 	char *curr, *prev;
@@ -855,17 +877,240 @@ static int __ld_linux_has_preload_option(const char *path)
 	return __set_errno(errno_save, ret);
 }
 
-static ssize_t __felf_header(int fd, Elf64_Ehdr *ehdr)
+static int __elf32_swap(Elf32_Ehdr *ehdr)
+{
+	union { int i; char c[4]; } u = { 1 };
+	return (u.c[3] + 1) != ehdr->e_ident[EI_DATA];
+}
+
+static uint16_t __elf32_half(Elf32_Ehdr *ehdr, uint16_t value)
+{
+	if (!__elf32_swap(ehdr))
+		return value;
+
+	return __bswap_16__(value);
+}
+
+static uint32_t __elf32_word(Elf32_Ehdr *ehdr, uint32_t value)
+{
+	if (!__elf32_swap(ehdr))
+		return value;
+
+	return __bswap_32__(value);
+}
+
+static uint32_t __elf32_address(Elf32_Ehdr *ehdr, uint32_t value)
+{
+	if (!__elf32_swap(ehdr))
+		return value;
+
+	return __bswap_32__(value);
+}
+
+static uint32_t __elf32_offset(Elf32_Ehdr *ehdr, uint32_t value)
+{
+	if (!__elf32_swap(ehdr))
+		return value;
+
+	return __bswap_32__(value);
+}
+
+static int __elf32_phdr(int fd, Elf32_Ehdr *ehdr, Elf32_Phdr *phdr,
+			off_t offset)
 {
 	ssize_t siz;
-	int err;
 
-	if (fd < 0 || !ehdr)
-		return __set_errno(EINVAL, -1);
-
-	err = lseek(fd, 0, SEEK_SET);
-	if (err)
+	siz = pread(fd, phdr, sizeof(*phdr), offset);
+	if (siz == -1)
 		return -1;
+	else if ((size_t)siz < sizeof(*phdr))
+		return __set_errno(EIO, -1);
+
+	if (!__elf32_swap(ehdr))
+		return 0;
+
+	phdr->p_type = __bswap_32__(phdr->p_type);
+	phdr->p_offset = __bswap_32__(phdr->p_offset);
+	phdr->p_vaddr = __bswap_32__(phdr->p_vaddr);
+	phdr->p_paddr = __bswap_32__(phdr->p_paddr);
+	phdr->p_filesz = __bswap_32__(phdr->p_filesz);
+	phdr->p_memsz = __bswap_32__(phdr->p_memsz);
+	phdr->p_flags = __bswap_32__(phdr->p_flags);
+	phdr->p_align = __bswap_32__(phdr->p_align);
+
+	return 0;
+}
+
+static int __elf32_shdr(int fd, Elf32_Ehdr *ehdr, Elf32_Shdr *shdr,
+			off_t offset)
+{
+	ssize_t siz;
+
+	siz = pread(fd, shdr, sizeof(*shdr), offset);
+	if (siz == -1)
+		return -1;
+	else if ((size_t)siz < sizeof(*shdr))
+		return __set_errno(EIO, -1);
+
+	if (!__elf32_swap(ehdr))
+		return 0;
+
+	shdr->sh_name = __bswap_32__(shdr->sh_name);
+	shdr->sh_type = __bswap_32__(shdr->sh_type);
+	shdr->sh_flags = __bswap_32__(shdr->sh_flags);
+	shdr->sh_addr = __bswap_32__(shdr->sh_addr);
+	shdr->sh_offset = __bswap_32__(shdr->sh_offset);
+	shdr->sh_size = __bswap_32__(shdr->sh_size);
+	shdr->sh_link = __bswap_32__(shdr->sh_link);
+	shdr->sh_addralign = __bswap_32__(shdr->sh_addralign);
+	shdr->sh_entsize = __bswap_32__(shdr->sh_entsize);
+
+	return 0;
+}
+
+static int __elf32_dyn(int fd, Elf32_Ehdr *ehdr, Elf32_Dyn *dyn, size_t dynsiz,
+		       off_t offset)
+{
+	ssize_t siz;
+
+	siz = pread(fd, dyn, dynsiz, offset);
+	if (siz == -1)
+		return -1;
+	else if ((size_t)siz < dynsiz)
+		return __set_errno(EIO, -1);
+
+	if (!__elf32_swap(ehdr))
+		return 0;
+
+	dyn->d_tag = __bswap_32__(dyn->d_tag);
+	if (dyn->d_tag != DT_NEEDED && dyn->d_tag != DT_SONAME &&
+	    dyn->d_tag != DT_RPATH && dyn->d_tag != DT_RUNPATH)
+		dyn->d_un.d_val = __bswap_32__(dyn->d_un.d_val);
+	else
+		dyn->d_un.d_ptr = __bswap_32__(dyn->d_un.d_ptr);
+
+	return 0;
+}
+
+static int __elf64_swap(Elf64_Ehdr *ehdr)
+{
+	union { int i; char c[4]; } u = { 1 };
+	return (u.c[3] + 1) != ehdr->e_ident[EI_DATA];
+}
+
+static uint16_t __elf64_half(Elf64_Ehdr *ehdr, uint16_t value)
+{
+	if (!__elf64_swap(ehdr))
+		return value;
+
+	return __bswap_16__(value);
+}
+
+static uint32_t __elf64_word(Elf64_Ehdr *ehdr, uint32_t value)
+{
+	if (!__elf64_swap(ehdr))
+		return value;
+
+	return __bswap_32__(value);
+}
+
+static uint64_t __elf64_address(Elf64_Ehdr *ehdr, uint64_t value)
+{
+	if (!__elf64_swap(ehdr))
+		return value;
+
+	return __bswap_64__(value);
+}
+
+static uint64_t __elf64_offset(Elf64_Ehdr *ehdr, uint64_t value)
+{
+	if (!__elf64_swap(ehdr))
+		return value;
+
+	return __bswap_64__(value);
+}
+
+static int __elf64_phdr(int fd, Elf64_Ehdr *ehdr, Elf64_Phdr *phdr,
+			off_t offset)
+{
+	ssize_t siz;
+
+	siz = pread(fd, phdr, sizeof(*phdr), offset);
+	if (siz == -1)
+		return -1;
+	else if ((size_t)siz < sizeof(*phdr))
+		return __set_errno(EIO, -1);
+
+	if (!__elf64_swap(ehdr))
+		return 0;
+
+	phdr->p_type = __bswap_32__(phdr->p_type);
+	phdr->p_flags = __bswap_32__(phdr->p_flags);
+	phdr->p_offset = __bswap_64__(phdr->p_offset);
+	phdr->p_vaddr = __bswap_64__(phdr->p_vaddr);
+	phdr->p_paddr = __bswap_64__(phdr->p_paddr);
+	phdr->p_filesz = __bswap_64__(phdr->p_filesz);
+	phdr->p_memsz = __bswap_64__(phdr->p_memsz);
+	phdr->p_align = __bswap_64__(phdr->p_align);
+
+	return 0;
+}
+
+static int __elf64_shdr(int fd, Elf64_Ehdr *ehdr, Elf64_Shdr *shdr,
+			off_t offset)
+{
+	ssize_t siz;
+
+	siz = pread(fd, shdr, sizeof(*shdr), offset);
+	if (siz == -1)
+		return -1;
+	else if ((size_t)siz < sizeof(*shdr))
+		return __set_errno(EIO, -1);
+
+	if (!__elf64_swap(ehdr))
+		return 0;
+
+	shdr->sh_name = __bswap_32__(shdr->sh_name);
+	shdr->sh_type = __bswap_32__(shdr->sh_type);
+	shdr->sh_flags = __bswap_64__(shdr->sh_flags);
+	shdr->sh_addr = __bswap_64__(shdr->sh_addr);
+	shdr->sh_offset = __bswap_64__(shdr->sh_offset);
+	shdr->sh_size = __bswap_64__(shdr->sh_size);
+	shdr->sh_link = __bswap_32__(shdr->sh_link);
+	shdr->sh_info = __bswap_32__(shdr->sh_info);
+	shdr->sh_addralign = __bswap_64__(shdr->sh_addralign);
+	shdr->sh_entsize = __bswap_64__(shdr->sh_entsize);
+
+	return 0;
+}
+
+static int __elf64_dyn(int fd, Elf64_Ehdr *ehdr, Elf64_Dyn *dyn, size_t dynsiz,
+		       off_t offset)
+{
+	ssize_t siz;
+
+	siz = pread(fd, dyn, dynsiz, offset);
+	if (siz == -1)
+		return -1;
+	else if ((size_t)siz < dynsiz)
+		return __set_errno(EIO, -1);
+
+	if (!__elf64_swap(ehdr))
+		return 0;
+
+	dyn->d_tag = __bswap_64__(dyn->d_tag);
+	if (dyn->d_tag != DT_NEEDED && dyn->d_tag != DT_SONAME &&
+	    dyn->d_tag != DT_RPATH && dyn->d_tag != DT_RUNPATH)
+		dyn->d_un.d_val = __bswap_64__(dyn->d_un.d_val);
+	else
+		dyn->d_un.d_ptr = __bswap_64__(dyn->d_un.d_ptr);
+
+	return 0;
+}
+
+static int __elf_ehdr(int fd, Elf64_Ehdr *ehdr)
+{
+	ssize_t siz;
 
 	siz = read(fd, ehdr, sizeof(*ehdr));
 	if (siz == -1)
@@ -878,14 +1123,63 @@ static ssize_t __felf_header(int fd, Elf64_Ehdr *ehdr)
 		return __set_errno(ENOEXEC, -1);
 
 	/* It is a 32-bits ELF */
-	if (ehdr->e_ident[EI_CLASS] == ELFCLASS32)
-		return sizeof(Elf32_Ehdr);
+	if (ehdr->e_ident[EI_CLASS] == ELFCLASS32) {
+		Elf32_Ehdr *ehdr32 = (Elf32_Ehdr *)ehdr;
+
+		ehdr32->e_type = __elf32_half(ehdr32, ehdr32->e_type);
+		ehdr32->e_machine = __elf32_half(ehdr32, ehdr32->e_machine);
+		ehdr32->e_version = __elf32_word(ehdr32, ehdr32->e_version);
+		ehdr32->e_entry = __elf32_address(ehdr32, ehdr32->e_entry);
+		ehdr32->e_phoff = __elf32_offset(ehdr32, ehdr32->e_phoff);
+		ehdr32->e_shoff = __elf32_offset(ehdr32, ehdr32->e_shoff);
+		ehdr32->e_flags = __elf32_word(ehdr32, ehdr32->e_flags);
+		ehdr32->e_ehsize = __elf32_half(ehdr32, ehdr32->e_ehsize);
+		ehdr32->e_phentsize = __elf32_half(ehdr32, ehdr32->e_phentsize);
+		ehdr32->e_phnum = __elf32_half(ehdr32, ehdr32->e_phnum);
+		ehdr32->e_shentsize = __elf32_half(ehdr32, ehdr32->e_phentsize);
+		ehdr32->e_shnum = __elf32_half(ehdr32, ehdr32->e_shnum);
+		ehdr32->e_shstrndx = __elf32_half(ehdr32, ehdr32->e_shstrndx);
+
+		return 0;
+	}
+
 	/* It is a 64-bits ELF */
-	else if (ehdr->e_ident[EI_CLASS] == ELFCLASS64)
-		return sizeof(Elf64_Ehdr);
+	if (ehdr->e_ident[EI_CLASS] == ELFCLASS64) {
+		Elf64_Ehdr *ehdr64 = ehdr;
+
+		ehdr64->e_type = __elf64_half(ehdr64, ehdr64->e_type);
+		ehdr64->e_machine = __elf64_half(ehdr64, ehdr64->e_machine);
+		ehdr64->e_version = __elf64_word(ehdr64, ehdr64->e_version);
+		ehdr64->e_entry = __elf64_address(ehdr64, ehdr64->e_entry);
+		ehdr64->e_phoff = __elf64_offset(ehdr64, ehdr64->e_phoff);
+		ehdr64->e_shoff = __elf64_offset(ehdr64, ehdr64->e_shoff);
+		ehdr64->e_flags = __elf64_word(ehdr64, ehdr64->e_flags);
+		ehdr64->e_ehsize = __elf64_half(ehdr64, ehdr64->e_ehsize);
+		ehdr64->e_phentsize = __elf64_half(ehdr64, ehdr64->e_phentsize);
+		ehdr64->e_phnum = __elf64_half(ehdr64, ehdr64->e_phnum);
+		ehdr64->e_shentsize = __elf64_half(ehdr64, ehdr64->e_phentsize);
+		ehdr64->e_shnum = __elf64_half(ehdr64, ehdr64->e_shnum);
+		ehdr64->e_shstrndx = __elf64_half(ehdr64, ehdr64->e_shstrndx);
+
+		return 0;
+	}
 
 	/* It is an invalid ELF */
 	return __set_errno(ENOEXEC, -1);
+}
+
+static int __felf_header(int fd, Elf64_Ehdr *ehdr)
+{
+	int err;
+
+	if (fd < 0 || !ehdr)
+		return __set_errno(EINVAL, -1);
+
+	err = lseek(fd, 0, SEEK_SET);
+	if (err)
+		return -1;
+
+	return __elf_ehdr(fd, ehdr);
 }
 
 static ssize_t __elf_interp32(int fd, Elf32_Ehdr *ehdr, char *buf,
@@ -900,14 +1194,11 @@ static ssize_t __elf_interp32(int fd, Elf32_Ehdr *ehdr, char *buf,
 	num = ehdr->e_phnum;
 	for (i = 0; i < num; i++) {
 		Elf32_Phdr phdr;
+		int err;
 
-		ret = pread(fd, &phdr, sizeof(phdr), off);
-		if (ret == -1) {
+		err = __elf32_phdr(fd, ehdr, &phdr, off);
+		if (err == -1)
 			goto exit;
-		} else if ((size_t)ret < sizeof(phdr)) {
-			ret = __set_errno(EIO, -1);
-			goto exit;
-		}
 
 		off += sizeof(phdr);
 
@@ -951,14 +1242,11 @@ static ssize_t __elf_interp64(int fd, Elf64_Ehdr *ehdr, char *buf,
 	num = ehdr->e_phnum;
 	for (i = 0; i < num; i++) {
 		Elf64_Phdr phdr;
+		int err;
 
-		ret = pread(fd, &phdr, sizeof(phdr), off);
-		if (ret == -1) {
+		err = __elf64_phdr(fd, ehdr, &phdr, off);
+		if (err == -1)
 			goto exit;
-		} else if ((size_t)ret < sizeof(phdr)) {
-			ret = __set_errno(EIO, -1);
-			goto exit;
-		}
 
 		off += sizeof(phdr);
 
@@ -1010,14 +1298,11 @@ static int __elf_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int d_tag,
 	num = ehdr->e_shnum;
 	for (i = 0; i < num; i++) {
 		Elf32_Shdr shdr;
+		int err;
 
-		siz = pread(fd, &shdr, sizeof(shdr), off);
-		if (siz == -1) {
+		err = __elf32_shdr(fd, ehdr, &shdr, off);
+		if (err == -1)
 			goto exit;
-		} else if ((size_t)siz < sizeof(shdr)) {
-			ret = __set_errno(EIO, -1);
-			goto exit;
-		}
 
 		off += sizeof(shdr);
 
@@ -1042,14 +1327,11 @@ static int __elf_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int d_tag,
 		unsigned int j;
 		size_t str_siz;
 		off_t str_off;
+		int err;
 
-		siz = pread(fd, &phdr, sizeof(phdr), off);
-		if (siz == -1) {
+		err = __elf32_phdr(fd, ehdr, &phdr, off);
+		if (err == -1)
 			goto exit;
-		} else if ((size_t)siz < sizeof(phdr)) {
-			ret = __set_errno(EIO, -1);
-			goto exit;
-		}
 
 		off += sizeof(phdr);
 
@@ -1063,13 +1345,9 @@ static int __elf_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int d_tag,
 		}
 
 		/* copy the .dynamic segment */
-		siz = pread(fd, dyn, phdr.p_filesz, phdr.p_offset);
-		if (siz == -1) {
+		err = __elf32_dyn(fd, ehdr, dyn, phdr.p_filesz, phdr.p_offset);
+		if (err == -1)
 			goto exit;
-		} else if ((size_t)siz < phdr.p_filesz) {
-			ret = __set_errno(EIO, -1);
-			goto exit;
-		}
 
 		/* look for the dynamic entry */
 		for (j = 0; j < phdr.p_filesz / sizeof(dyn[0]); j++) {
@@ -1145,14 +1423,11 @@ static int __elf_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int d_tag,
 	num = ehdr->e_shnum;
 	for (i = 0; i < num; i++) {
 		Elf64_Shdr shdr;
+		int err;
 
-		siz = pread(fd, &shdr, sizeof(shdr), off);
-		if (siz == -1) {
+		err = __elf64_shdr(fd, ehdr, &shdr, off);
+		if (err == -1)
 			goto exit;
-		} else if ((size_t)siz < sizeof(shdr)) {
-			ret = __set_errno(EIO, -1);
-			goto exit;
-		}
 
 		off += sizeof(shdr);
 
@@ -1177,14 +1452,11 @@ static int __elf_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int d_tag,
 		unsigned int j;
 		size_t str_siz;
 		off_t str_off;
+		int err;
 
-		siz = pread(fd, &phdr, sizeof(phdr), off);
-		if (siz == -1) {
+		err = __elf64_phdr(fd, ehdr, &phdr, off);
+		if (err == -1)
 			goto exit;
-		} else if ((size_t)siz < sizeof(phdr)) {
-			ret = __set_errno(EIO, -1);
-			goto exit;
-		}
 
 		off += sizeof(phdr);
 
@@ -1198,13 +1470,9 @@ static int __elf_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int d_tag,
 		}
 
 		/* copy the .dynamic segment */
-		siz = pread(fd, dyn, phdr.p_filesz, phdr.p_offset);
-		if (siz == -1) {
+		err = __elf64_dyn(fd, ehdr, dyn, phdr.p_filesz, phdr.p_offset);
+		if (err == -1)
 			goto exit;
-		} else if ((size_t)siz < phdr.p_filesz) {
-			ret = __set_errno(EIO, -1);
-			goto exit;
-		}
 
 		/* look for the dynamic entry */
 		for (j = 0; j < phdr.p_filesz / sizeof(dyn[0]); j++) {
@@ -1264,22 +1532,15 @@ static int __elf_iterate_shared_object(int fd, int d_tag,
 		     int (*callback)(const void *, size_t, void *), void *data)
 {
 	Elf64_Ehdr ehdr;
-	ssize_t siz;
 	int err;
 
 	err = lseek(fd, 0, SEEK_SET);
 	if (err)
 		return -1;
 
-	siz = read(fd, &ehdr, sizeof(ehdr));
-	if (siz == -1)
+	err = __elf_ehdr(fd, &ehdr);
+	if (err == -1)
 		return -1;
-	else if ((size_t)siz < sizeof(ehdr))
-		return __set_errno(EIO, -1);
-
-	/* Not an ELF */
-	if (memcmp(ehdr.e_ident, ELFMAG, 4) != 0)
-		return __set_errno(ENOEXEC, -1);
 
 	/* Not a linked program or shared object */
 	if ((ehdr.e_type != ET_EXEC) && (ehdr.e_type != ET_DYN))
@@ -1301,11 +1562,11 @@ static int __elf_iterate_shared_object(int fd, int d_tag,
 static ssize_t __felf_interp(int fd, char *buf, size_t bufsiz)
 {
 	Elf64_Ehdr ehdr;
-	ssize_t siz;
+	int err;
 
 	/* Get the ELF header */
-	siz = __felf_header(fd, &ehdr);
-	if (siz == -1)
+	err = __felf_header(fd, &ehdr);
+	if (err == -1)
 		return -1;
 
 	/* It is a 32-bits ELF */
@@ -1313,7 +1574,7 @@ static ssize_t __felf_interp(int fd, char *buf, size_t bufsiz)
 		return __elf_interp32(fd, (Elf32_Ehdr *)&ehdr, buf, bufsiz);
 	/* It is a 64-bits ELF */
 	else if (ehdr.e_ident[EI_CLASS] == ELFCLASS64)
-		return __elf_interp64(fd, (Elf64_Ehdr *)&ehdr, buf, bufsiz);
+		return __elf_interp64(fd, &ehdr, buf, bufsiz);
 
 	/* It is an invalid ELF */
 	return __set_errno(ENOEXEC, -1);
@@ -2232,8 +2493,8 @@ static ssize_t __felf_deflib(int fd, char *buf, size_t bufsiz)
 	 * object is an executable file, or from the needed libc, or from the
 	 * executable file.
 	 */
-	siz = __felf_header(fd, &ehdr);
-	if (siz == -1)
+	err = __felf_header(fd, &ehdr);
+	if (err == -1)
 		return -1;
 
 	siz = __felf_interp(fd, interp, sizeof(interp));

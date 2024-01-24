@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fixup the content of `LD_LIBRARY_PATH` used by `ld.so(8)`, `ldd(1)` and
   `dlopen()` for \*BSD and unrecognized [dynamic loaders][ld.so(8)]
 - Chroot to a [Debian] mipsel world; tested on [Debian MIPS Port]
+- Support different endianness; tested on s390x from x86_64
 
 ### Changed
 

@@ -48,7 +48,7 @@ freebsd-13.1-chroot:
 freebsd-%-chroot: export PATH = /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin:/root/bin
 freebsd-%-chroot: export SHELL = /bin/sh
 freebsd-%-chroot: $(ARCH)/libiamroot-elf.so.1 | freebsd-%-rootfs
-	bash ish -c "chroot freebsd-$*-rootfs"
+	bash ido $(IDOFLAGS) chroot freebsd-$*-rootfs
 
 freebsd-13.1-rootfs:
 freebsd-%-rootfs: | $(ARCH)/libiamroot-elf.so.1 FreeBSD-%-RELEASE-base-$(ARCH).txz

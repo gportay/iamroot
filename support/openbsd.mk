@@ -41,7 +41,7 @@ $(O)-%:
 openbsd-73-chroot: export PATH = /sbin:/usr/sbin:/bin:/usr/bin:/usr/X11R6/bin:/usr/local/sbin:/usr/local/bin
 openbsd-73-chroot: export SHELL = /bin/sh
 openbsd-73-chroot: $(ARCH)/libiamroot.so | openbsd-73-rootfs
-	bash ish -c "chroot $@"
+	bash ido $(IDOFLAGS) chroot $@
 
 openbsd-73-rootfs: | $(ARCH)/libiamroot.so base-73.tgz
 	rm -Rf $@

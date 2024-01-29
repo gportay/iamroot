@@ -21,6 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Chroot to a musl ppc64le world; tested on [Alpine Linux]
 - Implement the environment function `clearenv()`, `getenv()`, `putenv()`,
   `setenv()` and `unsetenv()` for internal purpose
+- Chroot to a PowerPC64 LE world; tested on [Arch Linux Power]
 
 ### Changed
 
@@ -817,6 +818,7 @@ Initial release.
 [Alpine Linux]: https://alpinelinux.org/
 [Arch Linux 32]: https://archlinux32.org/
 [Arch Linux ARM]: https://archlinuxarm.org/
+[Arch Linux Power]: https://archlinuxpower.org/
 [Arch Linux RISC-V]: https://archriscv.felixc.at/
 [Debian ARM 64 Port]: https://wiki.debian.org/Arm64Port
 [Debian ARM EABI Port]: https://wiki.debian.org/ArmEabiPort

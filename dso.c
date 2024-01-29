@@ -2925,6 +2925,7 @@ int __ldso_execveat(int dfd, const char *path, char * const argv[],
 	(void)argv;
 	(void)envp;
 
+	__warning("%s: Function not implemented", __func__);
 	return __set_errno(ENOSYS, -1);
 }
 
@@ -2943,5 +2944,6 @@ int __ldso_posix_spawn(pid_t *pid,
 	(void)argv;
 	(void)envp;
 
+	__warning("%s: Function not implemented", __func__);
 	return __set_errno(ENOSYS, -1);
 }

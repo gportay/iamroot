@@ -43,7 +43,7 @@ $(strip libiamroot.so \
 	$(if $(findstring :$(2):,:aarch64_be:                      ),$(if $(findstring :$(1):,:musl:),aarch64_be/libiamroot-musl-aarch64_be.so.1  ,aarch64_be/libiamroot-linux-aarch64_be.so.1), \
 	$(if $(findstring :$(2):,:mipsle: :mipsel:                 ),$(if $(findstring :$(1):,:musl:),mipsle/libiamroot-musl-mipsel.so.1          ,mipsle/libiamroot.so.1                     ), \
 	$(if $(findstring :$(2):,:mips64le: :mips64el:             ),$(if $(findstring :$(1):,:musl:),mips64le/libiamroot-musl-mips64el.so.1      ,mips64le/libiamroot.so.1                   ), \
-	$(if $(findstring :$(2):,:powerpc64:                       ),$(if $(findstring :$(1):,:musl:),powerpc64/libiamroot-musl-powerpc64.so.1    ,powerpc64/libiamroot.so.2                  ), \
+	$(if $(findstring :$(2):,:powerpc64: :ppc64:               ),$(if $(findstring :$(1):,:musl:),powerpc64/libiamroot-musl-powerpc64.so.1    ,powerpc64/libiamroot.so.2                  ), \
 	$(if $(findstring :$(2):,:powerpc64le: :ppc64le: :ppc64el: ),$(if $(findstring :$(1):,:musl:),powerpc64le/libiamroot-musl-powerpc64le.so.1,powerpc64le/libiamroot.so.2                ), \
 	$(if $(findstring :$(2):,:riscv64:                         ),$(if $(findstring :$(1):,:musl:),riscv64/libiamroot-musl-riscv64.so.1        ,riscv64/libiamroot-linux-riscv64-lp64d.so.1), \
 	$(if $(findstring :$(2):,:s390x:                           ),$(if $(findstring :$(1):,:musl:),s390x/libiamroot-musl-s390x.so.1            ,s390x/libiamroot.so.1                      ), \
@@ -628,6 +628,11 @@ endif
 ifneq ($(shell command -v powerpc64le-buildroot-linux-gnu-gcc 2>/dev/null),)
 $(O)-powerpc64le/libiamroot.so: override CC = powerpc64le-buildroot-linux-gnu-gcc
 $(eval $(call libiamroot_so_abi,powerpc64le,2))
+endif
+
+ifneq ($(shell command -v powerpc64-buildroot-linux-musl-gcc 2>/dev/null),)
+$(O)-powerpc64-musl-powerpc64/libiamroot.so: override CC = powerpc64-buildroot-linux-musl-gcc
+$(eval $(call libiamroot_ldso_so_abi,powerpc64,musl-powerpc64,1))
 endif
 
 ifneq ($(shell command -v powerpc64le-buildroot-linux-musl-gcc 2>/dev/null),)
@@ -1735,6 +1740,8 @@ $(eval $(call alpine-mini-rootfs,armv7,3.20))
 endif
 
 ifneq ($(shell command -v powerpc64le-buildroot-linux-musl-gcc 2>/dev/null),)
+$(eval $(call adelie-mini-rootfs,ppc64,20240426))
+
 powerpc64-rootfs: ppc64le-alpinelinux-rootfs
 
 .PHONY: ppc64le-alpinelinux-rootfs

@@ -97,9 +97,10 @@ $(strip libiamroot.so \
 	$(if $(findstring :$(2):,:aarch64_be:                     ),$(if $(findstring :$(1):,:musl:),aarch64_be/libiamroot-musl-aarch64_be.so.1  ,aarch64_be/libiamroot-linux-aarch64_be.so.1), \
 	$(if $(findstring :$(2):,:riscv64:                        ),$(if $(findstring :$(1):,:musl:),riscv64/libiamroot-musl-riscv64.so.1        ,riscv64/libiamroot-linux-riscv64-lp64d.so.1), \
 	$(if $(findstring :$(2):,:mipsle: :mipsel:                ),$(if $(findstring :$(1):,:musl:),mipsle/libiamroot-musl-mipsel.so.1          ,mipsle/libiamroot.so.1                     ), \
+	$(if $(findstring :$(2):,:powerpc64:                      ),$(if $(findstring :$(1):,:musl:),powerpc64/libiamroot-musl-powerpc64.so.1    ,powerpc64/libiamroot.so.2                  ), \
 	$(if $(findstring :$(2):,:powerpc64le: :ppc64le: :ppc64el:),$(if $(findstring :$(1):,:musl:),powerpc64le/libiamroot-musl-powerpc64le.so.1,powerpc64le/libiamroot.so.2                ), \
 	$(if $(findstring :$(2):,:s390x:                          ),$(if $(findstring :$(1):,:musl:),s390x/libiamroot-musl-s390x.so.1            ,s390x/libiamroot.so.1                      ), \
-	$(error $(1)-$(2): No such library))))))))))) \
+	$(error $(1)-$(2): No such library)))))))))))) \
 )
 endef
 
@@ -628,6 +629,11 @@ $(O)-mipsle-musl-mipsel/libiamroot.so: override CC = mipsel-buildroot-linux-musl
 $(eval $(call libiamroot_ldso_so_abi,mipsle,musl-mipsel,1))
 endif
 
+ifneq ($(shell command -v powerpc64-buildroot-linux-gnu-gcc 2>/dev/null),)
+$(O)-powerpc64/libiamroot.so: override CC = powerpc64-buildroot-linux-gnu-gcc
+$(eval $(call libiamroot_so_abi,powerpc64,2))
+endif
+
 ifneq ($(shell command -v powerpc64le-buildroot-linux-gnu-gcc 2>/dev/null),)
 $(O)-powerpc64le/libiamroot.so: override CC = powerpc64le-buildroot-linux-gnu-gcc
 $(eval $(call libiamroot_so_abi,powerpc64le,2))
@@ -699,6 +705,9 @@ riscv64-rootfs:
 
 .PHONY: mips-rootfs
 mips-rootfs:
+
+.PHONY: powerpc64-rootfs
+powerpc64-rootfs:
 
 .PHONY: powerpc64le-rootfs
 powerpc64le-rootfs:
@@ -1118,6 +1127,16 @@ riscv64-archlinuxriscv-rootfs: riscv64-archlinuxriscv-rootfs/bin/sh
 
 $(eval $(call pacstrap-rootfs,riscv64,archlinuxriscv,base))
 riscv64-archlinuxriscv-chroot riscv64-archlinuxriscv-shell riscv64-archlinuxriscv-rootfs/bin/sh: export IAMROOT_DEFLIB_RISCV64_LINUX_RISCV64_LP64D_1 = /lib:/usr/lib
+endif
+
+ifneq ($(shell command -v powerpc64-buildroot-linux-gnu-gcc 2>/dev/null),)
+powerpc64-rootfs: powerpc64-archlinuxpower-rootfs
+
+.PHONY: powerpc64-archlinuxpower-rootfs
+powerpc64-archlinuxpower-rootfs: powerpc64-archlinuxpower-rootfs/bin/sh
+
+$(eval $(call pacstrap-rootfs,powerpc64,archlinuxpower,base))
+powerpc64-archlinuxpower-chroot powerpc64-archlinuxpower-shell powerpc64-archlinuxpower-rootfs/bin/sh: export IAMROOT_DEFLIB_POWERPC64_2 = /lib:/usr/lib
 endif
 
 ifneq ($(shell command -v powerpc64le-buildroot-linux-gnu-gcc 2>/dev/null),)

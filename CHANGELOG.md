@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Add the `ido(1)` and `ish(1)` option `--multiarch` and its boolean
   environment variable `IAMROOT_MULTIARCH` to use [Debian multiarch] library
   path in chroot
+- Chroot to a PowerPC64 glibc world; tested on [Arch Linux Power]
 
 ### Removed
 

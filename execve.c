@@ -34,21 +34,6 @@ typedef struct {
 extern int next_fstatat(int, const char *, struct stat *, int);
 extern int __ldso_execve(const char *, char * const[], char * const[]);
 
-static ssize_t __env_setenv(char *env, size_t envsiz, off_t offset,
-			    const char *name, const char *value)
-{
-	int n;
-
-	if (!value)
-		return 0;
-
-	n = _snprintf(env+offset, envsiz-offset, "%s=%s", name, value);
-	if (n == -1)
-		return -1;
-
-	return n;
-}
-
 #ifdef __linux__
 static int __secure()
 {
@@ -393,97 +378,6 @@ static char *__getexec()
 	return ret;
 }
 
-/*
- * For a reason that is still unknown, in the GNU C Library world, the three
- * environment functions putenv(), setenv() and unsetenv() do nothing in the
- * execve() context call: the two global variables environ and __environ remain
- * unchanged. However, the function clearenv() clears the environ and set the
- * two globals to NULL.
- *
- * It workarounds the following error as LD_PRELOAD is STILL set to preload the
- * GNU libc in version 2.29 in the chroot environment, but exec.sh is run via
- * the /usr/bin/env linked against the GNU libc in version 2.38 in the host
- * system:
- *
- *	/usr/bin/env: /usr/lib64/libc-2.29.so: version `GLIBC_2.38' not found (required by /usr/bin/env)
- *	/usr/bin/env: /usr/lib64/libc-2.29.so: version `GLIBC_2.34' not found (required by /usr/bin/env)
- *	/usr/bin/env: /usr/lib64/libc-2.29.so: version `GLIBC_ABI_DT_RELR' not found (required by /usr/lib/libpthread.so.0)
- */
-__attribute__((visibility("hidden")))
-char **__glibc_workaround(char *buf, size_t bufsiz, char *argv0,
-			  char *envp[7+1])
-{
-	ssize_t siz;
-	off_t off;
-	int i;
-
-	/* Set a bare minimal environment to run exec.sh. */
-	i = 0;
-	off = strnlen(buf, bufsiz)+1; /* NULL-terminated */
-
-	siz = __env_setenv(buf, bufsiz, off, "PATH", getenv("PATH"));
-	if (siz == -1)
-		return NULL;
-	if (siz > 0) {
-		envp[i++] = buf+off;
-		off += siz+1; /* NULL-terminated */
-	}
-
-	siz = __env_setenv(buf, bufsiz, off, "IAMROOT_ROOT",
-			   getenv("IAMROOT_ROOT"));
-	if (siz == -1)
-		return NULL;
-	if (siz > 0) {
-		envp[i++] = buf+off;
-		off += siz+1; /* NULL-terminated */
-	}
-
-	siz = __env_setenv(buf, bufsiz, off, "IAMROOT_DEBUG",
-			   getenv("IAMROOT_DEBUG"));
-	if (siz == -1)
-		return NULL;
-	if (siz > 0) {
-		envp[i++] = buf+off;
-		off += siz+1; /* NULL-terminated */
-	}
-
-	siz = __env_setenv(buf, bufsiz, off, "IAMROOT_VERSION",
-			   getenv("IAMROOT_VERSION"));
-	if (siz == -1)
-		return NULL;
-	if (siz > 0) {
-		envp[i++] = buf+off;
-		off += siz+1; /* NULL-terminated */
-	}
-
-	siz = __env_setenv(buf, bufsiz, off, "_argv0", argv0);
-	if (siz == -1)
-		return NULL;
-	if (siz > 0) {
-		envp[i++] = buf+off;
-		off += siz+1; /* NULL-terminated */
-	}
-
-	siz = __env_setenv(buf, bufsiz, off, "_preload", getenv("LD_PRELOAD"));
-	if (siz == -1)
-		return NULL;
-	if (siz > 0) {
-		envp[i++] = buf+off;
-		off += siz+1; /* NULL-terminated */
-	}
-
-	siz = __env_setenv(buf, bufsiz, off, "_library_path",
-			   getenv("LD_LIBRARY_PATH"));
-	if (siz == -1)
-		return NULL;
-	if (siz > 0) {
-		envp[i++] = buf+off;
-		off += siz+1; /* NULL-terminated */
-	}
-
-	return envp;
-}
-
 __attribute__((visibility("hidden")))
 int __execve(const char *path, char * const argv[], char * const envp[])
 {
@@ -514,15 +408,6 @@ int __exec_sh(const char *path, char * const *argv, char *interparg[],
 	 * The library and the script exec.sh are host system binaries, it must
 	 * be run from the host system. Furthermore, the intepreter for the
 	 * script exec.sh is not necessarily part of the chroot environment.
-	 *
-	 * Important: the GNU C Library leaks symbols in the dynamically linked
-	 * binaries. Therefore, the binaries MUST load the same or any later
-	 * version of the libc. As a consequence, the exec.sh MUST be link at
-	 * runtime against the GNU libc from the host system, which implies the
-	 * dynamic loader environment variables LD_PRELOAD and LD_LIBRARY_PATH
-	 * MUST be unset, as they may be set to chroot environment libraries
-	 * and paths since the linux dynamic loader prior to 2.30 do not have
-	 * support for option --preload and the LD_PRELOAD is used instead.
 	 */
 	i = 0;
 	interparg[i++] = _strncpy(buf, __getexec(), bufsiz);
@@ -569,15 +454,6 @@ int __exec_sh(const char *path, char * const *argv, char *interparg[],
 
 int execve(const char *path, char * const argv[], char * const envp[])
 {
-	char *glibc_workaround_envp[7+1] = { NULL }; /* 0 PATH
-						      * 1 IAMROOT_ROOT
-						      * 2 IAMROOT_DEBUG
-						      * 3 IAMROOT_VERSION
-						      * 4 _argv0
-						      * 5 _preload
-						      * 6 _library_path
-						      * 7 NULL-terminated
-						      */
 	char *interparg[14+1] = { NULL }; /*  0 ARGV0
 					   *  1 /lib/ld.so
 					   *  2 LD_LINUX_ARGV1
@@ -609,7 +485,6 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	char hashbang[NAME_MAX];
 	char hashbangbuf[PATH_MAX];
 	char loaderbuf[PATH_MAX];
-	int is_ld_preload_set;
 	char *program = NULL;
 	char buf[PATH_MAX];
 	char * const *arg;
@@ -727,25 +602,9 @@ loader:
 	return __set_errno(EINVAL, -1);
 
 exec_sh:
-	is_ld_preload_set = getenv("LD_PRELOAD") != NULL;
-	if (is_ld_preload_set)
-		__info("%s: preloading shared object: LD_PRELOAD=%s\n", *argv,
-		       getenv("LD_PRELOAD"));
-
 	ret = __exec_sh(path, argv, interparg, buf, sizeof(buf));
 	if (ret == -1)
 		return -1;
-
-	if (is_ld_preload_set) {
-		envp = __glibc_workaround(buf, sizeof(buf), *argv,
-					  glibc_workaround_envp);
-		if (!envp)
-			return -1;
-		if (envp == glibc_workaround_envp)
-			__notice("%s: glibc: environment is reset!\n", *argv);
-	} else {
-		envp = __environ;
-	}
 
 	argc = 1;
 	arg = interparg;
@@ -769,8 +628,8 @@ exec_sh:
 		*narg++ = NULL; /* ensure NULL-terminated */
 
 		__execfd();
-		__verbose_exec(*nargv, nargv, envp);
-		return next_execve(*nargv, nargv, envp);
+		__verbose_exec(*nargv, nargv, __environ);
+		return next_execve(*nargv, nargv, __environ);
 	}
 
 	return __set_errno(EINVAL, -1);

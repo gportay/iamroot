@@ -103,6 +103,18 @@ extern "C" {
 char *strchrnul(const char *, int);
 #endif
 
+extern char *_getenv(const char *);
+extern int _clearenv();
+extern int _putenv(char *);
+extern int _setenv(const char *, const char *, int);
+extern int _unsetenv(const char *);
+
+#define clearenv _clearenv
+#define getenv _getenv
+#define putenv _putenv
+#define setenv _setenv
+#define unsetenv _unsetenv
+
 #ifndef __linux__
 #define __environ environ
 

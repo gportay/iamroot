@@ -526,8 +526,6 @@ p11-kit: no modules containing trust policy are registered
   Installing       : policycoreutils XXX/XXX
   Installing       : selinux-policy XXX/XXX
   Running scriptlet: selinux-policy XXX/XXX
-Executed with an unrecognized name (sh), defaulting to restorecon behavior.
-
   Installing       : rpm-build-libs XXX/XXX
   Running scriptlet: rpm-build-libs XXX/XXX
   Installing       : rpm-python XXX/XXX
@@ -579,7 +577,7 @@ Executed with an unrecognized name (sh), defaulting to restorecon behavior.
   Running scriptlet: ppp XXX/XXX
   Installing       : ppp XXX/XXX
   Running scriptlet: ppp XXX/XXX
-/bin/sh: cannot create directory ‘/var/lock’: Not a directory
+mkdir: cannot create directory ‘/var/lock’: Not a directory
 
   Installing       : wpa_supplicant XXX/XXX
   Running scriptlet: wpa_supplicant XXX/XXX
@@ -631,8 +629,6 @@ failed to glob pattern /etc/rc0.d/[SK][0-9][0-9]netconsole: No such file or dire
   Running scriptlet: selinux-policy-targeted XXX/XXX
   Installing       : selinux-policy-targeted XXX/XXX
   Running scriptlet: selinux-policy-targeted XXX/XXX
-Executed with an unrecognized name (sh), defaulting to restorecon behavior.
-
   Installing       : e2fsprogs XXX/XXX
   Installing       : grubby XXX/XXX
   Installing       : passwd XXX/XXX

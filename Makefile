@@ -129,6 +129,7 @@ libiamroot.so: dso.o
 libiamroot.so: dup.o
 libiamroot.so: dup2.o
 libiamroot.so: dup3.o
+libiamroot.so: env.o
 libiamroot.so: euidaccess.o
 libiamroot.so: execl.o
 libiamroot.so: execle.o

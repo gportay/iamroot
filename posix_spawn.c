@@ -48,15 +48,6 @@ int posix_spawn(pid_t *pid, const char *path,
 		const posix_spawnattr_t *attrp,
 		char * const argv[], char * const envp[])
 {
-	char *glibc_workaround_envp[7+1] = { NULL }; /* 0 PATH
-						      * 1 IAMROOT_ROOT
-						      * 2 IAMROOT_DEBUG
-						      * 3 IAMROOT_VERSION
-						      * 4 _argv0
-						      * 5 _preload
-						      * 6 _library_path
-						      * 7 NULL-terminated
-						      */
 	char *interparg[14+1] = { NULL }; /*  0 ARGV0
 					   *  1 /lib/ld.so
 					   *  2 LD_LINUX_ARGV1
@@ -88,7 +79,6 @@ int posix_spawn(pid_t *pid, const char *path,
 	char hashbang[NAME_MAX];
 	char hashbangbuf[PATH_MAX];
 	char loaderbuf[PATH_MAX];
-	int is_ld_preload_set;
 	char *program = NULL;
 	char buf[PATH_MAX];
 	char * const *arg;
@@ -210,25 +200,9 @@ loader:
 	return __set_errno(EINVAL, -1);
 
 exec_sh:
-	is_ld_preload_set = getenv("LD_PRELOAD") != NULL;
-	if (is_ld_preload_set)
-		__info("%s: preloading shared object: LD_PRELOAD=%s\n", *argv,
-		       getenv("LD_PRELOAD"));
-
 	ret = __exec_sh(path, argv, interparg, buf, sizeof(buf));
 	if (ret == -1)
 		return -1;
-
-	if (is_ld_preload_set) {
-		envp = __glibc_workaround(buf, sizeof(buf), *argv,
-					  glibc_workaround_envp);
-		if (!envp)
-			return -1;
-		if (envp == glibc_workaround_envp)
-			__notice("%s: glibc: environment is reset!\n", *argv);
-	} else {
-		envp = __environ;
-	}
 
 	argc = 1;
 	arg = interparg;
@@ -252,9 +226,9 @@ exec_sh:
 		*narg++ = NULL; /* ensure NULL-terminated */
 
 		__execfd();
-		__verbose_exec(*nargv, nargv, envp);
+		__verbose_exec(*nargv, nargv, __environ);
 		return next_posix_spawn(pid, *nargv, file_actions, attrp,
-					nargv, envp);
+					nargv, __environ);
 	}
 
 	return __set_errno(EINVAL, -1);

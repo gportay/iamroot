@@ -19,6 +19,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Chroot to an AArch64 BE; untested
 - Chroot to a [Debian] ppc64el world; tested on [Debian PowerPC64 LE Port]
 - Chroot to a musl ppc64le world; tested on [Alpine Linux]
+- Implement the environment function `clearenv()`, `getenv()`, `putenv()`,
+  `setenv()` and `unsetenv()` for internal purpose
 
 ### Changed
 
@@ -51,6 +53,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the detection of the [NetBSD]'s [dynamic loader][ld.so(8)]
 - Fix the regression on rewriting the command-line with interpreter scripts on
   non-[glibc] and non-[musl] worlds since [v13] (i.e. on \*BSD systems)
+- Fix the no-doing environment functions if running GNU Bash
 
 ## [v16] - 2024-01-04
 

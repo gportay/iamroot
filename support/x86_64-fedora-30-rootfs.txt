@@ -693,13 +693,11 @@ Running in chroot, ignoring request.
   Running scriptlet: glibc-all-langpacks             295/295FIXME: not-running /usr/sbin/build-locale-archive --install-langs all
  
   Running scriptlet: kernel-core XXX/XXX
-Executed with unrecognized name (sh), defaulting to restorecon behavior.
-Executed with unrecognized name (sh), defaulting to restorecon behavior.
-Executed with unrecognized name (sh), defaulting to restorecon behavior.
-Executed with unrecognized name (sh), defaulting to restorecon behavior.
-/bin/sh: invalid option -- 'a'
-dracut: mktemp -p '/var/tmp/' -d -t dracut.XXXXXX failed.
-dracut: mktemp -p '/var/tmp/' -d -t dracut.XXXXXX failed.
+depmod: invalid option -- 'a'
+dracut: No '/dev/log' or 'logger' included for syslog logging
+dracut: /lib/modules/5.0.9-301.fc30.x86_64//modules.dep is missing. Did you run depmod?
+dracut: No '/dev/log' or 'logger' included for syslog logging
+dracut: /lib/modules/5.0.9-301.fc30.x86_64//modules.dep is missing. Did you run depmod?
 warning: %posttrans(kernel-core-5.0.9-301.fc30.x86_64) scriptlet failed, exit status 3
 
 Error in POSTTRANS scriptlet in rpm package kernel-core

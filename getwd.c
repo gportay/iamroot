@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -49,5 +49,12 @@ char *__getwd_chk(char *buf, size_t buflen)
 	__debug("%s(buf: %p, buflen: %zu)\n", __func__, buf, buflen);
 
 	/* Forward to another function */
+#ifndef __clang__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 	return getwd(buf);
+#ifndef __clang__
+#pragma GCC diagnostic pop
+#endif
 }

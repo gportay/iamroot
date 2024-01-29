@@ -118,8 +118,7 @@ The options are as follows:
 	not set.
 
 *-V*, *--version*::
-	Print the *ido* version string as well as the version string of any
-	configured plugins.
+	Print the *ido* version string.
 
 *--*::
 	The **--** is used to delimit the end of the *ido* options. Subsequent

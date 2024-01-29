@@ -337,6 +337,7 @@ define alpine-make-rootfs-rootfs
 .PRECIOUS: $(1)-$(2)-$(3)-rootfs/bin/sh
 $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export APK_OPTS = --arch $(1) --no-progress
 $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export ISH_PRESERVE_ENV := $(ISH_PRESERVE_ENV):APK_OPTS
+$(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export ALPINE_MAKE_ROOTFSFLAGS = --packages apk-tools --packages openrc
 
 $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/ash,alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --mirror-uri http://mirrors.edge.kernel.org/alpine --branch $(3)))
 
@@ -969,7 +970,6 @@ alpinelinux-rootfs: x86_64-alpinelinux-3.18-rootfs
 alpinelinux-rootfs: x86_64-alpinelinux-3.19-rootfs
 alpinelinux-rootfs: x86_64-alpinelinux-edge-rootfs
 
-x86_64-alpinelinux-edge-rootfs/bin/sh: ALPINE_MAKE_ROOTFSFLAGS = --packages apk-tools --packages openrc
 $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpinelinux,3.14))
 $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpinelinux,3.15))
 $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpinelinux,3.16))

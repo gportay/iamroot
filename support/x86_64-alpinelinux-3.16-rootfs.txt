@@ -7,9 +7,18 @@ Executing busybox.post-install
 (X/X) Installing alpine-baselayout
 Executing alpine-baselayout.pre-install
 Executing alpine-baselayout.post-install
+(X/X) Installing ca-certificates-bundle
+(X/X) Installing libcrypto1.1
+(X/X) Installing libssl1.1
+(X/X) Installing ssl_client
+(X/X) Installing zlib
+(X/X) Installing apk-tools
 (X/X) Installing busybox-suid
 (X/X) Installing scanelf
 (X/X) Installing musl-utils
+(X/X) Installing ifupdown-ng
+(X/X) Installing openrc
+Executing openrc.post-install
 Executing busybox.trigger
 OK: X XiB in X packages
 tar: Ignoring unknown extended header keyword 'APK-TOOLS.checksum.SHA1'

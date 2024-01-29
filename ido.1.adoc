@@ -46,7 +46,7 @@ The options are as follows:
 	environment variables to those preserved from the user's environment.
 	This option may be specified multiple times.
 
-*-g*, *--group*=_group_::
+*-g* _group_, *--group*=_group_::
 	Run the _command_ with the primary group set to _group_ instead of the
 	primary group specified by the target user's password database entry.
 	The _group_ may be either a group name or a numeric group-ID (GID)
@@ -87,7 +87,7 @@ The options are as follows:
 	the target user is a member of. The real and effective group-IDs,
 	however, are still set to match the target user.
 
-*-R*, *--chroot*=_directory_::
+*-R* _directory_, *--chroot*=_directory_::
 	Change to the specified root _directory_ (see _chroot(8)_) before
 	running the _command_.
 
@@ -103,11 +103,11 @@ The options are as follows:
 	differently when a _command_ is specified as compared to an interactive
 	session; consult the shell's manual for details.
 
-*-T*, *--command-timeout*=_timeout_::
+*-T* _timeout_, *--command-timeout*=_timeout_::
 	Used to set a timeout for the _command_. If the timeout expires before
 	the _command_ has exited, the _command_ will be terminated.
 
-*-u*, *--user*=_user_::
+*-u* _user_, *--user*=_user_::
 	Run the _command_ as a user other than the default target user (usually
 	*root*). The _user_ may be either a user name or a numeric user-ID
 	(UID) prefixed with the ‘#’ character (e.g., ‘#0’ for UID 0). When

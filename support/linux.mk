@@ -348,7 +348,7 @@ $(eval $(call log,alpine-make-rootfs,$(1)-$(2)-$(3)-rootfs))
 
 $(if $(findstring x86_64,$(1)), \
 	$(eval $(call run,$(1),$(2)-$(3))) \
-	$(eval $(call alpine-postrootfs,$(1),$(2)-$(3))) \
+	$(eval $(call alpinelinux-postrootfs,$(1),$(2)-$(3))) \
 )
 endef
 
@@ -484,7 +484,7 @@ $(1)-$(2)-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	bash ish -c "chroot $(1)-$(2)-rootfs systemctl enable getty@ttyS0.service"
 endef
 
-define alpine-postrootfs
+define alpinelinux-postrootfs
 $(1)-$(2)-postrootfs:
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i $(1)-$(2)-rootfs/etc/passwd
@@ -969,7 +969,7 @@ alpinelinux-rootfs: x86_64-alpinelinux-3.18-rootfs
 alpinelinux-rootfs: x86_64-alpinelinux-3.19-rootfs
 alpinelinux-rootfs: x86_64-alpinelinux-edge-rootfs
 
-x86_64-alpine-edge-rootfs/bin/sh: ALPINE_MAKE_ROOTFSFLAGS = --packages apk-tools --packages openrc
+x86_64-alpinelinux-edge-rootfs/bin/sh: ALPINE_MAKE_ROOTFSFLAGS = --packages apk-tools --packages openrc
 $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpinelinux,3.14))
 $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpinelinux,3.15))
 $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpinelinux,3.16))
@@ -1599,9 +1599,9 @@ voidlinux-log: x86_64-voidlinux-musl-rootfs.log
 endif
 
 ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
-support: alpine-support
+support: alpinelinux-support
 
-.PHONY: alpine-support
+.PHONY: alpinelinux-support
 alpinelinux-support: support/x86_64-alpinelinux-3.14-rootfs.txt
 alpinelinux-support: support/x86_64-alpinelinux-3.15-rootfs.txt
 alpinelinux-support: support/x86_64-alpinelinux-3.16-rootfs.txt

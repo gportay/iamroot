@@ -72,14 +72,14 @@ distribution (or its bootstrap script).
 
 The table below lists the distributions and its tool that work with.
 
-| Tool                 | Distributions                                        |
-| -------------------- | ---------------------------------------------------- |
-| [pacstrap(8)]        | Arch Linux, Arch Linux ARM, Arch Linux 32, Manjaro   |
-| [alpine-make-rootfs] | Alpine Linux                                         |
-| [dnf(8)]             | Fedora                                               |
-| [zypper(8)]          | openSUSE                                             |
-| [debootstrap(8)]     | Debian\*, Ubuntu\*, Devuan\*                         |
-| [xbps-install(1)]    | Void Linux                                           |
+| Tool                 | Distributions                                                                          |
+| -------------------- | -------------------------------------------------------------------------------------- |
+| [pacstrap(8)]        | Arch Linux, Arch Linux ARM, Arch Linux 32, Arch Linux RISCV, Arch Linux Power, Manjaro |
+| [alpine-make-rootfs] | Alpine Linux                                                                           |
+| [dnf(8)]             | Fedora                                                                                 |
+| [zypper(8)]          | openSUSE                                                                               |
+| [debootstrap(8)]     | Debian\*, Ubuntu\*, Devuan\*                                                           |
+| [xbps-install(1)]    | Void Linux                                                                             |
 
 \*: Works with hacks.
 

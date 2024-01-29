@@ -28,8 +28,8 @@ The project compiles on Intel x86 and ARM 64-bit, and it runs on [Arch Linux],
 The [Miscellaneous Binary Format][binfmt_misc] on *Linux* allows to [chroot(2)]
 in a rootfs directory using a different architecture thanks to emulators (such
 as the [QEMU user-mode emulation][qemu] static binaries). The architectures
-`x86_64`, `i386`, `aarch64`, `armhf`, `arm`, `riscv64` and `mipsle` are
-supported.
+`x86_64`, `i386`, `aarch64`, `armhf`, `arm`, `riscv64`, `mipsle` and `s390x`
+are supported.
 
 ## HOW IT WORKS
 

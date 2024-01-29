@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `dlopen()` for \*BSD and unrecognized [dynamic loaders][ld.so(8)]
 - Chroot to a [Debian] mipsel world; tested on [Debian MIPS Port]
 - Support different endianness; tested on s390x from x86_64
+- Chroot to a [Debian] s390x world; tested on [Debian S/390 Port]
 
 ### Changed
 
@@ -816,6 +817,7 @@ Initial release.
 [Debian ARM hard-float Port]: https://wiki.debian.org/ArmHardFloatPort
 [Debian MIPS Port]: https://wiki.debian.org/MIPSPort
 [Debian RISC-V 64 Port]: https://wiki.debian.org/Ports/riscv64
+[Debian S/390 Port]: https://www.debian.org/ports/s390/
 [Debian i386 Port]: https://www.debian.org/ports/i386/
 [Debian]: https://www.debian.org/
 [Fedora 30]: https://docs.fedoraproject.org/en-US/releases/f30/

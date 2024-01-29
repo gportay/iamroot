@@ -96,7 +96,8 @@ $(strip libiamroot.so \
 	$(if $(findstring :$(2):,:aarch64: :arm64:         ),$(if $(findstring :$(1):,:musl:),aarch64/libiamroot-musl-aarch64.so.1,aarch64/libiamroot-linux-aarch64.so.1      ), \
 	$(if $(findstring :$(2):,:riscv64:                 ),$(if $(findstring :$(1):,:musl:),riscv64/libiamroot-musl-riscv64.so.1,riscv64/libiamroot-linux-riscv64-lp64d.so.1), \
 	$(if $(findstring :$(2):,:mipsle: :mipsel:         ),$(if $(findstring :$(1):,:musl:),mipsle/libiamroot-musl-mipsel.so.1  ,mipsle/libiamroot.so.1                     ), \
-	$(error $(1)-$(2): No such library)))))))) \
+	$(if $(findstring :$(2):,:s390x:                   ),$(if $(findstring :$(1):,:musl:),s390x/libiamroot-musl-s390x.so.1    ,s390x/libiamroot.so.1                      ), \
+	$(error $(1)-$(2): No such library))))))))) \
 )
 endef
 
@@ -231,6 +232,7 @@ $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export 
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_AARCH64_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu:/usr/lib/aarch64-linux-gnu:/lib:/usr/lib
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_RISCV64_LINUX_RISCV64_LP64D_1 = /lib/riscv64-linux-gnu:/usr/lib/riscv64-linux-gnu:/lib:/usr/lib
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_MIPSLE_1 = /usr/lib/mipsel-linux-gnu:/lib/mipsel-linux-gnu:/usr/lib:/lib
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_S390X_1 = /usr/lib/s390x-linux-gnu:/lib/s390x-linux-gnu:/usr/lib:/lib
 # chfn: PAM: Critical error - immediate abort
 # adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn
@@ -618,6 +620,11 @@ endif
 ifneq ($(shell command -v mipsel-buildroot-linux-musl-gcc 2>/dev/null),)
 $(O)-mipsle-musl-mipsel/libiamroot.so: override CC = mipsel-buildroot-linux-musl-gcc -march=mips32r2
 $(eval $(call libiamroot_ldso_so_abi,mipsle,musl-mipsel,1))
+endif
+
+ifneq ($(shell command -v s390x-buildroot-linux-gnu-gcc 2>/dev/null),)
+$(O)-s390x/libiamroot.so: override CC = s390x-buildroot-linux-gnu-gcc
+$(eval $(call libiamroot_so_abi,s390x,1))
 endif
 endif
 
@@ -1167,6 +1174,25 @@ $(eval $(call debootstrap-rootfs,mipsel,debian,oldstable))
 $(eval $(call debootstrap-rootfs,mipsel,debian,stable))
 mipsel-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 mipsel-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
+endif
+
+ifneq ($(shell command -v s390x-buildroot-linux-gnu-gcc 2>/dev/null),)
+s390x-rootfs: s390x-debian-rootfs
+
+.PHONY: s390x-debian-rootfs
+s390x-debian-rootfs: s390x-debian-oldoldstable-rootfs
+s390x-debian-rootfs: s390x-debian-oldstable-rootfs
+s390x-debian-rootfs: s390x-debian-stable-rootfs
+s390x-debian-rootfs: s390x-debian-testing-rootfs
+s390x-debian-rootfs: s390x-debian-unstable-rootfs
+
+$(eval $(call debootstrap-rootfs,s390x,debian,oldoldstable))
+$(eval $(call debootstrap-rootfs,s390x,debian,oldstable))
+$(eval $(call debootstrap-rootfs,s390x,debian,stable))
+$(eval $(call debootstrap-rootfs,s390x,debian,testing))
+$(eval $(call debootstrap-rootfs,s390x,debian,unstable))
+s390x-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+s390x-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 endif
 

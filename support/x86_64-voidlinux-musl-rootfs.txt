@@ -934,13 +934,13 @@ dracut-install: ERROR: failed to install '/usr/bin/stty:' for '/usr/bin/stty'
 dracut-install: ERROR: failed to install '/usr/bin/stty:' for '/usr/bin/stty'
 dracut-install: ERROR: 'ldd /usr/bin/stty' failed with 127
 dracut-install: ERROR: installing 'stty'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -a -l setfont loadkeys kbd_mode stty
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -a -l setfont loadkeys kbd_mode stty
 Warning: $ROOT/x86_64-voidlinux-musl-rootfs/usr/bin/ldd:: contains root directory '$ROOT/x86_64-voidlinux-musl-rootfs'
 dracut-install: ERROR: failed to install '$ROOT/x86_64-voidlinux-musl-rootfs/usr/bin/ldd:' for '/bin/dash'
 Warning: $ROOT/x86_64-voidlinux-musl-rootfs/usr/ldd:: contains root directory '$ROOT/x86_64-voidlinux-musl-rootfs'
 dracut-install: ERROR: failed to install '/bin/sh'
 dracut-install: ERROR: installing '/usr/lib/dracut/modules.d/10i18n/console_init.sh' to '/lib/udev/console_init'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -l /usr/lib/dracut/modules.d/10i18n/console_init.sh /lib/udev/console_init
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -l /usr/lib/dracut/modules.d/10i18n/console_init.sh /lib/udev/console_init
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/bin/gzip'
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/bin/gzip'
 dracut-install: ERROR: failed to install '/usr/bin/gzip:' for '/usr/bin/gzip'
@@ -951,7 +951,7 @@ dracut-install: ERROR: failed to install '/usr/bin/gzip:' for '/usr/bin/gzip'
 dracut-install: ERROR: failed to install '/usr/bin/gzip:' for '/usr/bin/gzip'
 dracut-install: ERROR: 'ldd /usr/bin/gzip' failed with 127
 dracut-install: ERROR: installing 'gzip'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -a -l gzip
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -a -l gzip
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/bin/udevadm'
 dracut-install: ERROR: failed to install '/usr/lib/systemd/libsystemd-shared-255.2-3.so' for '/usr/bin/udevadm'
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/bin/udevadm'
@@ -1126,7 +1126,7 @@ dracut-install: ERROR: failed to install '/usr/bin/udevadm:' for '/usr/bin/udeva
 dracut-install: ERROR: failed to install '/usr/bin/udevadm:' for '/usr/bin/udevadm'
 dracut-install: ERROR: 'ldd /usr/bin/udevadm' failed with 127
 dracut-install: ERROR: installing '/usr/bin/udevadm'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -l /usr/bin/udevadm
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -l /usr/bin/udevadm
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/bin/btrfs'
 dracut-install: ERROR: failed to install '/lib/libgcrypt.so.20' for '/usr/bin/btrfs'
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/bin/btrfs'
@@ -1228,19 +1228,19 @@ dracut-install: ERROR: failed to install '$ROOT/x86_64-voidlinux-musl-rootfs/usr
 Warning: $ROOT/x86_64-voidlinux-musl-rootfs/usr/ldd:: contains root directory '$ROOT/x86_64-voidlinux-musl-rootfs'
 dracut-install: ERROR: failed to install '/bin/sh'
 dracut-install: ERROR: installing '/usr/lib/dracut/modules.d/95lunmask/fc_transport_scan_lun.sh' to '/usr/lib/udev/fc_transport_scan_lun.sh'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -l /usr/lib/dracut/modules.d/95lunmask/fc_transport_scan_lun.sh /usr/lib/udev/fc_transport_scan_lun.sh
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -l /usr/lib/dracut/modules.d/95lunmask/fc_transport_scan_lun.sh /usr/lib/udev/fc_transport_scan_lun.sh
 Warning: $ROOT/x86_64-voidlinux-musl-rootfs/usr/bin/ldd:: contains root directory '$ROOT/x86_64-voidlinux-musl-rootfs'
 dracut-install: ERROR: failed to install '$ROOT/x86_64-voidlinux-musl-rootfs/usr/bin/ldd:' for '/bin/dash'
 Warning: $ROOT/x86_64-voidlinux-musl-rootfs/usr/ldd:: contains root directory '$ROOT/x86_64-voidlinux-musl-rootfs'
 dracut-install: ERROR: failed to install '/bin/sh'
 dracut-install: ERROR: installing '/usr/lib/dracut/modules.d/95lunmask/sas_transport_scan_lun.sh' to '/usr/lib/udev/sas_transport_scan_lun.sh'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -l /usr/lib/dracut/modules.d/95lunmask/sas_transport_scan_lun.sh /usr/lib/udev/sas_transport_scan_lun.sh
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -l /usr/lib/dracut/modules.d/95lunmask/sas_transport_scan_lun.sh /usr/lib/udev/sas_transport_scan_lun.sh
 Warning: $ROOT/x86_64-voidlinux-musl-rootfs/usr/bin/ldd:: contains root directory '$ROOT/x86_64-voidlinux-musl-rootfs'
 dracut-install: ERROR: failed to install '$ROOT/x86_64-voidlinux-musl-rootfs/usr/bin/ldd:' for '/bin/dash'
 Warning: $ROOT/x86_64-voidlinux-musl-rootfs/usr/ldd:: contains root directory '$ROOT/x86_64-voidlinux-musl-rootfs'
 dracut-install: ERROR: failed to install '/bin/sh'
 dracut-install: ERROR: installing '/usr/lib/dracut/modules.d/95resume/resume.sh' to '/lib/dracut/resume.sh'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -l /usr/lib/dracut/modules.d/95resume/resume.sh /lib/dracut/resume.sh
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -l /usr/lib/dracut/modules.d/95resume/resume.sh /lib/dracut/resume.sh
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/bin/umount'
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/bin/umount'
 dracut-install: ERROR: failed to install '/lib/libmount.so.1:' for '/usr/bin/umount'
@@ -1289,7 +1289,7 @@ dracut-install: ERROR: failed to install '/usr/bin/umount:' for '/usr/bin/umount
 dracut-install: ERROR: failed to install '/usr/bin/umount:' for '/usr/bin/umount'
 dracut-install: ERROR: 'ldd /usr/bin/umount' failed with 127
 dracut-install: ERROR: installing 'umount'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -a -l umount
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -a -l umount
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/bin/tr'
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/bin/tr'
 dracut-install: ERROR: failed to install '/usr/bin/tr:' for '/usr/bin/tr'
@@ -1299,7 +1299,7 @@ dracut-install: ERROR: failed to install '/usr/bin/tr:' for '/usr/bin/tr'
 dracut-install: ERROR: failed to install '/usr/bin/tr:' for '/usr/bin/tr'
 dracut-install: ERROR: 'ldd /usr/bin/tr' failed with 127
 dracut-install: ERROR: installing 'tr'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -a -l tr
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -a -l tr
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/bin/udevadm'
 dracut-install: ERROR: failed to install '/usr/lib/systemd/libsystemd-shared-255.2-3.so' for '/usr/bin/udevadm'
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/bin/udevadm'
@@ -1520,12 +1520,12 @@ dracut-install: ERROR: failed to install '/usr/bin/blkid:' for '/usr/bin/blkid'
 dracut-install: ERROR: failed to install '/usr/bin/blkid:' for '/usr/bin/blkid'
 dracut-install: ERROR: 'ldd /usr/bin/blkid' failed with 127
 dracut-install: ERROR: installing 'blkid'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -a -l udevadm cat uname blkid
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -a -l udevadm cat uname blkid
 Warning: $ROOT/x86_64-voidlinux-musl-rootfs/usr/bin/ldd:: contains root directory '$ROOT/x86_64-voidlinux-musl-rootfs'
 dracut-install: ERROR: failed to install '$ROOT/x86_64-voidlinux-musl-rootfs/usr/bin/ldd:' for '/sbin/udevd'
 Warning: $ROOT/x86_64-voidlinux-musl-rootfs/usr/ldd:: contains root directory '$ROOT/x86_64-voidlinux-musl-rootfs'
 dracut-install: ERROR: installing '/sbin/udevd'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -l /sbin/udevd
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -l /sbin/udevd
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/lib/udev/cdrom_id'
 dracut-install: ERROR: failed to install '/usr/lib/systemd/libsystemd-shared-255.2-3.so' for '/usr/lib/udev/cdrom_id'
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/lib/udev/cdrom_id'
@@ -1691,7 +1691,7 @@ dracut-install: ERROR: failed to install '/lib/libcap-ng.so.0:' for '/usr/lib/ud
 dracut-install: ERROR: failed to install '/usr/lib/udev/cdrom_id:' for '/usr/lib/udev/cdrom_id'
 dracut-install: ERROR: 'ldd /usr/lib/udev/cdrom_id' failed with 127
 dracut-install: ERROR: installing '/usr/lib/udev/cdrom_id'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -l /usr/lib/udev/cdrom_id
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -l /usr/lib/udev/cdrom_id
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/lib/udev/cdrom_id'
 dracut-install: ERROR: failed to install '/usr/lib/systemd/libsystemd-shared-255.2-3.so' for '/usr/lib/udev/cdrom_id'
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/lib/udev/cdrom_id'
@@ -1857,7 +1857,7 @@ dracut-install: ERROR: failed to install '/lib/libcap-ng.so.0:' for '/usr/lib/ud
 dracut-install: ERROR: failed to install '/usr/lib/udev/cdrom_id:' for '/usr/lib/udev/cdrom_id'
 dracut-install: ERROR: 'ldd /usr/lib/udev/cdrom_id' failed with 127
 dracut-install: ERROR: installing '/usr/lib/udev/cdrom_id'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -a -l /usr/lib/udev/cdrom_id
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -a -l /usr/lib/udev/cdrom_id
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/lib/udev/ata_id'
 dracut-install: ERROR: failed to install '/usr/lib/systemd/libsystemd-shared-255.2-3.so' for '/usr/lib/udev/ata_id'
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/lib/udev/ata_id'
@@ -2023,7 +2023,7 @@ dracut-install: ERROR: failed to install '/lib/libcap-ng.so.0:' for '/usr/lib/ud
 dracut-install: ERROR: failed to install '/usr/lib/udev/ata_id:' for '/usr/lib/udev/ata_id'
 dracut-install: ERROR: 'ldd /usr/lib/udev/ata_id' failed with 127
 dracut-install: ERROR: installing '/usr/lib/udev/ata_id'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -a -l /usr/lib/udev/ata_id
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -a -l /usr/lib/udev/ata_id
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/lib/udev/ata_id'
 dracut-install: ERROR: failed to install '/usr/lib/systemd/libsystemd-shared-255.2-3.so' for '/usr/lib/udev/ata_id'
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/lib/udev/ata_id'
@@ -2189,7 +2189,7 @@ dracut-install: ERROR: failed to install '/lib/libcap-ng.so.0:' for '/usr/lib/ud
 dracut-install: ERROR: failed to install '/usr/lib/udev/ata_id:' for '/usr/lib/udev/ata_id'
 dracut-install: ERROR: 'ldd /usr/lib/udev/ata_id' failed with 127
 dracut-install: ERROR: installing '/usr/lib/udev/ata_id'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -a -l /usr/lib/udev/ata_id
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -a -l /usr/lib/udev/ata_id
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/lib/udev/ata_id'
 dracut-install: ERROR: failed to install '/usr/lib/systemd/libsystemd-shared-255.2-3.so' for '/usr/lib/udev/ata_id'
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/lib/udev/ata_id'
@@ -2355,7 +2355,7 @@ dracut-install: ERROR: failed to install '/lib/libcap-ng.so.0:' for '/usr/lib/ud
 dracut-install: ERROR: failed to install '/usr/lib/udev/ata_id:' for '/usr/lib/udev/ata_id'
 dracut-install: ERROR: 'ldd /usr/lib/udev/ata_id' failed with 127
 dracut-install: ERROR: installing '/usr/lib/udev/ata_id'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -a -l /usr/lib/udev/ata_id
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -a -l /usr/lib/udev/ata_id
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/lib/udev/scsi_id'
 dracut-install: ERROR: failed to install '/usr/lib/systemd/libsystemd-shared-255.2-3.so' for '/usr/lib/udev/scsi_id'
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/lib/udev/scsi_id'
@@ -2524,7 +2524,7 @@ dracut-install: ERROR: failed to install '/usr/lib/udev/scsi_id:' for '/usr/lib/
 dracut-install: ERROR: failed to install '/usr/lib/udev/scsi_id:' for '/usr/lib/udev/scsi_id'
 dracut-install: ERROR: 'ldd /usr/lib/udev/scsi_id' failed with 127
 dracut-install: ERROR: installing '/usr/lib/udev/scsi_id'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -a -l /usr/lib/udev/scsi_id
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -a -l /usr/lib/udev/scsi_id
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/lib/udev/scsi_id'
 dracut-install: ERROR: failed to install '/usr/lib/systemd/libsystemd-shared-255.2-3.so' for '/usr/lib/udev/scsi_id'
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/lib/udev/scsi_id'
@@ -2693,7 +2693,7 @@ dracut-install: ERROR: failed to install '/usr/lib/udev/scsi_id:' for '/usr/lib/
 dracut-install: ERROR: failed to install '/usr/lib/udev/scsi_id:' for '/usr/lib/udev/scsi_id'
 dracut-install: ERROR: 'ldd /usr/lib/udev/scsi_id' failed with 127
 dracut-install: ERROR: installing '/usr/lib/udev/scsi_id'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -a -l /usr/lib/udev/scsi_id
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -a -l /usr/lib/udev/scsi_id
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/bin/udevadm'
 dracut-install: ERROR: failed to install '/usr/lib/systemd/libsystemd-shared-255.2-3.so' for '/usr/bin/udevadm'
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/bin/udevadm'
@@ -2868,7 +2868,7 @@ dracut-install: ERROR: failed to install '/usr/bin/udevadm:' for '/usr/bin/udeva
 dracut-install: ERROR: failed to install '/usr/bin/udevadm:' for '/usr/bin/udevadm'
 dracut-install: ERROR: 'ldd /usr/bin/udevadm' failed with 127
 dracut-install: ERROR: installing '/usr/bin/udevadm'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -l /usr/bin/udevadm
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -l /usr/bin/udevadm
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/lib/udev/ata_id'
 dracut-install: ERROR: failed to install '/usr/lib/systemd/libsystemd-shared-255.2-3.so' for '/usr/lib/udev/ata_id'
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/lib/udev/ata_id'
@@ -3665,7 +3665,7 @@ dracut-install: ERROR: failed to install '/usr/bin/tr:' for '/usr/bin/tr'
 dracut-install: ERROR: failed to install '/usr/bin/tr:' for '/usr/bin/tr'
 dracut-install: ERROR: 'ldd /usr/bin/tr' failed with 127
 dracut-install: ERROR: installing 'tr'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -a -l mount mknod mkdir sleep chown sed ls flock cp mv dmesg rm ln rmmod mkfifo umount readlink setsid modprobe chmod tr
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -a -l mount mknod mkdir sleep chown sed ls flock cp mv dmesg rm ln rmmod mkfifo umount readlink setsid modprobe chmod tr
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/bin/findmnt'
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/bin/findmnt'
 dracut-install: ERROR: failed to install '/lib/ld-linux-x86-64.so.2' for '/usr/bin/findmnt'
@@ -3802,7 +3802,7 @@ Warning: $ROOT/x86_64-voidlinux-musl-rootfs/usr/bin/ldd:: contains root director
 dracut-install: ERROR: failed to install '$ROOT/x86_64-voidlinux-musl-rootfs/usr/bin/ldd:' for '/usr/lib/dracut/dracut-util'
 Warning: $ROOT/x86_64-voidlinux-musl-rootfs/usr/ldd:: contains root directory '$ROOT/x86_64-voidlinux-musl-rootfs'
 dracut-install: ERROR: installing '/usr/lib/dracut/dracut-util' to '/usr/bin/dracut-util'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -l /usr/lib/dracut/dracut-util /usr/bin/dracut-util
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -l /usr/lib/dracut/dracut-util /usr/bin/dracut-util
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/bin/bash'
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/bin/bash'
 dracut-install: ERROR: failed to install '/lib/libreadline.so.8:' for '/usr/bin/bash'
@@ -3843,31 +3843,31 @@ dracut-install: ERROR: failed to install '/usr/bin/bash:' for '/usr/bin/bash'
 dracut-install: ERROR: failed to install '/usr/bin/bash:' for '/usr/bin/bash'
 dracut-install: ERROR: 'ldd /usr/bin/bash' failed with 127
 dracut-install: ERROR: installing 'bash'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -a -l bash
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -a -l bash
 Warning: $ROOT/x86_64-voidlinux-musl-rootfs/usr/bin/ldd:: contains root directory '$ROOT/x86_64-voidlinux-musl-rootfs'
 dracut-install: ERROR: failed to install '$ROOT/x86_64-voidlinux-musl-rootfs/usr/bin/ldd:' for '/bin/sh'
 Warning: $ROOT/x86_64-voidlinux-musl-rootfs/usr/ldd:: contains root directory '$ROOT/x86_64-voidlinux-musl-rootfs'
 dracut-install: ERROR: failed to install '/bin/sh'
 dracut-install: ERROR: installing '/usr/lib/dracut/modules.d/99base/init.sh' to '/init'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -l /usr/lib/dracut/modules.d/99base/init.sh /init
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -l /usr/lib/dracut/modules.d/99base/init.sh /init
 Warning: $ROOT/x86_64-voidlinux-musl-rootfs/usr/bin/ldd:: contains root directory '$ROOT/x86_64-voidlinux-musl-rootfs'
 dracut-install: ERROR: failed to install '$ROOT/x86_64-voidlinux-musl-rootfs/usr/bin/ldd:' for '/bin/sh'
 Warning: $ROOT/x86_64-voidlinux-musl-rootfs/usr/ldd:: contains root directory '$ROOT/x86_64-voidlinux-musl-rootfs'
 dracut-install: ERROR: failed to install '/bin/sh'
 dracut-install: ERROR: installing '/usr/lib/dracut/modules.d/99base/initqueue.sh' to '/sbin/initqueue'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -l /usr/lib/dracut/modules.d/99base/initqueue.sh /sbin/initqueue
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -l /usr/lib/dracut/modules.d/99base/initqueue.sh /sbin/initqueue
 Warning: $ROOT/x86_64-voidlinux-musl-rootfs/usr/bin/ldd:: contains root directory '$ROOT/x86_64-voidlinux-musl-rootfs'
 dracut-install: ERROR: failed to install '$ROOT/x86_64-voidlinux-musl-rootfs/usr/bin/ldd:' for '/bin/sh'
 Warning: $ROOT/x86_64-voidlinux-musl-rootfs/usr/ldd:: contains root directory '$ROOT/x86_64-voidlinux-musl-rootfs'
 dracut-install: ERROR: failed to install '/bin/sh'
 dracut-install: ERROR: installing '/usr/lib/dracut/modules.d/99base/loginit.sh' to '/sbin/loginit'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -l /usr/lib/dracut/modules.d/99base/loginit.sh /sbin/loginit
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -l /usr/lib/dracut/modules.d/99base/loginit.sh /sbin/loginit
 Warning: $ROOT/x86_64-voidlinux-musl-rootfs/usr/bin/ldd:: contains root directory '$ROOT/x86_64-voidlinux-musl-rootfs'
 dracut-install: ERROR: failed to install '$ROOT/x86_64-voidlinux-musl-rootfs/usr/bin/ldd:' for '/bin/sh'
 Warning: $ROOT/x86_64-voidlinux-musl-rootfs/usr/ldd:: contains root directory '$ROOT/x86_64-voidlinux-musl-rootfs'
 dracut-install: ERROR: failed to install '/bin/sh'
 dracut-install: ERROR: installing '/usr/lib/dracut/modules.d/99base/rdsosreport.sh' to '/sbin/rdsosreport'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -l /usr/lib/dracut/modules.d/99base/rdsosreport.sh /sbin/rdsosreport
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -l /usr/lib/dracut/modules.d/99base/rdsosreport.sh /sbin/rdsosreport
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/bin/switch_root'
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/usr/bin/switch_root'
 dracut-install: ERROR: failed to install '/usr/bin/switch_root:' for '/usr/bin/switch_root'
@@ -3875,14 +3875,14 @@ dracut-install: ERROR: failed to install '/usr/bin/switch_root:' for '/usr/bin/s
 dracut-install: ERROR: failed to install '/usr/bin/switch_root:' for '/usr/bin/switch_root'
 dracut-install: ERROR: 'ldd /usr/bin/switch_root' failed with 127
 dracut-install: ERROR: installing 'switch_root'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -a -l switch_root
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -a -l switch_root
 dracut: Failed to install switch_root
 Warning: $ROOT/x86_64-voidlinux-musl-rootfs/usr/bin/ldd:: contains root directory '$ROOT/x86_64-voidlinux-musl-rootfs'
 dracut-install: ERROR: failed to install '$ROOT/x86_64-voidlinux-musl-rootfs/usr/bin/ldd:' for '/bin/sh'
 Warning: $ROOT/x86_64-voidlinux-musl-rootfs/usr/ldd:: contains root directory '$ROOT/x86_64-voidlinux-musl-rootfs'
 dracut-install: ERROR: failed to install '/bin/sh'
 dracut-install: ERROR: installing '/usr/lib/dracut/modules.d/99fs-lib/fs-lib.sh' to '/lib/fs-lib.sh'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -l /usr/lib/dracut/modules.d/99fs-lib/fs-lib.sh /lib/fs-lib.sh
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -l /usr/lib/dracut/modules.d/99fs-lib/fs-lib.sh /lib/fs-lib.sh
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/sbin/fsck'
 dracut-install: ERROR: failed to install '/lib64/ld-linux-x86-64.so.2' for '/sbin/fsck'
 dracut-install: ERROR: failed to install '/lib/libblkid.so.1:' for '/sbin/fsck'
@@ -4920,13 +4920,13 @@ dracut-install: ERROR: failed to install '/usr/bin/timeout:' for '/usr/bin/timeo
 dracut-install: ERROR: failed to install '/usr/bin/timeout:' for '/usr/bin/timeout'
 dracut-install: ERROR: 'ldd /usr/bin/timeout' failed with 127
 dracut-install: ERROR: installing 'timeout'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -a -l umount poweroff reboot halt losetup stat sleep timeout
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -a -l umount poweroff reboot halt losetup stat sleep timeout
 Warning: $ROOT/x86_64-voidlinux-musl-rootfs/usr/bin/ldd:: contains root directory '$ROOT/x86_64-voidlinux-musl-rootfs'
 dracut-install: ERROR: failed to install '$ROOT/x86_64-voidlinux-musl-rootfs/usr/bin/ldd:' for '/bin/sh'
 Warning: $ROOT/x86_64-voidlinux-musl-rootfs/usr/ldd:: contains root directory '$ROOT/x86_64-voidlinux-musl-rootfs'
 dracut-install: ERROR: failed to install '/bin/sh'
 dracut-install: ERROR: installing '/usr/lib/dracut/modules.d/99shutdown/shutdown.sh' to '/shutdown'
-dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX8U/initramfs -l /usr/lib/dracut/modules.d/99shutdown/shutdown.sh /shutdown
+dracut: FAILED: /usr/lib/dracut/dracut-install -D /var/tmp/dracut.XXXXXX/initramfs -l /usr/lib/dracut/modules.d/99shutdown/shutdown.sh /shutdown
 Executing post-install kernel hook: 50-bootsize ...
 _2: configuring ...
 bzip2: installed successfully.

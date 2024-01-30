@@ -308,6 +308,8 @@ install-exec: install-bin install-lib
 .PHONY: install-bin
 install-bin:
 	install -d -m755 $(DESTDIR)$(PREFIX)/bin/
+	sed -e "s,/usr/local,$(PREFIX)," ido >$(DESTDIR)$(PREFIX)/bin/ido
+	chmod a+x $(DESTDIR)$(PREFIX)/bin/ido
 	sed -e "s,/usr/local,$(PREFIX)," ish >$(DESTDIR)$(PREFIX)/bin/ish
 	chmod a+x $(DESTDIR)$(PREFIX)/bin/ish
 	install -d -m755 $(DESTDIR)$(PREFIX)/lib/iamroot/

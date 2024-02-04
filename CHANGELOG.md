@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Fix the behaviour of the `ido`'s options `--user` and `--group` that does set
   the real and effective ID
+- Fix the detection of the [NetBSD]'s [dynamic loader][ld.so(8)]
 
 ## [v17] - 2024-01-30
 

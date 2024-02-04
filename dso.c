@@ -804,7 +804,7 @@ static int __ld_ldso_abi(const char *path, char ldso[NAME_MAX], int *abi)
 
 	/* NetBSD dynamic loader (ld.<object>_so) */
 	n = sscanf(name, "ld.%" __xstr(NAME_MAX) "[^_]_so", ldso);
-	if (n == 2) {
+	if (n == 1) {
 		if (abi)
 			*abi = -1;
 		return 0;

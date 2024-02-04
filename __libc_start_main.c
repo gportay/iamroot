@@ -94,7 +94,7 @@ static int __dl_iterate_phdr_callback(struct dl_phdr_info *info, size_t size,
 		return 0;
 
 	/* is an IAMROOT_LIB? */
-	val = getenv("IAMROOT_LIB");
+	val = _getenv("IAMROOT_LIB");
 	if (!val)
 		return 0;
 	val = __strncpy(buf, val);
@@ -129,7 +129,7 @@ int __libc_start_main(int argc,
 	__debug("%s(argc: %i, argv: { '%s', '%s', ... }, ...)\n", __func__,
 		argc, argv[0], argv[1]);
 
-	argv0 = getenv("argv0");
+	argv0 = _getenv("argv0");
 	if (argv0)
 		argv[0] = argv0;
 
@@ -152,7 +152,7 @@ int __libc_start_main(int (*main)(int, char **, char **), int argc,
 	__debug("%s(main: %p, argc: %i, argv: { '%s', '%s', ... }, ...)\n",
 		__func__, main, argc, argv[0], argv[1]);
 
-	argv0 = getenv("argv0");
+	argv0 = _getenv("argv0");
 	if (argv0)
 		argv[0] = argv0;
 

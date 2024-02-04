@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Gaël PORTAY
+ * Copyright 2023-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -34,7 +34,7 @@ int getresuid(uid_t *ruid, uid_t *euid, uid_t *suid)
         	unsigned long ul;
 
 		errno = 0;
-		ul = strtoul(__getenv("SUID") ?: "0", NULL, 0);
+		ul = strtoul(_getenv("IAMROOT_SUID") ?: "0", NULL, 0);
 		if (errno)
 			ul = 0;
 

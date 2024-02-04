@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Gaël PORTAY
+ * Copyright 2023-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -28,7 +28,7 @@ int setfsuid(uid_t fsuid)
 		goto exit;
 
 	/* Not forwarding function */
-	ret = __setenv("FSUID", buf, 1);
+	ret = _setenv("IAMROOT_FSUID", buf, 1);
 
 exit:
 	__debug("%s(fsuid: %u) -> %i\n", __func__, fsuid, ret);

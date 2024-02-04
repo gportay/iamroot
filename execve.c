@@ -116,7 +116,7 @@ const char *__execfn()
 	if (*argv[0] == '/')
 		siz = path_resolution(AT_FDCWD, argv[0], buf, sizeof(buf), 0);
 	else
-		siz = __path_access(argv[0], X_OK, getenv("PATH"), buf,
+		siz = __path_access(argv[0], X_OK, _getenv("PATH"), buf,
 				    sizeof(buf));
 	if (siz == -1)
 		return NULL;
@@ -211,7 +211,7 @@ void execve_init()
 	if (re_ignore)
 		return;
 
-	ignore = getenv("IAMROOT_EXEC_IGNORE");
+	ignore = _getenv("IAMROOT_EXEC_IGNORE");
 	if (!ignore)
 		ignore = "mountpoint";
 
@@ -371,7 +371,7 @@ static char *__getexec()
 {
 	char *ret;
 
-	ret = getenv("IAMROOT_EXEC");
+	ret = _getenv("IAMROOT_EXEC");
 	if (!ret)
 		return __xstr(PREFIX)"/lib/iamroot/exec.sh";
 
@@ -417,12 +417,12 @@ int __exec_sh(const char *path, char * const *argv, char *interparg[],
 	interparg[i] = NULL; /* ensure NULL-terminated */
 
 	/* Set library version for future API compatibility. */
-	err = setenv("IAMROOT_VERSION", __xstr(VERSION), 1);
+	err = _setenv("IAMROOT_VERSION", __xstr(VERSION), 1);
 	if (err)
 		return -1;
 
 	/* Set argv0 needed for binaries such as kmod, busybox... */
-	err = setenv("_argv0", *argv, 1);
+	err = _setenv("_argv0", *argv, 1);
 	if (err)
 		return -1;
 
@@ -433,19 +433,19 @@ int __exec_sh(const char *path, char * const *argv, char *interparg[],
 	 *
 	 * And back them up if needed.
 	 */
-	err = setenv("_preload", getenv("LD_PRELOAD") ?: "", 1);
+	err = _setenv("_preload", _getenv("LD_PRELOAD") ?: "", 1);
 	if (err)
 		return -1;
 
-	err = setenv("_library_path", getenv("LD_LIBRARY_PATH") ?: "", 1);
+	err = _setenv("_library_path", _getenv("LD_LIBRARY_PATH") ?: "", 1);
 	if (err)
 		return -1;
 
-	err = unsetenv("LD_PRELOAD");
+	err = _unsetenv("LD_PRELOAD");
 	if (err)
 		return -1;
 
-	err = unsetenv("LD_LIBRARY_PATH");
+	err = _unsetenv("LD_LIBRARY_PATH");
 	if (err)
 		return -1;
 

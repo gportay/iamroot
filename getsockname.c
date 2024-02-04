@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Gaël PORTAY
+ * Copyright 2023-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -47,7 +47,7 @@ int getsockname(int socket, struct sockaddr *addr, socklen_t *addrlen)
 	if (siz == -1 && errno == ENAMETOOLONG && __inchroot()) {
 		char *path;
 
-		path = getenv("IAMROOT_PATH_RESOLUTION_AF_UNIX");
+		path = _getenv("IAMROOT_PATH_RESOLUTION_AF_UNIX");
 		if (path) {
 			int n = _snprintf(buf.sun_path, sizeof(buf.sun_path),
 					  "%s/%s", path, buf.sun_path);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Gaël PORTAY
+ * Copyright 2023-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -28,7 +28,7 @@ int setresuid(uid_t ruid, uid_t euid, uid_t suid)
 		if (ret == -1)
 			goto exit;
 
-		ret = __setenv("SUID", buf, 1);
+		ret = _setenv("IAMROOT_SUID", buf, 1);
 		if (ret == -1)
 			goto exit;
 	}

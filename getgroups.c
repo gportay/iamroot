@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 Gaël PORTAY
+ * Copyright 2022-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -52,7 +52,7 @@ int getgroups(int listsize, gid_t list[])
 	if (listsize && !list)
 		return __set_errno(EINVAL, -1);
 
-	val = getenv("IAMROOT_GROUPS") ?: "0";
+	val = _getenv("IAMROOT_GROUPS") ?: "0";
 	ret = __path_iterate(val, __id_callback, &groups);
 	if (ret == -1)
 		return -1;

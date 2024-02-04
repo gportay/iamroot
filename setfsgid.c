@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Gaël PORTAY
+ * Copyright 2023-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -28,7 +28,7 @@ int setfsgid(gid_t fsgid)
 		goto exit;
 
 	/* Not forwarding function */
-	ret = __setenv("FSGID", buf, 1);
+	ret = _setenv("IAMROOT_FSGID", buf, 1);
 
 exit:
 	__debug("%s(fsgid: %u) -> %i\n", __func__, fsgid, ret);

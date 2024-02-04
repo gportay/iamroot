@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -14,6 +14,8 @@
 #include <spawn.h>
 
 #include "iamroot.h"
+
+#define getenv _getenv
 
 /*
  * Stolen and hacked from musl (src/process/execvp.c)
@@ -73,6 +75,8 @@ static int __posix_spawnp(pid_t *pid, const char *file,
 	if (seen_eacces) errno = EACCES;
 	return -1;
 }
+
+#undef getenv
 
 int posix_spawnp(pid_t *pid, const char *file,
 		 const posix_spawn_file_actions_t *file_actions,

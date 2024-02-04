@@ -64,7 +64,7 @@ static char *__getld_library_path()
 	char *curr, *prev;
 
 	/* LD_LIBRARY_PATH is unset; return NULL directly! */
-	curr = getenv("LD_LIBRARY_PATH");
+	curr = _getenv("LD_LIBRARY_PATH");
 	if (!curr)
 		return NULL;
 
@@ -74,7 +74,7 @@ static char *__getld_library_path()
 	 *
 	 * Return LD_LIBRARY_PATH's value.
 	 */
-	prev = getenv("ld_library_path");
+	prev = _getenv("ld_library_path");
 	if (!prev)
 		return curr;
 
@@ -285,11 +285,11 @@ int __path_setenv(const char *root, const char *name, const char *value,
 			}
 		}
 
-		return setenv(name, new_value, overwrite);
+		return _setenv(name, new_value, overwrite);
 	}
 
 setenv:
-	return setenv(name, value, overwrite);
+	return _setenv(name, value, overwrite);
 }
 
 static int __is_in_path_callback(const char *path, void *user)
@@ -1894,7 +1894,7 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 	if (siz == -1)
 		return NULL;
 
-	lib = getenv(buf);
+	lib = _getenv(buf);
 	if (lib)
 		goto exit;
 
@@ -2083,7 +2083,7 @@ access:
 	/*
 	 * Use the library set by the environment variable IAMROOT_LIB if set.
 	 */
-	lib = getenv("IAMROOT_LIB");
+	lib = _getenv("IAMROOT_LIB");
 	if (lib)
 		goto exit;
 
@@ -2091,11 +2091,11 @@ access:
 	lib = __xstr(PREFIX)"/lib/iamroot/libiamroot.so";
 
 exit:
-	err = setenv("IAMROOT_LIB", lib, 1);
+	err = _setenv("IAMROOT_LIB", lib, 1);
 	if (err == -1)
 		return NULL;
 
-	lib = getenv("IAMROOT_LIB");
+	lib = _getenv("IAMROOT_LIB");
 
 	return __set_errno(errno_save, lib);
 }
@@ -2116,7 +2116,7 @@ static const char *__getdeflib(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	if (siz == -1)
 		return NULL;
 
-	ret = getenv(buf);
+	ret = _getenv(buf);
 	if (ret)
 		return __set_errno(errno_save, ret);
 
@@ -2177,11 +2177,11 @@ static char *__setenv_ld_preload(Elf64_Ehdr *ehdr, const char *ldso, int abi,
 	if (err == -1)
 		return NULL;
 
-	err = setenv("ld_preload", buf, 1);
+	err = _setenv("ld_preload", buf, 1);
 	if (err == -1)
 		return NULL;
 
-	return getenv("ld_preload");
+	return _getenv("ld_preload");
 }
 
 static int __secure_execution_mode()
@@ -2340,7 +2340,7 @@ static char *__setenv_ld_library_path(const char *path)
 	if (err == -1)
 		return NULL;
 
-	return getenv("ld_library_path");
+	return _getenv("ld_library_path");
 }
 
 static int __flags_callback(const void *data, size_t datasiz, void *user)
@@ -2640,7 +2640,7 @@ static char *__setenv_inhibit_rpath()
 	char *inhibit_rpath;
 	char val[PATH_MAX];
 
-	inhibit_rpath = getenv("IAMROOT_INHIBIT_RPATH");
+	inhibit_rpath = _getenv("IAMROOT_INHIBIT_RPATH");
 	if (inhibit_rpath) {
 		int ret;
 
@@ -2650,7 +2650,7 @@ static char *__setenv_inhibit_rpath()
 			return NULL;
 	}
 
-	return getenv("inhibit_rpath");
+	return _getenv("inhibit_rpath");
 }
 
 __attribute__((visibility("hidden")))
@@ -2773,21 +2773,21 @@ int __ldso(const char *path, char * const argv[], char *interp,
 	 * Clear the dynamic loader environment variables.
 	 */
 
-	err = unsetenv("LD_PRELOAD");
+	err = _unsetenv("LD_PRELOAD");
 	if (err == -1)
 		goto close;
 
-	err = unsetenv("LD_LIBRARY_PATH");
+	err = _unsetenv("LD_LIBRARY_PATH");
 	if (err == -1)
 		goto close;
 
 	/*
-	 * Warning: The calls above to unsetenv() have probably modified the
+	 * Warning: The calls above to _unsetenv() have probably modified the
 	 * __environ.
 	 *
 	 * As a consequence, both dangling pointers ld_library_path and
 	 * ld_preload are to be considered as flags only as they probably point
-	 * to a deallocated memory area. Use getenv() instead to read and use
+	 * to a deallocated memory area. Use _getenv() instead to read and use
 	 * their value passed that point!
 	 */
 
@@ -2845,10 +2845,10 @@ int __ldso(const char *path, char * const argv[], char *interp,
 	 */
 	if (has_preload && ld_preload) {
 		interparg[i++] = "--preload";
-		interparg[i++] = getenv("ld_preload");
+		interparg[i++] = _getenv("ld_preload");
 	/* Or set LD_PRELOAD if --preload is not supported */
 	} else if (ld_preload) {
-		err = setenv("LD_PRELOAD", getenv("ld_preload"), 1);
+		err = _setenv("LD_PRELOAD", _getenv("ld_preload"), 1);
 		if (err == -1)
 			goto close;
 	}
@@ -2862,10 +2862,11 @@ int __ldso(const char *path, char * const argv[], char *interp,
 	 */
 	if (has_library_path && ld_library_path) {
 		interparg[i++] = "--library-path";
-		interparg[i++] = getenv("ld_library_path");
+		interparg[i++] = _getenv("ld_library_path");
 	/* Or set LD_LIBRARY_PATH if --library-path is not supported */
 	} else if (ld_library_path) {
-		err = setenv("LD_LIBRARY_PATH", getenv("ld_library_path"), 1);
+		err = _setenv("LD_LIBRARY_PATH", _getenv("ld_library_path"),
+			      1);
 		if (err == -1)
 			goto close;
 	}
@@ -2873,7 +2874,7 @@ int __ldso(const char *path, char * const argv[], char *interp,
 	/* Add --inhibit-rpath (chroot) */
 	if (has_inhibit_rpath && inhibit_rpath) {
 		interparg[i++] = "--inhibit-rpath";
-		interparg[i++] = getenv("inhibit_rpath");
+		interparg[i++] = _getenv("inhibit_rpath");
 	}
 
 	/* Add --inhibit-cache */
@@ -2890,7 +2891,7 @@ int __ldso(const char *path, char * const argv[], char *interp,
 		 * --argv0; the value will be set by via the function
 		 * __libc_start_main().
 		 */
-		err = setenv("argv0", argv0, 1);
+		err = _setenv("argv0", argv0, 1);
 		if (err == -1)
 			goto close;
 	}
@@ -2982,7 +2983,7 @@ static const char *__root_basepath(const char *path)
 
 static int __getld_trace_loaded_objects()
 {
-	return strtol(getenv("LD_TRACE_LOADED_OBJECTS") ?: "0", NULL, 0);
+	return strtol(_getenv("LD_TRACE_LOADED_OBJECTS") ?: "0", NULL, 0);
 }
 
 static int __ld_trace_loader_objects_needed(const char *, const char *,

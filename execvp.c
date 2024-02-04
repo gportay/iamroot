@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -16,6 +16,8 @@
 #include "iamroot.h"
 
 #ifndef __FreeBSD__
+#define getenv _getenv
+
 extern int __execve(const char *, char * const [], char * const []);
 
 /*
@@ -70,6 +72,8 @@ static int __execvp(const char *file, char * const argv[])
 	if (seen_eacces) errno = EACCES;
 	return -1;
 }
+
+#undef getenv
 #else
 /*
  * Stolen from musl (src/process/execvp.c)
@@ -141,7 +145,7 @@ int execvp(const char *file, char * const argv[])
 
 #ifdef __FreeBSD__
 	/* Forward to another function */
-	return execvP(file, getenv("PATH"), argv);
+	return execvP(file, _getenv("PATH"), argv);
 #else
 	/* Forward to local function */
 	return __execvp(file, argv);

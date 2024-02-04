@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2023 Gaël PORTAY
+ * Copyright 2020-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -39,32 +39,6 @@ int _snprintf(char *buf, size_t bufsiz, const char *fmt, ...)
 		return ret;
 
 	return __set_errno(ENOSPC, -1);
-}
-
-__attribute__((visibility("hidden")))
-char *__getenv(const char *name)
-{
-	char buf[BUFSIZ];
-	int ret;
-
-	ret = _snprintf(buf, sizeof(buf), "IAMROOT_%s", name);
-	if (ret == -1)
-		return NULL;
-
-	return getenv(buf);
-}
-
-__attribute__((visibility("hidden")))
-int __setenv(const char *name, const char *value, int overwrite)
-{
-	char buf[BUFSIZ];
-	int n;
-
-	n = _snprintf(buf, sizeof(buf), "IAMROOT_%s", name);
-	if (n == -1)
-		return -1;
-
-	return setenv(buf, value, overwrite);
 }
 
 __attribute__((visibility("hidden")))
@@ -187,24 +161,24 @@ int __isfile(const char *path)
 __attribute__((visibility("hidden")))
 int __getfatal()
 {
-	return strtol(getenv("IAMROOT_FATAL") ?: "0", NULL, 0);
+	return strtol(_getenv("IAMROOT_FATAL") ?: "0", NULL, 0);
 }
 
 __attribute__((visibility("hidden")))
 char *__getroot()
 {
-	return getenv("IAMROOT_ROOT");
+	return _getenv("IAMROOT_ROOT");
 }
 
 static inline int __setrootdir(const char *path)
 {
 	if (!path) {
 		__info("Exiting chroot: '%s'\n", __getrootdir());
-		return unsetenv("IAMROOT_ROOT");
+		return _unsetenv("IAMROOT_ROOT");
 	}
 
 	__info("Enterring chroot: '%s'\n", path);
-	return setenv("IAMROOT_ROOT", path, 1);
+	return _setenv("IAMROOT_ROOT", path, 1);
 }
 
 __attribute__((visibility("hidden")))

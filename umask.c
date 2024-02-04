@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -16,7 +16,7 @@
 __attribute__((visibility("hidden")))
 mode_t __getumask()
 {
-	return strtol(getenv("IAMROOT_UMASK") ?: "022", NULL, 8);
+	return strtol(_getenv("IAMROOT_UMASK") ?: "022", NULL, 8);
 }
 
 __attribute__((visibility("hidden")))
@@ -29,7 +29,7 @@ int __setumask(mode_t mask)
 	if (n == -1)
 		return -1;
 
-	return setenv("IAMROOT_UMASK", buf, 1);
+	return _setenv("IAMROOT_UMASK", buf, 1);
 }
 
 static mode_t (*sym)(mode_t);

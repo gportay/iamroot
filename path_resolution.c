@@ -50,7 +50,7 @@ const char *__getfd(int fd)
 	if (n == -1)
 		return NULL;
 
-	ret = getenv(buf);
+	ret = _getenv(buf);
 	if (!ret)
 		return __set_errno(ENOENT, NULL);
 
@@ -75,12 +75,12 @@ int __setfd(int fd, const char *path)
 	if (n == -1)
 		return -1;
 
-	__info("%i: %s='%s' -> '%s'\n", fd, buf, getenv(buf), path);
+	__info("%i: %s='%s' -> '%s'\n", fd, buf, _getenv(buf), path);
 
 	if (!path)
-		return unsetenv(buf);
+		return _unsetenv(buf);
 
-	return setenv(buf, path, 1);
+	return _setenv(buf, path, 1);
 #else
 	(void)fd;
 	(void)path;
@@ -554,7 +554,7 @@ void path_resolution_init()
 	if (re_ignore)
 		goto warning_ignore;
 
-	ignore = getenv("IAMROOT_PATH_RESOLUTION_IGNORE");
+	ignore = _getenv("IAMROOT_PATH_RESOLUTION_IGNORE");
 	if (!ignore)
 		ignore = "^/proc/|/sys/|"_PATH_DEV"|"_PATH_VARRUN"|/run/";
 
@@ -567,7 +567,7 @@ void path_resolution_init()
 	re_ignore = &regex_ignore.re;
 
 warning_ignore:
-	warning_ignore = getenv("IAMROOT_PATH_RESOLUTION_WARNING_IGNORE");
+	warning_ignore = _getenv("IAMROOT_PATH_RESOLUTION_WARNING_IGNORE");
 	if (!warning_ignore)
 		warning_ignore = "^/var/log/dnf\\.rpm\\.log$";
 
@@ -588,7 +588,7 @@ void path_resolution_fini()
 	 * Workaround: reset the root directory for later destructors call such
 	 * as __gcov_exit().
 	 */
-	unsetenv("IAMROOT_ROOT");
+	_unsetenv("IAMROOT_ROOT");
 
 	if (!re_warning_ignore)
 		goto ignore;

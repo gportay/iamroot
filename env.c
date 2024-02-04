@@ -40,6 +40,12 @@
 
 #include "iamroot.h"
 
+#define clearenv _clearenv
+#define getenv _getenv
+#define putenv _putenv
+#define setenv _setenv
+#define unsetenv _unsetenv
+
 void __env_rm_add(char *old, char *new);
 
 /*
@@ -200,3 +206,9 @@ int unsetenv(const char *name)
 	}
 	return 0;
 }
+
+#undef clearenv
+#undef getenv
+#undef putenv
+#undef setenv
+#undef unsetenv

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -27,7 +27,7 @@ int setgid(gid_t gid)
 		goto exit;
 
 	/* Not forwarding function */
-	ret = __setenv("GID", buf, 1);
+	ret = _setenv("IAMROOT_GID", buf, 1);
 
 exit:
 	__debug("%s(gid: %u) -> %i\n", __func__, gid, ret);

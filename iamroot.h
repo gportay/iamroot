@@ -103,18 +103,6 @@ extern "C" {
 char *strchrnul(const char *, int);
 #endif
 
-extern char *_getenv(const char *);
-extern int _clearenv();
-extern int _putenv(char *);
-extern int _setenv(const char *, const char *, int);
-extern int _unsetenv(const char *);
-
-#define clearenv _clearenv
-#define getenv _getenv
-#define putenv _putenv
-#define setenv _setenv
-#define unsetenv _unsetenv
-
 #ifndef __linux__
 #define __environ environ
 
@@ -135,6 +123,11 @@ extern char **__environ;
 #define IAMROOT_EXTATTR_GID  IAMROOT_EXTATTR_PREFIX "gid"
 #endif
 
+char *_getenv(const char *);
+int _clearenv();
+int _putenv(char *);
+int _setenv(const char *, const char *, int);
+int _unsetenv(const char *);
 int _snprintf(char *, size_t, const char *, ...) __attribute__((format(printf,3,4)));
 
 int __fissymlinkat(int, const char *, int);
@@ -147,8 +140,6 @@ int __fisfileat(int, const char *, int);
 int __fisfile(int);
 int __isfile(const char *);
 const char *__basename(const char *);
-char *__getenv(const char *);
-int __setenv(const char *, const char *, int);
 int __path_setenv(const char *, const char *, const char *, int);
 
 int __execve(const char *, char * const [], char * const []);

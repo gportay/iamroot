@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 Gaël PORTAY
+ * Copyright 2022-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -27,7 +27,7 @@ int setgroups(size_t listsize, const gid_t *list)
 	}
 
 	if (listsize == 0) {
-		ret = unsetenv("IAMROOT_GROUPS");
+		ret = _unsetenv("IAMROOT_GROUPS");
 		goto exit;
 	}
 
@@ -44,11 +44,11 @@ int setgroups(size_t listsize, const gid_t *list)
 	}
 
 	/* Not forwarding function */
-	ret = setenv("IAMROOT_GROUPS", buf, 1);
+	ret = _setenv("IAMROOT_GROUPS", buf, 1);
 
 exit:
 	__debug("%s(listsize: %i, list: %p): -> %i, IAMROOT_GROUPS: '%s'\n",
-		__func__, (int)listsize, list, ret, getenv("IAMROOT_GROUPS"));
+		__func__, (int)listsize, list, ret, _getenv("IAMROOT_GROUPS"));
 
 	return ret;
 }

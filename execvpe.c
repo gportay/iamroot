@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -14,6 +14,8 @@
 #include <unistd.h>
 
 #include "iamroot.h"
+
+#define getenv _getenv
 
 extern int __execve(const char *, char * const [], char * const []);
 
@@ -70,6 +72,8 @@ static int __execvpe(const char *file, char * const argv[],
 	if (seen_eacces) errno = EACCES;
 	return -1;
 }
+
+#undef getenv
 
 int execvpe(const char *file, char * const argv[], char * const envp[])
 {

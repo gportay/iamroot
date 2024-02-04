@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -24,19 +24,19 @@ typedef struct {
 __attribute__((visibility("hidden")))
 int __getdebug()
 {
-	return strtol(getenv("IAMROOT_DEBUG") ?: "0", NULL, 0);
+	return strtol(_getenv("IAMROOT_DEBUG") ?: "0", NULL, 0);
 }
 
 __attribute__((visibility("hidden")))
 int __getdebug_fd()
 {
-	return strtol(getenv("IAMROOT_DEBUG_FD") ?: "2", NULL, 0);
+	return strtol(_getenv("IAMROOT_DEBUG_FD") ?: "2", NULL, 0);
 }
 
 __attribute__((visibility("hidden")))
 int __getno_color()
 {
-	return strtol(getenv("NO_COLOR") ?: "0", NULL, 0);
+	return strtol(_getenv("NO_COLOR") ?: "0", NULL, 0);
 }
 
 __attribute__((visibility("hidden")))
@@ -71,7 +71,7 @@ void verbosef_init()
 	const char *ignore;
 	int ret;
 
-	ignore = getenv("IAMROOT_DEBUG_IGNORE");
+	ignore = _getenv("IAMROOT_DEBUG_IGNORE");
 	if (!ignore)
 		ignore = "^$";
 

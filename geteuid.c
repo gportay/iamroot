@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2023 Gaël PORTAY
+ * Copyright 2020-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -19,7 +19,7 @@ uid_t geteuid(void)
 	uid_t ret;
 
 	errno = 0;
-	ul = strtoul(__getenv("EUID") ?: "0", NULL, 0);
+	ul = strtoul(_getenv("IAMROOT_EUID") ?: "0", NULL, 0);
 	if (errno)
 		ul = 0;
 

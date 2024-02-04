@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 Gaël PORTAY
+ * Copyright 2022-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -54,6 +54,7 @@ static struct __libc {
 	char secure;
 } libc;
 
+#define getenv _getenv
 #define do_catopen(p) __catopen(p, oflag)
 
 /*
@@ -132,3 +133,5 @@ nl_catd catopen(const char *name, int oflag)
 	errno = ENOENT;
 	return (nl_catd)-1;
 }
+
+#undef getenv

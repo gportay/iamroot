@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Gaël PORTAY
+ * Copyright 2023-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -28,7 +28,7 @@ int setresgid(gid_t rgid, gid_t egid, gid_t sgid)
 		if (ret == -1)
 			goto exit;
 
-		ret = __setenv("SGID", buf, 1);
+		ret = _setenv("IAMROOT_SGID", buf, 1);
 		if (ret == -1)
 			goto exit;
 	}

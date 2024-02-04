@@ -1761,8 +1761,13 @@ static int __is_s390(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	(void)ldso;
 	(void)abi;
 
+#if defined EM_S390
 	/* It is a IBM S/390 ELF */
 	return ehdr && (ehdr->e_machine == EM_S390);
+#else
+	(void)ehdr;
+	return __set_errno(ENOTSUP, -1);
+#endif
 }
 
 static int __is_linux(Elf64_Ehdr *ehdr, const char *ldso, int abi)

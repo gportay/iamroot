@@ -156,34 +156,6 @@ else
 fi
 echo
 
-run "ish: test environment is not preserved"
-if ! ( export FOO=foo && ish -c "env" | grep "^FOO=foo$" )
-then
-	ok
-else
-	ko
-fi
-echo
-
-run "ish: test option --preserve-env FOO preserves environment variable"
-if ( export FOO=foo && ish --preserve-env FOO -c "env" | grep "^FOO=foo$" )
-then
-	ok
-else
-	ko
-fi
-echo
-
-run "ish: test option --preserve-env FOO:BAZ preserves environment variables"
-if ( export FOO=foo; export BAR=bar && ish --preserve-env FOO:BAR -c "env" | grep "^FOO=foo$" &&
-     export FOO=foo; export BAR=bar && ish --preserve-env FOO:BAR -c "env" | grep "^BAR=bar$" )
-then
-	ok
-else
-	ko
-fi
-echo
-
 run "ish: test option --deflib /usr/local/lib:/lib:/usr/lib sets default library path to use in chroot"
 if ish --deflib /usr/local/lib:/lib:/usr/lib -c "env" | grep "^IAMROOT_DEFLIB=/usr/local/lib:/lib:/usr/lib$"
 then

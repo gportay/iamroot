@@ -53,22 +53,6 @@ _ish()
 		_filedir
 		return
 		;;
-	--preserve-env)
-		local prefix realcur wordlist env
-		realcur="${cur##*\:}"
-		prefix="${cur%$realcur}"
-		mapfile -t env < <(env)
-		for WORD in "${env[@]%%=*}"
-		do
-			if ! [[ $prefix == *"$WORD"* ]]
-			then
-				wordlist+=("$WORD")
-			fi
-		done
-		compopt -o nospace
-		COMPREPLY=($(compgen -P "$prefix" -W "${wordlist[*]}" -S '\:' -- "$realcur"))
-		return 0
-		;;
 	--exec|--shell)
 		_filedir
 		return
@@ -164,7 +148,7 @@ _ish()
 
 	if [[ "$shell" != 1 ]]
 	then
-		COMPREPLY+=($(compgen -W "--root --profile-file --rc-file --preserve-env --deflib --exec --library --shell --no-color --fatal --debug --debug-fd --debug-ignore --exec-ignore --path-resolution-ignore --version" -- "$cur"))
+		COMPREPLY+=($(compgen -W "--root --profile-file --rc-file --deflib --exec --library --shell --no-color --fatal --debug --debug-fd --debug-ignore --exec-ignore --path-resolution-ignore --version" -- "$cur"))
 	fi
 } &&
 complete -F _ish ish

@@ -10,6 +10,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `ISH_UID` and `ISH_USER`
 - Remove the `ish(1)`'s option `--user` and its environment variable
   `IAMROOT_USER` to usurp the user identity
+- Remove the `ish(1)`'s option `--preserve-env` and its environment variable
+  `ISH_PRESERVE_ENV` to preserve the given user environment variables in the
+  shell
 
 ### Changed
 

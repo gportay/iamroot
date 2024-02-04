@@ -138,15 +138,6 @@ else
 fi
 echo
 
-run "ish: test option --user root sets loging name of the user root"
-if ish --user root -c "id -un" | grep "^root$"
-then
-	ok
-else
-	ko
-fi
-echo
-
 run "ish: test option --root $PWD/rootfs sets the absolute path to the root directory to chroot in"
 if ish --root "$PWD/rootfs" -c "env" | grep "^IAMROOT_ROOT=$PWD/rootfs$"
 then

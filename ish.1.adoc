@@ -47,9 +47,6 @@ shells, please refers to their manuals.
 
 *iamroot specific options*
 
-**--user USER**::
-	Login name of the user to usurp the identity.
-
 **--root DIR**::
 	Absolute path to the root directory to chroot in.
 
@@ -109,10 +106,6 @@ shells, please refers to their manuals.
 
 **ISHLVL**::
 	Incremented by one each time an instance of ish is started.
-
-**IAMROOT_USER**::
-	Set user login name to usurp the identity.
-	Equivalent to --user USER.
 
 **IAMROOT_ROOT**::
 	Set absolute path to root directory to chroot in.

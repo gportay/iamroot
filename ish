@@ -27,7 +27,6 @@ POSIX Shell related options:
       -s                        Read commands from standard-input.
 
 iamroot specific options:
-      --user USER               Login name of the user to usurp the identity.
       --root DIR                Absolute path to the root directory to chroot
                                 in.
       --profile-file FILE       Execute initialization file from FILE.
@@ -59,9 +58,6 @@ Environment variables:
 
       ISHLVL                    Incremented by one each time an instance of
                                 ish is started.
-
-      IAMROOT_USER              Set user login name to usurp the identity.
-                                Equivalent to --user USER.
 
       IAMROOT_ROOT              Set absolute path to root directory to chroot
                                 in. Equivalent to --root DIR.
@@ -111,9 +107,6 @@ export IAMROOT_LIB
 
 IAMROOT_EXEC="${IAMROOT_EXEC:-/usr/local/lib/iamroot/exec.sh}"
 export IAMROOT_EXEC
-
-IAMROOT_USER="${IAMROOT_USER:-root}"
-export IAMROOT_USER
 
 while [[ "$#" -ne 0 ]]
 do
@@ -197,11 +190,6 @@ do
 		shift
 		IAMROOT_ROOT="$1"
 		export IAMROOT_ROOT
-	elif [[ "$1" == "--user" ]]
-	then
-		shift
-		IAMROOT_USER="$1"
-		export IAMROOT_USER
 	elif [[ "$1" == "--" ]]
 	then
 		shift
@@ -228,15 +216,6 @@ do
 	PWD="$OLDPWD" source "${i##*/}"
 	cd "$OLDPWD"
 done
-
-IAMROOT_UID="$(id -u "$IAMROOT_USER")"
-export IAMROOT_UID
-
-IAMROOT_GID="$(id -g "$IAMROOT_USER")"
-export IAMROOT_GID
-
-IAMROOT_GROUPS="$(id -G "$IAMROOT_USER")"
-export IAMROOT_GROUPS
 
 mapfile -t envs < <(env)
 for env in "${envs[@]}"

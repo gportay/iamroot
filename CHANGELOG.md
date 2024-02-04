@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Remove the `ish(1)`'s environment variables `ISH_COMMAND`, `ISH_GID`,
   `ISH_UID` and `ISH_USER`
+- Remove the `ish(1)`'s option `--user` and its environment variable
+  `IAMROOT_USER` to usurp the user identity
 
 ### Changed
 

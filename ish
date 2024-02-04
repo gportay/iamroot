@@ -60,18 +60,6 @@ Environment variables:
       ISHLVL                    Incremented by one each time an instance of
                                 ish is started.
 
-      ISH_COMMAND               Set to the command run by ish, including any
-                                args.
-
-      ISH_GID                   Set to the group-ID of the user who invoked
-                                ish.
-
-      ISH_UID                   Set to the user-ID of the user who invoked
-                                ish.
-
-      ISH_USER                  Set to the login name of the user who invoked
-                                ish.
-
       IAMROOT_USER              Set user login name to usurp the identity.
                                 Equivalent to --user USER.
 
@@ -283,15 +271,8 @@ then
 	done
 fi
 
-command=("${SHELL:-/bin/sh}" "$@")
-
-exec /usr/bin/env \
-ISH_USER="$USER" \
-ISH_UID="$UID" \
-ISH_GID="${GROUPS[0]}" \
-ISH_COMMAND="${command[*]}" \
 ISHLVL="$((ISHLVL+1))" \
 PATH="${PATH:-/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin}" \
 LD_PRELOAD="$IAMROOT_LIB${LD_PRELOAD+:$LD_PRELOAD}" \
 LD_LIBRARY_PATH="$LD_LIBRARY_PATH" \
-"${command[@]}"
+exec "${SHELL:-/bin/sh}" "$@"

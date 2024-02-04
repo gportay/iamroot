@@ -346,60 +346,6 @@ else
 fi
 echo
 
-run "ish: test environment sets ISH_COMMAND to the command run by ish"
-if ish <<<'echo "ISH_COMMAND=$ISH_COMMAND"' | grep -E "^ISH_COMMAND=/bin/bash$"
-then
-	ok
-else
-	ko
-fi
-echo
-
-run "ish: test environment sets ISH_COMMAND to the command run by ish"
-if ( SHELL=/bin/sh && ish <<<'echo "ISH_COMMAND=$ISH_COMMAND"' | grep "^ISH_COMMAND=/bin/sh$" )
-then
-	ok
-else
-	ko
-fi
-echo
-
-run "ish: test environment sets ISH_COMMAND to the command run by ish"
-if ish -c "env" | grep "^ISH_COMMAND=/bin/bash -c env$"
-then
-	ok
-else
-	ko
-fi
-echo
-
-run "ish: test environment sets ISH_GID to the group-ID of the user who invoked ish"
-if ish -s <<<'echo "ISH_GID=$ISH_GID"' | grep "^ISH_GID=${GROUPS[0]}$"
-then
-	ok
-else
-	ko
-fi
-echo
-
-run "ish: test environment sets ISH_UID to the user-ID of the user who invoked ish"
-if ish -s <<<'echo "ISH_UID=$ISH_UID"' | grep "^ISH_UID=$UID$"
-then
-	ok
-else
-	ko
-fi
-echo
-
-run "ish: test environment sets ISH_USER to the login name of the user who invoked ish"
-if ish -s <<<'echo "ISH_USER=$ISH_USER"' | grep "^ISH_USER=$USER$"
-then
-	ok
-else
-	ko
-fi
-echo
-
 run "ido: test without argument"
 if ! ido
 then

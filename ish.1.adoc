@@ -110,18 +110,6 @@ shells, please refers to their manuals.
 **ISHLVL**::
 	Incremented by one each time an instance of ish is started.
 
-**ISH_COMMAND**::
-	Set to the command run by ish, including any args.
-
-**ISH_GID**::
-	Set to the group-ID of the user who invoked ish.
-
-**ISH_UID**::
-	Set to the user-ID of the user who invoked ish.
-
-**ISH_USER**::
-	Set to the login name of the user who invoked ish.
-
 **IAMROOT_USER**::
 	Set user login name to usurp the identity.
 	Equivalent to --user USER.

@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [unreleased]
 
+- Remove the `ish(1)`'s environment variables `ISH_COMMAND`, `ISH_GID`,
+  `ISH_UID` and `ISH_USER`
+
 ### Changed
 
 - The environment variable `IAMROOT_GROUPS` is now using whitespace delimiter

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2023 Gaël PORTAY
+# Copyright 2023-2024 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -385,8 +385,14 @@ then
 	eval "exec $IAMROOT_DEBUG_FD>&2"
 fi
 
+IAMROOT_EUID="${passwd[2]}"
+export IAMROOT_EUID
+
 IAMROOT_UID="${passwd[2]}"
 export IAMROOT_UID
+
+IAMROOT_EGID="${group[2]}"
+export IAMROOT_EGID
 
 IAMROOT_GID="${group[2]}"
 export IAMROOT_GID

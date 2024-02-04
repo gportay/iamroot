@@ -53,7 +53,7 @@ int getgroups(int listsize, gid_t list[])
 		return __set_errno(EINVAL, -1);
 
 	val = _getenv("IAMROOT_GROUPS") ?: "0";
-	ret = __path_iterate(val, __id_callback, &groups);
+	ret = __group_iterate(val, __id_callback, &groups);
 	if (ret == -1)
 		return -1;
 

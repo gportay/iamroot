@@ -361,7 +361,6 @@ fi
 if [[ "${opt_P:-0}" -eq 1 ]]
 then
 	groups="${GROUPS[*]}"
-	groups="${groups// /:}"
 fi
 
 if [[ "$opt_R" ]]
@@ -397,7 +396,7 @@ export IAMROOT_EGID
 IAMROOT_GID="${group[2]}"
 export IAMROOT_GID
 
-IAMROOT_GROUPS="${groups[*]/ /:}"
+IAMROOT_GROUPS="${groups[*]}"
 export IAMROOT_GROUPS
 
 if [[ "${#vars[@]}" -gt 0 ]]

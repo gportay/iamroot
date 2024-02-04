@@ -36,7 +36,7 @@ int setgroups(size_t listsize, const gid_t *list)
 		int n;
 
 		n = _snprintf(&buf[size], sizeof(buf)-size, "%s%u",
-			      i > 0 ? ":" : "", list[i]);
+			      i > 0 ? " " : "", list[i]);
 		if (n == -1)
 			goto exit;
 

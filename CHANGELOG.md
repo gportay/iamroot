@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [unreleased]
 
+### Changed
+
+- The environment variable `IAMROOT_GROUPS` is now using whitespace delimiter
+  as the `bash` array variable `GROUPS`
+
 ### Fixed
 
 - Fix the behaviour of the `ido`'s options `--user` and `--group` that does set

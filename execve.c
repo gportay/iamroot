@@ -182,6 +182,13 @@ int __path_iterate(const char *path, int (*callback)(const char *, void *),
 	return __strtok(path, ":", callback, user);
 }
 
+__attribute__((visibility("hidden")))
+int __group_iterate(const char *path, int (*callback)(const char *, void *),
+		    void *user)
+{
+	return __strtok(path, " ", callback, user);
+}
+
 static regex_t *re_ignore;
 
 static void __regex_perror(const char *s, regex_t *regex, int err)

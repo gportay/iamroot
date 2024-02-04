@@ -17,6 +17,9 @@
 #include <fcntl.h>
 #include <link.h>
 #include <elf.h>
+#ifdef __NetBSD__
+#include <sys/exec_elf.h>
+#endif
 #include <regex.h>
 #include <spawn.h>
 
@@ -1675,9 +1678,18 @@ static int __is_arm(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	(void)ldso;
 	(void)abi;
 
+#if defined EF_ARM_ABI_FLOAT_SOFT
 	/* It is an ARM ELF */
 	return ehdr && (ehdr->e_machine == EM_ARM) &&
 	       (((Elf32_Ehdr *)ehdr)->e_flags & EF_ARM_ABI_FLOAT_SOFT);
+#elif defined EF_ARM_SOFT_FLOAT
+	/* It is an ARM ELF */
+	return ehdr && (ehdr->e_machine == EM_ARM) &&
+	       (((Elf32_Ehdr *)ehdr)->e_flags & EF_ARM_SOFT_FLOAT);
+#else
+	(void)ehdr;
+	return __set_errno(ENOTSUP, -1);
+#endif
 }
 
 static int __is_armhf(Elf64_Ehdr *ehdr, const char *ldso, int abi)
@@ -1685,9 +1697,14 @@ static int __is_armhf(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	(void)ldso;
 	(void)abi;
 
+#if defined EF_ARM_ABI_FLOAT_SOFT
 	/* It is an ARMHF ELF */
 	return ehdr && (ehdr->e_machine == EM_ARM) &&
 	       (((Elf32_Ehdr *)ehdr)->e_flags & EF_ARM_ABI_FLOAT_HARD);
+#else
+	(void)ehdr;
+	return __set_errno(ENOTSUP, -1);
+#endif
 }
 
 static int __is_aarch64(Elf64_Ehdr *ehdr, const char *ldso, int abi)
@@ -1788,46 +1805,48 @@ static int __is_netbsd(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 
 static const char *__machine(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
+	const int errno_save = errno;
+
 	if (__is_x86(ehdr, ldso, abi)) {
 		if (__is_gnu_linux(ehdr, ldso, abi) ||
 		    __is_musl(ehdr, ldso, abi))
-			return "i686";
+			return __set_errno(errno_save, "i686");
 
 		/* Assuming it is a *BSD */
-		return "i386";
+		return __set_errno(errno_save, "i386");
 	} else if (__is_x86_64(ehdr, ldso, abi)) {
 		if (__is_gnu_linux(ehdr, ldso, abi) ||
 		    __is_musl(ehdr, ldso, abi))
-			return "x86_64";
+			return __set_errno(errno_save, "x86_64");
 
 		/* Assuming it is a *BSD */
-		return "amd64";
+		return __set_errno(errno_save, "amd64");
 	} else if (__is_arm(ehdr, ldso, abi)) {
-		return "arm";
+		return __set_errno(errno_save, "arm");
 	} else if (__is_armhf(ehdr, ldso, abi)) {
-		return "armhf";
+		return __set_errno(errno_save, "armhf");
 	} else if (__is_aarch64(ehdr, ldso, abi)) {
 		if (__is_gnu_linux(ehdr, ldso, abi) ||
 		    __is_musl(ehdr, ldso, abi))
-			return "aarch64";
+			return __set_errno(errno_save, "aarch64");
 
 		/* Assuming it is a *BSD */
-		return "arm64";
+		return __set_errno(errno_save, "arm64");
 	} else if (__is_aarch64_be(ehdr, ldso, abi)) {
-		return "aarch64_be";
+		return __set_errno(errno_save, "aarch64_be");
 	} else if (__is_riscv(ehdr, ldso, abi)) {
 		if (__is_gnu_linux(ehdr, ldso, abi) ||
 		    __is_musl(ehdr, ldso, abi))
-			return "riscv64";
+			return __set_errno(errno_save, "riscv64");
 
 		/* Assuming it is a *BSD */
-		return "riscv";
+		return __set_errno(errno_save, "riscv");
 	} else if (__is_mipsle(ehdr, ldso, abi)) {
-		return "mipsle";
+		return __set_errno(errno_save, "mipsle");
 	} else if (__is_powerpc64le(ehdr, ldso, abi)) {
-		return "powerpc64le";
+		return __set_errno(errno_save, "powerpc64le");
 	} else if (__is_s390(ehdr, ldso, abi)) {
-		return "s390x";
+		return __set_errno(errno_save, "s390x");
 	}
 
 	/* Unsupported yet! */

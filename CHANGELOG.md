@@ -32,8 +32,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
-- Chage the working directory to `IAMROOT_ROOT` in `ish` if the option `--root`
-  is set before running shell
+- Change the working directory to `IAMROOT_ROOT` in `ish` if the option
+  `--root` is set before running shell
 - Set or prefix the path directories in variable `LD_LIBRARY_PATH` by the
   content of the variable `IAMROOT_ROOT` variable in `ish` before the running
   the shell

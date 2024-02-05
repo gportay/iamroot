@@ -129,7 +129,7 @@ do
 	elif [[ "$1" =~ ^(-h|--help)$ ]]
 	then
 		help
-		exit 0
+		exit
 	elif [[ "$1" =~ ^(-H|--set-home)$ ]]
 	then
 		opt_H=1
@@ -166,7 +166,7 @@ do
 	elif [[ "$1" =~ ^(-V|--version)$ ]]
 	then
 		echo "$VERSION"
-		exit 0
+		exit
 	elif [[ "$1" =~ ^[a-zA-Z_][a-zA-Z0-9_]*= ]]
 	then
 		vars+=("$1")

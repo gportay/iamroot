@@ -101,7 +101,7 @@ static char *__getld_library_path()
 	 * and LD_LIBRARY_PATH **WAS** touched!
 	 *
 	 * Do nothing for now; return LD_LIBRARY_PATH's value.
-	 */ 
+	 */
 
 	/*
 	 * ld_library_path is a substring of LD_LIBRARY_PATH; i.e. it has been

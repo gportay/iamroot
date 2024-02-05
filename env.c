@@ -26,7 +26,7 @@
  * It fixes the following error as LD_PRELOAD is STILL set to preload the GNU
  * libc in version 2.29 in the chroot environment, but exec.sh is run via the
  * /usr/bin/env linked against the GNU libc in version 2.38 in the host system:
- * 
+ *
  * 	/usr/bin/env: /usr/lib64/libc-2.29.so: version `GLIBC_2.38' not found (required by /usr/bin/env)
  * 	/usr/bin/env: /usr/lib64/libc-2.29.so: version `GLIBC_2.34' not found (required by /usr/bin/env)
  * 	/usr/bin/env: /usr/lib64/libc-2.29.so: version `GLIBC_ABI_DT_RELR' not found (required by /usr/lib/libpthread.so.0)

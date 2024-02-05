@@ -103,14 +103,14 @@ do
 		opt_C="$1"
 	elif [[ "$1" =~ ^(-C|--close-from)=.*$ ]]
 	then
-	        opt_C="${1#*=}"
+		opt_C="${1#*=}"
 	elif [[ "$1" =~ ^(-D|--chdir)$ ]]
 	then
 		shift
 		opt_D="$1"
 	elif [[ "$1" =~ ^(-D|--chdir)=.*$ ]]
 	then
-	        opt_D="${1#*=}"
+		opt_D="${1#*=}"
 	elif [[ "$1" =~ ^(-E|--preserve-env)$ ]]
 	then
 		opt_E="1"
@@ -124,7 +124,7 @@ do
 		opt_g="$1"
 	elif [[ "$1" =~ ^(-g|--group)=.*$ ]]
 	then
-	        opt_g="${1#*=}"
+		opt_g="${1#*=}"
 	elif [[ "$1" =~ ^(-h|--help)$ ]]
 	then
 		help
@@ -144,7 +144,7 @@ do
 		opt_R="$1"
 	elif [[ "$1" =~ ^(-R|--chroot)=.*$ ]]
 	then
-	        opt_R="${1#*=}"
+		opt_R="${1#*=}"
 	elif [[ "$1" =~ ^(-s|--shell)$ ]]
 	then
 		opt_s=1
@@ -154,14 +154,14 @@ do
 		opt_T="$1"
 	elif [[ "$1" =~ ^(-T|--command-timeout)=.*$ ]]
 	then
-	        opt_T="${1#*=}"
+		opt_T="${1#*=}"
 	elif [[ "$1" =~ ^(-u|--user)$ ]]
 	then
 		shift
 		opt_u="$1"
 	elif [[ "$1" =~ ^(-u|--user)=.*$ ]]
 	then
-	        opt_u="${1#*=}"
+		opt_u="${1#*=}"
 	elif [[ "$1" =~ ^(-V|--version)$ ]]
 	then
 		echo "$VERSION"

@@ -141,7 +141,7 @@ The options are as follows:
 *--no-color*::
 	Turn off color.
 
-**--debug**::
+*--debug*::
 	Turn on debug mode.
 
 *--debug-fd*=_num_::

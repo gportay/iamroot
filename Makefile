@@ -373,8 +373,9 @@ test: libiamroot.so
 	$(MAKE) -C tests
 	$(MAKE) -C tests $@ PATH=$(CURDIR):$$PATH
 
-.PHONY: multiarch-ish
-multiarch-ish: export IAMROOT_DEFLIB_X86_64_LINUX_X86_64_2 = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+.PHONY: multiarch-ido multiarch-ish
+multiarch-ido multiarch-ish: export IAMROOT_DEFLIB_X86_64_LINUX_X86_64_2 = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+multiarch-ido: ido
 multiarch-ish: ish
 
 .PHONY: ido

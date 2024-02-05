@@ -62,7 +62,7 @@ FreeBSD-%-RELEASE-base-$(ARCH).txz:
 	wget https://download.freebsd.org/releases/$(ARCH)/$*-RELEASE/base.txz -O $@
 
 .PHONY: test ci ish
-test ci ish: libiamroot.so
+test ci ido ish: libiamroot.so
 	$(MAKE) -f Makefile $@
 
 .PHONY: cleanall

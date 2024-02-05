@@ -377,9 +377,13 @@ test: libiamroot.so
 multiarch-ish: export IAMROOT_DEFLIB_X86_64_LINUX_X86_64_2 = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
 multiarch-ish: ish
 
-.PHONY: ido ish
-ido ish: libiamroot.so
-	bash $@
+.PHONY: ido
+ido: libiamroot.so
+	bash ido $(IDOFLAGS) -i
+
+.PHONY: ish
+ish: libiamroot.so
+	bash ish
 
 .PHONY: sh bash zsh
 sh bash zsh csh ksh: PATH := $(CURDIR):$(PATH)

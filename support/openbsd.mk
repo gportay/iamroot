@@ -52,8 +52,8 @@ openbsd-73-rootfs: | $(ARCH)/libiamroot.so base-73.tgz
 base-73.tgz:
 	wget https://cdn.openbsd.org/pub/OpenBSD/7.3/amd64/base73.tgz -O $@
 
-.PHONY: test ci ish
-test ci ish: libiamroot.so
+.PHONY: test ci ido ish
+test ci ido ish: libiamroot.so
 	$(MAKE) -f Makefile $@
 
 .PHONY: cleanall

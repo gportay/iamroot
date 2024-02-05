@@ -316,7 +316,7 @@ $(1)-$(2)-rootfs/bin/sh: export XBPS_ARCH=$(1)
 $(1)-$(2)-rootfs/bin/sh: IDOFLAGS += --preserve-env=XBPS_ARCH
 $(1)-$(2)-rootfs/bin/sh: | $(call libs,linux,$(1))
 	bash ido $$(IDOFLAGS) install -D -t $(1)-$(2)-rootfs/var/db/xbps/keys/ /var/db/xbps/keys/*
-	bash ido xbps-install -S -y -r $(1)-$(2)-rootfs -R http://repo-default.voidlinux.org/current base-system
+	bash ido $$(IDOFLAGS) xbps-install -S -y -r $(1)-$(2)-rootfs -R http://repo-default.voidlinux.org/current base-system
 
 $(eval $(call log,xbps-install,$(1)-$(2)-rootfs))
 endef

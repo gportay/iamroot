@@ -2207,8 +2207,7 @@ static const char *__getdeflib(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 		return ret;
 
 	/*
-	 * Use the default library path set by the environment variable
-	 * IAMROOT_DEFLIB if set.
+	 * Use the defaul library path set by the environment variable if set.
 	 */
 	siz = __getvariable(ehdr, ldso, abi, "IAMROOT_DEFLIB", buf,
 			    sizeof(buf));
@@ -2216,6 +2215,14 @@ static const char *__getdeflib(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 		return NULL;
 
 	ret = _getenv(buf);
+	if (ret)
+		return __set_errno(errno_save, ret);
+
+	/*
+	 * Use the default library path set by the environment variable
+	 * IAMROOT_DEFLIB if set.
+	 */
+	ret = _getenv("IAMROOT_DEFLIB");
 	if (ret)
 		return __set_errno(errno_save, ret);
 

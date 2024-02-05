@@ -59,6 +59,9 @@ shells, please refers to their manuals.
 **--multiarch**::
 	Use multiarch library path in chroot.
 
+**--libdir**::
+	Set /lib:/usr/lib as default library path in chroot.
+
 **--deflib PATH**::
 	Default library path to use in chroot.
 

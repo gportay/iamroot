@@ -165,6 +165,15 @@ else
 fi
 echo
 
+run "ish: test option --libdir set /lib:/usr/lib as default library path in chroot"
+if ish --libdir -c "env" | grep "^IAMROOT_DEFLIB=/lib:/usr/lib$"
+then
+	ok
+else
+	ko
+fi
+echo
+
 run "ish: test option --deflib /usr/local/lib:/lib:/usr/lib sets default library path to use in chroot"
 if ish --deflib /usr/local/lib:/lib:/usr/lib -c "env" | grep "^IAMROOT_DEFLIB=/usr/local/lib:/lib:/usr/lib$"
 then
@@ -620,6 +629,15 @@ echo
 
 run "ido: test option --multiarch uses multiarch library path in chroot"
 if ido --multiarch env | grep "^IAMROOT_MULTIARCH=1$"
+then
+	ok
+else
+	ko
+fi
+echo
+
+run "ido: test option --libdir set /lib:/usr/lib as default library path in chroot"
+if ido --libdir env | grep "^IAMROOT_DEFLIB=/lib:/usr/lib$"
 then
 	ok
 else

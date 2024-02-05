@@ -51,6 +51,8 @@ ido specific options:
 
 iamroot specific options:
   --multiarch                   use multiarch library path in chroot
+  --libdir                      set /lib:/usr/lib as default library path in
+                                chroot
   --deflib=path                 default library path to use in chroot
   --exec=file                   absolute path to the iamroot exec script to use
   --library=lib                 absolute path to the iamroot library to use
@@ -214,6 +216,10 @@ do
 	then
 		IAMROOT_MULTIARCH="1"
 		export IAMROOT_MULTIARCH
+	elif [[ "$1" =~ ^--libdir$ ]]
+	then
+		IAMROOT_DEFLIB="/lib:/usr/lib"
+		export IAMROOT_DEFLIB
 	elif [[ "$1" =~ ^--deflib$ ]]
 	then
 		shift

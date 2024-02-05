@@ -1110,7 +1110,7 @@ aarch64-rootfs: aarch64-archlinuxarm-rootfs
 aarch64-archlinuxarm-rootfs: aarch64-archlinuxarm-rootfs/bin/sh
 
 $(eval $(call pacstrap-rootfs,aarch64,archlinuxarm,base))
-aarch64-archlinuxarm-chroot aarch64-archlinuxarm-shell aarch64-archlinuxarm-rootfs/bin/sh: export IAMROOT_DEFLIB_AARCH64_LINUX_AARCH64_1 = /lib:/usr/lib
+aarch64-archlinuxarm-chroot aarch64-archlinuxarm-shell aarch64-archlinuxarm-rootfs/bin/sh: IDOFLAGS += --libbdir
 endif
 
 ifneq ($(shell command -v arm-buildroot-linux-gnueabihf-gcc 2>/dev/null),)
@@ -1129,7 +1129,7 @@ riscv64-rootfs: riscv64-archlinuxriscv-rootfs
 riscv64-archlinuxriscv-rootfs: riscv64-archlinuxriscv-rootfs/bin/sh
 
 $(eval $(call pacstrap-rootfs,riscv64,archlinuxriscv,base))
-riscv64-archlinuxriscv-chroot riscv64-archlinuxriscv-shell riscv64-archlinuxriscv-rootfs/bin/sh: export IAMROOT_DEFLIB_RISCV64_LINUX_RISCV64_LP64D_1 = /lib:/usr/lib
+riscv64-archlinuxriscv-chroot riscv64-archlinuxriscv-shell riscv64-archlinuxriscv-rootfs/bin/sh: IDOFLAGS += --libdir
 endif
 
 ifneq ($(shell command -v powerpc64-buildroot-linux-gnu-gcc 2>/dev/null),)
@@ -1139,7 +1139,7 @@ powerpc64-rootfs: powerpc64-archlinuxpower-rootfs
 powerpc64-archlinuxpower-rootfs: powerpc64-archlinuxpower-rootfs/bin/sh
 
 $(eval $(call pacstrap-rootfs,powerpc64,archlinuxpower,base))
-powerpc64-archlinuxpower-chroot powerpc64-archlinuxpower-shell powerpc64-archlinuxpower-rootfs/bin/sh: export IAMROOT_DEFLIB_POWERPC64_2 = /lib:/usr/lib
+powerpc64-archlinuxpower-chroot powerpc64-archlinuxpower-shell powerpc64-archlinuxpower-rootfs/bin/sh: export IDOFLAGS += /lib:/usr/lib
 endif
 
 ifneq ($(shell command -v powerpc64le-buildroot-linux-gnu-gcc 2>/dev/null),)
@@ -1149,7 +1149,7 @@ powerpc64-rootfs: powerpc64le-archlinuxpower-rootfs
 powerpc64le-archlinuxpower-rootfs: powerpc64le-archlinuxpower-rootfs/bin/sh
 
 $(eval $(call pacstrap-rootfs,powerpc64le,archlinuxpower,base))
-powerpc64le-archlinuxpower-chroot powerpc64le-archlinuxpower-shell powerpc64le-archlinuxpower-rootfs/bin/sh: export IAMROOT_DEFLIB_POWERPC64LE_2 = /lib:/usr/lib
+powerpc64le-archlinuxpower-chroot powerpc64le-archlinuxpower-shell powerpc64le-archlinuxpower-rootfs/bin/sh: IDOFLAGS += --libdir
 endif
 endif
 

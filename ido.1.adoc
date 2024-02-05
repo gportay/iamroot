@@ -134,6 +134,9 @@ The options are as follows:
 *--multiarch*::
 	Use multiarch library path in chroot.
 
+*--libdir*::
+	Set /lib:/usr/lib as default library path in chroot.
+
 *--deflib*=_list_::
 	Default library path to use in chroot.
 

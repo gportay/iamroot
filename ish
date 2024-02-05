@@ -32,6 +32,8 @@ iamroot specific options:
       --profile-file FILE       Execute initialization file from FILE.
       --rc-file FILE            Execute commands from FILE.
       --multiarch               Use multiarch library path in chroot.
+      --libdir                  Set /lib:/usr/lib as default library path in
+                                chroot.
       --deflib PATH             Default library path to use in chroot.
       --exec FILE               Absolute path to the iamroot exec script to
                                 use.
@@ -169,6 +171,10 @@ do
 	then
 		shift
 		IAMROOT_DEFLIB="$1"
+		export IAMROOT_DEFLIB
+	elif [[ "$1" == "--libdir" ]]
+	then
+		IAMROOT_DEFLIB="/lib:/usr/lib"
 		export IAMROOT_DEFLIB
 	elif [[ "$1" == "--multiarch" ]]
 	then

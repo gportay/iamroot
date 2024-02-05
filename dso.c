@@ -2779,12 +2779,16 @@ int __ldso(const char *path, char * const argv[], char *interp,
 	 */
 
 	ld_preload = __setenv_ld_preload(&ehdr, ldso, abi, path);
-	if (!ld_preload)
+	if (!ld_preload) {
 		__warning("%s: is unset!\n", __xstr(ld_preload));
+		goto close;
+	}
 
 	ld_library_path = __setenv_ld_library_path(path);
-	if (!ld_library_path)
+	if (!ld_library_path) {
 		__warning("%s: is unset!\n", __xstr(ld_library_path));
+		goto close;
+	}
 
 	if (has_inhibit_rpath) {
 		inhibit_rpath = __setenv_inhibit_rpath();

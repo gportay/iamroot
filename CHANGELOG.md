@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [unreleased]
 
+### Added
+
+- Add the `ido(1)` and `ish(1)` option `--multiarch` and its boolean
+  environment variable `IAMROOT_MULTIARCH` to use [Debian multiarch] library
+  path in chroot
+
 ### Removed
 
 - Remove the `ish(1)`'s environment variables `ISH_COMMAND`, `ISH_GID`,
@@ -851,6 +857,7 @@ Initial release.
 [Debian RISC-V 64 Port]: https://wiki.debian.org/Ports/riscv64
 [Debian S/390 Port]: https://www.debian.org/ports/s390/
 [Debian i386 Port]: https://www.debian.org/ports/i386/
+[Debian multiarch]: https://wiki.debian.org/Multiarch
 [Debian]: https://www.debian.org/
 [Fedora 30]: https://docs.fedoraproject.org/en-US/releases/f30/
 [Fedora ARM]: https://arm.fedoraproject.org/

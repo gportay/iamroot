@@ -47,6 +47,7 @@ Options:
   --                            stop processing command line arguments
 
 iamroot specific options:
+  --multiarch                   use multiarch library path in chroot
   --deflib=path                 default library path to use in chroot
   --exec=file                   absolute path to the iamroot exec script to use
   --library=lib                 absolute path to the iamroot library to use
@@ -197,6 +198,10 @@ do
 	then
 		shift
 		break
+	elif [[ "$1" =~ ^--multiarch$ ]]
+	then
+		IAMROOT_MULTIARCH="1"
+		export IAMROOT_MULTIARCH
 	elif [[ "$1" =~ ^--deflib$ ]]
 	then
 		shift

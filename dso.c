@@ -40,6 +40,11 @@ extern int next_faccessat(int, const char *, int, int);
 extern int next_open(const char *, int, mode_t);
 extern void *next_dlopen(const char *, int);
 
+static int __getmultiarch()
+{
+	return strtol(_getenv("IAMROOT_MULTIARCH") ?: "0", NULL, 0);
+}
+
 /*
  * Stolen from musl (include/byteswap.h)
  *
@@ -1785,6 +1790,35 @@ static int __is_gnu_linux(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	return __is_linux_ldso(ldso) || __is_linux(ehdr, ldso, abi);
 }
 
+static int __is_gnu_linux_ext(Elf64_Ehdr *ehdr, const char *ldso, int abi)
+{
+	int ret;
+
+	/* LINUX_$ARCH_$ABI or it is a GNU/Linux ELF */
+	ret = __is_gnu_linux(ehdr, ldso, abi);
+	if (ret)
+		return ret;
+
+	/* It is an MIPS LSB ELF and IAMROOT_LIB_MIPSLE_1 */
+	ret = __is_mipsle(ehdr, ldso, abi) && (*ldso == 0 && abi == 1) &&
+	      __is_32_bits(ehdr, ldso, abi);
+	if (ret)
+		return ret;
+
+	/* It is a PowerPC64 LSB ELF and IAMROOT_LIB_POWERPC64LE_2 */
+	ret = __is_powerpc64le(ehdr, ldso, abi) && (*ldso == 0 && abi == 2);
+	if (ret)
+		return ret;
+
+	/* It is an IBM S/390 ELF and IAMROOT_LIB_S390X_1 */
+	ret = __is_s390(ehdr, ldso, abi) && (*ldso == 0 && abi == 1);
+	if (ret)
+		return ret;
+
+	/* It is something else */
+	return 0;
+}
+
 static int __is_musl(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
 	(void)ehdr;
@@ -1856,6 +1890,51 @@ static const char *__machine(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 
 	/* Unsupported yet! */
 	return __set_errno(ENOTSUP, NULL);
+}
+
+static const char *__multiarch(Elf64_Ehdr *ehdr, const char *ldso, int abi)
+{
+	if (!__is_gnu_linux_ext(ehdr, ldso, abi) || !__getmultiarch())
+		return NULL;
+
+	/* It is an x86 ELF */
+	if (__is_x86(ehdr, ldso, abi))
+		return "/lib/i386-linux-gnu:/usr/lib/i386-linux-gnu:/lib:/usr/lib";
+
+	/* It is an x86-64 ELF */
+	if (__is_x86_64(ehdr, ldso, abi))
+		return "/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/lib:/usr/lib";
+
+	/* It is an ARM ELF */
+	if (__is_arm(ehdr, ldso, abi))
+		return "/lib/arm-linux-gnueabi:/usr/lib/arm-linux-gnueabi:/lib:/usr/lib";
+
+	/* It is an ARM Hard Float ELF */
+	if (__is_armhf(ehdr, ldso, abi))
+		return "/lib/arm-linux-gnueabihf:/usr/lib/arm-linux-gnueabihf:/lib:/usr/lib";
+
+	/* It is an AArch64 LSB ELF */
+	if (__is_aarch64(ehdr, ldso, abi))
+		return "/lib/aarch64-linux-gnu:/usr/lib/aarch64-linux-gnu:/lib:/usr/lib";
+
+	/* It is an RISC-V lp64d ELF */
+	if (__is_riscv(ehdr, ldso, abi) && __is_64_bits(ehdr, ldso, abi))
+		return "/lib/riscv64-linux-gnu:/usr/lib/riscv64-linux-gnu:/lib:/usr/lib";
+
+	/* It is an MIPS LSB ELF */
+	if (__is_mipsle(ehdr, ldso, abi) && __is_32_bits(ehdr, ldso, abi))
+		return "/usr/lib/mipsel-linux-gnu:/lib/mipsel-linux-gnu:/usr/lib:/lib";
+
+	/* It is a PowerPC64 LSB ELF */
+	if (__is_powerpc64le(ehdr, ldso, abi))
+		return "/usr/lib/powerpc64le-linux-gnu:/lib/powerpc64le-linux-gnu:/usr/lib:/lib";
+
+	/* It is an IBM S/390 ELF */
+	if (__is_s390(ehdr, ldso, abi))
+		return "/usr/lib/s390x-linux-gnu:/lib/s390x-linux-gnu:/usr/lib:/lib";
+
+	/* It is something else */
+	return NULL;
 }
 
 ssize_t __getvariable(Elf64_Ehdr *ehdr, const char *ldso, int abi,
@@ -2128,8 +2207,13 @@ static const char *__getdeflib(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
 	const int errno_save = errno;
 	char buf[NAME_MAX];
+	const char *ret;
 	ssize_t siz;
-	char *ret;
+
+	/* Use the multiarch library path if IAMROOT_MULTIARCH is set. */
+	ret = __multiarch(ehdr, ldso, abi);
+	if (ret)
+		return ret;
 
 	/*
 	 * Use the default library path set by the environment variable

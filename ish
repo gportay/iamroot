@@ -31,6 +31,7 @@ iamroot specific options:
                                 in.
       --profile-file FILE       Execute initialization file from FILE.
       --rc-file FILE            Execute commands from FILE.
+      --multiarch               Use multiarch library path in chroot.
       --deflib PATH             Default library path to use in chroot.
       --exec FILE               Absolute path to the iamroot exec script to
                                 use.
@@ -66,6 +67,9 @@ Environment variables:
 
       ISH_RC_FILE               Set path to command file.
                                 Equivalent to --rc-file FILE.
+
+      IAMROOT_MULTIARCH         Use multiarch default library path in chroot.
+                                Equivalent to --multiarch.
 
       IAMROOT_DEFLIB            Set default library path to use in chroot.
                                 Equivalent to --deflib PATH.
@@ -166,6 +170,10 @@ do
 		shift
 		IAMROOT_DEFLIB="$1"
 		export IAMROOT_DEFLIB
+	elif [[ "$1" == "--multiarch" ]]
+	then
+		IAMROOT_MULTIARCH="1"
+		export IAMROOT_MULTIARCH
 	elif [[ "$1" == "--rc-file" ]]
 	then
 		shift

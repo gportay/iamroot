@@ -227,15 +227,7 @@ endef
 
 define debootstrap-rootfs
 .PRECIOUS: $(1)-$(2)-$(3)-rootfs/bin/sh
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_X86_64_LINUX_X86_64_2 = /lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/lib:/usr/lib
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_I686_LINUX_2 = /lib/i386-linux-gnu:/usr/lib/i386-linux-gnu:/lib:/usr/lib
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_ARM_LINUX_3 = /lib/arm-linux-gnueabi:/usr/lib/arm-linux-gnueabi:/lib:/usr/lib
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_ARMHF_LINUX_ARMHF_3 = /lib/arm-linux-gnueabihf:/usr/lib/arm-linux-gnueabihf:/lib:/usr/lib
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_AARCH64_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu:/usr/lib/aarch64-linux-gnu:/lib:/usr/lib
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_RISCV64_LINUX_RISCV64_LP64D_1 = /lib/riscv64-linux-gnu:/usr/lib/riscv64-linux-gnu:/lib:/usr/lib
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_MIPSLE_1 = /usr/lib/mipsel-linux-gnu:/lib/mipsel-linux-gnu:/usr/lib:/lib
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_POWERPC64LE_2 = /usr/lib/powerpc64le-linux-gnu:/lib/powerpc64le-linux-gnu:/usr/lib:/lib
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_DEFLIB_S390X_1 = /usr/lib/s390x-linux-gnu:/lib/s390x-linux-gnu:/usr/lib:/lib
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: IDOFLAGS += --multiarch
 # chfn: PAM: Critical error - immediate abort
 # adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn
@@ -440,7 +432,7 @@ $(1)-$(2)-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 endef
 
 define debootstrap-postrootfs
-$(1)-$(2)-postrootfs: export IAMROOT_DEFLIB = /lib/x86_64-linux-gnu:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
+$(1)-$(2)-postrootfs: IDOFLAGS += --multiarch
 $(1)-$(2)-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 	sed -e '/^root:x:/s,^root:x:,root::,' \
 	    -i $(1)-$(2)-rootfs/etc/passwd
@@ -712,15 +704,6 @@ mips-rootfs:
 powerpc64le-rootfs:
 
 .PHONY: test ci ido multiarch-ido ish multiarch-ish
-multiarch-ido multiarch-ish: export IAMROOT_DEFLIB_X86_64_LINUX_X86_64_2 = /lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/lib:/usr/lib
-multiarch-ido multiarch-ish: export IAMROOT_DEFLIB_I686_LINUX_2 = /lib/i386-linux-gnu:/usr/lib/i386-linux-gnu:/lib:/usr/lib
-multiarch-ido multiarch-ish: export IAMROOT_DEFLIB_ARM_LINUX_3 = /lib/arm-linux-gnueabi:/usr/lib/arm-linux-gnueabi:/lib:/usr/lib
-multiarch-ido multiarch-ish: export IAMROOT_DEFLIB_ARMHF_LINUX_ARMHF_3 = /lib/arm-linux-gnueabihf:/usr/lib/arm-linux-gnueabihf:/lib:/usr/lib
-multiarch-ido multiarch-ish: export IAMROOT_DEFLIB_AARCH64_LINUX_AARCH64_1 = /lib/aarch64-linux-gnu:/usr/lib/aarch64-linux-gnu:/lib:/usr/lib
-multiarch-ido multiarch-ish: export IAMROOT_DEFLIB_RISCV64_LINUX_RISCV64_LP64D_1 = /lib/riscv64-linux-gnu:/usr/lib/riscv64-linux-gnu:/lib:/usr/lib
-multiarch-ido multiarch-ish: export IAMROOT_DEFLIB_MIPSLE_1 = /usr/lib/mipsel-linux-gnu:/lib/mipsel-linux-gnu:/usr/lib:/lib
-multiarch-ido multiarch-ish: export IAMROOT_DEFLIB_POWERPC64LE_2 = /usr/lib/powerpc64le-linux-gnu:/lib/powerpc64le-linux-gnu:/usr/lib:/lib
-multiarch-ido multiarch-ish: export IAMROOT_DEFLIB_S390X_1 = /usr/lib/s390x-linux-gnu:/lib/s390x-linux-gnu:/usr/lib:/lib
 test ci ido multiarch-ido ish multiarch-ish: libiamroot.so
 	$(MAKE) -f Makefile $@
 

@@ -56,6 +56,9 @@ shells, please refers to their manuals.
 **--rc-file FILE**::
 	Execute commands from FILE.
 
+**--multiarch**::
+	Use multiarch library path in chroot.
+
 **--deflib PATH**::
 	Default library path to use in chroot.
 
@@ -115,6 +118,10 @@ shells, please refers to their manuals.
 **ISH_RC_FILE**::
 	Set path to command file.
 	Equivalent to --rc-file FILE.
+
+**IAMROOT_MULTIARCH**::
+	Use multiarch default library path in chroot.
+	Equivalent to --multiarch.
 
 **IAMROOT_DEFLIB**::
 	Set default library path to use in chroot.

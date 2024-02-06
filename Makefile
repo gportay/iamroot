@@ -399,6 +399,9 @@ shell: PATH := $(CURDIR):$(PATH)
 shell:
 	$(SHELL)
 
+.PHONY: cleanall
+cleanall: clean
+
 .PHONY: clean
 clean:
 	rm -Rf libiamroot.so *.o *.i

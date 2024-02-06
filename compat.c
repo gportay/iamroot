@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Gaël PORTAY
+ * Copyright 2023-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -58,7 +58,7 @@ int __isoc23_sscanf(const char *s, const char *format, ...)
 		sym = dlsym(RTLD_NEXT, "vsscanf");
 
 	if (!sym)
-		return __set_errno(ENOSYS, -1ULL);
+		return __set_errno(ENOSYS, -1);
 
 	va_start(ap, format);
 	ret = sym(s, format, ap);

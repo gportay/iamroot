@@ -40,6 +40,7 @@ static int __secure()
 	return getauxval(AT_SECURE) != 0;
 }
 
+__attribute__((visibility("hidden")))
 const char *__execfn()
 {
 	return (const char *)getauxval(AT_EXECFN);
@@ -47,6 +48,7 @@ const char *__execfn()
 #endif
 
 #ifdef __FreeBSD__
+__attribute__((visibility("hidden")))
 const char *__execfn()
 {
 	static char buf[PATH_MAX];
@@ -100,6 +102,7 @@ static char **get_proc_args()
 }
 #undef err
 
+__attribute__((visibility("hidden")))
 const char *__execfn()
 {
 	static char buf[PATH_MAX];
@@ -128,6 +131,7 @@ const char *__execfn()
 #ifdef __NetBSD__
 extern ssize_t next_readlinkat(int, const char *, char *, size_t);
 
+__attribute__((visibility("hidden")))
 const char *__execfn()
 {
 	static char buf[PATH_MAX];

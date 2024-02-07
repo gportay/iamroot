@@ -94,7 +94,6 @@ libiamroot.so: __lxstat64.o
 libiamroot.so: __open_2.o
 libiamroot.so: __openat_2.o
 libiamroot.so: __opendir2.o
-libiamroot.so: __pathdlperror.o
 libiamroot.so: __stat64_time64.o
 libiamroot.so: __xmknod.o
 libiamroot.so: __xmknodat.o

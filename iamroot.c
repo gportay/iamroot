@@ -14,6 +14,7 @@
 #include <limits.h>
 #include <dirent.h>
 #include <fcntl.h>
+#include <dlfcn.h>
 #include <sys/stat.h>
 #if defined __linux__ || defined __FreeBSD__
 #include <sys/auxv.h>
@@ -1234,4 +1235,14 @@ __attribute__((visibility("hidden")))
 void __abort()
 {
 	raise(SIGABRT);
+}
+
+__attribute__((visibility("hidden")))
+void __pathdlperror(const char *path, const char *s)
+{
+	const char *p = path && *path ? path : "(empty)";
+	(void)p;
+	(void)s;
+
+	__note_or_fatal("%s: %s: %s\n", p, s, dlerror());
 }

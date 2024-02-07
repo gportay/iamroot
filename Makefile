@@ -81,7 +81,6 @@ endif
 .PHONY: all
 all: libiamroot.so
 
-libiamroot.so: __abort.o
 libiamroot.so: __fstat64_time64.o
 libiamroot.so: __fstatat64_time64.o
 libiamroot.so: __fxstat.o

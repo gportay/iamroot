@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
+#include <signal.h>
 #include <limits.h>
 #include <dirent.h>
 #include <fcntl.h>
@@ -1228,3 +1229,9 @@ void __verbose_exec(const char *path, char * const argv[], char * const envp[])
 	}
 }
 #endif
+
+__attribute__((visibility("hidden")))
+void __abort()
+{
+	raise(SIGABRT);
+}

@@ -165,7 +165,9 @@ int __dir_iterate(const char *, int (*)(const char *, const char *, void *),
 		  void *);
 int __strtofd(const char *, char **);
 
+#if defined __linux__ || defined __NetBSD__
 void __procfdname(char *, unsigned);
+#endif
 
 char *__getroot();
 #if defined __linux__ || defined __FreeBSD__ || defined __NetBSD__

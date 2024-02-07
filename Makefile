@@ -193,6 +193,7 @@ libiamroot.so: getuid.o
 libiamroot.so: getwd.o
 libiamroot.so: getxattr.o
 libiamroot.so: group.o
+libiamroot.so: iamroot.o
 libiamroot.so: initgroups.o
 libiamroot.so: inotify_add_watch.o
 libiamroot.so: interpreter-script.o

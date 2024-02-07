@@ -212,6 +212,79 @@ int __isfile(const char *path)
 }
 
 __attribute__((visibility("hidden")))
+const char *__basename(const char *path)
+{
+	char *s = strrchr(path, '/');
+	if (!s)
+		return path;
+
+	return s+1; /* trailing-slash */
+}
+
+int __path_setenv(const char *root, const char *name, const char *value,
+		  int overwrite)
+{
+	size_t rootlen, vallen, newlen;
+
+	if (!name || !value)
+		return __set_errno(EINVAL, -1);
+
+	if (!root)
+		goto setenv;
+
+	newlen = 0;
+	rootlen = __strlen(root);
+
+	vallen = __strlen(value);
+	if (vallen > 0) {
+		char val[vallen+1]; /* NULL-terminated */
+		char *token, *saveptr;
+
+		newlen = vallen;
+		newlen += rootlen;
+		newlen++; /* ensure NULL-terminated */
+
+		__strncpy(val, value);
+		token = strtok_r(val, ":", &saveptr);
+		if (token && *token)
+			while (strtok_r(NULL, ":", &saveptr))
+				newlen += rootlen;
+	}
+
+	if (newlen > 0) {
+		char val[vallen+1], new_value[newlen+1]; /* NULL-terminated */
+		char *str, *token, *saveptr;
+
+		str = new_value;
+		__strncpy(val, value);
+		token = strtok_r(val, ":", &saveptr);
+		if (token && *token) {
+			int n;
+
+			n = _snprintf(str, newlen, "%s%s", root, token);
+			if ((n == -1) || (newlen < (size_t)n))
+				return __set_errno(EOVERFLOW, -1);
+			str += n;
+			newlen -= n;
+			while ((token = strtok_r(NULL, ":", &saveptr))) {
+				n = _snprintf(str, newlen, ":%s%s", root, token);
+				if ((n == -1) || (newlen < (size_t)n)) {
+					errno = EOVERFLOW;
+					return -1;
+				}
+				str += n;
+				newlen -= n;
+			}
+		}
+
+		return _setenv(name, new_value, overwrite);
+	}
+
+setenv:
+	return _setenv(name, value, overwrite);
+}
+
+__attribute__((visibility("hidden")))
 int __execve(const char *path, char * const argv[], char * const envp[])
 {
 	const char *root;

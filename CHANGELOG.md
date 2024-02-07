@@ -33,6 +33,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   the real and effective ID
 - Fix the detection of the [NetBSD]'s [dynamic loader][ld.so(8)]
 
+### Security
+
+- Fix stack buffer overflow if sanitizing a path starting by `./`
+
 ## [v17] - 2024-01-30
 
 ### Added

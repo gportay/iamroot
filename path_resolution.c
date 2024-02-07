@@ -349,7 +349,7 @@ char *__path_sanitize(char *path, size_t bufsiz)
 	/* Strip leading ./ */
 	while ((len > 3) && __strneq(path, "./") && path[2] != '/') {
 		char *s;
-		for (s = path; *s; s++)
+		for (s = path; *(s+2); s++)
 			*s = *(s+2);
 		len -= 2;
 	}

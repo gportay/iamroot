@@ -11,9 +11,7 @@
 #include <errno.h>
 #include <paths.h>
 #include <limits.h>
-#include <dlfcn.h>
 #include <sys/param.h>
-#include <sys/stat.h>
 #include <dirent.h>
 #include <regex.h>
 

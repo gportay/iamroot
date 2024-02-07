@@ -183,6 +183,7 @@ int __chrootdir(const char *);
 int __inchroot();
 char *__striprootdir(char *);
 
+int __getno_color();
 int __getcolor();
 
 int __getfatal();

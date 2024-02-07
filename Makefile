@@ -402,7 +402,7 @@ cleanall: clean
 
 .PHONY: clean
 clean:
-	rm -Rf libiamroot.so *.o *.i
+	rm -Rf libiamroot.so fuzzer *.o *.i
 	$(MAKE) -C tests $@
 
 .PHONY: mrproper
@@ -443,6 +443,32 @@ ifeq ($(OS),GNU/Linux)
 	patchelf --add-needed libc.so.6 --add-needed libdl.so.2 --add-needed libpthread.so.0 $@.tmp
 endif
 	mv $@.tmp $@
+
+.PHONY: fuzzing
+fuzzing: PATH := $(CURDIR):$(PATH)
+fuzzing: fuzzer | corpus
+	fuzzer $(FUZZERFLAGS) -only_ascii=1 -max_len=4096 corpus
+
+corpus:
+	mkdir $@
+
+fuzzer: CC = clang -g -fsanitize=address,undefined,fuzzer -fno-omit-frame-pointer
+fuzzer: CXX = $(CC)
+fuzzer: __fxstat.o
+fuzzer: __fxstatat.o
+fuzzer: env.o
+fuzzer: fgetxattr.o
+fuzzer: fstat.o
+fuzzer: fstatat.o
+fuzzer: getcwd.o
+fuzzer: iamroot.o
+fuzzer: lgetxattr.o
+fuzzer: path_resolution.o
+fuzzer: readlinkat.o
+fuzzer: realpath.o
+fuzzer: scandir.o
+fuzzer: fuzzer.o __fxstat.o __fxstatat.o env.o fgetxattr.o fstat.o fstatat.o getcwd.o iamroot.o lgetxattr.o path_resolution.o readlinkat.o realpath.o scandir.o
+	$(LINK.o) $^ $(LOADLIBES) $(LDLIBS) -o $@
 
 %.1: %.1.adoc
 	asciidoctor -b manpage -o $@ $<

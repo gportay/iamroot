@@ -72,3 +72,6 @@ busybox*/
 
 # Tests
 tests/rootfs/
+
+# Fuzzing corpus directory
+corpus/

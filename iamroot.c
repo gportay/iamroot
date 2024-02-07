@@ -14,6 +14,9 @@
 #include <dirent.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+#if defined __linux__ || defined __FreeBSD__
+#include <sys/auxv.h>
+#endif
 
 #include "iamroot.h"
 
@@ -25,6 +28,14 @@ extern int next_scandir(const char *, struct dirent ***,
 			int (*)(const struct dirent *),
 			int (*)(const struct dirent **,
 			const struct dirent **));
+
+#ifdef __linux__
+__attribute__((visibility("hidden")))
+int __secure()
+{
+	return getauxval(AT_SECURE) != 0;
+}
+#endif
 
 #ifdef __OpenBSD__
 /*
@@ -198,6 +209,104 @@ int __isfile(const char *path)
 		return ret;
 
 	return S_ISREG(statbuf.st_mode);
+}
+
+__attribute__((visibility("hidden")))
+int __execve(const char *path, char * const argv[], char * const envp[])
+{
+	const char *root;
+	ssize_t len;
+
+	root = __getrootdir();
+	if (streq(root, "/"))
+		goto exit;
+
+	len = __strlen(root);
+	if (strneq(path, root, len))
+		path += len;
+
+exit:
+	return execve(path, argv, envp);
+}
+
+__attribute__((visibility("hidden")))
+int __issuid(const char *path)
+{
+	struct stat statbuf;
+	int ret = -1;
+
+	ret = next_fstatat(AT_FDCWD, path, &statbuf, 0);
+	if (ret == -1)
+		return -1;
+
+	return (statbuf.st_mode & S_ISUID) != 0;
+}
+
+static char *__getexec()
+{
+	char *ret;
+
+	ret = _getenv("IAMROOT_EXEC");
+	if (!ret)
+		return __xstr(PREFIX)"/lib/iamroot/exec.sh";
+
+	return ret;
+}
+
+__attribute__((visibility("hidden")))
+int __exec_sh(const char *path, char * const *argv, char *interparg[],
+	      char *buf, size_t bufsiz)
+{
+	int i, err;
+
+	/*
+	 * Run exec.sh from the host system.
+	 *
+	 * The library and the script exec.sh are host system binaries, it must
+	 * be run from the host system. Furthermore, the intepreter for the
+	 * script exec.sh is not necessarily part of the chroot environment.
+	 */
+	i = 0;
+	interparg[i++] = _strncpy(buf, __getexec(), bufsiz);
+	interparg[i++] = (char *)path; /* original path as first positional
+					* argument
+					*/
+	interparg[i] = NULL; /* ensure NULL-terminated */
+
+	/* Set library version for future API compatibility. */
+	err = _setenv("IAMROOT_VERSION", __xstr(VERSION), 1);
+	if (err)
+		return -1;
+
+	/* Set argv0 needed for binaries such as kmod, busybox... */
+	err = _setenv("_argv0", *argv, 1);
+	if (err)
+		return -1;
+
+	/*
+	 * Unset the dynamic loader environment variables LD_PRELOAD and
+	 * LD_LIBRARY_PATH that referts to libraries and paths in the chroot
+	 * environment.
+	 *
+	 * And back them up if needed.
+	 */
+	err = _setenv("_preload", _getenv("LD_PRELOAD") ?: "", 1);
+	if (err)
+		return -1;
+
+	err = _setenv("_library_path", _getenv("LD_LIBRARY_PATH") ?: "", 1);
+	if (err)
+		return -1;
+
+	err = _unsetenv("LD_PRELOAD");
+	if (err)
+		return -1;
+
+	err = _unsetenv("LD_LIBRARY_PATH");
+	if (err)
+		return -1;
+
+	return i;
 }
 
 #ifdef __OpenBSD__
@@ -485,6 +594,51 @@ ssize_t __path_access(const char *file, int mode, const char *path, char *buf,
 	return -1;
 }
 
+static int __strtok(const char *str, const char *delim,
+		    int (*callback)(const char *, void *), void *user)
+{
+	size_t len;
+
+	if (!str || !callback)
+		return __set_errno(EINVAL, -1);
+
+	len = __strlen(str);
+	if (len > 0) {
+		char buf[len+1]; /* NULL-terminated */
+		char *token, *saveptr;
+
+		__strncpy(buf, str);
+		token = strtok_r(buf, delim, &saveptr);
+		do {
+			int ret;
+
+			if (!token)
+				break;
+
+			ret = callback(token, user);
+			if (ret != 0)
+				return ret;
+		} while ((token = strtok_r(NULL, delim, &saveptr)));
+	}
+
+	return 0;
+}
+
+__attribute__((visibility("hidden")))
+int __path_iterate(const char *path, int (*callback)(const char *, void *),
+		   void *user)
+{
+	return __strtok(path, ":", callback, user);
+}
+
+__attribute__((visibility("hidden")))
+int __group_iterate(const char *path, int (*callback)(const char *, void *),
+		    void *user)
+{
+	return __strtok(path, " ", callback, user);
+}
+
+
 __attribute__((visibility("hidden")))
 int __dir_iterate(const char *path,
 		  int (*callback)(const char *, const char *, void *),
@@ -514,6 +668,28 @@ __attribute__((visibility("hidden")))
 char *__getroot()
 {
 	return _getenv("IAMROOT_ROOT");
+}
+
+__attribute__((visibility("hidden")))
+const char *__getexe()
+{
+	const char *exec;
+	size_t len;
+	char *root;
+
+	exec = __execfn();
+	if (!exec)
+		return NULL;
+
+	len = 0;
+	root = __getroot();
+	if (root)
+		len = __strlen(root);
+
+	if (__strlen(exec) < len)
+		return NULL;
+
+	return &exec[len];
 }
 
 __attribute__((visibility("hidden")))
@@ -589,6 +765,114 @@ int __execfd()
 
 	return 0;
 }
+
+#ifdef __linux__
+__attribute__((visibility("hidden")))
+const char *__execfn()
+{
+	return (const char *)getauxval(AT_EXECFN);
+}
+#endif
+
+#ifdef __FreeBSD__
+__attribute__((visibility("hidden")))
+const char *__execfn()
+{
+	static char buf[PATH_MAX];
+	int ret;
+
+	ret = elf_aux_info(AT_EXECPATH, buf, sizeof(buf));
+	if (ret == -1)
+		return NULL;
+
+	return buf;
+}
+#endif
+
+#ifdef __OpenBSD__
+/*
+ * Stolen and hacked from OpenBSD (usr.bin/top/machine.c)
+ *
+ * SPDX-FileCopyrightText: The OpenBSD Contributors
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+#include <sys/sysctl.h>
+
+#define err(e, r) return __set_errno((e), (r))
+
+__attribute__((visibility("hidden")))
+static char **get_proc_args()
+{
+	static char **s;
+	static size_t siz = 1023;
+	int mib[4];
+
+	if (!s && !(s = malloc(siz)))
+		err(1, NULL);
+
+	mib[0] = CTL_KERN;
+	mib[1] = KERN_PROC_ARGS;
+	mib[2] = getpid();
+	mib[3] = KERN_PROC_ARGV;
+	for (;;) {
+		size_t space = siz;
+		if (sysctl(mib, 4, s, &space, NULL, 0) == 0)
+			break;
+		if (errno != ENOMEM)
+			return NULL;
+		siz *= 2;
+		if ((s = realloc(s, siz)) == NULL)
+			err(1, NULL);
+	}
+	return s;
+}
+#undef err
+
+__attribute__((visibility("hidden")))
+const char *__execfn()
+{
+	static char buf[PATH_MAX];
+	char **argv;
+	ssize_t siz;
+
+	if (*buf)
+		return buf;
+
+	argv = get_proc_args();
+	if (!argv)
+		return NULL;
+
+	if (*argv[0] == '/')
+		siz = path_resolution(AT_FDCWD, argv[0], buf, sizeof(buf), 0);
+	else
+		siz = __path_access(argv[0], X_OK, _getenv("PATH"), buf,
+				    sizeof(buf));
+	if (siz == -1)
+		return NULL;
+
+	return buf;
+}
+#endif
+
+#ifdef __NetBSD__
+__attribute__((visibility("hidden")))
+const char *__execfn()
+{
+	static char buf[PATH_MAX];
+	ssize_t siz;
+
+	if (*buf)
+		return buf;
+
+	siz = next_readlinkat(AT_FDCWD, "/proc/self/exe", buf, sizeof(buf));
+	if (siz == -1)
+		return NULL;
+	buf[siz] = 0; /* ensure NULL-terminated */
+
+	return buf;
+}
+#endif
 
 __attribute__((visibility("hidden")))
 int __setrootdir(const char *path)
@@ -671,3 +955,64 @@ int __getfatal()
 	return strtol(_getenv("IAMROOT_FATAL") ?: "0", NULL, 0);
 }
 
+#if !defined(NVERBOSE)
+__attribute__((visibility("hidden")))
+void __verbose_exec(const char *path, char * const argv[], char * const envp[])
+{
+	int color, fd, debug;
+
+	debug = __getdebug();
+	if (debug == 0)
+		return;
+
+	fd = __getdebug_fd();
+	if (fd < 0)
+		return;
+
+	color = __getcolor();
+	if (color)
+		dprintf(fd, "\033[32;1m");
+
+	dprintf(fd, "Debug: ");
+
+	if (color)
+		dprintf(fd, "\033[0m");
+
+	if (debug < 4) {
+		char * const *p;
+
+		dprintf(fd, "running");
+
+		p = envp;
+		if (p)
+			while (*p)
+				dprintf(fd, " \"%s\"", *p++);
+
+		p = argv;
+		if (p)
+			while (*p)
+				dprintf(fd, " \"%s\"", *p++);
+		dprintf(fd, "\n");
+	} else {
+		char * const *p;
+
+		dprintf(fd, "execve(path: '%s', argv: {", path);
+
+		p = argv;
+		if (p)
+			while (*p)
+				dprintf(fd, " '%s',", *p++);
+		dprintf(fd, " NULL }, ");
+		if (debug < 5) {
+			dprintf(fd, "envp: %p)\n", envp);
+		} else {
+			dprintf(fd, "envp: %p {", envp);
+			p = envp;
+			if (p)
+				while (*p)
+					dprintf(fd, " %s", *p++);
+			dprintf(fd, " }\n");
+		}
+	}
+}
+#endif

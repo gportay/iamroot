@@ -99,6 +99,10 @@ extern "C" {
 #define __strleq(s1, s2) (__strlcmp((s1), (s2)) == 0)
 #define __strneq(s1, s2) (__strncmp((s1), (s2)) == 0)
 
+#ifdef __linux__
+int __secure();
+#endif
+
 #ifdef __OpenBSD__
 char *strchrnul(const char *, int);
 #endif

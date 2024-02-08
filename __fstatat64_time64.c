@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Gaël PORTAY
+ * Copyright 2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -70,7 +70,6 @@ exit:
 
 	return ret;
 }
-
 #endif
 #endif
 #endif

@@ -1988,8 +1988,8 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 			goto access;
 		}
 
-		/* It is an ARM ELF or IAMROOT_LIB_ARMHF_LINUX_ARMHF_3 */
-		if (__is_arm(ehdr, ldso, abi) ||
+		/* It is an ARMHF ELF or IAMROOT_LIB_ARMHF_LINUX_ARMHF_3 */
+		if (__is_armhf(ehdr, ldso, abi) ||
 		    (streq(ldso, "linux-armhf") && abi == 3)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/armhf/libiamroot-linux-armhf.so.3";
 			goto access;
@@ -2073,8 +2073,8 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 			goto access;
 		}
 
-		/* It is an ARM ELF or IAMROOT_LIB_ARMHF_MUSL_ARMHF_1 */
-		if (__is_arm(ehdr, ldso, abi) ||
+		/* It is an ARMHF ELF or IAMROOT_LIB_ARMHF_MUSL_ARMHF_1 */
+		if (__is_armhf(ehdr, ldso, abi) ||
 		    (streq(ldso, "musl-armhf") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/armhf/libiamroot-musl-armhf.so.1";
 			goto access;

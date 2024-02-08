@@ -2119,13 +2119,15 @@ static const char *__getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso,
 		}
 
 		/* It is a PowerPC64 ELF and IAMROOT_LIB_POWERPC64_MUSL_POWERPC64_1 */
-		if (__is_powerpc64(ehdr, ldso, abi) && (*ldso == 0 && abi == 2)) {
+		if (__is_powerpc64(ehdr, ldso, abi) &&
+		    (*ldso == 0 && abi == 2)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/powerpc64/libiamroot-musl-powerpc64.so.1";
 			goto access;
 		}
 
 		/* It is a PowerPC64 LSB ELF and IAMROOT_LIB_POWERPC64LE_MUSL_POWERPC64LE_1 */
-		if (__is_powerpc64le(ehdr, ldso, abi) && (*ldso == 0 && abi == 2)) {
+		if (__is_powerpc64le(ehdr, ldso, abi) &&
+		    (*ldso == 0 && abi == 2)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/powerpc64le/libiamroot-musl-powerpc64le.so.1";
 			goto access;
 		}

@@ -1223,7 +1223,7 @@ mipsel-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mount
 mipsel-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 
-ifneq ($(shell command -v mipsel-buildroot-linux-gnu-gcc 2>/dev/null),)
+ifneq ($(shell command -v powerpc64le-buildroot-linux-gnu-gcc 2>/dev/null),)
 powerpc64le-rootfs: ppc64el-debian-rootfs
 
 .PHONY: ppc64el-debian-rootfs

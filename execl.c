@@ -42,5 +42,5 @@ int execl(const char *path, const char *arg, ...)
 		return execve(path, argv, __environ);
 	}
 
-	return __set_errno(EINVAL, -1);
+	return __set_errno(E2BIG, -1);
 }

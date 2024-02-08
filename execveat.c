@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 Gaël PORTAY
+ * Copyright 2022-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -182,7 +182,7 @@ loader:
 		return next_execveat(dfd, *nargv, nargv, __environ, atflags);
 	}
 
-	return __set_errno(EINVAL, -1);
+	return __set_errno(E2BIG, -1);
 
 exec_sh:
 	ret = __exec_sh(path, argv, interparg, buf, sizeof(buf));
@@ -215,5 +215,5 @@ exec_sh:
 		return next_execveat(dfd, *nargv, nargv, __environ, atflags);
 	}
 
-	return __set_errno(EINVAL, -1);
+	return __set_errno(E2BIG, -1);
 }

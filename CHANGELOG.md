@@ -29,6 +29,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   as the `bash` array variable `GROUPS`
 - The internal function `path_resolution()` returns `ENAMETOOLONG` if the given
   path exceeds `PATH_MAX` - 1
+- The functions `execl()`, `execle()`, `execlp()`, execve()`, `execveat()` and
+  `posix_spawn()` return `E2BIG` if the argument list is too long
 
 ### Fixed
 

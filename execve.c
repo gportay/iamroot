@@ -260,7 +260,7 @@ loader:
 		return next_execve(*nargv, nargv, __environ);
 	}
 
-	return __set_errno(EINVAL, -1);
+	return __set_errno(E2BIG, -1);
 
 exec_sh:
 	ret = __exec_sh(path, argv, interparg, buf, sizeof(buf));
@@ -293,5 +293,5 @@ exec_sh:
 		return next_execve(*nargv, nargv, __environ);
 	}
 
-	return __set_errno(EINVAL, -1);
+	return __set_errno(E2BIG, -1);
 }

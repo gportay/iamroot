@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -46,5 +46,5 @@ int execlp(const char *file, const char *arg, ...)
 #endif
 	}
 
-	return __set_errno(EINVAL, -1);
+	return __set_errno(E2BIG, -1);
 }

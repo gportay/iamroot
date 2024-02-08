@@ -402,6 +402,14 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsiz,
 		return __set_errno(EINVAL, -1);
 
 	/*
+	 * The path length exceeds the limit of PATH_MAX-1 bytes (i.e. the
+	 * NULL-character **IS NOT** in the first PATH_MAX characters).
+	 */
+	len = strnlen(path, PATH_MAX);
+	if (len == PATH_MAX)
+		return __set_errno(ENAMETOOLONG, -1);
+
+	/*
 	 * The files /proc/1/{cwd,root,exe} are readable by root only.
 	 *
 	 * The file /proc/1/root is often use to check if the process is in

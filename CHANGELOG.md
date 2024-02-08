@@ -26,6 +26,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - The environment variable `IAMROOT_GROUPS` is now using whitespace delimiter
   as the `bash` array variable `GROUPS`
+- The internal function `path_resolution()` returns `ENAMETOOLONG` if the given
+  path exceeds `PATH_MAX` - 1
 
 ### Fixed
 

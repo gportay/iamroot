@@ -709,9 +709,6 @@ mips-rootfs:
 .PHONY: powerpc64-rootfs
 powerpc64-rootfs:
 
-.PHONY: powerpc64le-rootfs
-powerpc64le-rootfs:
-
 .PHONY: test ci ido multiarch-ido ish multiarch-ish
 test ci ido multiarch-ido ish multiarch-ish: libiamroot.so
 	$(MAKE) -f Makefile $@
@@ -1140,7 +1137,7 @@ powerpc64-archlinuxpower-chroot powerpc64-archlinuxpower-shell powerpc64-archlin
 endif
 
 ifneq ($(shell command -v powerpc64le-buildroot-linux-gnu-gcc 2>/dev/null),)
-powerpc64le-rootfs: powerpc64le-archlinuxpower-rootfs
+powerpc64-rootfs: powerpc64le-archlinuxpower-rootfs
 
 .PHONY: powerpc64le-archlinuxpower-rootfs
 powerpc64le-archlinuxpower-rootfs: powerpc64le-archlinuxpower-rootfs/bin/sh
@@ -1243,7 +1240,7 @@ mipsel-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include s
 endif
 
 ifneq ($(shell command -v powerpc64le-buildroot-linux-gnu-gcc 2>/dev/null),)
-powerpc64le-rootfs: ppc64el-debian-rootfs
+powerpc64-rootfs: ppc64el-debian-rootfs
 
 .PHONY: ppc64el-debian-rootfs
 ppc64el-debian-rootfs: ppc64el-debian-oldoldstable-rootfs

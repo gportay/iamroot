@@ -43,13 +43,14 @@ $(strip libiamroot.so \
 	$(if $(findstring :$(2):,:aarch64_be:                      ),$(if $(findstring :$(1):,:musl:),aarch64_be/libiamroot-musl-aarch64_be.so.1  ,aarch64_be/libiamroot-linux-aarch64_be.so.1), \
 	$(if $(findstring :$(2):,:mipsle: :mipsel:                 ),$(if $(findstring :$(1):,:musl:),mipsle/libiamroot-musl-mipsel.so.1          ,mipsle/libiamroot.so.1                     ), \
 	$(if $(findstring :$(2):,:mips64le: :mips64el:             ),$(if $(findstring :$(1):,:musl:),mips64le/libiamroot-musl-mips64el.so.1      ,mips64le/libiamroot.so.1                   ), \
+	$(if $(findstring :$(2):,:powerpc: :ppc:                   ),$(if $(findstring :$(1):,:musl:),powerpc/libiamroot-musl-powerpc.so.1        ,powerpc/libiamroot.so.1                    ), \
 	$(if $(findstring :$(2):,:powerpc64: :ppc64:               ),$(if $(findstring :$(1):,:musl:),powerpc64/libiamroot-musl-powerpc64.so.1    ,powerpc64/libiamroot.so.2                  ), \
 	$(if $(findstring :$(2):,:powerpc64le: :ppc64le: :ppc64el: ),$(if $(findstring :$(1):,:musl:),powerpc64le/libiamroot-musl-powerpc64le.so.1,powerpc64le/libiamroot.so.2                ), \
 	$(if $(findstring :$(2):,:riscv64:                         ),$(if $(findstring :$(1):,:musl:),riscv64/libiamroot-musl-riscv64.so.1        ,riscv64/libiamroot-linux-riscv64-lp64d.so.1), \
 	$(if $(findstring :$(2):,:s390x:                           ),$(if $(findstring :$(1):,:musl:),s390x/libiamroot-musl-s390x.so.1            ,s390x/libiamroot.so.1                      ), \
 	$(if $(findstring :$(2):,:x86_64: :amd64:                  ),$(if $(findstring :$(1):,:musl:),x86_64/libiamroot-musl-x86_64.so.1          ,x86_64/libiamroot-linux-x86-64.so.2        ), \
 	$(if $(findstring :$(2):,:x86: :i386: :i686: :pmmx:        ),$(if $(findstring :$(1):,:musl:),i686/libiamroot-musl-i386.so.1              ,i686/libiamroot-linux.so.2                 ), \
-	$(error $(1)-$(2): No such library))))))))))))) \
+	$(error $(1)-$(2): No such library)))))))))))))) \
 )
 endef
 
@@ -620,6 +621,11 @@ $(O)-mips64le/libiamroot.so: override CC = mips64el-buildroot-linux-gnu-gcc
 $(eval $(call libiamroot_so_abi,mips64le,1))
 endif
 
+ifneq ($(shell command -v powerpc-buildroot-linux-musl-gcc 2>/dev/null),)
+$(O)-powerpc-musl-powerpc/libiamroot.so: override CC = powerpc-buildroot-linux-musl-gcc -fno-stack-protector
+$(eval $(call libiamroot_ldso_so_abi,powerpc,musl-powerpc,1))
+endif
+
 ifneq ($(shell command -v powerpc64-buildroot-linux-gnu-gcc 2>/dev/null),)
 $(O)-powerpc64/libiamroot.so: override CC = powerpc64-buildroot-linux-gnu-gcc
 $(eval $(call libiamroot_so_abi,powerpc64,2))
@@ -767,6 +773,7 @@ install-support: install-support-aarch64_be
 install-support: install-support-arm
 install-support: install-support-armhf
 install-support: install-support-riscv64
+install-support: install-support-powerpc
 install-support: install-support-powerpc64
 install-support: install-support-powerpc64le
 install-support: install-support-mips64le
@@ -793,6 +800,9 @@ install-support-armhf:
 
 .PHONY: install-support-riscv64
 install-support-riscv64:
+
+.PHONY: install-support-powerpc
+install-support-powerpc:
 
 .PHONY: install-support-powerpc64
 install-support-powerpc64:
@@ -1737,6 +1747,10 @@ $(eval $(call alpine-make-rootfs-rootfs,armv7,alpinelinux,3.20))
 $(eval $(call alpine-make-rootfs-rootfs,armv7,alpinelinux,edge))
 
 $(eval $(call alpine-mini-rootfs,armv7,3.20))
+endif
+
+ifneq ($(shell command -v powerpc-buildroot-linux-musl-gcc 2>/dev/null),)
+$(eval $(call adelie-mini-rootfs,ppc,20240426))
 endif
 
 ifneq ($(shell command -v powerpc64le-buildroot-linux-musl-gcc 2>/dev/null),)

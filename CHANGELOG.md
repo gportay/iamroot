@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Chroot to an [Adélie Linux] aarch64 world
 - Chroot to an [Adélie Linux] armv7 world
 - Chroot to an [Adélie Linux] ppc64 world
+- Chroot to an [Adélie Linux] ppc world
 
 ### Changed
 

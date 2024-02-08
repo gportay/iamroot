@@ -1787,6 +1787,21 @@ static int __is_mipsle(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 #endif
 }
 
+static int __is_powerpc(Elf64_Ehdr *ehdr, const char *ldso, int abi)
+{
+	(void)ldso;
+	(void)abi;
+
+#if defined EM_PPC
+	/* It is a PowerPC ELF */
+	return ehdr && (ehdr->e_machine == EM_PPC) &&
+	       (ehdr->e_ident[EI_DATA] == ELFDATA2MSB);
+#else
+	(void)ehdr;
+	return __set_errno(ENOTSUP, -1);
+#endif
+}
+
 static int __is_powerpc64(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
 	(void)ldso;
@@ -1953,6 +1968,8 @@ static const char *__machine(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	} else if (__is_mipsle(ehdr, ldso, abi) == 1 &&
 		   __is_64_bits(ehdr, ldso, abi) == 1) {
 		return __set_errno(errno_save, "mips64le");
+	} else if (__is_powerpc(ehdr, ldso, abi) == 1) {
+		return __set_errno(errno_save, "powerpc");
 	} else if (__is_powerpc64(ehdr, ldso, abi) == 1) {
 		return __set_errno(errno_save, "powerpc64");
 	} else if (__is_powerpc64le(ehdr, ldso, abi) == 1) {
@@ -2317,6 +2334,13 @@ static ssize_t __getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso, int abi,
 		    __is_64_bits(ehdr, ldso, abi) == 1 &&
 		    (streq(ldso, "musl-mips64el") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/mips64le/libiamroot-musl-mips64el.so.1";
+			goto access;
+		}
+
+		/* It is a PowerPC ELF and IAMROOT_LIB_POWERPC_MUSL_POWERPC_1 */
+		if (__is_powerpc(ehdr, ldso, abi) == 1 &&
+		    (streq(ldso, "musl-powerpc") && abi == 1)) {
+			lib = __xstr(PREFIX)"/lib/iamroot/powerpc/libiamroot-musl-powerpc.so.1";
 			goto access;
 		}
 

@@ -31,7 +31,7 @@ The [Miscellaneous Binary Format][binfmt_misc] on *Linux* allows to [chroot(2)]
 in a rootfs directory using a different architecture thanks to emulators (such
 as the [QEMU user-mode emulation][qemu] static binaries). The architectures
 `x86_64`, `i386`, `aarch64`, `aarch64_be`, `armhf`, `arm`, `riscv64`, `mipsle`
-`mips64le`, `powerpc64`, `powerpc64le` and `s390x` are supported.
+`mips64le`, `powerpc64`, `powerpc64le`, `powerpc` and `s390x` are supported.
 
 ## HOW IT WORKS
 

@@ -621,6 +621,11 @@ $(O)-mips64le/libiamroot.so: override CC = mips64el-buildroot-linux-gnu-gcc
 $(eval $(call libiamroot_so_abi,mips64le,1))
 endif
 
+ifneq ($(shell command -v powerpc-buildroot-linux-gnu-gcc 2>/dev/null),)
+$(O)-powerpc/libiamroot.so: override CC = powerpc-buildroot-linux-gnu-gcc -fno-stack-protector
+$(eval $(call libiamroot_so_abi,powerpc,1))
+endif
+
 ifneq ($(shell command -v powerpc-buildroot-linux-musl-gcc 2>/dev/null),)
 $(O)-powerpc-musl-powerpc/libiamroot.so: override CC = powerpc-buildroot-linux-musl-gcc -fno-stack-protector
 $(eval $(call libiamroot_ldso_so_abi,powerpc,musl-powerpc,1))
@@ -1377,6 +1382,21 @@ install-support-riscv64: install-support-riscv64-pacman
 .PHONY: install-support-riscv64-pacman
 install-support-riscv64-pacman:
 	install -D -m644 support/riscv64-archlinuxriscv-pacman.conf $(DESTDIR)$(PREFIX)/share/iamroot/archlinuxrisc-v/pacman.conf-riscv64
+endif
+
+ifneq ($(shell command -v powerpc-buildroot-linux-gnu-gcc 2>/dev/null),)
+powerpc-rootfs: powerpc-archlinuxpower-rootfs
+
+.PHONY: powerpc-archlinuxpower-rootfs
+powerpc-archlinuxpower-rootfs: powerpc-archlinuxpower-rootfs/bin/sh
+
+$(eval $(call pacstrap-rootfs,powerpc,archlinuxpower,base))
+
+install-support-powerpc: install-support-powerpc-pacman
+
+.PHONY: install-support-powerpc-pacman
+install-support-powerpc-pacman:
+	install -D -m644 support/powerpc-archlinuxpower-pacman.conf $(DESTDIR)$(PREFIX)/share/iamroot/archpower/pacman.conf-powerpc
 endif
 
 ifneq ($(shell command -v powerpc64-buildroot-linux-gnu-gcc 2>/dev/null),)

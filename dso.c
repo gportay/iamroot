@@ -1882,6 +1882,11 @@ static int __is_gnu_linux_ext(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	if (ret)
 		return ret;
 
+	/* It is a PowerPC ELF and IAMROOT_LIB_POWERPC_1 */
+	ret = __is_powerpc(ehdr, ldso, abi) && (*ldso == 0 && abi == 1);
+	if (ret)
+		return ret;
+
 	/* It is a PowerPC64 ELF and IAMROOT_LIB_POWERPC64_2 */
 	ret = __is_powerpc64(ehdr, ldso, abi) == 1 && (*ldso == 0 && abi == 2);
 	if (ret)
@@ -2248,6 +2253,12 @@ static ssize_t __getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso, int abi,
 			lib = __xstr(PREFIX)"/lib/iamroot/mips64le/libiamroot.so.1";
 			goto access;
 		}
+	}
+
+	/* It is a PowerPC ELF and IAMROOT_LIB_POWERPC_1 */
+	if (__is_powerpc(ehdr, ldso, abi) && (*ldso == 0 && abi == 1)) {
+		lib = __xstr(PREFIX)"/lib/iamroot/powerpc/libiamroot.so.1";
+		goto access;
 	}
 
 	/* It is a PowerPC64 ELF and IAMROOT_LIB_POWERPC64_2 */

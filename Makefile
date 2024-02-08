@@ -410,6 +410,7 @@ shell:
 
 .PHONY: cleanall
 cleanall: clean
+	rm -Rf corpus
 
 .PHONY: clean
 clean:

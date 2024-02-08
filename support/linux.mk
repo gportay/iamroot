@@ -1660,13 +1660,6 @@ fedora-log: x86_64-fedora-36-rootfs.log
 fedora-log: x86_64-fedora-37-rootfs.log
 fedora-log: x86_64-fedora-38-rootfs.log
 fedora-log: x86_64-fedora-39-rootfs.log
-# FIXME:
-#
-#	$ make stable-support
-#	(...)
-# 	make[1]: *** [makefile:846: x86_64-fedora-39-rootfs/bin/sh] Broken pipe
-# stable-support: support/x86_64-fedora-39-rootfs.txt
-# stable-log: x86_64-fedora-39-rootfs.log
 endif
 
 ifneq ($(shell command -v zypper 2>/dev/null),)

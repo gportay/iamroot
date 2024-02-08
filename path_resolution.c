@@ -352,17 +352,17 @@ char *__path_sanitize(char *path, size_t bufsiz)
 		char *s;
 		for (s = path; *(s+2); s++)
 			*s = *(s+2);
-		path[len-2] = 0;
+		path[len-2] = 0; /* ensure NULL-terminated */
 		len -= 2;
 	}
 	/* Strip trailing /. */
 	while ((len > 2) && __strneq(&path[len-2], "/.")) {
-		path[len-2] = 0;
+		path[len-2] = 0; /* ensure NULL-terminated */
 		len -= 2;
 	}
 	/* Strip trailing / */
 	while ((len > 1) && (path[len-1] == '/')) {
-		path[len-1] = 0;
+		path[len-1] = 0; /* ensure NULL-terminated */
 		len--;
 	}
 	/* Assuming . if reaches 0-length */

@@ -351,6 +351,7 @@ char *__path_sanitize(char *path, size_t bufsiz)
 		char *s;
 		for (s = path; *(s+2); s++)
 			*s = *(s+2);
+		path[len-2] = 0;
 		len -= 2;
 	}
 	/* Strip leading /. */

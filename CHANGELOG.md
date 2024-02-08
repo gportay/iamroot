@@ -32,6 +32,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the behaviour of the `ido`'s options `--user` and `--group` that does set
   the real and effective ID
 - Fix the detection of the [NetBSD]'s [dynamic loader][ld.so(8)]
+- Fix the missing copy of the NULL character if sanitizing a path starting by
+  `./`
 
 ### Security
 

@@ -124,6 +124,11 @@ The options are as follows:
 	The **--** is used to delimit the end of the *ido* options. Subsequent
 	options are passed to the _command_.
 
+*ido specific options*
+
+*--secure-path*=_list_::
+	Path used for every command run from *ido*.
+
 *iamroot specific options*
 
 *--multiarch*::

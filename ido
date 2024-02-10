@@ -46,6 +46,9 @@ Options:
   -V, --version                 display version information and exit
   --                            stop processing command line arguments
 
+ido specific options:
+  --secure-path=list            path used for every command run from ido
+
 iamroot specific options:
   --multiarch                   use multiarch library path in chroot
   --deflib=path                 default library path to use in chroot
@@ -198,6 +201,15 @@ do
 	then
 		shift
 		break
+	elif [[ "$1" =~ ^--secure-path$ ]]
+	then
+		shift
+		IDO_SECURE_PATH="$1"
+		export IDO_SECURE_PATH
+	elif [[ "$1" =~ ^--secure-path=.*$ ]]
+	then
+		IDO_SECURE_PATH="${1#*=}"
+		export IDO_SECURE_PATH
 	elif [[ "$1" =~ ^--multiarch$ ]]
 	then
 		IAMROOT_MULTIARCH="1"
@@ -438,7 +450,7 @@ IDO_UID="$UID" \
 IDO_GID="${GROUPS[0]}" \
 IDO_COMMAND="${command[*]}" \
 LOGNAME="${passwd[0]}" \
-PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
+PATH="${IDO_SECURE_PATH:-/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin}" \
 USER="${passwd[0]}" \
 HOME="${HOME:-${passwd[5]}}" \
 SHELL="${shell:-${passwd[6]}}" \

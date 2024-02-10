@@ -609,6 +609,15 @@ else
 fi
 echo
 
+run "ido: test option --secure-path /usr/local/bin:/usr/bin:/usr/bin sets path used for every command run from ido"
+if bash -x ido --secure-path /usr/local/bin:/usr/bin:/usr/bin env | grep "^PATH=/usr/local/bin:/usr/bin:/usr/bin$"
+then
+	ok
+else
+	ko
+fi
+echo
+
 run "ido: test option --multiarch uses multiarch library path in chroot"
 if ido --multiarch env | grep "^IAMROOT_MULTIARCH=1$"
 then

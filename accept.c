@@ -44,7 +44,7 @@ int accept(int socket, struct sockaddr *addr, socklen_t *addrlen)
 
 	siz = path_resolution(AT_FDCWD, addrun->sun_path, buf.sun_path,
 			      sizeof(buf.sun_path), 0);
-	if (siz == -1 && errno == ENAMETOOLONG && __inchroot()) {
+	if (siz == -1 && errno == ENAMETOOLONG) {
 		char *path;
 
 		path = _getenv("IAMROOT_PATH_RESOLUTION_AF_UNIX");

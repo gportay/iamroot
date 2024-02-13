@@ -32,6 +32,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   path exceeds `PATH_MAX` - 1
 - The functions `execl()`, `execle()`, `execlp()`, execve()`, `execveat()` and
   `posix_spawn()` return `E2BIG` if the argument list is too long
+- Do not restrict the environment variable `IAMROOT_PATH_RESOLUTION_AF_UNIX` to
+  a chroot environment if the Unix socket path exceeds the limitation of 108
+  characters
 
 ### Fixed
 

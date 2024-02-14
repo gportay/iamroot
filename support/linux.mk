@@ -79,7 +79,7 @@ $(eval $(call caseconvert-helper,UPPERCASE,$(join $(addsuffix :,$([FROM])),$([TO
 MAKEFLAGS += --no-print-directory
 
 .PHONY: all
-all:
+all: libiamroot.so
 
 .PHONY: vars
 vars:

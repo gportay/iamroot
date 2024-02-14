@@ -43,6 +43,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the detection of the [NetBSD]'s [dynamic loader][ld.so(8)]
 - Fix the missing copy of the NULL character if sanitizing a path starting by
   `./`
+- Fix the resolution path of an Unix socket path exceeding the 108 characters
 
 ### Security
 

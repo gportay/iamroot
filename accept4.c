@@ -51,7 +51,7 @@ int accept4(int socket, struct sockaddr *addr, socklen_t *addrlen, int oflags)
 		path = _getenv("IAMROOT_PATH_RESOLUTION_AF_UNIX");
 		if (path) {
 			int n = _snprintf(buf.sun_path, sizeof(buf.sun_path),
-					  "%s/%s", path, buf.sun_path);
+				  "%s/%s", path, __basename(addrun->sun_path));
 			if (n == -1)
 				goto exit;
 

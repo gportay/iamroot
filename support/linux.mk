@@ -712,6 +712,9 @@ riscv64-rootfs:
 .PHONY: mips-rootfs
 mips-rootfs:
 
+.PHONY: mips64-rootfs
+mips64-rootfs:
+
 .PHONY: powerpc64-rootfs
 powerpc64-rootfs:
 
@@ -1246,7 +1249,7 @@ mipsel-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include s
 endif
 
 ifneq ($(shell command -v mips64el-buildroot-linux-gnu-gcc 2>/dev/null),)
-mips-rootfs: mips64el-debian-rootfs
+mips64-rootfs: mips64el-debian-rootfs
 
 .PHONY: mips64el-debian-rootfs
 mips64el-debian-rootfs: mips64el-debian-oldoldstable-rootfs

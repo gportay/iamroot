@@ -743,6 +743,12 @@ cobertura.xml:
 codacy: cobertura.xml
 	bash <(curl -Ls https://coverage.codacy.com/get.sh)
 
+.PHONY: install
+install:
+
+.PHONY: uninstall
+uninstall:
+
 .PHONY: cleanall
 cleanall: clean
 	rm -f cobertura.xml

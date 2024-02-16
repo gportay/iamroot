@@ -72,14 +72,14 @@ distribution (or its bootstrap script).
 
 The table below lists the distributions and its tool that work with.
 
-| Tool                 | Distributions                                                                          |
-| -------------------- | -------------------------------------------------------------------------------------- |
-| [pacstrap(8)]        | Arch Linux, Arch Linux ARM, Arch Linux 32, Arch Linux RISCV, Arch Linux Power, Manjaro |
-| [alpine-make-rootfs] | Alpine Linux                                                                           |
-| [dnf(8)]             | Fedora                                                                                 |
-| [zypper(8)]          | openSUSE                                                                               |
-| [debootstrap(8)]     | Debian\*, Ubuntu\*, Devuan\*                                                           |
-| [xbps-install(1)]    | Void Linux                                                                             |
+| Tool                 | Distributions                                                                                 |
+| -------------------- | --------------------------------------------------------------------------------------------- |
+| [pacstrap(8)]        | [Arch Linux], [Arch Linux ARM], [Arch Linux 32], [Arch Linux RISC-V], [Arch POWER], [Manjaro] |
+| [alpine-make-rootfs] | [Alpine Linux]                                                                                |
+| [dnf(8)]             | [Fedora]                                                                                      |
+| [zypper(8)]          | [openSUSE]                                                                                    |
+| [debootstrap(8)]     | [Debian]\*, [Ubuntu]\*, [Devuan]\*                                                            |
+| [xbps-install(1)]    | [Void Linux]                                                                                  |
 
 \*: Works with hacks.
 
@@ -116,7 +116,7 @@ Or, for your system (i.e. every users)
 
 ## INSTALL
 
-Run the following command to install *iamroot(7)* and *ish(1)*
+Run the following command to install *iamroot(7)*, *ido(1)* and *ish(1)*
 
 To your home directory (i.e. your user only)
 
@@ -157,11 +157,21 @@ later version.
 [fakechroot(1)], [fakeroot(1)], [binfmt_misc], [qemu]
 
 [Alpine Linux]: https://www.alpinelinux.org/
+[Alpine Linux]: https://www.alpinelinux.org/
+[Arch Linux 32]: https://archlinux32.org/
+[Arch Linux ARM]: https://archlinuxarm.org/
+[Arch Linux RISC-V]: https://archriscv.felixc.at/
 [Arch Linux]: https://archlinux.org/
+[Arch POWER]: https://archlinuxpower.org/
 [Debian]: https://www.debian.org/
+[Devuan]: https://www.devuan.org/
+[Fedora]: https://fedoraproject.org/
 [FreeBSD]: https://www.freebsd.org/
+[Manjaro]: https://manjaro.org/
 [NetBSD]: https://www.netbsd.org/
 [OpenBSD]: https://www.openbsd.org/
+[Ubuntu]: https://ubuntu.com/
+[Void Linux]: https://voidlinux.org/
 [alpine-make-rootfs]: https://github.com/alpinelinux/alpine-make-rootfs/blob/master/README.adoc
 [binfmt_misc]: https://www.kernel.org/doc/html/latest/admin-guide/binfmt-misc.html
 [chdir(2)]: https://linux.die.net/man/2/chdir
@@ -179,6 +189,7 @@ later version.
 [ish(1)]: ish.1.adoc
 [musl]: https://www.musl-libc.org/
 [open(2)]: https://linux.die.net/man/2/open
+[openSUSE]: https://www.opensuse.org/
 [pacstrap(8)]: https://man.archlinux.org/man/pacstrap.8
 [path_resolution(7)]: https://linux.die.net/man/7/path_resolution
 [qemu]: https://www.qemu.org/

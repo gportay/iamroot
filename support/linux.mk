@@ -654,6 +654,11 @@ ifneq ($(shell command -v s390x-buildroot-linux-gnu-gcc 2>/dev/null),)
 $(O)-s390x/libiamroot.so: override CC = s390x-buildroot-linux-gnu-gcc
 $(eval $(call libiamroot_so_abi,s390x,1))
 endif
+
+ifneq ($(shell command -v s390x-buildroot-linux-musl-gcc 2>/dev/null),)
+$(O)-s390x-musl-s390x/libiamroot.so: override CC = s390x-buildroot-linux-musl-gcc
+$(eval $(call libiamroot_ldso_so_abi,s390x,musl-s390x,1))
+endif
 endif
 
 ifneq ($(CLANG),0)
@@ -1438,6 +1443,27 @@ ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
 riscv64-alpinelinux-rootfs: riscv64-alpinelinux-edge-rootfs
 
 $(eval $(call alpine-make-rootfs-rootfs,riscv64,alpinelinux,edge))
+endif
+
+ifneq ($(shell command -v s390x-buildroot-linux-musl-gcc 2>/dev/null),)
+s390x-rootfs: s390x-alpinelinux-rootfs
+
+.PHONY: s390x-alpinelinux-rootfs
+s390x-alpinelinux-rootfs: s390x-alpinelinux-3.14-rootfs
+s390x-alpinelinux-rootfs: s390x-alpinelinux-3.15-rootfs
+s390x-alpinelinux-rootfs: s390x-alpinelinux-3.16-rootfs
+s390x-alpinelinux-rootfs: s390x-alpinelinux-3.17-rootfs
+s390x-alpinelinux-rootfs: s390x-alpinelinux-3.18-rootfs
+s390x-alpinelinux-rootfs: s390x-alpinelinux-3.19-rootfs
+s390x-alpinelinux-rootfs: s390x-alpinelinux-edge-rootfs
+
+$(eval $(call alpine-make-rootfs-rootfs,s390x,alpinelinux,3.14))
+$(eval $(call alpine-make-rootfs-rootfs,s390x,alpinelinux,3.15))
+$(eval $(call alpine-make-rootfs-rootfs,s390x,alpinelinux,3.16))
+$(eval $(call alpine-make-rootfs-rootfs,s390x,alpinelinux,3.17))
+$(eval $(call alpine-make-rootfs-rootfs,s390x,alpinelinux,3.18))
+$(eval $(call alpine-make-rootfs-rootfs,s390x,alpinelinux,3.19))
+$(eval $(call alpine-make-rootfs-rootfs,s390x,alpinelinux,edge))
 endif
 endif
 

@@ -9,6 +9,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - Chroot to a musl s390x world; tested on [Alpine Linux]
+- Chroot to a musl ppc64le world; tested on [Alpine Linux]
+
+### Fixed
+
+- Fix the detection of the PowerPC64{,le} [musl]'s library
 
 ## [v18] - 2024-02-14
 

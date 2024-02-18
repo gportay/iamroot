@@ -1414,7 +1414,7 @@ $(eval $(call alpine-make-rootfs-rootfs,armhf,alpinelinux,edge))
 endif
 
 ifneq ($(shell command -v powerpc64le-buildroot-linux-musl-gcc 2>/dev/null),)
-ppc64le-rootfs: ppc64le-alpinelinux-rootfs
+powerpc64-rootfs: ppc64le-alpinelinux-rootfs
 
 .PHONY: ppc64le-alpinelinux-rootfs
 ppc64le-alpinelinux-rootfs: ppc64le-alpinelinux-3.14-rootfs

@@ -52,5 +52,6 @@ package() {
 	cd "$srcdir/$pkgname"
 	make PREFIX=/usr DESTDIR="$pkgdir" install-exec-powerpc64le.2
 	make PREFIX=/usr DESTDIR="$pkgdir" install-exec-powerpc64le-musl-powerpc64le.1
+	make PREFIX=/usr DESTDIR="$pkgdir" install-support-powerpc64le
 	install -D -m644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }

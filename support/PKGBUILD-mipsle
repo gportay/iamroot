@@ -52,5 +52,6 @@ package() {
 	cd "$srcdir/$pkgname"
 	make PREFIX=/usr DESTDIR="$pkgdir" install-exec-mipsle.1
 	make PREFIX=/usr DESTDIR="$pkgdir" install-exec-mipsle-musl-mipsel.1
+	make PREFIX=/usr DESTDIR="$pkgdir" install-support-mipsle
 	install -D -m644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }

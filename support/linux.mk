@@ -763,6 +763,56 @@ install:
 .PHONY: uninstall
 uninstall:
 
+.PHONY: install-support
+install-support: install-support-i686
+install-support: install-support-x86_64
+install-support: install-support-aarch64
+install-support: install-support-aarch64_be
+install-support: install-support-arm
+install-support: install-support-armhf
+install-support: install-support-riscv64
+install-support: install-support-powerpc64
+install-support: install-support-powerpc64le
+install-support: install-support-mips64le
+install-support: install-support-mipsle
+install-support: install-support-s390x
+
+.PHONY: install-support-i686
+install-support-i686:
+
+.PHONY: install-support-x86_64
+install-support-x86_64:
+
+.PHONY: install-support-aarch64
+install-support-aarch64:
+
+.PHONY: install-support-aarch64_be
+install-support-aarch64_be:
+
+.PHONY: install-support-arm
+install-support-arm:
+
+.PHONY: install-support-armhf
+install-support-armhf:
+
+.PHONY: install-support-riscv64
+install-support-riscv64:
+
+.PHONY: install-support-powerpc64
+install-support-powerpc64:
+
+.PHONY: install-support-powerpc64le
+install-support-powerpc64le:
+
+.PHONY: install-support-mips64le
+install-support-mips64le:
+
+.PHONY: install-support-mipsle
+install-support-mipsle:
+
+.PHONY: install-support-s390x
+install-support-s390x:
+
 .PHONY: cleanall
 cleanall: clean
 	rm -f cobertura.xml
@@ -792,6 +842,9 @@ rootfs: x86_64-archlinux-rootfs
 
 $(eval $(call pacstrap-rootfs,x86_64,archlinux,base))
 
+install-support-i686:
+	install -D -m644 support/i686-archlinux32-pacman.conf $(DESTDIR)$(PREFIX)/share/iamroot/archlinux32/pacman.conf-i686
+
 i686-rootfs: i686-archlinux32-rootfs
 
 $(eval $(call pacstrap-rootfs,i686,archlinux32,base))
@@ -802,6 +855,14 @@ unstable-rootfs: x86_64-manjaro-unstable-rootfs
 
 $(eval $(call pacstrap-rootfs,x86_64,manjaro-stable,base))
 $(eval $(call pacstrap-rootfs,x86_64,manjaro-unstable,base))
+
+install-support-x86_64: install-support-x86_64-pacman
+
+.PHONY: install-support-x86_64-pacman
+install-support-x86_64-pacman:
+	install -D -m644 support/x86_64-archlinux-pacman.conf $(DESTDIR)$(PREFIX)/share/iamroot/archlinux/pacman.conf
+	install -D -m644 support/x86_64-manjaro-stable-pacman.conf $(DESTDIR)$(PREFIX)/share/iamroot/manjaro/pacman.conf-stable
+	install -D -m644 support/x86_64-manjaro-unstable-pacman.conf $(DESTDIR)$(PREFIX)/share/iamroot/manjaro/pacman.conf-unstable
 endif
 
 ifneq ($(shell command -v debootstrap 2>/dev/null),)
@@ -953,6 +1014,12 @@ legacy-log: amd64-devuan-chimaera-rootfs.log
 
 stable-support: support/amd64-devuan-daedalus-rootfs.txt
 stable-log: amd64-devuan-daedalus-rootfs.log
+
+install-support-x86_64: install-support-x86_64-debootstrap
+
+.PHONY: install-support-x86_64-debootstrap
+install-support-x86_64-debootstrap:
+	install -D -m644 support/ceres $(DESTDIR)$(PREFIX)/share/iamroot/debootstrap/ceres
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)
@@ -993,6 +1060,13 @@ $(eval $(call dnf-rootfs,x86_64,fedora,37))
 $(eval $(call dnf-rootfs,x86_64,fedora,38))
 $(eval $(call dnf-rootfs,x86_64,fedora,39))
 x86_64-fedora-39-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
+
+install-support-x86_64: install-support-x86_64-fedora
+
+.PHONY: install-support-x86_64-fedora
+install-support-x86_64-fedora:
+	install -D -m644 support/fedora-archive.repo $(DESTDIR)$(PREFIX)/share/iamroot/fedora/fedora-archive.repo
+	install -D -m644 support/fedora.repo $(DESTDIR)$(PREFIX)/share/iamroot/fedora/fedora.repo
 endif
 
 ifneq ($(shell command -v zypper 2>/dev/null),)
@@ -1010,12 +1084,25 @@ $(eval $(call zypper-rootfs,x86_64,opensuse-leap))
 $(eval $(call zypper-rootfs,x86_64,opensuse-tumbleweed))
 x86_64-opensuse-leap-chroot x86_64-opensuse-leap-shell x86_64-opensuse-leap-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|/usr/bin/chkstat|/usr/sbin/update-ca-certificates
 
+install-support-x86_64: install-support-x86_64-zypper
+
+.PHONY: install-support-x86_64-zypper
+install-support-x86_64-zypper:
+	install -D -m644 support/opensuse-leap-repo-oss.repo $(DESTDIR)$(PREFIX)/share/iamroot/opensuse/leap-repo-oss.repo
+	install -D -m644 support/opensuse-tumbleweed-repo-oss.repo $(DESTDIR)$(PREFIX)/share/iamroot/opensuse/tumbleweed-repo-oss.repo
+
 qemu-system-x86_64-opensuse-leap: override CMDLINE += rw init=/usr/lib/systemd/systemd
 endif
 
 ifneq ($(shell command -v xbps-install 2>/dev/null),)
 $(eval $(call xbps-install-rootfs,x86_64,voidlinux))
 $(eval $(call xbps-install-musl-rootfs,x86_64,voidlinux))
+
+install-support-x86_64: install-support-x86_64-xbps
+
+.PHONY: install-support-x86_64-xbps
+install-support-x86_64-xbps:
+	install -D -m644 support/x86_64-xbps.conf $(DESTDIR)$(PREFIX)/share/iamroot/voidlinux/xbps.conf
 endif
 
 $(eval $(call void-rootfs,x86_64,20221001))
@@ -1160,6 +1247,12 @@ aarch64-archlinuxarm-rootfs: aarch64-archlinuxarm-rootfs/bin/sh
 
 $(eval $(call pacstrap-rootfs,aarch64,archlinuxarm,base))
 aarch64-archlinuxarm-chroot aarch64-archlinuxarm-shell aarch64-archlinuxarm-rootfs/bin/sh: IDOFLAGS += --libbdir
+
+install-support-aarch64: install-support-aarch64-pacman
+
+.PHONY: install-support-aarch64-pacman
+install-support-aarch64-pacman:
+	install -D -m644 support/aarch64-archlinuxarm-pacman.conf $(DESTDIR)$(PREFIX)/share/iamroot/archlinuxarm/pacman.conf-aarch64
 endif
 
 ifneq ($(shell command -v arm-buildroot-linux-gnueabihf-gcc 2>/dev/null),)
@@ -1169,6 +1262,12 @@ arm-rootfs: armv7h-archlinuxarm-rootfs
 armv7h-archlinuxarm-rootfs: armv7h-archlinuxarm-rootfs/bin/sh
 
 $(eval $(call pacstrap-rootfs,armv7h,archlinuxarm,base))
+
+install-support-armhf: install-support-armv7h-pacman
+
+.PHONY: install-support-armv7h-pacman
+install-support-armv7h-pacman:
+	install -D -m644 support/armv7h-archlinuxarm-pacman.conf $(DESTDIR)$(PREFIX)/share/iamroot/archlinuxarm/pacman.conf-armv7h
 endif
 
 ifneq ($(shell command -v riscv64-buildroot-linux-gnu-gcc 2>/dev/null),)
@@ -1179,6 +1278,12 @@ riscv64-archlinuxriscv-rootfs: riscv64-archlinuxriscv-rootfs/bin/sh
 
 $(eval $(call pacstrap-rootfs,riscv64,archlinuxriscv,base))
 riscv64-archlinuxriscv-chroot riscv64-archlinuxriscv-shell riscv64-archlinuxriscv-rootfs/bin/sh: IDOFLAGS += --libdir
+
+install-support-riscv64: install-support-riscv64-pacman
+
+.PHONY: install-support-riscv64-pacman
+install-support-riscv64-pacman:
+	install -D -m644 support/riscv64-archlinuxriscv-pacman.conf $(DESTDIR)$(PREFIX)/share/iamroot/archlinuxrisc-v/pacman.conf-riscv64
 endif
 
 ifneq ($(shell command -v powerpc64-buildroot-linux-gnu-gcc 2>/dev/null),)
@@ -1189,6 +1294,13 @@ powerpc64-archlinuxpower-rootfs: powerpc64-archlinuxpower-rootfs/bin/sh
 
 $(eval $(call pacstrap-rootfs,powerpc64,archlinuxpower,base))
 powerpc64-archlinuxpower-chroot powerpc64-archlinuxpower-shell powerpc64-archlinuxpower-rootfs/bin/sh: export IDOFLAGS += /lib:/usr/lib
+
+install-support-powerpc64: install-support-powerpc64-pacman
+
+.PHONY: install-support-powerpc64-pacman
+install-support-powerpc64-pacman:
+	install -D -m644 support/powerpc64-archlinuxpower-pacman.conf $(DESTDIR)$(PREFIX)/share/iamroot/archpower/pacman.conf-powerpc64
+	install -D -m644 support/toolchain_archlinuxpower_powerpc64_defconfig $(DESTDIR)$(PREFIX)/share/iamroot/buildroot/toolchain_archlinuxpower_powerpc64_defconfig
 endif
 
 ifneq ($(shell command -v powerpc64le-buildroot-linux-gnu-gcc 2>/dev/null),)
@@ -1199,6 +1311,12 @@ powerpc64le-archlinuxpower-rootfs: powerpc64le-archlinuxpower-rootfs/bin/sh
 
 $(eval $(call pacstrap-rootfs,powerpc64le,archlinuxpower,base))
 powerpc64le-archlinuxpower-chroot powerpc64le-archlinuxpower-shell powerpc64le-archlinuxpower-rootfs/bin/sh: IDOFLAGS += --libdir
+
+install-support-powerpc64le: install-support-powerpc64le-pacman
+
+.PHONY: install-support-powerpc64le-pacman
+install-support-powerpc64le-pacman:
+	install -D -m644 support/powerpc64le-archlinuxpower-pacman.conf $(DESTDIR)$(PREFIX)/share/iamroot/archpower/pacman.conf-powerpc64le
 endif
 endif
 
@@ -1311,6 +1429,12 @@ $(eval $(call debootstrap-rootfs,mips64el,debian,trixie))
 $(eval $(call debootstrap-rootfs,mips64el,debian,sid))
 mips64el-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 mips64el-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
+
+install-support-mips64le: install-support-mips64le-pacman
+
+.PHONY: install-support-mips64le-pacman
+install-support-mips64le-pacman:
+	install -D -m644 support/toolchain_debian_mips64el_defconfig $(DESTDIR)$(PREFIX)/share/iamroot/buildroot/toolchain_debian_mips64el_defconfig
 endif
 
 ifneq ($(shell command -v powerpc64le-buildroot-linux-gnu-gcc 2>/dev/null),)

@@ -373,23 +373,6 @@ install-bash-completion:
 
 .PHONY: install-support
 install-support:
-	install -D -m644 support/aarch64-archlinuxarm-pacman.conf $(DESTDIR)$(PREFIX)/share/iamroot/archlinuxarm/pacman.conf-aarch64
-	install -D -m644 support/armv7h-archlinuxarm-pacman.conf $(DESTDIR)$(PREFIX)/share/iamroot/archlinuxarm/pacman.conf-armv7h
-	install -D -m644 support/ceres $(DESTDIR)$(PREFIX)/share/iamroot/debootstrap/ceres
-	install -D -m644 support/fedora-archive.repo $(DESTDIR)$(PREFIX)/share/iamroot/fedora/fedora-archive.repo
-	install -D -m644 support/fedora.repo $(DESTDIR)$(PREFIX)/share/iamroot/fedora/fedora.repo
-	install -D -m644 support/i686-archlinux32-pacman.conf $(DESTDIR)$(PREFIX)/share/iamroot/archlinux32/pacman.conf-i686
-	install -D -m644 support/opensuse-leap-repo-oss.repo $(DESTDIR)$(PREFIX)/share/iamroot/opensuse/leap-repo-oss.repo
-	install -D -m644 support/opensuse-tumbleweed-repo-oss.repo $(DESTDIR)$(PREFIX)/share/iamroot/opensuse/tumbleweed-repo-oss.repo
-	install -D -m644 support/powerpc64-archlinuxpower-pacman.conf $(DESTDIR)$(PREFIX)/share/iamroot/archpower/pacman.conf-powerpc64
-	install -D -m644 support/powerpc64le-archlinuxpower-pacman.conf $(DESTDIR)$(PREFIX)/share/iamroot/archpower/pacman.conf-powerpc64le
-	install -D -m644 support/riscv64-archlinuxriscv-pacman.conf $(DESTDIR)$(PREFIX)/share/iamroot/archlinuxrisc-v/pacman.conf-riscv64
-	install -D -m644 support/toolchain_archlinuxpower_powerpc64_defconfig $(DESTDIR)$(PREFIX)/share/iamroot/buildroot/toolchain_archlinuxpower_powerpc64_defconfig
-	install -D -m644 support/toolchain_debian_mips64el_defconfig $(DESTDIR)$(PREFIX)/share/iamroot/buildroot/toolchain_debian_mips64el_defconfig
-	install -D -m644 support/x86_64-archlinux-pacman.conf $(DESTDIR)$(PREFIX)/share/iamroot/archlinux/pacman.conf
-	install -D -m644 support/x86_64-manjaro-stable-pacman.conf $(DESTDIR)$(PREFIX)/share/iamroot/manjaro/pacman.conf-stable
-	install -D -m644 support/x86_64-manjaro-unstable-pacman.conf $(DESTDIR)$(PREFIX)/share/iamroot/manjaro/pacman.conf-unstable
-	install -D -m644 support/x86_64-xbps.conf $(DESTDIR)$(PREFIX)/share/iamroot/voidlinux/xbps.conf
 
 .PHONY: uninstall
 uninstall:

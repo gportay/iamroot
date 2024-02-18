@@ -72,6 +72,7 @@ package() {
 	make PREFIX=/usr DESTDIR="$pkgdir" install-exec
 	make PREFIX=/usr DESTDIR="$pkgdir" install-doc
 	make PREFIX=/usr DESTDIR="$pkgdir" install-bash-completion
-	make PREFIX=/usr DESTDIR="$pkgdir" install-support
+	make PREFIX=/usr DESTDIR="$pkgdir" install-support-i686
+	make PREFIX=/usr DESTDIR="$pkgdir" install-support-x86_64
 	install -D -m644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }

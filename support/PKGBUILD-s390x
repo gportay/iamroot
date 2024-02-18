@@ -49,5 +49,6 @@ check() {
 package() {
 	cd "$srcdir/$pkgname"
 	make PREFIX=/usr DESTDIR="$pkgdir" install-exec-s390x.1
+	make PREFIX=/usr DESTDIR="$pkgdir" install-support-s390x
 	install -D -m644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }

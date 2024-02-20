@@ -1644,9 +1644,14 @@ static int __is_aarch64(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	(void)ldso;
 	(void)abi;
 
+#if defined EM_AARCH64
 	/* It is an AArch64 LSB ELF */
 	return ehdr && (ehdr->e_machine == EM_AARCH64) &&
 	       (ehdr->e_ident[EI_DATA] == ELFDATA2LSB);
+#else
+	(void)ehdr;
+	return __set_errno(ENOTSUP, -1);
+#endif
 }
 
 static int __is_aarch64_be(Elf64_Ehdr *ehdr, const char *ldso, int abi)
@@ -1654,9 +1659,14 @@ static int __is_aarch64_be(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	(void)ldso;
 	(void)abi;
 
+#if defined EM_AARCH64
 	/* It is an AArch64 MSB ELF */
 	return ehdr && (ehdr->e_machine == EM_AARCH64) &&
 	       (ehdr->e_ident[EI_DATA] == ELFDATA2MSB);
+#else
+	(void)ehdr;
+	return __set_errno(ENOTSUP, -1);
+#endif
 }
 
 static int __is_riscv(Elf64_Ehdr *ehdr, const char *ldso, int abi)
@@ -1664,8 +1674,13 @@ static int __is_riscv(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	(void)ldso;
 	(void)abi;
 
+#if defined EM_RISCV
 	/* It is a RISC-V ELF */
 	return ehdr && (ehdr->e_machine == EM_RISCV);
+#else
+	(void)ehdr;
+	return __set_errno(ENOTSUP, -1);
+#endif
 }
 
 static int __is_mipsle(Elf64_Ehdr *ehdr, const char *ldso, int abi)
@@ -1673,9 +1688,14 @@ static int __is_mipsle(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	(void)ldso;
 	(void)abi;
 
+#if defined EM_MIPS 
 	/* It is a MIPS LSB ELF */
 	return ehdr && (ehdr->e_machine == EM_MIPS) &&
 	       (ehdr->e_ident[EI_DATA] == ELFDATA2LSB);
+#else
+	(void)ehdr;
+	return __set_errno(ENOTSUP, -1);
+#endif
 }
 
 static int __is_powerpc64(Elf64_Ehdr *ehdr, const char *ldso, int abi)
@@ -1683,9 +1703,14 @@ static int __is_powerpc64(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	(void)ldso;
 	(void)abi;
 
+#if defined EM_PPC64
 	/* It is a PowerPC64 ELF */
 	return ehdr && (ehdr->e_machine == EM_PPC64) &&
 	       (ehdr->e_ident[EI_DATA] == ELFDATA2MSB);
+#else
+	(void)ehdr;
+	return __set_errno(ENOTSUP, -1);
+#endif
 }
 
 static int __is_powerpc64le(Elf64_Ehdr *ehdr, const char *ldso, int abi)
@@ -1693,9 +1718,14 @@ static int __is_powerpc64le(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	(void)ldso;
 	(void)abi;
 
+#if defined EM_PPC64
 	/* It is a PowerPC64 LSB ELF */
 	return ehdr && (ehdr->e_machine == EM_PPC64) &&
 	       (ehdr->e_ident[EI_DATA] == ELFDATA2LSB);
+#else
+	(void)ehdr;
+	return __set_errno(ENOTSUP, -1);
+#endif
 }
 
 static int __is_s390(Elf64_Ehdr *ehdr, const char *ldso, int abi)

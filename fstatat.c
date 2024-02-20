@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -32,7 +32,7 @@ int next_fstatat(int dfd, const char *path, struct stat *statbuf, int atflags)
 	if (!sym) {
 		int next___fxstatat(int, int, const char *, struct stat *,
 				    int);
-#if defined(__arm__)
+#if defined(__arm__) || defined(__mips__)
 		return next___fxstatat(3, dfd, path, statbuf, atflags);
 #else
 		return next___fxstatat(0, dfd, path, statbuf, atflags);

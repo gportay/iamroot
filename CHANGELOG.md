@@ -16,6 +16,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 
 - Fix the detection of the PowerPC64{,le} [musl]'s library
+- Fix the invalid argument version value given to `__fxstat{,at}{,64}()` on
+  `mips`
 
 ## [v18] - 2024-02-14
 

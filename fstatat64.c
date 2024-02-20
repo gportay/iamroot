@@ -18,6 +18,7 @@
 #include "iamroot.h"
 
 #ifdef _LARGEFILE64_SOURCE
+extern int next___fxstatat64(int, int, const char *, struct stat64 *, int);
 static int (*sym)(int, const char *, struct stat64 *, int);
 
 __attribute__((visibility("hidden")))
@@ -27,15 +28,9 @@ int next_fstatat64(int dfd, const char *path, struct stat64 *statbuf,
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "fstatat64");
 
-	if (!sym) {
-		int next___fxstatat64(int, int, const char *, struct stat64 *,
-				      int);
-#if defined(__arm__) || defined(__mips__)
-		return next___fxstatat64(3, dfd, path, statbuf, atflags);
-#else
-		return next___fxstatat64(0, dfd, path, statbuf, atflags);
-#endif
-	}
+	if (!sym)
+		return next___fxstatat64(_STAT_VER, dfd, path, statbuf,
+					 atflags);
 
 	return sym(dfd, path, statbuf, atflags);
 }

@@ -21,6 +21,8 @@
 
 #include "iamroot.h"
 
+extern int next___fxstatat(int, int, const char *, struct stat *, int);
+
 static int (*sym)(int, const char *, struct stat *, int);
 
 __attribute__((visibility("hidden")))
@@ -29,15 +31,8 @@ int next_fstatat(int dfd, const char *path, struct stat *statbuf, int atflags)
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "fstatat");
 
-	if (!sym) {
-		int next___fxstatat(int, int, const char *, struct stat *,
-				    int);
-#if defined(__arm__) || defined(__mips__)
-		return next___fxstatat(3, dfd, path, statbuf, atflags);
-#else
-		return next___fxstatat(0, dfd, path, statbuf, atflags);
-#endif
-	}
+	if (!sym)
+		return next___fxstatat(_STAT_VER, dfd, path, statbuf, atflags);
 
 	return sym(dfd, path, statbuf, atflags);
 }

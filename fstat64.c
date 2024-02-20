@@ -17,6 +17,8 @@
 #include "iamroot.h"
 
 #ifdef _LARGEFILE64_SOURCE
+extern int next___fxstat64(int, int, struct stat64 *);
+
 static int (*sym)(int, struct stat64 *);
 
 __attribute__((visibility("hidden")))
@@ -25,14 +27,8 @@ int next_fstat64(int fd, struct stat64 *statbuf)
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "fstat64");
 
-	if (!sym) {
-		int next___fxstat64(int, int, struct stat64 *);
-#if defined(__arm__) || defined(__mips__)
-		return next___fxstat64(3, fd, statbuf);
-#else
-		return next___fxstat64(0, fd, statbuf);
-#endif
-	}
+	if (!sym)
+		return next___fxstat64(_STAT_VER, fd, statbuf);
 
 	return sym(fd, statbuf);
 }

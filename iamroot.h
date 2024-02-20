@@ -99,6 +99,14 @@ extern "C" {
 #define __strleq(s1, s2) (__strlcmp((s1), (s2)) == 0)
 #define __strneq(s1, s2) (__strncmp((s1), (s2)) == 0)
 
+#ifndef _STAT_VER
+#if defined(__arm__) || defined(__mips__)
+#define _STAT_VER 3
+#else
+#define _STAT_VER 0
+#endif
+#endif
+
 #ifdef __linux__
 int __secure();
 #endif

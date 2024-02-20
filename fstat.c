@@ -21,6 +21,8 @@
 
 #include "iamroot.h"
 
+extern int next___fxstat(int, int, struct stat *);
+
 static int (*sym)(int, struct stat *);
 
 int next_fstat(int fd, struct stat *statbuf)
@@ -28,14 +30,8 @@ int next_fstat(int fd, struct stat *statbuf)
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "fstat");
 
-	if (!sym) {
-		int next___fxstat(int, int, struct stat *);
-#if defined(__arm__) || defined(__mips__)
-		return next___fxstat(3, fd, statbuf);
-#else
-		return next___fxstat(0, fd, statbuf);
-#endif
-	}
+	if (!sym)
+		return next___fxstat(_STAT_VER, fd, statbuf);
 
 	return sym(fd, statbuf);
 }

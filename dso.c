@@ -1848,55 +1848,57 @@ static const char *__machine(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 
 static const char *__multiarch(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
+	const int errno_save = errno;
+
 	if (!__is_gnu_linux_ext(ehdr, ldso, abi) || !__getmultiarch())
 		return NULL;
 
 	/* It is an x86 ELF */
 	if (__is_x86(ehdr, ldso, abi))
-		return "/lib/i386-linux-gnu:/usr/lib/i386-linux-gnu:/lib:/usr/lib";
+		return __set_errno(errno_save, "/lib/i386-linux-gnu:/usr/lib/i386-linux-gnu:/lib:/usr/lib");
 
 	/* It is an x86-64 ELF */
 	if (__is_x86_64(ehdr, ldso, abi))
-		return "/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/lib:/usr/lib";
+		return __set_errno(errno_save, "/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/lib:/usr/lib");
 
 	/* It is an ARM ELF */
 	if (__is_arm(ehdr, ldso, abi))
-		return "/lib/arm-linux-gnueabi:/usr/lib/arm-linux-gnueabi:/lib:/usr/lib";
+		return __set_errno(errno_save, "/lib/arm-linux-gnueabi:/usr/lib/arm-linux-gnueabi:/lib:/usr/lib");
 
 	/* It is an ARM Hard Float ELF */
 	if (__is_armhf(ehdr, ldso, abi))
-		return "/lib/arm-linux-gnueabihf:/usr/lib/arm-linux-gnueabihf:/lib:/usr/lib";
+		return __set_errno(errno_save, "/lib/arm-linux-gnueabihf:/usr/lib/arm-linux-gnueabihf:/lib:/usr/lib");
 
 	/* It is an AArch64 LSB ELF */
 	if (__is_aarch64(ehdr, ldso, abi))
-		return "/lib/aarch64-linux-gnu:/usr/lib/aarch64-linux-gnu:/lib:/usr/lib";
+		return __set_errno(errno_save, "/lib/aarch64-linux-gnu:/usr/lib/aarch64-linux-gnu:/lib:/usr/lib");
 
 	/* It is an RISC-V lp64d ELF */
 	if (__is_riscv(ehdr, ldso, abi) && __is_64_bits(ehdr, ldso, abi))
-		return "/lib/riscv64-linux-gnu:/usr/lib/riscv64-linux-gnu:/lib:/usr/lib";
+		return __set_errno(errno_save, "/lib/riscv64-linux-gnu:/usr/lib/riscv64-linux-gnu:/lib:/usr/lib");
 
 	/* It is an MIPS LSB ELF */
 	if (__is_mipsle(ehdr, ldso, abi) && __is_32_bits(ehdr, ldso, abi))
-		return "/usr/lib/mipsel-linux-gnu:/lib/mipsel-linux-gnu:/usr/lib:/lib";
+		return __set_errno(errno_save, "/usr/lib/mipsel-linux-gnu:/lib/mipsel-linux-gnu:/usr/lib:/lib");
 
 	/* It is an MIPS64 LSB ELF */
 	if (__is_mipsle(ehdr, ldso, abi) && __is_64_bits(ehdr, ldso, abi))
-		return "/usr/lib/mips64el-linux-gnuabi64:/lib/mips64el-linux-gnuabi64:/usr/lib:/lib";
+		return __set_errno(errno_save, "/usr/lib/mips64el-linux-gnuabi64:/lib/mips64el-linux-gnuabi64:/usr/lib:/lib");
 
 	/* It is a PowerPC64 ELF */
 	if (__is_powerpc64(ehdr, ldso, abi))
-		return "/usr/lib/powerpc64le-linux-gnu:/lib/powerpc64-linux-gnu:/usr/lib:/lib";
+		return __set_errno(errno_save, "/usr/lib/powerpc64le-linux-gnu:/lib/powerpc64-linux-gnu:/usr/lib:/lib");
 
 	/* It is a PowerPC64 LSB ELF */
 	if (__is_powerpc64le(ehdr, ldso, abi))
-		return "/usr/lib/powerpc64le-linux-gnu:/lib/powerpc64le-linux-gnu:/usr/lib:/lib";
+		return __set_errno(errno_save, "/usr/lib/powerpc64le-linux-gnu:/lib/powerpc64le-linux-gnu:/usr/lib:/lib");
 
 	/* It is an IBM S/390 ELF */
 	if (__is_s390(ehdr, ldso, abi))
-		return "/usr/lib/s390x-linux-gnu:/lib/s390x-linux-gnu:/usr/lib:/lib";
+		return __set_errno(errno_save, "/usr/lib/s390x-linux-gnu:/lib/s390x-linux-gnu:/usr/lib:/lib");
 
 	/* It is something else */
-	return NULL;
+	return __set_errno(ENOTSUP, NULL);
 }
 
 ssize_t __getvariable(Elf64_Ehdr *ehdr, const char *ldso, int abi,

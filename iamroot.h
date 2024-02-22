@@ -100,7 +100,7 @@ extern "C" {
 #define __strneq(s1, s2) (__strncmp((s1), (s2)) == 0)
 
 #ifndef _STAT_VER
-#if defined(__arm__) || defined(__mips__)
+#if defined(__arm__) || defined(__mips__) || defined(__i386__)
 #define _STAT_VER 3
 #else
 #define _STAT_VER 0

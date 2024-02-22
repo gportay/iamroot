@@ -21,7 +21,9 @@
 
 #include "iamroot.h"
 
+#ifdef __linux__
 extern int next___fxstatat(int, int, const char *, struct stat *, int);
+#endif
 
 static int (*sym)(int, const char *, struct stat *, int);
 
@@ -31,8 +33,13 @@ int next_fstatat(int dfd, const char *path, struct stat *statbuf, int atflags)
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "fstatat");
 
+#ifdef __linux__
 	if (!sym)
 		return next___fxstatat(_STAT_VER, dfd, path, statbuf, atflags);
+#else
+	if (!sym)
+		return __dl_set_errno_and_perror(ENOSYS, -1);
+#endif
 
 	return sym(dfd, path, statbuf, atflags);
 }

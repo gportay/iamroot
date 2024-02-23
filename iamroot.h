@@ -108,6 +108,24 @@ extern "C" {
 #endif
 
 #ifdef __linux__
+/*
+ * According to man open(2):
+ *
+ * The mode argument specifies the file mode bits to be applied when a new file
+ * is created. If neither O_CREAT nor O_TMPFILE is specified in flags, then mode
+ * is ignored (and can thus be specified as 0, or simply omitted). The mode
+ * argument must be supplied if O_CREAT or O_TMPFILE is specified in flags; if
+ * it is not supplied, some arbitrary bytes from the stack will be applied as
+ * the file mode.
+ */
+#define __has_create_flag(oflags) ((oflags) & O_CREAT)
+#ifdef O_TMPFILE
+#define __has_tmpfile_flag(oflags) ((oflags) & O_TMPFILE)
+#else
+#define __has_tmpfile_flag(oflags) (0)
+#endif
+#define __needs_mode(oflags) (__has_create_flag((oflags)) || __has_tmpfile_flag((oflags)))
+
 int __secure();
 #endif
 

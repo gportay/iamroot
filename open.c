@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -52,7 +52,7 @@ int open(const char *path, int oflags, ...)
 		goto exit;
 
 #ifdef __linux__
-	if ((oflags & O_CREAT) || (oflags & O_TMPFILE) == O_TMPFILE) {
+	if (__needs_mode(oflags)) {
 		va_list ap;
 		va_start(ap, oflags);
 		mode = va_arg(ap, mode_t);

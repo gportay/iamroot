@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -24,8 +24,10 @@
  */
 static int __fexecve(int fd, char * const argv[], char * const envp[])
 {
+#ifdef SYS_execveat
 	int r = __syscall(SYS_execveat, fd, "", argv, envp, AT_EMPTY_PATH);
 	if (r != -ENOSYS) return __syscall_ret(r);
+#endif
 	char buf[15 + 3*sizeof(int)];
 	__procfdname(buf, fd);
 	execve(buf, argv, envp);

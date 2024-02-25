@@ -352,12 +352,15 @@ static int __variable_has_dynamic_string_tokens(const char *value)
 }
 
 static ssize_t __elf_needed(const char *, char *, size_t);
-static ssize_t __elf_rpath(const char *, char *, size_t, off_t);
-static ssize_t __elf_runpath(const char *, char *, size_t, off_t);
-static int __elf_flags_1(const char *, uint32_t *);
-static ssize_t __elf_deflib(const char *, char *, size_t, off_t);
+static ssize_t __felf_needed(int, char *, size_t);
+static ssize_t __felf_rpath(int, char *, size_t, off_t);
+static ssize_t __felf_runpath(int, char *, size_t, off_t);
+static int __felf_flags_1(int, uint32_t *);
+static ssize_t __felf_deflib(int, char *, size_t, off_t);
 static int __elf_so_context(const char *, char **, char **, char **, char **,
 			    uint32_t *, char *, size_t, off_t);
+static int __felf_so_context(int, char **, char **, char **, char **,
+			     uint32_t *, char *, size_t, off_t);
 
 static int __ldso_preload_needed(const char *, const char *, char *, size_t,
 				 off_t);
@@ -661,6 +664,35 @@ static int __ld_needed_callback(const char *needed, void *user)
 			     ctx->user);
 }
 
+static int __fld_needed(int fd,
+			const char *rpath,
+			const char *ld_library_path,
+			const char *runpath,
+			const char *deflib,
+			uint32_t flags_1,
+			int (*callback)(const char *, const char *,
+					const char *, const char *,
+					const char *, uint32_t, void *),
+		       void *user)
+{
+	struct __ld_needed_context ctx;
+	char needed[PATH_MAX];
+	ssize_t siz;
+
+	/* Iterate over the DT_NEEDED shared objects */
+	siz = __felf_needed(fd, needed, sizeof(needed));
+	if (siz == -1)
+		return -1;
+	ctx.rpath = rpath;
+	ctx.ld_library_path = ld_library_path;
+	ctx.runpath = runpath;
+	ctx.deflib = deflib;
+	ctx.flags_1 = flags_1;
+	ctx.callback = callback;
+	ctx.user = user;
+	return __path_iterate(needed, __ld_needed_callback, &ctx);
+}
+
 static int __ld_needed(const char *path,
 		       const char *rpath,
 		       const char *ld_library_path,
@@ -672,22 +704,19 @@ static int __ld_needed(const char *path,
 				       const char *, uint32_t, void *),
 		       void *user)
 {
-	struct __ld_needed_context ctx;
-	char needed[PATH_MAX];
-	ssize_t siz;
+	ssize_t ret;
+	int fd;
 
-	/* Iterate over the DT_NEEDED shared objects */
-	siz = __elf_needed(path, needed, sizeof(needed));
-	if (siz == -1)
+	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
+	if (fd == -1)
 		return -1;
-	ctx.rpath = rpath;
-	ctx.ld_library_path = ld_library_path;
-	ctx.runpath = runpath;
-	ctx.deflib = deflib;
-	ctx.flags_1 = flags_1;
-	ctx.callback = callback;
-	ctx.user = user;
-	return __path_iterate(needed, __ld_needed_callback, &ctx);
+
+	ret = __fld_needed(fd, rpath, ld_library_path, runpath, deflib,
+			   flags_1, callback, user);
+
+	__close(fd);
+
+	return ret;
 }
 
 struct __ld_open_needed_context {
@@ -731,30 +760,50 @@ static int __ld_open_needed_callback(const char *needed,
 	return 0;
 }
 
-static int __ld_open_needed(const char *path, int flags, const char *needed_by)
+static int __fld_open_needed(int fd, int flags, const char *needed_by)
 {
 	char *deflib, *ld_library_path, *rpath, *runpath;
 	struct __ld_open_needed_context ctx;
 	char tmp[PATH_MAX];
 	uint32_t flags_1;
+	ssize_t siz;
 	int ret;
 
+	siz = fpath(fd, tmp, sizeof(tmp));
+	if (siz == -1)
+		return -1;
+
 	/* The shared object is already opened */
-	ret = __dl_is_opened(path);
+	ret = __dl_is_opened(tmp);
 	if (ret == -1 || ret == 1)
 		return ret;
 
 	/* Get the ELF shared object context */
-	ret = __elf_so_context(path, &rpath, &ld_library_path, &runpath,
-			       &deflib, &flags_1, tmp, sizeof(tmp), 0);
+	ret = __felf_so_context(fd, &rpath, &ld_library_path, &runpath,
+				&deflib, &flags_1, tmp, sizeof(tmp), 0);
 	if (ret == -1)
 		return -1;
 
 	/* Open the needed shared objects */
 	ctx.flags = flags;
 	ctx.needed_by = needed_by;
-	return __ld_needed(path, rpath, ld_library_path, runpath, deflib,
-			   flags_1, __ld_open_needed_callback, &ctx);
+	return __fld_needed(fd, rpath, ld_library_path, runpath, deflib,
+			    flags_1, __ld_open_needed_callback, &ctx);
+}
+
+static int __ld_open_needed(const char *path, int flags, const char *needed_by)
+{
+	int fd, ret;
+
+	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
+	if (fd == -1)
+		return -1;
+
+	ret = __fld_open_needed(fd, flags, needed_by);
+
+	__close(fd);
+
+	return ret;
 }
 
 hidden int __dlopen_needed(const char *path, int flags)
@@ -2661,8 +2710,7 @@ static int __secure_execution_mode()
  * Note: This resolves all the library path of the executable file in order to
  * prevent from loading the shared objects of the host system.
 */
-static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsiz,
-			     off_t offset)
+static ssize_t __fld_lib_path(int fd, char *buf, size_t bufsiz, off_t offset)
 {
 	int err, has_runpath;
 	char tmp[PATH_MAX];
@@ -2679,11 +2727,11 @@ static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsiz,
 	 * /lib64, and then /usr/lib64.) If the binary was linked with the
 	 * -z nodeflib linker option, this step is skipped.
 	 */
-	err = __elf_flags_1(path, &flags_1);
+	err = __felf_flags_1(fd, &flags_1);
 	if (err == -1)
 		return -1;
 	if (!(flags_1 & DF_1_NODEFLIB)) {
-		err = __elf_deflib(path, tmp, sizeof(tmp), 0);
+		err = __felf_deflib(fd, tmp, sizeof(tmp), 0);
 		if (err == -1)
 			return -1;
 
@@ -2711,7 +2759,7 @@ static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsiz,
 	 * unlike DT_RPATH, which is applied to searches for all children in
 	 * the dependency tree.
 	 */
-	err = __elf_runpath(path, tmp, sizeof(tmp), 0);
+	err = __felf_runpath(fd, tmp, sizeof(tmp), 0);
 	if (err == -1)
 		return -1;
 
@@ -2743,7 +2791,7 @@ static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsiz,
 	 * exist. Use of DT_RPATH is deprecated.
 	 */
 	if (!has_runpath) {
-		err = __elf_rpath(path, tmp, sizeof(tmp), 0);
+		err = __felf_rpath(fd, tmp, sizeof(tmp), 0);
 		if (err == -1)
 			return -1;
 
@@ -2753,6 +2801,22 @@ static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsiz,
 	}
 
 	return strnlen(buf+offset, bufsiz-offset);
+}
+
+static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsiz,
+			     off_t offset)
+{
+	int fd, ret;
+
+	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
+	if (fd == -1)
+		return -1;
+
+	ret = __fld_lib_path(fd, buf, bufsiz, offset);
+
+	__close(fd);
+
+	return ret;
 }
 
 struct __ldso_library_path_context {
@@ -2827,21 +2891,6 @@ static int __felf_flags_1(int fd, uint32_t *flags)
 					   flags);
 }
 
-static int __elf_flags_1(const char *path, uint32_t *flags)
-{
-	int fd, ret;
-
-	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
-	if (fd == -1)
-		return -1;
-
-	ret = __felf_flags_1(fd, flags);
-
-	__close(fd);
-
-	return ret;
-}
-
 static int __path_callback(const void *data, size_t datasiz, void *user)
 {
 	const char *path = (const char *)data;
@@ -2904,23 +2953,6 @@ static ssize_t __felf_rpath(int fd, char *buf, size_t bufsiz, off_t offset)
 	return strnlen(buf+offset, bufsiz-offset);
 }
 
-static ssize_t __elf_rpath(const char *path, char *buf, size_t bufsiz,
-			   off_t offset)
-{
-	ssize_t ret;
-	int fd;
-
-	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
-	if (fd == -1)
-		return -1;
-
-	ret = __felf_rpath(fd, buf, bufsiz, offset);
-
-	__close(fd);
-
-	return ret;
-}
-
 static ssize_t __felf_runpath(int fd, char *buf, size_t bufsiz, off_t offset)
 {
 	int err, n;
@@ -2937,23 +2969,6 @@ static ssize_t __felf_runpath(int fd, char *buf, size_t bufsiz, off_t offset)
 			  __fpath(fd), n, buf+offset);
 
 	return strnlen(buf+offset, bufsiz-offset);
-}
-
-static ssize_t __elf_runpath(const char *path, char *buf, size_t bufsiz,
-			     off_t offset)
-{
-	ssize_t ret;
-	int fd;
-
-	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
-	if (fd == -1)
-		return -1;
-
-	ret = __felf_runpath(fd, buf, bufsiz, offset);
-
-	__close(fd);
-
-	return ret;
 }
 
 static int __has_needed_callback(const char *needed, void *user)
@@ -3083,23 +3098,6 @@ deflib:
 	_strncpy(buf+offset, deflib, bufsiz-offset);
 
 	return strnlen(buf+offset, bufsiz-offset);
-}
-
-static ssize_t __elf_deflib(const char *path, char *buf, size_t bufsiz,
-			    off_t offset)
-{
-	ssize_t ret;
-	int fd;
-
-	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
-	if (fd == -1)
-		return -1;
-
-	ret = __felf_deflib(fd, buf, bufsiz, offset);
-
-	__close(fd);
-
-	return ret;
 }
 
 static ssize_t __inhibit_rpath(char *buf, size_t bufsiz, off_t offset)
@@ -3419,21 +3417,24 @@ hidden int __ldso(const char *path, char * const argv[], char *interparg[],
  * Get the DT_RPATH, DT_RUNPATH, LD_LIBRARY_PATH, DT_FLAGS_1, and the
  * default library path.
  */
-static int __elf_so_context(const char *path,
-			    char **rpath,
-			    char **ld_library_path,
-			    char **runpath,
-			    char **deflib,
-			    uint32_t *flags_1,
-			    char *buf,
-			    size_t bufsiz,
-			    off_t offset)
+static int __felf_so_context(int fd,
+			     char **rpath,
+			     char **ld_library_path,
+			     char **runpath,
+			     char **deflib,
+			     uint32_t *flags_1,
+			     char *buf,
+			     size_t bufsiz,
+			     off_t offset)
 {
 	off_t off = offset;
 	ssize_t siz;
 
-	if (!path || !rpath || !ld_library_path || !runpath || !deflib ||
-	    !flags_1 || !buf)
+	if (fd < 0)
+		return __set_errno_and_perror(EBADFD, -1);
+
+	if (!rpath || !ld_library_path || !runpath || !deflib || !flags_1 ||
+	    !buf)
 		return __set_errno_and_perror(EINVAL, -1);
 
 	*rpath = NULL;
@@ -3442,7 +3443,7 @@ static int __elf_so_context(const char *path,
 	*deflib = NULL;
 	*flags_1 = 0;
 
-	siz = __elf_runpath(path, buf, bufsiz, off);
+	siz = __felf_runpath(fd, buf, bufsiz, off);
 	if (siz == -1)
 		return -1;
 	if (siz > 0) {
@@ -3451,7 +3452,7 @@ static int __elf_so_context(const char *path,
 	}
 
 	if (!*runpath) {
-		siz = __elf_rpath(path, buf, bufsiz, off);
+		siz = __felf_rpath(fd, buf, bufsiz, off);
 		if (siz == -1)
 			return -1;
 		if (siz > 0) {
@@ -3470,7 +3471,7 @@ static int __elf_so_context(const char *path,
 		}
 	}
 
-	siz = __elf_deflib(path, buf, bufsiz, off);
+	siz = __felf_deflib(fd, buf, bufsiz, off);
 	if (siz == -1)
 		return -1;
 	if (siz > 0) {
@@ -3478,11 +3479,35 @@ static int __elf_so_context(const char *path,
 		off += siz+1; /* NULL-terminated */
 	}
 
-	return __elf_flags_1(path, flags_1);
+	return __felf_flags_1(fd, flags_1);
 }
 
-hidden ssize_t __dl_access(const char *path, int mode, char *buf,
-			   size_t bufsiz)
+static int __elf_so_context(const char *path,
+			    char **rpath,
+			    char **ld_library_path,
+			    char **runpath,
+			    char **deflib,
+			    uint32_t *flags_1,
+			    char *buf,
+			    size_t bufsiz,
+			    off_t offset)
+{
+	ssize_t ret;
+	int fd;
+
+	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
+	if (fd == -1)
+		return -1;
+
+	ret = __felf_so_context(fd, rpath, ld_library_path, runpath, deflib,
+				flags_1, buf, bufsiz, offset);
+
+	__close(fd);
+
+	return ret;
+}
+
+ssize_t __dl_access(const char *path, int mode, char *buf, size_t bufsiz)
 {
 	char *deflib, *ld_library_path, *exec_rpath, *exec_runpath;
 	char tmp[PATH_MAX];
@@ -3637,7 +3662,7 @@ static int __ld_trace_loader_objects_needed(const char *path,
 	return 0;
 }
 
-static int __ld_trace_loader_objects_executable(const char *path)
+static int __fld_trace_loader_objects_executable(int fd)
 {
 	char *deflib, *exec_rpath, *exec_runpath, *ld_library_path;
 	struct __ld_trace_loader_objects_needed_context ctx;
@@ -3654,14 +3679,14 @@ static int __ld_trace_loader_objects_executable(const char *path)
 	*buf = 0;
 
 	/* Get the ELF shared object context */
-	ret = __elf_so_context(path, &exec_rpath, &ld_library_path,
-			       &exec_runpath, &deflib, &flags_1, tmp,
-			       sizeof(tmp), 0);
+	ret = __felf_so_context(fd, &exec_rpath, &ld_library_path,
+				&exec_runpath, &deflib, &flags_1, tmp,
+				sizeof(tmp), 0);
 	if (ret == -1)
 		return -1;
 
 	/* Get the DT_INTERP */
-	siz = __elf_interp(path, interp, sizeof(interp));
+	siz = __felf_interp(fd, interp, sizeof(interp));
 	if (siz == -1 && errno != ENOEXEC)
 		return -1;
 	/* It has no DT_INTERP */
@@ -3685,18 +3710,33 @@ static int __ld_trace_loader_objects_executable(const char *path)
 	ctx.buf = buf;
 	ctx.bufsiz = sizeof(buf);
 	ctx.f = f;
-	ret = __ld_needed(path,
-			  exec_rpath,
-			  ld_library_path,
-			  exec_runpath,
-			  deflib,
-			  flags_1,
-			  __ld_trace_loader_objects_needed_callback,
-			  &ctx);
+	ret = __fld_needed(fd,
+			   exec_rpath,
+			   ld_library_path,
+			   exec_runpath,
+			   deflib,
+			   flags_1,
+			   __ld_trace_loader_objects_needed_callback,
+			   &ctx);
 
 	/* Print the PT_INTERP interpreter */
 	fprintf(f, "\t%s => %s (0x%0*zx)\n", interp, interp,
 		(int)sizeof(map_start) * 2, map_start);
+
+	return ret;
+}
+
+static int __ld_trace_loader_objects_executable(const char *path)
+{
+	int fd, ret;
+
+	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
+	if (fd == -1)
+		return -1;
+
+	ret = __fld_trace_loader_objects_executable(fd);
+
+	__close(fd);
 
 	return ret;
 }

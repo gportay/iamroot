@@ -48,28 +48,17 @@ Installing group/module packages:
 Installing dependencies:
  NetworkManager-libnm
  acl
- adobe-source-code-pro-fonts
- adwaita-cursor-theme
- adwaita-icon-theme
  alternatives
- at-spi2-atk
- at-spi2-core
- atk
  audit-libs
- avahi-libs
  brotli
  bzip2-libs
  c-ares
  ca-certificates
- cairo
- cairo-gobject
- colord-libs
  coreutils-common
  cpio
  cracklib
  crypto-policies
  cryptsetup-libs
- cups-libs
  cyrus-sasl-lib
  dbus
  dbus-broker
@@ -96,18 +85,9 @@ Installing dependencies:
  fipscheck
  fipscheck-lib
  firewalld-filesystem
- fontconfig
- fontpackages-filesystem
- freetype
- fribidi
  fuse-libs
  gawk
- gcr
- gcr-base
  gdbm-libs
- gdk-pixbuf2
- gdk-pixbuf2-modules
- glib-networking
  glib2
  glibc
  glibc-all-langpacks
@@ -117,15 +97,9 @@ Installing dependencies:
  gnutls
  gobject-introspection
  gpgme
- graphite2
  grep
  groff-base
- gsettings-desktop-schemas
- gtk-update-icon-cache
- gtk3
  gzip
- harfbuzz
- hicolor-icon-theme
  ima-evm-utils
  initscripts
  ipcalc
@@ -134,31 +108,13 @@ Installing dependencies:
  iptables
  iptables-libs
  jansson
- jasper-libs
- jbigkit-libs
  json-c
- json-glib
  kbd-legacy
  kbd-misc
  keyutils-libs
  kmod
  kmod-libs
  krb5-libs
- lcms2
- libX11
- libX11-common
- libXau
- libXcomposite
- libXcursor
- libXdamage
- libXext
- libXfixes
- libXft
- libXi
- libXinerama
- libXrandr
- libXrender
- libXtst
  libacl
  libarchive
  libargon2
@@ -172,13 +128,11 @@ Installing dependencies:
  libcom_err
  libcomps
  libcurl
- libdatrie
  libdb
  libdb-utils
  libdhash
  libdnf
  libedit
- libepoxy
  libevent
  libfdisk
  libffi
@@ -186,17 +140,14 @@ Installing dependencies:
  libgcrypt
  libgomp
  libgpg-error
- libgusb
  libidn2
  libini_config
- libjpeg-turbo
  libkcapi
  libkcapi-hmaccalc
  libksba
  libldb
  libmetalink
  libmnl
- libmodman
  libmodulemd1
  libmount
  libndp
@@ -210,8 +161,6 @@ Installing dependencies:
  libpath_utils
  libpcap
  libpipeline
- libpng
- libproxy
  libpsl
  libpwquality
  libref_array
@@ -226,7 +175,6 @@ Installing dependencies:
  libsigsegv
  libsmartcols
  libsolv
- libsoup
  libss
  libssh
  libssh-config
@@ -238,8 +186,6 @@ Installing dependencies:
  libtasn1
  libtdb
  libtevent
- libthai
- libtiff
  libtirpc
  libunistring
  libusbx
@@ -247,10 +193,6 @@ Installing dependencies:
  libutempter
  libuuid
  libverto
- libwayland-client
- libwayland-cursor
- libwayland-egl
- libxcb
  libxcrypt
  libxml2
  libyaml
@@ -272,10 +214,8 @@ Installing dependencies:
  p11-kit
  p11-kit-trust
  pam
- pango
  pcre
  pcre2
- pixman
  plymouth-core-libs
  plymouth-scripts
  polkit-libs
@@ -305,7 +245,6 @@ Installing dependencies:
  python3-slip-dbus
  qrencode-libs
  readline
- rest
  rpm-build-libs
  rpm-libs
  rpm-plugin-selinux
@@ -330,13 +269,10 @@ Installing dependencies:
  zchunk-libs
  zlib
 Installing weak dependencies:
- abattis-cantarell-fonts
  cracklib-dicts
- dconf
  deltarpm
  geolite2-city
  geolite2-country
- gnome-keyring
  gnupg2-smime
  iproute-tc
  kpartx
@@ -381,10 +317,7 @@ Running transaction
   Preparing        : XXX/XXX
   Installing       : libgcc XXX/XXX
   Running scriptlet: libgcc XXX/XXX
-  Installing       : fontpackages-filesystem XXX/XXX
-  Installing       : abattis-cantarell-fonts XXX/XXX
   Installing       : tzdata XXX/XXX
-  Installing       : adobe-source-code-pro-fonts XXX/XXX
   Installing       : xkeyboard-config XXX/XXX
   Installing       : whois-nls XXX/XXX
   Installing       : systemd-rpm-macros XXX/XXX
@@ -394,7 +327,6 @@ Running transaction
   Installing       : libssh-config XXX/XXX
   Installing       : libreport-filesystem XXX/XXX
   Installing       : dnf-data XXX/XXX
-  Installing       : libX11-common XXX/XXX
   Installing       : kbd-misc XXX/XXX
   Installing       : kbd-legacy XXX/XXX
   Installing       : geolite2-country XXX/XXX
@@ -427,35 +359,33 @@ Running transaction
   Installing       : bzip2-libs XXX/XXX
   Installing       : popt XXX/XXX
   Installing       : libcap XXX/XXX
-  Installing       : libgpg-error XXX/XXX
   Installing       : libuuid XXX/XXX
   Installing       : libcom_err XXX/XXX
   Installing       : libdb XXX/XXX
   Installing       : libzstd XXX/XXX
-  Installing       : libstdc++ XXX/XXX
-  Installing       : libgcrypt XXX/XXX
-  Installing       : libxml2 XXX/XXX
-  Installing       : expat XXX/XXX
-  Installing       : libffi XXX/XXX
-  Installing       : p11-kit XXX/XXX
+  Installing       : libgpg-error XXX/XXX
   Installing       : readline XXX/XXX
   Installing       : elfutils-libelf XXX/XXX
   Installing       : alternatives XXX/XXX
+  Installing       : expat XXX/XXX
   Installing       : gmp XXX/XXX
   Installing       : libmnl XXX/XXX
   Installing       : lua-libs XXX/XXX
+  Installing       : libgcrypt XXX/XXX
+  Installing       : libxml2 XXX/XXX
   Installing       : libtalloc XXX/XXX
+  Installing       : libffi XXX/XXX
+  Installing       : p11-kit XXX/XXX
+  Installing       : libassuan XXX/XXX
   Installing       : libcap-ng XXX/XXX
   Installing       : audit-libs XXX/XXX
-  Installing       : libassuan XXX/XXX
-  Installing       : libpng XXX/XXX
-  Installing       : freetype XXX/XXX
-  Installing       : sqlite-libs XXX/XXX
+  Installing       : libstdc++ XXX/XXX
   Installing       : pcre XXX/XXX
   Installing       : grep XXX/XXX
   Installing       : libsemanage XXX/XXX
   Installing       : libtevent XXX/XXX
   Installing       : libtdb XXX/XXX
+  Installing       : sqlite-libs XXX/XXX
   Installing       : findutils XXX/XXX
   Installing       : keyutils-libs XXX/XXX
   Installing       : libattr XXX/XXX
@@ -464,21 +394,17 @@ Running transaction
   Installing       : shadow-utils XXX/XXX
   Installing       : libbasicobjects XXX/XXX
   Installing       : libcollection XXX/XXX
-  Installing       : libjpeg-turbo XXX/XXX
   Installing       : libref_array XXX/XXX
   Installing       : libsmartcols XXX/XXX
   Installing       : libunistring XXX/XXX
   Installing       : libidn2 XXX/XXX
-  Installing       : libpsl XXX/XXX
   Installing       : lz4-libs XXX/XXX
-  Installing       : libwayland-client XXX/XXX
+  Installing       : libpsl XXX/XXX
   Installing       : libksba XXX/XXX
   Installing       : libxcrypt-compat XXX/XXX
   Installing       : file-libs XXX/XXX
-  Installing       : brotli XXX/XXX
   Installing       : cpio XXX/XXX
   Installing       : diffutils XXX/XXX
-  Installing       : fribidi XXX/XXX
   Installing       : gdbm-libs XXX/XXX
   Installing       : jansson XXX/XXX
   Installing       : json-c XXX/XXX
@@ -487,20 +413,18 @@ Running transaction
   Installing       : libtasn1 XXX/XXX
   Installing       : p11-kit-trust XXX/XXX
   Running scriptlet: p11-kit-trust XXX/XXX
-  Installing       : libxkbcommon XXX/XXX
-  Installing       : pixman XXX/XXX
-  Installing       : libwayland-cursor XXX/XXX
-  Installing       : jasper-libs XXX/XXX
   Running scriptlet: libutempter XXX/XXX
   Installing       : libutempter XXX/XXX
   Installing       : groff-base XXX/XXX
   Installing       : acl XXX/XXX
   Installing       : xz XXX/XXX
+  Installing       : libcomps XXX/XXX
   Installing       : ipset-libs XXX/XXX
   Installing       : ipset XXX/XXX
   Installing       : libnftnl XXX/XXX
   Installing       : mpfr XXX/XXX
   Installing       : nettle XXX/XXX
+  Installing       : libmetalink XXX/XXX
   Installing       : ebtables-legacy XXX/XXX
   Running scriptlet: ebtables-legacy XXX/XXX
 /var/tmp/rpm-tmp.XXXXXX: line X: readlink: command not found
@@ -508,41 +432,17 @@ Running transaction
 /var/tmp/rpm-tmp.XXXXXX: line X: readlink: command not found
 /var/tmp/rpm-tmp.XXXXXX: line X: readlink: command not found
 
-  Installing       : libcomps XXX/XXX
-  Installing       : libmetalink XXX/XXX
-  Installing       : graphite2 XXX/XXX
-  Installing       : libmodman XXX/XXX
-  Installing       : libproxy XXX/XXX
   Installing       : libdb-utils XXX/XXX
   Installing       : e2fsprogs-libs XXX/XXX
   Installing       : libss XXX/XXX
   Installing       : pigz XXX/XXX
   Installing       : libselinux-utils XXX/XXX
-  Installing       : hicolor-icon-theme XXX/XXX
   Installing       : less XXX/XXX
+  Installing       : brotli XXX/XXX
   Installing       : c-ares XXX/XXX
   Installing       : fuse-libs XXX/XXX
-  Installing       : jbigkit-libs XXX/XXX
-  Installing       : libtiff XXX/XXX
-  Installing       : lcms2 XXX/XXX
-  Installing       : libXau XXX/XXX
-  Installing       : libxcb XXX/XXX
-  Installing       : libX11 XXX/XXX
-  Installing       : libXext XXX/XXX
-  Installing       : libXrender XXX/XXX
-  Installing       : libXfixes XXX/XXX
-  Installing       : libXi XXX/XXX
-  Installing       : libXtst XXX/XXX
-  Installing       : libXcursor XXX/XXX
-  Installing       : libXdamage XXX/XXX
-  Installing       : libXrandr XXX/XXX
-  Installing       : libXinerama XXX/XXX
-  Installing       : libXcomposite XXX/XXX
   Installing       : libargon2 XXX/XXX
-  Installing       : libdatrie XXX/XXX
-  Installing       : libthai XXX/XXX
   Installing       : libedit XXX/XXX
-  Installing       : libepoxy XXX/XXX
   Installing       : libgomp XXX/XXX
   Installing       : libmaxminddb XXX/XXX
   Installing       : ipcalc XXX/XXX
@@ -567,7 +467,7 @@ Running transaction
   Installing       : libsss_nss_idmap XXX/XXX
   Installing       : libsss_sudo XXX/XXX
   Installing       : libverto XXX/XXX
-  Installing       : libwayland-egl XXX/XXX
+  Installing       : libxkbcommon XXX/XXX
   Installing       : libyaml XXX/XXX
   Installing       : linux-atm-libs XXX/XXX
   Installing       : iproute XXX/XXX
@@ -600,25 +500,16 @@ Running transaction
   Installing       : libblkid XXX/XXX
   Running scriptlet: libblkid XXX/XXX
   Installing       : dbus-libs XXX/XXX
-  Installing       : fontconfig XXX/XXX
-  Running scriptlet: fontconfig XXX/XXX
   Installing       : gzip XXX/XXX
   Installing       : cracklib XXX/XXX
   Installing       : libmount XXX/XXX
   Installing       : shared-mime-info XXX/XXX
   Running scriptlet: shared-mime-info XXX/XXX
   Installing       : glib2 XXX/XXX
-  Installing       : cairo XXX/XXX
-  Installing       : gdk-pixbuf2 XXX/XXX
-  Installing       : atk XXX/XXX
-  Installing       : harfbuzz XXX/XXX
   Installing       : python3-dbus XXX/XXX
   Installing       : kmod-libs XXX/XXX
-  Installing       : cairo-gobject XXX/XXX
-  Installing       : gcr-base XXX/XXX
   Installing       : libmodulemd1 XXX/XXX
   Installing       : cracklib-dicts XXX/XXX
-  Installing       : libusbx XXX/XXX
   Installing       : procps-ng XXX/XXX
   Installing       : kmod XXX/XXX
   Installing       : libevent XXX/XXX
@@ -631,33 +522,26 @@ Running transaction
   Installing       : unbound-libs XXX/XXX
   Running scriptlet: unbound-libs XXX/XXX
   Installing       : python3-unbound XXX/XXX
-  Installing       : libgusb XXX/XXX
-  Installing       : colord-libs XXX/XXX
   Installing       : libpwquality XXX/XXX
   Installing       : pam XXX/XXX
   Installing       : kbd XXX/XXX
   Installing       : sssd-client XXX/XXX
   Running scriptlet: sssd-client XXX/XXX
-  Installing       : gdk-pixbuf2-modules XXX/XXX
-  Installing       : gtk-update-icon-cache XXX/XXX
   Installing       : gobject-introspection XXX/XXX
   Installing       : python3-gobject-base XXX/XXX
-  Installing       : gsettings-desktop-schemas XXX/XXX
-  Installing       : json-glib XXX/XXX
+  Installing       : libsecret XXX/XXX
+  Installing       : pinentry XXX/XXX
   Installing       : polkit-libs XXX/XXX
-  Installing       : libXft XXX/XXX
-  Installing       : pango XXX/XXX
-  Installing       : avahi-libs XXX/XXX
   Installing       : libfdisk XXX/XXX
   Installing       : util-linux XXX/XXX
   Running scriptlet: util-linux XXX/XXX
+  Installing       : libusbx XXX/XXX
   Installing       : plymouth-core-libs XXX/XXX
   Installing       : libssh XXX/XXX
   Installing       : fipscheck-lib XXX/XXX
   Installing       : fipscheck XXX/XXX
   Running scriptlet: openssh XXX/XXX
   Installing       : openssh XXX/XXX
-  Installing       : openssh-clients XXX/XXX
   Installing       : libarchive XXX/XXX
   Installing       : trousers-lib XXX/XXX
   Installing       : device-mapper XXX/XXX
@@ -704,13 +588,6 @@ Created symlink /etc/systemd/system/sysinit.target.wants/import-state.service �
 Failed to open /dev/urandom: No such file or directory
 
   Installing       : NetworkManager-libnm XXX/XXX
-  Installing       : cups-libs XXX/XXX
-  Installing       : glib-networking XXX/XXX
-  Installing       : libsoup XXX/XXX
-  Installing       : rest XXX/XXX
-  Installing       : at-spi2-core XXX/XXX
-  Installing       : at-spi2-atk XXX/XXX
-  Installing       : dconf XXX/XXX
   Installing       : kpartx XXX/XXX
   Installing       : dracut XXX/XXX
   Installing       : plymouth XXX/XXX
@@ -726,6 +603,9 @@ Failed to open /dev/urandom: No such file or directory
   Installing       : vim-minimal XXX/XXX
   Installing       : cyrus-sasl-lib XXX/XXX
   Installing       : openldap XXX/XXX
+  Installing       : gnupg2-smime XXX/XXX
+  Installing       : gnupg2 XXX/XXX
+  Installing       : gpgme XXX/XXX
   Installing       : libcurl XXX/XXX
   Installing       : libldb XXX/XXX
   Installing       : curl XXX/XXX
@@ -745,6 +625,19 @@ Created symlink /etc/systemd/system/sysinit.target.wants/selinux-autorelabel-mar
   Installing       : deltarpm XXX/XXX
   Installing       : rpm-build-libs XXX/XXX
   Installing       : rpm-plugin-systemd-inhibit XXX/XXX
+  Installing       : rpm-sign-libs XXX/XXX
+  Installing       : python3-rpm XXX/XXX
+  Installing       : librepo XXX/XXX
+  Installing       : libdnf XXX/XXX
+  Installing       : python3-libdnf XXX/XXX
+  Installing       : python3-hawkey XXX/XXX
+  Installing       : python3-gpg XXX/XXX
+  Installing       : python3-dnf XXX/XXX
+  Installing       : dnf XXX/XXX
+  Running scriptlet: dnf XXX/XXX
+Created symlink /etc/systemd/system/multi-user.target.wants/dnf-makecache.timer → /usr/lib/systemd/system/dnf-makecache.timer.
+
+  Installing       : python3-dnf-plugins-core XXX/XXX
   Installing       : libnfsidmap XXX/XXX
   Installing       : sssd-nfs-idmap XXX/XXX
   Installing       : sssd-common XXX/XXX
@@ -752,36 +645,13 @@ Created symlink /etc/systemd/system/sysinit.target.wants/selinux-autorelabel-mar
 Created symlink /etc/systemd/system/multi-user.target.wants/sssd.service → /usr/lib/systemd/system/sssd.service.
 
   Installing       : libuser XXX/XXX
-  Installing       : adwaita-cursor-theme XXX/XXX
-  Installing       : adwaita-icon-theme XXX/XXX
-  Installing       : gtk3 XXX/XXX
-  Installing       : gcr XXX/XXX
-  Installing       : gnome-keyring XXX/XXX
-  Installing       : libsecret XXX/XXX
-  Installing       : pinentry XXX/XXX
-  Installing       : gnupg2-smime XXX/XXX
-  Installing       : gnupg2 XXX/XXX
-  Installing       : gpgme XXX/XXX
-  Installing       : librepo XXX/XXX
-  Installing       : libdnf XXX/XXX
-  Installing       : python3-libdnf XXX/XXX
-  Installing       : python3-hawkey XXX/XXX
-  Installing       : python3-gpg XXX/XXX
-  Installing       : rpm-sign-libs XXX/XXX
-  Installing       : python3-rpm XXX/XXX
-  Installing       : python3-dnf XXX/XXX
-  Installing       : dnf XXX/XXX
-  Running scriptlet: dnf XXX/XXX
-Created symlink /etc/systemd/system/multi-user.target.wants/dnf-makecache.timer → /usr/lib/systemd/system/dnf-makecache.timer.
-
-  Installing       : python3-dnf-plugins-core XXX/XXX
-  Installing       : dnf-plugins-core XXX/XXX
-  Installing       : yum XXX/XXX
   Installing       : passwd XXX/XXX
   Installing       : sssd-kcm XXX/XXX
   Running scriptlet: sssd-kcm XXX/XXX
 Created symlink /etc/systemd/system/sockets.target.wants/sssd-kcm.socket → /usr/lib/systemd/system/sssd-kcm.socket.
 
+  Installing       : dnf-plugins-core XXX/XXX
+  Installing       : yum XXX/XXX
   Running scriptlet: NetworkManager XXX/XXX
   Installing       : NetworkManager XXX/XXX
   Running scriptlet: NetworkManager XXX/XXX
@@ -810,6 +680,7 @@ Created symlink /etc/systemd/system/multi-user.target.wants/auditd.service → /
 Created symlink /etc/systemd/system/multi-user.target.wants/sshd.service → /usr/lib/systemd/system/sshd.service.
 
   Installing       : parted XXX/XXX
+  Installing       : openssh-clients XXX/XXX
   Running scriptlet: man-db XXX/XXX
   Installing       : man-db XXX/XXX
   Running scriptlet: man-db XXX/XXX
@@ -820,7 +691,6 @@ Created symlink /etc/systemd/system/multi-user.target.wants/sshd.service → /us
   Running scriptlet: filesystem XXX/XXX
   Running scriptlet: glibc-all-langpacks XXX/XXX
   Running scriptlet: crypto-policies XXX/XXX
-  Running scriptlet: dconf XXX/XXX
   Running scriptlet: selinux-policy-targeted XXX/XXX
   Running scriptlet: sssd-common XXX/XXX
 Running in chroot, ignoring request: try-restart
@@ -831,27 +701,16 @@ Running in chroot, ignoring request: try-restart
 Installed:
   NetworkManager
   NetworkManager-libnm
-  abattis-cantarell-fonts
   acl
-  adobe-source-code-pro-fonts
-  adwaita-cursor-theme
-  adwaita-icon-theme
   alternatives
-  at-spi2-atk
-  at-spi2-core
-  atk
   audit
   audit-libs
-  avahi-libs
   basesystem
   bash
   brotli
   bzip2-libs
   c-ares
   ca-certificates
-  cairo
-  cairo-gobject
-  colord-libs
   coreutils
   coreutils-common
   cpio
@@ -859,14 +718,12 @@ Installed:
   cracklib-dicts
   crypto-policies
   cryptsetup-libs
-  cups-libs
   curl
   cyrus-sasl-lib
   dbus
   dbus-broker
   dbus-common
   dbus-libs
-  dconf
   deltarpm
   device-mapper
   device-mapper-libs
@@ -896,40 +753,24 @@ Installed:
   fipscheck-lib
   firewalld
   firewalld-filesystem
-  fontconfig
-  fontpackages-filesystem
-  freetype
-  fribidi
   fuse-libs
   gawk
-  gcr
-  gcr-base
   gdbm-libs
-  gdk-pixbuf2
-  gdk-pixbuf2-modules
   geolite2-city
   geolite2-country
-  glib-networking
   glib2
   glibc
   glibc-all-langpacks
   glibc-common
   gmp
-  gnome-keyring
   gnupg2
   gnupg2-smime
   gnutls
   gobject-introspection
   gpgme
-  graphite2
   grep
   groff-base
-  gsettings-desktop-schemas
-  gtk-update-icon-cache
-  gtk3
   gzip
-  harfbuzz
-  hicolor-icon-theme
   hostname
   ima-evm-utils
   initscripts
@@ -942,10 +783,7 @@ Installed:
   iptables-libs
   iputils
   jansson
-  jasper-libs
-  jbigkit-libs
   json-c
-  json-glib
   kbd
   kbd-legacy
   kbd-misc
@@ -954,22 +792,7 @@ Installed:
   kmod-libs
   kpartx
   krb5-libs
-  lcms2
   less
-  libX11
-  libX11-common
-  libXau
-  libXcomposite
-  libXcursor
-  libXdamage
-  libXext
-  libXfixes
-  libXft
-  libXi
-  libXinerama
-  libXrandr
-  libXrender
-  libXtst
   libacl
   libarchive
   libargon2
@@ -983,13 +806,11 @@ Installed:
   libcom_err
   libcomps
   libcurl
-  libdatrie
   libdb
   libdb-utils
   libdhash
   libdnf
   libedit
-  libepoxy
   libevent
   libfdisk
   libffi
@@ -997,10 +818,8 @@ Installed:
   libgcrypt
   libgomp
   libgpg-error
-  libgusb
   libidn2
   libini_config
-  libjpeg-turbo
   libkcapi
   libkcapi-hmaccalc
   libksba
@@ -1008,7 +827,6 @@ Installed:
   libmaxminddb
   libmetalink
   libmnl
-  libmodman
   libmodulemd1
   libmount
   libndp
@@ -1022,8 +840,6 @@ Installed:
   libpath_utils
   libpcap
   libpipeline
-  libpng
-  libproxy
   libpsl
   libpwquality
   libref_array
@@ -1038,7 +854,6 @@ Installed:
   libsigsegv
   libsmartcols
   libsolv
-  libsoup
   libss
   libssh
   libssh-config
@@ -1052,8 +867,6 @@ Installed:
   libtasn1
   libtdb
   libtevent
-  libthai
-  libtiff
   libtirpc
   libunistring
   libusbx
@@ -1061,10 +874,6 @@ Installed:
   libutempter
   libuuid
   libverto
-  libwayland-client
-  libwayland-cursor
-  libwayland-egl
-  libxcb
   libxcrypt
   libxcrypt-compat
   libxkbcommon
@@ -1094,14 +903,12 @@ Installed:
   p11-kit
   p11-kit-trust
   pam
-  pango
   parted
   passwd
   pcre
   pcre2
   pigz
   pinentry
-  pixman
   plymouth
   plymouth-core-libs
   plymouth-scripts
@@ -1137,7 +944,6 @@ Installed:
   python3-unbound
   qrencode-libs
   readline
-  rest
   rootfiles
   rpm
   rpm-build-libs

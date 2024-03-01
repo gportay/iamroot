@@ -414,84 +414,13 @@ Running transaction
   Installing       : fedora-release-common XXX/XXX
   Installing       : fedora-release XXX/XXX
   Running scriptlet: setup XXX/XXX
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-xargs: echo: terminated by signal 13
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-xargs: echo: terminated by signal 13
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-xargs: echo: terminated by signal 13
-xargs: echo: terminated by signal 13
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-xargs: echo: terminated by signal 13
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-xargs: echo: terminated by signal 13
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-xargs: echo: terminated by signal 13
-xargs: echo: terminated by signal 13
-xargs: echo: terminated by signal 13
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-xargs: echo: terminated by signal 13
-xargs: echo: terminated by signal 13
-
-xargs: echo: terminated by signal 13
-xargs: echo: terminated by signal 13
-xargs: echo: terminated by signal 13
-xargs: echo: terminated by signal 13
-xargs: echo: terminated by signal 13
-xargs: echo: terminated by signal 13
-xargs: echo: terminated by signal 13
-xargs: echo: terminated by signal 13
-xargs: echo: terminated by signal 13
-xargs: echo: terminated by signal 13
-xargs: echo: terminated by signal 13
-xargs: echo: terminated by signal 13
-xargs: echo: terminated by signal 13
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-xargs: echo: terminated by signal 13
-xargs: echo: terminated by signal 13
-xargs: echo: terminated by signal 13
-/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
-xargs: echo: terminated by signal 13
-xargs: echo: terminated by signal 13
-xargs: echo: terminated by signal 13
-xargs: echo: terminated by signal 13
+useradd: Warning: missing or non-executable shell '/sbin/halt'
+useradd warning: nobody's uid 65534 is greater than SYS_UID_MAX 999
+useradd: Warning: missing or non-executable shell '/bin/bash'
+useradd: Warning: missing or non-executable shell '/sbin/shutdown'
+useradd: Warning: missing or non-executable shell '/bin/sync'
 
   Installing       : setup XXX/XXX
-xargs: echo: terminated by signal 13
-xargs: echo: terminated by signal 13
-xargs: echo: terminated by signal 13
-xargs: echo: terminated by signal 13
-xargs: echo: terminated by signal 13
-xargs: echo: terminated by signal 13
-
   Running scriptlet: setup XXX/XXX
   Installing       : filesystem XXX/XXX
   Installing       : basesystem XXX/XXX

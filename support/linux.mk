@@ -952,6 +952,7 @@ $(eval $(call dnf-rootfs,x86_64,fedora,36))
 $(eval $(call dnf-rootfs,x86_64,fedora,37))
 $(eval $(call dnf-rootfs,x86_64,fedora,38))
 $(eval $(call dnf-rootfs,x86_64,fedora,39))
+x86_64-fedora-39-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
 endif
 
 ifneq ($(shell command -v zypper 2>/dev/null),)
@@ -1343,6 +1344,7 @@ $(eval $(call dnf-rootfs,aarch64,fedora,36))
 $(eval $(call dnf-rootfs,aarch64,fedora,37))
 $(eval $(call dnf-rootfs,aarch64,fedora,38))
 $(eval $(call dnf-rootfs,aarch64,fedora,39))
+aarch64-fedora-39-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
 endif
 
 ifneq ($(shell command -v arm-buildroot-linux-gnueabihf-gcc 2>/dev/null),)

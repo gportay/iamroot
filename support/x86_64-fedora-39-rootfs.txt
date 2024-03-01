@@ -413,7 +413,85 @@ Running transaction
   Installing       : fedora-repos XXX/XXX
   Installing       : fedora-release-common XXX/XXX
   Installing       : fedora-release XXX/XXX
+  Running scriptlet: setup XXX/XXX
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+xargs: echo: terminated by signal 13
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+xargs: echo: terminated by signal 13
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+xargs: echo: terminated by signal 13
+xargs: echo: terminated by signal 13
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+xargs: echo: terminated by signal 13
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+xargs: echo: terminated by signal 13
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+xargs: echo: terminated by signal 13
+xargs: echo: terminated by signal 13
+xargs: echo: terminated by signal 13
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+xargs: echo: terminated by signal 13
+xargs: echo: terminated by signal 13
+
+xargs: echo: terminated by signal 13
+xargs: echo: terminated by signal 13
+xargs: echo: terminated by signal 13
+xargs: echo: terminated by signal 13
+xargs: echo: terminated by signal 13
+xargs: echo: terminated by signal 13
+xargs: echo: terminated by signal 13
+xargs: echo: terminated by signal 13
+xargs: echo: terminated by signal 13
+xargs: echo: terminated by signal 13
+xargs: echo: terminated by signal 13
+xargs: echo: terminated by signal 13
+xargs: echo: terminated by signal 13
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+xargs: echo: terminated by signal 13
+xargs: echo: terminated by signal 13
+xargs: echo: terminated by signal 13
+/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+xargs: echo: terminated by signal 13
+xargs: echo: terminated by signal 13
+xargs: echo: terminated by signal 13
+xargs: echo: terminated by signal 13
+
   Installing       : setup XXX/XXX
+xargs: echo: terminated by signal 13
+xargs: echo: terminated by signal 13
+xargs: echo: terminated by signal 13
+xargs: echo: terminated by signal 13
+xargs: echo: terminated by signal 13
+xargs: echo: terminated by signal 13
+
   Running scriptlet: setup XXX/XXX
   Installing       : filesystem XXX/XXX
   Installing       : basesystem XXX/XXX
@@ -551,6 +629,10 @@ Running transaction
   Installing       : libss XXX/XXX
   Installing       : e2fsprogs XXX/XXX
   Installing       : pigz XXX/XXX
+  Running scriptlet: dbus-common XXX/XXX
+groupadd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
+useradd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
+
   Installing       : dbus-common XXX/XXX
   Running scriptlet: dbus-common XXX/XXX
   Installing       : less XXX/XXX
@@ -658,6 +740,9 @@ Running transaction
   Installing       : openssl-libs XXX/XXX
   Installing       : kmod-libs XXX/XXX
   Running scriptlet: tpm2-tss XXX/XXX
+groupadd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
+useradd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
+
 useradd: Warning: missing or non-executable shell '/usr/sbin/nologin'
 
   Installing       : tpm2-tss XXX/XXX
@@ -669,9 +754,17 @@ useradd: Warning: missing or non-executable shell '/usr/sbin/nologin'
   Installing       : authselect-libs XXX/XXX
   Running scriptlet: libutempter XXX/XXX
   Installing       : libutempter XXX/XXX
+  Running scriptlet: systemd-networkd XXX/XXX
+groupadd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
+useradd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
+
   Installing       : systemd-networkd XXX/XXX
   Running scriptlet: systemd-networkd XXX/XXX
   Installing       : systemd-pam XXX/XXX
+  Running scriptlet: systemd-resolved XXX/XXX
+groupadd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
+useradd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
+
   Installing       : systemd-resolved XXX/XXX
   Running scriptlet: systemd-resolved XXX/XXX
   Installing       : os-prober XXX/XXX
@@ -679,6 +772,17 @@ useradd: Warning: missing or non-executable shell '/usr/sbin/nologin'
   Running scriptlet: grubby XXX/XXX
   Installing       : dracut XXX/XXX
   Installing       : util-linux XXX/XXX
+  Running scriptlet: systemd XXX/XXX
+groupadd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
+groupadd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
+groupadd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
+groupadd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
+
+groupadd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
+
+groupadd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
+useradd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
+
   Installing       : systemd XXX/XXX
   Running scriptlet: systemd XXX/XXX
 Creating group 'input' with GID XXX.
@@ -692,6 +796,13 @@ Creating group 'systemd-oom' with GID XXX.
 Creating user 'systemd-oom' (systemd Userspace OOM Killer) with UID XXX and GID XXX.
 Creating group 'systemd-resolve' with GID XXX.
 Creating user 'systemd-resolve' (systemd Resolver) with UID XXX and GID XXX.
+
+  Running scriptlet: systemd-udev XXX/XXX
+groupadd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
+useradd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
+
+groupadd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
+useradd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
 
   Installing       : systemd-udev XXX/XXX
   Running scriptlet: systemd-udev XXX/XXX
@@ -879,6 +990,9 @@ Created symlink /etc/systemd/system/network-online.target.wants/NetworkManager-w
   Installing       : openssh-clients XXX/XXX
   Running scriptlet: openssh-clients XXX/XXX
   Running scriptlet: openssh-server XXX/XXX
+groupadd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
+useradd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
+
   Installing       : openssh-server XXX/XXX
   Running scriptlet: openssh-server XXX/XXX
 Created symlink /etc/systemd/system/multi-user.target.wants/sshd.service → /usr/lib/systemd/system/sshd.service.

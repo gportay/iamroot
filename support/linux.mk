@@ -931,7 +931,7 @@ fedora-rootfs: x86_64-fedora-37-rootfs
 fedora-rootfs: x86_64-fedora-38-rootfs
 fedora-rootfs: x86_64-fedora-39-rootfs
 
-stable-rootfs: x86_64-fedora-39-rootfs
+fixme-rootfs: x86_64-fedora-39-rootfs
 
 x86_64-fedora-20-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 x86_64-fedora-30-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
@@ -1714,7 +1714,7 @@ fedora-support: support/x86_64-fedora-35-rootfs.txt
 fedora-support: support/x86_64-fedora-36-rootfs.txt
 fedora-support: support/x86_64-fedora-37-rootfs.txt
 fedora-support: support/x86_64-fedora-38-rootfs.txt
-fedora-support: support/x86_64-fedora-39-rootfs.txt
+fixme-support: support/x86_64-fedora-39-rootfs.txt
 
 log: fedora-log
 
@@ -1729,7 +1729,7 @@ fedora-log: x86_64-fedora-35-rootfs.log
 fedora-log: x86_64-fedora-36-rootfs.log
 fedora-log: x86_64-fedora-37-rootfs.log
 fedora-log: x86_64-fedora-38-rootfs.log
-fedora-log: x86_64-fedora-39-rootfs.log
+fixme-log: x86_64-fedora-39-rootfs.log
 endif
 
 ifneq ($(shell command -v zypper 2>/dev/null),)

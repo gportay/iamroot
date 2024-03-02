@@ -102,6 +102,7 @@ int execveat(int dfd, const char *path, char * const argv[],
 
 	/* Do not proceed to any hack if not in chroot */
 	if (!__inchroot()) {
+		__warn_if_not_preloading_libiamroot();
 		__execfd();
 		__verbose_exec(path, argv, envp);
 		return next_execveat(dfd, path, argv, envp, atflags);

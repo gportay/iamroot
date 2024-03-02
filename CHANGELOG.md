@@ -12,6 +12,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Chroot to a musl ppc64le world; tested on [Alpine Linux]
 - Output a warning if a library is not found in the library-path
 - Output a warning if the iamroot library is not found in the library-directory
+- Output a warning if the iamroot library is not preloaded
+
+### Changed
+
+- Output traces even if not in chroot
 
 ### Fixed
 

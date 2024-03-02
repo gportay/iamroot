@@ -178,6 +178,7 @@ int __issuid(const char *);
 int __ldso(const char *, char * const [], char *, size_t, char *[]);
 int __exec_sh(const char *, char * const *, char *[], char *, size_t);
 char **__glibc_workaround(char *, size_t, char *, char *[7+1]);
+ssize_t __interpreter_script_hashbang(const char *, char *, size_t);
 int __interpreter_script(const char *, char * const [], char *, size_t,
 			 char *[]);
 
@@ -238,6 +239,13 @@ void __verbose_exec(const char *, char * const[], char * const[]);
 #define __warning(fmt, ...) {}
 #define __verbose_exec(fmt, ...) {}
 #endif
+
+#define __warn_if_not_preloading_libiamroot() \
+	({ const int errno_save = errno; \
+	   if (!__is_preloading_libiamroot()) \
+	     __warning("%s: not preloading library!\n", __func__); \
+	   errno = errno_save; \
+	   })
 
 #define __fwarn_and_set_user_mode(fd, mode, user_mode) \
 	({ if (((mode) & (user_mode)) != (user_mode)) { \
@@ -701,6 +709,8 @@ static inline void __close(int fd)
 }
 
 const char *__path();
+
+int __is_preloading_libiamroot();
 
 int __is_ldso(const char *);
 

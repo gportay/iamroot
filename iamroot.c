@@ -1137,7 +1137,7 @@ static int __vdverbosef(int fd, int lvl, const char *func, const char *fmt,
 		return 0;
 
 	debug = __getdebug();
-	if (debug < lvl || (!__inchroot() && debug < 5))
+	if (debug < lvl)
 		return 0;
 
 	color = __getcolor();

@@ -113,6 +113,7 @@ int posix_spawn(pid_t *pid, const char *path,
 
 	/* Do not proceed to any hack if not in chroot */
 	if (!__inchroot()) {
+		__warn_if_not_preloading_libiamroot();
 		__execfd();
 		__verbose_exec(path, argv, envp);
 		return next_posix_spawn(pid, path, file_actions, attrp, argv,

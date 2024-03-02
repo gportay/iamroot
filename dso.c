@@ -2233,6 +2233,71 @@ exit:
 	return __set_errno(errno_save, lib);
 }
 
+__attribute__((visibility("hidden")))
+int __is_preloading_libiamroot()
+{
+	char hashbang[NAME_MAX], interp[NAME_MAX], ldso[NAME_MAX];
+	const char *ld_preload, *lib, *path;
+	int fd, abi = -1, ret = -1;
+	Elf64_Ehdr ehdr;
+	ssize_t siz;
+
+	/* Is LD_PRELOAD set? */
+	ld_preload = _getenv("LD_PRELOAD");
+	if (!ld_preload)
+		return 0;
+
+	/* Get the executable */
+	path = __execfn();
+	if (!path)
+		return -1;
+
+	siz = __interpreter_script_hashbang(path, hashbang, sizeof(hashbang));
+	if ((siz == -1) && (errno != ENOEXEC))
+		return -1;
+	if (siz < 1)
+		goto open;
+
+	path = hashbang;
+
+open:
+	/* Open the executable file... */
+	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
+	if (fd == -1)
+		return -1;
+
+	/* ... get the ELF header... */
+	siz = __felf_header(fd, &ehdr);
+	if (siz == -1)
+		goto close;
+
+	/*
+	 * ... get the dynamic loader stored in the .interp section of the ELF
+	 * linked program...
+	 */
+	siz = __felf_interp(fd, interp, sizeof(interp));
+	if (siz < 1)
+		goto close;
+
+	/* ... and get its LDSO-name and its ABI number */
+	ret = __ld_ldso_abi(interp, ldso, &abi);
+	if (ret == -1)
+		goto close;
+
+	/* Get the iamroot library */
+	lib = __getlibiamroot(&ehdr, ldso, abi);
+	if (!lib)
+		goto close;
+
+	/* Search for the iamroot library in LD_PRELOAD */
+	ret = __is_in_path(lib, _getenv("LD_PRELOAD") ?: "");
+
+close:
+	__close(fd);
+
+	return ret;
+}
+
 static const char *__getdeflib(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
 	const int errno_save = errno;

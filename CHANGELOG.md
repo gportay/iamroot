@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [unreleased]
 
+### Added
+
+- Preload the iamroot library if `LD_PRELOAD` is unset and not in a chroot'ed
+  environment
+
 ### Removed
 
 - Remove the environment variables `ld_preload`, `ld_library_path` and

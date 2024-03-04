@@ -240,10 +240,14 @@ void __verbose_exec(const char *, char * const[], char * const[]);
 #define __verbose_exec(fmt, ...) {}
 #endif
 
-#define __warn_if_not_preloading_libiamroot() \
+#define __note_if_not_preloading_libiamroot_and_ensure_preloading() \
 	({ const int errno_save = errno; \
-	   if (!__is_preloading_libiamroot()) \
-	     __warning("%s: not preloading library!\n", __func__); \
+	   if (!__is_preloading_libiamroot()) { \
+	     char *lib = _getenv("IAMROOT_LIB"); \
+	     __notice("%s: preload library '%s'!\n", __func__, lib); \
+	     __setld_preload(lib, 1); \
+	     __info("%s: libraries to preload '%s'!\n", __func__, _getenv("PRELOAD")); \
+	   } \
 	   errno = errno_save; \
 	   })
 
@@ -709,6 +713,8 @@ static inline void __close(int fd)
 }
 
 const char *__path();
+
+int __setld_preload(const char *, int);
 
 int __is_preloading_libiamroot();
 

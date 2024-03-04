@@ -559,10 +559,6 @@ useradd: Warning: missing or non-executable shell '/bin/sync'
   Installing       : e2fsprogs XXX/XXX
   Installing       : pigz XXX/XXX
   Running scriptlet: dbus-common XXX/XXX
-Warning: execve: not preloading library!
-groupadd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
-useradd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
-
   Installing       : dbus-common XXX/XXX
   Running scriptlet: dbus-common XXX/XXX
   Installing       : less XXX/XXX
@@ -670,12 +666,6 @@ useradd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation
   Installing       : openssl-libs XXX/XXX
   Installing       : kmod-libs XXX/XXX
   Running scriptlet: tpm2-tss XXX/XXX
-Warning: execve: not preloading library!
-groupadd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
-useradd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
-
-useradd: Warning: missing or non-executable shell '/usr/sbin/nologin'
-
   Installing       : tpm2-tss XXX/XXX
   Installing       : cryptsetup-libs XXX/XXX
   Installing       : pam XXX/XXX
@@ -686,18 +676,10 @@ useradd: Warning: missing or non-executable shell '/usr/sbin/nologin'
   Running scriptlet: libutempter XXX/XXX
   Installing       : libutempter XXX/XXX
   Running scriptlet: systemd-networkd XXX/XXX
-Warning: execve: not preloading library!
-groupadd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
-useradd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
-
   Installing       : systemd-networkd XXX/XXX
   Running scriptlet: systemd-networkd XXX/XXX
   Installing       : systemd-pam XXX/XXX
   Running scriptlet: systemd-resolved XXX/XXX
-Warning: execve: not preloading library!
-groupadd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
-useradd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
-
   Installing       : systemd-resolved XXX/XXX
   Running scriptlet: systemd-resolved XXX/XXX
   Installing       : os-prober XXX/XXX
@@ -706,42 +688,9 @@ useradd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation
   Installing       : dracut XXX/XXX
   Installing       : util-linux XXX/XXX
   Running scriptlet: systemd XXX/XXX
-Warning: execve: not preloading library!
-groupadd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
-groupadd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
-groupadd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
-groupadd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
-
-Warning: execve: not preloading library!
-groupadd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
-
-Warning: execve: not preloading library!
-groupadd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
-useradd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
-
   Installing       : systemd XXX/XXX
   Running scriptlet: systemd XXX/XXX
-Creating group 'input' with GID XXX.
-Creating group 'kvm' with GID XXX.
-Creating group 'render' with GID XXX.
-Creating group 'sgx' with GID XXX.
-Creating group 'systemd-journal' with GID XXX.
-Creating group 'systemd-network' with GID XXX.
-Creating user 'systemd-network' (systemd Network Management) with UID XXX and GID XXX.
-Creating group 'systemd-oom' with GID XXX.
-Creating user 'systemd-oom' (systemd Userspace OOM Killer) with UID XXX and GID XXX.
-Creating group 'systemd-resolve' with GID XXX.
-Creating user 'systemd-resolve' (systemd Resolver) with UID XXX and GID XXX.
-
   Running scriptlet: systemd-udev XXX/XXX
-Warning: execve: not preloading library!
-groupadd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
-useradd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
-
-Warning: execve: not preloading library!
-groupadd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
-useradd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
-
   Installing       : systemd-udev XXX/XXX
   Running scriptlet: systemd-udev XXX/XXX
 Created symlink /etc/systemd/system/dbus-org.freedesktop.home1.service → /usr/lib/systemd/system/systemd-homed.service.
@@ -928,10 +877,6 @@ Created symlink /etc/systemd/system/network-online.target.wants/NetworkManager-w
   Installing       : openssh-clients XXX/XXX
   Running scriptlet: openssh-clients XXX/XXX
   Running scriptlet: openssh-server XXX/XXX
-Warning: execve: not preloading library!
-groupadd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
-useradd: unable to chroot to directory $ROOT/x86_64-fedora-39-rootfs/: Operation not permitted
-
   Installing       : openssh-server XXX/XXX
   Running scriptlet: openssh-server XXX/XXX
 Created symlink /etc/systemd/system/multi-user.target.wants/sshd.service → /usr/lib/systemd/system/sshd.service.
@@ -960,11 +905,6 @@ Created symlink /etc/systemd/system/multi-user.target.wants/sshd.service → /us
   Running scriptlet: sssd-common XXX/XXX
   Running scriptlet: firewalld XXX/XXX
   Running scriptlet: rootfiles XXX/XXX
-Creating group 'systemd-coredump' with GID XXX.
-Creating user 'systemd-coredump' (systemd Core Dumper) with UID XXX and GID XXX.
-Creating group 'systemd-timesync' with GID XXX.
-Creating user 'systemd-timesync' (systemd Time Synchronization) with UID XXX and GID XXX.
-
 
 Installed:
   ModemManager-glib

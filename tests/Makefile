@@ -222,6 +222,9 @@ test: | rootfs
 	rm -Rf rootfs/tmp/* rootfs/dev/*
 	touch rootfs/tmp/file0 rootfs/tmp/wtmp rootfs/tmp/wtmpx
 	ln -s file0 rootfs/tmp/symlink0
+ifeq ($(OS),GNU/Linux)
+	env LD_PRELOAD=$(IAMROOT_LIB) sh -c "unset LD_PRELOAD; chroot rootfs env"
+endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                                                                            test-access               rootfs/tmp/file0         0
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                test-access               /tmp/file0               0
 	-env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                                                                           test-acct                 rootfs/var/log/pacct

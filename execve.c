@@ -179,10 +179,10 @@ int execve(const char *path, char * const argv[], char * const envp[])
 
 	/* Do not proceed to any hack if not in chroot */
 	if (!__inchroot()) {
-		__warn_if_not_preloading_libiamroot();
+		__note_if_not_preloading_libiamroot_and_ensure_preloading();
 		__execfd();
-		__verbose_exec(path, argv, envp);
-		return next_execve(path, argv, envp);
+		__verbose_exec(path, argv, __environ);
+		return next_execve(path, argv, __environ);
 	}
 
 	ret = __interpreter_script(program, argv, buf, sizeof(buf), off,

@@ -114,6 +114,28 @@ static char *__getld_library_path()
 	return curr;
 }
 
+__attribute__((visibility("hidden")))
+int __setld_preload(const char *preload, int overwrite)
+{
+	char buf[PATH_MAX];
+	char *curr;
+	int n;
+
+	if (!preload || !*preload)
+		return __set_errno(EINVAL, -1);
+
+	/* LD_PRELOAD is unset; setenv preload directly! */
+	curr = _getenv("LD_PRELOAD");
+	if (!curr)
+		return _setenv("LD_PRELOAD", preload, overwrite);
+
+	n = _snprintf(buf, sizeof(buf), "%s:%s", preload, curr);
+	if (n == -1)
+		return -1;
+
+	return _setenv("LD_PRELOAD", buf, overwrite);
+}
+
 static regex_t *re_ldso;
 static regex_t *re_lib;
 
@@ -2295,7 +2317,12 @@ open:
 		goto close;
 
 	/* Search for the iamroot library in LD_PRELOAD */
-	ret = __is_in_path(buf, _getenv("LD_PRELOAD") ?: "");
+	ret = __is_in_path(buf, ld_preload ?: "");
+	if (ret == -1)
+		goto close;
+	if (ret == 0)
+		ret = __is_in_path(__xstr(PREFIX)"/lib/iamroot/libiamroot.so",
+				   ld_preload ?: "");
 
 close:
 	__close(fd);

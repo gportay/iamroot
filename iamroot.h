@@ -177,7 +177,6 @@ int __exec_ignored(const char *);
 int __issuid(const char *);
 int __ldso(const char *, char * const [], char *, size_t, char *[]);
 int __exec_sh(const char *, char * const *, char *[], char *, size_t);
-char **__glibc_workaround(char *, size_t, char *, char *[7+1]);
 ssize_t __interpreter_script_hashbang(const char *, char *, size_t);
 int __interpreter_script(const char *, char * const [], char *, size_t,
 			 char *[]);

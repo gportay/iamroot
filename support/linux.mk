@@ -1719,7 +1719,7 @@ devuan-log: amd64-devuan-chimaera-rootfs.log
 devuan-log: amd64-devuan-daedalus-rootfs.log
 
 stable-support: support/amd64-debian-stable-rootfs.txt
-stable-log: amd64-debian-stable-rootfs.txt
+stable-log: amd64-debian-stable-rootfs.log
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)

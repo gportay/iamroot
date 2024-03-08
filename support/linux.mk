@@ -1728,7 +1728,9 @@ log: devuan-log
 devuan-log: amd64-devuan-chimaera-rootfs.log
 devuan-log: amd64-devuan-daedalus-rootfs.log
 
+legacy-support: support/amd64-debian-oldoldstable-rootfs.txt
 legacy-support: support/amd64-debian-oldstable-rootfs.txt
+legacy-log: amd64-debian-oldoldstable-rootfs.log
 legacy-log: amd64-debian-oldstable-rootfs.log
 
 stable-support: support/amd64-debian-stable-rootfs.txt

@@ -1593,6 +1593,9 @@ mnt:
 .PHONY: support
 support: all
 
+.PHONY: legacy-support
+legacy-support: all
+
 .PHONY: stable-support
 stable-support: all
 
@@ -1724,6 +1727,9 @@ log: devuan-log
 .PHONY: devuan-log
 devuan-log: amd64-devuan-chimaera-rootfs.log
 devuan-log: amd64-devuan-daedalus-rootfs.log
+
+legacy-support: support/amd64-debian-oldstable-rootfs.txt
+legacy-log: amd64-debian-oldstable-rootfs.log
 
 stable-support: support/amd64-debian-stable-rootfs.txt
 stable-log: amd64-debian-stable-rootfs.log

@@ -941,6 +941,9 @@ $(eval $(call debootstrap-rootfs,amd64,devuan,daedalus))
 
 legacy-support: support/amd64-devuan-chimaera-rootfs.txt
 legacy-log: amd64-devuan-chimaera-rootfs.log
+
+stable-support: support/amd64-devuan-daedalus-rootfs.txt
+stable-log: amd64-devuan-daedalus-rootfs.log
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)

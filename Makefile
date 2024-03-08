@@ -471,13 +471,22 @@ fuzzer: CC = clang -g -fsanitize=address,undefined,fuzzer -fno-omit-frame-pointe
 fuzzer: CXX = $(CC)
 fuzzer: __fxstat.o
 fuzzer: __fxstatat.o
+fuzzer: dlopen.o
+fuzzer: dso.o
 fuzzer: env.o
+fuzzer: faccessat.o
 fuzzer: fgetxattr.o
 fuzzer: fstat.o
 fuzzer: fstatat.o
 fuzzer: getcwd.o
 fuzzer: iamroot.o
+fuzzer: interpreter-script.o
+fuzzer: jimregexp.o
+fuzzer: ldso-cache.o
 fuzzer: lgetxattr.o
+fuzzer: lremovexattr.o
+fuzzer: lsetxattr.o
+fuzzer: open.o
 fuzzer: path_resolution.o
 fuzzer: readlinkat.o
 fuzzer: realpath.o

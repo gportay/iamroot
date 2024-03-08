@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [unreleased]
+
+### Fixed
+
+- Fix the out-of root directory creation of temporary files or directories for
+  the functions `mktemp()` and `mkdtemp()`
+
 ## [v19] - 2024-03-05
 
 ### Added

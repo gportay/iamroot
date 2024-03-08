@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -32,19 +32,24 @@ char *next_mkdtemp(char *path)
 char *mkdtemp(char *path)
 {
 	char buf[PATH_MAX];
+	char *ret = NULL;
+	ssize_t siz;
 	size_t len;
-	char *ret;
 
-	__strncpy(buf, path);
+	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf), 0);
+	if (siz == -1)
+		goto exit;
+
 	ret = next_mkdtemp(buf);
 	if (!*ret)
 		goto exit;
 
 	len = __strlen(__basename(path));
 	strncpy(&path[__strlen(path)-len], &buf[__strlen(buf)-len], len);
+	ret = path;
 
 exit:
-	__debug("%s(path: '%s') -> '%s'\n", __func__, path, ret);
+	__debug("%s(path: '%s' -> '%s') -> '%s'\n", __func__, path, buf, ret);
 
-	return path;
+	return ret;
 }

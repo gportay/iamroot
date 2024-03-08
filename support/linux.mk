@@ -1727,6 +1727,9 @@ devuan-log: amd64-devuan-daedalus-rootfs.log
 
 stable-support: support/amd64-debian-stable-rootfs.txt
 stable-log: amd64-debian-stable-rootfs.log
+
+unstable-support: support/amd64-debian-unstable-rootfs.txt
+unstable-log: amd64-debian-unstable-rootfs.log
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)

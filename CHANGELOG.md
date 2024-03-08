@@ -10,6 +10,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Fix the out-of root directory creation of temporary files or directories for
   the functions `mktemp()` and `mkdtemp()`
+- Fix the segmentation fault if preloading a shared-object with a circular
+  dependency
 
 ## [v19] - 2024-03-05
 

@@ -327,25 +327,22 @@ static int __ldso_preload_needed(const char *path, const char *deflib,
 	char needed[PATH_MAX];
 	ssize_t siz;
 	char *str;
-	int ret;
 
-	/* Add the needed shared objects to path first */
+	/*
+	 * Add the shared object to path first to avoid circular dependencies,
+	 * if a needed shared object needs this one.
+	 */
+	str = __path_strncat(buf, path, bufsiz);
+	if (!str)
+		return -1;
+	/* Add the needed shared objects to path then */
 	siz = __elf_needed(path, needed, sizeof(needed));
 	if (siz == -1)
 		return -1;
 	ctx.deflib = deflib;
 	ctx.buf = buf;
 	ctx.bufsiz = bufsiz;
-	ret = __path_iterate(needed, __ldso_preload_needed_callback, &ctx);
-	if (ret == -1)
-		return -1;
-
-	/* Add the shared object to path then */
-	str = __path_strncat(buf, path, bufsiz);
-	if (!str)
-		return -1;
-
-	return 0;
+	return __path_iterate(needed, __ldso_preload_needed_callback, &ctx);
 }
 
 static int __ldso_preload_executable(const char *path, const char *deflib,

@@ -132,7 +132,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 
 - Fix the behaviour of the `ish`'s option `--shell` that does not sets the
-  shell interpretor
+  shell interpreter
 - Fix the behaviour of the `ish`'s option `--debug-fd` that does not duplicate
   stderr to the given fd if it exists and always duplicates stderr to new fd
   instead
@@ -610,7 +610,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Create weak aliases for [glibc] `__` and `64` variants
 - Output the parameters even in chroot'ed environment  for the functions
   `execveat()`, `execve()` and `posix_spawn()`
-- Output a warning if the interpretor is not handled
+- Output a warning if the interpreter is not handled
 - Support the environment variables `argv0`, `LD_LIBRARY_PATH` and `LD_PRELOAD`
   while running a generic ELF dynamic loader
 - Remove the library path prefix `LD_` from the environment variable

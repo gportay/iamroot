@@ -938,6 +938,9 @@ amd64-devuan-daedalus-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= support/ceres
 amd64-devuan-daedalus-rootfs/bin/sh: export DEBOOTSTRAPFLAGS ?= --no-check-gpg
 $(eval $(call debootstrap-rootfs,amd64,devuan,chimaera))
 $(eval $(call debootstrap-rootfs,amd64,devuan,daedalus))
+
+legacy-support: support/amd64-devuan-chimaera-rootfs.txt
+legacy-log: amd64-devuan-chimaera-rootfs.log
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)

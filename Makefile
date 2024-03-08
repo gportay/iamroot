@@ -517,7 +517,7 @@ fuzzer: path_resolution.o
 fuzzer: readlinkat.o
 fuzzer: realpath.o
 fuzzer: scandir.o
-fuzzer: fuzzer.o __fxstat.o __fxstatat.o env.o fgetxattr.o fstat.o fstatat.o getcwd.o iamroot.o lgetxattr.o path_resolution.o readlinkat.o realpath.o scandir.o
+fuzzer: fuzzer.o
 	$(LINK.o) $^ $(LOADLIBES) $(LDLIBS) -o $@
 
 %.1: %.1.adoc

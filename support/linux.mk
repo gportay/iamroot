@@ -1687,7 +1687,7 @@ debian-support: support/amd64-debian-oldoldstable-rootfs.txt
 debian-support: support/amd64-debian-oldstable-rootfs.txt
 debian-support: support/amd64-debian-stable-rootfs.txt
 debian-support: support/amd64-debian-testing-rootfs.txt
-debian-support: support/amd64-debian-unstable-rootfs.txt
+broken-support: support/amd64-debian-unstable-rootfs.txt
 
 log: debian-log
 
@@ -1696,7 +1696,7 @@ debian-log: amd64-debian-oldoldstable-rootfs.log
 debian-log: amd64-debian-oldstable-rootfs.log
 debian-log: amd64-debian-stable-rootfs.log
 debian-log: amd64-debian-testing-rootfs.log
-debian-log: amd64-debian-unstable-rootfs.log
+broken-log: amd64-debian-unstable-rootfs.log
 
 support: ubuntu-support
 
@@ -1752,8 +1752,8 @@ legacy-log: amd64-debian-oldstable-rootfs.log
 stable-support: support/amd64-debian-stable-rootfs.txt
 stable-log: amd64-debian-stable-rootfs.log
 
-unstable-support: support/amd64-debian-unstable-rootfs.txt
-unstable-log: amd64-debian-unstable-rootfs.log
+broken-support: support/amd64-debian-unstable-rootfs.txt
+broken-log: amd64-debian-unstable-rootfs.log
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)

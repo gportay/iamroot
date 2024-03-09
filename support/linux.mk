@@ -866,7 +866,6 @@ amd64-ubuntu-jammy-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.ed
 amd64-ubuntu-kinetic-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://old-releases.ubuntu.com/ubuntu
 amd64-ubuntu-lunar-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
 amd64-ubuntu-mantic-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
-amd64-ubuntu-mantic-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= gutsy
 $(eval $(call debootstrap-rootfs,amd64,ubuntu,trusty))
 $(eval $(call debootstrap-rootfs,amd64,ubuntu,xenial))
 $(eval $(call debootstrap-rootfs,amd64,ubuntu,bionic))

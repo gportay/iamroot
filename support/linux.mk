@@ -852,8 +852,10 @@ amd64-ubuntu-rootfs: amd64-ubuntu-jammy-rootfs
 amd64-ubuntu-rootfs: amd64-ubuntu-kinetic-rootfs
 amd64-ubuntu-rootfs: amd64-ubuntu-lunar-rootfs
 amd64-ubuntu-rootfs: amd64-ubuntu-mantic-rootfs
+amd64-ubuntu-rootfs: amd64-ubuntu-noble-rootfs
 
 stable-rootfs: amd64-ubuntu-mantic-rootfs
+unstable-rootfs: amd64-ubuntu-noble-rootfs
 
 amd64-ubuntu-trusty-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
 amd64-ubuntu-xenial-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
@@ -866,6 +868,7 @@ amd64-ubuntu-jammy-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.ed
 amd64-ubuntu-kinetic-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://old-releases.ubuntu.com/ubuntu
 amd64-ubuntu-lunar-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
 amd64-ubuntu-mantic-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
+amd64-ubuntu-noble-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
 $(eval $(call debootstrap-rootfs,amd64,ubuntu,trusty))
 $(eval $(call debootstrap-rootfs,amd64,ubuntu,xenial))
 $(eval $(call debootstrap-rootfs,amd64,ubuntu,bionic))
@@ -877,6 +880,7 @@ $(eval $(call debootstrap-rootfs,amd64,ubuntu,jammy))
 $(eval $(call debootstrap-rootfs,amd64,ubuntu,kinetic))
 $(eval $(call debootstrap-rootfs,amd64,ubuntu,lunar))
 $(eval $(call debootstrap-rootfs,amd64,ubuntu,mantic))
+$(eval $(call debootstrap-rootfs,amd64,ubuntu,noble))
 # chmod: cannot access '/dev/tty[0-9]*': No such file or directory
 # dpkg: error processing package makedev (--configure):
 #  subprocess installed post-installation script returned error exit status 1
@@ -915,6 +919,8 @@ amd64-ubuntu-lunar-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
 amd64-ubuntu-lunar-rootfs/bin/sh: IDOFLAGS += --preserve-env=LDCONFIG_NOTRIGGER
 amd64-ubuntu-mantic-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
 amd64-ubuntu-mantic-rootfs/bin/sh: IDOFLAGS += --preserve-env=LDCONFIG_NOTRIGGER
+amd64-ubuntu-noble-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
+amd64-ubuntu-noble-rootfs/bin/sh: IDOFLAGS += --preserve-env=LDCONFIG_NOTRIGGER
 
 extra-rootfs: amd64-devuan-rootfs
 
@@ -1689,6 +1695,7 @@ ubuntu-support: support/amd64-ubuntu-jammy-rootfs.txt
 ubuntu-support: support/amd64-ubuntu-kinetic-rootfs.txt
 ubuntu-support: support/amd64-ubuntu-lunar-rootfs.txt
 ubuntu-support: support/amd64-ubuntu-mantic-rootfs.txt
+ubuntu-support: support/amd64-ubuntu-noble-rootfs.txt
 
 log: ubuntu-log
 
@@ -1704,6 +1711,7 @@ ubuntu-log: amd64-ubuntu-jammy-rootfs.log
 ubuntu-log: amd64-ubuntu-kinetic-rootfs.log
 ubuntu-log: amd64-ubuntu-lunar-rootfs.log
 ubuntu-log: amd64-ubuntu-mantic-rootfs.log
+ubuntu-log: amd64-ubuntu-noble-rootfs.log
 	
 extra-support: devuan-support
 

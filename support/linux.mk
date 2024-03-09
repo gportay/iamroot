@@ -925,21 +925,28 @@ amd64-ubuntu-noble-rootfs/bin/sh: IDOFLAGS += --preserve-env=LDCONFIG_NOTRIGGER
 extra-rootfs: amd64-devuan-rootfs
 
 .PHONY: amd64-devuan-rootfs
+amd64-devuan-rootfs: amd64-devuan-beowulf-rootfs
 amd64-devuan-rootfs: amd64-devuan-chimaera-rootfs
 amd64-devuan-rootfs: amd64-devuan-daedalus-rootfs
 
 stable-rootfs: amd64-devuan-daedalus-rootfs
 
+amd64-devuan-beowulf-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://deb.devuan.org/merged/
+amd64-devuan-beowulf-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= support/ceres
+amd64-devuan-beowulf-rootfs/bin/sh: export DEBOOTSTRAPFLAGS ?= --no-check-gpg --no-merged-usr
 amd64-devuan-chimaera-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://deb.devuan.org/merged/
 amd64-devuan-chimaera-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= support/ceres
 amd64-devuan-chimaera-rootfs/bin/sh: export DEBOOTSTRAPFLAGS ?= --no-check-gpg
 amd64-devuan-daedalus-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://deb.devuan.org/merged/
 amd64-devuan-daedalus-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= support/ceres
 amd64-devuan-daedalus-rootfs/bin/sh: export DEBOOTSTRAPFLAGS ?= --no-check-gpg
+$(eval $(call debootstrap-rootfs,amd64,devuan,beowulf))
 $(eval $(call debootstrap-rootfs,amd64,devuan,chimaera))
 $(eval $(call debootstrap-rootfs,amd64,devuan,daedalus))
 
+legacy-support: support/amd64-devuan-beowulf-rootfs.txt
 legacy-support: support/amd64-devuan-chimaera-rootfs.txt
+legacy-log: amd64-devuan-beowulf-rootfs.log
 legacy-log: amd64-devuan-chimaera-rootfs.log
 
 stable-support: support/amd64-devuan-daedalus-rootfs.txt
@@ -1725,12 +1732,14 @@ ubuntu-log: amd64-ubuntu-noble-rootfs.log
 extra-support: devuan-support
 
 .PHONY: devuan-support
+devuan-support: support/amd64-devuan-beowulf-rootfs.txt
 devuan-support: support/amd64-devuan-chimaera-rootfs.txt
 devuan-support: support/amd64-devuan-daedalus-rootfs.txt
 
 log: devuan-log
 
 .PHONY: devuan-log
+devuan-log: amd64-devuan-beowulf-rootfs.log
 devuan-log: amd64-devuan-chimaera-rootfs.log
 devuan-log: amd64-devuan-daedalus-rootfs.log
 

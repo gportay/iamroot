@@ -814,6 +814,7 @@ amd64-debian-rootfs: amd64-debian-testing-rootfs
 amd64-debian-rootfs: amd64-debian-unstable-rootfs
 
 stable-rootfs: amd64-debian-stable-rootfs
+unstable-rootfs: amd64-debian-unstable-rootfs
 
 $(eval $(call debootstrap-rootfs,amd64,debian,oldoldstable))
 $(eval $(call debootstrap-rootfs,amd64,debian,oldstable))

@@ -768,7 +768,7 @@ cleanall: clean
 	rm -f cobertura.xml
 	rm -f *.gcda *.gcno
 	rm -f *.ext4 *.cpio
-	rm -f *-rootfs.log
+	rm -f *-rootfs.log*
 	rm -Rf *-rootfs/
 
 .PHONY: clean

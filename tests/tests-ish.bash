@@ -157,7 +157,7 @@ result() {
 	exit "$exitcode"
 }
 
-PATH="$PWD:$PATH"
+PATH="$IAMROOT_ORIGIN:$PWD:$PATH"
 trap result 0 SIGINT
 
 export -n NO_COLOR

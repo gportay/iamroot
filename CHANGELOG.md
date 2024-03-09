@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Use [Jim Tcl]
 - Do not reset the environment variable `IAMROOT_LIB` to the iamroot library
+- `ish(1)` is now using `ld-iamroot.so(8)`
 
 ## [v23] - 2024-06-25
 

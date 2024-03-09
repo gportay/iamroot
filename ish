@@ -208,21 +208,11 @@ do
 	cd "$OLDPWD"
 done
 
-if [[ "$IAMROOT_ROOT" ]]
+if ! ldso="$(command -v ld-iamroot.so 2>/dev/null)"
 then
-	cd "$IAMROOT_ROOT"
-	PWD="/"
-
-	IFS=: read -r -a __ <<<"${LD_LIBRARY_PATH:-/usr/lib:/lib}"
-	LD_LIBRARY_PATH="$IAMROOT_ROOT${__[0]}"
-	for i in "${__[@]:1}"
-	do
-		LD_LIBRARY_PATH+=":$IAMROOT_ROOT${__[0]}"
-	done
+	ldso="${IAMROOT_ORIGIN:-/usr/local/bin}/ld-iamroot.so"
 fi
 
 ISHLVL="$((ISHLVL+1))" \
 PATH="${PATH:-/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin}" \
-LD_PRELOAD="${IAMROOT_LIB:-${IAMROOT_ORIGIN:-/usr/local/lib/iamroot}/libiamroot.so}${LD_PRELOAD+:$LD_PRELOAD}" \
-LD_LIBRARY_PATH="$LD_LIBRARY_PATH" \
-exec "${SHELL:-/bin/sh}" "$@"
+exec "${ldso:-/usr/local/bin/ld-iamroot.so}" -- "${SHELL:-/bin/sh}" "$@"

@@ -520,6 +520,25 @@ fuzzer: scandir.o
 fuzzer: fuzzer.o
 	$(LINK.o) $^ $(LOADLIBES) $(LDLIBS) -o $@
 
+.PHONY: compile_commands.json
+compile_commands.json:
+	@( echo '['; \
+	$(foreach c,$(wildcard *.c),\
+		echo '  {'; \
+		echo '    "directory": "$(CURDIR)",'; \
+		echo '    "command": "$(COMPILE.c) $(CFLAGS) $(CPPFAGLS) $(TARGET_ARCH) -o $(c:.c=.o) $(c)",'; \
+		echo '    "file": "$(c)",'; \
+		echo '    "output": "$(c:.c=.o)"'; \
+		echo '  },'; \
+	) \
+	echo '  {'; \
+	echo '    "directory": "$(CURDIR)",'; \
+	echo '    "command": "true",'; \
+	echo '    "file": "iamroot.h",'; \
+	echo '    "output": "libiamroot.so"'; \
+	echo '  }'; \
+	echo ']' ) >$@
+
 %.1: %.1.adoc
 	asciidoctor -b manpage -o $@ $<
 

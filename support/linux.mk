@@ -1729,7 +1729,7 @@ ubuntu-log: amd64-ubuntu-kinetic-rootfs.log
 ubuntu-log: amd64-ubuntu-lunar-rootfs.log
 ubuntu-log: amd64-ubuntu-mantic-rootfs.log
 ubuntu-log: amd64-ubuntu-noble-rootfs.log
-	
+
 extra-support: devuan-support
 
 .PHONY: devuan-support

@@ -586,7 +586,7 @@ fts64_read(FTS64 *sp)
 		goto name;
 	}
 
-next:	
+next:
 	/* Move to the next node on this level. */
 	tmp = p;
 
@@ -598,7 +598,7 @@ next:
 	 */
 	assert(tmp == sp->fts_cur);
 	sp->fts_cur = NULL;
-	
+
 	if ((p = p->fts_link) != NULL) {
 		fts_free(tmp);
 

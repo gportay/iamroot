@@ -36,7 +36,7 @@ int main(int argc, char * const argv[])
 
 	for (;;) {
 		FTSENT *e;
-		
+
 		e = fts_read(p);
 		if (!e && !errno)
 			break;
@@ -44,7 +44,7 @@ int main(int argc, char * const argv[])
 			perror("fts_read");
 			goto exit;
 		}
-			
+
 		printf("%s\n", e->fts_path);
 	}
 

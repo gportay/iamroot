@@ -236,7 +236,7 @@ static int __is_lib(const char *path)
 static char *__path_strncat(char *dst, const char *src, size_t dstsiz)
 {
 	size_t len;
-	
+
 	len = strlen(src);
 	if (*dst)
 		len++;
@@ -1715,7 +1715,7 @@ static int __is_mipsle(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	(void)ldso;
 	(void)abi;
 
-#if defined EM_MIPS 
+#if defined EM_MIPS
 	/* It is a MIPS LSB ELF */
 	return ehdr && (ehdr->e_machine == EM_MIPS) &&
 	       (ehdr->e_ident[EI_DATA] == ELFDATA2LSB);
@@ -2123,7 +2123,7 @@ static ssize_t __getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso, int abi,
 		    (streq(ldso, "musl-x86_64") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/x86_64/libiamroot-musl-x86_64.so.1";
 			goto access;
-		}	
+		}
 
 		/* It is an ARM ELF or IAMROOT_LIB_ARM_MUSL_ARM_1 */
 		if (__is_arm(ehdr, ldso, abi) ||
@@ -2206,7 +2206,7 @@ static ssize_t __getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso, int abi,
 			lib = __xstr(PREFIX)"/lib/iamroot/amd64/libiamroot-elf.so.1";
 			goto access;
 		}
-		
+
 		/* It is an AArch64 ELF */
 		if (__is_aarch64(ehdr, ldso, abi)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/arm64/libiamroot-elf.so.1";

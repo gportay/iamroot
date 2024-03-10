@@ -222,7 +222,7 @@ test: | rootfs
 	rm -Rf rootfs/tmp/* rootfs/dev/*
 	touch rootfs/tmp/file0 rootfs/tmp/wtmp rootfs/tmp/wtmpx
 	ln -s file0 rootfs/tmp/symlink0
-ifeq ($(OS),GNU/Linux)
+ifneq (,$(findstring $(OS),GNU/Linux Linux FreeBSD))
 	env LD_PRELOAD=$(IAMROOT_LIB) sh -c "unset LD_PRELOAD; chroot rootfs env"
 endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                                                                            test-access               rootfs/tmp/file0         0
@@ -590,6 +590,13 @@ rootfs:
 	install -m600 shadow $(DESTDIR)/etc/
 	install -d -m755 $(DESTDIR)/usr/bin
 	ln -sf usr/bin $(DESTDIR)/bin
+ifneq ($(OS),NetBSD)
+	install -d -m755 $(DESTDIR)/usr/local
+	ln -sf ../../bin $(DESTDIR)/usr/local/bin
+else
+	install -d -m755 $(DESTDIR)/usr/pkg
+	ln -sf ../../bin $(DESTDIR)/usr/pkg/bin
+endif
 	for i in *.c; do \
 		test -e $${i%.c} || continue; \
 		install -m755 $${i%.c} $(DESTDIR)/usr/bin/; \
@@ -673,10 +680,8 @@ ifneq ($(OS),Linux)
 	install -d -m755 $(DESTDIR)/usr/lib/nls/msg/$$LANG/
 	gencat $(DESTDIR)/usr/lib/nls/msg/$$LANG/test.cat test.msg
 endif
-ifeq ($(OS),GNU/Linux)
 	bash install-bin bash $(DESTDIR)
 	bash install-bin env $(DESTDIR)
-endif
 
 .PHONY: clean
 clean:

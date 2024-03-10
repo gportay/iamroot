@@ -14,12 +14,12 @@ then
 fi
 
 bin="$(command -v "$1")"
-mapfile -t objects < <(LD_TRACE_LOADED_OBJECTS=1 "$bin")
+mapfile -t objects < <(ldd "$bin")
 for i in "${objects[@]}"
 do
 	read -a words <<<"$i"
 
-	# Install the dynamic loader:
+	# Install the dynamic loader (GNU/Linux):
 	#
 	# It is the dynamic loader if the line has two arguments and if the
 	# first word if an host-existing file (it is the virtual dynamic shared
@@ -27,16 +27,35 @@ do
 	#
 	# linux-vdso.so.1 (0x00007fff3e564000)
 	# /lib64/ld-linux-x86-64.so.2 (0x00007fc10fd28000)
-	if [[ "${#words[*]}" -eq 2 ]] && [[ -x "${words[0]}" ]] &&
-	   [[ ! -x "$2${words[0]}" ]]
+	if [[ "${#words[*]}" -eq 2 ]] && [[ -e "${words[0]}" ]] &&
+	   [[ ! -e "$2${words[0]}" ]]
 	then
 		file="${words[0]}"
-	# Install the needed shared objects:
+	# Install the needed shared objects (NetBSD):
+	#
+	# It is a shared object if line has three arguments.
+	#
+	# -lc.12 => /usr/lib/libc.so.12
+	elif [[ "${#words[*]}" -eq 3 ]] && [[ -e "${words[2]}" ]]
+	then
+		file="${words[2]}"
+	# Install the needed shared objects (GNU/Linux, FreeBSD):
 	#
 	# It is a shared object if line has four arguments.
 	#
 	# libc.so.6 => /usr/lib/libc.so.6 (0x0123456789abcdef)
-	elif [[ "${#words[*]}" -eq 4 ]] && [[ -x "${words[2]}" ]]
+	# libc.so.7 => /lib/libc.so.7 (0x01234567)
+	elif [[ "${#words[*]}" -eq 4 ]] && [[ -e "${words[2]}" ]]
+	then
+		file="${words[2]}"
+	# Install the dynamic loader and needed shared objects (OpenBSD):
+	#
+	# It is the dynamic loader or a shared object if line has seven
+	# arguments and the third is either ld.so or rlib.
+	#
+	# 0123456799abcdef 0123456789abcdef rlib  0    1   0      /usr/lib/libc.so.97.0
+	# 0123456799abcdef 0123456789abcdef ld.so 0    1   0      /usr/libexec/ld.so
+	elif [[ "${#words[*]}" -eq 7 ]] && [[ "${words[2]}" =~ ^(|) ]] && [[ -e "${words[2]}" ]]
 	then
 		file="${words[2]}"
 	# Ignoring other lines.

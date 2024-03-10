@@ -1955,6 +1955,7 @@ static const char *__multiarch(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 ssize_t __getvariable(Elf64_Ehdr *ehdr, const char *ldso, int abi,
 		      const char *name, char *buf, ssize_t bufsiz)
 {
+	const int errno_save = errno;
 	const char *machine;
 	int n;
 
@@ -1993,7 +1994,7 @@ ssize_t __getvariable(Elf64_Ehdr *ehdr, const char *ldso, int abi,
 		return -1;
 
 	__env_sanitize(buf, 1);
-	return n;
+	return __set_errno(errno_save, n);
 }
 
 static ssize_t __getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso, int abi,

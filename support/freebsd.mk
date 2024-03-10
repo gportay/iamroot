@@ -61,7 +61,7 @@ FreeBSD-13.1-RELEASE-base-$(ARCH).txz:
 FreeBSD-%-RELEASE-base-$(ARCH).txz:
 	wget https://download.freebsd.org/releases/$(ARCH)/$*-RELEASE/base.txz -O $@
 
-.PHONY: test ci ish
+.PHONY: test ci ido ish
 test ci ido ish: libiamroot.so
 	$(MAKE) -f Makefile $@
 

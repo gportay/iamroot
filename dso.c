@@ -1781,7 +1781,7 @@ static int __is_linux(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 static int __is_gnu_linux(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
 	/* LINUX_$ARCH_$ABI or it is a GNU/Linux ELF */
-	return __is_linux_ldso(ldso) || __is_linux(ehdr, ldso, abi);
+	return __is_linux_ldso(ldso) == 1 || __is_linux(ehdr, ldso, abi) == 1;
 }
 
 static int __is_gnu_linux_ext(Elf64_Ehdr *ehdr, const char *ldso, int abi)
@@ -1789,34 +1789,35 @@ static int __is_gnu_linux_ext(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	int ret;
 
 	/* LINUX_$ARCH_$ABI or it is a GNU/Linux ELF */
-	ret = __is_gnu_linux(ehdr, ldso, abi);
+	ret = __is_gnu_linux(ehdr, ldso, abi) == 1;
 	if (ret)
 		return ret;
 
 	/* It is an MIPS LSB ELF and IAMROOT_LIB_MIPSLE_1 */
-	ret = __is_mipsle(ehdr, ldso, abi) && (*ldso == 0 && abi == 1) &&
-	      __is_32_bits(ehdr, ldso, abi);
+	ret = __is_mipsle(ehdr, ldso, abi) == 1 && (*ldso == 0 && abi == 1) &&
+	      __is_32_bits(ehdr, ldso, abi) == 1;
 	if (ret)
 		return ret;
 
 	/* It is an MIPS64 LSB ELF and IAMROOT_LIB_MIPSLE_1 */
-	ret = __is_mipsle(ehdr, ldso, abi) && (*ldso == 0 && abi == 1) &&
-	      __is_64_bits(ehdr, ldso, abi);
+	ret = __is_mipsle(ehdr, ldso, abi) == 1 && (*ldso == 0 && abi == 1) &&
+	      __is_64_bits(ehdr, ldso, abi) == 1;
 	if (ret)
 		return ret;
 
 	/* It is a PowerPC64 ELF and IAMROOT_LIB_POWERPC64_2 */
-	ret = __is_powerpc64(ehdr, ldso, abi) && (*ldso == 0 && abi == 2);
+	ret = __is_powerpc64(ehdr, ldso, abi) == 1 && (*ldso == 0 && abi == 2);
 	if (ret)
 		return ret;
 
 	/* It is a PowerPC64 LSB ELF and IAMROOT_LIB_POWERPC64LE_2 */
-	ret = __is_powerpc64le(ehdr, ldso, abi) && (*ldso == 0 && abi == 2);
+	ret = __is_powerpc64le(ehdr, ldso, abi) == 1 &&
+	      (*ldso == 0 && abi == 2);
 	if (ret)
 		return ret;
 
 	/* It is an IBM S/390 ELF and IAMROOT_LIB_S390X_1 */
-	ret = __is_s390(ehdr, ldso, abi) && (*ldso == 0 && abi == 1);
+	ret = __is_s390(ehdr, ldso, abi) == 1 && (*ldso == 0 && abi == 1);
 	if (ret)
 		return ret;
 
@@ -1830,62 +1831,62 @@ static int __is_musl(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	(void)abi;
 
 	/* MUSL_$ARCH_$ABI */
-	return __is_musl_ldso(ldso);
+	return __is_musl_ldso(ldso) == 1;
 }
 
 static int __is_freebsd(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
 	/* It is a FreeBSD ELF or ELF_1 */
 	return (ehdr && (ehdr->e_ident[EI_OSABI] == ELFOSABI_FREEBSD)) ||
-	       (__is_elf_ldso(ldso) && abi == 1);
+	       (__is_elf_ldso(ldso) == 1 && abi == 1);
 }
 
 static int __is_netbsd(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
 	/* It is a NetBSD ELF or ELF */
 	return (ehdr && (ehdr->e_ident[EI_OSABI] == ELFOSABI_NETBSD)) ||
-	       (__is_elf_ldso(ldso) && abi == -1);
+	       (__is_elf_ldso(ldso) == 1 && abi == -1);
 }
 
 static const char *__machine(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
 	const int errno_save = errno;
 
-	if (__is_x86(ehdr, ldso, abi)) {
-		if (__is_gnu_linux(ehdr, ldso, abi) ||
-		    __is_musl(ehdr, ldso, abi))
+	if (__is_x86(ehdr, ldso, abi) == 1) {
+		if (__is_gnu_linux(ehdr, ldso, abi) == 1 ||
+		    __is_musl(ehdr, ldso, abi) == 1)
 			return __set_errno(errno_save, "i686");
 
 		/* Assuming it is a *BSD */
 		return __set_errno(errno_save, "i386");
-	} else if (__is_x86_64(ehdr, ldso, abi)) {
+	} else if (__is_x86_64(ehdr, ldso, abi) == 1) {
 		return __set_errno(errno_save, "x86_64");
-	} else if (__is_arm(ehdr, ldso, abi)) {
+	} else if (__is_arm(ehdr, ldso, abi) == 1) {
 		return __set_errno(errno_save, "arm");
-	} else if (__is_armhf(ehdr, ldso, abi)) {
+	} else if (__is_armhf(ehdr, ldso, abi) == 1) {
 		return __set_errno(errno_save, "armhf");
-	} else if (__is_aarch64(ehdr, ldso, abi)) {
+	} else if (__is_aarch64(ehdr, ldso, abi) == 1) {
 		return __set_errno(errno_save, "aarch64");
-	} else if (__is_aarch64_be(ehdr, ldso, abi)) {
+	} else if (__is_aarch64_be(ehdr, ldso, abi) == 1) {
 		return __set_errno(errno_save, "aarch64_be");
-	} else if (__is_riscv(ehdr, ldso, abi)) {
-		if (__is_gnu_linux(ehdr, ldso, abi) ||
-		    __is_musl(ehdr, ldso, abi))
+	} else if (__is_riscv(ehdr, ldso, abi) == 1) {
+		if (__is_gnu_linux(ehdr, ldso, abi) == 1 ||
+		    __is_musl(ehdr, ldso, abi) == 1)
 			return __set_errno(errno_save, "riscv64");
 
 		/* Assuming it is a *BSD */
 		return __set_errno(errno_save, "riscv");
-	} else if (__is_mipsle(ehdr, ldso, abi) &&
-		   __is_32_bits(ehdr, ldso, abi)) {
+	} else if (__is_mipsle(ehdr, ldso, abi) == 1 &&
+		   __is_32_bits(ehdr, ldso, abi) == 1) {
 		return __set_errno(errno_save, "mipsle");
-	} else if (__is_mipsle(ehdr, ldso, abi) &&
-		   __is_64_bits(ehdr, ldso, abi)) {
+	} else if (__is_mipsle(ehdr, ldso, abi) == 1 &&
+		   __is_64_bits(ehdr, ldso, abi) == 1) {
 		return __set_errno(errno_save, "mips64le");
-	} else if (__is_powerpc64(ehdr, ldso, abi)) {
+	} else if (__is_powerpc64(ehdr, ldso, abi) == 1) {
 		return __set_errno(errno_save, "powerpc64");
-	} else if (__is_powerpc64le(ehdr, ldso, abi)) {
+	} else if (__is_powerpc64le(ehdr, ldso, abi) == 1) {
 		return __set_errno(errno_save, "powerpc64le");
-	} else if (__is_s390(ehdr, ldso, abi)) {
+	} else if (__is_s390(ehdr, ldso, abi) == 1) {
 		return __set_errno(errno_save, "s390x");
 	}
 
@@ -1897,51 +1898,54 @@ static const char *__multiarch(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
 	const int errno_save = errno;
 
-	if (!__is_gnu_linux_ext(ehdr, ldso, abi) || !__getmultiarch())
+	if (__is_gnu_linux_ext(ehdr, ldso, abi) != 1 || !__getmultiarch())
 		return NULL;
 
 	/* It is an x86 ELF */
-	if (__is_x86(ehdr, ldso, abi))
+	if (__is_x86(ehdr, ldso, abi) == 1)
 		return __set_errno(errno_save, "/lib/i386-linux-gnu:/usr/lib/i386-linux-gnu:/lib:/usr/lib");
 
 	/* It is an x86-64 ELF */
-	if (__is_x86_64(ehdr, ldso, abi))
+	if (__is_x86_64(ehdr, ldso, abi) == 1)
 		return __set_errno(errno_save, "/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/lib:/usr/lib");
 
 	/* It is an ARM ELF */
-	if (__is_arm(ehdr, ldso, abi))
+	if (__is_arm(ehdr, ldso, abi) == 1)
 		return __set_errno(errno_save, "/lib/arm-linux-gnueabi:/usr/lib/arm-linux-gnueabi:/lib:/usr/lib");
 
 	/* It is an ARM Hard Float ELF */
-	if (__is_armhf(ehdr, ldso, abi))
+	if (__is_armhf(ehdr, ldso, abi) == 1)
 		return __set_errno(errno_save, "/lib/arm-linux-gnueabihf:/usr/lib/arm-linux-gnueabihf:/lib:/usr/lib");
 
 	/* It is an AArch64 LSB ELF */
-	if (__is_aarch64(ehdr, ldso, abi))
+	if (__is_aarch64(ehdr, ldso, abi) == 1)
 		return __set_errno(errno_save, "/lib/aarch64-linux-gnu:/usr/lib/aarch64-linux-gnu:/lib:/usr/lib");
 
 	/* It is an RISC-V lp64d ELF */
-	if (__is_riscv(ehdr, ldso, abi) && __is_64_bits(ehdr, ldso, abi))
+	if (__is_riscv(ehdr, ldso, abi) == 1 &&
+	    __is_64_bits(ehdr, ldso, abi) == 1)
 		return __set_errno(errno_save, "/lib/riscv64-linux-gnu:/usr/lib/riscv64-linux-gnu:/lib:/usr/lib");
 
 	/* It is an MIPS LSB ELF */
-	if (__is_mipsle(ehdr, ldso, abi) && __is_32_bits(ehdr, ldso, abi))
+	if (__is_mipsle(ehdr, ldso, abi) == 1 &&
+	    __is_32_bits(ehdr, ldso, abi) == 1)
 		return __set_errno(errno_save, "/usr/lib/mipsel-linux-gnu:/lib/mipsel-linux-gnu:/usr/lib:/lib");
 
 	/* It is an MIPS64 LSB ELF */
-	if (__is_mipsle(ehdr, ldso, abi) && __is_64_bits(ehdr, ldso, abi))
+	if (__is_mipsle(ehdr, ldso, abi) == 1 &&
+	    __is_64_bits(ehdr, ldso, abi) == 1)
 		return __set_errno(errno_save, "/usr/lib/mips64el-linux-gnuabi64:/lib/mips64el-linux-gnuabi64:/usr/lib:/lib");
 
 	/* It is a PowerPC64 ELF */
-	if (__is_powerpc64(ehdr, ldso, abi))
+	if (__is_powerpc64(ehdr, ldso, abi) == 1)
 		return __set_errno(errno_save, "/usr/lib/powerpc64le-linux-gnu:/lib/powerpc64-linux-gnu:/usr/lib:/lib");
 
 	/* It is a PowerPC64 LSB ELF */
-	if (__is_powerpc64le(ehdr, ldso, abi))
+	if (__is_powerpc64le(ehdr, ldso, abi) == 1)
 		return __set_errno(errno_save, "/usr/lib/powerpc64le-linux-gnu:/lib/powerpc64le-linux-gnu:/usr/lib:/lib");
 
 	/* It is an IBM S/390 ELF */
-	if (__is_s390(ehdr, ldso, abi))
+	if (__is_s390(ehdr, ldso, abi) == 1)
 		return __set_errno(errno_save, "/usr/lib/s390x-linux-gnu:/lib/s390x-linux-gnu:/usr/lib:/lib");
 
 	/* It is something else */
@@ -2015,174 +2019,175 @@ static ssize_t __getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso, int abi,
 	/* The variable is unset, try to guess automagically the library. */
 
 	/* IAMROOT_LIB_$MACHINE_LINUX_$ARCH_$ABI */
-	if (__is_gnu_linux(ehdr, ldso, abi)) {
+	if (__is_gnu_linux(ehdr, ldso, abi) == 1) {
 		/* It is an x86 ELF or IAMROOT_LIB_I686_LINUX_2 */
-		if (__is_x86(ehdr, ldso, abi) ||
+		if (__is_x86(ehdr, ldso, abi) == 1 ||
 		    (streq(ldso, "linux") && abi == 2)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/i686/libiamroot-linux.so.2";
 			goto access;
 		}
 
 		/* It is an x86-64 ELF or IAMROOT_LIB_X86_64_LINUX_X86_64_2 */
-		if (__is_x86_64(ehdr, ldso, abi) ||
+		if (__is_x86_64(ehdr, ldso, abi) == 1 ||
 		    (streq(ldso, "linux-x86-64") && abi == 2)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/x86_64/libiamroot-linux-x86-64.so.2";
 			goto access;
 		}
 
 		/* It is an ARM ELF or IAMROOT_LIB_ARM_LINUX_3 */
-		if (__is_arm(ehdr, ldso, abi) ||
+		if (__is_arm(ehdr, ldso, abi) == 1 ||
 		    (streq(ldso, "linux") && abi == 3)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/arm/libiamroot-linux.so.3";
 			goto access;
 		}
 
 		/* It is an ARMHF ELF or IAMROOT_LIB_ARMHF_LINUX_ARMHF_3 */
-		if (__is_armhf(ehdr, ldso, abi) ||
+		if (__is_armhf(ehdr, ldso, abi) == 1 ||
 		    (streq(ldso, "linux-armhf") && abi == 3)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/armhf/libiamroot-linux-armhf.so.3";
 			goto access;
 		}
 
 		/* It is an AArch64 LSB ELF or IAMROOT_LIB_AARCH64_LINUX_AARCH64_1 */
-		if (__is_aarch64(ehdr, ldso, abi) ||
+		if (__is_aarch64(ehdr, ldso, abi) == 1 ||
 		    (streq(ldso, "linux-aarch64") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/aarch64/libiamroot-linux-aarch64.so.1";
 			goto access;
 		}
 
 		/* It is an AArch64 MSB ELF or IAMROOT_LIB_AARCH64_BE_LINUX_AARCH64_BE_1 */
-		if (__is_aarch64_be(ehdr, ldso, abi) ||
+		if (__is_aarch64_be(ehdr, ldso, abi) == 1 ||
 		    (streq(ldso, "linux-aarch64_be") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/aarch64_be/libiamroot-linux-aarch64_be.so.1";
 			goto access;
 		}
 
 		/* It is an RISC-V lp64d ELF or IAMROOT_LIB_RISCV64_LINUX_RISCV64_LP64D_1 */
-		if ((__is_riscv(ehdr, ldso, abi) &&
-		     __is_64_bits(ehdr, ldso, abi)) ||
+		if ((__is_riscv(ehdr, ldso, abi) == 1 &&
+		     __is_64_bits(ehdr, ldso, abi) == 1) ||
 		    (streq(ldso, "linux-riscv64-lp64d") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/riscv64/libiamroot-linux-riscv64-lp64d.so.1";
 			goto access;
 		}
 	}
 
-	if (__is_mipsle(ehdr, ldso, abi) && (*ldso == 0 && abi == 1)) {
+	if (__is_mipsle(ehdr, ldso, abi) == 1 && (*ldso == 0 && abi == 1)) {
 		/* It is an MIPS LSB ELF and IAMROOT_LIB_MIPSLE_1 */
-		if (__is_32_bits(ehdr, ldso, abi)) {
+		if (__is_32_bits(ehdr, ldso, abi) == 1) {
 			lib = __xstr(PREFIX)"/lib/iamroot/mipsle/libiamroot.so.1";
 			goto access;
 		}
 
 		/* It is an MIPS64 LSB ELF and IAMROOT_LIB_MIPS64LE_1 */
-		if (__is_64_bits(ehdr, ldso, abi)) {
+		if (__is_64_bits(ehdr, ldso, abi) == 1) {
 			lib = __xstr(PREFIX)"/lib/iamroot/mips64le/libiamroot.so.1";
 			goto access;
 		}
 	}
 
 	/* It is a PowerPC64 ELF and IAMROOT_LIB_POWERPC64_2 */
-	if (__is_powerpc64(ehdr, ldso, abi) && (*ldso == 0 && abi == 2)) {
+	if (__is_powerpc64(ehdr, ldso, abi) == 1 && (*ldso == 0 && abi == 2)) {
 		lib = __xstr(PREFIX)"/lib/iamroot/powerpc64/libiamroot.so.2";
 		goto access;
 	}
 
 	/* It is a PowerPC64 LSB ELF and IAMROOT_LIB_POWERPC64LE_2 */
-	if (__is_powerpc64le(ehdr, ldso, abi) && (*ldso == 0 && abi == 2)) {
+	if (__is_powerpc64le(ehdr, ldso, abi) == 1 &&
+	    (*ldso == 0 && abi == 2)) {
 		lib = __xstr(PREFIX)"/lib/iamroot/powerpc64le/libiamroot.so.2";
 		goto access;
 	}
 
 	/* It is an IBM S/390 ELF and IAMROOT_LIB_S390X_1 */
-	if (__is_s390(ehdr, ldso, abi) && (*ldso == 0 && abi == 1)) {
+	if (__is_s390(ehdr, ldso, abi) == 1 && (*ldso == 0 && abi == 1)) {
 		lib = __xstr(PREFIX)"/lib/iamroot/s390x/libiamroot.so.1";
 		goto access;
 	}
 
 	/* IAMROOT_LIB_$MACHINE_MUSL_$ARCH_$ABI */
-	if (__is_musl(ehdr, ldso, abi)) {
+	if (__is_musl(ehdr, ldso, abi) == 1) {
 		/* It is an x86 ELF or IAMROOT_LIB_I686_MUSL_I386_1 */
-		if (__is_x86(ehdr, ldso, abi) ||
+		if (__is_x86(ehdr, ldso, abi) == 1 ||
 		    (streq(ldso, "musl-i386") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/i686/libiamroot-musl-i386.so.1";
 			goto access;
 		}
 
 		/* It is an x86-64 ELF or IAMROOT_LIB_X86_64_MUSL_X86_64_1 */
-		if (__is_x86_64(ehdr, ldso, abi) ||
+		if (__is_x86_64(ehdr, ldso, abi) == 1 ||
 		    (streq(ldso, "musl-x86_64") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/x86_64/libiamroot-musl-x86_64.so.1";
 			goto access;
 		}
 
 		/* It is an ARM ELF or IAMROOT_LIB_ARM_MUSL_ARM_1 */
-		if (__is_arm(ehdr, ldso, abi) ||
+		if (__is_arm(ehdr, ldso, abi) == 1 ||
 		    (streq(ldso, "musl-arm") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/arm/libiamroot-musl-arm.so.1";
 			goto access;
 		}
 
 		/* It is an ARMHF ELF or IAMROOT_LIB_ARMHF_MUSL_ARMHF_1 */
-		if (__is_armhf(ehdr, ldso, abi) ||
+		if (__is_armhf(ehdr, ldso, abi) == 1 ||
 		    (streq(ldso, "musl-armhf") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/armhf/libiamroot-musl-armhf.so.1";
 			goto access;
 		}
 
 		/* It is an AArch64 LSB ELF or IAMROOT_LIB_AARCH64_MUSL_AARCH64_1 */
-		if (__is_aarch64(ehdr, ldso, abi) ||
+		if (__is_aarch64(ehdr, ldso, abi) == 1 ||
 		    (streq(ldso, "musl-aarch64") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/aarch64/libiamroot-musl-aarch64.so.1";
 			goto access;
 		}
 
 		/* It is an AArch64 MSB ELF or IAMROOT_LIB_AARCH64_BE_MUSL_AARCH64_BE_1 */
-		if (__is_aarch64(ehdr, ldso, abi) ||
+		if (__is_aarch64(ehdr, ldso, abi) == 1 ||
 		    (streq(ldso, "musl-aarch64_be") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/aarch64_be/libiamroot-musl-aarch64_be.so.1";
 			goto access;
 		}
 
 		/* It is an RISC-V ELF or IAMROOT_LIB_RISCV64_MUSL_RISCV64_1 */
-		if ((__is_riscv(ehdr, ldso, abi) &&
-		     __is_64_bits(ehdr, ldso, abi)) ||
+		if ((__is_riscv(ehdr, ldso, abi) == 1 &&
+		     __is_64_bits(ehdr, ldso, abi) == 1) ||
 		    (streq(ldso, "musl-riscv64") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/riscv64/libiamroot-musl-riscv64.so.1";
 			goto access;
 		}
 
 		/* It is a MIPS LSB ELF or IAMROOT_LIB_MIPSLE_MUSL_MIPSEL_1 */
-		if (__is_mipsle(ehdr, ldso, abi) &&
-		    __is_32_bits(ehdr, ldso, abi) &&
+		if (__is_mipsle(ehdr, ldso, abi) == 1 &&
+		    __is_32_bits(ehdr, ldso, abi) == 1 &&
 		    (streq(ldso, "musl-mipsel") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/mipsle/libiamroot-musl-mipsel.so.1";
 			goto access;
 		}
 
 		/* It is a MIPS64 LSB ELF or IAMROOT_LIB_MIPS64LE_MUSL_MIPS64EL_1 */
-		if (__is_mipsle(ehdr, ldso, abi) &&
-		    __is_64_bits(ehdr, ldso, abi) &&
+		if (__is_mipsle(ehdr, ldso, abi) == 1 &&
+		    __is_64_bits(ehdr, ldso, abi) == 1 &&
 		    (streq(ldso, "musl-mips64el") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/mips64le/libiamroot-musl-mips64el.so.1";
 			goto access;
 		}
 
 		/* It is a PowerPC64 ELF and IAMROOT_LIB_POWERPC64_MUSL_POWERPC64_1 */
-		if (__is_powerpc64(ehdr, ldso, abi) &&
+		if (__is_powerpc64(ehdr, ldso, abi) == 1 &&
 		    (streq(ldso, "musl-powerpc64") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/powerpc64/libiamroot-musl-powerpc64.so.1";
 			goto access;
 		}
 
 		/* It is a PowerPC64 LSB ELF and IAMROOT_LIB_POWERPC64LE_MUSL_POWERPC64LE_1 */
-		if (__is_powerpc64le(ehdr, ldso, abi) &&
+		if (__is_powerpc64le(ehdr, ldso, abi) == 1 &&
 		    (streq(ldso, "musl-powerpc64le") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/powerpc64le/libiamroot-musl-powerpc64le.so.1";
 			goto access;
 		}
 
 		/* It is an IBM S/390 ELF or IAMROOT_LIB_S390X_MUSL_S390X_1 */
-		if (__is_s390(ehdr, ldso, abi) &&
+		if (__is_s390(ehdr, ldso, abi) == 1 &&
 		    (streq(ldso, "musl-s390x") && abi == 1)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/s390x/libiamroot-musl-s390x.so.1";
 			goto access;
@@ -2190,30 +2195,30 @@ static ssize_t __getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso, int abi,
 	}
 
 	/* It is a FreeBSD ELF or IAMROOT_LIB_$MACHINE_ELF_1 */
-	if (__is_freebsd(ehdr, ldso, abi)) {
+	if (__is_freebsd(ehdr, ldso, abi) == 1) {
 		/* It is an x86-64 ELF */
-		if (__is_x86_64(ehdr, ldso, abi)) {
+		if (__is_x86_64(ehdr, ldso, abi) == 1) {
 			lib = __xstr(PREFIX)"/lib/iamroot/amd64/libiamroot-elf.so.1";
 			goto access;
 		}
 
 		/* It is an AArch64 ELF */
-		if (__is_aarch64(ehdr, ldso, abi)) {
+		if (__is_aarch64(ehdr, ldso, abi) == 1) {
 			lib = __xstr(PREFIX)"/lib/iamroot/arm64/libiamroot-elf.so.1";
 			goto access;
 		}
 	}
 
 	/* It is a NetBSD ELF or IAMROOT_LIB_$MACHINE_ELF */
-	if (__is_netbsd(ehdr, ldso, abi)) {
+	if (__is_netbsd(ehdr, ldso, abi) == 1) {
 		/* It is an x86-64 ELF */
-		if (__is_x86_64(ehdr, ldso, abi)) {
+		if (__is_x86_64(ehdr, ldso, abi) == 1) {
 			lib = __xstr(PREFIX)"/lib/iamroot/amd64/libiamroot.elf_so";
 			goto access;
 		}
 
 		/* It is an AArch64 ELF */
-		if (__is_aarch64(ehdr, ldso, abi)) {
+		if (__is_aarch64(ehdr, ldso, abi) == 1) {
 			lib = __xstr(PREFIX)"/lib/iamroot/arm64/libiamroot.elf_so";
 			goto access;
 		}
@@ -2230,7 +2235,7 @@ access:
 	/* The library is not found. */
 
 	__warning("%s: No such ELF%i iamroot library for machine %i! Trying the default...\n",
-		  lib, __is_64_bits(ehdr, ldso, abi) ? 64 : 32,
+		  lib, __is_64_bits(ehdr, ldso, abi) == 1 ? 64 : 32,
 		  ehdr->e_machine);
 
 	/*
@@ -2369,9 +2374,9 @@ static const char *__getdeflib(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	 * On some 64-bit architectures, the default paths for 64-bit shared
 	 * objects are /lib64, and then /usr/lib64.
 	 */
-	if (__is_gnu_linux(ehdr, ldso, abi)) {
+	if (__is_gnu_linux(ehdr, ldso, abi) == 1) {
 		/* It is a 64-bits GNU/Linux */
-		if (__is_64_bits(ehdr, ldso, abi))
+		if (__is_64_bits(ehdr, ldso, abi) == 1)
 			return __set_errno(errno_save, "/lib64:/usr/lib64");
 
 		/* It is a GNU/Linux */
@@ -2379,7 +2384,7 @@ static const char *__getdeflib(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	}
 
 	/* It is a NetBSD ELF or ELF */
-	if (__is_netbsd(ehdr, ldso, abi))
+	if (__is_netbsd(ehdr, ldso, abi) == 1)
 		return __set_errno(errno_save, "/lib:/usr/pkg/lib:/usr/lib");
 
 	/* It is something else */
@@ -2974,7 +2979,7 @@ int __ldso(const char *path, char * const argv[], char *interparg[], char *buf,
 	 *  - --inhibit-rpath since 2.0.94
 	 *  - --library-path since 2.0.92
 	 */
-	if (__is_gnu_linux(&ehdr, ldso, abi)) {
+	if (__is_gnu_linux(&ehdr, ldso, abi) == 1) {
 		has_inhibit_rpath = 1;
 		has_inhibit_cache =
 				__ld_linux_has_inhibit_cache_option(pt_interp);
@@ -3001,7 +3006,7 @@ int __ldso(const char *path, char * const argv[], char *interparg[], char *buf,
 	 * It does not support neither --inhibit-cache (it has no cache support
 	 * at all) nor --inhibit-rpath.
 	 */
-	if (__is_musl(&ehdr, ldso, abi)) {
+	if (__is_musl(&ehdr, ldso, abi) == 1) {
 		has_argv0 = 1;
 		has_preload = 1;
 		has_library_path = 1;

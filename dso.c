@@ -2215,10 +2215,10 @@ static ssize_t __getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso, int abi,
 	}
 
 	/* It is a NetBSD ELF or IAMROOT_LIB_AMD64_ELF */
-	if (!__is_netbsd(ehdr, ldso, abi)) {
+	if (__is_netbsd(ehdr, ldso, abi)) {
 		/* It is an x86-64 ELF */
 		if (__is_x86_64(ehdr, ldso, abi)) {
-			lib = __xstr(PREFIX)"/lib/iamroot/amd64/libiamroot-elf.so";
+			lib = __xstr(PREFIX)"/lib/iamroot/amd64/libiamroot.elf_so";
 			goto access;
 		}
 	}

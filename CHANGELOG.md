@@ -23,7 +23,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   the functions `mktemp()` and `mkdtemp()`
 - Fix the segmentation fault if preloading a shared-object with a circular
   dependency
-- Fix the detection of the [FreeBSD]'s libraries
+- Fix the detection of the [FreeBSD] and [NetBSD]'s libraries
 
 ## [v19] - 2024-03-05
 

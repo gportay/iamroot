@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Detection of Aarch64 [NetBSD]'s library
 
+### Removed
+
+- Remove the detailled `execve` output command on level 4 and above
+
 ## [v20] - 2024-03-08
 
 ### Added

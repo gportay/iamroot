@@ -1171,9 +1171,10 @@ int __verbosef(int lvl, const char *func, const char *fmt, ...)
 
 #if !defined(NVERBOSE)
 __attribute__((visibility("hidden")))
-void __verbose_exec(const char *path, char * const argv[], char * const envp[])
+void __verbose_exec(char * const argv[], char * const envp[])
 {
 	int color, fd, debug;
+	char * const *p;
 
 	debug = __getdebug();
 	if (debug == 0)
@@ -1192,42 +1193,20 @@ void __verbose_exec(const char *path, char * const argv[], char * const envp[])
 	if (color)
 		dprintf(fd, "\033[0m");
 
-	if (debug < 4) {
-		char * const *p;
 
-		dprintf(fd, "running");
+	dprintf(fd, "running");
 
-		p = envp;
-		if (p)
-			while (*p)
-				dprintf(fd, " \"%s\"", *p++);
+	p = envp;
+	if (p)
+		while (*p)
+			dprintf(fd, " \"%s\"", *p++);
 
-		p = argv;
-		if (p)
-			while (*p)
-				dprintf(fd, " \"%s\"", *p++);
-		dprintf(fd, "\n");
-	} else {
-		char * const *p;
+	p = argv;
+	if (p)
+		while (*p)
+			dprintf(fd, " \"%s\"", *p++);
 
-		dprintf(fd, "execve(path: '%s', argv: {", path);
-
-		p = argv;
-		if (p)
-			while (*p)
-				dprintf(fd, " '%s',", *p++);
-		dprintf(fd, " NULL }, ");
-		if (debug < 5) {
-			dprintf(fd, "envp: %p)\n", envp);
-		} else {
-			dprintf(fd, "envp: %p {", envp);
-			p = envp;
-			if (p)
-				while (*p)
-					dprintf(fd, " %s", *p++);
-			dprintf(fd, " }\n");
-		}
-	}
+	dprintf(fd, "\n");
 }
 #endif
 

@@ -86,7 +86,7 @@ int posix_spawnp(pid_t *pid, const char *file,
 	__debug("%s(file: '%s', ..., argv: { '%s', '%s', ... }, envp: %p)\n",
 		__func__, file, argv[0], argv[1], envp);
 
-	__verbose_exec(file, argv, envp);
+	__verbose_exec(argv, envp);
 
 	/* Forward to local function */
 	return __posix_spawnp(pid, file, file_actions, attrp, argv, envp);

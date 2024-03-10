@@ -5,16 +5,16 @@
 #
 
 O ?= output
-ARCH ?= $(shell uname -m 2>/dev/null)
+ARCH ?= $(shell uname -p 2>/dev/null)
 
 IAMROOT_LIB ?= $(CURDIR)/$(ARCH)/libiamroot-elf.so.1
 export IAMROOT_LIB
 
-IAMROOT_LIB_AMD64_ELF_1 ?= $(CURDIR)/$(ARCH)/libiamroot-elf.so.1
-export IAMROOT_LIB_AMD64_ELF_1
+IAMROOT_LIB_X86_64_ELF_1 ?= $(CURDIR)/$(ARCH)/libiamroot-elf.so.1
+export IAMROOT_LIB_X86_64_ELF_1
 
-IAMROOT_LIB_ARM64_ELF_1 ?= $(CURDIR)/$(ARCH)/libiamroot-elf.so.1
-export IAMROOT_LIB_ARM64_ELF_1
+IAMROOT_LIB_AARCH64_ELF_1 ?= $(CURDIR)/$(ARCH)/libiamroot-elf.so.1
+export IAMROOT_LIB_AARCH64_ELF_1
 
 IAMROOT_PATH_RESOLUTION_IGNORE ?= ^/dev/|^/etc/resolv.conf
 export IAMROOT_PATH_RESOLUTION_IGNORE

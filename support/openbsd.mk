@@ -5,7 +5,7 @@
 #
 
 O ?= output
-ARCH ?= $(shell uname -m 2>/dev/null)
+ARCH ?= $(shell uname -p 2>/dev/null)
 
 IAMROOT_LIB ?= $(CURDIR)/$(ARCH)/libiamroot.so
 export IAMROOT_LIB

@@ -8,16 +8,16 @@ PREFIX ?= /usr/pkg
 export PREFIX
 
 O ?= output
-ARCH ?= $(shell uname -m 2>/dev/null)
+ARCH ?= $(shell uname -p 2>/dev/null)
 
 IAMROOT_LIB ?= $(CURDIR)/$(ARCH)/libiamroot.elf_so
 export IAMROOT_LIB
 
-IAMROOT_LIB_AMD64_ELF ?= $(CURDIR)/$(ARCH)/libiamroot.elf_so
-export IAMROOT_LIB_AMD64_ELF
+IAMROOT_LIB_X86_64_ELF ?= $(CURDIR)/$(ARCH)/libiamroot.elf_so
+export IAMROOT_LIB_X86_64_ELF
 
-IAMROOT_LIB_ARM64_ELF ?= $(CURDIR)/$(ARCH)/libiamroot.elf_so
-export IAMROOT_LIB_ARM64_ELF
+IAMROOT_LIB_AARCH64_ELF ?= $(CURDIR)/$(ARCH)/libiamroot.elf_so
+export IAMROOT_LIB_AARCH64_ELF
 
 IAMROOT_PATH_RESOLUTION_IGNORE ?= ^/dev/|^/proc/
 export IAMROOT_PATH_RESOLUTION_IGNORE

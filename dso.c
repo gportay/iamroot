@@ -1859,23 +1859,13 @@ static const char *__machine(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 		/* Assuming it is a *BSD */
 		return __set_errno(errno_save, "i386");
 	} else if (__is_x86_64(ehdr, ldso, abi)) {
-		if (__is_gnu_linux(ehdr, ldso, abi) ||
-		    __is_musl(ehdr, ldso, abi))
-			return __set_errno(errno_save, "x86_64");
-
-		/* Assuming it is a *BSD */
-		return __set_errno(errno_save, "amd64");
+		return __set_errno(errno_save, "x86_64");
 	} else if (__is_arm(ehdr, ldso, abi)) {
 		return __set_errno(errno_save, "arm");
 	} else if (__is_armhf(ehdr, ldso, abi)) {
 		return __set_errno(errno_save, "armhf");
 	} else if (__is_aarch64(ehdr, ldso, abi)) {
-		if (__is_gnu_linux(ehdr, ldso, abi) ||
-		    __is_musl(ehdr, ldso, abi))
-			return __set_errno(errno_save, "aarch64");
-
-		/* Assuming it is a *BSD */
-		return __set_errno(errno_save, "arm64");
+		return __set_errno(errno_save, "aarch64");
 	} else if (__is_aarch64_be(ehdr, ldso, abi)) {
 		return __set_errno(errno_save, "aarch64_be");
 	} else if (__is_riscv(ehdr, ldso, abi)) {

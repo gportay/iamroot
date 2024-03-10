@@ -2200,7 +2200,7 @@ static ssize_t __getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso, int abi,
 	}
 
 	/* It is a FreeBSD ELF or IAMROOT_LIB_$MACHINE_ELF_1 */
-	if (!__is_freebsd(ehdr, ldso, abi)) {
+	if (__is_freebsd(ehdr, ldso, abi)) {
 		/* It is an x86-64 ELF */
 		if (__is_x86_64(ehdr, ldso, abi)) {
 			lib = __xstr(PREFIX)"/lib/iamroot/amd64/libiamroot-elf.so.1";

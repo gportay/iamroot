@@ -52,14 +52,25 @@ netbsd-9.3-chroot: export SHELL = /bin/sh
 netbsd-9.3-chroot: $(ARCH)/libiamroot.elf_so | netbsd-9.3-rootfs
 	bash ido $(IDOFLAGS) chroot $@
 
+ifeq ($(ARCH),x86_64)
 netbsd-9.3-rootfs: | $(ARCH)/libiamroot.elf_so base.tar.xz
 	rm -Rf $@
 	mkdir -p $@.tmp
 	tar xzf base.tar.xz -C $@.tmp
 	mv $@.tmp $@
+else
+netbsd-9.3-rootfs: | $(ARCH)/libiamroot.elf_so base.tgz
+	rm -Rf $@
+	mkdir -p $@.tmp
+	tar xzf base.tgz -C $@.tmp
+	mv $@.tmp $@
+endif
 
 base.tar.xz:
-	wget https://cdn.netbsd.org/pub/NetBSD/NetBSD-9.3/amd64/binary/sets/base.tar.xz -O $@
+	wget http://cdn.netbsd.org/pub/NetBSD/NetBSD-9.3/$(ARCH)/binary/sets/base.tar.xz -O $@
+
+base.tgz:
+	wget http://cdn.netbsd.org/pub/NetBSD/NetBSD-9.3/$(shell uname -m)-$(ARCH)/binary/sets/base.tgz -O $@
 
 .PHONY: test ci ido ish
 test ci ido ish: libiamroot.so

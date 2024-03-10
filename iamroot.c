@@ -1196,15 +1196,19 @@ void __verbose_exec(char * const argv[], char * const envp[])
 
 	dprintf(fd, "running");
 
-	p = envp;
-	if (p)
-		while (*p)
-			dprintf(fd, " \"%s\"", *p++);
+	for (p = envp; *p; p++) {
+		if (strchr(*p, ' '))
+			dprintf(fd, " \"%s\"", *p);
+		else
+			dprintf(fd, " %s", *p);
+	}
 
-	p = argv;
-	if (p)
-		while (*p)
-			dprintf(fd, " \"%s\"", *p++);
+	for (p = argv; *p; p++) {
+		if (strchr(*p, ' '))
+			dprintf(fd, " \"%s\"", *p);
+		else
+			dprintf(fd, " %s", *p);
+	}
 
 	dprintf(fd, "\n");
 }

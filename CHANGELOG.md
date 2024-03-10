@@ -14,6 +14,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Remove the detailled `execve` output command on level 4 and above
 
+### Changed
+
+- Double quote the arguments of full command if the argument contains a
+  whitespace
+
 ## [v20] - 2024-03-08
 
 ### Added

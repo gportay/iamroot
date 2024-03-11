@@ -50,7 +50,7 @@ $(O)-%:
 netbsd-9.3-chroot: export PATH = /sbin:/usr/sbin:/bin:/usr/bin:/usr/pkg/sbin:/usr/pkg/bin:/usr/X11R7/bin:/usr/local/sbin:/usr/local/bin
 netbsd-9.3-chroot: export SHELL = /bin/sh
 netbsd-9.3-chroot: $(ARCH)/libiamroot.elf_so | netbsd-9.3-rootfs
-	bash ido $(IDOFLAGS) chroot $@
+	bash ido $(IDOFLAGS) chroot netbsd-9.3-rootfs
 
 ifeq ($(ARCH),x86_64)
 netbsd-9.3-rootfs: | $(ARCH)/libiamroot.elf_so base.tar.xz

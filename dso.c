@@ -1848,6 +1848,15 @@ static int __is_netbsd(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	       (__is_elf_ldso(ldso) == 1 && abi == -1);
 }
 
+static int __is_openbsd(Elf64_Ehdr *ehdr, const char *ldso, int abi)
+{
+	(void)ldso;
+	(void)abi;
+
+	/* It is a OpenBSD ELF */
+	return (ehdr && (ehdr->e_ident[EI_OSABI] == ELFOSABI_OPENBSD));
+}
+
 static const char *__machine(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 {
 	const int errno_save = errno;
@@ -2923,7 +2932,7 @@ int __ldso(const char *path, char * const argv[], char *interparg[], char *buf,
 	   size_t bufsiz, off_t offset)
 {
 	int i, j, has_argv0 = 0, has_preload = 0, has_library_path = 0,
-	    has_inhibit_rpath = 0, has_inhibit_cache = 0, shift = 1;
+	    has_inhibit_rpath = 0, has_inhibit_cache = 0, shift = 0;
 	char *argv0 = NULL, *inhibit_rpath = NULL, *ld_library_path = NULL,
 	     *ld_preload = NULL;
 	char pt_interp[NAME_MAX], ldso[NAME_MAX];
@@ -2981,6 +2990,7 @@ int __ldso(const char *path, char * const argv[], char *interparg[], char *buf,
 	 *  - --library-path since 2.0.92
 	 */
 	if (__is_gnu_linux(&ehdr, ldso, abi) == 1) {
+		shift = 1;
 		has_inhibit_rpath = 1;
 		has_inhibit_cache =
 				__ld_linux_has_inhibit_cache_option(pt_interp);
@@ -3008,6 +3018,7 @@ int __ldso(const char *path, char * const argv[], char *interparg[], char *buf,
 	 * at all) nor --inhibit-rpath.
 	 */
 	if (__is_musl(&ehdr, ldso, abi) == 1) {
+		shift = 1;
 		has_argv0 = 1;
 		has_preload = 1;
 		has_library_path = 1;
@@ -3017,9 +3028,82 @@ int __ldso(const char *path, char * const argv[], char *interparg[], char *buf,
 	 * The FreeBSD world supports none of them; it supports the environment
 	 * variables LD_PRELOAD and LD_LIBRARY_PATH.
 	 *
-	 * The OpenBSD world supports the environment variables LD_PRELOAD and
-	 * LD_LIBRARY_PATH.
+	 * According to ld-elf.so.1(1):
+	 *
+	 * LD_LIBRARY_PATH
+	 * A colon separated list of directories, overriding the default search
+	 * path for shared libraries. This variable is unset for set-user-ID
+	 * and set-group-ID programs.
+	 *
+	 * LD_PRELOAD
+	 * A list of shared libraries, separated by colons and/or white space,
+	 * to be linked in before any other shared libraries. If the directory
+	 * is not specified then the directories specified by LD_LIBRARY_PATH
+	 * will be searched first followed by the set of built-in standard
+	 * directories. This variable is unset for set-user-ID and
+	 * set-group-ID programs.
+	 *
+	 * According to /libexec/ld-elf.so.1 -h:
+	 *
+	 * Usage: /libexec/ld-elf.so.1 [-h] [-b <exe>] [-d] [-f <FD>] [-p] [--] <binary> [<args>]
+	 *
+	 * Options:
+	 *   -h        Display this help message
+	 *   -b <exe>  Execute <exe> instead of <binary>, arg0 is <binary>
+	 *   -d        Ignore lack of exec permissions for the binary
+	 *   -f <FD>   Execute <FD> instead of searching for <binary>
+	 *   -p        Search in PATH for named binary
+	 *   -u        Ignore LD_ environment variables
+	 *   -v        Display identification information
+	 *   --        End of RTLD options
+	 *   <binary>  Name of processto execute
+	 *   <args>    Arguments to the executed process
 	 */
+	if (__is_freebsd(&ehdr, ldso, abi) == 1)
+		shift = 1;
+
+	/*
+	 * The NetBSD and OpenBSD worlds support the environment variables
+	 * LD_PRELOAD and LD_LIBRARY_PATH.
+	 *
+	 * The NetBSD world segfaults if run directly.
+	 *
+	 * According to ld.elf_so(1):
+	 *
+	 * If the following environment variables exist they will be used by
+	 * ld.elf_so.
+	 *
+	 * LD_LIBRARY_PATH
+	 * A colon separated list of directories, overriding the default search
+	 * path for shared libraries.
+	 *
+	 * LD_PRELOAD
+	 * A colon or space separated list of shared object filenames to be
+	 * loaded after the main program but before its shared object
+	 * dependencies. Space is allowed as a separator for backwards
+	 * compatibility only. Support may be removed in a future release and
+	 * should not be relied upon.
+	 *
+	 * The OpenBSD world has an none-executable ld.so.
+	 *
+	 * According to ld.so(1):
+	 *
+	 * ld.so recognises a number of environment variables that can be used
+	 * to modify its behaviour as follows:
+	 *
+	 * LD_LIBRARY_PATH
+	 * A colon separated list of directories, prepending the default search
+	 * path for shared libraries. This variable is ignored for set-user-ID
+	 * and set-group-ID executables.
+	 *
+	 * LD_PRELOAD
+	 * A colon separated list of library names to load before any of the
+	 * regular libraries are loaded. This variable is ignored for set-
+	 * user-ID and set-group-ID executables.
+	 */
+	if (__is_netbsd(&ehdr, ldso, abi) == 1 ||
+	    __is_openbsd(&ehdr, ldso, abi) == 1)
+		shift = 0;
 
 	siz = __ld_preload(&ehdr, ldso, abi, path, buf, bufsiz, off);
 	if (siz == -1)
@@ -3105,7 +3189,8 @@ int __ldso(const char *path, char * const argv[], char *interparg[], char *buf,
 
 	/* Add path to interpreter (host, argv0) */
 	i = 0;
-	interparg[i++] = interp;
+	if (shift)
+		interparg[i++] = interp;
 
 	/*
 	 * Add --preload and the libraries to preload:
@@ -3113,7 +3198,7 @@ int __ldso(const char *path, char * const argv[], char *interparg[], char *buf,
 	 *  - libc.so, libdl.so and libpthread.so (from chroot)
 	 *  - DT_NEEDED libraries of binary (from chroot)
 	 */
-	if (has_preload && ld_preload) {
+	if (shift && has_preload && ld_preload) {
 		interparg[i++] = "--preload";
 		interparg[i++] = ld_preload;
 	/* Or set LD_PRELOAD if --preload is not supported */
@@ -3130,7 +3215,7 @@ int __ldso(const char *path, char * const argv[], char *interparg[], char *buf,
 	 *  - DT_RUNPATH of binary (from chroot)
 	 *  - default library path of interpreter (from chroot)
 	 */
-	if (has_library_path && ld_library_path) {
+	if (shift && has_library_path && ld_library_path) {
 		interparg[i++] = "--library-path";
 		interparg[i++] = ld_library_path;
 	/* Or set LD_LIBRARY_PATH if --library-path is not supported */
@@ -3141,17 +3226,17 @@ int __ldso(const char *path, char * const argv[], char *interparg[], char *buf,
 	}
 
 	/* Add --inhibit-rpath (chroot) */
-	if (has_inhibit_rpath && inhibit_rpath) {
+	if (shift && has_inhibit_rpath && inhibit_rpath) {
 		interparg[i++] = "--inhibit-rpath";
 		interparg[i++] = inhibit_rpath;
 	}
 
 	/* Add --inhibit-cache */
-	if (has_inhibit_cache)
+	if (shift && has_inhibit_cache)
 		interparg[i++] = "--inhibit-cache";
 
 	/* Add --argv0 and original argv0 */
-	if (has_argv0) {
+	if (shift && has_argv0) {
 		interparg[i++] = "--argv0";
 		interparg[i++] = argv0;
 	} else {
@@ -3166,9 +3251,11 @@ int __ldso(const char *path, char * const argv[], char *interparg[], char *buf,
 	}
 
 	/* Add path to binary (in chroot, first positional argument) */
-	interparg[i] = (char *)path;
-	i += j;
-	interparg[i] = NULL; /* ensure NULL-terminated */
+	if (shift) {
+		interparg[i] = (char *)path;
+		i += j;
+		interparg[i] = NULL; /* ensure NULL-terminated */
+	}
 
 	ret = i;
 

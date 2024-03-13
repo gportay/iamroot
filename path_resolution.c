@@ -535,7 +535,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsiz,
 	if (follow_symlink(atflags)) {
 		char tmp[PATH_MAX];
 
-		_strncpy(tmp, buf, sizeof(tmp));
+		__strncpy(tmp, buf);
 		__realpath(tmp, buf);
 	}
 
@@ -573,7 +573,7 @@ char *__getpath(int dfd, const char *path, int atflags)
 		if (follow_symlink(atflags))
 			return next_realpath(path, buf);
 
-		return _strncpy(buf, path, sizeof(buf));
+		return __strncpy(buf, path);
 	}
 
 	siz = path_resolution(dfd, path, buf, sizeof(buf), atflags);

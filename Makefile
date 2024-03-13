@@ -449,7 +449,7 @@ cleanall: clean
 
 .PHONY: clean
 clean:
-	rm -f ld-iamroot.so libiamroot.so* fuzzer *.o *.i
+	rm -f ld-iamroot.so libiamroot.so* fuzzer *.o *.i *.1.gz *.7.gz *.8.gz
 	$(MAKE) -C tests $@
 
 .PHONY: mrproper

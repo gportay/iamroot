@@ -89,7 +89,7 @@ The table below lists the distributions and its tool that work with.
 | Tool                 | Distributions                                                                                 |
 | -------------------- | --------------------------------------------------------------------------------------------- |
 | [pacstrap(8)]        | [Arch Linux], [Arch Linux ARM], [Arch Linux 32], [Arch Linux RISC-V], [Arch POWER], [Manjaro] |
-| [alpine-make-rootfs] | [Alpine Linux]                                                                                |
+| [alpine-make-rootfs] | [Alpine Linux], [Adélie Linux]                                                                |
 | [dnf(8)]             | [Fedora]                                                                                      |
 | [zypper(8)]          | [openSUSE]                                                                                    |
 | [debootstrap(8)]     | [Debian], [Ubuntu]\*, [Devuan]                                                                |
@@ -238,6 +238,7 @@ later version.
 [binfmt_misc], [qemu]
 
 [-nodefaultlibs]: https://gcc.gnu.org/onlinedocs/gcc/Link-Options.html#index-nodefaultlibs
+[Adélie Linux]: https://www.adelielinux.org/
 [Alpine Linux]: https://www.alpinelinux.org/
 [Alpine Linux]: https://www.alpinelinux.org/
 [Arch Linux 32]: https://archlinux32.org/

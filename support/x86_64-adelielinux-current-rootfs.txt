@@ -1,0 +1,45 @@
+
+> Installing system
+(X/X) Installing musl
+(X/X) Installing ncurses-terminfo-base
+(X/X) Installing ncurses-terminfo
+(X/X) Installing ncurses-libs
+(X/X) Installing bash
+(X/X) Installing bash-binsh
+(X/X) Installing libacl
+(X/X) Installing libattr
+(X/X) Installing coreutils
+(X/X) Installing mawk
+(X/X) Installing debianutils
+(X/X) Installing libcrypto1.1
+(X/X) Installing ca-certificates
+(X/X) Installing libssl1.1
+(X/X) Installing zlib
+(X/X) Installing apk-tools
+(X/X) Installing adelie-keys
+(X/X) Installing scanelf
+(X/X) Installing musl-utils
+(X/X) Installing linux-pam
+(X/X) Installing shadow
+(X/X) Installing shimmy
+(X/X) Installing grep
+(X/X) Installing libproc
+(X/X) Installing procps
+(X/X) Installing diffutils
+(X/X) Installing findutils
+(X/X) Installing libcap-ng
+(X/X) Installing libuuid
+(X/X) Installing util-linux
+(X/X) Installing mii-tool
+(X/X) Installing net-tools
+(X/X) Installing db
+(X/X) Installing nvi
+(X/X) Installing sed
+(X/X) Installing psmisc
+(X/X) Installing less
+(X/X) Installing tzdata
+(X/X) Installing adelie-core
+Executing ca-certificates.trigger
+OK: X XiB in X packages
+
+> Cleaning-up rootfs

@@ -287,16 +287,16 @@ endef
 
 define alpine-make-rootfs-rootfs
 .PRECIOUS: $(1)-$(2)-$(3)-rootfs/bin/busybox
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export APK_OPTS = --arch $(1) --no-progress
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export APK_OPTS += --arch $(1) --no-progress
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: IDOFLAGS += --preserve-env=APK_OPTS
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export ALPINE_MAKE_ROOTFSFLAGS = --packages apk-tools --packages openrc
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export ALPINE_MAKE_ROOTFSFLAGS ?= --packages apk-tools --packages openrc --mirror-uri http://mirrors.edge.kernel.org/alpine
 
-$(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/ash,alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --mirror-uri http://mirrors.edge.kernel.org/alpine --branch $(3)))
+$(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/ash,alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --branch $(3) $$(ALPINE_MAKE_ROOTFSFLAGS)))
 
 $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/busybox
 $(1)-$(2)-$(3)-rootfs/bin/busybox: PATH := $(CURDIR):$(PATH)
 $(1)-$(2)-$(3)-rootfs/bin/busybox: | $(call libs,musl,$(1))
-	ido $$(IDOFLAGS) alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --mirror-uri http://mirrors.edge.kernel.org/alpine --branch $(3) $$(ALPINE_MAKE_ROOTFSFLAGS)
+	ido $$(IDOFLAGS) alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --branch $(3) $$(ALPINE_MAKE_ROOTFSFLAGS)
 
 $(eval $(call log,alpine-make-rootfs,$(1)-$(2)-$(3)-rootfs))
 
@@ -304,6 +304,18 @@ $(if $(findstring x86_64,$(1)), \
 	$(eval $(call run,$(1),$(2)-$(3))) \
 	$(eval $(call alpinelinux-postrootfs,$(1),$(2)-$(3))) \
 )
+endef
+
+define alpine-make-rootfs-adelie-rootfs
+.PRECIOUS: $(1)-$(2)-$(3)-rootfs/bin/sh
+$(1)-$(2)-$(3)-rootfs/bin/busybox: export ALPINE_MAKE_ROOTFSFLAGS = --packages adelie-core --repositories-file support/adelie-repositories
+$(eval $(call alpine-make-rootfs-rootfs,$(1),$(2),$(3)))
+$(1)-$(2)-$(3)-rootfs/bin/busybox: export APK_OPTS += --allow-untrusted
+$(1)-$(2)-$(3)-rootfs/bin/busybox: $(1)-$(2)-$(3)-rootfs/etc/alpine-release
+
+.INTERMEDIATE: $(1)-$(2)-$(3)-rootfs/etc/alpine-release
+$(1)-$(2)-$(3)-rootfs/etc/alpine-release:
+	install -D -m644 /dev/null $$@
 endef
 
 define run
@@ -721,6 +733,9 @@ mips-rootfs:
 
 .PHONY: mips64-rootfs
 mips64-rootfs:
+
+.PHONY: powerpc-rootfs
+powerpc-rootfs:
 
 .PHONY: powerpc64-rootfs
 powerpc64-rootfs:
@@ -1293,8 +1308,14 @@ x86-alpine-mini-rootfs: export IAMROOT_LIB_I686_MUSL_I386_1 := $(CURDIR)/i686/li
 pmmx-adelie-mini-shell: export IAMROOT_LIB_I686_MUSL_I386_1 := $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
 pmmx-adelie-mini-chroot: export IAMROOT_LIB_I686_MUSL_I386_1 := $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
 pmmx-adelie-mini-rootfs: export IAMROOT_LIB_I686_MUSL_I386_1 := $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
+x86_64-adelielinux-current-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-adelielinux-current-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-adelielinux-current-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
 i686/libiamroot-musl-i386.so.1: | gcompat-i386/libgcompat.so.0
 endif
+
+$(eval $(call alpine-make-rootfs-adelie-rootfs,x86_64,adelielinux,current))
+x86_64-adelielinux-current-rootfs/bin/busybox: export ALPINE_MAKE_ROOTFSFLAGS = --no-default-pkgs --packages adelie-core --repositories-file support/adelielinux-repositories --mirror-uri https://distfiles.adelielinux.org/adelie
 
 ifneq ($(shell command -v i386-musl-gcc 2>/dev/null),)
 i686-rootfs: x86-alpinelinux-rootfs
@@ -1317,6 +1338,15 @@ $(eval $(call alpine-make-rootfs-rootfs,x86,alpinelinux,3.18))
 $(eval $(call alpine-make-rootfs-rootfs,x86,alpinelinux,3.19))
 $(eval $(call alpine-make-rootfs-rootfs,x86,alpinelinux,3.20))
 $(eval $(call alpine-make-rootfs-rootfs,x86,alpinelinux,edge))
+
+$(eval $(call alpine-make-rootfs-adelie-rootfs,pmmx,adelielinux,current))
+pmmx-adelielinux-current-rootfs/bin/busybox: export ALPINE_MAKE_ROOTFSFLAGS = --no-default-pkgs --packages adelie-core --repositories-file support/adelielinux-repositories --mirror-uri https://distfiles.adelielinux.org/adelie
+
+ifneq ($(COVERAGE),0)
+pmmx-adelielinux-current-shell: export IAMROOT_LIB_I686_MUSL_I386_1 := $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
+pmmx-adelielinux-current-chroot: export IAMROOT_LIB_I686_MUSL_I386_1 := $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
+pmmx-adelielinux-current-rootfs: export IAMROOT_LIB_I686_MUSL_I386_1 := $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
+endif
 endif
 endif
 endif
@@ -1696,6 +1726,14 @@ $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpinelinux,3.20))
 $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpinelinux,edge))
 
 $(eval $(call alpine-mini-rootfs,aarch64,3.20))
+
+aarch64-rootfs: aarch64-adelielinux-rootfs
+
+.PHONY: aarch64-adelielinux-rootfs
+aarch64-adelielinux-rootfs: aarch64-adelielinux-current-rootfs
+
+$(eval $(call alpine-make-rootfs-adelie-rootfs,aarch64,adelielinux,current))
+aarch64-adelielinux-current-rootfs/bin/busybox: export ALPINE_MAKE_ROOTFSFLAGS = --no-default-pkgs --packages adelie-core --repositories-file support/adelielinux-repositories --mirror-uri https://distfiles.adelielinux.org/adelie
 endif
 
 ifneq ($(shell command -v arm-buildroot-linux-musleabihf-gcc 2>/dev/null),)
@@ -1744,10 +1782,26 @@ $(eval $(call alpine-make-rootfs-rootfs,armv7,alpinelinux,3.20))
 $(eval $(call alpine-make-rootfs-rootfs,armv7,alpinelinux,edge))
 
 $(eval $(call alpine-mini-rootfs,armv7,3.20))
+
+arm-rootfs: armv7-adelielinux-rootfs
+
+.PHONY: armv7-adelielinux-rootfs
+armv7-adelielinux-rootfs: armv7-adelielinux-current-rootfs
+
+$(eval $(call alpine-make-rootfs-adelie-rootfs,armv7,adelielinux,current))
+armv7-adelielinux-current-rootfs/bin/busybox: export ALPINE_MAKE_ROOTFSFLAGS = --no-default-pkgs --packages adelie-core --repositories-file support/adelielinux-repositories --mirror-uri https://distfiles.adelielinux.org/adelie
 endif
 
 ifneq ($(shell command -v powerpc-buildroot-linux-musl-gcc 2>/dev/null),)
 $(eval $(call adelie-mini-rootfs,ppc,20240426))
+
+powerpc-rootfs: ppc-adelielinux-rootfs
+
+.PHONY: ppc-adelielinux-rootfs
+ppc-adelielinux-rootfs: ppc-adelielinux-current-rootfs
+
+$(eval $(call alpine-make-rootfs-adelie-rootfs,ppc,adelielinux,current))
+ppc-adelielinux-current-rootfs/bin/busybox: export ALPINE_MAKE_ROOTFSFLAGS = --no-default-pkgs --packages adelie-core --repositories-file support/adelielinux-repositories --mirror-uri https://distfiles.adelielinux.org/adelie
 endif
 
 ifneq ($(shell command -v powerpc64le-buildroot-linux-musl-gcc 2>/dev/null),)
@@ -1775,6 +1829,14 @@ $(eval $(call alpine-make-rootfs-rootfs,ppc64le,alpinelinux,3.20))
 $(eval $(call alpine-make-rootfs-rootfs,ppc64le,alpinelinux,edge))
 
 $(eval $(call alpine-mini-rootfs,ppc64le,3.20))
+
+powerpc64-rootfs: ppc64-adelielinux-rootfs
+
+.PHONY: ppc64-adelielinux-rootfs
+ppc64-adelielinux-rootfs: ppc64-adelielinux-current-rootfs
+
+$(eval $(call alpine-make-rootfs-adelie-rootfs,ppc64,adelielinux,current))
+ppc64-adelielinux-current-rootfs/bin/busybox: export ALPINE_MAKE_ROOTFSFLAGS = --no-default-pkgs --packages adelie-core --repositories-file support/adelielinux-repositories --mirror-uri https://distfiles.adelielinux.org/adelie
 endif
 
 ifneq ($(shell command -v riscv64-buildroot-linux-musl-gcc 2>/dev/null),)
@@ -2217,6 +2279,23 @@ stable-log: x86_64-alpinelinux-3.20-rootfs.log
 
 unstable-support: support/x86_64-alpinelinux-edge-rootfs.txt
 unstable-log: x86_64-alpinelinux-edge-rootfs.log
+
+support: adelielinux-support
+
+.PHONY: adelielinux-support
+adelielinux-support: support/x86_64-adelielinux-current-rootfs.txt
+adelielinux-support: support/pmmx-adelielinux-current-rootfs.txt
+
+log: adelielinux-log
+
+.PHONY: adelielinux-log
+adelielinux-log: x86_64-adelielinux-current-rootfs.log
+adelielinux-log: pmmx-adelielinux-current-rootfs.log
+
+unstable-support: support/x86_64-adelielinux-current-rootfs.txt
+unstable-support: support/pmmx-adelielinux-current-rootfs.txt
+unstable-log: x86_64-adelielinux-current-rootfs.log
+unstable-log: pmmx-adelielinux-current-rootfs.log
 endif
 endif
 

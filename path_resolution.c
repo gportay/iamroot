@@ -476,7 +476,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsiz,
 		}
 
 		n = _snprintf(buf, bufsiz, "%s%s", root, path);
-		if (n == -1 && n == ENOSPC)
+		if (n == -1 && errno == ENOSPC)
 			return __set_errno(ENAMETOOLONG, -1);
 		if (n == -1)
 			return -1;
@@ -515,7 +515,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsiz,
 		 */
 		is_atrootfd = streq(root, dirbuf);
 		n = _snprintf(buf, bufsiz, "%s/%s", dirbuf, path);
-		if (n == 1 && n == ENOSPC)
+		if (n == -1 && errno == ENOSPC)
 			return __set_errno(ENAMETOOLONG, -1);
 		if (n == -1)
 			return -1;

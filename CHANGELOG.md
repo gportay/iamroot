@@ -19,6 +19,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Double quote the arguments of full command if the argument contains a
   whitespace
 
+### Fixed
+
+- Fix the if statement if `_snprintf()` returns -1 and `ENAMETOOLONG`
+
 ## [v20] - 2024-03-08
 
 ### Added

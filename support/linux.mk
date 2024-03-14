@@ -807,39 +807,39 @@ ifneq ($(shell command -v debootstrap 2>/dev/null),)
 rootfs: amd64-debian-rootfs
 
 .PHONY: amd64-debian-rootfs
-amd64-debian-rootfs: amd64-debian-oldoldstable-rootfs
-amd64-debian-rootfs: amd64-debian-oldstable-rootfs
-amd64-debian-rootfs: amd64-debian-stable-rootfs
+amd64-debian-rootfs: amd64-debian-buster-rootfs
+amd64-debian-rootfs: amd64-debian-bullseye-rootfs
+amd64-debian-rootfs: amd64-debian-bookworm-rootfs
 amd64-debian-rootfs: amd64-debian-testing-rootfs
-amd64-debian-rootfs: amd64-debian-unstable-rootfs
+amd64-debian-rootfs: amd64-debian-sid-rootfs
 
-stable-rootfs: amd64-debian-stable-rootfs
-unstable-rootfs: amd64-debian-unstable-rootfs
+stable-rootfs: amd64-debian-bookworm-rootfs
+unstable-rootfs: amd64-debian-sid-rootfs
 
-$(eval $(call debootstrap-rootfs,amd64,debian,oldoldstable))
-$(eval $(call debootstrap-rootfs,amd64,debian,oldstable))
-$(eval $(call debootstrap-rootfs,amd64,debian,stable))
+$(eval $(call debootstrap-rootfs,amd64,debian,buster))
+$(eval $(call debootstrap-rootfs,amd64,debian,bullseye))
+$(eval $(call debootstrap-rootfs,amd64,debian,bookworm))
 $(eval $(call debootstrap-rootfs,amd64,debian,testing))
-$(eval $(call debootstrap-rootfs,amd64,debian,unstable))
-amd64-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
-amd64-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
+$(eval $(call debootstrap-rootfs,amd64,debian,sid))
+amd64-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+amd64-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 
 i686-rootfs: i386-debian-rootfs
 
 .PHONY: i386-debian-rootfs
-i386-debian-rootfs: i386-debian-oldoldstable-rootfs
-i386-debian-rootfs: i386-debian-oldstable-rootfs
-i386-debian-rootfs: i386-debian-stable-rootfs
+i386-debian-rootfs: i386-debian-buster-rootfs
+i386-debian-rootfs: i386-debian-bullseye-rootfs
+i386-debian-rootfs: i386-debian-bookworm-rootfs
 i386-debian-rootfs: i386-debian-testing-rootfs
-i386-debian-rootfs: i386-debian-unstable-rootfs
+i386-debian-rootfs: i386-debian-sid-rootfs
 
-$(eval $(call debootstrap-rootfs,i386,debian,oldoldstable))
-$(eval $(call debootstrap-rootfs,i386,debian,oldstable))
-$(eval $(call debootstrap-rootfs,i386,debian,stable))
+$(eval $(call debootstrap-rootfs,i386,debian,buster))
+$(eval $(call debootstrap-rootfs,i386,debian,bullseye))
+$(eval $(call debootstrap-rootfs,i386,debian,bookworm))
 $(eval $(call debootstrap-rootfs,i386,debian,testing))
-$(eval $(call debootstrap-rootfs,i386,debian,unstable))
-i386-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
-i386-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
+$(eval $(call debootstrap-rootfs,i386,debian,sid))
+i386-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+i386-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 
 .PHONY: amd64-ubuntu-rootfs
 amd64-ubuntu-rootfs: amd64-ubuntu-trusty-rootfs
@@ -1206,148 +1206,148 @@ ifneq ($(shell command -v arm-buildroot-linux-gnueabi-gcc 2>/dev/null),)
 arm-rootfs: armel-debian-rootfs
 
 .PHONY: armel-debian-rootfs
-armel-debian-rootfs: armel-debian-oldoldstable-rootfs
-armel-debian-rootfs: armel-debian-oldstable-rootfs
-armel-debian-rootfs: armel-debian-stable-rootfs
+armel-debian-rootfs: armel-debian-buster-rootfs
+armel-debian-rootfs: armel-debian-bullseye-rootfs
+armel-debian-rootfs: armel-debian-bookworm-rootfs
 armel-debian-rootfs: armel-debian-testing-rootfs
-armel-debian-rootfs: armel-debian-unstable-rootfs
+armel-debian-rootfs: armel-debian-sid-rootfs
 
-$(eval $(call debootstrap-rootfs,armel,debian,oldoldstable))
-$(eval $(call debootstrap-rootfs,armel,debian,oldstable))
-$(eval $(call debootstrap-rootfs,armel,debian,stable))
+$(eval $(call debootstrap-rootfs,armel,debian,buster))
+$(eval $(call debootstrap-rootfs,armel,debian,bullseye))
+$(eval $(call debootstrap-rootfs,armel,debian,bookworm))
 $(eval $(call debootstrap-rootfs,armel,debian,testing))
-$(eval $(call debootstrap-rootfs,armel,debian,unstable))
-armel-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
-armel-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
+$(eval $(call debootstrap-rootfs,armel,debian,sid))
+armel-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+armel-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 
 ifneq ($(shell command -v arm-buildroot-linux-gnueabihf-gcc 2>/dev/null),)
 arm-rootfs: armhf-debian-rootfs
 
 .PHONY: armhf-debian-rootfs
-armhf-debian-rootfs: armhf-debian-oldoldstable-rootfs
-armhf-debian-rootfs: armhf-debian-oldstable-rootfs
-armhf-debian-rootfs: armhf-debian-stable-rootfs
+armhf-debian-rootfs: armhf-debian-buster-rootfs
+armhf-debian-rootfs: armhf-debian-bullseye-rootfs
+armhf-debian-rootfs: armhf-debian-bookworm-rootfs
 armhf-debian-rootfs: armhf-debian-testing-rootfs
-armhf-debian-rootfs: armhf-debian-unstable-rootfs
+armhf-debian-rootfs: armhf-debian-sid-rootfs
 
-$(eval $(call debootstrap-rootfs,armhf,debian,oldoldstable))
-$(eval $(call debootstrap-rootfs,armhf,debian,oldstable))
-$(eval $(call debootstrap-rootfs,armhf,debian,stable))
+$(eval $(call debootstrap-rootfs,armhf,debian,buster))
+$(eval $(call debootstrap-rootfs,armhf,debian,bullseye))
+$(eval $(call debootstrap-rootfs,armhf,debian,bookworm))
 $(eval $(call debootstrap-rootfs,armhf,debian,testing))
-$(eval $(call debootstrap-rootfs,armhf,debian,unstable))
-armhf-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
-armhf-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
+$(eval $(call debootstrap-rootfs,armhf,debian,sid))
+armhf-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+armhf-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 
 ifneq ($(shell command -v aarch64-buildroot-linux-gnu-gcc 2>/dev/null),)
 arm-rootfs: arm64-debian-rootfs
 
 .PHONY: arm64-debian-rootfs
-arm64-debian-rootfs: arm64-debian-oldoldstable-rootfs
-arm64-debian-rootfs: arm64-debian-oldstable-rootfs
-arm64-debian-rootfs: arm64-debian-stable-rootfs
+arm64-debian-rootfs: arm64-debian-buster-rootfs
+arm64-debian-rootfs: arm64-debian-bullseye-rootfs
+arm64-debian-rootfs: arm64-debian-bookworm-rootfs
 arm64-debian-rootfs: arm64-debian-testing-rootfs
-arm64-debian-rootfs: arm64-debian-unstable-rootfs
+arm64-debian-rootfs: arm64-debian-sid-rootfs
 
-$(eval $(call debootstrap-rootfs,arm64,debian,oldoldstable))
-$(eval $(call debootstrap-rootfs,arm64,debian,oldstable))
-$(eval $(call debootstrap-rootfs,arm64,debian,stable))
+$(eval $(call debootstrap-rootfs,arm64,debian,buster))
+$(eval $(call debootstrap-rootfs,arm64,debian,bullseye))
+$(eval $(call debootstrap-rootfs,arm64,debian,bookworm))
 $(eval $(call debootstrap-rootfs,arm64,debian,testing))
-$(eval $(call debootstrap-rootfs,arm64,debian,unstable))
-arm64-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
-arm64-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
+$(eval $(call debootstrap-rootfs,arm64,debian,sid))
+arm64-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+arm64-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 
 ifneq ($(shell command -v riscv64-buildroot-linux-gnu-gcc 2>/dev/null),)
 riscv64-rootfs: riscv64-debian-rootfs
 
 .PHONY: riscv64-debian-rootfs
-riscv64-debian-rootfs: riscv64-debian-oldoldstable-rootfs
-riscv64-debian-rootfs: riscv64-debian-oldstable-rootfs
-riscv64-debian-rootfs: riscv64-debian-stable-rootfs
+riscv64-debian-rootfs: riscv64-debian-buster-rootfs
+riscv64-debian-rootfs: riscv64-debian-bullseye-rootfs
+riscv64-debian-rootfs: riscv64-debian-bookworm-rootfs
 riscv64-debian-rootfs: riscv64-debian-testing-rootfs
-riscv64-debian-rootfs: riscv64-debian-unstable-rootfs
+riscv64-debian-rootfs: riscv64-debian-sid-rootfs
 
-$(eval $(call debootstrap-rootfs,riscv64,debian,oldoldstable))
-$(eval $(call debootstrap-rootfs,riscv64,debian,oldstable))
-$(eval $(call debootstrap-rootfs,riscv64,debian,stable))
+$(eval $(call debootstrap-rootfs,riscv64,debian,buster))
+$(eval $(call debootstrap-rootfs,riscv64,debian,bullseye))
+$(eval $(call debootstrap-rootfs,riscv64,debian,bookworm))
 $(eval $(call debootstrap-rootfs,riscv64,debian,testing))
-$(eval $(call debootstrap-rootfs,riscv64,debian,unstable))
-riscv64-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
-riscv64-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
+$(eval $(call debootstrap-rootfs,riscv64,debian,sid))
+riscv64-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+riscv64-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 
 ifneq ($(shell command -v mipsel-buildroot-linux-gnu-gcc 2>/dev/null),)
 mips-rootfs: mipsel-debian-rootfs
 
 .PHONY: mipsel-debian-rootfs
-mipsel-debian-rootfs: mipsel-debian-oldoldstable-rootfs
-mipsel-debian-rootfs: mipsel-debian-oldstable-rootfs
-mipsel-debian-rootfs: mipsel-debian-stable-rootfs
+mipsel-debian-rootfs: mipsel-debian-buster-rootfs
+mipsel-debian-rootfs: mipsel-debian-bullseye-rootfs
+mipsel-debian-rootfs: mipsel-debian-bookworm-rootfs
 
-$(eval $(call debootstrap-rootfs,mipsel,debian,oldoldstable))
-$(eval $(call debootstrap-rootfs,mipsel,debian,oldstable))
-$(eval $(call debootstrap-rootfs,mipsel,debian,stable))
-mipsel-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
-mipsel-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
+$(eval $(call debootstrap-rootfs,mipsel,debian,buster))
+$(eval $(call debootstrap-rootfs,mipsel,debian,bullseye))
+$(eval $(call debootstrap-rootfs,mipsel,debian,bookworm))
+mipsel-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+mipsel-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 
 ifneq ($(shell command -v mips64el-buildroot-linux-gnu-gcc 2>/dev/null),)
 mips64-rootfs: mips64el-debian-rootfs
 
 .PHONY: mips64el-debian-rootfs
-mips64el-debian-rootfs: mips64el-debian-oldoldstable-rootfs
-mips64el-debian-rootfs: mips64el-debian-oldstable-rootfs
-mips64el-debian-rootfs: mips64el-debian-stable-rootfs
+mips64el-debian-rootfs: mips64el-debian-buster-rootfs
+mips64el-debian-rootfs: mips64el-debian-bullseye-rootfs
+mips64el-debian-rootfs: mips64el-debian-bookworm-rootfs
 mips64el-debian-rootfs: mips64el-debian-testing-rootfs
-mips64el-debian-rootfs: mips64el-debian-unstable-rootfs
+mips64el-debian-rootfs: mips64el-debian-sid-rootfs
 
-$(eval $(call debootstrap-rootfs,mips64el,debian,oldoldstable))
-$(eval $(call debootstrap-rootfs,mips64el,debian,oldstable))
-$(eval $(call debootstrap-rootfs,mips64el,debian,stable))
+$(eval $(call debootstrap-rootfs,mips64el,debian,buster))
+$(eval $(call debootstrap-rootfs,mips64el,debian,bullseye))
+$(eval $(call debootstrap-rootfs,mips64el,debian,bookworm))
 $(eval $(call debootstrap-rootfs,mips64el,debian,testing))
-$(eval $(call debootstrap-rootfs,mips64el,debian,unstable))
-mips64el-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
-mips64el-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
+$(eval $(call debootstrap-rootfs,mips64el,debian,sid))
+mips64el-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+mips64el-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 
 ifneq ($(shell command -v powerpc64le-buildroot-linux-gnu-gcc 2>/dev/null),)
 powerpc64-rootfs: ppc64el-debian-rootfs
 
 .PHONY: ppc64el-debian-rootfs
-ppc64el-debian-rootfs: ppc64el-debian-oldoldstable-rootfs
-ppc64el-debian-rootfs: ppc64el-debian-oldstable-rootfs
-ppc64el-debian-rootfs: ppc64el-debian-stable-rootfs
+ppc64el-debian-rootfs: ppc64el-debian-buster-rootfs
+ppc64el-debian-rootfs: ppc64el-debian-bullseye-rootfs
+ppc64el-debian-rootfs: ppc64el-debian-bookworm-rootfs
 ppc64el-debian-rootfs: ppc64el-debian-testing-rootfs
-ppc64el-debian-rootfs: ppc64el-debian-unstable-rootfs
+ppc64el-debian-rootfs: ppc64el-debian-sid-rootfs
 
-$(eval $(call debootstrap-rootfs,ppc64el,debian,oldoldstable))
-$(eval $(call debootstrap-rootfs,ppc64el,debian,oldstable))
-$(eval $(call debootstrap-rootfs,ppc64el,debian,stable))
+$(eval $(call debootstrap-rootfs,ppc64el,debian,buster))
+$(eval $(call debootstrap-rootfs,ppc64el,debian,bullseye))
+$(eval $(call debootstrap-rootfs,ppc64el,debian,bookworm))
 $(eval $(call debootstrap-rootfs,ppc64el,debian,testing))
-$(eval $(call debootstrap-rootfs,ppc64el,debian,unstable))
-ppc64el-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
-ppc64el-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
+$(eval $(call debootstrap-rootfs,ppc64el,debian,sid))
+ppc64el-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+ppc64el-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 
 ifneq ($(shell command -v s390x-buildroot-linux-gnu-gcc 2>/dev/null),)
 s390x-rootfs: s390x-debian-rootfs
 
 .PHONY: s390x-debian-rootfs
-s390x-debian-rootfs: s390x-debian-oldoldstable-rootfs
-s390x-debian-rootfs: s390x-debian-oldstable-rootfs
-s390x-debian-rootfs: s390x-debian-stable-rootfs
+s390x-debian-rootfs: s390x-debian-buster-rootfs
+s390x-debian-rootfs: s390x-debian-bullseye-rootfs
+s390x-debian-rootfs: s390x-debian-bookworm-rootfs
 s390x-debian-rootfs: s390x-debian-testing-rootfs
-s390x-debian-rootfs: s390x-debian-unstable-rootfs
+s390x-debian-rootfs: s390x-debian-sid-rootfs
 
-$(eval $(call debootstrap-rootfs,s390x,debian,oldoldstable))
-$(eval $(call debootstrap-rootfs,s390x,debian,oldstable))
-$(eval $(call debootstrap-rootfs,s390x,debian,stable))
+$(eval $(call debootstrap-rootfs,s390x,debian,buster))
+$(eval $(call debootstrap-rootfs,s390x,debian,bullseye))
+$(eval $(call debootstrap-rootfs,s390x,debian,bookworm))
 $(eval $(call debootstrap-rootfs,s390x,debian,testing))
-$(eval $(call debootstrap-rootfs,s390x,debian,unstable))
-s390x-debian-oldoldstable-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
-s390x-debian-oldoldstable-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
+$(eval $(call debootstrap-rootfs,s390x,debian,sid))
+s390x-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+s390x-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 endif
 
@@ -1683,20 +1683,20 @@ ifneq ($(shell command -v debootstrap 2>/dev/null),)
 support: debian-support
 
 .PHONY: debian-support
-debian-support: support/amd64-debian-oldoldstable-rootfs.txt
-debian-support: support/amd64-debian-oldstable-rootfs.txt
-debian-support: support/amd64-debian-stable-rootfs.txt
+debian-support: support/amd64-debian-buster-rootfs.txt
+debian-support: support/amd64-debian-bullseye-rootfs.txt
+debian-support: support/amd64-debian-bookworm-rootfs.txt
 debian-support: support/amd64-debian-testing-rootfs.txt
-broken-support: support/amd64-debian-unstable-rootfs.txt
+broken-support: support/amd64-debian-sid-rootfs.txt
 
 log: debian-log
 
 .PHONY: debian-log
-debian-log: amd64-debian-oldoldstable-rootfs.log
-debian-log: amd64-debian-oldstable-rootfs.log
-debian-log: amd64-debian-stable-rootfs.log
+debian-log: amd64-debian-buster-rootfs.log
+debian-log: amd64-debian-bullseye-rootfs.log
+debian-log: amd64-debian-bookworm-rootfs.log
 debian-log: amd64-debian-testing-rootfs.log
-broken-log: amd64-debian-unstable-rootfs.log
+broken-log: amd64-debian-sid-rootfs.log
 
 support: ubuntu-support
 
@@ -1744,16 +1744,16 @@ devuan-log: amd64-devuan-beowulf-rootfs.log
 devuan-log: amd64-devuan-chimaera-rootfs.log
 devuan-log: amd64-devuan-daedalus-rootfs.log
 
-legacy-support: support/amd64-debian-oldoldstable-rootfs.txt
-legacy-support: support/amd64-debian-oldstable-rootfs.txt
-legacy-log: amd64-debian-oldoldstable-rootfs.log
-legacy-log: amd64-debian-oldstable-rootfs.log
+legacy-support: support/amd64-debian-buster-rootfs.txt
+legacy-support: support/amd64-debian-bullseye-rootfs.txt
+legacy-log: amd64-debian-buster-rootfs.log
+legacy-log: amd64-debian-bullseye-rootfs.log
 
-stable-support: support/amd64-debian-stable-rootfs.txt
-stable-log: amd64-debian-stable-rootfs.log
+stable-support: support/amd64-debian-bookworm-rootfs.txt
+stable-log: amd64-debian-bookworm-rootfs.log
 
-broken-support: support/amd64-debian-unstable-rootfs.txt
-broken-log: amd64-debian-unstable-rootfs.log
+broken-support: support/amd64-debian-sid-rootfs.txt
+broken-log: amd64-debian-sid-rootfs.log
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)

@@ -714,7 +714,6 @@ int __group_iterate(const char *path, int (*callback)(const char *, void *),
 	return __strtok(path, " ", callback, user);
 }
 
-
 __attribute__((visibility("hidden")))
 int __dir_iterate(const char *path,
 		  int (*callback)(const char *, const char *, void *),

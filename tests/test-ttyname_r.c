@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Gaël PORTAY
+ * Copyright 2023-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -25,7 +25,7 @@ int main(int argc, char * const argv[])
 
 	fd = strtoul(argv[1], NULL, 0);
 
-	if (ttyname_r(fd, buf, sizeof(buf)) == -1) {
+	if (ttyname_r(fd, buf, sizeof(buf)) != 0) {
 		perror("ttyname_r");
 		return EXIT_FAILURE;
 	}

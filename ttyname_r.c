@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Gaël PORTAY
+ * Copyright 2023-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -32,7 +32,7 @@ int ttyname_r(int fd, char *buf, size_t bufsiz)
 	int ret;
 
 	ret = next_ttyname_r(fd, buf, bufsiz);
-	if (ret == -1)
+	if (ret != 0)
 		goto exit;
 
 	s = __striprootdir(buf);

@@ -548,7 +548,7 @@ Retrieving: openSUSE-build-key (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB
 Retrieving: openSUSE-build-key.rpm [done]
 (XXX/XXX) Installing: openSUSE-build-key [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/openSUSE-build-key.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-/var/tmp/rpm-tmp.aqwGp6: line 1: touch: command not found
+/var/tmp/rpm-tmp.XXXXXX: line X: touch: command not found
 Retrieving: login_defs (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: login_defs [done]
 (XXX/XXX) Installing: login_defs [done]

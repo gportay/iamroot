@@ -54,18 +54,16 @@
 	s,\([[:lower:][:upper:][:digit:]._+-]\+\)-\([[:digit:]]\+:[[:alnum:]._~^+-]\+\|[[:alnum:]._~^+-]\+\)-\([[:alnum:].%{?}-]\+\)\.\([[:lower:][:digit:]]\+\.[[:alnum:]_]\+\|[[:alnum:]_]\+\),\1,
 }
 
+# warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/filesystem-84.87-3.2.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
 /^warning:/ {
-	# /var/tmp/rpm-tmp.XXXXXX: line X: file: strerror
-	/^\/var\/tmp\/rpm-tmp\./ {
-		s,/rpm-tmp\.[[:alnum:]]\{6\,6\},/rpm-tmp.XXXXXX,
-		s,line \([[:digit:]]\+\): ,line X: ,
-	}
+	s,\([[:lower:][:upper:][:digit:]._+-]\+\)-\([[:digit:]]\+:[[:alnum:]._~^+-]\+\|[[:alnum:]._~^+-]\+\)-\([[:alnum:].%{?}-]\+\)\.\([[:lower:][:digit:]]\+\.[[:alnum:]_]\+\|[[:alnum:]_]\+\),\1,
+	s,key ID \([[:xdigit:]]\+\): ,key ID xxxxxxxx: ,
+}
 
-	# warning: opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/filesystem-84.87-3.2.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 3dbdc284: NOKEY
-	/^warning:/{
-		s,\([[:lower:][:upper:][:digit:]._+-]\+\)-\([[:digit:]]\+:[[:alnum:]._~^+-]\+\|[[:alnum:]._~^+-]\+\)-\([[:alnum:].%{?}-]\+\)\.\([[:lower:][:digit:]]\+\.[[:alnum:]_]\+\|[[:alnum:]_]\+\),\1,
-		s,key ID \([[:xdigit:]]\+\): ,key ID xxxxxxxx: ,
-	}
+# /var/tmp/rpm-tmp.XXXXXX: line X: file: strerror
+/^\/var\/tmp\/rpm-tmp\./ {
+	s,/rpm-tmp\.[[:alnum:]]\{6\,6\},/rpm-tmp.XXXXXX,
+	s,line \([[:digit:]]\+\): ,line X: ,
 }
 
 # /sbin/update-ca-certificates: line X: /dev/fd/X: No such file or directory

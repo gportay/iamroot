@@ -1675,8 +1675,8 @@ stable-log: x86_64-archlinux-rootfs.log
 stable-log: i686-archlinux32-rootfs.log
 stable-log: x86_64-manjaro-stable-rootfs.log
 
-unstable-support: support/x86_64-manjaro-unstable-rootfs.txt
-unstable-log: x86_64-manjaro-unstable-rootfs.log
+broken-support: support/x86_64-manjaro-unstable-rootfs.txt
+broken-log: x86_64-manjaro-unstable-rootfs.log
 endif
 
 ifneq ($(shell command -v debootstrap 2>/dev/null),)

@@ -1670,10 +1670,10 @@ manjaro-log: x86_64-manjaro-unstable-rootfs.log
 
 stable-support: support/x86_64-archlinux-rootfs.txt
 stable-support: support/i686-archlinux32-rootfs.txt
-stable-support: support/x86_64-manjaro-stable-rootfs.txt
+broken-support: support/x86_64-manjaro-stable-rootfs.txt
 stable-log: x86_64-archlinux-rootfs.log
 stable-log: i686-archlinux32-rootfs.log
-stable-log: x86_64-manjaro-stable-rootfs.log
+broken-log: x86_64-manjaro-stable-rootfs.log
 
 broken-support: support/x86_64-manjaro-unstable-rootfs.txt
 broken-log: x86_64-manjaro-unstable-rootfs.log

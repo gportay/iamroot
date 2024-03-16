@@ -1687,7 +1687,7 @@ debian-support: support/amd64-debian-buster-rootfs.txt
 debian-support: support/amd64-debian-bullseye-rootfs.txt
 debian-support: support/amd64-debian-bookworm-rootfs.txt
 debian-support: support/amd64-debian-trixie-rootfs.txt
-broken-support: support/amd64-debian-sid-rootfs.txt
+debian-support: support/amd64-debian-sid-rootfs.txt
 
 log: debian-log
 
@@ -1696,7 +1696,7 @@ debian-log: amd64-debian-buster-rootfs.log
 debian-log: amd64-debian-bullseye-rootfs.log
 debian-log: amd64-debian-bookworm-rootfs.log
 debian-log: amd64-debian-trixie-rootfs.log
-broken-log: amd64-debian-sid-rootfs.log
+debian-log: amd64-debian-sid-rootfs.log
 
 support: ubuntu-support
 
@@ -1752,8 +1752,8 @@ legacy-log: amd64-debian-bullseye-rootfs.log
 stable-support: support/amd64-debian-bookworm-rootfs.txt
 stable-log: amd64-debian-bookworm-rootfs.log
 
-broken-support: support/amd64-debian-sid-rootfs.txt
-broken-log: amd64-debian-sid-rootfs.log
+unstable-support: support/amd64-debian-sid-rootfs.txt
+unstable-log: amd64-debian-sid-rootfs.log
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)

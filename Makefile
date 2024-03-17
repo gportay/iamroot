@@ -71,6 +71,9 @@ endif
 ifeq ($(OS),FreeBSD)
 lib%.so: override LDFLAGS += -ldl
 endif
+ifeq ($(OS),OpenBSD)
+lib%.so: override LDFLAGS += -lpthread
+endif
 
 ifneq ($(COVERAGE),0)
 %.o: override CFLAGS += -fprofile-arcs -ftest-coverage

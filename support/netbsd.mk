@@ -28,6 +28,7 @@ export IAMROOT_EXEC
 -include local.mk
 
 .PHONY: all
+all: ld-iamroot.so
 all: libiamroot.so
 
 .PRECIOUS: libiamroot.so

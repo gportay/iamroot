@@ -24,7 +24,9 @@
 #include "iamroot.h"
 
 extern char *next_getcwd(char *, size_t);
+#ifndef __NetBSD__
 extern int next_fstat(int, struct stat *);
+#endif
 extern int next_fstatat(int, const char *, struct stat *, int);
 extern ssize_t next_readlinkat(int, const char *, char *, size_t);
 extern int next_scandir(const char *, struct dirent ***,
@@ -110,6 +112,7 @@ int __fissymlinkat(int dfd, const char *path, int atflags)
 	return S_ISLNK(statbuf.st_mode);
 }
 
+#ifndef __NetBSD__
 __attribute__((visibility("hidden")))
 int __fissymlink(int fd)
 {
@@ -122,6 +125,7 @@ int __fissymlink(int fd)
 
 	return S_ISLNK(statbuf.st_mode);
 }
+#endif
 
 __attribute__((visibility("hidden")))
 int __issymlink(const char *path)
@@ -162,6 +166,7 @@ int __isdirectory(const char *path)
 	return S_ISDIR(statbuf.st_mode);
 }
 
+#ifndef __NetBSD__
 __attribute__((visibility("hidden")))
 int __fisdirectory(int fd)
 {
@@ -174,6 +179,7 @@ int __fisdirectory(int fd)
 
 	return S_ISDIR(statbuf.st_mode);
 }
+#endif
 
 __attribute__((visibility("hidden")))
 int __fisfileat(int dfd, const char *path, int atflags)
@@ -188,6 +194,7 @@ int __fisfileat(int dfd, const char *path, int atflags)
 	return S_ISREG(statbuf.st_mode);
 }
 
+#ifndef __NetBSD__
 __attribute__((visibility("hidden")))
 int __fisfile(int fd)
 {
@@ -200,6 +207,7 @@ int __fisfile(int fd)
 
 	return S_ISREG(statbuf.st_mode);
 }
+#endif
 
 __attribute__((visibility("hidden")))
 int __isfile(const char *path)

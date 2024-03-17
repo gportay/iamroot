@@ -91,6 +91,11 @@ ld-iamroot.so: dlopen.o
 ld-iamroot.so: dso.o
 ld-iamroot.so: env.o
 ld-iamroot.so: execve.o
+ld-iamroot.so: extattr_delete_link.o
+ld-iamroot.so: extattr_get_fd.o
+ld-iamroot.so: extattr_get_link.o
+ld-iamroot.so: extattr_set_fd.o
+ld-iamroot.so: extattr_set_link.o
 ld-iamroot.so: faccessat.o
 ld-iamroot.so: fgetxattr.o
 ld-iamroot.so: fstat.o

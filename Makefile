@@ -69,10 +69,10 @@ ifeq ($(OS),GNU/Linux)
 lib%.so: override LDFLAGS += -nodefaultlibs
 endif
 ifeq ($(OS),FreeBSD)
-lib%.so: override LDFLAGS += -ldl
+lib%.so: override LDLIBS += -ldl
 endif
 ifeq ($(OS),OpenBSD)
-lib%.so: override LDFLAGS += -lpthread
+lib%.so: override LDLIBS += -lpthread
 endif
 
 ifneq ($(COVERAGE),0)

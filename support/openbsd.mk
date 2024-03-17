@@ -39,18 +39,18 @@ $(O)-%/libiamroot.so: $(wildcard *.c) | $(O)-%
 $(O)-%:
 	mkdir $@
 
-openbsd-73-chroot: export PATH = /sbin:/usr/sbin:/bin:/usr/bin:/usr/X11R6/bin:/usr/local/sbin:/usr/local/bin
-openbsd-73-chroot: export SHELL = /bin/sh
-openbsd-73-chroot: $(ARCH)/libiamroot.so | openbsd-73-rootfs
-	bash ido $(IDOFLAGS) chroot openbsd-73-rootfs
+openbsd-7.3-chroot: export PATH = /sbin:/usr/sbin:/bin:/usr/bin:/usr/X11R6/bin:/usr/local/sbin:/usr/local/bin
+openbsd-7.3-chroot: export SHELL = /bin/sh
+openbsd-7.3-chroot: $(ARCH)/libiamroot.so | openbsd-7.3-rootfs
+	bash ido $(IDOFLAGS) chroot openbsd-7.3-rootfs
 
-openbsd-73-rootfs: | $(ARCH)/libiamroot.so base-73.tgz
+openbsd-7.3-rootfs: | $(ARCH)/libiamroot.so base.tgz
 	rm -Rf $@
 	mkdir -p $@.tmp
-	tar xzf base-73.tgz -C $@.tmp
+	tar xzf base.tgz -C $@.tmp
 	mv $@.tmp $@
 
-base-73.tgz:
+base.tgz:
 	wget https://cdn.openbsd.org/pub/OpenBSD/7.3/$(shell uname -m)/base73.tgz -O $@
 
 .PHONY: test ci ido ish

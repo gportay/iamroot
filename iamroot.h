@@ -170,6 +170,7 @@ int __fis_fileat(int, const char *, int);
 int __fis_file(int);
 int __is_file(const char *);
 const char *__basename(const char *);
+int __can_exec(const char *);
 char *__getenv(const char *);
 int __setenv(const char *, const char *, int);
 
@@ -721,6 +722,8 @@ int __is_preloading_libiamroot();
 int __is_ldso(const char *);
 
 ssize_t __dl_access(const char *, int, char *, size_t);
+
+int __elf_has_interp(int);
 
 ssize_t __ldso_cache(const char *, char *, size_t);
 

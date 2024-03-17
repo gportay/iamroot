@@ -15,6 +15,7 @@
 #include <dirent.h>
 #include <fcntl.h>
 #include <dlfcn.h>
+#include <elf.h>
 #include <sys/stat.h>
 #if defined __linux__ || defined __FreeBSD__
 #include <sys/auxv.h>
@@ -23,11 +24,15 @@
 
 #include "iamroot.h"
 
+#define SCRIPTMAG "#!"
+#define SSCRIPTMAG 2
+
 extern char *next_getcwd(char *, size_t);
 #ifndef __NetBSD__
 extern int next_fstat(int, struct stat *);
 #endif
 extern int next_fstatat(int, const char *, struct stat *, int);
+extern int next_open(const char *, int, mode_t);
 extern ssize_t next_readlinkat(int, const char *, char *, size_t);
 extern int next_scandir(const char *, struct dirent ***,
 			int (*)(const struct dirent *),
@@ -217,6 +222,59 @@ hidden const char *__basename(const char *path)
 		return path;
 
 	return s+1; /* trailing-slash */
+}
+
+static int __fcan_exec(int fd)
+{
+	char magic[4];
+	ssize_t siz;
+
+	siz = read(fd, magic, sizeof(magic));
+	if (siz == -1)
+		return -1;
+	else if ((size_t)siz < sizeof(magic))
+		return __set_errno(EIO, -1);
+
+	/* It is an interpreter-script */
+	if (memcmp(magic, SCRIPTMAG, SSCRIPTMAG) == 0)
+		return 1;
+
+	/* It is an ELF */
+	if (memcmp(magic, ELFMAG, SELFMAG) == 0)
+		return __elf_has_interp(fd);
+
+	/* Unsupported yet! */
+	return __set_errno(ENOTSUP, -1);
+}
+
+hidden int __can_exec(const char *path)
+{
+	int fd = -1, ret;
+
+	/*
+	 * In secure-execution mode, preload pathnames containing slashes are
+	 * ignored. Furthermore, shared objects are preloaded only from the
+	 * standard search directories and only if they have set-user-ID mode
+	 * bit enabled (which is not typical).
+	 */
+	ret = __is_suid(path);
+	if (ret == -1)
+		return -1;
+	if (ret == 1)
+		return 0;
+
+	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
+	if (fd == -1)
+		return -1;
+
+	/*
+	 * Only ELF shared object and interpreter-script are supported.
+	 */
+	ret = __fcan_exec(fd);
+
+	__close(fd);
+
+	return ret;
 }
 
 int __path_setenv(const char *root, const char *name, const char *value,

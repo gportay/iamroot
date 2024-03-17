@@ -86,16 +86,10 @@ int execveat(int dfd, const char *path, char * const argv[],
 
 	interparg[0] = *argv; /* original argv0 as argv0 */
 
-	/*
-	 * In secure-execution mode, preload pathnames containing slashes are
-	 * ignored. Furthermore, shared objects are preloaded only from the
-	 * standard search directories and only if they have set-user-ID mode
-	 * bit enabled (which is not typical).
-	 */
-	ret = __is_suid(program);
+	ret = __can_exec(program);
 	if (ret == -1)
 		return -1;
-	else if (ret != 0)
+	else if (ret == 0)
 		goto exec_sh;
 
 	/* Do not proceed to any hack if not in chroot */

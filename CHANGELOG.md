@@ -24,6 +24,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   filename without a slash
 - Do not output for the dynamic loader command in `exec.sh` to not pollute its
   output on stderr
+- Run `exec.sh` if program a statically linked ELF executable even if not
+  chroot'ed
 
 ### Fixed
 

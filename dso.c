@@ -17,6 +17,8 @@
 #include <fcntl.h>
 #include <link.h>
 #include <elf.h>
+#include <sys/stat.h>
+#include <sys/mman.h>
 #ifdef __NetBSD__
 #include <sys/exec_elf.h>
 #endif
@@ -37,6 +39,7 @@ typedef struct {
 } __regex_t;
 
 extern int next_faccessat(int, const char *, int, int);
+extern int next_fstat(int, struct stat *);
 extern int next_open(const char *, int, mode_t);
 extern void *next_dlopen(const char *, int);
 
@@ -3639,4 +3642,280 @@ hidden int __ldso_posix_spawn(pid_t *pid,
 
 	__warning("%s: Function not implemented", __func__);
 	return __set_errno(ENOSYS, -1);
+}
+
+/* New API with addr and addrsiz from mmap() */
+static int __elf_header(void *addr, size_t addrsiz, Elf64_Ehdr *ehdr)
+{
+	if (sizeof(*ehdr) > addrsiz)
+		return __set_errno(ENOSPC, -1);
+
+	memcpy(ehdr, addr, sizeof(*ehdr));
+
+	/* Not an ELF */
+	if (memcmp(ehdr->e_ident, ELFMAG, SELFMAG) != 0)
+		return __set_errno(ENOEXEC, -1);
+
+	/* It is a 32-bit ELF */
+	if (ehdr->e_ident[EI_CLASS] == ELFCLASS32) {
+		Elf32_Ehdr *ehdr32 = (Elf32_Ehdr *)ehdr;
+
+		ehdr32->e_type = __elf32_half(ehdr32, ehdr32->e_type);
+		ehdr32->e_machine = __elf32_half(ehdr32, ehdr32->e_machine);
+		ehdr32->e_version = __elf32_word(ehdr32, ehdr32->e_version);
+		ehdr32->e_entry = __elf32_address(ehdr32, ehdr32->e_entry);
+		ehdr32->e_phoff = __elf32_offset(ehdr32, ehdr32->e_phoff);
+		ehdr32->e_shoff = __elf32_offset(ehdr32, ehdr32->e_shoff);
+		ehdr32->e_flags = __elf32_word(ehdr32, ehdr32->e_flags);
+		ehdr32->e_ehsize = __elf32_half(ehdr32, ehdr32->e_ehsize);
+		ehdr32->e_phentsize = __elf32_half(ehdr32, ehdr32->e_phentsize);
+		ehdr32->e_phnum = __elf32_half(ehdr32, ehdr32->e_phnum);
+		ehdr32->e_shentsize = __elf32_half(ehdr32, ehdr32->e_phentsize);
+		ehdr32->e_shnum = __elf32_half(ehdr32, ehdr32->e_shnum);
+		ehdr32->e_shstrndx = __elf32_half(ehdr32, ehdr32->e_shstrndx);
+
+		return 0;
+	}
+
+	/* It is a 64-bit ELF */
+	if (ehdr->e_ident[EI_CLASS] == ELFCLASS64) {
+		Elf64_Ehdr *ehdr64 = ehdr;
+
+		ehdr64->e_type = __elf64_half(ehdr64, ehdr64->e_type);
+		ehdr64->e_machine = __elf64_half(ehdr64, ehdr64->e_machine);
+		ehdr64->e_version = __elf64_word(ehdr64, ehdr64->e_version);
+		ehdr64->e_entry = __elf64_address(ehdr64, ehdr64->e_entry);
+		ehdr64->e_phoff = __elf64_offset(ehdr64, ehdr64->e_phoff);
+		ehdr64->e_shoff = __elf64_offset(ehdr64, ehdr64->e_shoff);
+		ehdr64->e_flags = __elf64_word(ehdr64, ehdr64->e_flags);
+		ehdr64->e_ehsize = __elf64_half(ehdr64, ehdr64->e_ehsize);
+		ehdr64->e_phentsize = __elf64_half(ehdr64, ehdr64->e_phentsize);
+		ehdr64->e_phnum = __elf64_half(ehdr64, ehdr64->e_phnum);
+		ehdr64->e_shentsize = __elf64_half(ehdr64, ehdr64->e_phentsize);
+		ehdr64->e_shnum = __elf64_half(ehdr64, ehdr64->e_shnum);
+		ehdr64->e_shstrndx = __elf64_half(ehdr64, ehdr64->e_shstrndx);
+
+		return 0;
+	}
+
+	/* Unsupported yet! */
+	return __set_errno(ENOTSUP, -1);
+}
+
+static int __elf32_program_header(void *addr, size_t addrsiz, Elf32_Ehdr *ehdr,
+				  Elf32_Phdr *phdr, off_t offset)
+{
+	if ((size_t)offset + sizeof(*phdr) > addrsiz)
+		return __set_errno(ENOSPC, -1);
+
+	memcpy(phdr, addr + offset, sizeof(*phdr));
+
+	if (!__elf32_swap(ehdr))
+		return 0;
+
+	phdr->p_type = __bswap_32__(phdr->p_type);
+	phdr->p_offset = __bswap_32__(phdr->p_offset);
+	phdr->p_vaddr = __bswap_32__(phdr->p_vaddr);
+	phdr->p_paddr = __bswap_32__(phdr->p_paddr);
+	phdr->p_filesz = __bswap_32__(phdr->p_filesz);
+	phdr->p_memsz = __bswap_32__(phdr->p_memsz);
+	phdr->p_flags = __bswap_32__(phdr->p_flags);
+	phdr->p_align = __bswap_32__(phdr->p_align);
+
+	return 0;
+}
+
+static int __elf64_program_header(void *addr, size_t addrsiz, Elf64_Ehdr *ehdr,
+				  Elf64_Phdr *phdr, off_t offset)
+{
+	if ((size_t)offset + sizeof(*phdr) > addrsiz)
+		return __set_errno(ENOSPC, -1);
+
+	memcpy(phdr, addr + offset, sizeof(*phdr));
+
+	if (!__elf64_swap(ehdr))
+		return 0;
+
+	phdr->p_type = __bswap_32__(phdr->p_type);
+	phdr->p_flags = __bswap_32__(phdr->p_flags);
+	phdr->p_offset = __bswap_64__(phdr->p_offset);
+	phdr->p_vaddr = __bswap_64__(phdr->p_vaddr);
+	phdr->p_paddr = __bswap_64__(phdr->p_paddr);
+	phdr->p_filesz = __bswap_64__(phdr->p_filesz);
+	phdr->p_memsz = __bswap_64__(phdr->p_memsz);
+	phdr->p_align = __bswap_64__(phdr->p_align);
+
+	return 0;
+}
+
+static int __elf32_iterate_for_pt(void *addr,
+				  size_t addrsiz,
+				  Elf32_Ehdr *ehdr,
+				  unsigned int p_type,
+				  int (*callback)(const void *, size_t, void *),
+				  void *data)
+{
+	const int errno_save = errno;
+	int i, num;
+	off_t off;
+
+	if (!callback)
+		return __set_errno(EINVAL, -1);
+
+	/* Look for the segment */
+	off = ehdr->e_phoff;
+	num = ehdr->e_phnum;
+	for (i = 0; i < num; i++) {
+		Elf32_Phdr phdr;
+		int err;
+
+		err = __elf32_program_header(addr, addrsiz, ehdr, &phdr, off);
+		if (err == -1)
+			return -1;
+
+		off += sizeof(phdr);
+
+		/* Not the segment */
+		if (phdr.p_type != p_type)
+			continue;
+
+		if (phdr.p_offset > addrsiz)
+			return __set_errno(ENOSPC, -1);
+
+		err = callback(addr + phdr.p_offset, phdr.p_filesz, data);
+		if (err == -1)
+			return -1;
+
+		if (err == 0)
+			return __set_errno(errno_save, err);
+	}
+
+	return __set_errno(ENOENT, -1);
+}
+
+static int __elf64_iterate_for_pt(void *addr,
+				  size_t addrsiz,
+				  Elf64_Ehdr *ehdr,
+				  unsigned int p_type,
+				  int (*callback)(const void *, size_t, void *),
+				  void *data)
+{
+	const int errno_save = errno;
+	int i, num;
+	off_t off;
+
+	if (!callback)
+		return __set_errno(EINVAL, -1);
+
+	/* Look for the segment */
+	off = ehdr->e_phoff;
+	num = ehdr->e_phnum;
+	for (i = 0; i < num; i++) {
+		Elf64_Phdr phdr;
+		int err;
+
+		err = __elf64_program_header(addr, addrsiz, ehdr, &phdr, off);
+		if (err == -1)
+			return -1;
+
+		off += sizeof(phdr);
+
+		/* Not the segment */
+		if (phdr.p_type != p_type)
+			continue;
+
+		if (phdr.p_offset > addrsiz)
+			return __set_errno(ENOSPC, -1);
+
+		err = callback(addr + phdr.p_offset, phdr.p_filesz, data);
+		if (err == -1)
+			return -1;
+
+		if (err == 0)
+			return __set_errno(errno_save, err);
+	}
+
+	return __set_errno(ENOENT, -1);
+}
+
+static int __elf_iterate_shared_object_for_pt(int fd, unsigned int p_type,
+		     int (*callback)(const void *, size_t, void *), void *data)
+{
+	struct stat statbuf;
+	Elf64_Ehdr ehdr;
+	size_t addrsiz;
+	void *addr;
+	int err;
+
+	err = next_fstat(fd, &statbuf);
+	if (err == -1)
+		return -1;
+
+	addrsiz = statbuf.st_size;
+	addr = mmap(NULL, addrsiz, PROT_READ, MAP_PRIVATE, fd, 0);
+	if (addr == MAP_FAILED)
+		return -1;
+
+	err = __elf_header(addr, addrsiz, &ehdr);
+	if (err == -1)
+		return -1;
+
+	/* Not a linked program or shared object */
+	if ((ehdr.e_type != ET_EXEC) && (ehdr.e_type != ET_DYN))
+		return __set_errno(ENOEXEC, -1);
+
+	/* It is a 32-bit ELF */
+	if (ehdr.e_ident[EI_CLASS] == ELFCLASS32)
+		return __elf32_iterate_for_pt(addr,
+					      addrsiz,
+					      (Elf32_Ehdr *)&ehdr,
+					      p_type,
+					      callback,
+					      data);
+
+	/* It is a 64-bit ELF */
+	if (ehdr.e_ident[EI_CLASS] == ELFCLASS64)
+		return __elf64_iterate_for_pt(addr,
+					      addrsiz,
+					      (Elf64_Ehdr *)&ehdr,
+					      p_type,
+					      callback,
+					      data);
+
+	/* Unsupported yet! */
+	return __set_errno(ENOTSUP, -1);
+}
+
+static int __elf_has_interp_callback(const void *data, size_t datasiz,
+				     void *user)
+{
+	const char *interp = (const char *)data;
+	int *fd = (int *)user;
+	(void)datasiz;
+	(void)interp;
+	(void)fd;
+
+	if (!data || !user)
+		return __set_errno(EINVAL, -1);
+
+	__notice("%s: has interpreter '%s'\n", __fpath(*fd), interp);
+
+	return 0;
+}
+
+hidden int __elf_has_interp(int fd)
+{
+	const int errno_save = errno;
+	int err;
+
+	err = __elf_iterate_shared_object_for_pt(fd,
+						 PT_INTERP,
+						 __elf_has_interp_callback,
+						 &fd);
+	if (err == -1 && errno != ENOENT)
+		return -1;
+	if (err == -1)
+		return __set_errno(errno_save, 0);
+
+	return __set_errno(errno_save, 1);
 }

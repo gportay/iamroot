@@ -13,13 +13,16 @@ processes in userspace.
 
 ## TL;DR;
 
-[iamroot(7)] is a self-contained and all-in-one alternative to [fakeroot(1)]
-and [fakechroot(1)] to call privileged syscalls for unprivileged processes,
-including [chroot(2)].
+[iamroot(7)] works towards creating rootfs from the binary packages of the most
+popular *Linux* distributions without the need for [sudo(8)].
 
-The project targets the *Linux* userlands [glibc] and [musl]. It works on
-[FreeBSD], [OpenBSD] and [NetBSD] but its usage is limited by some statically
-linked binaries and by dynamic loaders that are non-executable.
+The project is a self-contained and all-in-one alternative to [fakeroot(1)] and
+[fakechroot(1)]. It gives unprivileged user permissions to call privileged
+syscalls such as [chown(2)] and [chroot(2)] by emulating them.
+
+[iamroot(7)] targets the *Linux* userlands [glibc] and [musl]. It works on
+[FreeBSD], [OpenBSD] and [NetBSD] even if its usage is limited by various
+statically linked binaries and by non-executable dynamic loaders.
 
 The project compiles on Intel x86 and ARM 64-bit, and it runs on [Arch Linux],
 [Debian], [Alpine Linux], [FreeBSD], [OpenBSD] and [NetBSD].
@@ -71,14 +74,14 @@ in `/proc`, `/sys`, `/dev` or `/run`.
 situations of the whole variety of operation-systems (i.e. GNU/Linux, musl,
 \*BSD...).
 
-It comes with two shell scripts [ido(1)] and [ish(1)] to make the configuration
-easy via specific command line options. They are frontends to standard CLIs to
-either open an interactive shell or switch user. [ish(1)] provides a shell like
-[sh(1)], and [ido(1)] switches user like [sudo(8)].
+It comes with two shell scripts to make the configuration easy via specific
+command line options. They are frontends to standard CLIs to either open an
+interactive shell or to switch user. [ish(1)] provides a shell like [sh(1)],
+and [ido(1)] switches user like [sudo(8)].
 
 ## BUILD ROOTFS
 
-[iamroot(7)] aims to create any Linux rootfs using the package manager of the
+[iamroot(7)] aims to create any *Linux* rootfs using the package manager of the
 distribution (or its bootstrap script).
 
 The table below lists the distributions and its tool that work with.
@@ -254,6 +257,7 @@ later version.
 [alpine-make-rootfs]: https://github.com/alpinelinux/alpine-make-rootfs/blob/master/README.adoc
 [binfmt_misc]: https://www.kernel.org/doc/html/latest/admin-guide/binfmt-misc.html
 [chdir(2)]: https://linux.die.net/man/2/chdir
+[chown(2)]: https://linux.die.net/man/2/chown
 [chroot(2)]: https://linux.die.net/man/2/chroot
 [debconf]: https://packages.debian.org/sid/debconf
 [debootstrap(8)]: https://linux.die.net/man/8/debootstrap

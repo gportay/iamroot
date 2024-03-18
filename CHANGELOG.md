@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-- Detection of Aarch64 [NetBSD]'s library
+- Dectect the Aarch64 [NetBSD]'s library
 
 ### Removed
 

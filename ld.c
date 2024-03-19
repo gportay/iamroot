@@ -11,6 +11,8 @@
 #include <limits.h>
 #include <errno.h>
 #include <getopt.h>
+#include <link.h>
+#include <elf.h>
 
 #include "iamroot.h"
 
@@ -25,6 +27,72 @@ int multiarch;
 char *root;
 char *cwd;
 int debug;
+
+static int callback(struct dl_phdr_info *info, size_t size, void *data)
+{
+	const char **runpath = (const char **)data;
+	int i;
+	(void)size;
+
+	if (!data)
+		return __set_errno(EINVAL, -1);
+
+	/*
+	 * According to dl_iterate_phdr(3):
+	 *
+	 * The dl_iterate_phdr() function walks through the list of an
+	 * application's shared objects and calls the function callback once
+	 * for each object, until either all shared objects have been processed
+	 * or callback returns a nonzero value.
+	 *
+	 * The first shared object for which output is displayed (where the
+	 * name is an empty string) is the main program.
+	 */
+	if (__strnlen(info->dlpi_name) > 0)
+		return 1;
+
+	for (i = 0; i < info->dlpi_phnum; i++) {
+		ElfW(Phdr) *phdr = (ElfW(Phdr) *)(&info->dlpi_phdr[i]);
+		ElfW(Dyn) *dyn = (ElfW(Dyn) *)(info->dlpi_addr + phdr->p_vaddr);
+		ElfW(Addr) strtab = 0;
+		unsigned int j;
+		const char *dt_runpath;
+
+		if (info->dlpi_phdr[i].p_type != PT_DYNAMIC)
+			continue;
+
+		/* Look for the .strtab section */
+		for (j = 0; j < info->dlpi_phdr[i].p_filesz / sizeof(Elf64_Dyn); j++) {
+			if (dyn[j].d_tag != DT_STRTAB)
+				continue;
+
+			strtab = dyn[j].d_un.d_ptr;
+			break;
+		}
+
+		/* No .strtab section */
+		if (!strtab)
+			continue;
+
+		/* Look for the DT_RUNPATH tag */
+		for (j = 0; j < info->dlpi_phdr[i].p_filesz / sizeof(Elf64_Dyn); j++) {
+			if (dyn[j].d_tag != DT_RUNPATH)
+				continue;
+
+			dt_runpath = (const char *)(strtab + dyn[j].d_un.d_ptr);
+			break;
+		}
+
+		if (!dt_runpath)
+			continue;
+
+		__info("DT_RUNPATH='%s'\n", dt_runpath);
+		*runpath = dt_runpath;
+		return 1;
+	}
+
+	return __set_errno(ENOENT, -1);
+}
 
 void usage(FILE * f, char * const arg0)
 {
@@ -56,6 +124,7 @@ int main(int argc, char * argv[])
 		{ "help",         no_argument,       NULL, 'h' },
 		{ NULL,           no_argument,       NULL, 0   }
 	};
+	char *runpath;
 	int err;
 
 	for (;;) {
@@ -194,6 +263,43 @@ int main(int argc, char * argv[])
 		}
 
 		err = setenv("IAMROOT_DEBUG", buf, 1);
+		if (err == -1) {
+			perror("setenv");
+			exit(EXIT_FAILURE);
+		}
+	}
+
+	err = dl_iterate_phdr(callback, &runpath);
+	if (err == -1 && errno == ENOENT) {
+		runpath = __xstr(PREFIX)"/lib/iamroot";
+		__warning("%s: DT_RUNPATH is unset! assuming '%s'\n", argv[0],
+			  runpath);
+	} else if (err == -1) {
+		perror("dl_iterate_phdr");
+		exit(EXIT_FAILURE);
+	}
+
+	if (runpath && *runpath) {
+		char buf[BUFSIZ];
+		int n;
+
+		err = setenv("IAMROOT_ORIGIN", runpath, 1);
+		if (err == -1) {
+			perror("setenv");
+			exit(EXIT_FAILURE);
+		}
+
+		n = snprintf(buf, sizeof(buf), "%s/libiamroot.so", runpath);
+		if (n == -1) {
+			perror("snprintf");
+			exit(EXIT_FAILURE);
+		} else if ((size_t)n >= sizeof(buf)) {
+			errno = ENOSPC;
+			perror("snprintf");
+			exit(EXIT_FAILURE);
+		}
+
+		err = setenv("LD_PRELOAD", buf, 1);
 		if (err == -1) {
 			perror("setenv");
 			exit(EXIT_FAILURE);

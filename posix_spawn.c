@@ -104,7 +104,7 @@ int posix_spawn(pid_t *pid, const char *path,
 	 * standard search directories and only if they have set-user-ID mode
 	 * bit enabled (which is not typical).
 	 */
-	ret = __issuid(buf);
+	ret = __is_suid(buf);
 	if (ret == -1)
 		return -1;
 	else if (ret != 0)

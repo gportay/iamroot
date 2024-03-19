@@ -314,7 +314,7 @@ exit:
 }
 
 __attribute__((visibility("hidden")))
-int __issuid(const char *path)
+int __is_suid(const char *path)
 {
 	struct stat statbuf;
 	int ret = -1;

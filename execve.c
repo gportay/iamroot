@@ -171,7 +171,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	 * standard search directories and only if they have set-user-ID mode
 	 * bit enabled (which is not typical).
 	 */
-	ret = __issuid(buf);
+	ret = __is_suid(buf);
 	if (ret == -1)
 		return -1;
 	else if (ret != 0)

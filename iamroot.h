@@ -175,7 +175,7 @@ int __setenv(const char *, const char *, int);
 
 int __execve(const char *, char * const [], char * const []);
 int __exec_ignored(const char *);
-int __issuid(const char *);
+int __is_suid(const char *);
 int __ldso(const char *, char * const [], char *[], char *, size_t, off_t);
 int __exec_sh(const char *, char * const *, char *[], char *, size_t);
 ssize_t __interpreter_script_hashbang(const char *, char *, size_t, off_t);

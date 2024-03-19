@@ -21,6 +21,7 @@ char *program;
 char *argv0;
 char *preload;
 char *library_path;
+int multiarch;
 char *root;
 char *cwd;
 int debug;
@@ -33,6 +34,7 @@ void usage(FILE * f, char * const arg0)
 		   " -A or --argv0 STRING      Set argv[0] to the value STRING before running the PROGRAM.\n"
 		   " -P or --preload LIST      Preload the objects specified in LIST.\n"
 		   " -L or --library-path PATH Use PATH instead of LD_LIBRARY_PATH environment variable setting.\n"
+		   " -M or --multiarch         Use multiarch library path in chroot.\n"
 		   " -R or --root DIR          Set root directory to DIR.\n"
 		   " -C or --cwd DIR           Set current working directory to DIR.\n"
 		   " -D or --debug             Turn on debug mode.\n"
@@ -47,6 +49,7 @@ int main(int argc, char * argv[])
 		{ "argv0",        required_argument, NULL, 'A' },
 		{ "preload",      required_argument, NULL, 'P' },
 		{ "library-path", required_argument, NULL, 'L' },
+		{ "multiarch",    no_argument,       NULL, 'M' },
 		{ "root",         required_argument, NULL, 'R' },
 		{ "debug",        no_argument,       NULL, 'D' },
 		{ "version",      no_argument,       NULL, 'V' },
@@ -57,7 +60,7 @@ int main(int argc, char * argv[])
 
 	for (;;) {
 		int index;
-		int c = getopt_long(argc, argv, "A:P:L:R:DVh", long_options, &index);
+		int c = getopt_long(argc, argv, "A:P:L:MR:DVh", long_options, &index);
 		if (c == -1)
 			break;
 
@@ -72,6 +75,10 @@ int main(int argc, char * argv[])
 
 		case 'L':
 			library_path = optarg;
+			break;
+
+		case 'M':
+			multiarch = 1;
 			break;
 
 		case 'R':
@@ -127,6 +134,14 @@ int main(int argc, char * argv[])
 
 	if (library_path) {
 		err = setenv("LD_LIBRARY_PATH", library_path, 1);
+		if (err == -1) {
+			perror("setenv");
+			exit(EXIT_FAILURE);
+		}
+	}
+
+	if (multiarch) {
+		err = setenv("IAMROOT_MULTIARCH", "1", 1);
 		if (err == -1) {
 			perror("setenv");
 			exit(EXIT_FAILURE);

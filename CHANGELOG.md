@@ -9,6 +9,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - Dectect the Aarch64 [NetBSD]'s library
+- Add the `ld-iamroot.so(8)` option `--multiarch` to use [Debian multiarch]
+  library path in chroot
 
 ### Removed
 

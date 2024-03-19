@@ -160,15 +160,15 @@ int _setenv(const char *, const char *, int);
 int _unsetenv(const char *);
 int _snprintf(char *, size_t, const char *, ...) __attribute__((format(printf,3,4)));
 
-int __fissymlinkat(int, const char *, int);
-int __fissymlink(int);
-int __issymlink(const char *);
-int __fisdirectoryat(int, const char *, int);
-int __fisdirectory(int);
-int __isdirectory(const char *);
-int __fisfileat(int, const char *, int);
-int __fisfile(int);
-int __isfile(const char *);
+int __fis_symlinkat(int, const char *, int);
+int __fis_symlink(int);
+int __is_symlink(const char *);
+int __fis_directoryat(int, const char *, int);
+int __fis_directory(int);
+int __is_directory(const char *);
+int __fis_fileat(int, const char *, int);
+int __fis_file(int);
+int __is_file(const char *);
 const char *__basename(const char *);
 char *__getenv(const char *);
 int __setenv(const char *, const char *, int);
@@ -280,14 +280,14 @@ void __verbose_exec(char * const[], char * const[]);
 	   } })
 
 #define __fwarn_if_insuffisant_user_mode(fd, mode) \
-	({ if (__fisdirectory((fd)) > 0) { \
+	({ if (__fis_directory((fd)) > 0) { \
 	     __fwarn_and_set_user_mode((fd), (mode), 0700); \
 	   } else { \
 	     __fwarn_and_set_user_mode((fd), (mode), 0600); \
 	   } })
 
 #define __fwarn_if_insuffisant_user_modeat(fd, path, mode, flags) \
-	({ if (__fisdirectoryat((fd), (path), (flags)) > 0) { \
+	({ if (__fis_directoryat((fd), (path), (flags)) > 0) { \
 	     __fwarn_and_set_user_modeat((fd), (path), (mode), (flags), 0700); \
 	   } else { \
 	     __fwarn_and_set_user_modeat((fd), (path), (mode), (flags), 0600); \
@@ -308,7 +308,7 @@ void __verbose_exec(char * const[], char * const[]);
 	   } })
 
 #define __warn_if_insuffisant_user_mode(path, mode) \
-	({ if (__isdirectory((path)) > 0) { \
+	({ if (__is_directory((path)) > 0) { \
 	     __warn_and_set_user_mode((path), (mode), 0700); \
 	   } else { \
 	     __warn_and_set_user_mode((path), (mode), 0600); \

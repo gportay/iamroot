@@ -100,7 +100,7 @@ int _snprintf(char *buf, size_t bufsiz, const char *fmt, ...)
 }
 
 __attribute__((visibility("hidden")))
-int __fissymlinkat(int dfd, const char *path, int atflags)
+int __fis_symlinkat(int dfd, const char *path, int atflags)
 {
 	struct stat statbuf;
 	int ret;
@@ -114,7 +114,7 @@ int __fissymlinkat(int dfd, const char *path, int atflags)
 
 #ifndef __NetBSD__
 __attribute__((visibility("hidden")))
-int __fissymlink(int fd)
+int __fis_symlink(int fd)
 {
 	struct stat statbuf;
 	int ret;
@@ -128,7 +128,7 @@ int __fissymlink(int fd)
 #endif
 
 __attribute__((visibility("hidden")))
-int __issymlink(const char *path)
+int __is_symlink(const char *path)
 {
 	struct stat statbuf;
 	int ret;
@@ -141,7 +141,7 @@ int __issymlink(const char *path)
 }
 
 __attribute__((visibility("hidden")))
-int __fisdirectoryat(int dfd, const char *path, int atflags)
+int __fis_directoryat(int dfd, const char *path, int atflags)
 {
 	struct stat statbuf;
 	int ret;
@@ -154,7 +154,7 @@ int __fisdirectoryat(int dfd, const char *path, int atflags)
 }
 
 __attribute__((visibility("hidden")))
-int __isdirectory(const char *path)
+int __is_directory(const char *path)
 {
 	struct stat statbuf;
 	int ret;
@@ -168,7 +168,7 @@ int __isdirectory(const char *path)
 
 #ifndef __NetBSD__
 __attribute__((visibility("hidden")))
-int __fisdirectory(int fd)
+int __fis_directory(int fd)
 {
 	struct stat statbuf;
 	int ret;
@@ -182,7 +182,7 @@ int __fisdirectory(int fd)
 #endif
 
 __attribute__((visibility("hidden")))
-int __fisfileat(int dfd, const char *path, int atflags)
+int __fis_fileat(int dfd, const char *path, int atflags)
 {
 	struct stat statbuf;
 	int ret;
@@ -196,7 +196,7 @@ int __fisfileat(int dfd, const char *path, int atflags)
 
 #ifndef __NetBSD__
 __attribute__((visibility("hidden")))
-int __fisfile(int fd)
+int __fis_file(int fd)
 {
 	struct stat statbuf;
 	int ret;
@@ -210,7 +210,7 @@ int __fisfile(int fd)
 #endif
 
 __attribute__((visibility("hidden")))
-int __isfile(const char *path)
+int __is_file(const char *path)
 {
 	struct stat statbuf;
 	int ret;

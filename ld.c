@@ -185,7 +185,7 @@ int main(int argc, char * argv[])
 		}
 	}
 
-	execve(program, &argv[optind], __environ);
-	perror("execve");
+	execvpe(program, &argv[optind], __environ);
+	perror("execvpe");
 	exit(127);
 }

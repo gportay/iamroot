@@ -18,6 +18,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Double quote the arguments of full command if the argument contains a
   whitespace
+- Search for the executable in `PATH` in `ld-iamroot.so(8)` if the program
+  if a filename without a slash
 
 ### Fixed
 

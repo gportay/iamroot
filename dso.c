@@ -1315,7 +1315,7 @@ static int __elf_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int d_tag,
 		if (err == -1)
 			goto exit;
 
-		/* look for the dynamic entry */
+		/* loop for the dynamic entries */
 		for (j = 0; j < phdr.p_filesz / sizeof(dyn[0]); j++) {
 			char buf[BUFSIZ];
 			size_t size;
@@ -1440,7 +1440,7 @@ static int __elf_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int d_tag,
 		if (err == -1)
 			goto exit;
 
-		/* look for the dynamic entry */
+		/* loop for the dynamic entries */
 		for (j = 0; j < phdr.p_filesz / sizeof(dyn[0]); j++) {
 			char buf[BUFSIZ];
 			size_t size;

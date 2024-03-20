@@ -27,8 +27,8 @@ static int (*sym)(const char *, int, const char *, const void *, size_t);
 static ssize_t (*sym)(const char *, int, const char *, const void *, size_t);
 #endif
 
-#ifdef __NetBSD__
 hidden
+#ifdef __NetBSD__
 int next_extattr_set_file(const char *path, int attrnamespace,
 			  const char *attrname, const void *data,
 			  size_t nbytes)

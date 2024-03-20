@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 Gaël PORTAY
+ * Copyright 2022-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -18,7 +18,7 @@
 
 static DIR *(*sym)(const char *, int);
 
-__attribute__((visibility("hidden")))
+hidden
 DIR *next___opendir2(const char *path, int oflags)
 {
 	if (!sym)

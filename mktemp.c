@@ -17,7 +17,7 @@
 
 static char *(*sym)(char *);
 
-__attribute__((visibility("hidden")))
+hidden
 char *next_mktemp(char *path)
 {
 	if (!sym)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 Gaël PORTAY
+ * Copyright 2022-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -23,7 +23,7 @@
 
 static int (*sym)(const char *, int, const char *);
 
-__attribute__((visibility("hidden")))
+hidden
 int next_extattr_delete_file(const char *path, int attrnamespace,
 			     const char *attrname)
 {

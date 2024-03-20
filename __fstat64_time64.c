@@ -21,7 +21,7 @@
 #if __TIMESIZE == 32
 static int (*sym)(int, struct stat64 *);
 
-__attribute__((visibility("hidden")))
+hidden
 int next___fstat64_time64(int fd, struct stat64 *statbuf)
 {
 	if (!sym)

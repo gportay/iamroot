@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -47,7 +47,7 @@ static size_t slash_len(const char *s)
  *
  * SPDX-License-Identifier: MIT
  */
-__attribute__((visibility("hidden")))
+hidden
 char *next_realpath(const char *filename, char *resolved)
 {
 	char stack[PATH_MAX+1];

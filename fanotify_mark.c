@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 Gaël PORTAY
+ * Copyright 2022-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -24,7 +24,7 @@ static int (*sym)(int, unsigned int, uint64_t, int, const char *);
 static int (*sym)(int, unsigned int, unsigned long long, int, const char *);
 #endif
 
-__attribute__((visibility("hidden")))
+hidden
 #ifdef __GLIBC__
 int next_fanotify_mark(int fanotify_fd, unsigned int flags, uint64_t mask,
 		       int dfd, const char *path)

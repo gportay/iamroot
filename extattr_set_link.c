@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 Gaël PORTAY
+ * Copyright 2022-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -28,12 +28,12 @@ static ssize_t (*sym)(const char *, int, const char *, const void *, size_t);
 #endif
 
 #ifdef __NetBSD__
-__attribute__((visibility("hidden")))
+hidden
 int next_extattr_set_link(const char *path, int attrnamespace,
 			  const char *attrname, const void *data,
 			  size_t nbytes)
 #else
-__attribute__((visibility("hidden")))
+hidden
 ssize_t next_extattr_set_link(const char *path, int attrnamespace,
 			      const char *attrname, const void *data,
 			      size_t nbytes)

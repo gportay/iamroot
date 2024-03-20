@@ -18,7 +18,7 @@
 
 static int (*sym)(int, struct sockaddr *, socklen_t *, int);
 
-__attribute__((visibility("hidden")))
+hidden
 int next_accept4(int socket, struct sockaddr *addr, socklen_t *addrlen,
 		 int oflags)
 {

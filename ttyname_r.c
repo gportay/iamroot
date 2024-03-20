@@ -14,7 +14,7 @@
 
 static int (*sym)(int, char *, size_t);
 
-__attribute__((visibility("hidden")))
+hidden
 int next_ttyname_r(int fd, char *buf, size_t bufsiz)
 {
 	if (!sym)

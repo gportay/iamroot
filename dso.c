@@ -114,7 +114,7 @@ static char *__getld_library_path()
 	return curr;
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __setld_preload(const char *preload, int overwrite)
 {
 	char buf[PATH_MAX];
@@ -200,7 +200,7 @@ ldso:
 	re_ldso = NULL;
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __is_ldso(const char *path)
 {
 	int ret = 0;
@@ -724,7 +724,7 @@ static int __ld_open_needed(const char *path, int flags, const char *needed_by)
 			   flags_1, __ld_open_needed_callback, &ctx);
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __dlopen_needed(const char *path, int flags)
 {
 	return __ld_open_needed(path, flags, __execfn());
@@ -2269,7 +2269,7 @@ exit:
 	return __set_errno(errno_save, ret);
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __is_preloading_libiamroot()
 {
 	char buf[PATH_MAX], hashbang[NAME_MAX], interp[NAME_MAX],
@@ -2927,7 +2927,7 @@ static ssize_t __inhibit_rpath(char *buf, size_t bufsiz, off_t offset)
 	return strnlen(buf+offset, bufsiz-offset);
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __ldso(const char *path, char * const argv[], char *interparg[], char *buf,
 	   size_t bufsiz, off_t offset)
 {
@@ -3265,7 +3265,7 @@ close:
 	return ret;
 }
 
-__attribute__((visibility("hidden")))
+hidden
 ssize_t __dl_access(const char *path, int mode, char *buf, size_t bufsiz)
 {
 	char *exec_rpath, *exec_runpath, *ld_library_path;
@@ -3564,7 +3564,7 @@ static int __ldso_verify(const char *path)
 	return 0;
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __ldso_execve(const char *path, char * const argv[], char * const envp[])
 {
 	int ret;
@@ -3616,7 +3616,7 @@ exit:
 	return __set_errno(EAGAIN, -1);
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __ldso_execveat(int dfd, const char *path, char * const argv[],
 		    char * const envp[])
 {
@@ -3629,7 +3629,7 @@ int __ldso_execveat(int dfd, const char *path, char * const argv[],
 	return __set_errno(ENOSYS, -1);
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __ldso_posix_spawn(pid_t *pid,
 		       const char *path,
 		       const posix_spawn_file_actions_t *file_actions,

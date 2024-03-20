@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -17,7 +17,7 @@
 
 static FILE *(*sym)(const char *, const char *, FILE *);
 
-__attribute__((visibility("hidden")))
+hidden
 FILE *next_freopen(const char *path, const char *mode, FILE *stream)
 {
 	if (!sym)

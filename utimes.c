@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -20,7 +20,7 @@
 
 static int (*sym)(const char *, const struct timeval[2]);
 
-__attribute__((visibility("hidden")))
+hidden
 int next_utimes(const char *path, const struct timeval times[2])
 {
 	if (!sym)

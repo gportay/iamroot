@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 Gaël PORTAY
+ * Copyright 2022-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -18,7 +18,7 @@
 #ifdef __GLIBC__
 static int (*sym)(const char *, off_t);
 
-__attribute__((visibility("hidden")))
+hidden
 int next_truncate64(const char *path, off64_t length)
 {
 	if (!sym)

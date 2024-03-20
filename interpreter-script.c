@@ -15,7 +15,7 @@
 
 extern int next_open(const char *, int, mode_t);
 
-__attribute__((visibility("hidden")))
+hidden
 ssize_t __interpreter_script_hashbang(const char *path, char *buf,
 				      size_t bufsiz, off_t offset)
 {
@@ -115,7 +115,7 @@ close:
 	return ret;
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __interpreter_script(const char *path, char * const argv[], char *buf,
 			 size_t bufsiz, off_t offset, char *interparg[])
 {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Gaël PORTAY
+ * Copyright 2023-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -17,7 +17,7 @@
 
 static void (*sym)(const char *, const struct utmpx *);
 
-__attribute__((visibility("hidden")))
+hidden
 void next_updwtmpx(const char *path, const struct utmpx *ut)
 {
 	if (!sym)

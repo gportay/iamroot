@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -16,7 +16,7 @@
 
 static int (*sym)(const char *, int, const char *);
 
-__attribute__((visibility("hidden")))
+hidden
 int next_symlinkat(const char *string, int dfd, const char *path)
 {
 	if (!sym)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -20,7 +20,7 @@
 #ifdef _LARGEFILE64_SOURCE
 static int (*sym)(int, int, const char *, struct stat64 *, int);
 
-__attribute__((visibility("hidden")))
+hidden
 int next___fxstatat64(int ver, int dfd, const char *path,
 		      struct stat64 *statbuf, int atflags)
 {

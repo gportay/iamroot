@@ -13,13 +13,13 @@
 
 #include "iamroot.h"
 
-__attribute__((visibility("hidden")))
+hidden
 mode_t __getumask()
 {
 	return strtol(_getenv("IAMROOT_UMASK") ?: "022", NULL, 8);
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __setumask(mode_t mask)
 {
 	char buf[4];
@@ -34,7 +34,7 @@ int __setumask(mode_t mask)
 
 static mode_t (*sym)(mode_t);
 
-__attribute__((visibility("hidden")))
+hidden
 mode_t next_umask(mode_t mask)
 {
 	if (!sym)

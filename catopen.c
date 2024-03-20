@@ -19,7 +19,7 @@
 
 static nl_catd (*sym)(const char *, int);
 
-__attribute__((visibility("hidden")))
+hidden
 nl_catd next_catopen(const char *path, int flag)
 {
 	if (!sym)

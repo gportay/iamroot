@@ -35,7 +35,7 @@ struct startup_info
 static int (*sym)(int, char **, char **, ElfW(auxv_t) *, void (*)(),
 		  struct startup_info *, char **);
 
-__attribute__((visibility("hidden")))
+hidden
 int next___libc_start_main(int argc,
 			   char **argv,
 			   char **ev,
@@ -56,7 +56,7 @@ int next___libc_start_main(int argc,
 static int (*sym)(int (*)(), int, char **, int (*)(int, char **, char **),
 		  void (*)(), void(*)(), void(*)());
 
-__attribute__((visibility("hidden")))
+hidden
 int next___libc_start_main(int (*main)(int, char **, char **), int argc,
 			   char **argv, int (*init)(int, char **, char **),
 			   void (*fini)(void), void (*rtld_fini)(void),

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -18,7 +18,7 @@ static int (*sym)(int, const char *, struct dirent ***,
 		  int (*)(const struct dirent *),
 		  int (*)(const struct dirent **, const struct dirent **));
 
-__attribute__((visibility("hidden")))
+hidden
 int next_scandirat(int dfd, const char *path, struct dirent ***namelist,
 		  int (*filter)(const struct dirent *),
 		  int (*compar)(const struct dirent **, const struct dirent **))

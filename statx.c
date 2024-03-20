@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -27,7 +27,7 @@
 #if defined __GLIBC__ && __GLIBC_PREREQ(2,28)
 static int (*sym)(int, const char *, int, unsigned int, struct statx *);
 
-__attribute__((visibility("hidden")))
+hidden
 int next_statx(int dfd, const char *path, int atflags, unsigned int mask,
 	       struct statx *statxbuf)
 {

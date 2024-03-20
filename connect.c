@@ -18,7 +18,7 @@
 
 static int (*sym)(int, const struct sockaddr *, socklen_t);
 
-__attribute__((visibility("hidden")))
+hidden
 int next_connect(int socket, const struct sockaddr *addr, socklen_t addrlen)
 {
 	if (!sym)

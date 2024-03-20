@@ -35,7 +35,7 @@ extern int next_scandir(const char *, struct dirent ***,
 			const struct dirent **));
 
 #ifdef __linux__
-__attribute__((visibility("hidden")))
+hidden
 int __secure()
 {
 	return getauxval(AT_SECURE) != 0;
@@ -60,7 +60,7 @@ int __secure()
 #define HIGHS (ONES * (UCHAR_MAX/2+1))
 #define HASZERO(x) ((x)-ONES & ~(x) & HIGHS)
 
-__attribute__((visibility("hidden")))
+hidden
 char *__strchrnul(const char *s, int c)
 {
 	c = (unsigned char)c;
@@ -80,7 +80,7 @@ char *__strchrnul(const char *s, int c)
 }
 #endif
 
-__attribute__((visibility("hidden")))
+hidden
 int _snprintf(char *buf, size_t bufsiz, const char *fmt, ...)
 {
 	va_list ap;
@@ -99,7 +99,7 @@ int _snprintf(char *buf, size_t bufsiz, const char *fmt, ...)
 	return __set_errno(ENOSPC, -1);
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __fis_symlinkat(int dfd, const char *path, int atflags)
 {
 	struct stat statbuf;
@@ -113,7 +113,7 @@ int __fis_symlinkat(int dfd, const char *path, int atflags)
 }
 
 #ifndef __NetBSD__
-__attribute__((visibility("hidden")))
+hidden
 int __fis_symlink(int fd)
 {
 	struct stat statbuf;
@@ -127,7 +127,7 @@ int __fis_symlink(int fd)
 }
 #endif
 
-__attribute__((visibility("hidden")))
+hidden
 int __is_symlink(const char *path)
 {
 	struct stat statbuf;
@@ -140,7 +140,7 @@ int __is_symlink(const char *path)
 	return S_ISLNK(statbuf.st_mode);
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __fis_directoryat(int dfd, const char *path, int atflags)
 {
 	struct stat statbuf;
@@ -153,7 +153,7 @@ int __fis_directoryat(int dfd, const char *path, int atflags)
 	return S_ISDIR(statbuf.st_mode);
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __is_directory(const char *path)
 {
 	struct stat statbuf;
@@ -167,7 +167,7 @@ int __is_directory(const char *path)
 }
 
 #ifndef __NetBSD__
-__attribute__((visibility("hidden")))
+hidden
 int __fis_directory(int fd)
 {
 	struct stat statbuf;
@@ -181,7 +181,7 @@ int __fis_directory(int fd)
 }
 #endif
 
-__attribute__((visibility("hidden")))
+hidden
 int __fis_fileat(int dfd, const char *path, int atflags)
 {
 	struct stat statbuf;
@@ -195,7 +195,7 @@ int __fis_fileat(int dfd, const char *path, int atflags)
 }
 
 #ifndef __NetBSD__
-__attribute__((visibility("hidden")))
+hidden
 int __fis_file(int fd)
 {
 	struct stat statbuf;
@@ -209,7 +209,7 @@ int __fis_file(int fd)
 }
 #endif
 
-__attribute__((visibility("hidden")))
+hidden
 int __is_file(const char *path)
 {
 	struct stat statbuf;
@@ -222,7 +222,7 @@ int __is_file(const char *path)
 	return S_ISREG(statbuf.st_mode);
 }
 
-__attribute__((visibility("hidden")))
+hidden
 const char *__basename(const char *path)
 {
 	char *s = strrchr(path, '/');
@@ -295,7 +295,7 @@ setenv:
 	return _setenv(name, value, overwrite);
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __execve(const char *path, char * const argv[], char * const envp[])
 {
 	const char *root;
@@ -313,7 +313,7 @@ exit:
 	return execve(path, argv, envp);
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __is_suid(const char *path)
 {
 	struct stat statbuf;
@@ -337,7 +337,7 @@ static char *__getexec()
 	return ret;
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __exec_sh(const char *path, char * const *argv, char *interparg[],
 	      char *buf, size_t bufsiz)
 {
@@ -419,7 +419,7 @@ static ssize_t __fgetpath(int fd, char *buf, size_t bufsiz)
 #include <sys/sysctl.h>
 #include <sys/user.h>
 
-__attribute__((visibility("hidden")))
+hidden
 struct kinfo_file *kinfo_getfile(pid_t pid, int *cntp)
 {
 	int mib[4];
@@ -509,7 +509,7 @@ static ssize_t __fgetpath(int fd, char *buf, size_t bufsiz)
 }
 #endif
 
-__attribute__((visibility("hidden")))
+hidden
 int __strtofd(const char *nptr, char **endptr)
 {
 	int errno_save;
@@ -533,7 +533,7 @@ int __strtofd(const char *nptr, char **endptr)
  *
  * SPDX-License-Identifier: MIT
  */
-__attribute__((visibility("hidden")))
+hidden
 void __procfdname(char *buf, unsigned fd)
 {
 	unsigned i, j;
@@ -576,7 +576,7 @@ static ssize_t __fgetpath(int fd, char *buf, size_t bufsiz)
 }
 #endif
 
-__attribute__((visibility("hidden")))
+hidden
 ssize_t fpath(int fd, char *buf, size_t bufsiz)
 {
 	ssize_t ret;
@@ -592,7 +592,7 @@ ssize_t fpath(int fd, char *buf, size_t bufsiz)
 	return ret;
 }
 
-__attribute__((visibility("hidden")))
+hidden
 char *__fpath(int fd)
 {
 	const int errno_save = errno;
@@ -607,7 +607,7 @@ char *__fpath(int fd)
 	return buf;
 }
 
-__attribute__((visibility("hidden")))
+hidden
 char *__fpath2(int fd)
 {
 	const int errno_save = errno;
@@ -629,7 +629,7 @@ char *__fpath2(int fd)
  *
  * SPDX-License-Identifier: MIT
  */
-__attribute__((visibility("hidden")))
+hidden
 ssize_t __path_access(const char *file, int mode, const char *path, char *buf,
 		      size_t bufsiz)
 {
@@ -708,21 +708,21 @@ static int __strtok(const char *str, const char *delim,
 	return 0;
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __path_iterate(const char *path, int (*callback)(const char *, void *),
 		   void *user)
 {
 	return __strtok(path, ":", callback, user);
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __group_iterate(const char *path, int (*callback)(const char *, void *),
 		    void *user)
 {
 	return __strtok(path, " ", callback, user);
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __dir_iterate(const char *path,
 		  int (*callback)(const char *, const char *, void *),
 		  void *user)
@@ -747,13 +747,13 @@ int __dir_iterate(const char *path,
 	return ret;
 }
 
-__attribute__((visibility("hidden")))
+hidden
 char *__getroot()
 {
 	return _getenv("IAMROOT_ROOT");
 }
 
-__attribute__((visibility("hidden")))
+hidden
 const char *__getexe()
 {
 	const char *exec;
@@ -775,7 +775,7 @@ const char *__getexe()
 	return &exec[len];
 }
 
-__attribute__((visibility("hidden")))
+hidden
 const char *__getfd(int fd)
 {
 #if defined __OpenBSD__ || defined __NetBSD__
@@ -801,7 +801,7 @@ const char *__getfd(int fd)
 #endif
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __setfd(int fd, const char *path)
 {
 #if defined __OpenBSD__ || defined __NetBSD__
@@ -826,7 +826,7 @@ int __setfd(int fd, const char *path)
 #endif
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __execfd()
 {
 #if defined __OpenBSD__ || defined __NetBSD__
@@ -850,7 +850,7 @@ int __execfd()
 }
 
 #ifdef __linux__
-__attribute__((visibility("hidden")))
+hidden
 const char *__execfn()
 {
 	return (const char *)getauxval(AT_EXECFN);
@@ -858,7 +858,7 @@ const char *__execfn()
 #endif
 
 #ifdef __FreeBSD__
-__attribute__((visibility("hidden")))
+hidden
 const char *__execfn()
 {
 	static char buf[PATH_MAX];
@@ -884,7 +884,7 @@ const char *__execfn()
 
 #define err(e, r) return __set_errno((e), (r))
 
-__attribute__((visibility("hidden")))
+hidden
 static char **get_proc_args()
 {
 	static char **s;
@@ -912,7 +912,7 @@ static char **get_proc_args()
 }
 #undef err
 
-__attribute__((visibility("hidden")))
+hidden
 const char *__execfn()
 {
 	static char buf[PATH_MAX];
@@ -939,7 +939,7 @@ const char *__execfn()
 #endif
 
 #ifdef __NetBSD__
-__attribute__((visibility("hidden")))
+hidden
 const char *__execfn()
 {
 	static char buf[PATH_MAX];
@@ -957,7 +957,7 @@ const char *__execfn()
 }
 #endif
 
-__attribute__((visibility("hidden")))
+hidden
 int __setrootdir(const char *path)
 {
 	if (!path) {
@@ -969,7 +969,7 @@ int __setrootdir(const char *path)
 	return _setenv("IAMROOT_ROOT", path, 1);
 }
 
-__attribute__((visibility("hidden")))
+hidden
 const char *__getrootdir()
 {
 	char *root;
@@ -981,7 +981,7 @@ const char *__getrootdir()
 	return root;
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __chrootdir(const char *cwd)
 {
 	char buf[PATH_MAX];
@@ -1000,13 +1000,13 @@ int __chrootdir(const char *cwd)
 	return 0;
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __inchroot()
 {
 	return !streq(__getrootdir(), "/");
 }
 
-__attribute__((visibility("hidden")))
+hidden
 char *__striprootdir(char *path)
 {
 	const char *root;
@@ -1032,13 +1032,13 @@ char *__striprootdir(char *path)
 	return ret;
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __getno_color()
 {
 	return strtol(_getenv("NO_COLOR") ?: "0", NULL, 0);
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __getcolor()
 {
 	const int errno_save = errno;
@@ -1049,19 +1049,19 @@ int __getcolor()
 	return __getno_color() == 0;
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __getfatal()
 {
 	return strtol(_getenv("IAMROOT_FATAL") ?: "0", NULL, 0);
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __getdebug()
 {
 	return strtol(_getenv("IAMROOT_DEBUG") ?: "0", NULL, 0);
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __getdebug_fd()
 {
 	return strtol(_getenv("IAMROOT_DEBUG_FD") ?: "2", NULL, 0);
@@ -1164,7 +1164,7 @@ static int __vdverbosef(int fd, int lvl, const char *func, const char *fmt,
 	return ret;
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __verbosef(int lvl, const char *func, const char *fmt, ...)
 {
 	va_list ap;
@@ -1177,7 +1177,7 @@ int __verbosef(int lvl, const char *func, const char *fmt, ...)
 }
 
 #if !defined(NVERBOSE)
-__attribute__((visibility("hidden")))
+hidden
 void __verbose_exec(char * const argv[], char * const envp[])
 {
 	int color, fd, debug;
@@ -1221,13 +1221,13 @@ void __verbose_exec(char * const argv[], char * const envp[])
 }
 #endif
 
-__attribute__((visibility("hidden")))
+hidden
 void __abort()
 {
 	raise(SIGABRT);
 }
 
-__attribute__((visibility("hidden")))
+hidden
 void __pathdlperror(const char *path, const char *s)
 {
 	const char *p = path && *path ? path : "(empty)";

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -24,7 +24,7 @@
 #ifdef __GLIBC__
 static int (*sym)(const char *, struct statfs64 *);
 
-__attribute__((visibility("hidden")))
+hidden
 int next_statfs64(const char *path, struct statfs64 *statfsbuf)
 {
 	if (!sym)

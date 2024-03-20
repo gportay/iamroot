@@ -55,7 +55,7 @@ void __env_rm_add(char *old, char *new);
  *
  * SPDX-License-Identifier: MIT
  */
-__attribute__((visibility("hidden")))
+hidden
 int clearenv()
 {
 	char **e = __environ;
@@ -71,7 +71,7 @@ int clearenv()
  *
  * SPDX-License-Identifier: MIT
  */
-__attribute__((visibility("hidden")))
+hidden
 char *getenv(const char *name)
 {
 	size_t l = __strchrnul(name, '=') - name;
@@ -89,7 +89,7 @@ char *getenv(const char *name)
  *
  * SPDX-License-Identifier: MIT
  */
-__attribute__((visibility("hidden")))
+hidden
 int __putenv(char *s, size_t l, char *r)
 {
 	size_t i=0;
@@ -123,7 +123,7 @@ oom:
 	return -1;
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int putenv(char *s)
 {
 	size_t l = __strchrnul(s, '=') - s;
@@ -138,7 +138,7 @@ int putenv(char *s)
  *
  * SPDX-License-Identifier: MIT
  */
-__attribute__((visibility("hidden")))
+hidden
 void __env_rm_add(char *old, char *new)
 {
 	static char **env_alloced;
@@ -158,7 +158,7 @@ void __env_rm_add(char *old, char *new)
 	(env_alloced = t)[env_alloced_n++] = new;
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int setenv(const char *var, const char *value, int overwrite)
 {
 	char *s;

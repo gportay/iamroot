@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Gaël PORTAY
+ * Copyright 2023-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -14,7 +14,7 @@
 
 static int (*sym)(int, char *, size_t);
 
-__attribute__((visibility("hidden")))
+hidden
 int next_ptsname_r(int fd, char *buf, size_t bufsiz)
 {
 	if (!sym)

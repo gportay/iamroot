@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Gaël PORTAY
+ * Copyright 2023-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -14,7 +14,7 @@
 
 static int (*sym)(FILE *);
 
-__attribute__((visibility("hidden")))
+hidden
 int next_fclose(FILE *stream)
 {
 	if (!sym)

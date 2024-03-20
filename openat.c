@@ -23,7 +23,7 @@
 
 static int (*sym)(int, const char *, int, ...);
 
-__attribute__((visibility("hidden")))
+hidden
 int next_openat(int dfd, const char *path, int oflags, mode_t mode)
 {
 	if (!sym)

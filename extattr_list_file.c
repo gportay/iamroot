@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 Gaël PORTAY
+ * Copyright 2022-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -23,7 +23,7 @@
 
 static ssize_t (*sym)(const char *, int, void *, size_t);
 
-__attribute__((visibility("hidden")))
+hidden
 ssize_t next_extattr_list_file(const char *path, int attrnamespace, void *data,
 			       size_t nbytes)
 {

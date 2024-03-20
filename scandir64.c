@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 Gaël PORTAY
+ * Copyright 2022-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -20,7 +20,7 @@ static int (*sym)(const char *, struct dirent64 ***,
 		  int (*)(const struct dirent64 **,
 			  const struct dirent64 **));
 
-__attribute__((visibility("hidden")))
+hidden
 int next_scandir64(const char *path, struct dirent64 ***namelist,
 		   int (*filter)(const struct dirent64 *),
 		   int (*compar)(const struct dirent64 **,

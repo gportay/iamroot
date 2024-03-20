@@ -20,7 +20,7 @@ extern int __ldso_execveat(int, const char *, char * const[], char * const[]);
 
 static int (*sym)(int, const char *, char * const[], char * const[], int);
 
-__attribute__((visibility("hidden")))
+hidden
 int next_execveat(int dfd, const char *path, char * const argv[],
 		  char * const envp[], int atflags)
 {

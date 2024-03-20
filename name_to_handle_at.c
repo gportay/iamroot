@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -18,7 +18,7 @@
 
 static int (*sym)(int, const char *, struct file_handle *, int *, int);
 
-__attribute__((visibility("hidden")))
+hidden
 int next_name_to_handle_at(int dfd, const char *path,
 			   struct file_handle *handle, int *mount_id,
 			   int atflags)

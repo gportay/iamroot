@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -15,7 +15,7 @@
 
 static char *(*sym)();
 
-__attribute__((visibility("hidden")))
+hidden
 char *next_get_current_dir_name()
 {
 	if (!sym)

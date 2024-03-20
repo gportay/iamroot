@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -18,7 +18,7 @@
 #ifdef __GLIBC__
 static void *(*sym)(Lmid_t, const char *, int);
 
-__attribute__((visibility("hidden")))
+hidden
 void *next_dlmopen(Lmid_t lmid, const char *path, int flags)
 
 {

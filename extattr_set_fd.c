@@ -27,7 +27,7 @@ static int (*sym)(int, int, const char *, const void *, size_t);
 static ssize_t (*sym)(int, int, const char *, const void *, size_t);
 #endif
 
-__attribute__((visibility("hidden")))
+hidden
 #ifdef __NetBSD__
 int next_extattr_set_fd(int fd, int attrnamespace, const char *attrname,
 			const void *data, size_t nbytes)

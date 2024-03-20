@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -17,7 +17,7 @@
 
 static int (*sym)(char *, int, int);
 
-__attribute__((visibility("hidden")))
+hidden
 int next_mkostemps(char *path, int suffixlen, int oflags)
 {
 	if (!sym)

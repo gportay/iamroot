@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -19,7 +19,7 @@
 
 static int (*sym)(int, const char *, const void *, size_t, int);
 
-__attribute__((visibility("hidden")))
+hidden
 int next_fsetxattr(int fd, const char *name, const void *value, size_t size,
 		   int flags)
 {

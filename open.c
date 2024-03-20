@@ -24,7 +24,7 @@
 
 static int (*sym)(const char *, int, ...);
 
-__attribute__((visibility("hidden")))
+hidden
 int next_open(const char *path, int oflags, mode_t mode)
 {
 	if (!sym)

@@ -18,7 +18,7 @@
 
 static int (*sym)(int, struct sockaddr *, socklen_t *);
 
-__attribute__((visibility("hidden")))
+hidden
 int next_getsockname(int socket, struct sockaddr *addr, socklen_t *addrlen)
 {
 	if (!sym)

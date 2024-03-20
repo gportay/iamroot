@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 Gaël PORTAY
+ * Copyright 2022-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -16,7 +16,7 @@
 
 static int (*sym)(const char *, int);
 
-__attribute__((visibility("hidden")))
+hidden
 key_t next_ftok(const char *path, int proj_id)
 {
 	if (!sym)

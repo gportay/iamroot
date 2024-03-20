@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Gaël PORTAY
+ * Copyright 2023-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -18,7 +18,7 @@
 #if defined(__OpenBSD__) || defined(__NetBSD__)
 static int (*sym)(int);
 
-__attribute__((visibility("hidden")))
+hidden
 int next_closefrom(int fd)
 {
 	if (!sym)
@@ -32,7 +32,7 @@ int next_closefrom(int fd)
 #else
 static void (*sym)(int);
 
-__attribute__((visibility("hidden")))
+hidden
 void next_closefrom(int fd)
 {
 	if (!sym)

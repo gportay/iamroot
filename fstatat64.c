@@ -21,7 +21,7 @@
 extern int next___fxstatat64(int, int, const char *, struct stat64 *, int);
 static int (*sym)(int, const char *, struct stat64 *, int);
 
-__attribute__((visibility("hidden")))
+hidden
 int next_fstatat64(int dfd, const char *path, struct stat64 *statbuf,
 		   int atflags)
 {

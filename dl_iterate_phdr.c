@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 Gaël PORTAY
+ * Copyright 2022-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -17,7 +17,7 @@
 
 static int (*sym)(int (*)(struct dl_phdr_info *, size_t, void *), void *);
 
-__attribute__((visibility("hidden")))
+hidden
 int next_dl_iterate_phdr(int (*callback)(struct dl_phdr_info *, size_t, void *),
 			 void *data)
 {

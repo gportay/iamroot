@@ -93,7 +93,7 @@ static int ignore(const char *path)
 	return !ret;
 }
 
-__attribute__((visibility("hidden")))
+hidden
 int __exec_ignored(const char *path)
 {
 	return ignore(path);
@@ -101,7 +101,7 @@ int __exec_ignored(const char *path)
 
 static int (*sym)(const char *, char * const[], char * const[]);
 
-__attribute__((visibility("hidden")))
+hidden
 int next_execve(const char *path, char * const argv[], char * const envp[])
 {
 	if (!sym)

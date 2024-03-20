@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 Gaël PORTAY
+ * Copyright 2022-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -22,7 +22,7 @@ static int (*sym)(int, const char *, unsigned int, int);
 static int (*sym)(int, const char *, unsigned long, int);
 #endif
 
-__attribute__((visibility("hidden")))
+hidden
 #ifdef __OpenBSD__
 int next_chflagsat(int dfd, const char *path, unsigned int flags, int atflag)
 #else

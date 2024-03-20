@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 Gaël PORTAY
+ * Copyright 2022-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -18,7 +18,7 @@
 
 static int (*sym)(const char *, unsigned long);
 
-__attribute__((visibility("hidden")))
+hidden
 int next_lchflags(const char *path, unsigned long flags)
 {
 	if (!sym)

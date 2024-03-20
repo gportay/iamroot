@@ -22,7 +22,7 @@
 #if __TIMESIZE == 32
 static int (*sym)(int, const char *, struct stat64 *, int);
 
-__attribute__((visibility("hidden")))
+hidden
 int next___fstatat64_time64(int dfd, const char *path, struct stat64 *statbuf,
 			    int atflags)
 {

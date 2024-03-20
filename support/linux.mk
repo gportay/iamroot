@@ -551,7 +551,7 @@ $(ARCH)/ld-iamroot.so: output-$(ARCH)/libiamroot.so
 	install -D -m755 $< $@
 
 output-$(ARCH)/ld-iamroot.so: $(wildcard *.c) | output-$(ARCH)
-	$(MAKE) -f $(CURDIR)/Makefile -C $(O)-$* ld-iamroot.so VPATH=$(CURDIR)
+	$(MAKE) -f $(CURDIR)/Makefile -C output-$(ARCH) ld-iamroot.so VPATH=$(CURDIR)
 
 ifeq ($(ARCH),x86_64)
 ifeq ($(LIBC),musl)

@@ -17,8 +17,7 @@
 #ifdef __GLIBC__
 static int (*sym)(const char *, struct statvfs64 *);
 
-hidden
-int next_statvfs64(const char *path, struct statvfs64 *statvfsbuf)
+hidden int next_statvfs64(const char *path, struct statvfs64 *statvfsbuf)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "statvfs64");

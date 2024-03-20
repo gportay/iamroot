@@ -59,8 +59,7 @@ static size_t slash_len(const char *s)
  *
  * SPDX-License-Identifier: MIT
  */
-hidden
-char *__realpath(const char *filename, char *resolved)
+hidden char *__realpath(const char *filename, char *resolved)
 {
 	char stack[PATH_MAX+1];
 	char output[PATH_MAX];
@@ -374,8 +373,7 @@ char *__path_sanitize(char *path, size_t bufsiz)
 	return path;
 }
 
-hidden
-int __path_ignored(int dfd, const char *path)
+hidden int __path_ignored(int dfd, const char *path)
 {
 	if (dfd != AT_FDCWD) {
 		char buf[PATH_MAX];
@@ -559,8 +557,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsiz,
 	return strnlen(buf, bufsiz);
 }
 
-hidden
-char *__getpath(int dfd, const char *path, int atflags)
+hidden char *__getpath(int dfd, const char *path, int atflags)
 {
 	static char buf[PATH_MAX];
 	ssize_t siz;

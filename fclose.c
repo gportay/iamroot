@@ -14,8 +14,7 @@
 
 static int (*sym)(FILE *);
 
-hidden
-int next_fclose(FILE *stream)
+hidden int next_fclose(FILE *stream)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "fclose");

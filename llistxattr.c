@@ -20,8 +20,7 @@
 
 static ssize_t (*sym)(const char *, char *, size_t);
 
-hidden
-ssize_t next_llistxattr(const char *path, char *list, size_t size)
+hidden ssize_t next_llistxattr(const char *path, char *list, size_t size)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "llistxattr");

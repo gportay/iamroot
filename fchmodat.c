@@ -22,8 +22,7 @@
 
 static int (*sym)(int, const char *, mode_t, int);
 
-hidden
-int next_fchmodat(int dfd, const char *path, mode_t mode, int atflags)
+hidden int next_fchmodat(int dfd, const char *path, mode_t mode, int atflags)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "fchmodat");

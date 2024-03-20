@@ -18,8 +18,7 @@
 #ifdef __GLIBC__
 static int (*sym)(const char *, int);
 
-hidden
-int next___open_2(const char *path, int oflags)
+hidden int next___open_2(const char *path, int oflags)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "__open_2");

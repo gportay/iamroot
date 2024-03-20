@@ -16,8 +16,7 @@
 
 static int (*sym)(const char *);
 
-hidden
-int next_chdir(const char *path)
+hidden int next_chdir(const char *path)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "chdir");

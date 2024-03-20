@@ -19,9 +19,8 @@
 
 static int (*sym)(int, const char *, const void *, size_t, int);
 
-hidden
-int next_fsetxattr(int fd, const char *name, const void *value, size_t size,
-		   int flags)
+hidden int next_fsetxattr(int fd, const char *name, const void *value,
+			  size_t size, int flags)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "fsetxattr");

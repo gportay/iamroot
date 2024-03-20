@@ -27,9 +27,8 @@
 #if defined __GLIBC__ && __GLIBC_PREREQ(2,28)
 static int (*sym)(int, const char *, int, unsigned int, struct statx *);
 
-hidden
-int next_statx(int dfd, const char *path, int atflags, unsigned int mask,
-	       struct statx *statxbuf)
+hidden int next_statx(int dfd, const char *path, int atflags,
+		      unsigned int mask, struct statx *statxbuf)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "statx");

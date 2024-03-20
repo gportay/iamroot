@@ -17,8 +17,7 @@
 
 static char *(*sym)(char *);
 
-hidden
-char *next_mktemp(char *path)
+hidden char *next_mktemp(char *path)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "mktemp");

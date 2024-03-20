@@ -18,8 +18,7 @@
 
 static void *(*sym)(const char *, int);
 
-hidden
-void *next_dlopen(const char *path, int flags)
+hidden void *next_dlopen(const char *path, int flags)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "dlopen");

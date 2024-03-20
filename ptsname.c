@@ -14,8 +14,7 @@
 
 static char *(*sym)(int);
 
-hidden
-char *next_ptsname(int fd)
+hidden char *next_ptsname(int fd)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "ptsname");

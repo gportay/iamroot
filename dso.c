@@ -114,8 +114,7 @@ static char *__getld_library_path()
 	return curr;
 }
 
-hidden
-int __setld_preload(const char *preload, int overwrite)
+hidden int __setld_preload(const char *preload, int overwrite)
 {
 	char buf[PATH_MAX];
 	char *curr;
@@ -200,8 +199,7 @@ ldso:
 	re_ldso = NULL;
 }
 
-hidden
-int __is_ldso(const char *path)
+hidden int __is_ldso(const char *path)
 {
 	int ret = 0;
 
@@ -724,8 +722,7 @@ static int __ld_open_needed(const char *path, int flags, const char *needed_by)
 			   flags_1, __ld_open_needed_callback, &ctx);
 }
 
-hidden
-int __dlopen_needed(const char *path, int flags)
+hidden int __dlopen_needed(const char *path, int flags)
 {
 	return __ld_open_needed(path, flags, __execfn());
 }
@@ -2269,8 +2266,7 @@ exit:
 	return __set_errno(errno_save, ret);
 }
 
-hidden
-int __is_preloading_libiamroot()
+hidden int __is_preloading_libiamroot()
 {
 	char buf[PATH_MAX], hashbang[NAME_MAX], interp[NAME_MAX],
 	     ldso[NAME_MAX];
@@ -2927,9 +2923,8 @@ static ssize_t __inhibit_rpath(char *buf, size_t bufsiz, off_t offset)
 	return strnlen(buf+offset, bufsiz-offset);
 }
 
-hidden
-int __ldso(const char *path, char * const argv[], char *interparg[], char *buf,
-	   size_t bufsiz, off_t offset)
+hidden int __ldso(const char *path, char * const argv[], char *interparg[],
+		  char *buf, size_t bufsiz, off_t offset)
 {
 	int i, j, has_argv0 = 0, has_preload = 0, has_library_path = 0,
 	    has_inhibit_rpath = 0, has_inhibit_cache = 0, shift = 0;
@@ -3265,8 +3260,8 @@ close:
 	return ret;
 }
 
-hidden
-ssize_t __dl_access(const char *path, int mode, char *buf, size_t bufsiz)
+hidden ssize_t __dl_access(const char *path, int mode, char *buf,
+			   size_t bufsiz)
 {
 	char *exec_rpath, *exec_runpath, *ld_library_path;
 	char deflib[PATH_MAX];
@@ -3564,8 +3559,8 @@ static int __ldso_verify(const char *path)
 	return 0;
 }
 
-hidden
-int __ldso_execve(const char *path, char * const argv[], char * const envp[])
+hidden int __ldso_execve(const char *path, char * const argv[],
+			 char * const envp[])
 {
 	int ret;
 	(void)path;
@@ -3616,9 +3611,8 @@ exit:
 	return __set_errno(EAGAIN, -1);
 }
 
-hidden
-int __ldso_execveat(int dfd, const char *path, char * const argv[],
-		    char * const envp[])
+hidden int __ldso_execveat(int dfd, const char *path, char * const argv[],
+			   char * const envp[])
 {
 	(void)dfd;
 	(void)path;
@@ -3629,13 +3623,12 @@ int __ldso_execveat(int dfd, const char *path, char * const argv[],
 	return __set_errno(ENOSYS, -1);
 }
 
-hidden
-int __ldso_posix_spawn(pid_t *pid,
-		       const char *path,
-		       const posix_spawn_file_actions_t *file_actions,
-		       const posix_spawnattr_t *attrp,
-		       char * const argv[],
-		       char * const envp[])
+hidden int __ldso_posix_spawn(pid_t *pid,
+			      const char *path,
+			      const posix_spawn_file_actions_t *file_actions,
+			      const posix_spawnattr_t *attrp,
+			      char * const argv[],
+			      char * const envp[])
 {
 	(void)pid;
 	(void)path;

@@ -15,8 +15,7 @@
 
 static int (*sym)(const char *);
 
-hidden
-int next_remove(const char *path)
+hidden int next_remove(const char *path)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "remove");

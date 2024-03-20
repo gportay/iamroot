@@ -24,8 +24,7 @@
 
 static int (*sym)(int, uid_t, gid_t);
 
-hidden
-int next_fchown(int fd, uid_t owner, gid_t group)
+hidden int next_fchown(int fd, uid_t owner, gid_t group)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "fchown");

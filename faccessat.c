@@ -16,8 +16,7 @@
 
 static int (*sym)(int, const char *, int, int);
 
-hidden
-int next_faccessat(int dfd, const char *path, int mode, int atflags)
+hidden int next_faccessat(int dfd, const char *path, int mode, int atflags)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "faccessat");

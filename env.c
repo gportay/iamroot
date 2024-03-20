@@ -55,8 +55,7 @@ void __env_rm_add(char *old, char *new);
  *
  * SPDX-License-Identifier: MIT
  */
-hidden
-int clearenv()
+hidden int clearenv()
 {
 	char **e = __environ;
 	__environ = 0;
@@ -71,8 +70,7 @@ int clearenv()
  *
  * SPDX-License-Identifier: MIT
  */
-hidden
-char *getenv(const char *name)
+hidden char *getenv(const char *name)
 {
 	size_t l = __strchrnul(name, '=') - name;
 	if (l && !name[l] && __environ)
@@ -89,8 +87,7 @@ char *getenv(const char *name)
  *
  * SPDX-License-Identifier: MIT
  */
-hidden
-int __putenv(char *s, size_t l, char *r)
+hidden int __putenv(char *s, size_t l, char *r)
 {
 	size_t i=0;
 	if (__environ) {
@@ -123,8 +120,7 @@ oom:
 	return -1;
 }
 
-hidden
-int putenv(char *s)
+hidden int putenv(char *s)
 {
 	size_t l = __strchrnul(s, '=') - s;
 	if (!l || !s[l]) return unsetenv(s);
@@ -138,8 +134,7 @@ int putenv(char *s)
  *
  * SPDX-License-Identifier: MIT
  */
-hidden
-void __env_rm_add(char *old, char *new)
+hidden void __env_rm_add(char *old, char *new)
 {
 	static char **env_alloced;
 	static size_t env_alloced_n;
@@ -158,8 +153,7 @@ void __env_rm_add(char *old, char *new)
 	(env_alloced = t)[env_alloced_n++] = new;
 }
 
-hidden
-int setenv(const char *var, const char *value, int overwrite)
+hidden int setenv(const char *var, const char *value, int overwrite)
 {
 	char *s;
 	size_t l1, l2;

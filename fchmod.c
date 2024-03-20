@@ -22,8 +22,7 @@
 
 static int (*sym)(int, mode_t);
 
-hidden
-int next_fchmod(int fd, mode_t mode)
+hidden int next_fchmod(int fd, mode_t mode)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "fchmod");

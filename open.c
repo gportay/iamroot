@@ -24,8 +24,7 @@
 
 static int (*sym)(const char *, int, ...);
 
-hidden
-int next_open(const char *path, int oflags, mode_t mode)
+hidden int next_open(const char *path, int oflags, mode_t mode)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "open");

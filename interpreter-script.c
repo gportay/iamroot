@@ -15,9 +15,8 @@
 
 extern int next_open(const char *, int, mode_t);
 
-hidden
-ssize_t __interpreter_script_hashbang(const char *path, char *buf,
-				      size_t bufsiz, off_t offset)
+hidden ssize_t __interpreter_script_hashbang(const char *path, char *buf,
+					     size_t bufsiz, off_t offset)
 {
 	ssize_t ret;
 	char *d, *s;
@@ -115,9 +114,9 @@ close:
 	return ret;
 }
 
-hidden
-int __interpreter_script(const char *path, char * const argv[], char *buf,
-			 size_t bufsiz, off_t offset, char *interparg[])
+hidden int __interpreter_script(const char *path, char * const argv[],
+				char *buf, size_t bufsiz, off_t offset,
+				char *interparg[])
 {
 	ssize_t siz;
 	size_t len;

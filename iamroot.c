@@ -35,8 +35,7 @@ extern int next_scandir(const char *, struct dirent ***,
 			const struct dirent **));
 
 #ifdef __linux__
-hidden
-int __secure()
+hidden int __secure()
 {
 	return getauxval(AT_SECURE) != 0;
 }
@@ -60,8 +59,7 @@ int __secure()
 #define HIGHS (ONES * (UCHAR_MAX/2+1))
 #define HASZERO(x) ((x)-ONES & ~(x) & HIGHS)
 
-hidden
-char *__strchrnul(const char *s, int c)
+hidden char *__strchrnul(const char *s, int c)
 {
 	c = (unsigned char)c;
 	if (!c) return (char *)s + strlen(s);
@@ -80,8 +78,7 @@ char *__strchrnul(const char *s, int c)
 }
 #endif
 
-hidden
-int _snprintf(char *buf, size_t bufsiz, const char *fmt, ...)
+hidden int _snprintf(char *buf, size_t bufsiz, const char *fmt, ...)
 {
 	va_list ap;
 	int ret;
@@ -99,8 +96,7 @@ int _snprintf(char *buf, size_t bufsiz, const char *fmt, ...)
 	return __set_errno(ENOSPC, -1);
 }
 
-hidden
-int __fis_symlinkat(int dfd, const char *path, int atflags)
+hidden int __fis_symlinkat(int dfd, const char *path, int atflags)
 {
 	struct stat statbuf;
 	int ret;
@@ -113,8 +109,7 @@ int __fis_symlinkat(int dfd, const char *path, int atflags)
 }
 
 #ifndef __NetBSD__
-hidden
-int __fis_symlink(int fd)
+hidden int __fis_symlink(int fd)
 {
 	struct stat statbuf;
 	int ret;
@@ -127,8 +122,7 @@ int __fis_symlink(int fd)
 }
 #endif
 
-hidden
-int __is_symlink(const char *path)
+hidden int __is_symlink(const char *path)
 {
 	struct stat statbuf;
 	int ret;
@@ -140,8 +134,7 @@ int __is_symlink(const char *path)
 	return S_ISLNK(statbuf.st_mode);
 }
 
-hidden
-int __fis_directoryat(int dfd, const char *path, int atflags)
+hidden int __fis_directoryat(int dfd, const char *path, int atflags)
 {
 	struct stat statbuf;
 	int ret;
@@ -153,8 +146,7 @@ int __fis_directoryat(int dfd, const char *path, int atflags)
 	return S_ISDIR(statbuf.st_mode);
 }
 
-hidden
-int __is_directory(const char *path)
+hidden int __is_directory(const char *path)
 {
 	struct stat statbuf;
 	int ret;
@@ -167,8 +159,7 @@ int __is_directory(const char *path)
 }
 
 #ifndef __NetBSD__
-hidden
-int __fis_directory(int fd)
+hidden int __fis_directory(int fd)
 {
 	struct stat statbuf;
 	int ret;
@@ -181,8 +172,7 @@ int __fis_directory(int fd)
 }
 #endif
 
-hidden
-int __fis_fileat(int dfd, const char *path, int atflags)
+hidden int __fis_fileat(int dfd, const char *path, int atflags)
 {
 	struct stat statbuf;
 	int ret;
@@ -195,8 +185,7 @@ int __fis_fileat(int dfd, const char *path, int atflags)
 }
 
 #ifndef __NetBSD__
-hidden
-int __fis_file(int fd)
+hidden int __fis_file(int fd)
 {
 	struct stat statbuf;
 	int ret;
@@ -209,8 +198,7 @@ int __fis_file(int fd)
 }
 #endif
 
-hidden
-int __is_file(const char *path)
+hidden int __is_file(const char *path)
 {
 	struct stat statbuf;
 	int ret;
@@ -222,8 +210,7 @@ int __is_file(const char *path)
 	return S_ISREG(statbuf.st_mode);
 }
 
-hidden
-const char *__basename(const char *path)
+hidden const char *__basename(const char *path)
 {
 	char *s = strrchr(path, '/');
 	if (!s)
@@ -295,8 +282,7 @@ setenv:
 	return _setenv(name, value, overwrite);
 }
 
-hidden
-int __execve(const char *path, char * const argv[], char * const envp[])
+hidden int __execve(const char *path, char * const argv[], char * const envp[])
 {
 	const char *root;
 	ssize_t len;
@@ -313,8 +299,7 @@ exit:
 	return execve(path, argv, envp);
 }
 
-hidden
-int __is_suid(const char *path)
+hidden int __is_suid(const char *path)
 {
 	struct stat statbuf;
 	int ret = -1;
@@ -337,8 +322,7 @@ static char *__getexec()
 	return ret;
 }
 
-hidden
-int __exec_sh(const char *path, char * const *argv, char *interparg[],
+hidden int __exec_sh(const char *path, char * const *argv, char *interparg[],
 	      char *buf, size_t bufsiz)
 {
 	int i, err;
@@ -419,8 +403,7 @@ static ssize_t __fgetpath(int fd, char *buf, size_t bufsiz)
 #include <sys/sysctl.h>
 #include <sys/user.h>
 
-hidden
-struct kinfo_file *kinfo_getfile(pid_t pid, int *cntp)
+hidden struct kinfo_file *kinfo_getfile(pid_t pid, int *cntp)
 {
 	int mib[4];
 	int error;
@@ -509,8 +492,7 @@ static ssize_t __fgetpath(int fd, char *buf, size_t bufsiz)
 }
 #endif
 
-hidden
-int __strtofd(const char *nptr, char **endptr)
+hidden int __strtofd(const char *nptr, char **endptr)
 {
 	int errno_save;
 	long l;
@@ -533,8 +515,7 @@ int __strtofd(const char *nptr, char **endptr)
  *
  * SPDX-License-Identifier: MIT
  */
-hidden
-void __procfdname(char *buf, unsigned fd)
+hidden void __procfdname(char *buf, unsigned fd)
 {
 	unsigned i, j;
 	for (i=0; (buf[i] = "/proc/self/fd/"[i]); i++);
@@ -576,8 +557,7 @@ static ssize_t __fgetpath(int fd, char *buf, size_t bufsiz)
 }
 #endif
 
-hidden
-ssize_t fpath(int fd, char *buf, size_t bufsiz)
+hidden ssize_t fpath(int fd, char *buf, size_t bufsiz)
 {
 	ssize_t ret;
 
@@ -592,8 +572,7 @@ ssize_t fpath(int fd, char *buf, size_t bufsiz)
 	return ret;
 }
 
-hidden
-char *__fpath(int fd)
+hidden char *__fpath(int fd)
 {
 	const int errno_save = errno;
 	static char buf[PATH_MAX];
@@ -607,8 +586,7 @@ char *__fpath(int fd)
 	return buf;
 }
 
-hidden
-char *__fpath2(int fd)
+hidden char *__fpath2(int fd)
 {
 	const int errno_save = errno;
 	static char buf[PATH_MAX];
@@ -629,9 +607,8 @@ char *__fpath2(int fd)
  *
  * SPDX-License-Identifier: MIT
  */
-hidden
-ssize_t __path_access(const char *file, int mode, const char *path, char *buf,
-		      size_t bufsiz)
+hidden ssize_t __path_access(const char *file, int mode, const char *path,
+			     char *buf, size_t bufsiz)
 {
 	const char *p, *z;
 	size_t l, k;
@@ -708,24 +685,23 @@ static int __strtok(const char *str, const char *delim,
 	return 0;
 }
 
-hidden
-int __path_iterate(const char *path, int (*callback)(const char *, void *),
-		   void *user)
+hidden int __path_iterate(const char *path,
+			  int (*callback)(const char *, void *),
+			  void *user)
 {
 	return __strtok(path, ":", callback, user);
 }
 
-hidden
-int __group_iterate(const char *path, int (*callback)(const char *, void *),
-		    void *user)
+hidden int __group_iterate(const char *path,
+			   int (*callback)(const char *, void *),
+			   void *user)
 {
 	return __strtok(path, " ", callback, user);
 }
 
-hidden
-int __dir_iterate(const char *path,
-		  int (*callback)(const char *, const char *, void *),
-		  void *user)
+hidden int __dir_iterate(const char *path,
+			 int (*callback)(const char *, const char *, void *),
+			 void *user)
 {
 	struct dirent **namelist;
 	int n, ret = 0;
@@ -747,14 +723,12 @@ int __dir_iterate(const char *path,
 	return ret;
 }
 
-hidden
-char *__getroot()
+hidden char *__getroot()
 {
 	return _getenv("IAMROOT_ROOT");
 }
 
-hidden
-const char *__getexe()
+hidden const char *__getexe()
 {
 	const char *exec;
 	size_t len;
@@ -775,8 +749,7 @@ const char *__getexe()
 	return &exec[len];
 }
 
-hidden
-const char *__getfd(int fd)
+hidden const char *__getfd(int fd)
 {
 #if defined __OpenBSD__ || defined __NetBSD__
 	char buf[NAME_MAX];
@@ -801,8 +774,7 @@ const char *__getfd(int fd)
 #endif
 }
 
-hidden
-int __setfd(int fd, const char *path)
+hidden int __setfd(int fd, const char *path)
 {
 #if defined __OpenBSD__ || defined __NetBSD__
 	char buf[NAME_MAX];
@@ -826,8 +798,7 @@ int __setfd(int fd, const char *path)
 #endif
 }
 
-hidden
-int __execfd()
+hidden int __execfd()
 {
 #if defined __OpenBSD__ || defined __NetBSD__
 	char * const *p;
@@ -850,16 +821,14 @@ int __execfd()
 }
 
 #ifdef __linux__
-hidden
-const char *__execfn()
+hidden const char *__execfn()
 {
 	return (const char *)getauxval(AT_EXECFN);
 }
 #endif
 
 #ifdef __FreeBSD__
-hidden
-const char *__execfn()
+hidden const char *__execfn()
 {
 	static char buf[PATH_MAX];
 	int ret;
@@ -884,8 +853,7 @@ const char *__execfn()
 
 #define err(e, r) return __set_errno((e), (r))
 
-hidden
-static char **get_proc_args()
+hidden static char **get_proc_args()
 {
 	static char **s;
 	static size_t siz = 1023;
@@ -912,8 +880,7 @@ static char **get_proc_args()
 }
 #undef err
 
-hidden
-const char *__execfn()
+hidden const char *__execfn()
 {
 	static char buf[PATH_MAX];
 	char **argv;
@@ -939,8 +906,7 @@ const char *__execfn()
 #endif
 
 #ifdef __NetBSD__
-hidden
-const char *__execfn()
+hidden const char *__execfn()
 {
 	static char buf[PATH_MAX];
 	ssize_t siz;
@@ -957,8 +923,7 @@ const char *__execfn()
 }
 #endif
 
-hidden
-int __setrootdir(const char *path)
+hidden int __setrootdir(const char *path)
 {
 	if (!path) {
 		__info("Exiting chroot: '%s'\n", __getrootdir());
@@ -969,8 +934,7 @@ int __setrootdir(const char *path)
 	return _setenv("IAMROOT_ROOT", path, 1);
 }
 
-hidden
-const char *__getrootdir()
+hidden const char *__getrootdir()
 {
 	char *root;
 
@@ -981,8 +945,7 @@ const char *__getrootdir()
 	return root;
 }
 
-hidden
-int __chrootdir(const char *cwd)
+hidden int __chrootdir(const char *cwd)
 {
 	char buf[PATH_MAX];
 	const char *root;
@@ -1000,14 +963,12 @@ int __chrootdir(const char *cwd)
 	return 0;
 }
 
-hidden
-int __inchroot()
+hidden int __inchroot()
 {
 	return !streq(__getrootdir(), "/");
 }
 
-hidden
-char *__striprootdir(char *path)
+hidden char *__striprootdir(char *path)
 {
 	const char *root;
 	size_t len, size;
@@ -1032,14 +993,12 @@ char *__striprootdir(char *path)
 	return ret;
 }
 
-hidden
-int __getno_color()
+hidden int __getno_color()
 {
 	return strtol(_getenv("NO_COLOR") ?: "0", NULL, 0);
 }
 
-hidden
-int __getcolor()
+hidden int __getcolor()
 {
 	const int errno_save = errno;
 
@@ -1049,20 +1008,17 @@ int __getcolor()
 	return __getno_color() == 0;
 }
 
-hidden
-int __getfatal()
+hidden int __getfatal()
 {
 	return strtol(_getenv("IAMROOT_FATAL") ?: "0", NULL, 0);
 }
 
-hidden
-int __getdebug()
+hidden int __getdebug()
 {
 	return strtol(_getenv("IAMROOT_DEBUG") ?: "0", NULL, 0);
 }
 
-hidden
-int __getdebug_fd()
+hidden int __getdebug_fd()
 {
 	return strtol(_getenv("IAMROOT_DEBUG_FD") ?: "2", NULL, 0);
 }
@@ -1164,8 +1120,7 @@ static int __vdverbosef(int fd, int lvl, const char *func, const char *fmt,
 	return ret;
 }
 
-hidden
-int __verbosef(int lvl, const char *func, const char *fmt, ...)
+hidden int __verbosef(int lvl, const char *func, const char *fmt, ...)
 {
 	va_list ap;
 	int ret;
@@ -1177,8 +1132,7 @@ int __verbosef(int lvl, const char *func, const char *fmt, ...)
 }
 
 #if !defined(NVERBOSE)
-hidden
-void __verbose_exec(char * const argv[], char * const envp[])
+hidden void __verbose_exec(char * const argv[], char * const envp[])
 {
 	int color, fd, debug;
 	char * const *p;
@@ -1221,14 +1175,12 @@ void __verbose_exec(char * const argv[], char * const envp[])
 }
 #endif
 
-hidden
-void __abort()
+hidden void __abort()
 {
 	raise(SIGABRT);
 }
 
-hidden
-void __pathdlperror(const char *path, const char *s)
+hidden void __pathdlperror(const char *path, const char *s)
 {
 	const char *p = path && *path ? path : "(empty)";
 	(void)p;

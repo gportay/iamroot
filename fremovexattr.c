@@ -19,8 +19,7 @@
 
 static int (*sym)(int, const char *);
 
-hidden
-int next_fremovexattr(int fd, const char *name)
+hidden int next_fremovexattr(int fd, const char *name)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "fremovexattr");

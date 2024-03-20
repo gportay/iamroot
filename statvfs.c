@@ -16,8 +16,7 @@
 
 static int (*sym)(const char *, struct statvfs *);
 
-hidden
-int next_statvfs(const char *path, struct statvfs *statvfsbuf)
+hidden int next_statvfs(const char *path, struct statvfs *statvfsbuf)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "statvfs");

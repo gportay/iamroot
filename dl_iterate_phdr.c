@@ -17,9 +17,9 @@
 
 static int (*sym)(int (*)(struct dl_phdr_info *, size_t, void *), void *);
 
-hidden
-int next_dl_iterate_phdr(int (*callback)(struct dl_phdr_info *, size_t, void *),
-			 void *data)
+hidden int next_dl_iterate_phdr(
+			int (*callback)(struct dl_phdr_info *, size_t, void *),
+			void *data)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "dl_iterate_phdr");

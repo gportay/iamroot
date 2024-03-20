@@ -16,8 +16,7 @@
 
 static int (*sym)(pid_t, int);
 
-hidden
-int next_kill(pid_t pid, int sig)
+hidden int next_kill(pid_t pid, int sig)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "kill");

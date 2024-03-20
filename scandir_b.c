@@ -19,10 +19,10 @@ static int (*sym)(const char *, struct dirent ***,
 		  int (*)(const struct dirent *),
 		  int (*)(const struct dirent **, const struct dirent **));
 
-hidden
-int next_scandir_b(const char *path, struct dirent ***namelist,
-		   int (*select)(const struct dirent *),
-		   int (*compar)(const struct dirent **, const struct dirent **))
+hidden int next_scandir_b(const char *path, struct dirent ***namelist,
+			  int (*select)(const struct dirent *),
+			  int (*compar)(const struct dirent **,
+				  	const struct dirent **))
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "scandir_b");

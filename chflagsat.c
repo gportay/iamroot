@@ -22,11 +22,12 @@ static int (*sym)(int, const char *, unsigned int, int);
 static int (*sym)(int, const char *, unsigned long, int);
 #endif
 
-hidden
 #ifdef __OpenBSD__
-int next_chflagsat(int dfd, const char *path, unsigned int flags, int atflag)
+hidden int next_chflagsat(int dfd, const char *path, unsigned int flags,
+			  int atflag)
 #else
-int next_chflagsat(int dfd, const char *path, unsigned long flags, int atflag)
+hidden int next_chflagsat(int dfd, const char *path, unsigned long flags,
+			  int atflag)
 #endif
 {
 	if (!sym)

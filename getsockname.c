@@ -18,8 +18,8 @@
 
 static int (*sym)(int, struct sockaddr *, socklen_t *);
 
-hidden
-int next_getsockname(int socket, struct sockaddr *addr, socklen_t *addrlen)
+hidden int next_getsockname(int socket, struct sockaddr *addr,
+			    socklen_t *addrlen)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "getsockname");

@@ -16,8 +16,7 @@
 
 static int (*sym)(int, const char *, int);
 
-hidden
-int next_unlinkat(int dfd, const char *path, int atflags)
+hidden int next_unlinkat(int dfd, const char *path, int atflags)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "unlinkat");

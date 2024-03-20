@@ -13,14 +13,12 @@
 
 #include "iamroot.h"
 
-hidden
-mode_t __getumask()
+hidden mode_t __getumask()
 {
 	return strtol(_getenv("IAMROOT_UMASK") ?: "022", NULL, 8);
 }
 
-hidden
-int __setumask(mode_t mask)
+hidden int __setumask(mode_t mask)
 {
 	char buf[4];
 	int n;
@@ -34,8 +32,7 @@ int __setumask(mode_t mask)
 
 static mode_t (*sym)(mode_t);
 
-hidden
-mode_t next_umask(mode_t mask)
+hidden mode_t next_umask(mode_t mask)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "umask");

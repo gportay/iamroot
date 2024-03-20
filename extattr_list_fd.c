@@ -23,9 +23,8 @@
 
 static ssize_t (*sym)(int, int, void *, size_t);
 
-hidden
-ssize_t next_extattr_list_fd(int fd, int attrnamespace, void *data,
-			     size_t nbytes)
+hidden ssize_t next_extattr_list_fd(int fd, int attrnamespace, void *data,
+				    size_t nbytes)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "extattr_list_fd");

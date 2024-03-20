@@ -23,8 +23,7 @@
 
 static int (*sym)(int, const char *, int, ...);
 
-hidden
-int next_openat(int dfd, const char *path, int oflags, mode_t mode)
+hidden int next_openat(int dfd, const char *path, int oflags, mode_t mode)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "openat");

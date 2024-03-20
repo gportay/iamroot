@@ -17,8 +17,7 @@
 
 static int (*sym)(unsigned int, unsigned int, int);
 
-hidden
-int next_close_range(unsigned int first, unsigned int last, int flags)
+hidden int next_close_range(unsigned int first, unsigned int last, int flags)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "close_range");

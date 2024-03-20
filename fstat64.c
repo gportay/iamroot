@@ -21,8 +21,7 @@ extern int next___fxstat64(int, int, struct stat64 *);
 
 static int (*sym)(int, struct stat64 *);
 
-hidden
-int next_fstat64(int fd, struct stat64 *statbuf)
+hidden int next_fstat64(int fd, struct stat64 *statbuf)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "fstat64");

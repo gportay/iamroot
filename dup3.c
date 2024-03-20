@@ -15,8 +15,7 @@
 
 static int (*sym)(int, int, int);
 
-hidden
-int next_dup3(int oldfd, int newfd, int oflags)
+hidden int next_dup3(int oldfd, int newfd, int oflags)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "dup3");

@@ -16,8 +16,7 @@
 
 static int (*sym)(const char *, int);
 
-hidden
-key_t next_ftok(const char *path, int proj_id)
+hidden key_t next_ftok(const char *path, int proj_id)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "ftok");

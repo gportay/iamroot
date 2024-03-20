@@ -19,8 +19,7 @@
 
 static int (*sym)(const char *, fhandle_t *);
 
-hidden
-int next_lgetfh(const char *path, fhandle_t *fhp)
+hidden int next_lgetfh(const char *path, fhandle_t *fhp)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "lgetfh");

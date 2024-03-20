@@ -18,8 +18,7 @@
 #ifdef __GLIBC__
 static void *(*sym)(Lmid_t, const char *, int);
 
-hidden
-void *next_dlmopen(Lmid_t lmid, const char *path, int flags)
+hidden void *next_dlmopen(Lmid_t lmid, const char *path, int flags)
 
 {
 	if (!sym)

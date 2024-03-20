@@ -17,8 +17,7 @@
 
 static void (*sym)(const char *, const struct utmpx *);
 
-hidden
-void next_updwtmpx(const char *path, const struct utmpx *ut)
+hidden void next_updwtmpx(const char *path, const struct utmpx *ut)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "updwtmpx");

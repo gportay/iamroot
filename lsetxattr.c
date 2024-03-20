@@ -20,9 +20,8 @@
 
 static int (*sym)(const char *, const char *, const void *, size_t, int);
 
-hidden
-int next_lsetxattr(const char *path, const char *name, const void *value,
-		   size_t size, int flags)
+hidden int next_lsetxattr(const char *path, const char *name,
+			  const void *value, size_t size, int flags)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "lsetxattr");

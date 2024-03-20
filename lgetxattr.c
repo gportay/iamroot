@@ -20,9 +20,8 @@
 
 static ssize_t (*sym)(const char *, const char *, void *, size_t);
 
-hidden
-ssize_t next_lgetxattr(const char *path, const char *name, void *value,
-		       size_t size)
+hidden ssize_t next_lgetxattr(const char *path, const char *name, void *value,
+			      size_t size)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "lgetxattr");

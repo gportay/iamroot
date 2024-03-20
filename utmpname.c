@@ -17,8 +17,7 @@
 
 static int (*sym)(const char *);
 
-hidden
-int next_utmpname(const char *path)
+hidden int next_utmpname(const char *path)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "utmpname");

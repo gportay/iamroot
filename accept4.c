@@ -18,9 +18,8 @@
 
 static int (*sym)(int, struct sockaddr *, socklen_t *, int);
 
-hidden
-int next_accept4(int socket, struct sockaddr *addr, socklen_t *addrlen,
-		 int oflags)
+hidden int next_accept4(int socket, struct sockaddr *addr, socklen_t *addrlen,
+			int oflags)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "accept4");

@@ -18,8 +18,7 @@
 
 static int (*sym)(int, char *, int, int);
 
-hidden
-int next_mkostempsat(int dfd, char *path, int suffixlen, int oflags)
+hidden int next_mkostempsat(int dfd, char *path, int suffixlen, int oflags)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "mkostempsat");

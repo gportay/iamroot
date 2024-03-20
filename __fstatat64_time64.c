@@ -22,9 +22,8 @@
 #if __TIMESIZE == 32
 static int (*sym)(int, const char *, struct stat64 *, int);
 
-hidden
-int next___fstatat64_time64(int dfd, const char *path, struct stat64 *statbuf,
-			    int atflags)
+hidden int next___fstatat64_time64(int dfd, const char *path,
+				   struct stat64 *statbuf, int atflags)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "__fstatat64_time64");

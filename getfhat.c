@@ -19,8 +19,7 @@
 
 static int (*sym)(int, char *, fhandle_t *, int);
 
-hidden
-int next_getfhat(int dfd, char *path, fhandle_t *fhp, int atflags)
+hidden int next_getfhat(int dfd, char *path, fhandle_t *fhp, int atflags)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "getfhat");

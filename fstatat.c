@@ -27,8 +27,8 @@ extern int next___fxstatat(int, int, const char *, struct stat *, int);
 
 static int (*sym)(int, const char *, struct stat *, int);
 
-hidden
-int next_fstatat(int dfd, const char *path, struct stat *statbuf, int atflags)
+hidden int next_fstatat(int dfd, const char *path, struct stat *statbuf,
+			int atflags)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "fstatat");

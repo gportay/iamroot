@@ -14,8 +14,7 @@
 
 static char *(*sym)(char *);
 
-hidden
-char *next_getwd(char *buf)
+hidden char *next_getwd(char *buf)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "getwd");

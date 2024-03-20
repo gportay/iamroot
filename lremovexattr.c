@@ -20,8 +20,7 @@
 
 static int (*sym)(const char *, const char *);
 
-hidden
-int next_lremovexattr(const char *path, const char *name)
+hidden int next_lremovexattr(const char *path, const char *name)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "lremovexattr");

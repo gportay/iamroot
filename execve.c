@@ -93,16 +93,15 @@ static int ignore(const char *path)
 	return !ret;
 }
 
-hidden
-int __exec_ignored(const char *path)
+hidden int __exec_ignored(const char *path)
 {
 	return ignore(path);
 }
 
 static int (*sym)(const char *, char * const[], char * const[]);
 
-hidden
-int next_execve(const char *path, char * const argv[], char * const envp[])
+hidden int next_execve(const char *path, char * const argv[],
+		       char * const envp[])
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "execve");

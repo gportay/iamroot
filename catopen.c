@@ -19,8 +19,7 @@
 
 static nl_catd (*sym)(const char *, int);
 
-hidden
-nl_catd next_catopen(const char *path, int flag)
+hidden nl_catd next_catopen(const char *path, int flag)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "catopen");

@@ -23,9 +23,9 @@
 
 static ssize_t (*sym)(int, int, const char *, void *, size_t);
 
-hidden
-ssize_t next_extattr_get_fd(int fd, int attrnamespace, const char *attrname,
-			    void *data, size_t nbytes)
+hidden ssize_t next_extattr_get_fd(int fd, int attrnamespace,
+				   const char *attrname, void *data,
+				   size_t nbytes)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "extattr_get_fd");

@@ -17,8 +17,7 @@
 
 static char *(*sym)(const char *, const char *);
 
-hidden
-char *next_tempnam(const char *path, const char *pfx)
+hidden char *next_tempnam(const char *path, const char *pfx)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "tempnam");

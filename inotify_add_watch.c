@@ -17,8 +17,7 @@
 
 static int (*sym)(int, const char *, uint32_t);
 
-hidden
-int next_inotify_add_watch(int fd, const char *path, uint32_t mask)
+hidden int next_inotify_add_watch(int fd, const char *path, uint32_t mask)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "inotify_add_watch");

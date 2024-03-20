@@ -28,11 +28,12 @@ extern int __ldso_posix_spawn(pid_t *,
 int (*sym)(pid_t *, const char *, const posix_spawn_file_actions_t *,
 		   const posix_spawnattr_t *, char * const [], char * const []);
 
-hidden
-int next_posix_spawn(pid_t *pid, const char *path,
-		     const posix_spawn_file_actions_t *file_actions,
-		     const posix_spawnattr_t *attrp,
-		     char * const argv[], char * const envp[])
+hidden int next_posix_spawn(pid_t *pid,
+			    const char *path,
+			    const posix_spawn_file_actions_t *file_actions,
+			    const posix_spawnattr_t *attrp,
+			    char * const argv[],
+			    char * const envp[])
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "posix_spawn");

@@ -14,8 +14,7 @@
 
 static char *(*sym)(int);
 
-hidden
-char *next_ttyname(int fd)
+hidden char *next_ttyname(int fd)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "ttyname");

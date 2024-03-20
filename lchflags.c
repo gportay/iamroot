@@ -18,8 +18,7 @@
 
 static int (*sym)(const char *, unsigned long);
 
-hidden
-int next_lchflags(const char *path, unsigned long flags)
+hidden int next_lchflags(const char *path, unsigned long flags)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "lchflags");

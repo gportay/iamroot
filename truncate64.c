@@ -18,8 +18,7 @@
 #ifdef __GLIBC__
 static int (*sym)(const char *, off_t);
 
-hidden
-int next_truncate64(const char *path, off64_t length)
+hidden int next_truncate64(const char *path, off64_t length)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "truncate64");

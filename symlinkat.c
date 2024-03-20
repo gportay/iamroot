@@ -16,8 +16,7 @@
 
 static int (*sym)(const char *, int, const char *);
 
-hidden
-int next_symlinkat(const char *string, int dfd, const char *path)
+hidden int next_symlinkat(const char *string, int dfd, const char *path)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "symlinkat");

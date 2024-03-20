@@ -17,8 +17,7 @@
 
 static FILE *(*sym)(const char *, const char *, FILE *);
 
-hidden
-FILE *next_freopen(const char *path, const char *mode, FILE *stream)
+hidden FILE *next_freopen(const char *path, const char *mode, FILE *stream)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "freopen");

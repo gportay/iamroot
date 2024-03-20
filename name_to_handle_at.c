@@ -18,10 +18,9 @@
 
 static int (*sym)(int, const char *, struct file_handle *, int *, int);
 
-hidden
-int next_name_to_handle_at(int dfd, const char *path,
-			   struct file_handle *handle, int *mount_id,
-			   int atflags)
+hidden int next_name_to_handle_at(int dfd, const char *path,
+				  struct file_handle *handle, int *mount_id,
+				  int atflags)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "name_to_handle_at");

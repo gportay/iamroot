@@ -20,8 +20,7 @@
 
 static int (*sym)(const char *, const struct timeval[2]);
 
-hidden
-int next_utimes(const char *path, const struct timeval times[2])
+hidden int next_utimes(const char *path, const struct timeval times[2])
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "utimes");

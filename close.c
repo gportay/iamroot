@@ -15,8 +15,7 @@
 
 static int (*sym)(int);
 
-hidden
-int next_close(int fd)
+hidden int next_close(int fd)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "close");

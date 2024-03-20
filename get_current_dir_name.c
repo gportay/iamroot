@@ -15,8 +15,7 @@
 
 static char *(*sym)();
 
-hidden
-char *next_get_current_dir_name()
+hidden char *next_get_current_dir_name()
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "get_current_dir_name");

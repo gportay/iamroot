@@ -18,8 +18,7 @@
 
 static DIR *(*sym)(const char *, int);
 
-hidden
-DIR *next___opendir2(const char *path, int oflags)
+hidden DIR *next___opendir2(const char *path, int oflags)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "__opendir2");

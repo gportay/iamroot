@@ -16,8 +16,7 @@
 
 static char *(*sym)(const char *);
 
-hidden
-char *next_canonicalize_file_name(const char *path)
+hidden char *next_canonicalize_file_name(const char *path)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "canonicalize_file_name");

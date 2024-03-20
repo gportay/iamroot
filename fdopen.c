@@ -14,8 +14,7 @@
 
 static FILE *(*sym)(int, const char *);
 
-hidden
-FILE *next_fdopen(int fd, const char *mode)
+hidden FILE *next_fdopen(int fd, const char *mode)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "fdopen");

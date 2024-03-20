@@ -17,9 +17,8 @@
 
 static int (*sym)(int, const char *, const struct timespec[2], int);
 
-hidden
-int next_utimensat(int dfd, const char *path, const struct timespec times[2],
-		   int atflags)
+hidden int next_utimensat(int dfd, const char *path,
+			  const struct timespec times[2], int atflags)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "utimensat");

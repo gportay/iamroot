@@ -16,8 +16,7 @@
 
 static int (*sym)(const char *, off_t);
 
-hidden
-int next_truncate(const char *path, off_t length)
+hidden int next_truncate(const char *path, off_t length)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "truncate");

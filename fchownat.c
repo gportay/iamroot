@@ -22,9 +22,8 @@
 
 static int (*sym)(int, const char *, uid_t, gid_t, int);
 
-hidden
-int next_fchownat(int dfd, const char *path, uid_t owner, gid_t group,
-		  int atflags)
+hidden int next_fchownat(int dfd, const char *path, uid_t owner, gid_t group,
+			 int atflags)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "fchownat");

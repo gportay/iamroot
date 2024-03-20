@@ -24,9 +24,8 @@
 
 static int (*sym)(int, int, const char *, struct stat *, int);
 
-hidden
-int next___fxstatat(int ver, int dfd, const char *path, struct stat *statbuf,
-		    int atflags)
+hidden int next___fxstatat(int ver, int dfd, const char *path,
+			   struct stat *statbuf, int atflags)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "__fxstatat");

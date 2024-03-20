@@ -16,8 +16,8 @@
 
 static ssize_t (*sym)(int, const char *, char *, size_t);
 
-hidden
-ssize_t next_readlinkat(int dfd, const char *path, char *buf, size_t bufsiz)
+hidden ssize_t next_readlinkat(int dfd, const char *path, char *buf,
+			       size_t bufsiz)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "readlinkat");

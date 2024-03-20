@@ -28,15 +28,13 @@ static ssize_t (*sym)(const char *, int, const char *, const void *, size_t);
 #endif
 
 #ifdef __NetBSD__
-hidden
-int next_extattr_set_link(const char *path, int attrnamespace,
-			  const char *attrname, const void *data,
-			  size_t nbytes)
+hidden int next_extattr_set_link(const char *path, int attrnamespace,
+				 const char *attrname, const void *data,
+				 size_t nbytes)
 #else
-hidden
-ssize_t next_extattr_set_link(const char *path, int attrnamespace,
-			      const char *attrname, const void *data,
-			      size_t nbytes)
+hidden ssize_t next_extattr_set_link(const char *path, int attrnamespace,
+				     const char *attrname, const void *data,
+				     size_t nbytes)
 #endif
 {
 	if (!sym)

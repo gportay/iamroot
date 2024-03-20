@@ -24,8 +24,7 @@
 #ifdef __GLIBC__
 static int (*sym)(const char *, struct statfs64 *);
 
-hidden
-int next_statfs64(const char *path, struct statfs64 *statfsbuf)
+hidden int next_statfs64(const char *path, struct statfs64 *statfsbuf)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "statfs64");

@@ -15,9 +15,8 @@
 
 static int (*sym)(int, const char *, int, const char *);
 
-hidden
-int next_renameat(int olddfd, const char *oldpath, int newdfd,
-		  const char *newpath)
+hidden int next_renameat(int olddfd, const char *oldpath, int newdfd,
+			 const char *newpath)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "renameat");

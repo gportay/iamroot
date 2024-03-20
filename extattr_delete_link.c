@@ -23,9 +23,8 @@
 
 static int (*sym)(const char *, int, const char *);
 
-hidden
-int next_extattr_delete_link(const char *path, int attrnamespace,
-			     const char *attrname)
+hidden int next_extattr_delete_link(const char *path, int attrnamespace,
+				    const char *attrname)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "extattr_delete_link");

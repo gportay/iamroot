@@ -20,9 +20,8 @@
 #ifdef _LARGEFILE64_SOURCE
 static int (*sym)(int, int, const char *, struct stat64 *, int);
 
-hidden
-int next___fxstatat64(int ver, int dfd, const char *path,
-		      struct stat64 *statbuf, int atflags)
+hidden int next___fxstatat64(int ver, int dfd, const char *path,
+			     struct stat64 *statbuf, int atflags)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "__fxstatat64");

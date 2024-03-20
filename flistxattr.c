@@ -20,8 +20,7 @@
 
 static ssize_t (*sym)(int, char *, size_t);
 
-hidden
-ssize_t next_flistxattr(int fd, char *list, size_t size)
+hidden ssize_t next_flistxattr(int fd, char *list, size_t size)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "flistxattr");

@@ -27,15 +27,14 @@ static int (*sym)(const char *, int, const char *, const void *, size_t);
 static ssize_t (*sym)(const char *, int, const char *, const void *, size_t);
 #endif
 
-hidden
 #ifdef __NetBSD__
-int next_extattr_set_file(const char *path, int attrnamespace,
-			  const char *attrname, const void *data,
-			  size_t nbytes)
+hidden int next_extattr_set_file(const char *path, int attrnamespace,
+				 const char *attrname, const void *data,
+				 size_t nbytes)
 #else
-ssize_t next_extattr_set_file(const char *path, int attrnamespace,
-			      const char *attrname, const void *data,
-			      size_t nbytes)
+hidden ssize_t next_extattr_set_file(const char *path, int attrnamespace,
+				     const char *attrname, const void *data,
+				     size_t nbytes)
 #endif
 {
 	if (!sym)

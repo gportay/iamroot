@@ -24,13 +24,12 @@ static int (*sym)(int, unsigned int, uint64_t, int, const char *);
 static int (*sym)(int, unsigned int, unsigned long long, int, const char *);
 #endif
 
-hidden
 #ifdef __GLIBC__
-int next_fanotify_mark(int fanotify_fd, unsigned int flags, uint64_t mask,
-		       int dfd, const char *path)
+hidden int next_fanotify_mark(int fanotify_fd, unsigned int flags,
+			      uint64_t mask, int dfd, const char *path)
 #else
-int next_fanotify_mark(int fanotify_fd, unsigned int flags, unsigned long mask,
-		       int dfd, const char *path)
+hidden int next_fanotify_mark(int fanotify_fd, unsigned int flags,
+			      unsigned long mask, int dfd, const char *path)
 #endif
 {
 	if (!sym)

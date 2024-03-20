@@ -14,8 +14,7 @@
 
 static char *(*sym)(char *);
 
-hidden
-char *next_ctermid(char *s)
+hidden char *next_ctermid(char *s)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "ctermid");

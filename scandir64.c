@@ -20,11 +20,10 @@ static int (*sym)(const char *, struct dirent64 ***,
 		  int (*)(const struct dirent64 **,
 			  const struct dirent64 **));
 
-hidden
-int next_scandir64(const char *path, struct dirent64 ***namelist,
-		   int (*filter)(const struct dirent64 *),
-		   int (*compar)(const struct dirent64 **,
-				 const struct dirent64 **))
+hidden int next_scandir64(const char *path, struct dirent64 ***namelist,
+			  int (*filter)(const struct dirent64 *),
+			  int (*compar)(const struct dirent64 **,
+				  	const struct dirent64 **))
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "scandir64");

@@ -18,8 +18,7 @@
 #if defined(__OpenBSD__) || defined(__NetBSD__)
 static int (*sym)(int);
 
-hidden
-int next_closefrom(int fd)
+hidden int next_closefrom(int fd)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "closefrom");
@@ -32,8 +31,7 @@ int next_closefrom(int fd)
 #else
 static void (*sym)(int);
 
-hidden
-void next_closefrom(int fd)
+hidden void next_closefrom(int fd)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "closefrom");

@@ -24,8 +24,7 @@
 
 static int (*sym)(const char *, struct statfs *);
 
-hidden
-int next_statfs(const char *path, struct statfs *statfsbuf)
+hidden int next_statfs(const char *path, struct statfs *statfsbuf)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "statfs");

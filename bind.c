@@ -18,8 +18,8 @@
 
 static int (*sym)(int, const struct sockaddr *, socklen_t);
 
-hidden
-int next_bind(int socket, const struct sockaddr *addr, socklen_t addrlen)
+hidden int next_bind(int socket, const struct sockaddr *addr,
+		     socklen_t addrlen)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "bind");

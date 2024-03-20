@@ -19,8 +19,8 @@
 
 static ssize_t (*sym)(int, const char *, void *, size_t);
 
-hidden
-ssize_t next_fgetxattr(int fd, const char *name, void *value, size_t size)
+hidden ssize_t next_fgetxattr(int fd, const char *name, void *value,
+			      size_t size)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "fgetxattr");

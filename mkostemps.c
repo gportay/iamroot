@@ -17,8 +17,7 @@
 
 static int (*sym)(char *, int, int);
 
-hidden
-int next_mkostemps(char *path, int suffixlen, int oflags)
+hidden int next_mkostemps(char *path, int suffixlen, int oflags)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "mkostemps");

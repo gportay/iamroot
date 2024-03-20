@@ -547,11 +547,11 @@ export CFLAGS
 ld-iamroot.so: $(ARCH)/ld-iamroot.so
 	install -D -m755 $< $@
 
-$(ARCH)/ld-iamroot.so: output-$(ARCH)/libiamroot.so
+$(ARCH)/ld-iamroot.so: $(O)-$(ARCH)/libiamroot.so
 	install -D -m755 $< $@
 
-output-$(ARCH)/ld-iamroot.so: $(wildcard *.c) | output-$(ARCH)
-	$(MAKE) -f $(CURDIR)/Makefile -C output-$(ARCH) ld-iamroot.so VPATH=$(CURDIR)
+$(O)-$(ARCH)/ld-iamroot.so: $(wildcard *.c) | $(O)-$(ARCH)
+	$(MAKE) -f $(CURDIR)/Makefile -C $(O)-$(ARCH) ld-iamroot.so VPATH=$(CURDIR)
 
 ifeq ($(ARCH),x86_64)
 ifeq ($(LIBC),musl)

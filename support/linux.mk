@@ -774,6 +774,7 @@ cleanall: clean
 .PHONY: clean
 clean:
 	$(MAKE) -f Makefile $@
+	rm -Rf $(O)-$(ARCH)/
 
 ifeq ($(ARCH),x86_64)
 ifneq ($(shell command -v pacstrap 2>/dev/null),)

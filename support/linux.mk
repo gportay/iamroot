@@ -90,18 +90,18 @@ vars:
 
 define libs
 $(strip libiamroot.so \
-	$(if $(findstring :$(2):,:arm: :armel:                    ),$(if $(findstring :$(1):,:musl:),arm/libiamroot-musl-arm.so.1                ,arm/libiamroot-linux.so.3                  ), \
-	$(if $(findstring :$(2):,:armhf: :armv7hl: :armv7h:       ),$(if $(findstring :$(1):,:musl:),armhf/libiamroot-musl-armhf.so.1            ,armhf/libiamroot-linux-armhf.so.3          ), \
-	$(if $(findstring :$(2):,:aarch64: :arm64:                ),$(if $(findstring :$(1):,:musl:),aarch64/libiamroot-musl-aarch64.so.1        ,aarch64/libiamroot-linux-aarch64.so.1      ), \
-	$(if $(findstring :$(2):,:aarch64_be:                     ),$(if $(findstring :$(1):,:musl:),aarch64_be/libiamroot-musl-aarch64_be.so.1  ,aarch64_be/libiamroot-linux-aarch64_be.so.1), \
-	$(if $(findstring :$(2):,:mipsle: :mipsel:                ),$(if $(findstring :$(1):,:musl:),mipsle/libiamroot-musl-mipsel.so.1          ,mipsle/libiamroot.so.1                     ), \
-	$(if $(findstring :$(2):,:mips64le: :mips64el:            ),$(if $(findstring :$(1):,:musl:),mips64le/libiamroot-musl-mips64el.so.1      ,mips64le/libiamroot.so.1                   ), \
-	$(if $(findstring :$(2):,:powerpc64:                      ),$(if $(findstring :$(1):,:musl:),powerpc64/libiamroot-musl-powerpc64.so.1    ,powerpc64/libiamroot.so.2                  ), \
-	$(if $(findstring :$(2):,:powerpc64le: :ppc64le: :ppc64el:),$(if $(findstring :$(1):,:musl:),powerpc64le/libiamroot-musl-powerpc64le.so.1,powerpc64le/libiamroot.so.2                ), \
-	$(if $(findstring :$(2):,:riscv64:                        ),$(if $(findstring :$(1):,:musl:),riscv64/libiamroot-musl-riscv64.so.1        ,riscv64/libiamroot-linux-riscv64-lp64d.so.1), \
-	$(if $(findstring :$(2):,:s390x:                          ),$(if $(findstring :$(1):,:musl:),s390x/libiamroot-musl-s390x.so.1            ,s390x/libiamroot.so.1                      ), \
-	$(if $(findstring :$(2):,:x86_64: :amd64:                 ),$(if $(findstring :$(1):,:musl:),x86_64/libiamroot-musl-x86_64.so.1          ,x86_64/libiamroot-linux-x86-64.so.2        ), \
-	$(if $(findstring :$(2):,:x86: :i386: :i686:              ),$(if $(findstring :$(1):,:musl:),i686/libiamroot-musl-i386.so.1              ,i686/libiamroot-linux.so.2                 ), \
+	$(if $(findstring :$(2):,:arm: :armel:                     ),$(if $(findstring :$(1):,:musl:),arm/libiamroot-musl-arm.so.1                ,arm/libiamroot-linux.so.3                  ), \
+	$(if $(findstring :$(2):,:armhf: :armv7: :armv7hl: :armv7h:),$(if $(findstring :$(1):,:musl:),armhf/libiamroot-musl-armhf.so.1            ,armhf/libiamroot-linux-armhf.so.3          ), \
+	$(if $(findstring :$(2):,:aarch64: :arm64:                 ),$(if $(findstring :$(1):,:musl:),aarch64/libiamroot-musl-aarch64.so.1        ,aarch64/libiamroot-linux-aarch64.so.1      ), \
+	$(if $(findstring :$(2):,:aarch64_be:                      ),$(if $(findstring :$(1):,:musl:),aarch64_be/libiamroot-musl-aarch64_be.so.1  ,aarch64_be/libiamroot-linux-aarch64_be.so.1), \
+	$(if $(findstring :$(2):,:mipsle: :mipsel:                 ),$(if $(findstring :$(1):,:musl:),mipsle/libiamroot-musl-mipsel.so.1          ,mipsle/libiamroot.so.1                     ), \
+	$(if $(findstring :$(2):,:mips64le: :mips64el:             ),$(if $(findstring :$(1):,:musl:),mips64le/libiamroot-musl-mips64el.so.1      ,mips64le/libiamroot.so.1                   ), \
+	$(if $(findstring :$(2):,:powerpc64:                       ),$(if $(findstring :$(1):,:musl:),powerpc64/libiamroot-musl-powerpc64.so.1    ,powerpc64/libiamroot.so.2                  ), \
+	$(if $(findstring :$(2):,:powerpc64le: :ppc64le: :ppc64el: ),$(if $(findstring :$(1):,:musl:),powerpc64le/libiamroot-musl-powerpc64le.so.1,powerpc64le/libiamroot.so.2                ), \
+	$(if $(findstring :$(2):,:riscv64:                         ),$(if $(findstring :$(1):,:musl:),riscv64/libiamroot-musl-riscv64.so.1        ,riscv64/libiamroot-linux-riscv64-lp64d.so.1), \
+	$(if $(findstring :$(2):,:s390x:                           ),$(if $(findstring :$(1):,:musl:),s390x/libiamroot-musl-s390x.so.1            ,s390x/libiamroot.so.1                      ), \
+	$(if $(findstring :$(2):,:x86_64: :amd64:                  ),$(if $(findstring :$(1):,:musl:),x86_64/libiamroot-musl-x86_64.so.1          ,x86_64/libiamroot-linux-x86-64.so.2        ), \
+	$(if $(findstring :$(2):,:x86: :i386: :i686:               ),$(if $(findstring :$(1):,:musl:),i686/libiamroot-musl-i386.so.1              ,i686/libiamroot-linux.so.2                 ), \
 	$(error $(1)-$(2): No such library))))))))))))) \
 )
 endef
@@ -1577,6 +1577,23 @@ $(eval $(call alpine-make-rootfs-rootfs,armhf,alpinelinux,3.17))
 $(eval $(call alpine-make-rootfs-rootfs,armhf,alpinelinux,3.18))
 $(eval $(call alpine-make-rootfs-rootfs,armhf,alpinelinux,3.19))
 $(eval $(call alpine-make-rootfs-rootfs,armhf,alpinelinux,edge))
+
+.PHONY: armv7-alpinelinux-rootfs
+armv7-alpinelinux-rootfs: armv7-alpinelinux-3.14-rootfs
+armv7-alpinelinux-rootfs: armv7-alpinelinux-3.15-rootfs
+armv7-alpinelinux-rootfs: armv7-alpinelinux-3.16-rootfs
+armv7-alpinelinux-rootfs: armv7-alpinelinux-3.17-rootfs
+armv7-alpinelinux-rootfs: armv7-alpinelinux-3.18-rootfs
+armv7-alpinelinux-rootfs: armv7-alpinelinux-3.19-rootfs
+armv7-alpinelinux-rootfs: armv7-alpinelinux-edge-rootfs
+
+$(eval $(call alpine-make-rootfs-rootfs,armv7,alpinelinux,3.14))
+$(eval $(call alpine-make-rootfs-rootfs,armv7,alpinelinux,3.15))
+$(eval $(call alpine-make-rootfs-rootfs,armv7,alpinelinux,3.16))
+$(eval $(call alpine-make-rootfs-rootfs,armv7,alpinelinux,3.17))
+$(eval $(call alpine-make-rootfs-rootfs,armv7,alpinelinux,3.18))
+$(eval $(call alpine-make-rootfs-rootfs,armv7,alpinelinux,3.19))
+$(eval $(call alpine-make-rootfs-rootfs,armv7,alpinelinux,edge))
 endif
 
 ifneq ($(shell command -v powerpc64le-buildroot-linux-musl-gcc 2>/dev/null),)

@@ -184,7 +184,7 @@ bbsuid)
 	exit 0
 	;;
 *)
-	warn "running" "$argv0" "$@"
+	warn "running" "$inchroot_path" "$@"
 	exec "$inchroot_path" "$@"
 	;;
 esac

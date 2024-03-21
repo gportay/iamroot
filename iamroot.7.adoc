@@ -14,29 +14,32 @@ iamroot - Emulate the syscall chroot(2) for unprivileged processes in userspace
 
 Only a privileged process can run *chroot(2)*.
 
-*iamroot(7)* intends to emulate the behaviour of the *chroot(2)* syscall for
-unprivileged users as far as the permissions grant it; *iamroot(7)* cannot
-bypass the permissions such as reading or writing to files that do not belongs
-to the user.
+*iamroot(7)* emulates the behaviour of the syscall *chroot(2)* for unprivileged
+users as far as their permissions grant it; it cannot overcome the lack for
+permissions such as reading or writing files that do not belong to the user,
+such as the files owned by _root_ without a permissive access.
 
-*iamroot(7)* consists of an ELF library and a shell script which workaround the
-needs for privileges to run processes that call *chroot(2)* and for executables
-with the SUID bit set or for not dynamically linked objects.
+*iamroot(7)* consists of an ELF library to preload, and convenient shell
+scripts to setup an environment ready to run unprivileged processes calling
+*chroot(2)* and to workaround the impossible such as executing SUID or
+statically linked objects.
+
+*iamroot(7)* emulates privileged syscalls such as *chmod(2)* or *chown(2)* and
+bypasses *mount(2)*, *umount(2)* or *unshare(2)*; it is not restricted to them.
 
 == PREREQUISITE
 
 A _pathname_ starting with _/_ is called an *absolute* _pathname_; otherwise it
 is called a *relative* _pathname_.
 
-Every processes inherits two related path ingredients from its parent:
+Every processes inherits two paths from its parent:
+ - _cwd_ for the current working directory
+ - _root_ for the root directory
 
-	- _cwd_ for the current working directory
-	- _root_ for the root directory
+The _cwd_ is changed using *chdir(2)* or *fchdir(2)*; the _root_ is changed
+using *chroot(2)*.
 
-The _cwd_ can be changed using *chdir(2)* or *fchdir(2)*; the _root_ can be
-changed using *chroot(2)*.
-
-Both ingredients are checked in _/proc/<pid>/cwd_ and _/proc/<pid>/root_.
+Both paths are readable in _/proc/<pid>/cwd_ and _/proc/<pid>/root_.
 
 	[gportay@archlinux ~]$ readlink /proc/self/cwd
 	/home/gportay
@@ -54,29 +57,29 @@ the _pathname_ internally before calling the real symbol with the _pathname_
 modified.
 
 If the process changes the _root_ directory using *chroot(2)*, the library
-intercepts the function and does not call the real symbol then. Instead, the
-library stores the absolute path of the _pathname_ given in parameter in the
-environment *IAMROOT_ROOT*. The library resolves every absolute _pathname_ of
-the subsequent intercepted calls using this environment variable.
+intercepts the function and it **DOES NOT** call the real symbol then! Instead,
+the library stores the absolute path for the _pathname_ given in parameter in
+the environment *IAMROOT_ROOT*. The library resolves every absolute _pathname_
+of the subsequent intercepted calls using this environment variable.
 
 If the process changes the _current_ working directory using either *chdir(3p)*
 or *fchdir(3p)*, the library intercepts these functions as well and it checks
 if the process breaks from its "chroot jail". If it exits, the library resets
 the environment *IAMROOT_ROOT* and it resolves every absolute _pathname_ of the
-subsequent intercepted calls normally.
+subsequent calls to intercepted functions normally.
 
-The library _libiamroot.so_ does not gain the superuser permissions, as a
-consequence, the functions can end with _EACCESS_ or _EPERM_ errors. However,
-the script _exec.sh_ is run to workaround the impossible; i.e. to handle the
-lack of permissions or to handle the binaries which can not support library
-preloading (SUID executables or not dynamically linked objects).
+The library _libiamroot.so_ does not gain the superuser permissions. As a
+consequence, some syscalls end with _EACCESS_ or _EPERM_ errors. The library
+handles the lack of permissions. Additionally, it works arround the impossible
+from withing the shell script _exec.sh_ to run the SUID or statically linked
+objects.
 
-*iamroot(7)* was been tested to make minimal linux rootfs with *pacstrap(1)* or
-*alpine-make-rootfs*. Nevertheless, it is a proof-of-concept, therefore expect
-the unexpectable!
+*iamroot(7)* is tested regularly to make minimal linux rootfs with various
+package managers. Nevertheless, it is still a proof-of-concept, therefore
+expect the unexpectable!
 
-_Note:_ The library _libiamroot.so_ replaces *fakechroot(1)*; but it is not a
-replacant for *fakeroot(1)* as it provides a minimal subset of its features.
+_Note:_ The library _libiamroot.so_ replaces the couple *fakechroot(1)* and
+*fakeroot(1)*.
 
 == BUGS
 
@@ -88,7 +91,7 @@ Written by Gaël PORTAY *gael.portay@gmail.com*
 
 == COPYRIGHT
 
-Copyright (c) 2021,2023 Gaël PORTAY
+Copyright (c) 2021,2023-2024 Gaël PORTAY
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU Lesser General Public License as published by the Free
@@ -97,4 +100,5 @@ later version.
 
 == SEE ALSO
 
-*ish(1)*, *chroot(2)*, *path_resolution(7)*
+*ido(1)*, *ish(1)*, *ld-iamroot.so(8)*, *chroot(2)*, *path_resolution(7)*,
+*fakechroot(1)*, *fakechroot(1)*

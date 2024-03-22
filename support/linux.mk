@@ -759,9 +759,11 @@ codacy: cobertura.xml
 
 .PHONY: install
 install:
+	$(MAKE) -f Makefile $@
 
 .PHONY: uninstall
 uninstall:
+	$(MAKE) -f Makefile $@
 
 .PHONY: install-support
 install-support: install-support-i686

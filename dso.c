@@ -1088,7 +1088,7 @@ static int __elf_ehdr(int fd, Elf64_Ehdr *ehdr)
 	if (memcmp(ehdr->e_ident, ELFMAG, 4) != 0)
 		return __set_errno(ENOEXEC, -1);
 
-	/* It is a 32-bits ELF */
+	/* It is a 32-bit ELF */
 	if (ehdr->e_ident[EI_CLASS] == ELFCLASS32) {
 		Elf32_Ehdr *ehdr32 = (Elf32_Ehdr *)ehdr;
 
@@ -1109,7 +1109,7 @@ static int __elf_ehdr(int fd, Elf64_Ehdr *ehdr)
 		return 0;
 	}
 
-	/* It is a 64-bits ELF */
+	/* It is a 64-bit ELF */
 	if (ehdr->e_ident[EI_CLASS] == ELFCLASS64) {
 		Elf64_Ehdr *ehdr64 = ehdr;
 
@@ -1512,11 +1512,11 @@ static int __elf_iterate_shared_object(int fd, int d_tag,
 	if ((ehdr.e_type != ET_EXEC) && (ehdr.e_type != ET_DYN))
 		return __set_errno(ENOEXEC, -1);
 
-	/* It is a 32-bits ELF */
+	/* It is a 32-bit ELF */
 	if (ehdr.e_ident[EI_CLASS] == ELFCLASS32)
 		return __elf_iterate_ehdr32(fd, (Elf32_Ehdr *)&ehdr, d_tag,
 					    callback, data);
-	/* It is a 64-bits ELF */
+	/* It is a 64-bit ELF */
 	else if (ehdr.e_ident[EI_CLASS] == ELFCLASS64)
 		return __elf_iterate_ehdr64(fd, (Elf64_Ehdr *)&ehdr, d_tag,
 					    callback, data);
@@ -1535,10 +1535,10 @@ static ssize_t __felf_interp(int fd, char *buf, size_t bufsiz)
 	if (err == -1)
 		return -1;
 
-	/* It is a 32-bits ELF */
+	/* It is a 32-bit ELF */
 	if (ehdr.e_ident[EI_CLASS] == ELFCLASS32)
 		return __elf_interp32(fd, (Elf32_Ehdr *)&ehdr, buf, bufsiz);
-	/* It is a 64-bits ELF */
+	/* It is a 64-bit ELF */
 	else if (ehdr.e_ident[EI_CLASS] == ELFCLASS64)
 		return __elf_interp64(fd, &ehdr, buf, bufsiz);
 
@@ -1598,7 +1598,7 @@ static int __is_32_bits(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	(void)ldso;
 	(void)abi;
 
-	/* It is a 32-bits ELF */
+	/* It is a 32-bit ELF */
 	return ehdr && (ehdr->e_ident[EI_CLASS] == ELFCLASS32);
 }
 
@@ -1607,7 +1607,7 @@ static int __is_64_bits(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	(void)ldso;
 	(void)abi;
 
-	/* It is a 64-bits ELF */
+	/* It is a 64-bit ELF */
 	return ehdr && (ehdr->e_ident[EI_CLASS] == ELFCLASS64);
 }
 
@@ -2381,7 +2381,7 @@ static const char *__getdeflib(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	 * objects are /lib64, and then /usr/lib64.
 	 */
 	if (__is_gnu_linux(ehdr, ldso, abi) == 1) {
-		/* It is a 64-bits GNU/Linux */
+		/* It is a 64-bit GNU/Linux */
 		if (__is_64_bits(ehdr, ldso, abi) == 1)
 			return __set_errno(errno_save, "/lib64:/usr/lib64");
 

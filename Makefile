@@ -376,6 +376,7 @@ install-support:
 
 .PHONY: uninstall
 uninstall:
+	rm -f $(DESTDIR)$(PREFIX)/bin/ido
 	rm -f $(DESTDIR)$(PREFIX)/bin/ish
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/libiamroot.so
 	rm -f $(DESTDIR)$(PREFIX)/lib/iamroot/exec.sh

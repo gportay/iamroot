@@ -482,14 +482,23 @@ ifeq ($(OS),GNU/Linux)
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                                                                       test-setfsgid   0                                                               | tee /dev/stderr | grep '^0$$'
 endif
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                                                                       test-execl                                                                      | tee /dev/stderr | grep '^one two three$$'
+	cd rootfs/ && PATH=$(CURDIR)/rootfs/usr/bin env LD_PRELOAD=$(IAMROOT_LIB) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib IAMROOT_ROOT=$(CURDIR)/rootfs PWD=/ test-execl                                                                      | tee /dev/stderr | grep '^one two three$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                                                                       test-execle                                                                     | tee /dev/stderr | grep '^one two three$$'
+	cd rootfs/ && PATH=$(CURDIR)/rootfs/usr/bin env LD_PRELOAD=$(IAMROOT_LIB) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib IAMROOT_ROOT=$(CURDIR)/rootfs PWD=/ test-execle                                                                     | tee /dev/stderr | grep '^one two three$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                                                                       test-execlp                                                                     | tee /dev/stderr | grep '^one two three$$'
+	cd rootfs/ && PATH=$(CURDIR)/rootfs/usr/bin env LD_PRELOAD=$(IAMROOT_LIB) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib IAMROOT_ROOT=$(CURDIR)/rootfs PWD=/ test-execlp                                                                     | tee /dev/stderr | grep '^one two three$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                                                                       test-execv                                                                      | tee /dev/stderr | grep '^one two three$$'
+	cd rootfs/ && PATH=$(CURDIR)/rootfs/usr/bin env LD_PRELOAD=$(IAMROOT_LIB) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib IAMROOT_ROOT=$(CURDIR)/rootfs PWD=/ test-execv                                                                      | tee /dev/stderr | grep '^one two three$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                                                                       test-execve                                                                     | tee /dev/stderr | grep '^one two three$$'
+	cd rootfs/ && PATH=$(CURDIR)/rootfs/usr/bin env LD_PRELOAD=$(IAMROOT_LIB) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib IAMROOT_ROOT=$(CURDIR)/rootfs PWD=/ test-execve                                                                     | tee /dev/stderr | grep '^one two three$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                                                                       test-execveat                                                                   | tee /dev/stderr | grep '^one two three$$'
+	cd rootfs/ && PATH=$(CURDIR)/rootfs/usr/bin env LD_PRELOAD=$(IAMROOT_LIB) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib IAMROOT_ROOT=$(CURDIR)/rootfs PWD=/ test-execveat                                                                   | tee /dev/stderr | grep '^one two three$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                                                                       test-execvp                                                                     | tee /dev/stderr | grep '^one two three$$'
+	cd rootfs/ && PATH=$(CURDIR)/rootfs/usr/bin env LD_PRELOAD=$(IAMROOT_LIB) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib IAMROOT_ROOT=$(CURDIR)/rootfs PWD=/ test-execvp                                                                     | tee /dev/stderr | grep '^one two three$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                                                                       test-execvpe                                                                    | tee /dev/stderr | grep '^one two three$$'
+	cd rootfs/ && PATH=$(CURDIR)/rootfs/usr/bin env LD_PRELOAD=$(IAMROOT_LIB) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib IAMROOT_ROOT=$(CURDIR)/rootfs PWD=/ test-execvpe                                                                    | tee /dev/stderr | grep '^one two three$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                                                                       test-fexecve                                                                    | tee /dev/stderr | grep '^one two three$$'
+	cd rootfs/ && PATH=$(CURDIR)/rootfs/usr/bin env LD_PRELOAD=$(IAMROOT_LIB) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib IAMROOT_ROOT=$(CURDIR)/rootfs PWD=/ test-fexecve                                                                    | tee /dev/stderr | grep '^one two three$$'
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                test-getpwnam   root                                                            | tee /dev/stderr | grep -q '^root:.*:0:0:.*:.*:.*$$'
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                test-getpwnam_r root                                                            | tee /dev/stderr | grep -q '^root:.*:0:0:.*:.*:.*$$'
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                test-getpwuid   0                                                               | tee /dev/stderr | grep -q '^root:.*:0:0:.*:.*:.*$$'
@@ -699,6 +708,7 @@ ifneq ($(OS),Linux)
 endif
 	bash install-bin bash $(DESTDIR)
 	bash install-bin env $(DESTDIR)
+	ln -sf bash $(DESTDIR)/usr/bin/sh
 
 .PHONY: clean
 clean:

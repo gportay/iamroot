@@ -22,6 +22,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   whitespace
 - Search for the executable in `PATH` in `ld-iamroot.so(8)` if the program if a
   filename without a slash
+- Do not output for the dynamic loader command in `exec.sh` to not pollute its
+  output on stderr
 
 ### Fixed
 

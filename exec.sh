@@ -183,6 +183,11 @@ bbsuid)
 	done
 	exit 0
 	;;
+ldd|ld*.so*)
+	# Do not pollute stderr with a warning trace!
+	# warn "running" "$inchroot_path" "$@"
+	exec "$inchroot_path" "$@"
+	;;
 *)
 	warn "running" "$inchroot_path" "$@"
 	exec "$inchroot_path" "$@"

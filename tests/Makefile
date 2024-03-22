@@ -196,29 +196,33 @@ test-path_resolution: libiamnotroot.so
 test-path_resolution: override LDLIBS += libiamnotroot.so
 
 .PHONY: test
+test: test-scripts test-library
+	@echo "Completed!"
+
+.PHONY: test-library
 ifeq ($(OS),FreeBSD)
-test: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/lib/libc.so.7:$(CURDIR)/rootfs/usr/lib/libdl.so.1
+test-library: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/lib/libc.so.7:$(CURDIR)/rootfs/usr/lib/libdl.so.1
 endif
 ifeq ($(OS),OpenBSD)
 ifeq ($(KVER),7.2)
-test: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/usr/lib/libc.so.96.2:$(CURDIR)/rootfs/usr/lib/libpthread.so.26.2
+test-library: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/usr/lib/libc.so.96.2:$(CURDIR)/rootfs/usr/lib/libpthread.so.26.2
 endif
 ifeq ($(KVER),7.3)
-test: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/usr/lib/libc.so.97.0:$(CURDIR)/rootfs/usr/lib/libpthread.so.27.0
+test-library: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/usr/lib/libc.so.97.0:$(CURDIR)/rootfs/usr/lib/libpthread.so.27.0
 endif
 ifeq ($(KVER),7.4)
-test: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/usr/lib/libc.so.97.1:$(CURDIR)/rootfs/usr/lib/libpthread.so.27.1
+test-library: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/usr/lib/libc.so.97.1:$(CURDIR)/rootfs/usr/lib/libpthread.so.27.1
 endif
 endif
 ifeq ($(OS),NetBSD)
-test: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/lib/libc.so.12
+test-library: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/lib/libc.so.12
 endif
 ifeq ($(OS),GNU/Linux)
-test: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/usr/lib64/libc.so.6:$(CURDIR)/rootfs/usr/lib64/libdl.so.2:$(CURDIR)/rootfs/usr/lib64/libpthread.so.0
+test-library: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/usr/lib64/libc.so.6:$(CURDIR)/rootfs/usr/lib64/libdl.so.2:$(CURDIR)/rootfs/usr/lib64/libpthread.so.0
 endif
-test: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|.*\.gcda
-test: export NLSPATH = /usr/lib/nls/msg/%L/%N
-test: | rootfs
+test-library: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|.*\.gcda
+test-library: export NLSPATH = /usr/lib/nls/msg/%L/%N
+test-library: | rootfs
 	rm -Rf rootfs/tmp/* rootfs/dev/*
 	touch rootfs/tmp/file0 rootfs/tmp/wtmp rootfs/tmp/wtmpx
 	ln -s file0 rootfs/tmp/symlink0
@@ -575,10 +579,12 @@ ifeq ($(OS),GNU/Linux)
 	- env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                                                                          test-lremovexattr         rootfs/etc/os-release user.two
 	- env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                                                                          test-lremovexattr         rootfs/etc/os-release user.one
 endif
+
+.PHONY: test-scripts
+test-scripts: | rootfs
 ifeq ($(OS),GNU/Linux)
 	bash tests.bash
 endif
-	@echo "Completed!"
 
 rootfs: DESTDIR = $(CURDIR)/rootfs
 rootfs:

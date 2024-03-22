@@ -405,8 +405,8 @@ ci: check test
 check:
 	shellcheck -e SC1090 -e SC3037 ido ish exec.sh
 
-.PHONY: test
-test: libiamroot.so
+.PHONY: test test-library test-scripts
+test test-library test-scripts: libiamroot.so
 	$(MAKE) -C tests
 	$(MAKE) -C tests $@ PATH=$(CURDIR):$$PATH
 

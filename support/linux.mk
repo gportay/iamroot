@@ -332,15 +332,15 @@ $(eval $(call log,xbps-install,$(1)-$(2)-musl-rootfs))
 endef
 
 define alpine-make-rootfs-rootfs
-.PRECIOUS: $(1)-$(2)-$(3)-rootfs/bin/sh
-$(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export APK_OPTS = --arch $(1) --no-progress
-$(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: IDOFLAGS += --preserve-env=APK_OPTS
-$(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export ALPINE_MAKE_ROOTFSFLAGS = --packages apk-tools --packages openrc
+.PRECIOUS: $(1)-$(2)-$(3)-rootfs/bin/busybox
+$(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export APK_OPTS = --arch $(1) --no-progress
+$(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: IDOFLAGS += --preserve-env=APK_OPTS
+$(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export ALPINE_MAKE_ROOTFSFLAGS = --packages apk-tools --packages openrc
 
 $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/ash,alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --mirror-uri http://mirrors.edge.kernel.org/alpine --branch $(3)))
 
-$(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/sh
-$(1)-$(2)-$(3)-rootfs/bin/sh: | $(call libs,musl,$(1))
+$(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/busybox
+$(1)-$(2)-$(3)-rootfs/bin/busybox: | $(call libs,musl,$(1))
 	bash ido $$(IDOFLAGS) alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --mirror-uri http://mirrors.edge.kernel.org/alpine --branch $(3) $$(ALPINE_MAKE_ROOTFSFLAGS)
 
 $(eval $(call log,alpine-make-rootfs,$(1)-$(2)-$(3)-rootfs))

@@ -11,18 +11,38 @@ set -o pipefail
 run() {
 	lineno="${BASH_LINENO[0]}"
 	test="$*"
-	echo -e "\e[1mRunning $test...\e[0m"
+	if [ -t 1 ]
+	then
+		echo -e "\e[1mRunning $test...\e[0m"
+	else
+		echo "Running $test..."
+	fi
 }
 
 ok() {
 	ok=$((ok+1))
-	echo -e "\e[1m$test: \e[32m[OK]\e[0m"
+	if [ -t 1 ]
+	then
+		echo -e "\e[1m$test: \e[32m[OK]\e[0m"
+	else
+		echo "$test: [OK]"
+	fi
 }
 
 ko() {
 	ko=$((ko+1))
-	echo -e "\e[1m$test: \e[31m[KO]\e[0m"
-	reports+=("$test at line \e[1m$lineno \e[31mhas failed\e[0m!")
+	if [ -t 1 ]
+	then
+		echo -e "\e[1m$test: \e[31m[KO]\e[0m"
+	else
+		echo "$test: [KO]"
+	fi
+	if [ -t 2 ]
+	then
+		reports+=("$test at line \e[1m$lineno \e[31mhas failed\e[0m!")
+	else
+		reports+=("$test at line $lineno has failed!")
+	fi
 	if [[ $EXIT_ON_ERROR ]]
 	then
 		exit 1
@@ -31,49 +51,104 @@ ko() {
 
 fix() {
 	fix=$((fix+1))
-	echo -e "\e[1m$test: \e[34m[FIX]\e[0m"
-	reports+=("$test at line \e[1m$lineno is \e[34mfixed\e[0m!")
+	if [ -t 1 ]
+	then
+		echo -e "\e[1m$test: \e[34m[FIX]\e[0m"
+	else
+		echo "$test: [FIX]"
+	fi
+	if [ -t 2 ]
+	then
+		reports+=("$test at line \e[1m$lineno is \e[34mfixed\e[0m!")
+	else
+		reports+=("$test at line $lineno is fixed!")
+	fi
 }
 
 bug() {
 	bug=$((bug+1))
-	echo -e "\e[1m$test: \e[33m[BUG]\e[0m"
-	reports+=("$test at line \e[1m$lineno is \e[33mbugged\e[0m!")
+	if [ -t 1 ]
+	then
+		echo -e "\e[1m$test: \e[33m[BUG]\e[0m"
+	else
+		echo "$test: [BUG]"
+	fi
+	if [ -t 2 ]
+	then
+		reports+=("$test at line \e[1m$lineno is \e[33mbugged\e[0m!")
+	else
+		reports+=("$test at line $lineno is bugged!")
+	fi
 }
 
 result() {
 	exitcode="$?"
 	trap - 0
 
-	echo -e "\e[1mTest report:\e[0m"
+	if [ -t 2 ]
+	then
+		echo -e "\e[1mTest report:\e[0m"
+	else
+		echo "Test report:"
+	fi
 	for report in "${reports[@]}"
 	do
-		echo -e "$report" >&2
+		if [ -t 2 ]
+		then
+			echo -e "$report" >&2
+		else
+			echo "$report" >&2
+		fi
 	done
 
 	if [[ $ok ]]
 	then
-		echo -e "\e[1m\e[32m$ok test(s) succeed!\e[0m"
+		if [ -t 1 ]
+		then
+			echo -e "\e[1m\e[32m$ok test(s) succeed!\e[0m"
+		else
+			echo "$ok test(s) succeed!"
+		fi
 	fi
 
 	if [[ $fix ]]
 	then
-		echo -e "\e[1m\e[34m$fix test(s) fixed!\e[0m" >&2
+		if [ -t 2 ]
+		then
+			echo -e "\e[1m\e[34m$fix test(s) fixed!\e[0m" >&2
+		else
+			echo "$fix test(s) fixed!" >&2
+		fi
 	fi
 
 	if [[ $bug ]]
 	then
-		echo -e "\e[1mWarning: \e[33m$bug test(s) bug!\e[0m" >&2
+		if [ -t 2 ]
+		then
+			echo -e "\e[1mWarning: \e[33m$bug test(s) bug!\e[0m" >&2
+		else
+			echo "Warning: $bug test(s) bug!" >&2
+		fi
 	fi
 
 	if [[ $ko ]]
 	then
-		echo -e "\e[1mError: \e[31m$ko test(s) failed!\e[0m" >&2
+		if [ -t 2 ]
+		then
+			echo -e "\e[1mError: \e[31m$ko test(s) failed!\e[0m" >&2
+		else
+			echo "Error: $ko test(s) failed!" >&2
+		fi
 	fi
 
 	if [[ $exitcode -ne 0 ]] && [[ $ko ]]
 	then
-		echo -e "\e[1;31mExited!\e[0m" >&2
+		if [ -t 2 ]
+		then
+			echo -e "\e[1;31mExited!\e[0m" >&2
+		else
+			echo "Exited!" >&2
+		fi
 	elif [[ $exitcode -eq 0 ]] && [[ $ko ]]
 	then
 		exit 1

@@ -1948,7 +1948,7 @@ endif
 
 ifneq ($(shell command -v xbps-install 2>/dev/null),)
 extra-support: support/x86_64-voidlinux-rootfs.txt
-fixme-support: support/x86_64-voidlinux-musl-rootfs.txt
+extra-support: support/x86_64-voidlinux-musl-rootfs.txt
 
 .PHONY: voidlinux-support
 voidlinux-support: support/x86_64-voidlinux-rootfs.txt

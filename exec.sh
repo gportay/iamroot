@@ -183,7 +183,27 @@ bbsuid)
 	done
 	exit 0
 	;;
-ldd|ld*.so*)
+ldd)
+	args=()
+	for i in "$@"
+	do
+		if [ "${i:0:1}" = "-" ]
+		then
+			args+=("$i")
+		else
+			args+=("$IAMROOT_ROOT$i")
+		fi
+	done
+	set -- "${args[@]}"
+	unset args
+
+	# Do not pollute stderr with a warning trace!
+	#warn "running" "$inchroot_path" "$@"
+	# FIXME: reuse implementation within the library.
+	LD_LIBRARY_PATH="$IAMROOT_ROOT/lib:$IAMROOT_ROOT/usr/lib" \
+	exec "$inchroot_path" "$@" | sed "s,$IAMROOT_ROOT,,g"
+	;;
+ld*.so*)
 	# Do not pollute stderr with a warning trace!
 	# warn "running" "$inchroot_path" "$@"
 	exec "$inchroot_path" "$@"

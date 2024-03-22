@@ -1085,7 +1085,7 @@ static int __elf_ehdr(int fd, Elf64_Ehdr *ehdr)
 		return __set_errno(EIO, -1);
 
 	/* Not an ELF */
-	if (memcmp(ehdr->e_ident, ELFMAG, 4) != 0)
+	if (memcmp(ehdr->e_ident, ELFMAG, SELFMAG) != 0)
 		return __set_errno(ENOEXEC, -1);
 
 	/* It is a 32-bit ELF */

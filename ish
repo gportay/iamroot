@@ -225,6 +225,7 @@ done
 if [[ "$IAMROOT_ROOT" ]]
 then
 	cd "$IAMROOT_ROOT"
+	PWD="/"
 
 	IFS=: read -r -a __ <<<"${LD_LIBRARY_PATH:-/usr/lib:/lib}"
 	LD_LIBRARY_PATH="$IAMROOT_ROOT${__[0]}"

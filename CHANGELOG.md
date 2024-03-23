@@ -11,6 +11,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Dectect the Aarch64 [NetBSD]'s library
 - Add the `ld-iamroot.so(8)` option `--multiarch` to use [Debian multiarch]
   library path in chroot
+- Set the environment variable `PWD` to `/` in `ido(1)` and `ish(1)` if
+  chroot'ed
 
 ### Removed
 

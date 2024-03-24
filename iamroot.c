@@ -28,7 +28,10 @@
 #define SSCRIPTMAG 2
 
 extern char *next_getcwd(char *, size_t);
-#ifndef __NetBSD__
+#ifdef __NetBSD__
+#define next_fstat next___fstat50
+extern int next___fstat50(int, struct stat *);
+#else
 extern int next_fstat(int, struct stat *);
 #endif
 extern int next_fstatat(int, const char *, struct stat *, int);
@@ -113,7 +116,6 @@ hidden int __fis_symlinkat(int dfd, const char *path, int atflags)
 	return S_ISLNK(statbuf.st_mode);
 }
 
-#ifndef __NetBSD__
 hidden int __fis_symlink(int fd)
 {
 	struct stat statbuf;
@@ -125,7 +127,6 @@ hidden int __fis_symlink(int fd)
 
 	return S_ISLNK(statbuf.st_mode);
 }
-#endif
 
 hidden int __is_symlink(const char *path)
 {
@@ -163,7 +164,6 @@ hidden int __is_directory(const char *path)
 	return S_ISDIR(statbuf.st_mode);
 }
 
-#ifndef __NetBSD__
 hidden int __fis_directory(int fd)
 {
 	struct stat statbuf;
@@ -175,7 +175,6 @@ hidden int __fis_directory(int fd)
 
 	return S_ISDIR(statbuf.st_mode);
 }
-#endif
 
 hidden int __fis_fileat(int dfd, const char *path, int atflags)
 {
@@ -189,7 +188,6 @@ hidden int __fis_fileat(int dfd, const char *path, int atflags)
 	return S_ISREG(statbuf.st_mode);
 }
 
-#ifndef __NetBSD__
 hidden int __fis_file(int fd)
 {
 	struct stat statbuf;
@@ -201,7 +199,6 @@ hidden int __fis_file(int fd)
 
 	return S_ISREG(statbuf.st_mode);
 }
-#endif
 
 hidden int __is_file(const char *path)
 {
@@ -1246,3 +1243,7 @@ hidden void __pathdlperror(const char *path, const char *s)
 
 	__note_or_fatal("%s: %s: %s\n", p, s, dlerror());
 }
+
+#ifdef __NetBSD__
+#undef next_fstat
+#endif

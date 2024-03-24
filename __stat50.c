@@ -1,10 +1,10 @@
 /*
- * Copyright 2021-2024 Gaël PORTAY
+ * Copyright 2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
-#ifndef __NetBSD__
+#ifdef __NetBSD__
 #include <stdio.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -13,11 +13,11 @@
 
 #include "iamroot.h"
 
-int lstat(const char *path, struct stat *statbuf)
+int __stat50(const char *path, struct stat *statbuf)
 {
 	__debug("%s(path: '%s', ...)\n", __func__, path);
 
 	/* Forward to another function */
-	return fstatat(AT_FDCWD, path, statbuf, AT_SYMLINK_NOFOLLOW);
+	return fstatat(AT_FDCWD, path, statbuf, 0);
 }
 #endif

@@ -85,6 +85,7 @@ endif
 all: ld-iamroot.so
 all: libiamroot.so
 
+ld-iamroot.so: __fstat50.o
 ld-iamroot.so: __fxstat.o
 ld-iamroot.so: __fxstatat.o
 ld-iamroot.so: dlopen.o
@@ -114,6 +115,7 @@ ld-iamroot.so: readlinkat.o
 ld-iamroot.so: realpath.o
 ld-iamroot.so: scandir.o
 
+libiamroot.so: __fstat50.o
 libiamroot.so: __fstat64_time64.o
 libiamroot.so: __fstatat64_time64.o
 libiamroot.so: __fxstat.o
@@ -121,12 +123,14 @@ libiamroot.so: __fxstat64.o
 libiamroot.so: __fxstatat.o
 libiamroot.so: __fxstatat64.o
 libiamroot.so: __libc_start_main.o
+libiamroot.so: __lstat50.o
 libiamroot.so: __lstat64_time64.o
 libiamroot.so: __lxstat.o
 libiamroot.so: __lxstat64.o
 libiamroot.so: __open_2.o
 libiamroot.so: __openat_2.o
 libiamroot.so: __opendir2.o
+libiamroot.so: __stat50.o
 libiamroot.so: __stat64_time64.o
 libiamroot.so: __xmknod.o
 libiamroot.so: __xmknodat.o

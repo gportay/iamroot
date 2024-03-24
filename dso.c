@@ -39,7 +39,12 @@ typedef struct {
 } __regex_t;
 
 extern int next_faccessat(int, const char *, int, int);
+#ifdef __NetBSD__
+#define next_fstat next___fstat50
+extern int next___fstat50(int, struct stat *);
+#else
 extern int next_fstat(int, struct stat *);
+#endif
 extern int next_open(const char *, int, mode_t);
 extern void *next_dlopen(const char *, int);
 
@@ -3922,3 +3927,7 @@ hidden int __elf_has_interp(int fd)
 
 	return __set_errno(errno_save, 1);
 }
+
+#ifdef __NetBSD__
+#undef next_fstat
+#endif

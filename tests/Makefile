@@ -201,26 +201,6 @@ test: test-scripts test-library
 	@echo "Completed!"
 
 .PHONY: test-library
-ifeq ($(OS),FreeBSD)
-test-library: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/lib/libc.so.7:$(CURDIR)/rootfs/usr/lib/libdl.so.1
-endif
-ifeq ($(OS),OpenBSD)
-ifeq ($(KVER),7.2)
-test-library: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/usr/lib/libc.so.96.2:$(CURDIR)/rootfs/usr/lib/libpthread.so.26.2
-endif
-ifeq ($(KVER),7.3)
-test-library: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/usr/lib/libc.so.97.0:$(CURDIR)/rootfs/usr/lib/libpthread.so.27.0
-endif
-ifeq ($(KVER),7.4)
-test-library: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/usr/lib/libc.so.97.1:$(CURDIR)/rootfs/usr/lib/libpthread.so.27.1
-endif
-endif
-ifeq ($(OS),NetBSD)
-test-library: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/lib/libc.so.12
-endif
-ifeq ($(OS),GNU/Linux)
-test-library: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/rootfs/usr/lib64/libc.so.6:$(CURDIR)/rootfs/usr/lib64/libdl.so.2:$(CURDIR)/rootfs/usr/lib64/libpthread.so.0
-endif
 test-library: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|.*\.gcda
 test-library: export NLSPATH = /usr/lib/nls/msg/%L/%N
 test-library: | rootfs
@@ -437,7 +417,7 @@ ifeq ($(OS),GNU/Linux)
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)                                                                  test-dlmopen              rootfs/usr/lib64/iar/libiamnotroot.so
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                test-dlmopen              /usr/lib64/iar/libiamnotroot.so
 endif
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                                                                            test-dl_iterate_phdr                                                            | grep '$(CURDIR)/rootfs'
+	! env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                                                                          test-dl_iterate_phdr                                                            | grep '$(CURDIR)/rootfs'
 	cd rootfs/ && ! env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                              test-dl_iterate_phdr                                                            | grep '$(CURDIR)/rootfs'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin                                                                                       test-getgid                                                                     | tee /dev/stderr | grep '^0$$'
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin:/bin IAMROOT_GID=1000                                                                      test-getgid                                                                     | tee /dev/stderr | grep '^1000$$'

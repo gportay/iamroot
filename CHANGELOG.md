@@ -70,6 +70,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 
 - Output traces even if not in chroot
+- Output the returned value for the function `extattr_set_link()`
 
 ### Fixed
 

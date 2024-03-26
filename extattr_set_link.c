@@ -88,9 +88,9 @@ ssize_t extattr_set_link(const char *path, int attrnamespace,
 				    nbytes);
 
 exit:
-	__debug("%s(path: '%s' -> '%s', attrnamespace: %i -> %i, attrname: '%s' -> '%s', ...)\n",
+	__debug("%s(path: '%s' -> '%s', attrnamespace: %i -> %i, attrname: '%s' -> '%s', ...) -> %zi\n",
 		__func__, path, buf, oldattrnamespace, attrnamespace,
-		oldattrname, attrname);
+		oldattrname, attrname, ret);
 
 	return ret;
 }

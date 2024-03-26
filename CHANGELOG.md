@@ -39,6 +39,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Fix the if statement if `_snprintf()` returns -1 and `ENAMETOOLONG`
 - Fix the behaviour for the function `ttyname_r()`
+- Fix the behaviour for the function `getgrouplist()` on \*BSD systems
 
 ## [v20] - 2024-03-08
 

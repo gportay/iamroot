@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -338,7 +338,33 @@ int getgrouplist(const char *user, gid_t gid, gid_t *groups, int *ngroups)
 		}
 	}
 
+#ifndef __linux__
+	/*
+	 * According to getgrouplist(3):
+	 *
+	 * RETURN VALUE
+	 *
+	 * The getgrouplist() and getgroupmembership() functions return 0 if
+	 * successful, and return -1 if the size of the group list is too small
+	 * to hold all the user's groups.
+	 */
+	ret = n > nlim ? -1 : 0;
+#else
+	/*
+	 * According to getgrouplist(3):
+	 *
+	 * RETURN VALUE
+	 *
+	 * If the number of groups of which user is a member is less than or
+	 * equal to *ngroups, then the value *ngroups is returned.
+	 *
+	 * If the user is a member of more than *ngroups groups, then
+	 * getgrouplist() returns -1. In this case, the value returned in
+	 * *ngroups can be used to resize the buffer passed to a further call
+	 * to getgrouplist().
+	 */
 	ret = n > nlim ? -1 : n;
+#endif
 	*ngroups = n;
 
 cleanup:

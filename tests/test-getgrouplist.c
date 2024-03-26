@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Gaël PORTAY
+ * Copyright 2023-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -22,7 +22,7 @@
 int main(int argc, char * const argv[])
 {
 	gid_t gid, groups[NGROUPS_MAX];
-	int i, siz, len = NGROUPS_MAX;
+	int i, ret, len = NGROUPS_MAX;
 
 	if (argc < 3) {
 		fprintf(stderr, "Too few arguments\n");
@@ -36,14 +36,21 @@ int main(int argc, char * const argv[])
 	if (argc > 3)
 		len = strtoul(argv[3], NULL, 0);
 
-	siz = getgrouplist(argv[1], gid, groups, &len);
-	if (siz == -1 && errno) {
+	ret = getgrouplist(argv[1], gid, groups, &len);
+#ifdef __linux__
+	if (ret == -1 && errno) {
 		perror("getgrouplist");
 		return EXIT_FAILURE;
 	}
+#else
+	if (ret == -1) {
+		perror("getgrouplist");
+		return EXIT_FAILURE;
+	}
+#endif
 
 	printf("%i", len);
-	for (i = 0; i < siz; i++)
+	for (i = 0; i < len; i++)
 		printf(" %u", groups[i]);
 	printf("\n");
 

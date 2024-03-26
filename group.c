@@ -347,4 +347,13 @@ cleanup:
 	free(mem);
 	return ret;
 }
+
+#ifdef __NetBSD__
+int getgroupmembership(const char *user, gid_t gid, gid_t *groups, int maxgrp,
+		       int *ngroups)
+{
+	*ngroups = maxgrp;
+	return getgrouplist(user, gid, groups, ngroups);
+}
+#endif
 #endif

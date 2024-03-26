@@ -13,8 +13,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   library path in chroot
 - Set the environment variable `PWD` to `/` in `ido(1)` and `ish(1)` if
   chroot'ed
-- Intercept the [NetBSD]'s functions `__fstat50()`, `__lstat50()` and
-  `__stat50()`
+- Intercept the [NetBSD]'s functions `getgroupmembership()`, `__fstat50()`,
+  `__lstat50()` and `__stat50()`
 - Return `ERANGE` if the shared object is zero length
 
 ### Removed

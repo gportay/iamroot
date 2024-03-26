@@ -84,6 +84,7 @@ all: test-getgrgid_r
 all: test-getgrnam
 all: test-getgrnam_r
 all: test-getgrouplist
+all: test-getgroupmembership
 all: test-getgroups
 all: test-getgroups
 all: test-getpwent
@@ -523,6 +524,10 @@ endif
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                test-initgroups   "$$USER" "$$GROUPS"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                test-getgrouplist "$$USER" "$$GROUPS"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                test-getgrouplist "$$USER" "$$GROUPS" 0
+ifeq ($(OS),NetBSD)
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                test-getgroupmembership "$$USER" "$$GROUPS"
+	cd rootfs/ && ! env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                              test-getgroupmembership "$$USER" "$$GROUPS" 0
+endif
 	cd rootfs/ && ! env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs IAMROOT_GROUPS="0 100 1000"                  test-getgroups 2
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs   IAMROOT_GROUPS="0 100 1000"                  test-setgroups                                                                  | tee /dev/stderr | grep -q '^$$'
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                test-setgroups 0 100 1000                                                       | tee /dev/stderr | grep -q '^0 100 1000$$'

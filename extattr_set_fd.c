@@ -85,9 +85,15 @@ ssize_t extattr_set_fd(int fd, int attrnamespace, const char *attrname,
 	ret = next_extattr_set_fd(fd, attrnamespace, attrname, data, nbytes);
 
 exit:
+#ifdef __NetBSD__
+	__debug("%s(fd: %i <-> '%s', attrnamespace: %i -> %i, attrname: '%s' -> '%s', ...) -> %i\n",
+		__func__, fd, buf, oldattrnamespace, attrnamespace,
+		oldattrname, attrname, ret);
+#else
 	__debug("%s(fd: %i <-> '%s', attrnamespace: %i -> %i, attrname: '%s' -> '%s', ...) -> %zi\n",
 		__func__, fd, buf, oldattrnamespace, attrnamespace,
 		oldattrname, attrname, ret);
+#endif
 
 	return ret;
 }

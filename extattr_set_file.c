@@ -87,9 +87,15 @@ ssize_t extattr_set_file(const char *path, int attrnamespace,
 				    nbytes);
 
 exit:
+#ifdef __NetBSD__
+	__debug("%s(path: '%s' -> '%s', attrnamespace: %i -> %i, attrname: '%s' -> '%s', ...) -> %i\n",
+		__func__, path, buf, oldattrnamespace, attrnamespace,
+		oldattrname, attrname, ret);
+#else
 	__debug("%s(path: '%s' -> '%s', attrnamespace: %i -> %i, attrname: '%s' -> '%s', ...) -> %zi\n",
 		__func__, path, buf, oldattrnamespace, attrnamespace,
 		oldattrname, attrname, ret);
+#endif
 
 	return ret;
 }

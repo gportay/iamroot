@@ -3648,7 +3648,7 @@ hidden int __ldso_posix_spawn(pid_t *pid,
 static int __elf_header(void *addr, size_t addrsiz, Elf64_Ehdr *ehdr)
 {
 	if (sizeof(*ehdr) > addrsiz)
-		return __set_errno(ENOSPC, -1);
+		return __set_errno(ERANGE, -1);
 
 	memcpy(ehdr, addr, sizeof(*ehdr));
 
@@ -3706,7 +3706,7 @@ static int __elf32_program_header(void *addr, size_t addrsiz, Elf32_Ehdr *ehdr,
 				  Elf32_Phdr *phdr, off_t offset)
 {
 	if ((size_t)offset + sizeof(*phdr) > addrsiz)
-		return __set_errno(ENOSPC, -1);
+		return __set_errno(ERANGE, -1);
 
 	memcpy(phdr, addr + offset, sizeof(*phdr));
 
@@ -3729,7 +3729,7 @@ static int __elf64_program_header(void *addr, size_t addrsiz, Elf64_Ehdr *ehdr,
 				  Elf64_Phdr *phdr, off_t offset)
 {
 	if ((size_t)offset + sizeof(*phdr) > addrsiz)
-		return __set_errno(ENOSPC, -1);
+		return __set_errno(ERANGE, -1);
 
 	memcpy(phdr, addr + offset, sizeof(*phdr));
 
@@ -3780,7 +3780,7 @@ static int __elf32_iterate_for_pt(void *addr,
 			continue;
 
 		if (phdr.p_offset > addrsiz)
-			return __set_errno(ENOSPC, -1);
+			return __set_errno(ERANGE, -1);
 
 		err = callback(addr + phdr.p_offset, phdr.p_filesz, data);
 		if (err == -1)
@@ -3825,7 +3825,7 @@ static int __elf64_iterate_for_pt(void *addr,
 			continue;
 
 		if (phdr.p_offset > addrsiz)
-			return __set_errno(ENOSPC, -1);
+			return __set_errno(ERANGE, -1);
 
 		err = callback(addr + phdr.p_offset, phdr.p_filesz, data);
 		if (err == -1)

@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#ifndef __NetBSD__
 #include <stdio.h>
 #include <errno.h>
 #include <limits.h>
@@ -58,4 +59,5 @@ DIR *__opendir (const char *__name) __nonnull ((1))
      __attribute_malloc__ __attr_dealloc (closedir, 1);
 #endif
 weak_alias(opendir, __opendir);
+#endif
 #endif

@@ -21,7 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Remove the detailled `execve` output command on level 4 and above
 - Remove the functions `mkdtemp()`, `mkostemp()`, `mkostemps()`, `mkstemp()`,
-  `mkstemps()` and `mktemp()` on [NetBSD]
+  `mkstemps()`, `mktemp()` and `opendir()` on [NetBSD]
 
 ### Changed
 

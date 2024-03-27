@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#ifndef __NetBSD__
 #include <stdarg.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -134,3 +135,4 @@ nl_catd catopen(const char *name, int oflag)
 }
 
 #undef getenv
+#endif

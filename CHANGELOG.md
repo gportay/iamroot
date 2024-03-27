@@ -20,9 +20,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Removed
 
 - Remove the detailled `execve` output command on level 4 and above
-- Remove the functions `fopen()`, `freopen()`, `mkdtemp()`, `mkostemp()`,
-  `mkostemps()`, `mkstemp()`, `mkstemps()`, `mktemp()` and `opendir()` on
-  [NetBSD]
+- Remove the functions `catopen()`, `fopen()`, `freopen()`, `mkdtemp()`,
+  `mkostemp()`, `mkostemps()`, `mkstemp()`, `mkstemps()`, `mktemp()` and
+  `opendir()` on [NetBSD]
 
 ### Changed
 

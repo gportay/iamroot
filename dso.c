@@ -3852,6 +3852,9 @@ static int __elf_iterate_shared_object_for_pt(int fd, unsigned int p_type,
 		return -1;
 
 	addrsiz = statbuf.st_size;
+	if (addrsiz == 0)
+		return __set_errno(ERANGE, -1);
+
 	addr = mmap(NULL, addrsiz, PROT_READ, MAP_PRIVATE, fd, 0);
 	if (addr == MAP_FAILED)
 		return -1;

@@ -247,7 +247,7 @@ static char *__path_strncat(char *dst, const char *src, size_t dstsiz)
 	if (*dst)
 		len++;
 	if (len > (dstsiz-strlen(dst)-1)) /* NULL-terminated */
-		 return __set_errno(ENOSPC, NULL);
+		return __set_errno(ENOSPC, NULL);
 
 	if (*dst)
 		_strncat(dst, ":", dstsiz);

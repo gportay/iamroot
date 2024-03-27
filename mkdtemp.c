@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#ifndef __NetBSD__
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
@@ -52,3 +53,4 @@ exit:
 
 	return ret;
 }
+#endif

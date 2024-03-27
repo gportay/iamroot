@@ -1,9 +1,10 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#ifndef __FreeBSD__
 #include <stdio.h>
 #include <errno.h>
 
@@ -21,4 +22,5 @@ int mkostemp(char *path, int oflags)
 
 #ifdef __GLIBC__
 weak_alias(mkostemp, mkostemp64);
+#endif
 #endif

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -47,7 +47,7 @@ int mknodat(int dfd, const char *path, mode_t mode, dev_t dev)
 	__set_mode(buf, oldmode, mode);
 
 exit:
-	__debug("%s(dfd %i <-> '%s', path: '%s' -> '%s', mode: 0%03o -> 0%03o) -> %i\n",
+	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', mode: 0%03o -> 0%03o) -> %i\n",
 		__func__, dfd, __fpath(dfd), path, buf, oldmode, mode, ret);
 
 	return ret;

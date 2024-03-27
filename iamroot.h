@@ -252,6 +252,20 @@ void __verbose_exec(char * const[], char * const[]);
 	   errno = errno_save; \
 	   })
 
+#define __warn_and_set_user_mode(path, mode, user_mode) \
+	({ if (((mode) & (user_mode)) != (user_mode)) { \
+	     __info("%s: %s: Insuffisant user mode 0%03o!\n", __func__, (path), (mode)); \
+	     (mode) |= (user_mode); \
+	   } \
+	   if ((mode) & S_ISUID) { \
+	     __info("%s: %s: SUID bit 0%04o!\n", __func__, (path), (mode)); \
+	     (mode) &= ~S_ISUID; \
+	   } \
+	   if ((mode) & S_ISGID) { \
+	     __info("%s: %s: SGID bit 0%04o!\n", __func__, (path), (mode)); \
+	     (mode) &= ~S_ISGID; \
+	   } })
+
 #define __fwarn_and_set_user_mode(fd, mode, user_mode) \
 	({ if (((mode) & (user_mode)) != (user_mode)) { \
 	     __info("%s: %i <-> %s: Insuffisant user mode 0%03o!\n", __func__, (fd), __fpath((fd)), (mode)); \
@@ -280,6 +294,13 @@ void __verbose_exec(char * const[], char * const[]);
 	     (mode) &= ~S_ISGID; \
 	   } })
 
+#define __warn_if_insuffisant_user_mode(path, mode) \
+	({ if (__is_directory((path)) > 0) { \
+	     __warn_and_set_user_mode((path), (mode), 0700); \
+	   } else { \
+	     __warn_and_set_user_mode((path), (mode), 0600); \
+	   } })
+
 #define __fwarn_if_insuffisant_user_mode(fd, mode) \
 	({ if (__fis_directory((fd)) > 0) { \
 	     __fwarn_and_set_user_mode((fd), (mode), 0700); \
@@ -292,27 +313,6 @@ void __verbose_exec(char * const[], char * const[]);
 	     __fwarn_and_set_user_modeat((fd), (path), (mode), (flags), 0700); \
 	   } else { \
 	     __fwarn_and_set_user_modeat((fd), (path), (mode), (flags), 0600); \
-	   } })
-
-#define __warn_and_set_user_mode(path, mode, user_mode) \
-	({ if (((mode) & (user_mode)) != (user_mode)) { \
-	     __info("%s: %s: Insuffisant user mode 0%03o!\n", __func__, (path), (mode)); \
-	     (mode) |= (user_mode); \
-	   } \
-	   if ((mode) & S_ISUID) { \
-	     __info("%s: %s: SUID bit 0%04o!\n", __func__, (path), (mode)); \
-	     (mode) &= ~S_ISUID; \
-	   } \
-	   if ((mode) & S_ISGID) { \
-	     __info("%s: %s: SGID bit 0%04o!\n", __func__, (path), (mode)); \
-	     (mode) &= ~S_ISGID; \
-	   } })
-
-#define __warn_if_insuffisant_user_mode(path, mode) \
-	({ if (__is_directory((path)) > 0) { \
-	     __warn_and_set_user_mode((path), (mode), 0700); \
-	   } else { \
-	     __warn_and_set_user_mode((path), (mode), 0600); \
 	   } })
 
 #define __warn_and_set_umask(mask, user_mask) \

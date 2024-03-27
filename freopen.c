@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#ifndef __NetBSD__
 #include <stdarg.h>
 #include <stdio.h>
 #include <errno.h>
@@ -52,4 +53,5 @@ exit:
 
 #ifdef _LARGEFILE64_SOURCE
 weak_alias(freopen, freopen64);
+#endif
 #endif

@@ -45,7 +45,7 @@ int mkdirat(int dfd, const char *path, mode_t mode)
 	if (siz == -1)
 		goto exit;
 
-	__fwarn_if_insuffisant_user_modeat(dfd, buf, mode, 0);
+	__warn_if_insuffisant_user_mode(buf, mode);
 
 	ret = next_mkdirat(dfd, buf, mode);
 	__set_mode(buf, oldmode, mode);

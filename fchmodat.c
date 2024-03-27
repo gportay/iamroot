@@ -46,7 +46,7 @@ int fchmodat(int dfd, const char *path, mode_t mode, int atflags)
 	if (siz == -1)
 		goto exit;
 
-	__fwarn_if_insuffisant_user_modeat(dfd, buf, mode, atflags);
+	__warn_if_insuffisant_user_mode(buf, mode);
 
 	ret = next_fchmodat(dfd, buf, mode, atflags);
 	__ignore_error_and_warn(ret, dfd, path, atflags);

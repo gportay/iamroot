@@ -60,7 +60,7 @@ int openat(int dfd, const char *path, int oflags, ...)
 #endif
 
 	if (oflags & O_CREAT)
-		__fwarn_if_insuffisant_user_modeat(dfd, buf, mode, 0);
+		__warn_if_insuffisant_user_mode(buf, mode);
 
 	ret = next_openat(dfd, buf, oflags, mode);
 	__set_mode(buf, oldmode, mode);

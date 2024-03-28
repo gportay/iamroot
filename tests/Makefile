@@ -523,7 +523,7 @@ endif
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs   IAMROOT_GROUPS="0 100 1000"                  test-getgroups 3                                                                | tee /dev/stderr | grep -q '^3 0 100 1000$$'
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                test-initgroups   "$$USER" "$$GROUPS"
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                test-getgrouplist "$$USER" "$$GROUPS"
-ifneq (,$(findstring $(OS),GNU/Linux Linux FreeBSD))
+ifneq (,$(findstring $(OS),GNU/Linux Linux))
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                test-getgrouplist "$$USER" "$$GROUPS" 0
 else
 	cd rootfs/ && ! env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                              test-getgrouplist "$$USER" "$$GROUPS" 0

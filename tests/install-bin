@@ -55,7 +55,9 @@ do
 	#
 	# 0123456799abcdef 0123456789abcdef rlib  0    1   0      /usr/lib/libc.so.97.0
 	# 0123456799abcdef 0123456789abcdef ld.so 0    1   0      /usr/libexec/ld.so
-	elif [[ "${#words[*]}" -eq 7 ]] && [[ "${words[2]}" =~ ^(rlib|ld.so) ]] && [[ -e "${words[6]}" ]]
+	elif [[ "${#words[*]}" -eq 7 ]] &&
+	     [[ "${words[2]}" =~ ^(rlib|ld.so) ]] &&
+	     [[ -e "${words[6]}" ]]
 	then
 		file="${words[6]}"
 	# Ignoring other lines.

@@ -42,6 +42,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the behaviour for the function `getgrouplist()` on \*BSD systems
 - Fix the testing for regex functions `regcomp()` and `regexec()` returned
   values
+- Fix the regex subexpression emptyness for library and dynamic loader on \*BSD
+  systems
 
 ## [v20] - 2024-03-08
 

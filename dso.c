@@ -162,8 +162,8 @@ __attribute__((constructor,visibility("hidden")))
 void dso_init()
 {
 	static __regex_t regex_ldso, regex_lib;
-	const char *ldso = "^ld(64||-[[:alnum:]._-]+)\\.so(|\\.[[:digit:]]+)$";
-	const char *lib = "^lib[[:alnum:]+._-]+\\.so(|.*)$";
+	const char *ldso = "^ld(64|-[[:alnum:]._-]+)?\\.so(\\.[[:digit:]]+)?$";
+	const char *lib = "^lib[[:alnum:]+._-]+\\.so(\\.[[:alnum:]_-]+)*$";
 	int ret;
 
 	if (re_ldso)

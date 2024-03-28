@@ -1137,7 +1137,7 @@ static int __ignore(const char *func)
 		return 0;
 
 	ret = regexec(re_ignore, func, 0, NULL, 0);
-	if (ret == -1) {
+	if (ret == -1 || ret > REG_NOMATCH) {
 		__regex_perror("regexec", re_ignore, ret);
 		return 0;
 	}

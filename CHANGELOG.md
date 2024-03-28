@@ -34,6 +34,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   output on stderr
 - Run `exec.sh` if program a statically linked ELF executable even if not
   chroot'ed
+- Output a warning if a using the default library
 
 ### Fixed
 

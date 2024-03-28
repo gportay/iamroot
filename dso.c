@@ -2249,9 +2249,9 @@ access:
 
 	/* The library is not found. */
 
-	__warning("%s: No such ELF%i iamroot library for machine %i! Trying the default...\n",
-		  lib, __is_64_bits(ehdr, ldso, abi) == 1 ? 64 : 32,
-		  ehdr->e_machine);
+	__notice("%s: No such ELF%i iamroot library for machine %i! Trying IAMROOT_LIB if set...\n",
+		 lib, __is_64_bits(ehdr, ldso, abi) == 1 ? 64 : 32,
+		 ehdr->e_machine);
 
 	/*
 	 * Use the library set by the environment variable IAMROOT_LIB if set.
@@ -2262,6 +2262,10 @@ access:
 
 	/* The variable is unset; use the default value. */
 	lib = __xstr(PREFIX)"/lib/iamroot/libiamroot.so";
+
+	__warning("%s: No such ELF%i iamroot library for machine %i! Trying the default...\n",
+		  lib, __is_64_bits(ehdr, ldso, abi) == 1 ? 64 : 32,
+		  ehdr->e_machine);
 
 exit:
 	err = _setenv("IAMROOT_LIB", lib, 1);

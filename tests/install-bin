@@ -68,6 +68,7 @@ do
 	# Install file to DESTDIR if it is not already installed.
 	if [[ ! -x "$2$file" ]]
 	then
+		echo install -D -m755 "$file" "$2$file" >&2
 		install -D -m755 "$file" "$2$file"
 	fi
 done
@@ -75,5 +76,6 @@ done
 # Install binary file to DESTDIR if it is not already installed.
 if [[ ! -x "$2$bin" ]]
 then
+	echo install -D -m755 "$bin" "$2$bin" >&2
 	install -D -m755 "$bin" "$2$bin"
 fi

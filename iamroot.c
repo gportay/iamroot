@@ -1111,7 +1111,7 @@ void verbosef_init()
 		ignore = "^$";
 
 	ret = regcomp(&regex_ignore.re, ignore, REG_NOSUB|REG_EXTENDED);
-	if (ret == -1) {
+	if (ret != 0) {
 		__regex_perror("regcomp", &regex_ignore.re, ret);
 		return;
 	}

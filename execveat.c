@@ -130,8 +130,6 @@ int execveat(int dfd, const char *path, char * const argv[],
 loader:
 	/* It is the dynamic loader */
 	ret = __is_ldso(__basename(path));
-	if (ret == -1)
-		return -1;
 	/* Try to run the dynamic loader internaly... */
 	if (ret == 1) {
 		int err;

@@ -59,7 +59,7 @@ void execve_init()
 		ignore = "mountpoint";
 
 	ret = regcomp(&regex_ignore.re, ignore, REG_NOSUB|REG_EXTENDED);
-	if (ret == -1) {
+	if (ret != 0) {
 		__regex_perror("regcomp", &regex_ignore.re, ret);
 		return;
 	}
@@ -85,7 +85,7 @@ static int ignore(const char *path)
 		return 0;
 
 	ret = regexec(re_ignore, path, 0, NULL, 0);
-	if (ret == -1) {
+	if (ret > REG_NOMATCH) {
 		__regex_perror("regexec", re_ignore, ret);
 		return 0;
 	}
@@ -208,8 +208,6 @@ int execve(const char *path, char * const argv[], char * const envp[])
 loader:
 	/* It is the dynamic loader */
 	ret = __is_ldso(__basename(path));
-	if (ret == -1)
-		return -1;
 	/* Try to run the dynamic loader internaly... */
 	if (ret == 1) {
 		int err;

@@ -253,7 +253,7 @@ void path_resolution_init()
 		ignore = "^/proc/|/sys/|"_PATH_DEV"|"_PATH_VARRUN"|/run/";
 
 	ret = regcomp(&regex_ignore.re, ignore, REG_NOSUB|REG_EXTENDED);
-	if (ret == -1) {
+	if (ret != 0) {
 		__regex_perror("regcomp", &regex_ignore.re, ret);
 		return;
 	}
@@ -267,7 +267,7 @@ warning_ignore:
 
 	ret = regcomp(&regex_warning_ignore.re, warning_ignore,
 		      REG_NOSUB|REG_EXTENDED);
-	if (ret == -1) {
+	if (ret != 0) {
 		__regex_perror("regcomp", &regex_warning_ignore.re, ret);
 		return;
 	}
@@ -309,7 +309,7 @@ static int ignore(const char *path)
 		return 0;
 
 	ret = regexec(re_ignore, path, 0, NULL, 0);
-	if (ret == -1) {
+	if (ret > REG_NOMATCH) {
 		__regex_perror("regexec", re_ignore, ret);
 		return 0;
 	}
@@ -325,7 +325,7 @@ static int warning_ignore(const char *path)
 		return 0;
 
 	ret = regexec(re_warning_ignore, path, 0, NULL, 0);
-	if (ret == -1) {
+	if (ret > REG_NOMATCH) {
 		__regex_perror("regexec", re_warning_ignore, ret);
 		return 0;
 	}

@@ -170,7 +170,7 @@ void dso_init()
 		goto lib;
 
 	ret = regcomp(&regex_ldso.re, ldso, REG_NOSUB|REG_EXTENDED);
-	if (ret == -1) {
+	if (ret != 0) {
 		__regex_perror("regcomp", &regex_ldso.re, ret);
 		return;
 	}
@@ -182,7 +182,7 @@ lib:
 		return;
 
 	ret = regcomp(&regex_lib.re, lib, REG_NOSUB|REG_EXTENDED);
-	if (ret == -1) {
+	if (ret != 0) {
 		__regex_perror("regcomp", &regex_lib.re, ret);
 		return;
 	}
@@ -215,7 +215,7 @@ hidden int __is_ldso(const char *path)
 		return 0;
 
 	ret = regexec(re_ldso, path, 0, NULL, 0);
-	if (ret == -1) {
+	if (ret > REG_NOMATCH) {
 		__regex_perror("regexec", re_ldso, ret);
 		return 0;
 	}
@@ -231,7 +231,7 @@ static int __is_lib(const char *path)
 		return 0;
 
 	ret = regexec(re_lib, path, 0, NULL, 0);
-	if (ret == -1) {
+	if (ret > REG_NOMATCH) {
 		__regex_perror("regexec", re_lib, ret);
 		return 0;
 	}
@@ -338,7 +338,7 @@ static int __ldso_preload_needed_callback(const char *needed, void *user)
 	ret = __is_lib(__basename(buf));
 	if (ret == 0 && !__is_ldso(__basename(buf)))
 		__warning("%s: ignoring non-library!\n", __basename(buf));
-	if (ret == -1 || ret == 0)
+	if (ret == 0)
 		return 0;
 
 	/* The shared object is already in the buffer */
@@ -3384,7 +3384,7 @@ static int __ld_trace_loader_objects_needed_callback(const char *so,
 	ret = __is_lib(__basename(buf));
 	if (ret == 0 && !__is_ldso(__basename(buf)))
 		__warning("%s: ignoring non-library!\n", __basename(buf));
-	if (ret == -1 || ret == 0)
+	if (ret == 0)
 		return 0;
 
 	/* The shared object is already in the buffer */

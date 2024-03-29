@@ -258,6 +258,8 @@ hidden int __can_exec(const char *path)
 	if (ret == -1)
 		return -1;
 	if (ret == 1)
+		__notice("%s: SUID executable\n", path);
+	if (ret == 1)
 		return 0;
 
 	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
@@ -268,6 +270,8 @@ hidden int __can_exec(const char *path)
 	 * Only ELF shared object and interpreter-script are supported.
 	 */
 	ret = __fcan_exec(fd);
+	if (ret == 0)
+		__notice("%s: static-pie executable\n", path);
 
 	__close(fd);
 

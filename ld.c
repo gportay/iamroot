@@ -200,7 +200,12 @@ int main(int argc, char * argv[])
 		}
 	}
 
+#ifdef __FreeBSD__
+	execvP(program, _getenv("PATH"), argv);
+	perror("execvP");
+#else
 	execvpe(program, &argv[optind], __environ);
 	perror("execvpe");
+#endif
 	exit(127);
 }

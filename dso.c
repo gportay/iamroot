@@ -3258,11 +3258,9 @@ hidden int __ldso(const char *path, char * const argv[], char *interparg[],
 	}
 
 	/* Add path to binary (in chroot, first positional argument) */
-	if (shift) {
-		interparg[i] = (char *)path;
-		i += j;
-		interparg[i] = NULL; /* ensure NULL-terminated */
-	}
+	interparg[i] = (char *)path;
+	i += j;
+	interparg[i] = NULL; /* ensure NULL-terminated */
 
 	ret = i;
 

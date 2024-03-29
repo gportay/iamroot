@@ -1856,7 +1856,7 @@ ubuntu-support: support/amd64-ubuntu-jammy-rootfs.txt
 ubuntu-support: support/amd64-ubuntu-kinetic-rootfs.txt
 ubuntu-support: support/amd64-ubuntu-lunar-rootfs.txt
 ubuntu-support: support/amd64-ubuntu-mantic-rootfs.txt
-ubuntu-support: support/amd64-ubuntu-noble-rootfs.txt
+fixme-support: support/amd64-ubuntu-noble-rootfs.txt
 
 log: ubuntu-log
 
@@ -1872,7 +1872,7 @@ ubuntu-log: amd64-ubuntu-jammy-rootfs.log
 ubuntu-log: amd64-ubuntu-kinetic-rootfs.log
 ubuntu-log: amd64-ubuntu-lunar-rootfs.log
 ubuntu-log: amd64-ubuntu-mantic-rootfs.log
-ubuntu-log: amd64-ubuntu-noble-rootfs.log
+fixme-log: amd64-ubuntu-noble-rootfs.log
 
 extra-support: devuan-support
 

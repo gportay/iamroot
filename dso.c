@@ -2332,6 +2332,23 @@ static int __felf_interp_ldso_abi(int fd, Elf64_Ehdr *ehdr, char *interp,
 	return __ld_ldso_abi(interp, ldso, abi);
 }
 
+static int __elf_interp_ldso_abi(const char *path, Elf64_Ehdr *ehdr,
+				 char *interp, size_t interpsiz, char *ldso,
+				 int *abi)
+{
+	int fd, ret;
+
+	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
+	if (fd == -1)
+		return -1;
+
+	ret = __felf_interp_ldso_abi(fd, ehdr, interp, interpsiz, ldso, abi);
+
+	__close(fd);
+
+	return ret;
+}
+
 hidden int __preload_libiamroot()
 {
 	char buf[PATH_MAX], hashbang[NAME_MAX], interp[NAME_MAX],
@@ -2979,7 +2996,7 @@ hidden int __ldso(const char *path, char * const argv[], char *interparg[],
 	char *argv0 = NULL, *inhibit_rpath = NULL, *ld_library_path = NULL,
 	     *ld_preload = NULL;
 	char pt_interp[NAME_MAX], ldso[NAME_MAX];
-	int fd, abi = 0, err = -1, ret = -1;
+	int abi = 0, err = -1;
 	char *interp = NULL;
 	off_t off = offset;
 	char * const *arg;
@@ -2987,19 +3004,14 @@ hidden int __ldso(const char *path, char * const argv[], char *interparg[],
 	ssize_t siz;
 	(void)argv;
 
-	/* Open the executable file... */
-	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
-	if (fd == -1)
-		return -1;
-
 	/*
-	 * ... and get the dynamic loader stored in the .interp section of the
-	 * ELF program, its LDSO-name and its ABI number
+	 * Get the dynamic loader stored in the .interp section of the ELF
+	 * program, its LDSO-name and its ABI number
 	 */
-	ret = __felf_interp_ldso_abi(fd, &ehdr, pt_interp, sizeof(pt_interp),
-				     ldso, &abi);
-	if (ret == -1)
-		goto close;
+        err = __elf_interp_ldso_abi(path, &ehdr, pt_interp, sizeof(pt_interp),
+				    ldso, &abi);
+	if (err == -1)
+		return -1;
 
 	/*
 	 * The dynamic load has to preload its libiamroot.so library, and
@@ -3020,15 +3032,15 @@ hidden int __ldso(const char *path, char * const argv[], char *interparg[],
 		has_inhibit_cache =
 				__ld_linux_has_inhibit_cache_option(pt_interp);
 		if (has_inhibit_cache == -1)
-			goto close;
+			return -1;
 
 		has_argv0 = __ld_linux_has_argv0_option(pt_interp);
 		if (has_argv0 == -1)
-			goto close;
+			return -1;
 
 		has_preload = __ld_linux_has_preload_option(pt_interp);
 		if (has_preload == -1)
-			goto close;
+			return -1;
 
 		has_library_path = 1;
 	}
@@ -3132,7 +3144,7 @@ hidden int __ldso(const char *path, char * const argv[], char *interparg[],
 
 	siz = __ld_preload(&ehdr, ldso, abi, path, buf, bufsiz, off);
 	if (siz == -1)
-		goto close;
+		return -1;
 	if (siz > 0) {
 		ld_preload = buf+off;
 		off += siz+1; /* NULL-terminated */
@@ -3140,7 +3152,7 @@ hidden int __ldso(const char *path, char * const argv[], char *interparg[],
 
 	siz = __ld_library_path(path, buf, bufsiz, off);
 	if (siz == -1)
-		goto close;
+		return -1;
 	if (siz > 0) {
 		ld_library_path = buf+off;
 		off += siz+1; /* NULL-terminated */
@@ -3149,7 +3161,7 @@ hidden int __ldso(const char *path, char * const argv[], char *interparg[],
 	if (has_inhibit_rpath) {
 		siz = __inhibit_rpath(buf, bufsiz, off);
 		if (siz == -1)
-			goto close;
+			return -1;
 		if (siz > 0) {
 			inhibit_rpath = buf+off;
 			off += siz+1; /* NULL-terminated */
@@ -3162,15 +3174,15 @@ hidden int __ldso(const char *path, char * const argv[], char *interparg[],
 
 	err = _unsetenv("LD_PRELOAD");
 	if (err == -1)
-		goto close;
+		return -1;
 
 	err = _unsetenv("LD_LIBRARY_PATH");
 	if (err == -1)
-		goto close;
+		return -1;
 
 	siz = path_resolution(AT_FDCWD, pt_interp, &buf[off], bufsiz-off, 0);
 	if (siz == -1)
-		goto close;
+		return -1;
 	interp = &buf[off];
 	off += siz+1; /* NULL-terminated */
 
@@ -3230,7 +3242,7 @@ hidden int __ldso(const char *path, char * const argv[], char *interparg[],
 	} else if (ld_preload) {
 		err = _setenv("LD_PRELOAD", ld_preload, 1);
 		if (err == -1)
-			goto close;
+			return -1;
 	}
 
 	/*
@@ -3247,7 +3259,7 @@ hidden int __ldso(const char *path, char * const argv[], char *interparg[],
 	} else if (ld_library_path) {
 		err = _setenv("LD_LIBRARY_PATH", ld_library_path, 1);
 		if (err == -1)
-			goto close;
+			return -1;
 	}
 
 	/* Add --inhibit-rpath (chroot) */
@@ -3272,7 +3284,7 @@ hidden int __ldso(const char *path, char * const argv[], char *interparg[],
 		 */
 		err = _setenv("argv0", argv0, 1);
 		if (err == -1)
-			goto close;
+			return -1;
 	}
 
 	/* Add path to binary (in chroot, first positional argument) */
@@ -3280,12 +3292,7 @@ hidden int __ldso(const char *path, char * const argv[], char *interparg[],
 	i += j;
 	interparg[i] = NULL; /* ensure NULL-terminated */
 
-	ret = i;
-
-close:
-	__close(fd);
-
-	return ret;
+	return i;
 }
 
 hidden ssize_t __dl_access(const char *path, int mode, char *buf,

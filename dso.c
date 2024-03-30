@@ -2297,6 +2297,7 @@ hidden int __is_preloading_libiamroot()
 	if (!path)
 		return -1;
 
+	/* Get the interpreter if executable is an interpreter-script */
 	siz = __interpreter_script_hashbang(path, hashbang, sizeof(hashbang),
 					    0);
 	if ((siz == -1) && (errno != ENOEXEC))

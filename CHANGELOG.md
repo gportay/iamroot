@@ -36,6 +36,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   chroot'ed
 - Output a warning if a using the default library
 - Output a notice if exec'ing a SUID or static-pie executable
+- Preload the iamroot library not using `IAMROOT_LIB` if `LD_PRELOAD` is unset
+  and not in a chroot'ed environment
 
 ### Fixed
 

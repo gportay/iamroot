@@ -122,7 +122,7 @@ static char *__getld_library_path()
 	return curr;
 }
 
-hidden int __setld_preload(const char *preload, int overwrite)
+static int __setld_preload(const char *preload, int overwrite)
 {
 	char buf[PATH_MAX];
 	char *curr;
@@ -265,6 +265,28 @@ static int __is_in_path_callback(const char *path, void *user)
 static int __is_in_path(const char *pathname, const char *path)
 {
 	return __path_iterate(path, __is_in_path_callback, (void *)pathname);
+}
+
+static int __is_preloading_so(const char *so)
+{
+	const char *ld_preload;
+
+	ld_preload = _getenv("LD_PRELOAD");
+	if (!ld_preload)
+		return 0;
+
+	return __is_in_path(so, ld_preload);
+}
+
+static int __preload_so(const char *so)
+{
+	int err;
+
+	err = __is_preloading_so(so);
+	if (err == -1)
+		return -1;
+
+	return __setld_preload(so, 1);
 }
 
 /*
@@ -2278,19 +2300,46 @@ exit:
 	return __set_errno(errno_save, ret);
 }
 
-hidden int __is_preloading_libiamroot()
+static int __felf_interp_ldso_abi(int fd, Elf64_Ehdr *ehdr, char *interp,
+				  size_t interpsiz, char *ldso, int *abi)
+{
+	ssize_t siz;
+
+	/*
+	 * According to execve(2):
+	 *
+	 * If the executable is a dynamically linked ELF executable, the
+	 * interpreter named in the PT_INTERP segment is used to load the
+	 * needed shared objects. This interpreter is typically
+	 * /lib/ld-linux.so.2 for binaries linked with glibc (see
+	 * ld-linux.so(8)).
+	 */
+
+	/* Get the ELF header... */
+	siz = __felf_header(fd, ehdr);
+	if (siz == -1)
+		return -1;
+
+	/*
+	 * ... get the dynamic loader stored in the .interp section of the ELF
+	 * linked program...
+	 */
+	siz = __felf_interp(fd, interp, interpsiz);
+	if (siz < 1)
+		return -1;
+
+	/* ... and get its LDSO-name and its ABI number */
+	return __ld_ldso_abi(interp, ldso, abi);
+}
+
+hidden int __preload_libiamroot()
 {
 	char buf[PATH_MAX], hashbang[NAME_MAX], interp[NAME_MAX],
 	     ldso[NAME_MAX];
-	const char *ld_preload, *path;
 	int fd, abi = -1, ret = -1;
+	const char *path;
 	Elf64_Ehdr ehdr;
 	ssize_t siz;
-
-	/* Is LD_PRELOAD set? */
-	ld_preload = _getenv("LD_PRELOAD");
-	if (!ld_preload)
-		return 0;
 
 	/* Get the executable */
 	path = __execfn();
@@ -2310,21 +2359,12 @@ hidden int __is_preloading_libiamroot()
 	if (fd == -1)
 		return -1;
 
-	/* ... get the ELF header... */
-	siz = __felf_header(fd, &ehdr);
-	if (siz == -1)
-		goto close;
-
 	/*
-	 * ... get the dynamic loader stored in the .interp section of the ELF
-	 * linked program...
+	 * Get the dynamic loader stored in the .interp section of the ELF
+	 * program, its LDSO-name and its ABI number
 	 */
-	siz = __felf_interp(fd, interp, sizeof(interp));
-	if (siz < 1)
-		goto close;
-
-	/* ... and get its LDSO-name and its ABI number */
-	ret = __ld_ldso_abi(interp, ldso, &abi);
+	ret = __felf_interp_ldso_abi(fd, &ehdr, interp, sizeof(interp), ldso,
+				     &abi);
 	if (ret == -1)
 		goto close;
 
@@ -2333,13 +2373,11 @@ hidden int __is_preloading_libiamroot()
 	if (siz == -1)
 		goto close;
 
-	/* Search for the iamroot library in LD_PRELOAD */
-	ret = __is_in_path(buf, ld_preload ?: "");
+	/* Preload library if not preloaded */
+	ret = __preload_so(buf);
 	if (ret == -1)
 		goto close;
 	if (ret == 0)
-		ret = __is_in_path(__xstr(PREFIX)"/lib/iamroot/libiamroot.so",
-				   ld_preload ?: "");
 
 close:
 	__close(fd);

@@ -2301,12 +2301,9 @@ hidden int __is_preloading_libiamroot()
 					    0);
 	if ((siz == -1) && (errno != ENOEXEC))
 		return -1;
-	if (siz < 1)
-		goto open;
+	if (siz > 0)
+		path = hashbang;
 
-	path = hashbang;
-
-open:
 	/* Open the executable file... */
 	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
 	if (fd == -1)

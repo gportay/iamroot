@@ -2987,36 +2987,18 @@ hidden int __ldso(const char *path, char * const argv[], char *interparg[],
 	ssize_t siz;
 	(void)argv;
 
-	/*
-	 * According to execve(2):
-	 *
-	 * If the executable is a dynamically linked ELF executable, the
-	 * interpreter named in the PT_INTERP segment is used to load the
-	 * needed shared objects. This interpreter is typically
-	 * /lib/ld-linux.so.2 for binaries linked with glibc (see
-	 * ld-linux.so(8)).
-	 */
 	/* Open the executable file... */
 	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
 	if (fd == -1)
 		return -1;
 
-	/* ... get the ELF header... */
-	siz = __felf_header(fd, &ehdr);
-	if (siz == -1)
-		goto close;
-
 	/*
-	 * ... get the dynamic loader stored in the .interp section of the ELF
-	 * linked program...
+	 * ... and get the dynamic loader stored in the .interp section of the
+	 * ELF program, its LDSO-name and its ABI number
 	 */
-	siz = __felf_interp(fd, pt_interp, sizeof(pt_interp));
-	if (siz < 1)
-		goto close;
-
-	/* ... and get its LDSO-name and its ABI number */
-	err = __ld_ldso_abi(pt_interp, ldso, &abi);
-	if (err == -1)
+	ret = __felf_interp_ldso_abi(fd, &ehdr, pt_interp, sizeof(pt_interp),
+				     ldso, &abi);
+	if (ret == -1)
 		goto close;
 
 	/*

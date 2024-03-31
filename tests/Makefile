@@ -331,9 +331,9 @@ endif
 	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                test-freopen              /etc/group               r
 ifneq ($(OS),Linux)
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                                                                            test-catopen              "rootfs/usr/lib/nls/msg/$$LANG/test.cat" 0
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                test-catopen              "/usr/lib/nls/msg/$$LANG/test.cat"       0
-	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                              test-catopen              test.cat                                 0
-	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                test-catopen              test.cat                                 0
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs       test-catopen              "/usr/lib/nls/msg/$$LANG/test.cat"       0
+	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin NLSPATH=$(CURDIR)/rootfs/usr/lib/nls/msg/%L/%N                                         test-catopen              test.cat                                 0
+	cd rootfs/ && env LD_PRELOAD=$(IAMROOT_LIB) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs       test-catopen              test.cat                                 0
 endif
 ifeq ($(OS),FreeBSD)
 	env LD_PRELOAD=$(IAMROOT_LIB) PATH=$(CURDIR)/rootfs/usr/bin                                                                                            test-close_range 3 3 0                                                     2>&1 | tee /dev/stderr | grep -q '^stdout$$'

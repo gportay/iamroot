@@ -77,7 +77,7 @@ static uint64_t __bswap_64__(uint64_t __x)
 
 static ssize_t __getld_library_path(char *buf, size_t bufsiz, off_t offset)
 {
-	char *curr, *prev;
+	char *curr, *prev, *s;
 
 	/* LD_LIBRARY_PATH is unset; return NULL directly! */
 	curr = _getenv("LD_LIBRARY_PATH");
@@ -113,18 +113,36 @@ static ssize_t __getld_library_path(char *buf, size_t bufsiz, off_t offset)
 	/*
 	 * Both values are differents; i.e. ld.so does not have --library-path,
 	 * and LD_LIBRARY_PATH **WAS** touched!
-	 *
-	 * Do nothing for now; return LD_LIBRARY_PATH's value.
 	 */
+
+	/*
+	 * ld_library_path is **NOT** a substring of LD_LIBRARY_PATH; i.e it
+	 * has reset!
+	 *
+	 * Return LD_LIBRARY_PATH's value.
+	 */
+	s = strstr(curr, prev);
+	if (!s) {
+		_strncpy(buf+offset, curr, bufsiz-offset);
+		goto exit;
+	}
 
 	/*
 	 * ld_library_path is a substring of LD_LIBRARY_PATH; i.e. it has been
 	 * touched!
 	 */
-	if (strstr(curr, prev))
-		__warning("LD_LIBRARY_PATH: '%s' contains '%s'\n", curr, prev);
 
-	/* TODO: Strip off ld_library_path from LD_LIBRARY_PATH! */
+	/* Strip leading ld_library_path! */
+	if (s == curr) {
+		size_t len;
+
+		len = __strlen(prev);
+		_strncpy(buf+offset, curr+len, bufsiz-offset);
+		goto exit;
+	}
+
+	/* Strip off ld_library_path from LD_LIBRARY_PATH! */
+	__notice("LD_LIBRARY_PATH: '%s' contains '%s'\n", curr, prev);
 	_strncpy(buf+offset, curr, bufsiz-offset);
 
 exit:

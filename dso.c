@@ -75,14 +75,16 @@ static uint64_t __bswap_64__(uint64_t __x)
 	return (__bswap_32__(__x)+0ULL)<<32 | __bswap_32__(__x>>32);
 }
 
-static char *__getld_library_path()
+static ssize_t __getld_library_path(char *buf, size_t bufsiz, off_t offset)
 {
 	char *curr, *prev;
 
 	/* LD_LIBRARY_PATH is unset; return NULL directly! */
 	curr = _getenv("LD_LIBRARY_PATH");
-	if (!curr)
-		return NULL;
+	if (!curr) {
+		buf[offset] = 0;
+		goto exit;
+	}
 
 	/*
 	 * ld_library_path is unset; i.e. ld.so has --library-path or bootstrap
@@ -91,18 +93,22 @@ static char *__getld_library_path()
 	 * Return LD_LIBRARY_PATH's value.
 	 */
 	prev = _getenv("ld_library_path");
-	if (!prev)
-		return curr;
+	if (!prev) {
+		_strncpy(buf+offset, curr, bufsiz-offset);
+		goto exit;
+	}
 
 	/*
 	 * Both values are identicals; i.e. ld.so does not have --library-path,
 	 * and LD_LIBRARY_PATH is left untouched; it is "empty" with no initial
 	 * value!
 	 *
-	 * Return NULL.
+	 * Return empty string.
 	 */
-	if (streq(curr, prev))
-		return NULL;
+	if (streq(curr, prev)) {
+		buf[offset] = 0;
+		goto exit;
+	}
 
 	/*
 	 * Both values are differents; i.e. ld.so does not have --library-path,
@@ -119,7 +125,10 @@ static char *__getld_library_path()
 		__warning("LD_LIBRARY_PATH: '%s' contains '%s'\n", curr, prev);
 
 	/* TODO: Strip off ld_library_path from LD_LIBRARY_PATH! */
-	return curr;
+	_strncpy(buf+offset, curr, bufsiz-offset);
+
+exit:
+	return strnlen(buf+offset, bufsiz-offset);;
 }
 
 static int __setld_preload(const char *preload, int overwrite)
@@ -737,8 +746,15 @@ static int __ld_open_needed(const char *path, int flags, const char *needed_by)
 		}
 	}
 
-	if (!__secure_execution_mode())
-		ld_library_path = __getld_library_path();
+	if (!__secure_execution_mode()) {
+		siz = __getld_library_path(tmp, sizeof(tmp), off);
+		if (siz == -1)
+			return -1;
+		if (siz > 0) {
+			ld_library_path = &tmp[off];
+			off += siz+1; /* NULL-terminated */
+		}
+	}
 
 	siz = __elf_deflib(path, tmp, sizeof(tmp), off);
 	if (siz == -1)
@@ -2558,10 +2574,10 @@ static int __secure_execution_mode()
 static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsiz,
 			     off_t offset)
 {
-	char *ld_library_path, *str;
 	int err, has_runpath;
 	char tmp[PATH_MAX];
 	uint32_t flags_1;
+	char *str;
 
 	buf[offset] = 0;
 
@@ -2621,9 +2637,12 @@ static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsiz,
 	 * executable is being run in secure-execution mode (see below), in
 	 * which case this variable is ignored.
 	 */
-	ld_library_path = __getld_library_path();
-	if (ld_library_path && *ld_library_path && !__secure_execution_mode()) {
-		str = __path_strncat(buf+offset, ld_library_path, bufsiz-offset);
+	if (!__secure_execution_mode()) {
+		err = __getld_library_path(tmp, sizeof(tmp), 0);
+		if (err == -1)
+			return -1;
+
+		str = __path_strncat(buf+offset, tmp, bufsiz-offset);
 		if (!str)
 			return -1;
 	}
@@ -3348,8 +3367,15 @@ hidden ssize_t __dl_access(const char *path, int mode, char *buf,
 		}
 	}
 
-	if (!__secure_execution_mode())
-		ld_library_path = __getld_library_path();
+	if (!__secure_execution_mode()) {
+		siz = __getld_library_path(tmp, sizeof(tmp), off);
+		if (siz == -1)
+			return -1;
+		if (siz > 0) {
+			ld_library_path = &tmp[off];
+			off += siz+1; /* NULL-terminated */
+		}
+	}
 
 	siz = __elf_deflib(execfn, tmp, sizeof(tmp), off);
 	if (siz == -1)
@@ -3535,8 +3561,15 @@ static int __ld_trace_loader_objects_executable(const char *path)
 		}
 	}
 
-	if (!__secure_execution_mode())
-		ld_library_path = __getld_library_path();
+	if (!__secure_execution_mode()) {
+		siz = __getld_library_path(tmp, sizeof(tmp), off);
+		if (siz == -1)
+			return -1;
+		if (siz > 0) {
+			ld_library_path = &tmp[off];
+			off += siz+1; /* NULL-terminated */
+		}
+	}
 
 	siz = __elf_deflib(path, tmp, sizeof(tmp), off);
 	if (siz == -1)

@@ -322,10 +322,10 @@ static int __variable_has_dynamic_string_tokens(const char *value)
 }
 
 static ssize_t __elf_needed(const char *, char *, size_t);
-static ssize_t __elf_rpath(const char *, char *, size_t);
-static ssize_t __elf_runpath(const char *, char *, size_t);
+static ssize_t __elf_rpath(const char *, char *, size_t, off_t);
+static ssize_t __elf_runpath(const char *, char *, size_t, off_t);
 static int __elf_flags_1(const char *, uint32_t *);
-static ssize_t __elf_deflib(const char *, char *, size_t);
+static ssize_t __elf_deflib(const char *, char *, size_t, off_t);
 
 static int __ldso_preload_needed(const char *, const char *, char *, size_t,
 				 off_t);
@@ -701,11 +701,11 @@ static int __ld_open_needed_callback(const char *needed,
 
 static int __ld_open_needed(const char *path, int flags, const char *needed_by)
 {
-	char *rpath, *runpath, *ld_library_path;
+	char *ld_library_path, *deflib = NULL, *rpath = NULL, *runpath = NULL;
 	struct __ld_open_needed_context ctx;
-	char deflib[PATH_MAX];
 	char tmp[PATH_MAX];
 	uint32_t flags_1;
+	off_t off = 0;
 	ssize_t siz;
 	int ret;
 
@@ -718,28 +718,35 @@ static int __ld_open_needed(const char *path, int flags, const char *needed_by)
 	 * Get the DT_RPATH, DT_RUNPATH, LD_LIBRARY_PATH, DT_FLAGS_1, and the
 	 * default library path
 	 */
-	siz = __elf_runpath(path, tmp, sizeof(tmp));
+	siz = __elf_runpath(path, tmp, sizeof(tmp), off);
 	if (siz == -1)
 		return -1;
+	if (siz > 0) {
+		runpath = &tmp[off];
+		off += siz+1; /* NULL-terminated */
+	}
 
-	runpath = siz > 0 ? tmp : NULL;
-	if (runpath) {
-		rpath = NULL; /* ignore DT_RPATH */
-	} else {
-		siz = __elf_rpath(path, tmp, sizeof(tmp));
+	if (!runpath) {
+		siz = __elf_rpath(path, tmp, sizeof(tmp), off);
 		if (siz == -1)
 			return -1;
-
-		rpath = siz > 0 ? tmp : NULL;
+		if (siz > 0) {
+			rpath = &tmp[off];
+			off += siz+1; /* NULL-terminated */
+		}
 	}
 
 	ld_library_path = __getld_library_path();
 	if (__secure_execution_mode())
 		ld_library_path = NULL;
 
-	siz = __elf_deflib(path, deflib, sizeof(deflib));
+	siz = __elf_deflib(path, tmp, sizeof(tmp), off);
 	if (siz == -1)
 		return -1;
+	if (siz > 0) {
+		deflib = &tmp[off];
+		off += siz+1; /* NULL-terminated */
+	}
 
 	ret = __elf_flags_1(path, &flags_1);
 	if (ret == -1)
@@ -2570,7 +2577,7 @@ static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsiz,
 	if (err == -1)
 		return -1;
 	if (!(flags_1 & DF_1_NODEFLIB)) {
-		err = __elf_deflib(path, tmp, sizeof(tmp));
+		err = __elf_deflib(path, tmp, sizeof(tmp), 0);
 		if (err == -1)
 			return -1;
 
@@ -2598,7 +2605,7 @@ static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsiz,
 	 * unlike DT_RPATH, which is applied to searches for all children in
 	 * the dependency tree.
 	 */
-	err = __elf_runpath(path, tmp, sizeof(tmp));
+	err = __elf_runpath(path, tmp, sizeof(tmp), 0);
 	if (err == -1)
 		return -1;
 
@@ -2627,7 +2634,7 @@ static ssize_t __ld_lib_path(const char *path, char *buf, size_t bufsiz,
 	 * exist. Use of DT_RPATH is deprecated.
 	 */
 	if (!has_runpath) {
-		err = __elf_rpath(path, tmp, sizeof(tmp));
+		err = __elf_rpath(path, tmp, sizeof(tmp), 0);
 		if (err == -1)
 			return -1;
 
@@ -2770,24 +2777,26 @@ static ssize_t __elf_needed(const char *path, char *buf, size_t bufsiz)
 	return ret;
 }
 
-static ssize_t __felf_rpath(int fd, char *buf, size_t bufsiz)
+static ssize_t __felf_rpath(int fd, char *buf, size_t bufsiz, off_t offset)
 {
 	int err, n;
 
-	*buf = 0;
-	err = __elf_iterate_shared_object(fd, DT_RPATH, __path_callback, buf);
+	buf[offset] = 0;
+	err = __elf_iterate_shared_object(fd, DT_RPATH, __path_callback,
+					  buf+offset);
 	if (err == -1)
 		return -1;
 
-	n = __variable_has_dynamic_string_tokens(buf);
+	n = __variable_has_dynamic_string_tokens(buf+offset);
 	if (n)
 		__warning("%s: RPATH has dynamic %i string token(s): %s\n",
-			  __fpath(fd), n, buf);
+			  __fpath(fd), n, buf+offset);
 
-	return strnlen(buf, bufsiz);
+	return strnlen(buf+offset, bufsiz-offset);
 }
 
-static ssize_t __elf_rpath(const char *path, char *buf, size_t bufsiz)
+static ssize_t __elf_rpath(const char *path, char *buf, size_t bufsiz,
+			   off_t offset)
 {
 	ssize_t ret;
 	int fd;
@@ -2796,32 +2805,33 @@ static ssize_t __elf_rpath(const char *path, char *buf, size_t bufsiz)
 	if (fd == -1)
 		return -1;
 
-	ret = __felf_rpath(fd, buf, bufsiz);
+	ret = __felf_rpath(fd, buf, bufsiz, offset);
 
 	__close(fd);
 
 	return ret;
 }
 
-static ssize_t __felf_runpath(int fd, char *buf, size_t bufsiz)
+static ssize_t __felf_runpath(int fd, char *buf, size_t bufsiz, off_t offset)
 {
 	int err, n;
 
-	*buf = 0;
+	buf[offset] = 0;
 	err = __elf_iterate_shared_object(fd, DT_RUNPATH, __path_callback,
-					  buf);
+					  buf+offset);
 	if (err == -1)
 		return -1;
 
-	n = __variable_has_dynamic_string_tokens(buf);
+	n = __variable_has_dynamic_string_tokens(buf+offset);
 	if (n)
 		__warning("%s: RUNPATH has dynamic %i string token(s): %s\n",
-			  __fpath(fd), n, buf);
+			  __fpath(fd), n, buf+offset);
 
-	return strnlen(buf, bufsiz);
+	return strnlen(buf+offset, bufsiz-offset);
 }
 
-static ssize_t __elf_runpath(const char *path, char *buf, size_t bufsiz)
+static ssize_t __elf_runpath(const char *path, char *buf, size_t bufsiz,
+			     off_t offset)
 {
 	ssize_t ret;
 	int fd;
@@ -2830,7 +2840,7 @@ static ssize_t __elf_runpath(const char *path, char *buf, size_t bufsiz)
 	if (fd == -1)
 		return -1;
 
-	ret = __felf_runpath(fd, buf, bufsiz);
+	ret = __felf_runpath(fd, buf, bufsiz, offset);
 
 	__close(fd);
 
@@ -2903,7 +2913,7 @@ static ssize_t __getld_linux_so(int fd, char *buf, size_t bufsiz)
 	return strnlen(buf, bufsiz);
 }
 
-static ssize_t __felf_deflib(int fd, char *buf, size_t bufsiz)
+static ssize_t __felf_deflib(int fd, char *buf, size_t bufsiz, off_t offset)
 {
 	const int errno_save = errno;
 	char interp[NAME_MAX];
@@ -2961,12 +2971,13 @@ deflib:
 	if (!deflib)
 		return -1;
 
-	_strncpy(buf, deflib, bufsiz);
+	_strncpy(buf+offset, deflib, bufsiz-offset);
 
-	return strnlen(buf, bufsiz);
+	return strnlen(buf+offset, bufsiz-offset);
 }
 
-static ssize_t __elf_deflib(const char *path, char *buf, size_t bufsiz)
+static ssize_t __elf_deflib(const char *path, char *buf, size_t bufsiz,
+			    off_t offset)
 {
 	ssize_t ret;
 	int fd;
@@ -2975,7 +2986,7 @@ static ssize_t __elf_deflib(const char *path, char *buf, size_t bufsiz)
 	if (fd == -1)
 		return -1;
 
-	ret = __felf_deflib(fd, buf, bufsiz);
+	ret = __felf_deflib(fd, buf, bufsiz, offset);
 
 	__close(fd);
 
@@ -3298,11 +3309,12 @@ hidden int __ldso(const char *path, char * const argv[], char *interparg[],
 hidden ssize_t __dl_access(const char *path, int mode, char *buf,
 			   size_t bufsiz)
 {
-	char *exec_rpath, *exec_runpath, *ld_library_path;
-	char deflib[PATH_MAX];
+	char *ld_library_path, *deflib = NULL, *exec_rpath = NULL,
+	     *exec_runpath = NULL;
 	char tmp[PATH_MAX];
 	const char *execfn;
 	uint32_t flags_1;
+	off_t off = 0;
 	ssize_t siz;
 	int err;
 
@@ -3318,28 +3330,35 @@ hidden ssize_t __dl_access(const char *path, int mode, char *buf,
 	 * Get the DT_RPATH, DT_RUNPATH, LD_LIBRARY_PATH, DT_FLAGS_1, and the
 	 * default library path
 	 */
-	siz = __elf_runpath(execfn, tmp, sizeof(tmp));
+	siz = __elf_runpath(execfn, tmp, sizeof(tmp), off);
 	if (siz == -1)
 		return -1;
+	if (siz > 0) {
+		exec_runpath = &tmp[off];
+		off += siz+1; /* NULL-terminated */
+	}
 
-	exec_runpath = siz > 0 ? tmp : NULL;
-	if (exec_runpath) {
-		exec_rpath = NULL; /* ignore DT_RPATH */
-	} else {
-		siz = __elf_rpath(execfn, tmp, sizeof(tmp));
+	if (!exec_runpath) {
+		siz = __elf_rpath(execfn, tmp, sizeof(tmp), off);
 		if (siz == -1)
 			return -1;
-
-		exec_rpath = siz > 0 ? tmp : NULL;
+		if (siz > 0) {
+			exec_rpath = &tmp[off];
+			off += siz+1; /* NULL-terminated */
+		}
 	}
 
 	ld_library_path = __getld_library_path();
 	if (__secure_execution_mode())
 		ld_library_path = NULL;
 
-	siz = __elf_deflib(execfn, deflib, sizeof(deflib));
+	siz = __elf_deflib(execfn, tmp, sizeof(tmp), off);
 	if (siz == -1)
 		return -1;
+	if (siz > 0) {
+		deflib = &tmp[off];
+		off += siz+1; /* NULL-terminated */
+	}
 
 	err = __elf_flags_1(execfn, &flags_1);
 	if (err == -1)
@@ -3479,46 +3498,55 @@ static int __ld_trace_loader_objects_needed(const char *path,
 
 static int __ld_trace_loader_objects_executable(const char *path)
 {
+	char *ld_library_path, *deflib = NULL, *exec_rpath = NULL,
+	     *exec_runpath = NULL;
 	struct __ld_trace_loader_objects_needed_context ctx;
-	char *exec_rpath, *exec_runpath, *ld_library_path;
 	const size_t map_start = 0;
 	char interp[NAME_MAX];
-	char deflib[PATH_MAX];
 	char ldso[NAME_MAX];
 	char buf[PATH_MAX];
 	char tmp[PATH_MAX];
 	int ret, abi = 0;
 	uint32_t flags_1;
 	FILE *f = stdout;
+	off_t off = 0;
 	ssize_t siz;
 
 	*buf = 0;
+
 	/*
 	 * Get the DT_RPATH, DT_RUNPATH, LD_LIBRARY_PATH, DT_FLAGS_1, and the
 	 * default library path
 	 */
-	siz = __elf_runpath(path, tmp, sizeof(tmp));
+	siz = __elf_runpath(path, tmp, sizeof(tmp), off);
 	if (siz == -1)
 		return -1;
+	if (siz > 0) {
+		exec_runpath = &tmp[off];
+		off += siz+1; /* NULL-terminated */
+	}
 
-	exec_runpath = siz > 0 ? tmp : NULL;
-	if (exec_runpath) {
-		exec_rpath = NULL; /* ignore DT_RPATH */
-	} else {
-		siz = __elf_rpath(path, tmp, sizeof(tmp));
+	if (!exec_runpath) {
+		siz = __elf_rpath(path, tmp, sizeof(tmp), off);
 		if (siz == -1)
 			return -1;
-
-		exec_rpath = siz > 0 ? tmp : NULL;
+		if (siz > 0) {
+			exec_rpath = &tmp[off];
+			off += siz+1; /* NULL-terminated */
+		}
 	}
 
 	ld_library_path = __getld_library_path();
 	if (__secure_execution_mode())
 		ld_library_path = NULL;
 
-	siz = __elf_deflib(path, deflib, sizeof(deflib));
+	siz = __elf_deflib(path, tmp, sizeof(tmp), off);
 	if (siz == -1)
 		return -1;
+	if (siz > 0) {
+		deflib = &tmp[off];
+		off += siz+1; /* NULL-terminated */
+	}
 
 	ret = __elf_flags_1(path, &flags_1);
 	if (ret == -1)

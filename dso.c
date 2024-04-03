@@ -335,6 +335,8 @@ static ssize_t __elf_rpath(const char *, char *, size_t, off_t);
 static ssize_t __elf_runpath(const char *, char *, size_t, off_t);
 static int __elf_flags_1(const char *, uint32_t *);
 static ssize_t __elf_deflib(const char *, char *, size_t, off_t);
+static int __elf_so_context(const char *, char **, char **, char **, char **,
+			    uint32_t *, char *, size_t, off_t);
 
 static int __ldso_preload_needed(const char *, const char *, char *, size_t,
 				 off_t);
@@ -710,13 +712,10 @@ static int __ld_open_needed_callback(const char *needed,
 
 static int __ld_open_needed(const char *path, int flags, const char *needed_by)
 {
-	char *deflib = NULL, *ld_library_path = NULL, *rpath = NULL,
-	     *runpath = NULL;
+	char *deflib, *ld_library_path, *rpath, *runpath;
 	struct __ld_open_needed_context ctx;
 	char tmp[PATH_MAX];
 	uint32_t flags_1;
-	off_t off = 0;
-	ssize_t siz;
 	int ret;
 
 	/* The shared object is already opened */
@@ -724,47 +723,9 @@ static int __ld_open_needed(const char *path, int flags, const char *needed_by)
 	if (ret == -1 || ret == 1)
 		return ret;
 
-	/*
-	 * Get the DT_RPATH, DT_RUNPATH, LD_LIBRARY_PATH, DT_FLAGS_1, and the
-	 * default library path
-	 */
-	siz = __elf_runpath(path, tmp, sizeof(tmp), off);
-	if (siz == -1)
-		return -1;
-	if (siz > 0) {
-		runpath = &tmp[off];
-		off += siz+1; /* NULL-terminated */
-	}
-
-	if (!runpath) {
-		siz = __elf_rpath(path, tmp, sizeof(tmp), off);
-		if (siz == -1)
-			return -1;
-		if (siz > 0) {
-			rpath = &tmp[off];
-			off += siz+1; /* NULL-terminated */
-		}
-	}
-
-	if (!__secure_execution_mode()) {
-		siz = __getld_library_path(tmp, sizeof(tmp), off);
-		if (siz == -1)
-			return -1;
-		if (siz > 0) {
-			ld_library_path = &tmp[off];
-			off += siz+1; /* NULL-terminated */
-		}
-	}
-
-	siz = __elf_deflib(path, tmp, sizeof(tmp), off);
-	if (siz == -1)
-		return -1;
-	if (siz > 0) {
-		deflib = &tmp[off];
-		off += siz+1; /* NULL-terminated */
-	}
-
-	ret = __elf_flags_1(path, &flags_1);
+	/* Get the ELF shared object context */
+	ret = __elf_so_context(path, &rpath, &ld_library_path, &runpath,
+			       &deflib, &flags_1, tmp, sizeof(tmp), 0);
 	if (ret == -1)
 		return -1;
 
@@ -3325,16 +3286,79 @@ hidden int __ldso(const char *path, char * const argv[], char *interparg[],
 	return i;
 }
 
+/*
+ * Get the DT_RPATH, DT_RUNPATH, LD_LIBRARY_PATH, DT_FLAGS_1, and the
+ * default library path.
+ */
+static int __elf_so_context(const char *path,
+			    char **rpath,
+			    char **ld_library_path,
+			    char **runpath,
+			    char **deflib,
+			    uint32_t *flags_1,
+			    char *buf,
+			    size_t bufsiz,
+			    off_t offset)
+{
+	off_t off = offset;
+	ssize_t siz;
+
+	if (!path || !rpath || !ld_library_path || !runpath || !deflib ||
+	    !flags_1 || !buf)
+		return __set_errno(EINVAL, -1);
+
+	*rpath = NULL;
+	*ld_library_path = NULL;
+	*runpath = NULL;
+	*deflib = NULL;
+	*flags_1 = 0;
+
+	siz = __elf_runpath(path, buf, bufsiz, off);
+	if (siz == -1)
+		return -1;
+	if (siz > 0) {
+		*runpath = buf+off;
+		off += siz+1; /* NULL-terminated */
+	}
+
+	if (!*runpath) {
+		siz = __elf_rpath(path, buf, bufsiz, off);
+		if (siz == -1)
+			return -1;
+		if (siz > 0) {
+			*rpath = buf+off;
+			off += siz+1; /* NULL-terminated */
+		}
+	}
+
+	if (!__secure_execution_mode()) {
+		siz = __getld_library_path(buf, bufsiz, off);
+		if (siz == -1)
+			return -1;
+		if (siz > 0) {
+			*ld_library_path = buf+off;
+			off += siz+1; /* NULL-terminated */
+		}
+	}
+
+	siz = __elf_deflib(path, buf, bufsiz, off);
+	if (siz == -1)
+		return -1;
+	if (siz > 0) {
+		*deflib = buf+off;
+		off += siz+1; /* NULL-terminated */
+	}
+
+	return __elf_flags_1(path, flags_1);
+}
+
 hidden ssize_t __dl_access(const char *path, int mode, char *buf,
 			   size_t bufsiz)
 {
-	char *deflib = NULL, *ld_library_path = NULL, *exec_rpath = NULL,
-	     *exec_runpath = NULL;
+	char *deflib, *ld_library_path, *exec_rpath, *exec_runpath;
 	char tmp[PATH_MAX];
 	const char *execfn;
 	uint32_t flags_1;
-	off_t off = 0;
-	ssize_t siz;
 	int err;
 
 	if (strchr(path, '/'))
@@ -3345,47 +3369,10 @@ hidden ssize_t __dl_access(const char *path, int mode, char *buf,
 	if (!execfn)
 		return -1;
 
-	/*
-	 * Get the DT_RPATH, DT_RUNPATH, LD_LIBRARY_PATH, DT_FLAGS_1, and the
-	 * default library path
-	 */
-	siz = __elf_runpath(execfn, tmp, sizeof(tmp), off);
-	if (siz == -1)
-		return -1;
-	if (siz > 0) {
-		exec_runpath = &tmp[off];
-		off += siz+1; /* NULL-terminated */
-	}
-
-	if (!exec_runpath) {
-		siz = __elf_rpath(execfn, tmp, sizeof(tmp), off);
-		if (siz == -1)
-			return -1;
-		if (siz > 0) {
-			exec_rpath = &tmp[off];
-			off += siz+1; /* NULL-terminated */
-		}
-	}
-
-	if (!__secure_execution_mode()) {
-		siz = __getld_library_path(tmp, sizeof(tmp), off);
-		if (siz == -1)
-			return -1;
-		if (siz > 0) {
-			ld_library_path = &tmp[off];
-			off += siz+1; /* NULL-terminated */
-		}
-	}
-
-	siz = __elf_deflib(execfn, tmp, sizeof(tmp), off);
-	if (siz == -1)
-		return -1;
-	if (siz > 0) {
-		deflib = &tmp[off];
-		off += siz+1; /* NULL-terminated */
-	}
-
-	err = __elf_flags_1(execfn, &flags_1);
+	/* Get the ELF shared object context */
+	err = __elf_so_context(execfn, &exec_rpath, &ld_library_path,
+			       &exec_runpath, &deflib, &flags_1, tmp,
+			       sizeof(tmp), 0);
 	if (err == -1)
 		return -1;
 
@@ -3523,8 +3510,7 @@ static int __ld_trace_loader_objects_needed(const char *path,
 
 static int __ld_trace_loader_objects_executable(const char *path)
 {
-	char *deflib = NULL, *exec_rpath = NULL, *exec_runpath = NULL,
-	     *ld_library_path = NULL;
+	char *deflib, *exec_rpath, *exec_runpath, *ld_library_path;
 	struct __ld_trace_loader_objects_needed_context ctx;
 	const size_t map_start = 0;
 	char interp[NAME_MAX];
@@ -3534,52 +3520,14 @@ static int __ld_trace_loader_objects_executable(const char *path)
 	int ret, abi = 0;
 	uint32_t flags_1;
 	FILE *f = stdout;
-	off_t off = 0;
 	ssize_t siz;
 
 	*buf = 0;
 
-	/*
-	 * Get the DT_RPATH, DT_RUNPATH, LD_LIBRARY_PATH, DT_FLAGS_1, and the
-	 * default library path
-	 */
-	siz = __elf_runpath(path, tmp, sizeof(tmp), off);
-	if (siz == -1)
-		return -1;
-	if (siz > 0) {
-		exec_runpath = &tmp[off];
-		off += siz+1; /* NULL-terminated */
-	}
-
-	if (!exec_runpath) {
-		siz = __elf_rpath(path, tmp, sizeof(tmp), off);
-		if (siz == -1)
-			return -1;
-		if (siz > 0) {
-			exec_rpath = &tmp[off];
-			off += siz+1; /* NULL-terminated */
-		}
-	}
-
-	if (!__secure_execution_mode()) {
-		siz = __getld_library_path(tmp, sizeof(tmp), off);
-		if (siz == -1)
-			return -1;
-		if (siz > 0) {
-			ld_library_path = &tmp[off];
-			off += siz+1; /* NULL-terminated */
-		}
-	}
-
-	siz = __elf_deflib(path, tmp, sizeof(tmp), off);
-	if (siz == -1)
-		return -1;
-	if (siz > 0) {
-		deflib = &tmp[off];
-		off += siz+1; /* NULL-terminated */
-	}
-
-	ret = __elf_flags_1(path, &flags_1);
+	/* Get the ELF shared object context */
+	ret = __elf_so_context(path, &exec_rpath, &ld_library_path,
+			       &exec_runpath, &deflib, &flags_1, tmp,
+			       sizeof(tmp), 0);
 	if (ret == -1)
 		return -1;
 

@@ -870,6 +870,42 @@ Created symlink /etc/systemd/system/multi-user.target.wants/auditd.service → /
   Running scriptlet: NetworkManager XXX/XXX
   Installing       : NetworkManager XXX/XXX
   Running scriptlet: NetworkManager XXX/XXX
+
+** (process:837478): WARNING **: 01:11:20.995: Failed to load shared library 'libgobject-2.0.so.0' referenced by the typelib: unknown dl-error
+
+** (process:837478): WARNING **: 01:11:20.996: Failed to load shared library 'libglib-2.0.so.0' referenced by the typelib: unknown dl-error
+Traceback (most recent call last):
+  File "/bin/firewall-cmd", line 24, in <module>
+    from gi.repository import GObject
+  File "<frozen importlib._bootstrap>", line 1354, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1325, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 915, in _load_unlocked
+  File "<frozen importlib._bootstrap>", line 813, in module_from_spec
+  File "/usr/lib64/python3.12/site-packages/gi/importer.py", line 146, in create_module
+    importlib.import_module('gi.repository.' + dep.split("-")[0])
+  File "/usr/lib64/python3.12/importlib/__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1381, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1354, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1325, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 915, in _load_unlocked
+  File "<frozen importlib._bootstrap>", line 813, in module_from_spec
+  File "/usr/lib64/python3.12/site-packages/gi/importer.py", line 147, in create_module
+    dynamic_module = load_overrides(introspection_module)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/site-packages/gi/overrides/__init__.py", line 118, in load_overrides
+    override_mod = importlib.import_module(override_package_name)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib64/python3.12/importlib/__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/site-packages/gi/overrides/GLib.py", line 37, in <module>
+    from gi import _option as option
+  File "/usr/lib64/python3.12/site-packages/gi/_option.py", line 40, in <module>
+    OPTION_CONTEXT_ERROR_QUARK = GLib.quark_to_string(GLib.option_error_quark())
+                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+gi._error.GError: g-invoke-error-quark: Could not locate g_option_error_quark: unknown dl-error (1)
 Created symlink /etc/systemd/system/multi-user.target.wants/NetworkManager.service → /usr/lib/systemd/system/NetworkManager.service.
 Created symlink /etc/systemd/system/dbus-org.freedesktop.nm-dispatcher.service → /usr/lib/systemd/system/NetworkManager-dispatcher.service.
 Created symlink /etc/systemd/system/network-online.target.wants/NetworkManager-wait-online.service → /usr/lib/systemd/system/NetworkManager-wait-online.service.

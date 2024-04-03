@@ -712,9 +712,9 @@ Created symlink /etc/systemd/system/multi-user.target.wants/auditd.service → /
 Running in chroot, ignoring request.
 Running in chroot, ignoring request.
 
-** (process:2930160): WARNING **: 18:15:46.746: Failed to load shared library 'libgobject-2.0.so.0' referenced by the typelib: unknown dl-error
+** (process:823798): WARNING **: 01:05:16.546: Failed to load shared library 'libgobject-2.0.so.0' referenced by the typelib: unknown dl-error
 
-** (process:2930160): WARNING **: 18:15:46.746: Failed to load shared library 'libglib-2.0.so.0' referenced by the typelib: unknown dl-error
+** (process:823798): WARNING **: 01:05:16.546: Failed to load shared library 'libglib-2.0.so.0' referenced by the typelib: unknown dl-error
 Traceback (most recent call last):
   File "/bin/firewall-cmd", line 24, in <module>
     from gi.repository import GObject

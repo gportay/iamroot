@@ -350,13 +350,9 @@ static int __variable_has_dynamic_string_tokens(const char *value)
 
 static ssize_t __elf_needed(const char *, char *, size_t);
 static ssize_t __felf_needed(int, char *, size_t);
-static ssize_t __elf_rpath(const char *, char *, size_t, off_t);
 static ssize_t __felf_rpath(int, char *, size_t, off_t);
-static ssize_t __elf_runpath(const char *, char *, size_t, off_t);
 static ssize_t __felf_runpath(int, char *, size_t, off_t);
-static int __elf_flags_1(const char *, uint32_t *);
 static int __felf_flags_1(int, uint32_t *);
-static ssize_t __elf_deflib(const char *, char *, size_t, off_t);
 static ssize_t __felf_deflib(int, char *, size_t, off_t);
 static int __elf_so_context(const char *, char **, char **, char **, char **,
 			    uint32_t *, char *, size_t, off_t);
@@ -2809,21 +2805,6 @@ static int __felf_flags_1(int fd, uint32_t *flags)
 					   flags);
 }
 
-static int __elf_flags_1(const char *path, uint32_t *flags)
-{
-	int fd, ret;
-
-	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
-	if (fd == -1)
-		return -1;
-
-	ret = __felf_flags_1(fd, flags);
-
-	__close(fd);
-
-	return ret;
-}
-
 static int __path_callback(const void *data, size_t datasiz, void *user)
 {
 	const char *path = (const char *)data;
@@ -2886,23 +2867,6 @@ static ssize_t __felf_rpath(int fd, char *buf, size_t bufsiz, off_t offset)
 	return strnlen(buf+offset, bufsiz-offset);
 }
 
-static ssize_t __elf_rpath(const char *path, char *buf, size_t bufsiz,
-			   off_t offset)
-{
-	ssize_t ret;
-	int fd;
-
-	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
-	if (fd == -1)
-		return -1;
-
-	ret = __felf_rpath(fd, buf, bufsiz, offset);
-
-	__close(fd);
-
-	return ret;
-}
-
 static ssize_t __felf_runpath(int fd, char *buf, size_t bufsiz, off_t offset)
 {
 	int err, n;
@@ -2919,23 +2883,6 @@ static ssize_t __felf_runpath(int fd, char *buf, size_t bufsiz, off_t offset)
 			  __fpath(fd), n, buf+offset);
 
 	return strnlen(buf+offset, bufsiz-offset);
-}
-
-static ssize_t __elf_runpath(const char *path, char *buf, size_t bufsiz,
-			     off_t offset)
-{
-	ssize_t ret;
-	int fd;
-
-	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
-	if (fd == -1)
-		return -1;
-
-	ret = __felf_runpath(fd, buf, bufsiz, offset);
-
-	__close(fd);
-
-	return ret;
 }
 
 static int __has_needed_callback(const char *needed, void *user)
@@ -3065,23 +3012,6 @@ deflib:
 	_strncpy(buf+offset, deflib, bufsiz-offset);
 
 	return strnlen(buf+offset, bufsiz-offset);
-}
-
-static ssize_t __elf_deflib(const char *path, char *buf, size_t bufsiz,
-			    off_t offset)
-{
-	ssize_t ret;
-	int fd;
-
-	fd = next_open(path, O_RDONLY | O_CLOEXEC, 0);
-	if (fd == -1)
-		return -1;
-
-	ret = __felf_deflib(fd, buf, bufsiz, offset);
-
-	__close(fd);
-
-	return ret;
 }
 
 static ssize_t __inhibit_rpath(char *buf, size_t bufsiz, off_t offset)

@@ -849,9 +849,9 @@ Created symlink /etc/systemd/system/multi-user.target.wants/auditd.service → /
   Installing       : NetworkManager XXX/XXX
   Running scriptlet: NetworkManager XXX/XXX
 
-** (process:2940028): WARNING **: 18:18:06.787: Failed to load shared library 'libgobject-2.0.so.0' referenced by the typelib: unknown dl-error
+** (process:832799): WARNING **: 01:08:18.312: Failed to load shared library 'libgobject-2.0.so.0' referenced by the typelib: unknown dl-error
 
-** (process:2940028): WARNING **: 18:18:06.787: Failed to load shared library 'libglib-2.0.so.0' referenced by the typelib: unknown dl-error
+** (process:832799): WARNING **: 01:08:18.312: Failed to load shared library 'libglib-2.0.so.0' referenced by the typelib: unknown dl-error
 Traceback (most recent call last):
   File "/bin/firewall-cmd", line 24, in <module>
     from gi.repository import GObject

@@ -701,7 +701,8 @@ static int __ld_open_needed_callback(const char *needed,
 
 static int __ld_open_needed(const char *path, int flags, const char *needed_by)
 {
-	char *ld_library_path, *deflib = NULL, *rpath = NULL, *runpath = NULL;
+	char *deflib = NULL, *ld_library_path = NULL, *rpath = NULL,
+	     *runpath = NULL;
 	struct __ld_open_needed_context ctx;
 	char tmp[PATH_MAX];
 	uint32_t flags_1;
@@ -736,9 +737,8 @@ static int __ld_open_needed(const char *path, int flags, const char *needed_by)
 		}
 	}
 
-	ld_library_path = __getld_library_path();
-	if (__secure_execution_mode())
-		ld_library_path = NULL;
+	if (!__secure_execution_mode())
+		ld_library_path = __getld_library_path();
 
 	siz = __elf_deflib(path, tmp, sizeof(tmp), off);
 	if (siz == -1)
@@ -3309,7 +3309,7 @@ hidden int __ldso(const char *path, char * const argv[], char *interparg[],
 hidden ssize_t __dl_access(const char *path, int mode, char *buf,
 			   size_t bufsiz)
 {
-	char *ld_library_path, *deflib = NULL, *exec_rpath = NULL,
+	char *deflib = NULL, *ld_library_path = NULL, *exec_rpath = NULL,
 	     *exec_runpath = NULL;
 	char tmp[PATH_MAX];
 	const char *execfn;
@@ -3348,9 +3348,8 @@ hidden ssize_t __dl_access(const char *path, int mode, char *buf,
 		}
 	}
 
-	ld_library_path = __getld_library_path();
-	if (__secure_execution_mode())
-		ld_library_path = NULL;
+	if (!__secure_execution_mode())
+		ld_library_path = __getld_library_path();
 
 	siz = __elf_deflib(execfn, tmp, sizeof(tmp), off);
 	if (siz == -1)
@@ -3498,8 +3497,8 @@ static int __ld_trace_loader_objects_needed(const char *path,
 
 static int __ld_trace_loader_objects_executable(const char *path)
 {
-	char *ld_library_path, *deflib = NULL, *exec_rpath = NULL,
-	     *exec_runpath = NULL;
+	char *deflib = NULL, *exec_rpath = NULL, *exec_runpath = NULL,
+	     *ld_library_path = NULL;
 	struct __ld_trace_loader_objects_needed_context ctx;
 	const size_t map_start = 0;
 	char interp[NAME_MAX];
@@ -3536,9 +3535,8 @@ static int __ld_trace_loader_objects_executable(const char *path)
 		}
 	}
 
-	ld_library_path = __getld_library_path();
-	if (__secure_execution_mode())
-		ld_library_path = NULL;
+	if (!__secure_execution_mode())
+		ld_library_path = __getld_library_path();
 
 	siz = __elf_deflib(path, tmp, sizeof(tmp), off);
 	if (siz == -1)

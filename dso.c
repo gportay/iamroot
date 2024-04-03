@@ -2394,9 +2394,6 @@ hidden int __preload_libiamroot()
 
 	/* Preload library if not preloaded */
 	ret = __preload_so(buf);
-	if (ret == -1)
-		goto close;
-	if (ret == 0)
 
 close:
 	__close(fd);

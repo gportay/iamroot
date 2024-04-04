@@ -39,7 +39,7 @@ $(O)-%/libiamroot.so: $(wildcard *.c) | $(O)-%
 $(O)-%:
 	mkdir $@
 
-openbsd-7.3-chroot: export PATH = /sbin:/usr/sbin:/bin:/usr/bin:/usr/X11R6/bin:/usr/local/sbin:/usr/local/bin
+openbsd-7.3-chroot: export IDO_SECURE_PATH = /sbin:/usr/sbin:/bin:/usr/bin:/usr/X11R6/bin:/usr/local/sbin:/usr/local/bin
 openbsd-7.3-chroot: export SHELL = /bin/sh
 openbsd-7.3-chroot: $(ARCH)/libiamroot.so | openbsd-7.3-rootfs
 	bash ido $(IDOFLAGS) chroot openbsd-7.3-rootfs

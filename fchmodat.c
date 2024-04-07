@@ -49,7 +49,6 @@ int fchmodat(int dfd, const char *path, mode_t mode, int atflags)
 	__warn_if_insuffisant_user_mode(buf, mode);
 
 	ret = next_fchmodat(dfd, buf, mode, atflags);
-	__ignore_error_and_warn(ret, dfd, path, atflags);
 	/* Force ignoring EPERM error if not chroot'ed */
 	if ((ret == -1) && (errno == EPERM))
 		ret = __set_errno(errno_save, 0);

@@ -49,7 +49,6 @@ int fchmod(int fd, mode_t mode)
 	__fwarn_if_insuffisant_user_mode(fd, mode);
 
 	ret = next_fchmod(fd, mode);
-	__ignore_error_and_warn(ret, AT_FDCWD, buf, 0);
 	/* Force ignoring EPERM error if not chroot'ed */
 	if ((ret == -1) && (errno == EPERM))
 		ret = __set_errno(errno_save, 0);

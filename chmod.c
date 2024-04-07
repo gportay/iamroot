@@ -49,7 +49,6 @@ int chmod(const char *path, mode_t mode)
 	__warn_if_insuffisant_user_mode(buf, mode);
 
 	ret = next_chmod(buf, mode);
-	__ignore_error_and_warn(ret, AT_FDCWD, path, 0);
 	/* Force ignoring EPERM error if not chroot'ed */
 	if ((ret == -1) && (errno == EPERM))
 		ret = __set_errno(errno_save, 0);

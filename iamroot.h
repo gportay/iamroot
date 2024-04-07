@@ -652,14 +652,8 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 	   if (__getfatal()) \
 	     __abort(); })
 
-#define __note_or_fatal(fmt, ...) \
-	({ __notice(fmt, __VA_ARGS__); \
-	   if (__getfatal()) \
-	     __abort(); })
-
 extern void __abort();
 
-extern void __pathdlperror(const char *, const char *);
 #define __dlperror(s) __info("%s: %s\n", s, dlerror())
 
 #define __dl_set_errno_and_perror(e, r) \

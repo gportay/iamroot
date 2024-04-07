@@ -58,7 +58,6 @@ int chown(const char *path, uid_t owner, gid_t group)
 		group = oldgroup;
 
 	ret = next_chown(buf, owner, group);
-	__ignore_error_and_warn(ret, AT_FDCWD, path, 0);
 	/* Force ignoring EPERM error if not chroot'ed */
 	if ((ret == -1) && (errno == EPERM))
 		ret = __set_errno(errno_save, 0);

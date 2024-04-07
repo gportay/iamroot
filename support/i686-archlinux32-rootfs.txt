@@ -271,17 +271,11 @@ Optional dependencies for base
 (XXX/XXX) Applying kernel sysctl settings...
   Skipped: Running in chroot.
 (XXX/XXX) Creating temporary files...
-Warning: fchownat: /dev/snd/seq: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/snd/seq: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /dev/snd/timer: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/snd/timer: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /dev/loop-control: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/loop-control: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /dev/kvm: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/kvm: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /dev/vhost-net: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/vhost-net: Ignoring error 'Operation not permitted'!
-Warning: fchownat: /dev/vhost-vsock: Ignoring error 'Operation not permitted'!
 Warning: chmod: /dev/vhost-vsock: Ignoring error 'Operation not permitted'!
 (XXX/XXX) Reloading device manager configuration...
   Skipped: Running in chroot.

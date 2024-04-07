@@ -309,6 +309,13 @@ static int __preload_so(const char *so)
 {
 	int err;
 
+	/* FIXME: remove host and preload given library? */
+	err = __is_preloading_so(__xstr(PREFIX)"/lib/iamroot/libiamroot.so");
+	if (err == -1)
+		return -1;
+	if (err == 1)
+		return 1;
+
 	err = __is_preloading_so(so);
 	if (err == -1)
 		return -1;

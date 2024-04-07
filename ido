@@ -57,7 +57,6 @@ iamroot specific options:
   --exec=file                   absolute path to the iamroot exec script to use
   --library=lib                 absolute path to the iamroot library to use
   --no-color                    turn off color
-  --fatal                       abort on error
   --debug                       turn on debug mode
   --debug-fd=fd                 set debug fd
   --debug-ignore=regex          regular expression of functions to ignore in
@@ -251,10 +250,6 @@ do
 	then
 		NO_COLOR=1
 		export NO_COLOR
-	elif [[ "$1" == "--fatal" ]]
-	then
-		IAMROOT_FATAL="1"
-		export IAMROOT_FATAL
 	elif [[ "$1" == "--debug" ]]
 	then
 		IAMROOT_DEBUG="$((IAMROOT_DEBUG+1))"

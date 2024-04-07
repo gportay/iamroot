@@ -219,8 +219,6 @@ char *__striprootdir(char *);
 int __getno_color();
 int __getcolor();
 
-int __getfatal();
-
 #define DEBUG_FILENO __getdebug_fd()
 
 int __getdebug();
@@ -646,13 +644,6 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 #define __st_gid(path, statbuf) {}
 #define __fst_gid(fd, statbuf) {}
 #endif
-
-#define __warn_or_fatal(fmt, ...) \
-	({ __warning(fmt, __VA_ARGS__); \
-	   if (__getfatal()) \
-	     __abort(); })
-
-extern void __abort();
 
 #define __dlperror(s) __info("%s: %s\n", s, dlerror())
 

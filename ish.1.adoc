@@ -74,9 +74,6 @@ shells, please refers to their manuals.
 **--shell SHELL**::
 	Set shell interpretor.
 
-**--fatal**::
-	Abort on error.
-
 **--no-color**::
 	Turn off color.
 
@@ -137,10 +134,6 @@ shells, please refers to their manuals.
 **IAMROOT_LIB**::
 	Set absolute path to library to use.
 	Equivalent to --library LIB.
-
-**IAMROOT_FATAL**::
-	Set abort on error.
-	Equivalent to --fatal.
 
 **IAMROOT_DEBUG**::
 	Turn on debug mode.

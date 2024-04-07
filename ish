@@ -41,7 +41,6 @@ iamroot specific options:
       --shell SHELL             Set shell interpretor.
                                 Equivalent to set ISH=<SHELL>.
       --no-color                Turn off color.
-      --fatal                   Abort on error.
       --debug                   Turn on debug mode.
       --debug-fd FD             Set debug fd.
       --debug-ignore REGEX      Regular expression of functions to ignore in
@@ -81,9 +80,6 @@ Environment variables:
 
       IAMROOT_LIB               Set absolute path to library to use.
                                 Equivalent to --library LIB.
-
-      IAMROOT_FATAL             Set abort on error.
-                                Equivalent to --fatal.
 
       IAMROOT_DEBUG             Turn on debug mode.
                                 Equivalent to --debug.
@@ -144,10 +140,6 @@ do
 	then
 		IAMROOT_DEBUG="$((IAMROOT_DEBUG+1))"
 		export IAMROOT_DEBUG
-	elif [[ "$1" == "--fatal" ]]
-	then
-		IAMROOT_FATAL="1"
-		export IAMROOT_FATAL
 	elif [[ "$1" == "--no-color" ]]
 	then
 		NO_COLOR=1

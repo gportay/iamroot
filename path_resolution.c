@@ -468,8 +468,8 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsiz,
 		/* Warn if the path contains the root directory already */
 		if (*root && __strleq(path, root)) {
 			if (!warning_ignore(path+len))
-				__warn_or_fatal("%s: contains root directory '%s'\n",
-						path, root);
+				__warning("%s: contains root directory '%s'\n",
+					  path, root);
 			path = &path[len]; /* strip root directory */
 		}
 

@@ -95,7 +95,7 @@ static int __dl_iterate_phdr_callback(struct dl_phdr_info *info, size_t size,
 	if (__strneq(__basename(path), "libiamroot"))
 		return 0;
 
-	__warn_or_fatal("%s: is not in root directory '%s'\n", path, root);
+	__warning("%s: is not in root directory '%s'\n", path, root);
 	return 0;
 }
 

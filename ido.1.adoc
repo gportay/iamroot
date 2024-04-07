@@ -146,9 +146,6 @@ The options are as follows:
 *--library*=_file_::
 	Absolute path to the iamroot library to use.
 
-*--fatal*::
-	Abort on error.
-
 *--no-color*::
 	Turn off color.
 

@@ -10,7 +10,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
-#include <signal.h>
 #include <limits.h>
 #include <dirent.h>
 #include <fcntl.h>
@@ -1067,11 +1066,6 @@ hidden int __getcolor()
 	return __getno_color() == 0;
 }
 
-hidden int __getfatal()
-{
-	return strtol(_getenv("IAMROOT_FATAL") ?: "0", NULL, 0);
-}
-
 hidden int __getdebug()
 {
 	return strtol(_getenv("IAMROOT_DEBUG") ?: "0", NULL, 0);
@@ -1233,11 +1227,6 @@ hidden void __verbose_exec(char * const argv[], char * const envp[])
 	dprintf(fd, "\n");
 }
 #endif
-
-hidden void __abort()
-{
-	raise(SIGABRT);
-}
 
 #ifdef __NetBSD__
 #undef next_fstat

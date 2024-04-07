@@ -170,7 +170,6 @@ export -n IAMROOT_ROOT
 export -n IAMROOT_DEFLIB
 export -n IAMROOT_EXEC
 # Ignore: export -n IAMROOT_LIB
-export -n IAMROOT_FATAL
 export -n IAMROOT_DEBUG
 export -n IAMROOT_DEBUG_FD
 export -n IAMROOT_DEBUG_IGNORE
@@ -305,15 +304,6 @@ echo
 
 run "ish: test option --no-color turns off color"
 if ish --no-color -c "env" | grep "^NO_COLOR=1$"
-then
-	ok
-else
-	ko
-fi
-echo
-
-run "ish: test option --fatal sets abort on error"
-if ish --fatal -c "env" | grep "^IAMROOT_FATAL=1$"
 then
 	ok
 else
@@ -749,15 +739,6 @@ echo
 
 run "ido: test option --no-color turns off color"
 if ido --no-color env | grep "^NO_COLOR=1$"
-then
-	ok
-else
-	ko
-fi
-echo
-
-run "ido: test option --fatal sets abort on error"
-if ido --fatal env | grep "^IAMROOT_FATAL=1$"
 then
 	ok
 else

@@ -26,6 +26,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Remove the output of the ignored `errno` errors returned by the original
   symbols for the functions `chown()`, `fchown()`, `fchownat()`, `lchown()`,
   `chown()`, `fchown()`, `fchownat()` and `lchown()`
+- Remove the `ido`'s and `ish`'s option `--fatal` and its environment variable
+  `IAMROOT_FATAL`
 
 ### Changed
 

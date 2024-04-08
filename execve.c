@@ -10,11 +10,24 @@
 #include <limits.h>
 #include <dlfcn.h>
 #include <fcntl.h>
+#if !defined(JIM_REGEXP)
 #include <regex.h>
+#endif
 
 #include <unistd.h>
 
 #include "iamroot.h"
+
+#if defined(JIM_REGEXP)
+#include "jimregexp.h"
+
+#define regcomp jim_regcomp
+#define regexec jim_regexec
+#define regerror jim_regerror
+#define regfree jim_regfree
+
+#define REG_NOSUB 0
+#endif
 
 typedef struct {
 	regex_t re;
@@ -79,12 +92,13 @@ void execve_fini()
 
 static int ignore(const char *path)
 {
+	regmatch_t match;
 	int ret = 0;
 
 	if (!re_ignore)
 		return 0;
 
-	ret = regexec(re_ignore, path, 0, NULL, 0);
+	ret = regexec(re_ignore, path, 1, &match, 0);
 	if (ret > REG_NOMATCH) {
 		__regex_perror("regexec", re_ignore, ret);
 		return 0;
@@ -290,3 +304,10 @@ exec_sh:
 
 	return __set_errno(E2BIG, -1);
 }
+
+#if defined(JIM_REGEXP)
+#undef regfree
+#undef regerror
+#undef regexec
+#undef regcomp
+#endif

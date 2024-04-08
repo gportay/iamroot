@@ -22,10 +22,23 @@
 #ifdef __NetBSD__
 #include <sys/exec_elf.h>
 #endif
+#if !defined(JIM_REGEXP)
 #include <regex.h>
+#endif
 #include <spawn.h>
 
 #include "iamroot.h"
+
+#if defined(JIM_REGEXP)
+#include "jimregexp.h"
+
+#define regcomp jim_regcomp
+#define regexec jim_regexec
+#define regerror jim_regerror
+#define regfree jim_regfree
+
+#define REG_NOSUB 0
+#endif
 
 #ifndef ELFOSABI_GNU
 #define ELFOSABI_GNU ELFOSABI_LINUX
@@ -236,12 +249,13 @@ ldso:
 
 hidden int __is_ldso(const char *path)
 {
+	regmatch_t match;
 	int ret = 0;
 
 	if (!re_ldso)
 		return 0;
 
-	ret = regexec(re_ldso, path, 0, NULL, 0);
+	ret = regexec(re_ldso, path, 1, &match, 0);
 	if (ret > REG_NOMATCH) {
 		__regex_perror("regexec", re_ldso, ret);
 		return 0;
@@ -252,12 +266,13 @@ hidden int __is_ldso(const char *path)
 
 static int __is_lib(const char *path)
 {
+	regmatch_t match;
 	int ret = 0;
 
 	if (!re_lib)
 		return 0;
 
-	ret = regexec(re_lib, path, 0, NULL, 0);
+	ret = regexec(re_lib, path, 1, &match, 0);
 	if (ret > REG_NOMATCH) {
 		__regex_perror("regexec", re_lib, ret);
 		return 0;
@@ -3986,4 +4001,11 @@ hidden int __elf_has_interp(int fd)
 
 #ifdef __NetBSD__
 #undef next_fstat
+#endif
+
+#if defined(JIM_REGEXP)
+#undef regfree
+#undef regerror
+#undef regexec
+#undef regcomp
 #endif

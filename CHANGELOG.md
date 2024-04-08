@@ -16,6 +16,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Intercept the [NetBSD]'s functions `getgroupmembership()`, `__fstat50()`,
   `__lstat50()` and `__stat50()`
 - Return `ERANGE` if the shared object is zero length
+- Steal the regex functions `regcomp()`, `regexec()`, `regerror()` and
+  `regfree()` from [Jim Tcl]
 
 ### Removed
 
@@ -974,6 +976,7 @@ Initial release.
 [Fedora ARM]: https://arm.fedoraproject.org/
 [Fedora]: https://getfedora.org/
 [FreeBSD]: https://www.freebsd.org/
+[Jim Tcl]: https://jim.tcl.tk/index.html/doc/www/www/index.html
 [Leap]: https://www.opensuse.org/#Leap
 [Manjaro]: https://manjaro.org/
 [NO_COLOR]: https://no-color.org/

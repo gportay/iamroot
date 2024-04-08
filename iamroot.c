@@ -19,9 +19,22 @@
 #if defined __linux__ || defined __FreeBSD__
 #include <sys/auxv.h>
 #endif
+#if !defined(JIM_REGEXP)
 #include <regex.h>
+#endif
 
 #include "iamroot.h"
+
+#if defined(JIM_REGEXP)
+#include "jimregexp.h"
+
+#define regcomp jim_regcomp
+#define regexec jim_regexec
+#define regerror jim_regerror
+#define regfree jim_regfree
+
+#define REG_NOSUB 0
+#endif
 
 #define SCRIPTMAG "#!"
 #define SSCRIPTMAG 2
@@ -1129,12 +1142,13 @@ void verbosef_fini()
 
 static int __ignore(const char *func)
 {
+	regmatch_t match;
 	int ret = 0;
 
 	if (!re_ignore)
 		return 0;
 
-	ret = regexec(re_ignore, func, 0, NULL, 0);
+	ret = regexec(re_ignore, func, 1, &match, 0);
 	if (ret == -1 || ret > REG_NOMATCH) {
 		__regex_perror("regexec", re_ignore, ret);
 		return 0;
@@ -1230,4 +1244,11 @@ hidden void __verbose_exec(char * const argv[], char * const envp[])
 
 #ifdef __NetBSD__
 #undef next_fstat
+#endif
+
+#if defined(JIM_REGEXP)
+#undef regfree
+#undef regerror
+#undef regexec
+#undef regcomp
 #endif

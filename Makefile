@@ -104,6 +104,7 @@ ld-iamroot.so: fstatat.o
 ld-iamroot.so: getcwd.o
 ld-iamroot.so: iamroot.o
 ld-iamroot.so: interpreter-script.o
+ld-iamroot.so: jimregexp.o
 ld-iamroot.so: ld.o
 ld-iamroot.so: ldso-cache.o
 ld-iamroot.so: lgetxattr.o
@@ -231,6 +232,7 @@ libiamroot.so: iamroot.o
 libiamroot.so: initgroups.o
 libiamroot.so: inotify_add_watch.o
 libiamroot.so: interpreter-script.o
+libiamroot.so: jimregexp.o
 libiamroot.so: kill.o
 libiamroot.so: lchflags.o
 libiamroot.so: lchmod.o

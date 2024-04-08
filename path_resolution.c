@@ -10,7 +10,9 @@
 #include <errno.h>
 #include <paths.h>
 #include <limits.h>
+#if !defined(JIM_REGEXP)
 #include <regex.h>
+#endif
 
 #include <fcntl.h>
 
@@ -18,6 +20,17 @@
 
 /* AT flag FOLLOW takes precedence over NOFOLLOW */
 #define follow_symlink(f) ((f & AT_SYMLINK_FOLLOW) || (f & AT_SYMLINK_NOFOLLOW) == 0)
+
+#if defined(JIM_REGEXP)
+#include "jimregexp.h"
+
+#define regcomp jim_regcomp
+#define regexec jim_regexec
+#define regerror jim_regerror
+#define regfree jim_regfree
+
+#define REG_NOSUB 0
+#endif
 
 typedef struct {
 	regex_t re;
@@ -300,6 +313,7 @@ ignore:
 
 static int ignore(const char *path)
 {
+	regmatch_t match;
 	int ret = 0;
 
 	if (!re_ignore)
@@ -308,7 +322,7 @@ static int ignore(const char *path)
 	if (!*path)
 		return 0;
 
-	ret = regexec(re_ignore, path, 0, NULL, 0);
+	ret = regexec(re_ignore, path, 1, &match, 0);
 	if (ret > REG_NOMATCH) {
 		__regex_perror("regexec", re_ignore, ret);
 		return 0;
@@ -319,12 +333,13 @@ static int ignore(const char *path)
 
 static int warning_ignore(const char *path)
 {
+	regmatch_t match;
 	int ret = 0;
 
 	if (!re_warning_ignore)
 		return 0;
 
-	ret = regexec(re_warning_ignore, path, 0, NULL, 0);
+	ret = regexec(re_warning_ignore, path, 1, &match, 0);
 	if (ret > REG_NOMATCH) {
 		__regex_perror("regexec", re_warning_ignore, ret);
 		return 0;
@@ -579,3 +594,10 @@ hidden char *__getpath(int dfd, const char *path, int atflags)
 
 	return buf;
 }
+
+#if defined(JIM_REGEXP)
+#undef regfree
+#undef regerror
+#undef regexec
+#undef regcomp
+#endif

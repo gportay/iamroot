@@ -39,7 +39,7 @@ prepare() {
 
 build() {
 	cd "$srcdir/$pkgname"
-	make CFLAGS= PREFIX=/usr s390x/libiamroot.so.1
+	make CFLAGS=-DJIM_REGEXP PREFIX=/usr s390x/libiamroot.so.1
 }
 
 check() {

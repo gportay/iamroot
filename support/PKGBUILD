@@ -27,7 +27,7 @@ validpgpkeys=('8F3491E60E62695ED780AC672FA122CA0501CA71')
 #
 # 	$ ish
 #	/bin/bash: symbol lookup error: /usr/lib/iamroot/libiamroot.so: undefined symbol: _Unwind_Resume
-CFLAGS="${CFLAGS//-fexceptions/}"
+CFLAGS="${CFLAGS//-fexceptions/} -DJIM_REGEXP"
 export CFLAGS
 
 pkgver() {

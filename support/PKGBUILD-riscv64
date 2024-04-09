@@ -40,8 +40,8 @@ prepare() {
 
 build() {
 	cd "$srcdir/$pkgname"
-	make CFLAGS= PREFIX=/usr riscv64/libiamroot-linux-riscv64-lp64d.so.1
-	make CFLAGS= PREFIX=/usr riscv64/libiamroot-musl-riscv64.so.1
+	make CFLAGS=-DJIM_REGEXP PREFIX=/usr riscv64/libiamroot-linux-riscv64-lp64d.so.1
+	make CFLAGS=-DJIM_REGEXP PREFIX=/usr riscv64/libiamroot-musl-riscv64.so.1
 }
 
 check() {

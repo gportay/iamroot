@@ -409,7 +409,9 @@ ci: check test
 
 .PHONY: check
 check:
+ifneq ($(shell command -v shellcheck 2>/dev/null),)
 	shellcheck -e SC1090 -e SC3037 ido ish exec.sh
+endif
 
 .PHONY: test test-library test-scripts
 test test-library test-scripts: libiamroot.so

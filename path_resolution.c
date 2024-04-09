@@ -546,7 +546,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsiz,
 
 	/* Follow the symlink unless the AT_SYMLINK_NOFOLLOW is given */
 	if (follow_symlink(atflags)) {
-		char tmp[PATH_MAX];
+		char tmp[PATH_MAX+1];
 
 		__strncpy(tmp, buf);
 		__realpath(tmp, buf);

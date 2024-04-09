@@ -361,10 +361,11 @@ install-lib:
 
 .PHONY: install-doc
 install-doc:
-	install -d -m755 $(DESTDIR)$(PREFIX)/share/man/man1/ $(DESTDIR)$(PREFIX)/share/man/man7/
+	install -d -m755 $(DESTDIR)$(PREFIX)/share/man/man1/ $(DESTDIR)$(PREFIX)/share/man/man7/ $(DESTDIR)$(PREFIX)/share/man/man8/
 	install -m644 ido.1.gz $(DESTDIR)$(PREFIX)/share/man/man1/ido.1.gz
 	install -m644 ish.1.gz $(DESTDIR)$(PREFIX)/share/man/man1/ish.1.gz
 	install -m644 iamroot.7.gz $(DESTDIR)$(PREFIX)/share/man/man7/iamroot.7.gz
+	install -m644 ld-iamroot.so.8.gz $(DESTDIR)$(PREFIX)/share/man/man8/ld-iamroot.so.8.gz
 
 .PHONY: install-bash-completion
 install-bash-completion:

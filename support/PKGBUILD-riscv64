@@ -35,6 +35,7 @@ prepare() {
 	sed -e "/^:man source:/s,\w\+$,$pkgver," -i ido.1.adoc
 	sed -e "/^:man source:/s,\w\+$,$pkgver," -i ish.1.adoc
 	sed -e "/^:man source:/s,\w\+$,$pkgver," -i iamroot.7.adoc
+	sed -e "/^:man source:/s,\w\+$,$pkgver," -i ld-iamroot.so.8.adoc
 }
 
 build() {

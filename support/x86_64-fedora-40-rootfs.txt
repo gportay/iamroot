@@ -1,0 +1,1313 @@
+Fedora 40 - x86_64 XXX xB/s | XXX xB XX:XX
+Last metadata expiration check: HH:mm:ss on Day XX Mon YYYY HH:mm:ss xM TZ.
+Dependencies resolved.
+===============================
+ Package Arch Version Repo Size
+===============================
+Installing group/module packages:
+ NetworkManager
+ audit
+ basesystem
+ bash
+ coreutils
+ curl
+ dhcp-client
+ dnf
+ dnf-plugins-core
+ dracut-config-rescue
+ e2fsprogs
+ filesystem
+ firewalld
+ fwupd
+ hostname
+ iproute
+ iputils
+ kbd
+ less
+ man-db
+ ncurses
+ openssh-clients
+ openssh-server
+ parted
+ plymouth
+ policycoreutils
+ procps-ng
+ rootfiles
+ rpm
+ selinux-policy-targeted
+ setup
+ shadow-utils
+ sssd-common
+ sssd-kcm
+ sudo
+ systemd-resolved
+ util-linux
+ vim-minimal
+ yum
+ zram-generator-defaults
+Installing dependencies:
+ ModemManager-glib
+ NetworkManager-libnm
+ alternatives
+ audit-libs
+ audit-rules
+ authselect
+ authselect-libs
+ avahi-libs
+ bzip2-libs
+ c-ares
+ ca-certificates
+ coreutils-common
+ cpio
+ cracklib
+ crypto-policies
+ cryptsetup-libs
+ cyrus-sasl-lib
+ dbus
+ dbus-broker
+ dbus-common
+ dbus-libs
+ device-mapper
+ device-mapper-libs
+ dhcp-common
+ diffutils
+ dmidecode
+ dnf-data
+ dracut
+ duktape
+ e2fsprogs-libs
+ elfutils-default-yama-scope
+ elfutils-libelf
+ elfutils-libs
+ expat
+ fedora-gpg-keys
+ fedora-release
+ fedora-release-common
+ fedora-release-identity-basic
+ fedora-repos
+ file
+ file-libs
+ findutils
+ firewalld-filesystem
+ flashrom
+ fonts-filesystem
+ fuse-libs
+ gawk
+ gdbm
+ gdbm-libs
+ gettext-envsubst
+ gettext-libs
+ gettext-runtime
+ glib2
+ glibc
+ glibc-common
+ glibc-minimal-langpack
+ gmp
+ gnupg2
+ gnutls
+ gobject-introspection
+ gpgme
+ grep
+ groff-base
+ grub2-common
+ grub2-tools
+ grub2-tools-minimal
+ gsettings-desktop-schemas
+ gzip
+ ima-evm-utils
+ inih
+ ipcalc
+ ipset-libs
+ iptables-libs
+ jansson
+ json-c
+ json-glib
+ kbd-legacy
+ kbd-misc
+ keyutils-libs
+ kmod
+ kmod-libs
+ krb5-libs
+ libacl
+ libarchive
+ libassuan
+ libatasmart
+ libattr
+ libb2
+ libbasicobjects
+ libblkid
+ libblockdev
+ libblockdev-crypto
+ libblockdev-fs
+ libblockdev-loop
+ libblockdev-mdraid
+ libblockdev-nvme
+ libblockdev-part
+ libblockdev-swap
+ libblockdev-utils
+ libbpf
+ libbrotli
+ libbytesize
+ libcap
+ libcap-ng
+ libcbor
+ libcollection
+ libcom_err
+ libcomps
+ libcurl
+ libdaemon
+ libdhash
+ libdnf
+ libeconf
+ libedit
+ libevdev
+ libevent
+ libfdisk
+ libffi
+ libfido2
+ libfsverity
+ libftdi
+ libgcc
+ libgcrypt
+ libgomp
+ libgpg-error
+ libgudev
+ libgusb
+ libidn2
+ libini_config
+ libjcat
+ libkcapi
+ libkcapi-hmaccalc
+ libksba
+ libldb
+ libmbim
+ libmnl
+ libmodulemd
+ libmount
+ libndp
+ libnetfilter_conntrack
+ libnfnetlink
+ libnftnl
+ libnghttp2
+ libnl3
+ libnsl2
+ libnvme
+ libpath_utils
+ libpipeline
+ libpkgconf
+ libproxy
+ libpsl
+ libpwquality
+ libqmi
+ libqrtr-glib
+ libref_array
+ librepo
+ libreport-filesystem
+ libseccomp
+ libsecret
+ libselinux
+ libselinux-utils
+ libsemanage
+ libsepol
+ libsmartcols
+ libsolv
+ libsoup3
+ libss
+ libssh
+ libssh-config
+ libsss_certmap
+ libsss_idmap
+ libsss_nss_idmap
+ libsss_sudo
+ libstdc++
+ libtalloc
+ libtasn1
+ libtdb
+ libtevent
+ libtirpc
+ libtool-ltdl
+ libudisks2
+ libunistring
+ libusb1
+ libutempter
+ libuuid
+ libverto
+ libxcrypt
+ libxkbcommon
+ libxml2
+ libxmlb
+ libyaml
+ libzstd
+ lmdb-libs
+ lua-libs
+ lz4-libs
+ lzo
+ mdadm
+ mpdecimal
+ mpfr
+ nano
+ ncurses-base
+ ncurses-libs
+ nettle
+ nftables
+ npth
+ nspr
+ nss
+ nss-softokn
+ nss-softokn-freebl
+ nss-sysinit
+ nss-util
+ ntfs-3g-libs
+ oniguruma
+ openldap
+ openssh
+ openssl-libs
+ os-prober
+ p11-kit
+ p11-kit-trust
+ pam
+ pam-libs
+ passim-libs
+ pciutils-libs
+ pcre2
+ pcre2-syntax
+ pcsc-lite
+ pcsc-lite-libs
+ pkgconf
+ pkgconf-m4
+ pkgconf-pkg-config
+ plymouth-core-libs
+ plymouth-scripts
+ polkit
+ polkit-libs
+ polkit-pkla-compat
+ popt
+ protobuf-c
+ psmisc
+ publicsuffix-list-dafsa
+ python-pip-wheel
+ python3
+ python3-dateutil
+ python3-dbus
+ python3-distro
+ python3-dnf
+ python3-dnf-plugins-core
+ python3-firewall
+ python3-gobject-base
+ python3-hawkey
+ python3-libcomps
+ python3-libdnf
+ python3-libs
+ python3-nftables
+ python3-rpm
+ python3-six
+ python3-systemd
+ readline
+ rpm-build-libs
+ rpm-libs
+ rpm-plugin-selinux
+ rpm-sequoia
+ rpm-sign-libs
+ sed
+ selinux-policy
+ shared-mime-info
+ sqlite-libs
+ sssd-client
+ systemd
+ systemd-libs
+ systemd-pam
+ systemd-udev
+ tpm2-tss
+ tpm2-tss-fapi
+ tzdata
+ unbound-libs
+ userspace-rcu
+ util-linux-core
+ vim-data
+ volume_key-libs
+ whois-nls
+ xkeyboard-config
+ xz
+ xz-libs
+ zchunk-libs
+ zlib-ng-compat
+ zram-generator
+Installing weak dependencies:
+ abattis-cantarell-fonts
+ adobe-source-code-pro-fonts
+ avahi
+ bluez
+ btrfs-progs
+ cracklib-dicts
+ crypto-policies-scripts
+ dosfstools
+ elfutils-debuginfod-client
+ exfatprogs
+ f2fs-tools
+ fwupd-efi
+ fwupd-plugin-flashrom
+ fwupd-plugin-modem-manager
+ fwupd-plugin-uefi-capsule-data
+ gawk-all-langpacks
+ geolite2-city
+ geolite2-country
+ glib-networking
+ glibc-gconv-extra
+ gnupg2-smime
+ grubby
+ initscripts-service
+ ipset
+ iptables-nft
+ jq
+ kpartx
+ libcap-ng-python3
+ libmaxminddb
+ memstrack
+ mkpasswd
+ nano-default-editor
+ nilfs-utils
+ ntfs-3g
+ ntfs-3g-system-compression
+ ntfsprogs
+ passim
+ pcsc-lite-ccid
+ pigz
+ pinentry
+ pkcs11-provider
+ python-unversioned-command
+ python3-unbound
+ qrencode-libs
+ rpm-plugin-audit
+ rpm-plugin-systemd-inhibit
+ sudo-python-plugin
+ systemd-networkd
+ tpm2-tools
+ udftools
+ udisks2
+ unbound-anchor
+ xfsprogs
+Installing Environment Groups:
+ Minimal Install
+Installing Groups:
+ Core
+
+Transaction Summary
+===============================
+Install  XXX Packages
+
+Total download size: XXX M
+Installed size: XXX M
+Downloading Packages:
+----------------------------------
+Total XXX xB/s | XXX xB XX:XX
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Running scriptlet: filesystem XXX/XXX
+  Running scriptlet: selinux-policy-targeted XXX/XXX
+  Preparing        : XXX/XXX
+  Installing       : libgcc XXX/XXX
+  Running scriptlet: libgcc XXX/XXX
+  Installing       : tzdata XXX/XXX
+  Installing       : xkeyboard-config XXX/XXX
+  Installing       : libreport-filesystem XXX/XXX
+  Installing       : fonts-filesystem XXX/XXX
+  Installing       : fedora-release-identity-basic XXX/XXX
+  Installing       : fedora-gpg-keys XXX/XXX
+  Installing       : fedora-repos XXX/XXX
+  Installing       : fedora-release-common XXX/XXX
+  Installing       : fedora-release XXX/XXX
+  Running scriptlet: setup XXX/XXX
+useradd: Warning: missing or non-executable shell '/sbin/halt'
+useradd warning: nobody's uid 65534 is greater than SYS_UID_MAX 999
+useradd: Warning: missing or non-executable shell '/bin/bash'
+useradd: Warning: missing or non-executable shell '/sbin/shutdown'
+useradd: Warning: missing or non-executable shell '/bin/sync'
+
+  Installing       : setup XXX/XXX
+  Running scriptlet: setup XXX/XXX
+  Installing       : filesystem XXX/XXX
+  Installing       : basesystem XXX/XXX
+  Installing       : abattis-cantarell-fonts XXX/XXX
+  Installing       : adobe-source-code-pro-4. XXX/XXX
+  Installing       : dnf-data XXX/XXX
+  Installing       : whois-nls XXX/XXX
+  Installing       : vim-data XXX/XXX
+  Installing       : publicsuffix-list-dafsa XXX/XXX
+  Installing       : pkgconf-m4 XXX/XXX
+  Installing       : pcre2-syntax XXX/XXX
+  Installing       : ncurses-base XXX/XXX
+  Installing       : glibc-gconv-extra XXX/XXX
+  Running scriptlet: glibc-gconv-extra XXX/XXX
+  Installing       : glibc-minimal-langpack XXX/XXX
+  Installing       : glibc-common XXX/XXX
+  Running scriptlet: glibc XXX/XXX
+  Installing       : glibc XXX/XXX
+  Running scriptlet: glibc XXX/XXX
+  Installing       : ncurses-libs XXX/XXX
+  Installing       : bash XXX/XXX
+  Running scriptlet: bash XXX/XXX
+  Installing       : zlib-ng-compat XXX/XXX
+  Installing       : libuuid XXX/XXX
+  Installing       : libblkid XXX/XXX
+  Installing       : xz-libs XXX/XXX
+  Installing       : libzstd XXX/XXX
+  Installing       : readline XXX/XXX
+  Installing       : libcom_err XXX/XXX
+  Installing       : bzip2-libs XXX/XXX
+  Installing       : libgpg-error XXX/XXX
+  Installing       : libxcrypt XXX/XXX
+  Installing       : mkpasswd XXX/XXX
+  Installing       : elfutils-libelf XXX/XXX
+  Installing       : libxml2 XXX/XXX
+  Installing       : sqlite-libs XXX/XXX
+  Installing       : gmp XXX/XXX
+  Installing       : nspr XXX/XXX
+  Installing       : pcre2 XXX/XXX
+  Installing       : grep XXX/XXX
+  Installing       : popt XXX/XXX
+  Installing       : nss-util XXX/XXX
+  Installing       : alternatives XXX/XXX
+  Installing       : expat XXX/XXX
+  Installing       : libmnl XXX/XXX
+  Installing       : libstdc++ XXX/XXX
+  Installing       : gdbm-libs XXX/XXX
+  Installing       : json-c XXX/XXX
+  Installing       : keyutils-libs XXX/XXX
+  Installing       : libcap-ng XXX/XXX
+  Installing       : audit-libs XXX/XXX
+  Installing       : libffi XXX/XXX
+  Installing       : libtalloc XXX/XXX
+  Installing       : libunistring XXX/XXX
+  Installing       : libidn2 XXX/XXX
+  Installing       : libassuan XXX/XXX
+  Installing       : libgcrypt XXX/XXX
+  Installing       : libfdisk XXX/XXX
+  Installing       : libattr XXX/XXX
+  Installing       : libacl XXX/XXX
+  Installing       : libnghttp2 XXX/XXX
+  Installing       : libsepol XXX/XXX
+  Installing       : libselinux XXX/XXX
+  Installing       : sed XXX/XXX
+  Installing       : libmount XXX/XXX
+  Installing       : findutils XXX/XXX
+  Installing       : libsmartcols XXX/XXX
+  Installing       : lz4-libs XXX/XXX
+  Installing       : libsemanage XXX/XXX
+  Installing       : libpsl XXX/XXX
+  Installing       : libtevent XXX/XXX
+  Installing       : e2fsprogs-libs XXX/XXX
+  Installing       : file-libs XXX/XXX
+  Installing       : libedit XXX/XXX
+  Installing       : libeconf XXX/XXX
+  Installing       : pam-libs XXX/XXX
+  Installing       : libcap XXX/XXX
+  Installing       : systemd-libs XXX/XXX
+  Installing       : dbus-libs XXX/XXX
+  Installing       : shadow-utils XXX/XXX
+  Installing       : libusb1 XXX/XXX
+  Installing       : util-linux-core XXX/XXX
+  Installing       : libtasn1 XXX/XXX
+  Installing       : p11-kit XXX/XXX
+  Installing       : p11-kit-trust XXX/XXX
+  Running scriptlet: p11-kit-trust XXX/XXX
+  Installing       : ntfs-3g-libs XXX/XXX
+  Installing       : protobuf-c XXX/XXX
+  Installing       : libnftnl XXX/XXX
+  Installing       : mpfr XXX/XXX
+  Installing       : nettle XXX/XXX
+  Installing       : libxkbcommon XXX/XXX
+  Installing       : libbpf XXX/XXX
+  Installing       : libksba XXX/XXX
+  Installing       : grub2-common XXX/XXX
+  Installing       : cpio XXX/XXX
+  Installing       : diffutils XXX/XXX
+  Installing       : duktape XXX/XXX
+  Installing       : fuse-libs XXX/XXX
+  Installing       : libbasicobjects XXX/XXX
+  Installing       : libbrotli XXX/XXX
+  Installing       : libcbor XXX/XXX
+  Installing       : libcollection XXX/XXX
+  Installing       : libdhash XXX/XXX
+  Installing       : libgomp XXX/XXX
+  Installing       : libref_array XXX/XXX
+  Installing       : libsss_idmap XXX/XXX
+  Installing       : libtdb XXX/XXX
+  Installing       : lua-libs XXX/XXX
+  Installing       : npth XXX/XXX
+  Installing       : libb2 XXX/XXX
+  Installing       : libbytesize XXX/XXX
+  Installing       : ntfs-3g-system-compression XXX/XXX
+  Installing       : ntfs-3g XXX/XXX
+  Installing       : libatasmart XXX/XXX
+  Installing       : procps-ng XXX/XXX
+  Installing       : file XXX/XXX
+  Installing       : nano XXX/XXX
+  Installing       : nano-default-editor XXX/XXX
+  Installing       : nilfs-utils XXX/XXX
+  Installing       : f2fs-tools XXX/XXX
+  Installing       : libselinux-utils XXX/XXX
+  Installing       : gettext-libs XXX/XXX
+  Installing       : cyrus-sasl-lib XXX/XXX
+  Installing       : gdbm XXX/XXX
+  Running scriptlet: groff-base XXX/XXX
+  Installing       : groff-base XXX/XXX
+  Running scriptlet: groff-base XXX/XXX
+  Installing       : ipset-libs XXX/XXX
+  Installing       : ipset XXX/XXX
+  Installing       : libcomps XXX/XXX
+  Installing       : nss-softokn-freebl XXX/XXX
+  Installing       : nss-softokn XXX/XXX
+  Installing       : xz XXX/XXX
+  Installing       : libss XXX/XXX
+  Installing       : e2fsprogs XXX/XXX
+  Installing       : pigz XXX/XXX
+  Running scriptlet: dbus-common XXX/XXX
+  Installing       : dbus-common XXX/XXX
+  Running scriptlet: dbus-common XXX/XXX
+  Running scriptlet: dbus-broker XXX/XXX
+  Installing       : dbus-broker XXX/XXX
+  Running scriptlet: dbus-broker XXX/XXX
+  Installing       : dbus XXX/XXX
+  Installing       : less XXX/XXX
+  Installing       : memstrack XXX/XXX
+  Installing       : psmisc XXX/XXX
+  Installing       : iproute XXX/XXX
+  Installing       : c-ares XXX/XXX
+  Installing       : dmidecode XXX/XXX
+  Installing       : dosfstools XXX/XXX
+  Installing       : exfatprogs XXX/XXX
+  Installing       : gettext-envsubst XXX/XXX
+  Installing       : gettext-runtime XXX/XXX
+  Installing       : inih XXX/XXX
+  Installing       : jansson XXX/XXX
+  Installing       : libdaemon XXX/XXX
+  Installing       : libevdev XXX/XXX
+  Installing       : plymouth-core-libs XXX/XXX
+  Installing       : libmaxminddb XXX/XXX
+  Installing       : libndp XXX/XXX
+  Installing       : libnfnetlink XXX/XXX
+  Installing       : libnetfilter_conntrack XXX/XXX
+  Installing       : iptables-libs XXX/XXX
+  Installing       : nftables XXX/XXX
+  Running scriptlet: nftables XXX/XXX
+  Installing       : libnl3 XXX/XXX
+  Installing       : libpath_utils XXX/XXX
+  Installing       : libini_config XXX/XXX
+  Installing       : libpipeline XXX/XXX
+  Installing       : libpkgconf XXX/XXX
+  Installing       : pkgconf XXX/XXX
+  Installing       : pkgconf-pkg-config XXX/XXX
+  Installing       : fwupd-efi XXX/XXX
+  Installing       : libseccomp XXX/XXX
+  Installing       : libsss_nss_idmap XXX/XXX
+  Installing       : libsss_sudo XXX/XXX
+  Installing       : libtool-ltdl XXX/XXX
+  Installing       : libverto XXX/XXX
+  Installing       : libyaml XXX/XXX
+  Installing       : lmdb-libs XXX/XXX
+  Installing       : lzo XXX/XXX
+  Installing       : btrfs-progs XXX/XXX
+  Installing       : mpdecimal XXX/XXX
+  Installing       : oniguruma XXX/XXX
+  Installing       : jq XXX/XXX
+  Installing       : pciutils-libs XXX/XXX
+  Installing       : pcsc-lite-libs XXX/XXX
+  Installing       : qrencode-libs XXX/XXX
+  Installing       : userspace-rcu XXX/XXX
+  Installing       : xfsprogs XXX/XXX
+  Installing       : libssh-config XXX/XXX
+  Installing       : kbd-misc XXX/XXX
+  Installing       : kbd-legacy XXX/XXX
+  Installing       : kbd XXX/XXX
+  Installing       : geolite2-country XXX/XXX
+  Installing       : geolite2-city XXX/XXX
+  Installing       : ipcalc XXX/XXX
+  Installing       : gawk-all-langpacks XXX/XXX
+  Installing       : gawk XXX/XXX
+  Installing       : firewalld-filesystem XXX/XXX
+  Installing       : dhcp-common XXX/XXX
+  Installing       : coreutils-common XXX/XXX
+  Installing       : python-pip-wheel XXX/XXX
+  Installing       : libevent XXX/XXX
+  Installing       : python-unversioned-command XXX/XXX
+  Installing       : python3-libs XXX/XXX
+  Installing       : python3 XXX/XXX
+  Installing       : libssh XXX/XXX
+  Installing       : openldap XXX/XXX
+  Installing       : krb5-libs XXX/XXX
+  Installing       : libtirpc XXX/XXX
+  Installing       : libnsl2 XXX/XXX
+  Installing       : libcurl XXX/XXX
+  Installing       : libkcapi XXX/XXX
+  Installing       : libkcapi-hmaccalc XXX/XXX
+  Installing       : tpm2-tss-fapi XXX/XXX
+  Installing       : crypto-policies-scripts XXX/XXX
+  Installing       : crypto-policies XXX/XXX
+  Running scriptlet: crypto-policies XXX/XXX
+  Installing       : cracklib-dicts XXX/XXX
+  Installing       : cracklib XXX/XXX
+  Installing       : libpwquality XXX/XXX
+  Installing       : gzip XXX/XXX
+  Installing       : pkcs11-provider XXX/XXX
+  Installing       : authselect XXX/XXX
+  Installing       : grub2-tools-minimal XXX/XXX
+  Installing       : kpartx XXX/XXX
+  Installing       : device-mapper XXX/XXX
+  Installing       : device-mapper-libs XXX/XXX
+  Installing       : elfutils-debuginfod-client XXX/XXX
+  Installing       : elfutils-default-yama-scope XXX/XXX
+  Running scriptlet: elfutils-default-yama-scope XXX/XXX
+  Installing       : elfutils-libs XXX/XXX
+  Installing       : tpm2-tools XXX/XXX
+  Installing       : coreutils XXX/XXX
+  Running scriptlet: ca-certificates XXX/XXX
+  Installing       : ca-certificates XXX/XXX
+  Running scriptlet: ca-certificates XXX/XXX
+  Installing       : openssl-libs XXX/XXX
+  Installing       : kmod-libs XXX/XXX
+  Running scriptlet: tpm2-tss XXX/XXX
+  Installing       : tpm2-tss XXX/XXX
+  Installing       : cryptsetup-libs XXX/XXX
+  Installing       : kmod XXX/XXX
+  Installing       : pam XXX/XXX
+  Installing       : libfido2 XXX/XXX
+  Installing       : authselect-libs XXX/XXX
+  Running scriptlet: libutempter XXX/XXX
+  Installing       : libutempter XXX/XXX
+  Running scriptlet: systemd-networkd XXX/XXX
+  Installing       : systemd-networkd XXX/XXX
+  Running scriptlet: systemd-networkd XXX/XXX
+  Installing       : systemd-pam XXX/XXX
+  Running scriptlet: systemd-resolved XXX/XXX
+  Installing       : systemd-resolved XXX/XXX
+  Running scriptlet: systemd-resolved XXX/XXX
+  Installing       : os-prober XXX/XXX
+  Installing       : grubby XXX/XXX
+  Running scriptlet: grubby XXX/XXX
+  Installing       : dracut XXX/XXX
+  Installing       : util-linux XXX/XXX
+  Running scriptlet: util-linux XXX/XXX
+  Running scriptlet: systemd XXX/XXX
+  Installing       : systemd XXX/XXX
+  Running scriptlet: systemd XXX/XXX
+  Running scriptlet: systemd-udev XXX/XXX
+  Installing       : systemd-udev XXX/XXX
+  Running scriptlet: systemd-udev XXX/XXX
+Created symlink /etc/systemd/system/dbus-org.freedesktop.home1.service → /usr/lib/systemd/system/systemd-homed.service.
+Created symlink /etc/systemd/system/multi-user.target.wants/systemd-homed.service → /usr/lib/systemd/system/systemd-homed.service.
+Created symlink /etc/systemd/system/systemd-homed.service.wants/systemd-homed-activate.service → /usr/lib/systemd/system/systemd-homed-activate.service.
+Created symlink /etc/systemd/system/dbus-org.freedesktop.oom1.service → /usr/lib/systemd/system/systemd-oomd.service.
+Created symlink /etc/systemd/system/multi-user.target.wants/systemd-oomd.service → /usr/lib/systemd/system/systemd-oomd.service.
+Created symlink /etc/systemd/system/sysinit.target.wants/systemd-pstore.service → /usr/lib/systemd/system/systemd-pstore.service.
+Created symlink /etc/systemd/system/multi-user.target.wants/remote-cryptsetup.target → /usr/lib/systemd/system/remote-cryptsetup.target.
+
+  Running scriptlet: grub2-tools XXX/XXX
+  Installing       : grub2-tools XXX/XXX
+  Running scriptlet: grub2-tools XXX/XXX
+Created symlink /etc/systemd/user/timers.target.wants/grub-boot-success.timer → /usr/lib/systemd/user/grub-boot-success.timer.
+
+  Installing       : gnutls XXX/XXX
+  Installing       : glib2 XXX/XXX
+  Installing       : libblockdev-utils XXX/XXX
+  Installing       : polkit-libs XXX/XXX
+  Running scriptlet: polkit XXX/XXX
+  Installing       : polkit XXX/XXX
+  Running scriptlet: polkit XXX/XXX
+  Installing       : polkit-pkla-compat XXX/XXX
+  Installing       : json-glib XXX/XXX
+  Installing       : libgudev XXX/XXX
+  Installing       : libgusb XXX/XXX
+  Installing       : libmbim XXX/XXX
+  Installing       : passim-libs XXX/XXX
+  Installing       : python3-dbus XXX/XXX
+  Installing       : shared-mime-info XXX/XXX
+  Running scriptlet: shared-mime-info XXX/XXX
+  Installing       : libxmlb XXX/XXX
+  Installing       : openssh XXX/XXX
+  Installing       : libarchive XXX/XXX
+  Installing       : zchunk-libs XXX/XXX
+  Installing       : libldb XXX/XXX
+  Installing       : pcsc-lite-ccid XXX/XXX
+  Running scriptlet: pcsc-lite-ccid XXX/XXX
+  Installing       : pcsc-lite XXX/XXX
+  Running scriptlet: pcsc-lite XXX/XXX
+Created symlink /etc/systemd/system/sockets.target.wants/pcscd.socket → /usr/lib/systemd/system/pcscd.socket.
+
+  Installing       : libblockdev XXX/XXX
+  Installing       : libblockdev-fs XXX/XXX
+  Installing       : libblockdev-loop XXX/XXX
+  Installing       : libblockdev-part XXX/XXX
+  Installing       : libblockdev-swap XXX/XXX
+  Installing       : ModemManager-glib XXX/XXX
+  Installing       : NetworkManager-libnm XXX/XXX
+  Installing       : bluez XXX/XXX
+  Running scriptlet: bluez XXX/XXX
+Created symlink /etc/systemd/system/dbus-org.bluez.service → /usr/lib/systemd/system/bluetooth.service.
+Created symlink /etc/systemd/system/bluetooth.target.wants/bluetooth.service → /usr/lib/systemd/system/bluetooth.service.
+
+  Installing       : gobject-introspection XXX/XXX
+  Installing       : python3-gobject-base XXX/XXX
+  Installing       : gsettings-desktop-schemas XXX/XXX
+  Installing       : libproxy XXX/XXX
+  Installing       : glib-networking XXX/XXX
+  Installing       : libsoup3 XXX/XXX
+  Installing       : libqrtr-glib XXX/XXX
+  Installing       : libqmi XXX/XXX
+  Installing       : libsecret XXX/XXX
+  Installing       : pinentry XXX/XXX
+  Installing       : gnupg2-smime XXX/XXX
+  Installing       : gnupg2 XXX/XXX
+  Installing       : gpgme XXX/XXX
+  Installing       : libjcat XXX/XXX
+  Installing       : libudisks2 XXX/XXX
+  Installing       : ntfsprogs XXX/XXX
+  Installing       : udftools XXX/XXX
+  Installing       : initscripts-service XXX/XXX
+  Installing       : audit-rules XXX/XXX
+  Running scriptlet: audit-rules XXX/XXX
+Created symlink /etc/systemd/system/multi-user.target.wants/audit-rules.service → /usr/lib/systemd/system/audit-rules.service.
+No rules detected, adding default
+You must be root to run this program.
+You must be root to run this program.
+
+  Installing       : audit XXX/XXX
+  Running scriptlet: audit XXX/XXX
+Created symlink /etc/systemd/system/multi-user.target.wants/auditd.service → /usr/lib/systemd/system/auditd.service.
+Running in chroot, ignoring command 'start'
+
+  Installing       : iputils XXX/XXX
+  Installing       : libftdi XXX/XXX
+  Installing       : flashrom XXX/XXX
+  Installing       : mdadm XXX/XXX
+  Running scriptlet: mdadm XXX/XXX
+Created symlink /etc/systemd/system/multi-user.target.wants/mdmonitor.service → /usr/lib/systemd/system/mdmonitor.service.
+Created symlink /etc/systemd/system/timers.target.wants/raid-check.timer → /usr/lib/systemd/system/raid-check.timer.
+
+  Installing       : libblockdev-mdraid XXX/XXX
+  Installing       : zram-generator XXX/XXX
+  Installing       : plymouth XXX/XXX
+  Installing       : plymouth-scripts XXX/XXX
+  Installing       : sudo XXX/XXX
+  Installing       : sudo-python-plugin XXX/XXX
+  Installing       : ima-evm-utils XXX/XXX
+  Installing       : libfsverity XXX/XXX
+  Installing       : libnvme XXX/XXX
+  Installing       : libblockdev-nvme XXX/XXX
+  Installing       : libsss_certmap XXX/XXX
+  Installing       : rpm-sequoia XXX/XXX
+  Installing       : rpm-plugin-audit XXX/XXX
+  Installing       : rpm-libs XXX/XXX
+  Installing       : libmodulemd XXX/XXX
+  Installing       : libsolv XXX/XXX
+  Installing       : librepo XXX/XXX
+  Installing       : libdnf XXX/XXX
+  Installing       : python3-libdnf XXX/XXX
+  Installing       : python3-hawkey XXX/XXX
+  Installing       : rpm-build-libs XXX/XXX
+  Installing       : rpm-plugin-systemd-inhibit XXX/XXX
+  Installing       : rpm-sign-libs XXX/XXX
+  Installing       : python3-rpm XXX/XXX
+  Installing       : unbound-anchor XXX/XXX
+  Running scriptlet: unbound-anchor XXX/XXX
+Created symlink /etc/systemd/system/timers.target.wants/unbound-anchor.timer → /usr/lib/systemd/system/unbound-anchor.timer.
+
+  Running scriptlet: unbound-libs XXX/XXX
+  Installing       : unbound-libs XXX/XXX
+  Installing       : python3-unbound XXX/XXX
+  Installing       : iptables-nft XXX/XXX
+  Running scriptlet: iptables-nft XXX/XXX
+  Installing       : nss-sysinit XXX/XXX
+  Installing       : nss XXX/XXX
+  Running scriptlet: nss XXX/XXX
+  Installing       : volume_key-libs XXX/XXX
+  Installing       : libblockdev-crypto XXX/XXX
+  Installing       : udisks2 XXX/XXX
+  Running scriptlet: udisks2 XXX/XXX
+Created symlink /etc/systemd/system/graphical.target.wants/udisks2.service → /usr/lib/systemd/system/udisks2.service.
+
+  Installing       : curl XXX/XXX
+  Running scriptlet: rpm XXX/XXX
+  Installing       : rpm XXX/XXX
+  Installing       : policycoreutils XXX/XXX
+  Running scriptlet: policycoreutils XXX/XXX
+Created symlink /etc/systemd/system/sysinit.target.wants/selinux-autorelabel-mark.service → /usr/lib/systemd/system/selinux-autorelabel-mark.service.
+
+  Installing       : selinux-policy XXX/XXX
+  Running scriptlet: selinux-policy XXX/XXX
+  Running scriptlet: selinux-policy-targeted XXX/XXX
+  Installing       : selinux-policy-targeted XXX/XXX
+  Running scriptlet: selinux-policy-targeted XXX/XXX
+  Installing       : sssd-client XXX/XXX
+  Running scriptlet: sssd-client XXX/XXX
+  Installing       : sssd-common XXX/XXX
+  Running scriptlet: sssd-common XXX/XXX
+Created symlink /etc/systemd/system/multi-user.target.wants/sssd.service → /usr/lib/systemd/system/sssd.service.
+
+  Installing       : libcap-ng-python3 XXX/XXX
+  Installing       : python3-distro XXX/XXX
+  Installing       : python3-libcomps XXX/XXX
+  Installing       : python3-dnf XXX/XXX
+  Installing       : dnf XXX/XXX
+  Running scriptlet: dnf XXX/XXX
+Created symlink /etc/systemd/system/timers.target.wants/dnf-makecache.timer → /usr/lib/systemd/system/dnf-makecache.timer.
+
+  Installing       : python3-nftables XXX/XXX
+  Installing       : python3-firewall XXX/XXX
+  Installing       : python3-six XXX/XXX
+  Installing       : python3-dateutil XXX/XXX
+  Installing       : python3-systemd XXX/XXX
+  Installing       : python3-dnf-plugins-core XXX/XXX
+  Installing       : avahi-libs XXX/XXX
+  Running scriptlet: avahi XXX/XXX
+  Installing       : avahi XXX/XXX
+  Running scriptlet: avahi XXX/XXX
+Created symlink /etc/systemd/system/sockets.target.wants/avahi-daemon.socket → /usr/lib/systemd/system/avahi-daemon.socket.
+Created symlink /etc/systemd/system/dbus-org.freedesktop.Avahi.service → /usr/lib/systemd/system/avahi-daemon.service.
+Created symlink /etc/systemd/system/multi-user.target.wants/avahi-daemon.service → /usr/lib/systemd/system/avahi-daemon.service.
+
+  Running scriptlet: passim XXX/XXX
+  Installing       : passim XXX/XXX
+  Running scriptlet: passim XXX/XXX
+  Installing       : fwupd-plugin-flashrom XXX/XXX
+  Installing       : fwupd-plugin-uefi-capsule-data XXX/XXX
+  Installing       : fwupd XXX/XXX
+  Running scriptlet: fwupd XXX/XXX
+  Installing       : fwupd-plugin-modem-manager XXX/XXX
+  Installing       : dnf-plugins-core XXX/XXX
+  Installing       : firewalld XXX/XXX
+  Running scriptlet: firewalld XXX/XXX
+Created symlink /etc/systemd/system/dbus-org.fedoraproject.FirewallD1.service → /usr/lib/systemd/system/firewalld.service.
+Created symlink /etc/systemd/system/multi-user.target.wants/firewalld.service → /usr/lib/systemd/system/firewalld.service.
+
+  Installing       : yum XXX/XXX
+  Installing       : sssd-kcm XXX/XXX
+  Running scriptlet: sssd-kcm XXX/XXX
+Created symlink /etc/systemd/system/sockets.target.wants/sssd-kcm.socket → /usr/lib/systemd/system/sssd-kcm.socket.
+
+  Installing       : rpm-plugin-selinux XXX/XXX
+  Installing       : zram-generator-defaults XXX/XXX
+  Installing       : dhcp-client XXX/XXX
+  Running scriptlet: NetworkManager XXX/XXX
+  Installing       : NetworkManager XXX/XXX
+  Running scriptlet: NetworkManager XXX/XXX
+Created symlink /etc/systemd/system/multi-user.target.wants/NetworkManager.service → /usr/lib/systemd/system/NetworkManager.service.
+Created symlink /etc/systemd/system/dbus-org.freedesktop.nm-dispatcher.service → /usr/lib/systemd/system/NetworkManager-dispatcher.service.
+Created symlink /etc/systemd/system/network-online.target.wants/NetworkManager-wait-online.service → /usr/lib/systemd/system/NetworkManager-wait-online.service.
+
+  Installing       : openssh-clients XXX/XXX
+  Running scriptlet: openssh-clients XXX/XXX
+  Running scriptlet: openssh-server XXX/XXX
+  Installing       : openssh-server XXX/XXX
+  Running scriptlet: openssh-server XXX/XXX
+Created symlink /etc/systemd/system/multi-user.target.wants/sshd.service → /usr/lib/systemd/system/sshd.service.
+
+  Installing       : dracut-config-rescue XXX/XXX
+  Running scriptlet: man-db XXX/XXX
+  Installing       : man-db XXX/XXX
+  Running scriptlet: man-db XXX/XXX
+  Installing       : parted XXX/XXX
+  Installing       : vim-minimal XXX/XXX
+  Installing       : hostname XXX/XXX
+  Running scriptlet: hostname XXX/XXX
+  Installing       : ncurses XXX/XXX
+  Installing       : rootfiles XXX/XXX
+  Running scriptlet: filesystem XXX/XXX
+  Running scriptlet: grub2-common XXX/XXX
+  Running scriptlet: crypto-policies-scripts XXX/XXX
+  Running scriptlet: ca-certificates XXX/XXX
+  Running scriptlet: authselect-libs XXX/XXX
+  Running scriptlet: systemd-resolved XXX/XXX
+'/etc/resolv.conf' -> '../run/systemd/resolve/stub-resolv.conf'
+
+  Running scriptlet: nss XXX/XXX
+  Running scriptlet: rpm XXX/XXX
+  Running scriptlet: selinux-policy-targeted XXX/XXX
+  Running scriptlet: sssd-common XXX/XXX
+  Running scriptlet: firewalld XXX/XXX
+  Running scriptlet: rootfiles XXX/XXX
+
+Installed:
+  ModemManager-glib
+  NetworkManager
+  NetworkManager-libnm
+  abattis-cantarell-fonts
+  adobe-source-code-pro-fonts
+  alternatives
+  audit
+  audit-libs
+  audit-rules
+  authselect
+  authselect-libs
+  avahi
+  avahi-libs
+  basesystem
+  bash
+  bluez
+  btrfs-progs
+  bzip2-libs
+  c-ares
+  ca-certificates
+  coreutils
+  coreutils-common
+  cpio
+  cracklib
+  cracklib-dicts
+  crypto-policies
+  crypto-policies-scripts
+  cryptsetup-libs
+  curl
+  cyrus-sasl-lib
+  dbus
+  dbus-broker
+  dbus-common
+  dbus-libs
+  device-mapper
+  device-mapper-libs
+  dhcp-client
+  dhcp-common
+  diffutils
+  dmidecode
+  dnf
+  dnf-data
+  dnf-plugins-core
+  dosfstools
+  dracut
+  dracut-config-rescue
+  duktape
+  e2fsprogs
+  e2fsprogs-libs
+  elfutils-debuginfod-client
+  elfutils-default-yama-scope
+  elfutils-libelf
+  elfutils-libs
+  exfatprogs
+  expat
+  f2fs-tools
+  fedora-gpg-keys
+  fedora-release
+  fedora-release-common
+  fedora-release-identity-basic
+  fedora-repos
+  file
+  file-libs
+  filesystem
+  findutils
+  firewalld
+  firewalld-filesystem
+  flashrom
+  fonts-filesystem
+  fuse-libs
+  fwupd
+  fwupd-efi
+  fwupd-plugin-flashrom
+  fwupd-plugin-modem-manager
+  fwupd-plugin-uefi-capsule-data
+  gawk
+  gawk-all-langpacks
+  gdbm
+  gdbm-libs
+  geolite2-city
+  geolite2-country
+  gettext-envsubst
+  gettext-libs
+  gettext-runtime
+  glib-networking
+  glib2
+  glibc
+  glibc-common
+  glibc-gconv-extra
+  glibc-minimal-langpack
+  gmp
+  gnupg2
+  gnupg2-smime
+  gnutls
+  gobject-introspection
+  gpgme
+  grep
+  groff-base
+  grub2-common
+  grub2-tools
+  grub2-tools-minimal
+  grubby
+  gsettings-desktop-schemas
+  gzip
+  hostname
+  ima-evm-utils
+  inih
+  initscripts-service
+  ipcalc
+  iproute
+  ipset
+  ipset-libs
+  iptables-libs
+  iptables-nft
+  iputils
+  jansson
+  jq
+  json-c
+  json-glib
+  kbd
+  kbd-legacy
+  kbd-misc
+  keyutils-libs
+  kmod
+  kmod-libs
+  kpartx
+  krb5-libs
+  less
+  libacl
+  libarchive
+  libassuan
+  libatasmart
+  libattr
+  libb2
+  libbasicobjects
+  libblkid
+  libblockdev
+  libblockdev-crypto
+  libblockdev-fs
+  libblockdev-loop
+  libblockdev-mdraid
+  libblockdev-nvme
+  libblockdev-part
+  libblockdev-swap
+  libblockdev-utils
+  libbpf
+  libbrotli
+  libbytesize
+  libcap
+  libcap-ng
+  libcap-ng-python3
+  libcbor
+  libcollection
+  libcom_err
+  libcomps
+  libcurl
+  libdaemon
+  libdhash
+  libdnf
+  libeconf
+  libedit
+  libevdev
+  libevent
+  libfdisk
+  libffi
+  libfido2
+  libfsverity
+  libftdi
+  libgcc
+  libgcrypt
+  libgomp
+  libgpg-error
+  libgudev
+  libgusb
+  libidn2
+  libini_config
+  libjcat
+  libkcapi
+  libkcapi-hmaccalc
+  libksba
+  libldb
+  libmaxminddb
+  libmbim
+  libmnl
+  libmodulemd
+  libmount
+  libndp
+  libnetfilter_conntrack
+  libnfnetlink
+  libnftnl
+  libnghttp2
+  libnl3
+  libnsl2
+  libnvme
+  libpath_utils
+  libpipeline
+  libpkgconf
+  libproxy
+  libpsl
+  libpwquality
+  libqmi
+  libqrtr-glib
+  libref_array
+  librepo
+  libreport-filesystem
+  libseccomp
+  libsecret
+  libselinux
+  libselinux-utils
+  libsemanage
+  libsepol
+  libsmartcols
+  libsolv
+  libsoup3
+  libss
+  libssh
+  libssh-config
+  libsss_certmap
+  libsss_idmap
+  libsss_nss_idmap
+  libsss_sudo
+  libstdc++
+  libtalloc
+  libtasn1
+  libtdb
+  libtevent
+  libtirpc
+  libtool-ltdl
+  libudisks2
+  libunistring
+  libusb1
+  libutempter
+  libuuid
+  libverto
+  libxcrypt
+  libxkbcommon
+  libxml2
+  libxmlb
+  libyaml
+  libzstd
+  lmdb-libs
+  lua-libs
+  lz4-libs
+  lzo
+  man-db
+  mdadm
+  memstrack
+  mkpasswd
+  mpdecimal
+  mpfr
+  nano
+  nano-default-editor
+  ncurses
+  ncurses-base
+  ncurses-libs
+  nettle
+  nftables
+  nilfs-utils
+  npth
+  nspr
+  nss
+  nss-softokn
+  nss-softokn-freebl
+  nss-sysinit
+  nss-util
+  ntfs-3g
+  ntfs-3g-libs
+  ntfs-3g-system-compression
+  ntfsprogs
+  oniguruma
+  openldap
+  openssh
+  openssh-clients
+  openssh-server
+  openssl-libs
+  os-prober
+  p11-kit
+  p11-kit-trust
+  pam
+  pam-libs
+  parted
+  passim
+  passim-libs
+  pciutils-libs
+  pcre2
+  pcre2-syntax
+  pcsc-lite
+  pcsc-lite-ccid
+  pcsc-lite-libs
+  pigz
+  pinentry
+  pkcs11-provider
+  pkgconf
+  pkgconf-m4
+  pkgconf-pkg-config
+  plymouth
+  plymouth-core-libs
+  plymouth-scripts
+  policycoreutils
+  polkit
+  polkit-libs
+  polkit-pkla-compat
+  popt
+  procps-ng
+  protobuf-c
+  psmisc
+  publicsuffix-list-dafsa
+  python-pip-wheel
+  python-unversioned-command
+  python3
+  python3-dateutil
+  python3-dbus
+  python3-distro
+  python3-dnf
+  python3-dnf-plugins-core
+  python3-firewall
+  python3-gobject-base
+  python3-hawkey
+  python3-libcomps
+  python3-libdnf
+  python3-libs
+  python3-nftables
+  python3-rpm
+  python3-six
+  python3-systemd
+  python3-unbound
+  qrencode-libs
+  readline
+  rootfiles
+  rpm
+  rpm-build-libs
+  rpm-libs
+  rpm-plugin-audit
+  rpm-plugin-selinux
+  rpm-plugin-systemd-inhibit
+  rpm-sequoia
+  rpm-sign-libs
+  sed
+  selinux-policy
+  selinux-policy-targeted
+  setup
+  shadow-utils
+  shared-mime-info
+  sqlite-libs
+  sssd-client
+  sssd-common
+  sssd-kcm
+  sudo
+  sudo-python-plugin
+  systemd
+  systemd-libs
+  systemd-networkd
+  systemd-pam
+  systemd-resolved
+  systemd-udev
+  tpm2-tools
+  tpm2-tss
+  tpm2-tss-fapi
+  tzdata
+  udftools
+  udisks2
+  unbound-anchor
+  unbound-libs
+  userspace-rcu
+  util-linux
+  util-linux-core
+  vim-data
+  vim-minimal
+  volume_key-libs
+  whois-nls
+  xfsprogs
+  xkeyboard-config
+  xz
+  xz-libs
+  yum
+  zchunk-libs
+  zlib-ng-compat
+  zram-generator
+  zram-generator-defaults
+
+Complete!

@@ -309,6 +309,18 @@ static int __is_in_path(const char *pathname, const char *path)
 	return __path_iterate(path, __is_in_path_callback, (void *)pathname);
 }
 
+static int __is_in_preload_callback(const char *path, void *user)
+{
+	const char *p = (const char *)user;
+
+	return strneq(__basename(path), __basename(p), PATH_MAX);
+}
+
+static int __is_in_preload(const char *path, const char *preload)
+{
+	return __path_iterate(preload, __is_in_preload_callback, (void *)path);
+}
+
 static int __is_preloading_so(const char *so)
 {
 	const char *ld_preload;
@@ -317,14 +329,13 @@ static int __is_preloading_so(const char *so)
 	if (!ld_preload)
 		return 0;
 
-	return __is_in_path(so, ld_preload);
+	return __is_in_preload(so, ld_preload);
 }
 
 static int __preload_so(const char *so)
 {
 	int err;
 
-	/* FIXME: remove host and preload given library? */
 	err = __is_preloading_so(__xstr(PREFIX)"/lib/iamroot/libiamroot.so");
 	if (err == -1)
 		return -1;

@@ -544,7 +544,7 @@ endef
 export CC
 export CFLAGS
 
-ld-iamroot.so: $(ARCH)/ld-iamroot.so
+ld-iamroot.so: $(O)-$(ARCH)/ld-iamroot.so
 	install -D -m755 $< $@
 
 $(ARCH)/ld-iamroot.so: $(O)-$(ARCH)/libiamroot.so

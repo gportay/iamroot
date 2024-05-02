@@ -124,7 +124,7 @@ int main(int argc, char * argv[])
 		{ "help",         no_argument,       NULL, 'h' },
 		{ NULL,           no_argument,       NULL, 0   }
 	};
-	char *runpath;
+	char *origin;
 	int err;
 
 	for (;;) {
@@ -269,27 +269,30 @@ int main(int argc, char * argv[])
 		}
 	}
 
-	err = dl_iterate_phdr(callback, &runpath);
-	if (err == -1 && errno == ENOENT) {
-		runpath = __xstr(PREFIX)"/lib/iamroot";
-		__warning("%s: DT_RUNPATH is unset! assuming '%s'\n", argv[0],
-			  runpath);
-	} else if (err == -1) {
-		perror("dl_iterate_phdr");
-		exit(EXIT_FAILURE);
+	origin = getenv("IAMROOT_ORIGIN");
+	if (!origin) {
+		err = dl_iterate_phdr(callback, &origin);
+		if (err == -1 && errno == ENOENT) {
+			origin = __xstr(PREFIX)"/lib/iamroot";
+			__warning("%s: DT_RUNPATH is unset! assuming '%s'\n",
+				  argv[0], origin);
+		} else if (err == -1) {
+			perror("dl_iterate_phdr");
+			exit(EXIT_FAILURE);
+		}
 	}
 
-	if (runpath && *runpath) {
+	if (origin && *origin) {
 		char buf[BUFSIZ];
 		int n;
 
-		err = setenv("IAMROOT_ORIGIN", runpath, 1);
+		err = setenv("IAMROOT_ORIGIN", origin, 1);
 		if (err == -1) {
 			perror("setenv");
 			exit(EXIT_FAILURE);
 		}
 
-		n = snprintf(buf, sizeof(buf), "%s/libiamroot.so", runpath);
+		n = snprintf(buf, sizeof(buf), "%s/libiamroot.so", origin);
 		if (n == -1) {
 			perror("snprintf");
 			exit(EXIT_FAILURE);

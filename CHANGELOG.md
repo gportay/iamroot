@@ -11,8 +11,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Look up the iamroot libraries and `exec.sh` in the directory specified in the
   environment variable `IAMROOT_ORIGIN` if set first and in the iamroot library
   directory then
-- Set the environment variable `IAMROOT_ORIGIN` using `DT_RUNPATH` if set in
-  `ld-iamroot.so(8)`
+- Set the environment variable `IAMROOT_ORIGIN` if it is unset, using either
+  the `DT_RUNPATH` value set in `ld-iamroot.so(8)` or the hard-coded iamroot
+  library directory
 
 ### Deprecated
 

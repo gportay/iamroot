@@ -31,7 +31,7 @@ int getresgid(gid_t *rgid, gid_t *egid, gid_t *sgid)
 	}
 
 	if (sgid) {
-        	unsigned long ul;
+		unsigned long ul;
 
 		errno = 0;
 		ul = strtoul(_getenv("IAMROOT_SGID") ?: "0", NULL, 0);

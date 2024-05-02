@@ -31,7 +31,7 @@ int main(int argc, char * const argv[])
 	}
 
 	printf("%s:%s\n", getenv("IAMROOT_UID") ?: "",
-	                  getenv("IAMROOT_EUID") ?: "");
+			  getenv("IAMROOT_EUID") ?: "");
 
 	return EXIT_SUCCESS;
 }

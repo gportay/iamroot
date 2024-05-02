@@ -3036,7 +3036,7 @@ hidden int __ldso(const char *path, char * const argv[], char *interparg[],
 	 * Get the dynamic loader stored in the .interp section of the ELF
 	 * program, its LDSO-name and its ABI number
 	 */
-        err = __elf_interp_ldso_abi(path, &ehdr, pt_interp, sizeof(pt_interp),
+	err = __elf_interp_ldso_abi(path, &ehdr, pt_interp, sizeof(pt_interp),
 				    ldso, &abi);
 	if (err == -1)
 		return -1;
@@ -3425,10 +3425,10 @@ static const char *__root_basepath(const char *path)
 	size_t len;
 
 	root = __getrootdir();
-        if (streq(root, "/"))
-                return NULL;
+	if (streq(root, "/"))
+		return NULL;
 
-        len = __strlen(root);
+	len = __strlen(root);
 	if (!strneq(root, path, len))
 		return NULL;
 

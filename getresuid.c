@@ -31,7 +31,7 @@ int getresuid(uid_t *ruid, uid_t *euid, uid_t *suid)
 	}
 
 	if (suid) {
-        	unsigned long ul;
+		unsigned long ul;
 
 		errno = 0;
 		ul = strtoul(_getenv("IAMROOT_SUID") ?: "0", NULL, 0);

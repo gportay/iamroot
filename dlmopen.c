@@ -43,7 +43,7 @@ void *dlmopen(Lmid_t lmid, const char *path, int flags)
 	 * If filename is NULL, then the returned handle is for the main
 	 * program.
 	 */
-        /* Do not proceed to any hack if not in chroot */
+	/* Do not proceed to any hack if not in chroot */
 	if (!path || !__inchroot())
 		return next_dlmopen(lmid, path, flags);
 

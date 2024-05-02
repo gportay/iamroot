@@ -44,10 +44,6 @@ MAKEFLAGS += --no-print-directory
 all: ld-iamroot.so
 all: libiamroot.so
 
-.PHONY: vars
-vars:
-	@echo export "IAMROOT_EXEC_IGNORE=\"$(IAMROOT_EXEC_IGNORE)\""
-
 define libs
 $(strip libiamroot.so \
 	$(if $(findstring :$(2):,:arm: :armel:                     ),$(if $(findstring :$(1):,:musl:),arm/libiamroot-musl-arm.so.1                ,arm/libiamroot-linux.so.3                  ), \

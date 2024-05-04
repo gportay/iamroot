@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set the environment variable `IAMROOT_ORIGIN` if it is unset, using either
   the `DT_RUNPATH` value set in `ld-iamroot.so(8)` or the hard-coded iamroot
   library directory
+- Set the `DT_RUNPATH` of `ld-iamroot.so(8)` to the iamroot library directory
 
 ### Deprecated
 

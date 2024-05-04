@@ -40,6 +40,7 @@ endif
 all: ld-iamroot.so
 all: libiamroot.so
 
+ld-iamroot.so: override LDFLAGS += -Wl,-rpath,$(PREFIX)/lib/iamroot
 ld-iamroot.so: __fstat50.o
 ld-iamroot.so: __fxstat.o
 ld-iamroot.so: __fxstatat.o

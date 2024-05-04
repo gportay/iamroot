@@ -15,6 +15,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   the `DT_RUNPATH` value set in `ld-iamroot.so(8)` or the hard-coded iamroot
   library directory
 - Set the `DT_RUNPATH` of `ld-iamroot.so(8)` to the iamroot library directory
+- Add the `ld-iamroot.so(8)` option `--origin` to set the iamroot library
+  directory
 
 ### Deprecated
 

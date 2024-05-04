@@ -23,6 +23,7 @@ char *program;
 char *argv0;
 char *preload;
 char *library_path;
+char *origin;
 int multiarch;
 char *root;
 char *cwd;
@@ -102,6 +103,7 @@ void usage(FILE * f, char * const arg0)
 		   " -A or --argv0 STRING      Set argv[0] to the value STRING before running the PROGRAM.\n"
 		   " -P or --preload LIST      Preload the objects specified in LIST.\n"
 		   " -L or --library-path PATH Use PATH instead of LD_LIBRARY_PATH environment variable setting.\n"
+		   " -O or --origin DIR        Set origin directory to DIR.\n"
 		   " -M or --multiarch         Use multiarch library path in chroot.\n"
 		   " -R or --root DIR          Set root directory to DIR.\n"
 		   " -C or --cwd DIR           Set current working directory to DIR.\n"
@@ -117,6 +119,7 @@ int main(int argc, char * argv[])
 		{ "argv0",        required_argument, NULL, 'A' },
 		{ "preload",      required_argument, NULL, 'P' },
 		{ "library-path", required_argument, NULL, 'L' },
+		{ "origin",       required_argument, NULL, 'O' },
 		{ "multiarch",    no_argument,       NULL, 'M' },
 		{ "root",         required_argument, NULL, 'R' },
 		{ "debug",        no_argument,       NULL, 'D' },
@@ -124,12 +127,12 @@ int main(int argc, char * argv[])
 		{ "help",         no_argument,       NULL, 'h' },
 		{ NULL,           no_argument,       NULL, 0   }
 	};
-	char *origin;
 	int err;
 
 	for (;;) {
 		int index;
-		int c = getopt_long(argc, argv, "A:P:L:MR:DVh", long_options, &index);
+		int c = getopt_long(argc, argv, "A:P:L:O:MR:DVh", long_options,
+				    &index);
 		if (c == -1)
 			break;
 
@@ -144,6 +147,10 @@ int main(int argc, char * argv[])
 
 		case 'L':
 			library_path = optarg;
+			break;
+
+		case 'O':
+			origin = optarg;
 			break;
 
 		case 'M':
@@ -269,7 +276,9 @@ int main(int argc, char * argv[])
 		}
 	}
 
-	origin = getenv("IAMROOT_ORIGIN");
+	if (!origin)
+		origin = getenv("IAMROOT_ORIGIN");
+
 	if (!origin) {
 		err = dl_iterate_phdr(callback, &origin);
 		if (err == -1 && errno == ENOENT) {

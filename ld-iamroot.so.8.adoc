@@ -37,6 +37,9 @@ dynamic loader, please refers to their manuals.
 *-L* or *--library-path* _path_::
 	Use _path_ instead of *LD_LIBRARY_PATH* environment variable setting.
 
+*-O* or *--origin* _dir_::
+	Set origin directory to _dir_.
+
 *-M* or *--multiarch*::
 	Use multiarch library path in chroot.
 
@@ -56,6 +59,10 @@ dynamic loader, please refers to their manuals.
 	Display the version.
 
 == ENVIRONMENT VARIABLES
+
+*IAMROOT_ORIGIN*::
+	Set absolute path to origin directory of iamroot.
+	Equivalent to --origin DIR.
 
 **IAMROOT_MULTIARCH**::
 	Use multiarch default library path in chroot.

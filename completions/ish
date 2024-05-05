@@ -74,13 +74,13 @@ _ish()
 		done
 		compopt -o nospace
 		COMPREPLY=($(compgen -P "$prefix" -W "${wordlist[*]}" -S '\:' -- "$realcur"))
-		return 0
+		return
 		;;
 	--debug-fd)
 		local fds
 		mapfile -t fds < <(for fd in /proc/self/fd/*; do echo "${fd##*/}"; done)
 		COMPREPLY=($(compgen -W "${fds[*]}" -- "$cur"))
-		return 0
+		return
 		;;
 	--debug-ignore)
 		local prefix realcur wordlist
@@ -95,7 +95,7 @@ _ish()
 		done
 		compopt -o nospace
 		COMPREPLY=($(compgen -P "$prefix" -W "${wordlist[*]}" -S '\|' -- "$realcur"))
-		return 0
+		return
 		;;
 	--exec-ignore)
 		local prefix realcur wordlist
@@ -111,7 +111,7 @@ _ish()
 		done
 		compopt -o nospace
 		COMPREPLY=($(compgen -P "$prefix" -W "${wordlist[*]}" -S '\|' -- "$realcur"))
-		return 0
+		return
 		;;
 	--path-resolution-ignore)
 		local prefix realcur wordlist
@@ -127,7 +127,7 @@ _ish()
 		done
 		compopt -o nospace
 		COMPREPLY=($(compgen -P "$prefix" -W "${wordlist[*]}" -S '\|' -- "$realcur"))
-		return 0
+		return
 		;;
 	esac
 

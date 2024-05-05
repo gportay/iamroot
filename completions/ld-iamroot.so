@@ -1,0 +1,117 @@
+#
+# Copyright 2024 Gaël PORTAY
+#
+# SPDX-License-Identifier: LGPL-2.1-or-later
+#
+
+#
+# Stolen and hacked from bash-completion (bash_completion)
+#
+# SPDX-FileCopyrightText: The Bash Completion Maintainers
+#
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# The function _get_first_arg_2() is a merge of the two helper functions
+# _get_first_arg() and _count_args() from the bash-completion sources.
+#
+# This function returns the first argument, excluding options
+# @param $1 chars  Characters out of $COMP_WORDBREAKS which should
+#     NOT be considered word breaks. See __reassemble_comp_words_by_ref.
+# @param $2 glob   Options whose following argument should not be counted
+# @param $3 glob   Options that should be counted as args
+_get_first_arg_2()
+{
+	local i cword words
+	__reassemble_comp_words_by_ref "${1-}" words cword
+
+	arg=
+	for ((i = 1; i < cword; i++)); do
+		# shellcheck disable=SC2053
+		if [[ ${words[i]} != -* && ${words[i - 1]} != ${2-} || \
+		   ${words[i]} == ${3-} ]]; then
+			arg=${COMP_WORDS[i]}
+			break
+		fi
+	done
+}
+
+# The function _command_2() is a merge of the two helper functions _command()
+# and _count_args() from the bash-completion sources.
+#
+# A _command_offset wrapper function for use when the offset is unknown.
+# Only intended to be used as a completion function directly associated
+# with a command, not to be invoked from within other completion functions.
+# @param $1 chars  Characters out of $COMP_WORDBREAKS which should
+#     NOT be considered word breaks. See __reassemble_comp_words_by_ref.
+# @param $2 glob   Options whose following argument should not be counted
+# @param $3 glob   Options that should be counted as args
+_command_2()
+{
+	local offset i cword words
+	__reassemble_comp_words_by_ref "${1-}" words cword
+
+	# find actual offset, as position of the first non-option
+	offset=1
+	for ((i = 1; i < cword; i++)); do
+		# shellcheck disable=SC2053
+		if [[ ${words[i]} != -* && ${words[i - 1]} != ${2-} || \
+		   ${words[i]} == ${3-} ]]; then
+			offset=$i
+			break
+		fi
+	done
+	_command_offset $offset
+}
+
+_ld-iamroot.so()
+{
+	local cur prev words cword
+	_init_completion || return
+
+	case "$prev" in
+	-A|--argv0)
+		COMPREPLY=($(compgen -c "$cur"))
+		return
+		;;
+	-O|--origin|-R|--root|-C|--cwd)
+		_filedir -d
+		return
+		;;
+	-P|--preload)
+		_filedir so*
+		return
+		;;
+	-L|--library-path)
+		local prefix realcur wordlist
+		realcur="${cur##*\:}"
+		prefix="${cur%$realcur}"
+		for WORD in /lib /usr/local/lib /usr/lib
+		do
+			if ! [[ $prefix == *"$WORD"* ]]
+			then
+				wordlist+=("$WORD")
+			fi
+		done
+		compopt -o nospace
+		COMPREPLY=($(compgen -P "$prefix" -W "${wordlist[*]}" -S '\:' -- "$realcur"))
+		return
+		;;
+	esac
+
+	local arg
+	_get_first_arg_2 "" "@(-A|--argv0|-P|--preload|-L|--library-path|-O|--origin|-R|--root|-C|--cwd)"
+	if [[ "$arg" ]]
+	then
+		_command_2 "" "@(-A|--argv0|-P|--preload|-L|--library-path|-O|--origin|-R|--root|-C|--cwd)"
+		return
+	fi
+
+	if [[ "$cur" == -* ]]
+	then
+		COMPREPLY+=($(compgen -W "-A --argv0 -P --preload -L --library-path -M --multiarch -R --root -C --cwd -D --debug -h --help -V --version" -- "$cur"))
+		return
+	fi
+
+	COMPREPLY=($(compgen -c "$cur"))
+} &&
+complete -F _ld-iamroot.so ld-iamroot.so

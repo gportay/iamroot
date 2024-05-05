@@ -332,6 +332,7 @@ install-bash-completion:
 		install -d -m755 $(DESTDIR)$$completionsdir/; \
 		install -m644 completions/ido $(DESTDIR)$$completionsdir/ido; \
 		install -m644 completions/ish $(DESTDIR)$$completionsdir/ish; \
+		install -m644 completions/ld-iamroot.so $(DESTDIR)$$completionsdir/ld-iamroot.so; \
 	fi
 
 .PHONY: install-support
@@ -352,6 +353,7 @@ uninstall:
 	if [ -n "$$completionsdir" ]; then \
 		rm -f $(DESTDIR)$$completionsdir/ido; \
 		rm -f $(DESTDIR)$$completionsdir/ish; \
+		rm -f $(DESTDIR)$$completionsdir/ld-iamroot.so; \
 	fi
 
 .PHONY: user-install

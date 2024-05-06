@@ -203,6 +203,33 @@ $(if $(findstring x86_64,$(1)), \
 )
 endef
 
+define mmdebstrap-rootfs
+.PRECIOUS: $(1)-$(2)-$(3)-rootfs/bin/sh
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: IDOFLAGS += --multiarch
+# chfn: PAM: Critical error - immediate abort
+# adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^/dev/(null|zero|full|random|urandom|tty|console|pts|shm|ptmx)|^$(CURDIR)/.*\.gcda
+# debconf: PERL_DL_NONLAZY is not set, if debconf is running from a preinst script, this is not safe
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: IDOFLAGS += --preserve-env=PERL_DL_NONLAZY
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export PERL_DL_NONLAZY = 1
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export MMDEBSTRAPFLAGS ?=
+
+$(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/bash,mmdebstrap --verbose $$(MMDEBSTRAPFLAGS) $(1)-$(2)-$(3)-rootfs <support/$(2)-$(3)-sources.list))
+
+$(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/sh
+$(1)-$(2)-$(3)-rootfs/bin/sh: PATH := $(CURDIR):$(PATH)
+$(1)-$(2)-$(3)-rootfs/bin/sh: | $(call libs,linux,$(1))
+	ido $$(IDOFLAGS) mmdebstrap --verbose $$(MMDEBSTRAPFLAGS) $(3) $(1)-$(2)-$(3)-rootfs <support/$(2)-$(3)-sources.list
+
+$(eval $(call log,mmdebstrap,$(1)-$(2)-$(3)-rootfs))
+
+$(if $(findstring x86_64,$(1)), \
+	$(eval $(call run,$(1),$(2)-$(3))) \
+	$(eval $(call debootstrap-postrootfs,$(1),$(2)-$(3))) \
+)
+endef
+
 define dnf-rootfs
 .PRECIOUS: $(1)-$(2)-$(3)-rootfs/bin/sh
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
@@ -996,6 +1023,32 @@ install-support-x86_64: install-support-x86_64-debootstrap
 .PHONY: install-support-x86_64-debootstrap
 install-support-x86_64-debootstrap:
 	install -D -m644 support/ceres $(DESTDIR)$(PREFIX)/share/iamroot/debootstrap/ceres
+endif
+
+ifneq ($(shell command -v mmdebstrap 2>/dev/null),)
+#amd64-mobian-bookworm-rootfs/bin/sh: export MMDEBSTRAPFLAGS ?= --hook-dir=/usr/share/mmdebstrap/hooks/no-merged-usr
+amd64-mobian-bookworm-rootfs/bin/sh: export MMDEBSTRAPFLAGS ?= --hook-dir=/usr/share/mmdebstrap/hooks/maybe-merged-usr
+amd64-mobian-trixie-rootfs/bin/sh: export MMDEBSTRAPFLAGS ?= --hook-dir=/usr/share/mmdebstrap/hooks/maybe-merged-usr
+$(eval $(call mmdebstrap-rootfs,amd64,mobian,bookworm))
+$(eval $(call mmdebstrap-rootfs,amd64,mobian,trixie))
+
+extra-rootfs: amd64-mobian-rootfs
+
+.PHONY: amd64-mobian-rootfs
+amd64-mobian-rootfs: amd64-mobian-bookworm-rootfs
+amd64-mobian-rootfs: amd64-mobian-trixie-rootfs
+
+extra-support: support/amd64-mobian-bookworm-rootfs.txt
+extra-log: amd64-mobian-bookworm-rootfs.log
+
+unstable-support: support/amd64-mobian-trixie-rootfs.txt
+unstable-log: amd64-mobian-trixie-rootfs.log
+
+install-support-x86_64: install-support-x86_64-debootstrap
+
+.PHONY: install-support-x86_64-mmdebstrap
+install-support-x86_64-mmdebstrap:
+	install -D -m644 support/mobian-bookworm-sources.list $(DESTDIR)$(PREFIX)/share/iamroot/mmdebstrap/
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)
@@ -1906,6 +1959,20 @@ stable-log: amd64-debian-bookworm-rootfs.log
 
 unstable-support: support/amd64-debian-sid-rootfs.txt
 unstable-log: amd64-debian-sid-rootfs.log
+endif
+
+ifneq ($(shell command -v mmdebstrap 2>/dev/null),)
+extra-support: mobian-support
+
+.PHONY: mobian-support
+mobian-support: support/amd64-mobian-bookworm-rootfs.txt
+mobian-support: support/amd64-mobian-trixie-rootfs.txt
+
+log: mobian-log
+
+.PHONY: mobian-log
+mobian-log: amd64-mobian-bookworm-rootfs.log
+mobian-log: amd64-mobian-trixie-rootfs.log
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)

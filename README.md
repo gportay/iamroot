@@ -93,6 +93,7 @@ The table below lists the distributions and its tool that work with.
 | [dnf(8)]             | [Fedora]                                                                                      |
 | [zypper(8)]          | [openSUSE]                                                                                    |
 | [debootstrap(8)]     | [Debian]\*, [Ubuntu]\*, [Devuan]\*                                                            |
+| [mmdebstrap(1)]      | [Mobian]\*                                                                                    |
 | [xbps-install(1)]    | [Void Linux]                                                                                  |
 
 \*: Works with hacks.
@@ -249,6 +250,7 @@ later version.
 [Fedora]: https://fedoraproject.org/
 [FreeBSD]: https://www.freebsd.org/
 [Manjaro]: https://manjaro.org/
+[Mobian]: https://mobian-project.org/
 [NetBSD]: https://www.netbsd.org/
 [OpenBSD]: https://www.openbsd.org/
 [The Yocto Project]: https://www.yoctoproject.org/software-item/poky/
@@ -275,6 +277,7 @@ later version.
 [ld-iamroot.so(8)]: ld-iamroot.so.8.adoc
 [ld.so(8)]: https://linux.die.net/man/8/ld.so
 [libpam-runtime]: https://packages.debian.org/sid/libpam-runtime
+[mmdebstrap(1)]: https://manpages.debian.org/testing/mmdebstrap/mmdebstrap.1.en.html
 [musl]: https://www.musl-libc.org/
 [musl]: https://www.musl-libc.org/
 [open(2)]: https://linux.die.net/man/2/open

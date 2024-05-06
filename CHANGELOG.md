@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Create the `64` weak aliases `__futimesat64()`, `__lutimes64()`,
   `__utime64()` and `__utimes64()`
 - Run empty executable files via the bourne shell interpreter
+- Create a [Mobian] rootfs via [mmdebstrap(1)]
 
 ### Changed
 
@@ -1010,6 +1011,7 @@ Initial release.
 [Jim Tcl]: https://jim.tcl.tk/index.html/doc/www/www/index.html
 [Leap]: https://www.opensuse.org/#Leap
 [Manjaro]: https://manjaro.org/
+[Mobian]: https://mobian-project.org/
 [NO_COLOR]: https://no-color.org/
 [NetBSD]: https://www.netbsd.org/
 [OpenBSD]: https://www.openbsd.org/
@@ -1027,6 +1029,7 @@ Initial release.
 [glibc]: https://www.gnu.org/software/libc/
 [ld.so(8)]: https://linux.die.net/man/8/ld.so
 [ldconfig(8)]: https://linux.die.net/man/8/ldconfig
+[mmdebstrap(1)]: https://manpages.debian.org/testing/mmdebstrap/mmdebstrap.1.en.html
 [mountpoint(1)]: https://linux.die.net/man/1/mountpoint
 [musl]: https://www.musl-libc.org/
 [openSUSE]: https://www.opensuse.org/

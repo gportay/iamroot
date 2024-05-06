@@ -1777,7 +1777,7 @@ support: debian-support
 debian-support: support/amd64-debian-buster-rootfs.txt
 debian-support: support/amd64-debian-bullseye-rootfs.txt
 debian-support: support/amd64-debian-bookworm-rootfs.txt
-broken-support: support/amd64-debian-trixie-rootfs.txt
+debian-support: support/amd64-debian-trixie-rootfs.txt
 debian-support: support/amd64-debian-sid-rootfs.txt
 
 log: debian-log
@@ -1786,7 +1786,7 @@ log: debian-log
 debian-log: amd64-debian-buster-rootfs.log
 debian-log: amd64-debian-bullseye-rootfs.log
 debian-log: amd64-debian-bookworm-rootfs.log
-broken-log: amd64-debian-trixie-rootfs.log
+debian-log: amd64-debian-trixie-rootfs.log
 debian-log: amd64-debian-sid-rootfs.log
 
 support: ubuntu-support

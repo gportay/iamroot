@@ -1836,6 +1836,22 @@ ubuntu-log: amd64-ubuntu-lunar-rootfs.log
 ubuntu-log: amd64-ubuntu-mantic-rootfs.log
 ubuntu-log: amd64-ubuntu-noble-rootfs.log
 
+stable-support: support/amd64-ubuntu-trusty-rootfs.txt
+stable-support: support/amd64-ubuntu-xenial-rootfs.txt
+stable-support: support/amd64-ubuntu-bionic-rootfs.txt
+stable-support: support/amd64-ubuntu-focal-rootfs.txt
+stable-support: support/amd64-ubuntu-jammy-rootfs.txt
+stable-support: support/amd64-ubuntu-mantic-rootfs.txt
+stable-support: support/amd64-ubuntu-noble-rootfs.txt
+
+stable-log: amd64-ubuntu-trusty-rootfs.log
+stable-log: amd64-ubuntu-xenial-rootfs.log
+stable-log: amd64-ubuntu-bionic-rootfs.log
+stable-log: amd64-ubuntu-focal-rootfs.log
+stable-log: amd64-ubuntu-jammy-rootfs.log
+stable-log: amd64-ubuntu-mantic-rootfs.log
+stable-log: amd64-ubuntu-noble-rootfs.log
+
 legacy-support: support/amd64-ubuntu-groovy-rootfs.txt
 legacy-support: support/amd64-ubuntu-hirsute-rootfs.txt
 legacy-support: support/amd64-ubuntu-impish-rootfs.txt

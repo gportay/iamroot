@@ -893,8 +893,8 @@ $(eval $(call debootstrap-rootfs,amd64,ubuntu,trusty))
 $(eval $(call debootstrap-rootfs,amd64,ubuntu,xenial))
 $(eval $(call debootstrap-rootfs,amd64,ubuntu,bionic))
 $(eval $(call debootstrap-rootfs,amd64,ubuntu,focal))
-$(eval $(call debootstrap-rootfs,amd64,ubuntu,hirsute))
 $(eval $(call debootstrap-rootfs,amd64,ubuntu,groovy))
+$(eval $(call debootstrap-rootfs,amd64,ubuntu,hirsute))
 $(eval $(call debootstrap-rootfs,amd64,ubuntu,impish))
 $(eval $(call debootstrap-rootfs,amd64,ubuntu,jammy))
 $(eval $(call debootstrap-rootfs,amd64,ubuntu,kinetic))
@@ -925,10 +925,10 @@ amd64-ubuntu-bionic-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
 amd64-ubuntu-bionic-rootfs/bin/sh: IDOFLAGS += --preserve-env=LDCONFIG_NOTRIGGER
 amd64-ubuntu-focal-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
 amd64-ubuntu-focal-rootfs/bin/sh: IDOFLAGS += --preserve-env=LDCONFIG_NOTRIGGER
-amd64-ubuntu-hirsute-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
-amd64-ubuntu-hirsute-rootfs/bin/sh: IDOFLAGS += --preserve-env=LDCONFIG_NOTRIGGER
 amd64-ubuntu-groovy-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
 amd64-ubuntu-groovy-rootfs/bin/sh: IDOFLAGS += --preserve-env=LDCONFIG_NOTRIGGER
+amd64-ubuntu-hirsute-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
+amd64-ubuntu-hirsute-rootfs/bin/sh: IDOFLAGS += --preserve-env=LDCONFIG_NOTRIGGER
 amd64-ubuntu-impish-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
 amd64-ubuntu-impish-rootfs/bin/sh: IDOFLAGS += --preserve-env=LDCONFIG_NOTRIGGER
 amd64-ubuntu-jammy-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
@@ -1811,8 +1811,8 @@ ubuntu-support: support/amd64-ubuntu-trusty-rootfs.txt
 ubuntu-support: support/amd64-ubuntu-xenial-rootfs.txt
 ubuntu-support: support/amd64-ubuntu-bionic-rootfs.txt
 ubuntu-support: support/amd64-ubuntu-focal-rootfs.txt
-ubuntu-support: support/amd64-ubuntu-hirsute-rootfs.txt
 ubuntu-support: support/amd64-ubuntu-groovy-rootfs.txt
+ubuntu-support: support/amd64-ubuntu-hirsute-rootfs.txt
 ubuntu-support: support/amd64-ubuntu-impish-rootfs.txt
 ubuntu-support: support/amd64-ubuntu-jammy-rootfs.txt
 ubuntu-support: support/amd64-ubuntu-kinetic-rootfs.txt
@@ -1827,8 +1827,8 @@ ubuntu-log: amd64-ubuntu-trusty-rootfs.log
 ubuntu-log: amd64-ubuntu-xenial-rootfs.log
 ubuntu-log: amd64-ubuntu-bionic-rootfs.log
 ubuntu-log: amd64-ubuntu-focal-rootfs.log
-ubuntu-log: amd64-ubuntu-hirsute-rootfs.log
 ubuntu-log: amd64-ubuntu-groovy-rootfs.log
+ubuntu-log: amd64-ubuntu-hirsute-rootfs.log
 ubuntu-log: amd64-ubuntu-impish-rootfs.log
 ubuntu-log: amd64-ubuntu-jammy-rootfs.log
 ubuntu-log: amd64-ubuntu-kinetic-rootfs.log

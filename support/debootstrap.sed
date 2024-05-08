@@ -24,13 +24,13 @@
 	}
 
 	# http://deb.debian.org/debian/dists/unstable/main/binary-amd64/by-hash/SHA256/646f59e179f69a5d9742b7aca0a1907d3b19c9156084daa464ed41d215f98ee8:
-	/^http.*:$/{
+	/^http.*:$/ {
 		d
 	}
 
 	# YYYY-MM-DD hh:mm:ss ERROR 404: Not Found.
 	# YYYY-MM-DD hh:mm:ss URL:http://deb.debian.org/debian/pool/main/b/base-files/base-files_12.2_am
-	/^[[:digit:]]\{4,4\}-[[:digit:]]\{2,2\}-[[:digit:]]\{2,2\}\s[[:digit:]]\{2,2\}:[[:digit:]]\{2,2\}:[[:digit:]]\{2,2\}\s\(URL\|ERROR\)/{
+	/^[[:digit:]]\{4,4\}-[[:digit:]]\{2,2\}-[[:digit:]]\{2,2\}\s[[:digit:]]\{2,2\}:[[:digit:]]\{2,2\}:[[:digit:]]\{2,2\}\s\(URL\|ERROR\)/ {
 		d
 	}
 
@@ -40,14 +40,14 @@
 	# Unpacking libc6:amd64 (2.34-3) ...
 	# Selecting previously unselected package libc6:amd64.
 	# Processing triggers for libc-bin (2.33-7) ...
-	/^\(Unpacking\|Selecting\|Setting up\|Processing triggers for\)/{
+	/^\(Unpacking\|Selecting\|Setting up\|Processing triggers for\)/ {
 		s,(\([[:digit:]]\+:[[:alnum:].+~%-]\+\|[[:alnum:].+~%-]\+\))\sover\s,,
 		s,\([[:lower:][:digit:]+.-]\+\)\s(\([[:digit:]]\+:[[:alnum:].+~%-]\+\|[[:alnum:].+~%-]\+\))\s\.\.\.,\1 ...,
 		s,\([[:lower:][:digit:]+.-]\+\):\([[:lower:][:digit:]]\+\),\1,
 	}
 
 	# Preparing to unpack .../base-files_12.2_amd64.deb ...
-	/^Preparing to unpack/{
+	/^Preparing to unpack/ {
 		s,\([[:lower:][:digit:]+.-]\+\)_\([[:digit:]]\+:[[:alnum:].+~%-]\+\|[[:alnum:].+~%-]\+\)_\([[:lower:][:digit:]-]\+\)\.deb\s\.\.\.,\1 ...,
 	}
 
@@ -57,7 +57,7 @@
 	# dpkg: libc6:amd64: dependency problems, but configuring anyway as you requested:
 	#  libc6:amd64 depends on libgcc-s1; however:
 	#   Package libgcc-s1 is not installed.
-	/^dpkg: /,/^$/{
+	/^dpkg: /,/^$/ {
 		s,\([[:lower:][:digit:]+.-]\+\)_\([[:digit:]]\+:[[:alnum:].+~%-]\+\|[[:alnum:].+~%-]\+\)_\([[:lower:][:digit:]-]\+\)\.deb,\1,
 		s,\([[:lower:][:digit:]+.-]\+\)\s(>\?=\s\([[:digit:]]\+:[[:alnum:].+~%-]\+\|[[:alnum:].+~%-]\+\)),\1,
 		s,\([[:lower:][:digit:]+.-]\+\):\([[:lower:][:digit:]]\+\),\1,
@@ -65,12 +65,12 @@
 
 	# Local time is now:      Day Mon dd hh:mm:ss TZ YYYY.
 	# Universal Time is now:  Day Mon dd hh:mm:ss TZ YYYY.
-        /^\(Local time\|Universal Time\) is now: /{
+        /^\(Local time\|Universal Time\) is now: / {
 		s,\(:\s\+\).*$,\1Day Mon dd hh:mm:ss TZ YYYY.,
 	}
 
 	# (Reading database ... XXXX files and directories currently installed.)
-	/^(Reading database \.\.\./{
+	/^(Reading database \.\.\./ {
 		s,[[:digit:]]\+,XXX,
 	}
 
@@ -88,7 +88,7 @@
 
 # Creating group 'bin' with GID 1.
 # Creating user 'bin' (n/a) with UID 1 and GID 1.
-/^Creating \(user\|group\) '.*'/{
+/^Creating \(user\|group\) '.*'/ {
 	s,UID [[:digit:]]\+,UID XXX,
 	s,GID [[:digit:]]\+,GID XXX,
 }

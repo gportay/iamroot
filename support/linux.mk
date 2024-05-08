@@ -1836,6 +1836,17 @@ ubuntu-log: amd64-ubuntu-lunar-rootfs.log
 ubuntu-log: amd64-ubuntu-mantic-rootfs.log
 ubuntu-log: amd64-ubuntu-noble-rootfs.log
 
+legacy-support: support/amd64-ubuntu-groovy-rootfs.txt
+legacy-support: support/amd64-ubuntu-hirsute-rootfs.txt
+legacy-support: support/amd64-ubuntu-impish-rootfs.txt
+legacy-support: support/amd64-ubuntu-kinetic-rootfs.txt
+legacy-support: support/amd64-ubuntu-lunar-rootfs.txt
+legacy-log: amd64-ubuntu-groovy-rootfs.log
+legacy-log: amd64-ubuntu-hirsute-rootfs.log
+legacy-log: amd64-ubuntu-impish-rootfs.log
+legacy-log: amd64-ubuntu-kinetic-rootfs.log
+legacy-log: amd64-ubuntu-lunar-rootfs.log
+
 extra-support: devuan-support
 
 .PHONY: devuan-support

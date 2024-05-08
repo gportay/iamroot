@@ -1,6 +1,6 @@
 #!/bin/sed -f
 #
-# Copyright 2022-2023 Gaël PORTAY
+# Copyright 2022-2024 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -90,6 +90,11 @@
 # Creating user 'bin' (n/a) with UID 1 and GID 1.
 /^Creating \(user\|group\) '.*'/{
 	s,UID [[:digit:]]\+,UID XXX,
+	s,GID [[:digit:]]\+,GID XXX,
+}
+
+# Adding group `crontab' (GID XXX) ...
+/^Adding group `.\+'/ {
 	s,GID [[:digit:]]\+,GID XXX,
 }
 

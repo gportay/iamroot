@@ -388,7 +388,7 @@ multiarch-ish: ish
 .PHONY: ido
 ido: PATH := $(CURDIR):$(PATH)
 ido: libiamroot.so
-	bash ido $(IDOFLAGS) -i
+	bash ido $(IDOFLAGS) -s
 
 .PHONY: ish
 ish: PATH := $(CURDIR):$(PATH)

@@ -37,9 +37,7 @@
 	# Get:X http://deb.debian.org/debian bookworm InRelease [XXX kB]
 	# Hit:X http://deb.debian.org/debian bookworm InRelease
 	/^\(Get\|Hit\):/ {
-		s,Get:[[:digit:]]\+,Get:X,g
-		s,Hit:[[:digit:]]\+,Hit:X,g
-		s,[[:digit:].]\{3\,4\}\s\([kM]\|\)B,XXX \1B,g
+		d
 	}
 
 	# Unpacking base-files (12.2) ...

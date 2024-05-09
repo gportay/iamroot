@@ -1,2 +1,2 @@
 deb http://deb.debian.org/debian trixie main
-deb http://repo.mobian.org/ trixie main non-free-firmware
+deb http://repo.mobian.org/ trixie main

@@ -1,2 +1,2 @@
 deb http://deb.debian.org/debian bookworm main
-deb http://repo.mobian.org/ bookworm main non-free-firmware
+deb http://repo.mobian.org/ bookworm main

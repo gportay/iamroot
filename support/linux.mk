@@ -215,12 +215,12 @@ $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: IDOFLAG
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export PERL_DL_NONLAZY = 1
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export MMDEBSTRAPFLAGS ?=
 
-$(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/bash,mmdebstrap --verbose $$(MMDEBSTRAPFLAGS) $(1)-$(2)-$(3)-rootfs <support/$(2)-$(3)-sources.list))
+$(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/bash,mmdebstrap --verbose --architectures=$(1) $$(MMDEBSTRAPFLAGS) $(1)-$(2)-$(3)-rootfs <support/$(2)-$(3)-sources.list))
 
 $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/sh
 $(1)-$(2)-$(3)-rootfs/bin/sh: PATH := $(CURDIR):$(PATH)
 $(1)-$(2)-$(3)-rootfs/bin/sh: | $(call libs,linux,$(1))
-	ido $$(IDOFLAGS) mmdebstrap --verbose $$(MMDEBSTRAPFLAGS) $(3) $(1)-$(2)-$(3)-rootfs <support/$(2)-$(3)-sources.list
+	ido $$(IDOFLAGS) mmdebstrap --verbose --architectures=$(1) $$(MMDEBSTRAPFLAGS) $(3) $(1)-$(2)-$(3)-rootfs <support/$(2)-$(3)-sources.list
 
 $(eval $(call log,mmdebstrap,$(1)-$(2)-$(3)-rootfs))
 
@@ -1505,6 +1505,21 @@ $(eval $(call debootstrap-rootfs,s390x,debian,trixie))
 $(eval $(call debootstrap-rootfs,s390x,debian,sid))
 s390x-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 s390x-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
+endif
+endif
+
+ifneq ($(shell command -v mmdebstrap 2>/dev/null),)
+ifneq ($(shell command -v aarch64-buildroot-linux-gnu-gcc 2>/dev/null),)
+arm-rootfs: arm64-mobian-rootfs
+
+.PHONY: arm64-mobian-rootfs
+arm64-mobian-rootfs: arm64-mobian-bookworm-rootfs
+arm64-mobian-rootfs: arm64-mobian-trixie-rootfs
+
+arm64-mobian-bookworm-rootfs/bin/sh: export MMDEBSTRAPFLAGS ?= --hook-dir=/usr/share/mmdebstrap/hooks/maybe-merged-usr
+arm64-mobian-trixie-rootfs/bin/sh: export MMDEBSTRAPFLAGS ?= --hook-dir=/usr/share/mmdebstrap/hooks/maybe-merged-usr
+$(eval $(call mmdebstrap-rootfs,arm64,mobian,bookworm))
+$(eval $(call mmdebstrap-rootfs,arm64,mobian,trixie))
 endif
 endif
 

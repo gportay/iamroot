@@ -1509,6 +1509,19 @@ endif
 endif
 
 ifneq ($(shell command -v mmdebstrap 2>/dev/null),)
+ifneq ($(shell command -v arm-buildroot-linux-gnueabihf-gcc 2>/dev/null),)
+arm-rootfs: armhf-mobian-rootfs
+
+.PHONY: armhf-mobian-rootfs
+armhf-mobian-rootfs: armhf-mobian-bookworm-rootfs
+armhf-mobian-rootfs: armhf-mobian-trixie-rootfs
+
+armhf-mobian-bookworm-rootfs/bin/sh: export MMDEBSTRAPFLAGS ?= --hook-dir=/usr/share/mmdebstrap/hooks/maybe-merged-usr
+armhf-mobian-trixie-rootfs/bin/sh: export MMDEBSTRAPFLAGS ?= --hook-dir=/usr/share/mmdebstrap/hooks/maybe-merged-usr
+$(eval $(call mmdebstrap-rootfs,armhf,mobian,bookworm))
+$(eval $(call mmdebstrap-rootfs,armhf,mobian,trixie))
+endif
+
 ifneq ($(shell command -v aarch64-buildroot-linux-gnu-gcc 2>/dev/null),)
 arm-rootfs: arm64-mobian-rootfs
 

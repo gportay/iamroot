@@ -22,6 +22,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Run empty executable files via the bourne shell interpreter
 - Create a [Mobian] rootfs via [mmdebstrap(1)]
 - Chroot to a [Mobian] arm64 world
+- Chroot to a [Mobian] armhf world
 
 ### Changed
 

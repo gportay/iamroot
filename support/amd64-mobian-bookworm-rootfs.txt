@@ -774,7 +774,7 @@ Chrooting into $ROOT/amd64-mobian-bookworm-rootfs/
 debconf: delaying package configuration, since apt-utils is not installed
 Fetched XXX B XXXs (XXX kB/s)
 Chrooting into $ROOT/amd64-mobian-bookworm-rootfs/
-(Reading database ... (Reading database ... XXX%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 3744 files and directories currently installed.)
+(Reading database ... (Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX files and directories currently installed.)
 Preparing to unpack .../usr-is-merged ...
 Unpacking usr-is-merged ...
 Chrooting into $ROOT/amd64-mobian-bookworm-rootfs/

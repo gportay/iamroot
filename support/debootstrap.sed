@@ -71,7 +71,7 @@
 
 	# (Reading database ... XXXX files and directories currently installed.)
 	/^(Reading database \.\.\./ {
-		s,[[:digit:]]\+,XXX,
+		s,[[:digit:]]\+,XXX,g
 	}
 
 	# dpkg: warning: parsing file '/var/lib/dpkg/status' near line X package 'dpkg':

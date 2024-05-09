@@ -77,7 +77,7 @@
 
 	# (Reading database ... XXXX files and directories currently installed.)
 	/^(Reading database \.\.\./ {
-		s,[[:digit:]]\+,XXX,
+		s,[[:digit:]]\+,XXX,g
 	}
 }
 

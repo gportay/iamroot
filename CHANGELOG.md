@@ -17,6 +17,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set the `DT_RUNPATH` of `ld-iamroot.so(8)` to the iamroot library directory
 - Add the `ld-iamroot.so(8)` option `--origin` to set the iamroot library
   directory
+- Create the `64` weak aliases `__futimesat64()`, `__lutimes64()`,
+  `__utime64()` and `__utimes64()`
 
 ### Changed
 

@@ -50,3 +50,13 @@ exit:
 
 	return ret;
 }
+
+#ifdef __GLIBC__
+#if __TIMESIZE == 32
+#ifdef _LARGEFILE64_SOURCE
+int __utimes64 (const char *__file, const struct timeval __tvp[2])
+     __THROW __nonnull ((1));
+weak_alias(utimes, __utimes64);
+#endif
+#endif
+#endif

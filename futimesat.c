@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -44,3 +44,13 @@ int futimesat(int dfd, const char *path, const struct timeval times[2])
 
 	return __futimesat(dfd, path, times);
 }
+
+#ifdef __GLIBC__
+#if __TIMESIZE == 32
+#ifdef _LARGEFILE64_SOURCE
+int __futimesat64 (int __fd, const char *__file,
+		   const struct timeval __tvp[2]) __THROW;
+weak_alias(futimesat, __futimesat64);
+#endif
+#endif
+#endif

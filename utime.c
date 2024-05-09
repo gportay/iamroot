@@ -1,8 +1,15 @@
 /*
- * Copyright 2021-2022 Gaël PORTAY
+ * Copyright 2021-2022,2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
+
+#include <stdio.h>
+#include <errno.h>
+
+#include <utime.h>
+
+#include "iamroot.h"
 
 /*
  * Stolen from musl (src/time/utime.c)
@@ -23,3 +30,14 @@ int utime(const char *path, const struct utimbuf *times)
 		{ .tv_sec = times->actime }, { .tv_sec = times->modtime }})
 		: 0, 0);
 }
+
+#ifdef __GLIBC__
+#if __TIMESIZE == 32
+#ifdef _LARGEFILE64_SOURCE
+int __utime64 (const char *__file,
+	       const struct utimbuf *__file_times)
+     __THROW __nonnull ((1));
+weak_alias(utime, __utime64);
+#endif
+#endif
+#endif

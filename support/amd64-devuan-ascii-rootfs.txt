@@ -1,0 +1,85 @@
+I: Target architecture can be executed
+I: Retrieving InRelease 
+I: Checking Release signature
+I: Valid Release signature (key id XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX)
+I: Retrieving Packages 
+I: Validating Packages 
+I: Resolving dependencies of required packages...
+I: Resolving dependencies of base packages...
+I: Checking component main on http://deb.devuan.org/devuan...
+I: Retrieving base-files
+I: Validating base-files
+I: Retrieving bootlogd
+I: Validating bootlogd
+I: Retrieving bsdutils
+I: Validating bsdutils
+I: Retrieving devuan-baseconf
+I: Validating devuan-baseconf
+I: Retrieving devuan-keyring
+I: Validating devuan-keyring
+I: Retrieving eudev
+I: Validating eudev
+I: Retrieving init
+I: Validating init
+I: Retrieving init-system-helpers
+I: Validating init-system-helpers
+I: Retrieving initscripts
+I: Validating initscripts
+I: Retrieving libblkid1
+I: Validating libblkid1
+I: Retrieving libeudev1
+I: Validating libeudev1
+I: Retrieving libfdisk1
+I: Validating libfdisk1
+I: Retrieving libmount1
+I: Validating libmount1
+I: Retrieving libprocps6
+I: Validating libprocps6
+I: Retrieving libsmartcols1
+I: Validating libsmartcols1
+I: Retrieving libuuid1
+I: Validating libuuid1
+I: Retrieving lsb-base
+I: Validating lsb-base
+I: Retrieving mount
+I: Validating mount
+I: Retrieving net-tools
+I: Validating net-tools
+I: Retrieving procps
+I: Validating procps
+I: Retrieving rsyslog
+I: Validating rsyslog
+I: Retrieving sysv-rc
+I: Validating sysv-rc
+I: Retrieving sysvinit-core
+I: Validating sysvinit-core
+I: Retrieving sysvinit-utils
+I: Validating sysvinit-utils
+I: Retrieving tasksel
+I: Validating tasksel
+I: Retrieving tasksel-data
+I: Validating tasksel-data
+I: Retrieving util-linux
+I: Validating util-linux
+I: Chosen extractor for .deb packages: dpkg-deb
+I: Extracting base-files...
+I: Extracting bootlogd...
+I: Extracting bsdutils...
+I: Extracting init-system-helpers...
+I: Extracting initscripts...
+I: Extracting libblkid1...
+I: Extracting libeudev1...
+I: Extracting libfdisk1...
+I: Extracting libmount1...
+I: Extracting libsmartcols1...
+I: Extracting libuuid1...
+I: Extracting lsb-base...
+I: Extracting mount...
+I: Extracting sysv-rc...
+I: Extracting sysvinit-utils...
+I: Extracting util-linux...
+W: Failure trying to run: chroot "$ROOT/amd64-devuan-ascii-rootfs" dpkg-deb -f  Version
+W: See $ROOT/amd64-devuan-ascii-rootfs/debootstrap/debootstrap.log for details
+W: Failure trying to run: chroot "$ROOT/amd64-devuan-ascii-rootfs" /sbin/ldconfig
+W: See $ROOT/amd64-devuan-ascii-rootfs/debootstrap/debootstrap.log for details
+make[1]: *** [makefile:966: amd64-devuan-ascii-rootfs/bin/sh] Error 1

@@ -988,11 +988,15 @@ amd64-devuan-chimaera-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://deb.dev
 amd64-devuan-chimaera-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= support/ceres
 amd64-devuan-daedalus-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://deb.devuan.org/merged/
 amd64-devuan-daedalus-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= support/ceres
+amd64-devuan-excalibur-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://deb.devuan.org/merged/
+amd64-devuan-excalibur-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= support/ceres
+amd64-devuan-excalibur-rootfs/bin/sh: export DEBOOTSTRAPFLAGS ?= --keyring support/devuan-keyring-excalibur-archive.gpg --exclude=logrotate,cron,cron-common-daemon --variant=minbase
 $(eval $(call debootstrap-rootfs,amd64,devuan,jessie))
 $(eval $(call debootstrap-rootfs,amd64,devuan,ascii))
 $(eval $(call debootstrap-rootfs,amd64,devuan,beowulf))
 $(eval $(call debootstrap-rootfs,amd64,devuan,chimaera))
 $(eval $(call debootstrap-rootfs,amd64,devuan,daedalus))
+$(eval $(call debootstrap-rootfs,amd64,devuan,excalibur))
 # Processing triggers for libc-bin ...
 # dpkg: cycle found while processing triggers:
 #  chain of packages whose triggers are or may be responsible:
@@ -1017,6 +1021,9 @@ legacy-log: amd64-devuan-chimaera-rootfs.log
 
 stable-support: support/amd64-devuan-daedalus-rootfs.txt
 stable-log: amd64-devuan-daedalus-rootfs.log
+
+unstable-support: support/amd64-devuan-excalibur-rootfs.txt
+unstable-log: amd64-devuan-excalibur-rootfs.log
 
 install-support-x86_64: install-support-x86_64-debootstrap
 
@@ -1970,6 +1977,7 @@ devuan-support: support/amd64-devuan-ascii-rootfs.txt
 devuan-support: support/amd64-devuan-beowulf-rootfs.txt
 devuan-support: support/amd64-devuan-chimaera-rootfs.txt
 devuan-support: support/amd64-devuan-daedalus-rootfs.txt
+devuan-support: support/amd64-devuan-excalibur-rootfs.txt
 
 log: devuan-log
 
@@ -1979,6 +1987,7 @@ devuan-log: amd64-devuan-ascii-rootfs.log
 devuan-log: amd64-devuan-beowulf-rootfs.log
 devuan-log: amd64-devuan-chimaera-rootfs.log
 devuan-log: amd64-devuan-daedalus-rootfs.log
+devuan-log: amd64-devuan-excalibur-rootfs.log
 
 legacy-support: support/amd64-debian-buster-rootfs.txt
 legacy-support: support/amd64-debian-bullseye-rootfs.txt

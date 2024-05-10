@@ -953,13 +953,11 @@ stable-rootfs: amd64-devuan-daedalus-rootfs
 
 amd64-devuan-beowulf-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://deb.devuan.org/merged/
 amd64-devuan-beowulf-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= support/ceres
-amd64-devuan-beowulf-rootfs/bin/sh: export DEBOOTSTRAPFLAGS ?= --no-check-gpg --no-merged-usr
+amd64-devuan-beowulf-rootfs/bin/sh: export DEBOOTSTRAPFLAGS ?= --no-merged-usr
 amd64-devuan-chimaera-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://deb.devuan.org/merged/
 amd64-devuan-chimaera-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= support/ceres
-amd64-devuan-chimaera-rootfs/bin/sh: export DEBOOTSTRAPFLAGS ?= --no-check-gpg
 amd64-devuan-daedalus-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://deb.devuan.org/merged/
 amd64-devuan-daedalus-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= support/ceres
-amd64-devuan-daedalus-rootfs/bin/sh: export DEBOOTSTRAPFLAGS ?= --no-check-gpg
 $(eval $(call debootstrap-rootfs,amd64,devuan,beowulf))
 $(eval $(call debootstrap-rootfs,amd64,devuan,chimaera))
 $(eval $(call debootstrap-rootfs,amd64,devuan,daedalus))

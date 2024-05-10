@@ -951,6 +951,8 @@ amd64-devuan-rootfs: amd64-devuan-daedalus-rootfs
 
 stable-rootfs: amd64-devuan-daedalus-rootfs
 
+amd64-devuan-jessie-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.devuan.org/merged/
+amd64-devuan-jessie-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= support/ceres
 amd64-devuan-ascii-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.devuan.org/merged/
 amd64-devuan-ascii-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= support/ceres
 amd64-devuan-beowulf-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://deb.devuan.org/merged/
@@ -959,14 +961,17 @@ amd64-devuan-chimaera-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://deb.dev
 amd64-devuan-chimaera-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= support/ceres
 amd64-devuan-daedalus-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://deb.devuan.org/merged/
 amd64-devuan-daedalus-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= support/ceres
+$(eval $(call debootstrap-rootfs,amd64,devuan,jessie))
 $(eval $(call debootstrap-rootfs,amd64,devuan,ascii))
 $(eval $(call debootstrap-rootfs,amd64,devuan,beowulf))
 $(eval $(call debootstrap-rootfs,amd64,devuan,chimaera))
 $(eval $(call debootstrap-rootfs,amd64,devuan,daedalus))
 
+fixme-support: support/amd64-devuan-jessie-rootfs.txt
 legacy-support: support/amd64-devuan-ascii-rootfs.txt
 legacy-support: support/amd64-devuan-beowulf-rootfs.txt
 legacy-support: support/amd64-devuan-chimaera-rootfs.txt
+fixme-log: amd64-devuan-jessie-rootfs.log
 legacy-log: amd64-devuan-ascii-rootfs.log
 legacy-log: amd64-devuan-beowulf-rootfs.log
 legacy-log: amd64-devuan-chimaera-rootfs.log

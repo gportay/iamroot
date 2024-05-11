@@ -1,3 +1,4 @@
+default_mirror http://deb.devuan.org/merged
 mirror_style release
 download_style apt
 finddebs_style from-indices
@@ -15,9 +16,33 @@ case $ARCH in
 	*)          LIBC="libc6" ;;
 esac
 
+# Based on functions resolve_deps()
+get_depends() {
+    local pkgs m1 s c a path pkgdest
+    pkgs="$*"
+    shift
+
+    archs="$ARCH"
+    if [ $ARCH_ALL_SUPPORTED -eq 1 ]; then
+	archs="all $ARCH"
+    fi
+
+    for m1 in $MIRRORS; do
+	for s in $SUITE $EXTRA_SUITES; do
+	    for c in $COMPONENTS; do
+		for a in $archs; do
+		    path="dists/$s/$c/binary-$a/Packages"
+		    pkgdest="$TARGET/$($DLDEST pkg "$s" "$c" "$a" "$m1" "$path")"
+		    echo "$("$PKGDETAILS" GETDEPS "$pkgdest" $pkgs)"
+		done
+	    done
+	done
+    done
+    }
+
 work_out_debs () {
 	required="$(get_debs Priority: required)"
-	devuan_required="devuan-keyring devuan-baseconf sysvinit-core"
+	devuan_required="devuan-keyring sysvinit-core"
 
 	if doing_variant - || doing_variant fakechroot; then
 		#required="$required $(get_debs Priority: important)"
@@ -39,18 +64,57 @@ work_out_debs () {
 		base="$base apt-transport-https ca-certificates"
 		;;
 	esac
-}
+
+	# Fixup dependencies: debootstrap doesn't resolve alternatives, so we
+	# need manual fixes.
+	if get_depends $base | grep '^systemd$' >/dev/null 2>&1 ; then
+	    case "$base" in
+		# Fix #796: recent versions of cron-daemon-common depend on
+		# systemd | systemd-standalone-sysusers | systemd-sysusers.
+		*cron-daemon-common*)
+		    required="$required systemd-standalone-sysusers"
+		    ;;
+	    esac
+	fi
+
+	# On suites >= daedalus if merged-/usr has been chosen or is the
+	# default, there is no need for the live migration 'usrmerge' package and
+	# its extra dependencies; instead install the empty 'usr-is-merged'
+	# metapackage to indicate that the transition has been done.
+	case "$CODENAME" in
+	    jessie*|ascii|beowulf|chimaera)
+	    ;;
+	    *)
+ 		if [ "$MERGED_USR" = "yes" -o "$CODENAME" != "daedalus" ]; then
+		    required="$required usr-is-merged"
+		    EXCLUDE_DEPENDENCY="$EXCLUDE_DEPENDENCY usrmerge"
+		fi
+		;;
+	esac
+	}
 
 first_stage_install () {
 	case "$CODENAME" in
-		etch|etch-m68k|jessie|jessie-kfreebsd|lenny|squeeze|wheezy) ;;
+		jessie*|ascii) ;;
 		*)
-			EXTRACT_DEB_TAR_OPTIONS="$EXTRACT_DEB_TAR_OPTIONS -k"
-			setup_merged_usr
-			;;
+		    EXTRACT_DEB_TAR_OPTIONS="$EXTRACT_DEB_TAR_OPTIONS -k"
+		    ;;
+	esac
+
+	case "$CODENAME" in
+	    excalibur|freia|ceres)
+		if [ "$MERGED_USR" = "no" ]; then
+		    error 1 SANITYCHECK "Unmerged /usr is not compatible with $CODENAME"
+		fi
+		MERGED_USR="yes"
+		;;
 	esac
 
 	extract $required
+
+	if [ "$MERGED_USR" = "yes" ]; then
+	    merge_usr
+	fi
 
 	mkdir -p "$TARGET/var/lib/dpkg"
 	: >"$TARGET/var/lib/dpkg/status"
@@ -95,7 +159,7 @@ Status: install ok installed" >> "$TARGET/var/lib/dpkg/status"
 	}
 
 	if doing_variant fakechroot; then
-		setup_proc_fakechroot
+		setup_proc_symlink
 	else
 		setup_proc
 		in_target /sbin/ldconfig

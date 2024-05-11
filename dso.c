@@ -955,7 +955,7 @@ static int __elf32_phdr(int fd, Elf32_Ehdr *ehdr, Elf32_Phdr *phdr,
 	if (siz == -1)
 		return -1;
 	else if ((size_t)siz < sizeof(*phdr))
-		return __set_errno(EIO, -1);
+		return __set_errno_and_perror(EIO, -1);
 
 	if (!__elf32_swap(ehdr))
 		return 0;
@@ -981,7 +981,7 @@ static int __elf32_shdr(int fd, Elf32_Ehdr *ehdr, Elf32_Shdr *shdr,
 	if (siz == -1)
 		return -1;
 	else if ((size_t)siz < sizeof(*shdr))
-		return __set_errno(EIO, -1);
+		return __set_errno_and_perror(EIO, -1);
 
 	if (!__elf32_swap(ehdr))
 		return 0;
@@ -1008,7 +1008,7 @@ static int __elf32_dyn(int fd, Elf32_Ehdr *ehdr, Elf32_Dyn *dyn, size_t dynsiz,
 	if (siz == -1)
 		return -1;
 	else if ((size_t)siz < dynsiz)
-		return __set_errno(EIO, -1);
+		return __set_errno_and_perror(EIO, -1);
 
 	if (!__elf32_swap(ehdr))
 		return 0;
@@ -1070,7 +1070,7 @@ static int __elf64_phdr(int fd, Elf64_Ehdr *ehdr, Elf64_Phdr *phdr,
 	if (siz == -1)
 		return -1;
 	else if ((size_t)siz < sizeof(*phdr))
-		return __set_errno(EIO, -1);
+		return __set_errno_and_perror(EIO, -1);
 
 	if (!__elf64_swap(ehdr))
 		return 0;
@@ -1096,7 +1096,7 @@ static int __elf64_shdr(int fd, Elf64_Ehdr *ehdr, Elf64_Shdr *shdr,
 	if (siz == -1)
 		return -1;
 	else if ((size_t)siz < sizeof(*shdr))
-		return __set_errno(EIO, -1);
+		return __set_errno_and_perror(EIO, -1);
 
 	if (!__elf64_swap(ehdr))
 		return 0;
@@ -1124,7 +1124,7 @@ static int __elf64_dyn(int fd, Elf64_Ehdr *ehdr, Elf64_Dyn *dyn, size_t dynsiz,
 	if (siz == -1)
 		return -1;
 	else if ((size_t)siz < dynsiz)
-		return __set_errno(EIO, -1);
+		return __set_errno_and_perror(EIO, -1);
 
 	if (!__elf64_swap(ehdr))
 		return 0;
@@ -1147,7 +1147,7 @@ static int __elf_ehdr(int fd, Elf64_Ehdr *ehdr)
 	if (siz == -1)
 		return -1;
 	else if ((size_t)siz < sizeof(*ehdr))
-		return __set_errno(EIO, -1);
+		return __set_errno_and_perror(EIO, -1);
 
 	/* Not an ELF */
 	if (memcmp(ehdr->e_ident, ELFMAG, SELFMAG) != 0)
@@ -1238,7 +1238,7 @@ static ssize_t __elf_interp32(int fd, Elf32_Ehdr *ehdr, char *buf,
 			continue;
 
 		if (bufsiz < phdr.p_filesz) {
-			ret = __set_errno(EIO, -1);
+			ret = __set_errno_and_perror(EIO, -1);
 			goto exit;
 		}
 
@@ -1247,7 +1247,7 @@ static ssize_t __elf_interp32(int fd, Elf32_Ehdr *ehdr, char *buf,
 		if (ret == -1) {
 			goto exit;
 		} else if ((size_t)ret < phdr.p_filesz) {
-			ret = __set_errno(EIO, -1);
+			ret = __set_errno_and_perror(EIO, -1);
 			goto exit;
 		}
 
@@ -1286,7 +1286,7 @@ static ssize_t __elf_interp64(int fd, Elf64_Ehdr *ehdr, char *buf,
 			continue;
 
 		if (bufsiz < phdr.p_filesz) {
-			ret = __set_errno(EIO, -1);
+			ret = __set_errno_and_perror(EIO, -1);
 			goto exit;
 		}
 
@@ -1295,7 +1295,7 @@ static ssize_t __elf_interp64(int fd, Elf64_Ehdr *ehdr, char *buf,
 		if (ret == -1) {
 			goto exit;
 		} else if ((size_t)ret < phdr.p_filesz) {
-			ret = __set_errno(EIO, -1);
+			ret = __set_errno_and_perror(EIO, -1);
 			goto exit;
 		}
 
@@ -1371,7 +1371,7 @@ static int __elf_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int d_tag,
 			continue;
 
 		if (sizeof(dyn) < phdr.p_filesz) {
-			ret = __set_errno(EIO, -1);
+			ret = __set_errno_and_perror(EIO, -1);
 			goto exit;
 		}
 
@@ -1415,7 +1415,7 @@ static int __elf_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int d_tag,
 			if (siz == -1) {
 				goto exit;
 			} else if ((size_t)siz < size) {
-				ret = __set_errno(EIO, -1);
+				ret = __set_errno_and_perror(EIO, -1);
 				goto exit;
 			}
 
@@ -1496,7 +1496,7 @@ static int __elf_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int d_tag,
 			continue;
 
 		if (sizeof(dyn) < phdr.p_filesz) {
-			ret = __set_errno(EIO, -1);
+			ret = __set_errno_and_perror(EIO, -1);
 			goto exit;
 		}
 
@@ -1540,7 +1540,7 @@ static int __elf_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int d_tag,
 			if (siz == -1) {
 				goto exit;
 			} else if ((size_t)siz < size) {
-				ret = __set_errno(EIO, -1);
+				ret = __set_errno_and_perror(EIO, -1);
 				goto exit;
 			}
 

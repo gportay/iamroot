@@ -66,6 +66,11 @@ extern "C" {
 	({ errno = (e); \
 	   (r); })
 
+#define __set_errno_and_perror(e, r) \
+	({ errno = (e); \
+	   perror(__func__); \
+	   (r); })
+
 #define _strncpy(s1, s2, n1) \
 	({ const int l = (n1)-1; \
 	   strncpy((s1), (s2), l); \

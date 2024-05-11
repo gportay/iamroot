@@ -1698,7 +1698,8 @@ Setting up libnettle4 ...
 Setting up debian-archive-keyring ...
 Setting up vim-common ...
 Setting up devuan-baseconf ...
-dpkg (subprocess): unable to execute installed post-installation script (/var/lib/dpkg/info/devuan-baseconf.postinst): Input/output error
+__fcan_exec: Input/output error
+dpkg (subprocess): unable to execute installed post-installation script (/var/lib/dpkg/info/devuan-baseconf.postinst): Invalid argument
 dpkg: error processing package devuan-baseconf (--configure):
  subprocess installed post-installation script returned error exit status 2
 Setting up libnfnetlink0 ...
@@ -1779,25 +1780,29 @@ Setting up tasksel-data ...
 Errors were encountered while processing:
  devuan-baseconf
 Setting up devuan-baseconf ...
-dpkg (subprocess): unable to execute installed post-installation script (/var/lib/dpkg/info/devuan-baseconf.postinst): Input/output error
+__fcan_exec: Input/output error
+dpkg (subprocess): unable to execute installed post-installation script (/var/lib/dpkg/info/devuan-baseconf.postinst): Invalid argument
 dpkg: error processing package devuan-baseconf (--configure):
  subprocess installed post-installation script returned error exit status 2
 Errors were encountered while processing:
  devuan-baseconf
 Setting up devuan-baseconf ...
-dpkg (subprocess): unable to execute installed post-installation script (/var/lib/dpkg/info/devuan-baseconf.postinst): Input/output error
+__fcan_exec: Input/output error
+dpkg (subprocess): unable to execute installed post-installation script (/var/lib/dpkg/info/devuan-baseconf.postinst): Invalid argument
 dpkg: error processing package devuan-baseconf (--configure):
  subprocess installed post-installation script returned error exit status 2
 Errors were encountered while processing:
  devuan-baseconf
 Setting up devuan-baseconf ...
-dpkg (subprocess): unable to execute installed post-installation script (/var/lib/dpkg/info/devuan-baseconf.postinst): Input/output error
+__fcan_exec: Input/output error
+dpkg (subprocess): unable to execute installed post-installation script (/var/lib/dpkg/info/devuan-baseconf.postinst): Invalid argument
 dpkg: error processing package devuan-baseconf (--configure):
  subprocess installed post-installation script returned error exit status 2
 Errors were encountered while processing:
  devuan-baseconf
 Setting up devuan-baseconf ...
-dpkg (subprocess): unable to execute installed post-installation script (/var/lib/dpkg/info/devuan-baseconf.postinst): Input/output error
+__fcan_exec: Input/output error
+dpkg (subprocess): unable to execute installed post-installation script (/var/lib/dpkg/info/devuan-baseconf.postinst): Invalid argument
 dpkg: error processing package devuan-baseconf (--configure):
  subprocess installed post-installation script returned error exit status 2
 Errors were encountered while processing:

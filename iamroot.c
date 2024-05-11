@@ -243,7 +243,7 @@ static int __fcan_exec(int fd)
 	if (siz == -1)
 		return -1;
 	else if ((size_t)siz < sizeof(magic))
-		return __set_errno(EIO, -1);
+		return __set_errno_and_perror(EIO, -1);
 
 	/* It is an interpreter-script */
 	if (memcmp(magic, SCRIPTMAG, SSCRIPTMAG) == 0)

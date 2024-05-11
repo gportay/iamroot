@@ -966,6 +966,18 @@ $(eval $(call debootstrap-rootfs,amd64,devuan,ascii))
 $(eval $(call debootstrap-rootfs,amd64,devuan,beowulf))
 $(eval $(call debootstrap-rootfs,amd64,devuan,chimaera))
 $(eval $(call debootstrap-rootfs,amd64,devuan,daedalus))
+# Processing triggers for libc-bin ...
+# dpkg: cycle found while processing triggers:
+#  chain of packages whose triggers are or may be responsible:
+#   libc-bin -> libc-bin
+#  packages' pending triggers which are or may be unresolvable:
+#   libc-bin: ldconfig
+# dpkg: error processing package libc-bin (--configure):
+#  triggers looping, abandoned
+# Errors were encountered while processing:
+#  libc-bin
+amd64-devuan-jessie-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
+amd64-devuan-jessie-rootfs/bin/sh: IDOFLAGS += --preserve-env=LDCONFIG_NOTRIGGER
 
 fixme-support: support/amd64-devuan-jessie-rootfs.txt
 legacy-support: support/amd64-devuan-ascii-rootfs.txt

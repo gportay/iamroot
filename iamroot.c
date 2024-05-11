@@ -239,11 +239,16 @@ static int __fcan_exec(int fd)
 	char magic[4];
 	ssize_t siz;
 
+	/* Read magic */
 	siz = read(fd, magic, sizeof(magic));
 	if (siz == -1)
 		return -1;
-	else if ((size_t)siz < sizeof(magic))
+	else if (siz != 0 && (size_t)siz < sizeof(magic))
 		return __set_errno_and_perror(EIO, -1);
+
+	/* It is an empty file */
+	if (siz == 0)
+		return 1;
 
 	/* It is an interpreter-script */
 	if (memcmp(magic, SCRIPTMAG, SSCRIPTMAG) == 0)

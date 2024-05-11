@@ -19,6 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   directory
 - Create the `64` weak aliases `__futimesat64()`, `__lutimes64()`,
   `__utime64()` and `__utimes64()`
+- Run empty executable files via the bourne shell interpreter
 
 ### Changed
 

@@ -169,7 +169,7 @@ static int __setld_preload(const char *preload, int overwrite)
 	int n;
 
 	if (!preload || !*preload)
-		return __set_errno(EINVAL, -1);
+		return __set_errno_and_perror(EINVAL, -1);
 
 	/* LD_PRELOAD is unset; setenv preload directly! */
 	curr = _getenv("LD_PRELOAD");
@@ -289,7 +289,7 @@ static char *__path_strncat(char *dst, const char *src, size_t dstsiz)
 	if (*dst)
 		len++;
 	if (len > (dstsiz-strlen(dst)-1)) /* NULL-terminated */
-		return __set_errno(ENOSPC, NULL);
+		return __set_errno_and_perror(ENOSPC, NULL);
 
 	if (*dst)
 		_strncat(dst, ":", dstsiz);
@@ -684,7 +684,7 @@ static int __ld_needed_callback(const char *needed, void *user)
 	struct __ld_needed_context *ctx = (struct __ld_needed_context *)user;
 
 	if (!ctx->callback)
-		return __set_errno(EINVAL, -1);
+		return __set_errno_and_perror(EINVAL, -1);
 
 	return ctx->callback(needed, ctx->rpath, ctx->ld_library_path,
 			     ctx->runpath, ctx->deflib, ctx->flags_1,
@@ -1204,7 +1204,7 @@ static int __felf_header(int fd, Elf64_Ehdr *ehdr)
 	int err;
 
 	if (fd < 0 || !ehdr)
-		return __set_errno(EINVAL, -1);
+		return __set_errno_and_perror(EINVAL, -1);
 
 	err = lseek(fd, 0, SEEK_SET);
 	if (err)
@@ -1322,7 +1322,7 @@ static int __elf_iterate_ehdr32(int fd, Elf32_Ehdr *ehdr, int d_tag,
 	off_t off;
 
 	if (!callback)
-		ret = __set_errno(EINVAL, -1);
+		ret = __set_errno_and_perror(EINVAL, -1);
 
 	/* Look for the .shstrtab section */
 	off = ehdr->e_shoff;
@@ -1447,7 +1447,7 @@ static int __elf_iterate_ehdr64(int fd, Elf64_Ehdr *ehdr, int d_tag,
 	off_t off;
 
 	if (!callback)
-		ret = __set_errno(EINVAL, -1);
+		ret = __set_errno_and_perror(EINVAL, -1);
 
 	/* Look for the .shstrtab section */
 	off = ehdr->e_shoff;
@@ -2805,7 +2805,7 @@ static int __flags_callback(const void *data, size_t datasiz, void *user)
 	(void)datasiz;
 
 	if (!data || !user)
-		return __set_errno(EINVAL, -1);
+		return __set_errno_and_perror(EINVAL, -1);
 
 	*f = *flags;
 
@@ -2841,7 +2841,7 @@ static int __path_callback(const void *data, size_t datasiz, void *user)
 	(void)datasiz;
 
 	if (!data || !user)
-		return __set_errno(EINVAL, -1);
+		return __set_errno_and_perror(EINVAL, -1);
 
 	str = __path_strncat(p, path, PATH_MAX);
 	if (!str)
@@ -3426,7 +3426,7 @@ static int __elf_so_context(const char *path,
 
 	if (!path || !rpath || !ld_library_path || !runpath || !deflib ||
 	    !flags_1 || !buf)
-		return __set_errno(EINVAL, -1);
+		return __set_errno_and_perror(EINVAL, -1);
 
 	*rpath = NULL;
 	*ld_library_path = NULL;
@@ -3483,7 +3483,7 @@ hidden ssize_t __dl_access(const char *path, int mode, char *buf,
 	int err;
 
 	if (strchr(path, '/'))
-		return __set_errno(EINVAL, -1);
+		return __set_errno_and_perror(EINVAL, -1);
 
 	/* Get the executable */
 	execfn = __execfn();
@@ -3808,7 +3808,7 @@ hidden int __ldso_posix_spawn(pid_t *pid,
 static int __elf_header(void *addr, size_t addrsiz, Elf64_Ehdr *ehdr)
 {
 	if (sizeof(*ehdr) > addrsiz)
-		return __set_errno(ERANGE, -1);
+		return __set_errno_and_perror(ERANGE, -1);
 
 	memcpy(ehdr, addr, sizeof(*ehdr));
 
@@ -3866,7 +3866,7 @@ static int __elf32_program_header(void *addr, size_t addrsiz, Elf32_Ehdr *ehdr,
 				  Elf32_Phdr *phdr, off_t offset)
 {
 	if ((size_t)offset + sizeof(*phdr) > addrsiz)
-		return __set_errno(ERANGE, -1);
+		return __set_errno_and_perror(ERANGE, -1);
 
 	memcpy(phdr, addr + offset, sizeof(*phdr));
 
@@ -3889,7 +3889,7 @@ static int __elf64_program_header(void *addr, size_t addrsiz, Elf64_Ehdr *ehdr,
 				  Elf64_Phdr *phdr, off_t offset)
 {
 	if ((size_t)offset + sizeof(*phdr) > addrsiz)
-		return __set_errno(ERANGE, -1);
+		return __set_errno_and_perror(ERANGE, -1);
 
 	memcpy(phdr, addr + offset, sizeof(*phdr));
 
@@ -3920,7 +3920,7 @@ static int __elf32_iterate_for_pt(void *addr,
 	off_t off;
 
 	if (!callback)
-		return __set_errno(EINVAL, -1);
+		return __set_errno_and_perror(EINVAL, -1);
 
 	/* Look for the segment */
 	off = ehdr->e_phoff;
@@ -3940,7 +3940,7 @@ static int __elf32_iterate_for_pt(void *addr,
 			continue;
 
 		if (phdr.p_offset > addrsiz)
-			return __set_errno(ERANGE, -1);
+			return __set_errno_and_perror(ERANGE, -1);
 
 		err = callback(addr + phdr.p_offset, phdr.p_filesz, data);
 		if (err == -1)
@@ -3965,7 +3965,7 @@ static int __elf64_iterate_for_pt(void *addr,
 	off_t off;
 
 	if (!callback)
-		return __set_errno(EINVAL, -1);
+		return __set_errno_and_perror(EINVAL, -1);
 
 	/* Look for the segment */
 	off = ehdr->e_phoff;
@@ -3985,7 +3985,7 @@ static int __elf64_iterate_for_pt(void *addr,
 			continue;
 
 		if (phdr.p_offset > addrsiz)
-			return __set_errno(ERANGE, -1);
+			return __set_errno_and_perror(ERANGE, -1);
 
 		err = callback(addr + phdr.p_offset, phdr.p_filesz, data);
 		if (err == -1)
@@ -4013,7 +4013,7 @@ static int __elf_iterate_shared_object_for_pt(int fd, unsigned int p_type,
 
 	addrsiz = statbuf.st_size;
 	if (addrsiz == 0)
-		return __set_errno(ERANGE, -1);
+		return __set_errno_and_perror(ERANGE, -1);
 
 	addr = mmap(NULL, addrsiz, PROT_READ, MAP_PRIVATE, fd, 0);
 	if (addr == MAP_FAILED)
@@ -4059,7 +4059,7 @@ static int __elf_has_interp_callback(const void *data, size_t datasiz,
 	(void)fd;
 
 	if (!data || !user)
-		return __set_errno(EINVAL, -1);
+		return __set_errno_and_perror(EINVAL, -1);
 
 	__notice("%s: has interpreter '%s'\n", __fpath(*fd), interp);
 

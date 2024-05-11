@@ -236,8 +236,19 @@ hidden const char *__basename(const char *path)
 
 static int __fcan_exec(int fd)
 {
+	struct stat statbuf;
 	char magic[4];
 	ssize_t siz;
+	int err;
+
+	/* Get file status */
+	err = fstat(fd, &statbuf);
+	if (err == -1)
+		return -1;
+
+	/* File is non-executable */
+	if ((statbuf.st_mode & S_IXUSR) == 0)
+		return __set_errno(ENOEXEC, -1);
 
 	/* Read magic */
 	siz = read(fd, magic, sizeof(magic));

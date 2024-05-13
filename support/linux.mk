@@ -979,11 +979,11 @@ $(eval $(call debootstrap-rootfs,amd64,devuan,daedalus))
 amd64-devuan-jessie-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
 amd64-devuan-jessie-rootfs/bin/sh: IDOFLAGS += --preserve-env=LDCONFIG_NOTRIGGER
 
-fixme-support: support/amd64-devuan-jessie-rootfs.txt
+legacy-support: support/amd64-devuan-jessie-rootfs.txt
 legacy-support: support/amd64-devuan-ascii-rootfs.txt
 legacy-support: support/amd64-devuan-beowulf-rootfs.txt
 legacy-support: support/amd64-devuan-chimaera-rootfs.txt
-fixme-log: amd64-devuan-jessie-rootfs.log
+legacy-log: amd64-devuan-jessie-rootfs.log
 legacy-log: amd64-devuan-ascii-rootfs.log
 legacy-log: amd64-devuan-beowulf-rootfs.log
 legacy-log: amd64-devuan-chimaera-rootfs.log

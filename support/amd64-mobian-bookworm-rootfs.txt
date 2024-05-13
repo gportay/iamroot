@@ -49,125 +49,125 @@ The following NEW packages will be installed:
 XXX upgraded, XXX newly installed, XXX to remove and XXX not upgraded.
 Need to get XXX.X MB of archives.
 After this operation, XXX.X MB of additional disk space will be used.
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/gcc-12-base_12.2.0-14_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure gcc-12-base:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libc6_2.36-9+deb12u7_amd64.deb $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libgcc-s1_12.2.0-14_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libgcc-s1:amd64 libc6:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/mawk_1.3.4.20200120-3.1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure mawk:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/base-files_12.4+deb12u5_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure base-files:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libtinfo6_6.4-4_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libtinfo6:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/debianutils_5.7-0.5~deb12u1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure debianutils:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/bash_5.2.15-2+b2_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure bash:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libcap2_1%3a2.66-4_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libcap2:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libgpg-error0_1.46-1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libgpg-error0:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libgcrypt20_1.10.1-3_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libgcrypt20:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/liblz4-1_1.9.4-1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure liblz4-1:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/liblzma5_5.4.1-0.2_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure liblzma5:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libzstd1_1.5.4+dfsg2-5_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libzstd1:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libsystemd0_252.22-1~deb12u1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libsystemd0:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/bsdutils_1%3a2.38.1-5+deb12u1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure bsdutils:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libacl1_2.3.1-3_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libacl1:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libattr1_1%3a2.5.1-4_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libattr1:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libgmp10_2%3a6.2.1+dfsg1-1.1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libgmp10:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libpcre2-8-0_10.42-1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libpcre2-8-0:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libselinux1_3.4-1+b6_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libselinux1:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/coreutils_9.1-1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure coreutils:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libbz2-1.0_1.0.8-5+b1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libbz2-1.0:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libmd0_1.0.4-2_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libmd0:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/zlib1g_1%3a1.2.13.dfsg-1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure zlib1g:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/tar_1.34+dfsg-1.2+deb12u1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure tar:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/dpkg_1.21.22_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure dpkg:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/dash_0.5.12-2_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure dash:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/diffutils_1%3a3.8-4_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure diffutils:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/findutils_4.9.0-4_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure findutils:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/grep_3.8-5_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure grep:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/gzip_1.12-1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure gzip:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/hostname_3.23+nmu1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure hostname:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libaudit-common_1%3a3.0.9-1_all.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libaudit-common:all 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libcap-ng0_0.8.3-1+b3_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libcap-ng0:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libaudit1_1%3a3.0.9-1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libaudit1:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libcrypt1_1%3a4.4.33-2_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libcrypt1:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/debconf_1.5.82_all.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure debconf:all 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libpam0g_1.5.2-6+deb12u1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libpam0g:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libdb5.3_5.3.28+dfsg2-1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libdb5.3:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libpam-modules-bin_1.5.2-6+deb12u1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libpam-modules-bin:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libpam-modules_1.5.2-6+deb12u1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libpam-modules:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libpam-runtime_1.5.2-6+deb12u1_all.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libpam-runtime:all 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/login_1%3a4.13+dfsg1-1+b1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure login:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/ncurses-bin_6.4-4_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure ncurses-bin:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/perl-base_5.36.0-7+deb12u1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure perl-base:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/sed_4.9-1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure sed:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libblkid1_2.38.1-5+deb12u1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libblkid1:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libmount1_2.38.1-5+deb12u1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libmount1:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libsmartcols1_2.38.1-5+deb12u1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libsmartcols1:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libudev1_252.22-1~deb12u1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libudev1:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libuuid1_2.38.1-5+deb12u1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libuuid1:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/util-linux-extra_2.38.1-5+deb12u1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure util-linux-extra:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/util-linux_2.38.1-5+deb12u1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure util-linux:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libdebconfclient0_0.270_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libdebconfclient0:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/base-passwd_3.6.1_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure base-passwd:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/init-system-helpers_1.65.2_all.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure init-system-helpers:all 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libc-bin_2.36-9+deb12u7_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure libc-bin:amd64 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/ncurses-base_6.4-4_all.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure ncurses-base:all 
-/usr/bin/dpkg --status-fd 10 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/sysvinit-utils_3.06-4_amd64.deb 
-/usr/bin/dpkg --status-fd 10 --no-triggers --configure sysvinit-utils:amd64 
-/usr/bin/dpkg --status-fd 10 --configure --pending 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/gcc-12-base_12.2.0-14_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure gcc-12-base:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libc6_2.36-9+deb12u4_amd64.deb $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libgcc-s1_12.2.0-14_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libgcc-s1:amd64 libc6:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/mawk_1.3.4.20200120-3.1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure mawk:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/base-files_12.4+deb12u5_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure base-files:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libtinfo6_6.4-4_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libtinfo6:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/debianutils_5.7-0.5~deb12u1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure debianutils:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/bash_5.2.15-2+b2_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure bash:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libcap2_1%3a2.66-4_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libcap2:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libgpg-error0_1.46-1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libgpg-error0:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libgcrypt20_1.10.1-3_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libgcrypt20:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/liblz4-1_1.9.4-1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure liblz4-1:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/liblzma5_5.4.1-0.2_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure liblzma5:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libzstd1_1.5.4+dfsg2-5_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libzstd1:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libsystemd0_252.22-1~deb12u1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libsystemd0:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/bsdutils_1%3a2.38.1-5+b1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure bsdutils:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libacl1_2.3.1-3_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libacl1:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libattr1_1%3a2.5.1-4_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libattr1:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libgmp10_2%3a6.2.1+dfsg1-1.1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libgmp10:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libpcre2-8-0_10.42-1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libpcre2-8-0:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libselinux1_3.4-1+b6_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libselinux1:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/coreutils_9.1-1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure coreutils:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libbz2-1.0_1.0.8-5+b1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libbz2-1.0:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libmd0_1.0.4-2_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libmd0:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/zlib1g_1%3a1.2.13.dfsg-1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure zlib1g:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/tar_1.34+dfsg-1.2+deb12u1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure tar:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/dpkg_1.21.22_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure dpkg:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/dash_0.5.12-2_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure dash:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/diffutils_1%3a3.8-4_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure diffutils:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/findutils_4.9.0-4_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure findutils:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/grep_3.8-5_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure grep:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/gzip_1.12-1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure gzip:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/hostname_3.23+nmu1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure hostname:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libaudit-common_1%3a3.0.9-1_all.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libaudit-common:all 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libcap-ng0_0.8.3-1+b3_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libcap-ng0:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libaudit1_1%3a3.0.9-1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libaudit1:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libcrypt1_1%3a4.4.33-2_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libcrypt1:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/debconf_1.5.82_all.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure debconf:all 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libpam0g_1.5.2-6+deb12u1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libpam0g:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libdb5.3_5.3.28+dfsg2-1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libdb5.3:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libpam-modules-bin_1.5.2-6+deb12u1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libpam-modules-bin:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libpam-modules_1.5.2-6+deb12u1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libpam-modules:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libpam-runtime_1.5.2-6+deb12u1_all.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libpam-runtime:all 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/login_1%3a4.13+dfsg1-1+b1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure login:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/ncurses-bin_6.4-4_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure ncurses-bin:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/perl-base_5.36.0-7+deb12u1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure perl-base:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/sed_4.9-1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure sed:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libblkid1_2.38.1-5+b1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libblkid1:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libmount1_2.38.1-5+b1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libmount1:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libsmartcols1_2.38.1-5+b1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libsmartcols1:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libudev1_252.22-1~deb12u1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libudev1:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libuuid1_2.38.1-5+b1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libuuid1:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/util-linux-extra_2.38.1-5+b1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure util-linux-extra:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/util-linux_2.38.1-5+b1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure util-linux:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libdebconfclient0_0.270_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libdebconfclient0:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/base-passwd_3.6.1_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure base-passwd:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/init-system-helpers_1.65.2_all.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure init-system-helpers:all 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libc-bin_2.36-9+deb12u4_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure libc-bin:amd64 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/ncurses-base_6.4-4_all.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure ncurses-base:all 
+/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/sysvinit-utils_3.06-4_amd64.deb 
+/usr/bin/dpkg --status-fd 9 --no-triggers --configure sysvinit-utils:amd64 
+/usr/bin/dpkg --status-fd 9 --configure --pending 
 Fetched XXX MB XXXs (XXX MB/s)
 I: extracting archives...
 W: skipping bind-mounting ./dev/console

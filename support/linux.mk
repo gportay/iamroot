@@ -200,7 +200,7 @@ $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/sh,mmdebstrap --verbose --archite
 $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/sh
 $(1)-$(2)-$(3)-rootfs/bin/sh: PATH := $(CURDIR):$(PATH)
 $(1)-$(2)-$(3)-rootfs/bin/sh: | $(call libs,linux,$(1))
-	ido $$(IDOFLAGS) mmdebstrap --verbose --architectures=$(1) $$(MMDEBSTRAPFLAGS) $(3) $(1)-$(2)-$(3)-rootfs support/$(2)-$(3)-sources.list
+	ido $$(IDOFLAGS) mmdebstrap --verbose --architectures=$(1) $$(MMDEBSTRAPFLAGS) $(3) $(1)-$(2)-$(3)-rootfs - <support/$(2)-$(3)-sources.list
 
 $(eval $(call log,mmdebstrap,$(1)-$(2)-$(3)-rootfs))
 
@@ -1098,8 +1098,8 @@ install-support-x86_64-debootstrap:
 endif
 
 ifneq ($(shell command -v mmdebstrap 2>/dev/null),)
-amd64-mobian-bookworm-rootfs/bin/sh: export MMDEBSTRAPFLAGS ?= --hook-dir=/usr/share/mmdebstrap/hooks/maybe-merged-usr
-amd64-mobian-trixie-rootfs/bin/sh: export MMDEBSTRAPFLAGS ?= --hook-dir=/usr/share/mmdebstrap/hooks/maybe-merged-usr
+amd64-mobian-bookworm-rootfs/bin/sh: export MMDEBSTRAPFLAGS ?= --hook-dir=/usr/share/mmdebstrap/hooks/maybe-merged-usr --variant=apt --include=mobian-base
+amd64-mobian-trixie-rootfs/bin/sh: export MMDEBSTRAPFLAGS ?= --hook-dir=/usr/share/mmdebstrap/hooks/maybe-merged-usr --variant=apt --include=mobian-base
 $(eval $(call mmdebstrap-rootfs,amd64,mobian,bookworm))
 $(eval $(call mmdebstrap-rootfs,amd64,mobian,trixie))
 

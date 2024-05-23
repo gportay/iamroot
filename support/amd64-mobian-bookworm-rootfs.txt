@@ -168,7 +168,7 @@ After this operation, XXX.X MB of additional disk space will be used.
 /usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/sysvinit-utils_3.06-4_amd64.deb 
 /usr/bin/dpkg --status-fd 9 --no-triggers --configure sysvinit-utils:amd64 
 /usr/bin/dpkg --status-fd 9 --configure --pending 
-Fetched XXX MB XXXs (XXX MB/s)
+Fetched XXX MB XXXs (XXX kB/s)
 I: extracting archives...
 W: skipping bind-mounting ./dev/console
 W: skipping bind-mounting ./dev/full
@@ -835,10 +835,10 @@ The following NEW packages will be installed:
 XXX upgraded, XXX newly installed, XXX to remove and XXX not upgraded.
 Need to get XXX.X MB of archives.
 After this operation, XXX.X MB of additional disk space will be used.
-Fetched XXX MB XXXs (XXX MB/s)
+Fetched XXX MB XXXs (XXX kB/s)
 Chrooting into $ROOT/amd64-mobian-bookworm-rootfs/
 debconf: delaying package configuration, since apt-utils is not installed
-Fetched XXX MB XXXs (XXX MB/s)
+Fetched XXX MB XXXs (XXX kB/s)
 Chrooting into $ROOT/amd64-mobian-bookworm-rootfs/
 Selecting previously unselected package libcom-err2.
 (Reading database ... XXX files and directories currently installed.)

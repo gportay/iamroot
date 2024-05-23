@@ -31,7 +31,7 @@
 	# Fetched XXX kB in XXXs (XXX kB/s)
 	/^Fetched / {
 		s,[[:digit:].]\{3\,4\}\s\([kM]\|\)B,XXX \1B,g
-		s,in\s[[:digit:]]\([s]\),XXX\1,g
+		s,in\s[[:digit:]]\+\([s]\),XXX\1,g
 	}
 
 	# Get:X http://deb.debian.org/debian bookworm InRelease [XXX kB]

@@ -990,7 +990,7 @@ amd64-devuan-daedalus-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://deb.dev
 amd64-devuan-daedalus-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= support/ceres
 amd64-devuan-excalibur-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://deb.devuan.org/merged/
 amd64-devuan-excalibur-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= support/ceres
-amd64-devuan-excalibur-rootfs/bin/sh: export DEBOOTSTRAPFLAGS ?= --keyring support/devuan-keyring-excalibur-archive.gpg --exclude=logrotate,cron,cron-common-daemon --variant=minbase
+amd64-devuan-excalibur-rootfs/bin/sh: export DEBOOTSTRAPFLAGS ?= --keyring support/devuan-keyring-excalibur-archive.gpg
 $(eval $(call debootstrap-rootfs,amd64,devuan,jessie))
 $(eval $(call debootstrap-rootfs,amd64,devuan,ascii))
 $(eval $(call debootstrap-rootfs,amd64,devuan,beowulf))

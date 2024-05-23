@@ -260,9 +260,9 @@ XXX packages will be installed:
   linux 
   base-system 
 
-Size to download:              XXXxB
-Size required on disk:         XXXxB
-Space available on disk:       XXXxB
+Size to download: XXXxB
+Size required on disk: XXXxB
+Space available on disk: XXXxB
 
 
 [*] Downloading packages

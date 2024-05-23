@@ -22,9 +22,12 @@
 # base-files: unpacking ...
 # base-files: configuring ...
 # base-files: installed successfully.
+# Size to download: XXXxB
+# Size required on disk: XXXxB
+# Space available on disk: XXXxB
 /[[:space:]]*[[:lower:][:digit:]._+-]/ {
 	s,\([[:lower:][:digit:]._+-]\+\)-\([[:alnum:]._+-]\+\)_\([[:alnum:]]\+\),\1,
-	s,[[:digit:]]\+.B\(\|/s\),XXXxB\1,g
+	s,\s\+[[:digit:]]\+.B\(\|/s\), XXXxB\1,g
 	s,[[:digit:]]\+%,XXX%,
 	s,ETA: [[:digit:]]\{2\,2\}m[[:digit:]]\{2\,2\}s,ETA: MMmSSs,
 	/ETA:/d

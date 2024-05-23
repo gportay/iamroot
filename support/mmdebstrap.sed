@@ -61,7 +61,7 @@
 	# Preparing to unpack .../base-files_12.2_amd64.deb ...
 	/^Preparing to unpack/ {
 		s,\.\.\./[[:digit:]]\+-,.../,
-		s,\([[:lower:][:digit:]+.-]\+\)_\([[:digit:]]\+:[[:alnum:].+~%-]\+\|[[:alnum:].+~%-]\+\)_\([[:lower:][:digit:]-]\+\)\.deb\s\.\.\.,\1 ...,
+		s,\([[:lower:][:digit:]+.-]\+\)_\([[:digit:]]\+:[[:alnum:].+~%-]\+\|[[:alnum:].+~%-]\+\)_\([[:lower:][:digit:]-]\+\)\.deb\s\.\.\.,\1.deb ...,
 	}
 
 	# dpkg: regarding .../archives/dpkg_1.21.1_amd64.deb containing dpkg, pre-dependency problem:
@@ -71,7 +71,7 @@
 	#  libc6:amd64 depends on libgcc-s1; however:
 	#   Package libgcc-s1 is not installed.
 	/^dpkg: /,/^$/ {
-		s,\([[:lower:][:digit:]+.-]\+\)_\([[:digit:]]\+:[[:alnum:].+~%-]\+\|[[:alnum:].+~%-]\+\)_\([[:lower:][:digit:]-]\+\)\.deb,\1,
+		s,\([[:lower:][:digit:]+.-]\+\)_\([[:digit:]]\+:[[:alnum:].+~%-]\+\|[[:alnum:].+~%-]\+\)_\([[:lower:][:digit:]-]\+\)\.deb,\1.deb,
 		s,\([[:lower:][:digit:]+.-]\+\)\s(>\?=\s\([[:digit:]]\+:[[:alnum:].+~%-]\+\|[[:alnum:].+~%-]\+\)),\1,
 		s,\([[:lower:][:digit:]+.-]\+\):\([[:lower:][:digit:]]\+\),\1,
 	}

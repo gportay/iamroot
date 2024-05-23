@@ -400,6 +400,12 @@ Installed size: XXX M
 Downloading Packages:
 ----------------------------------
 Total XXX xB/s | XXX xB XX:XX
+Fedora 40 - x86_64 XXX xB/s | XXX xB XX:XX
+Importing GPG key 0xA15B79CC:
+ Userid     : "Fedora (40) <fedora-40-primary@fedoraproject.org>"
+ Fingerprint: XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX
+ From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-40-x86_64
+Key imported successfully
 Running transaction check
 Transaction check succeeded.
 Running transaction test

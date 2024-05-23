@@ -49,125 +49,125 @@ The following NEW packages will be installed:
 XXX upgraded, XXX newly installed, XXX to remove and XXX not upgraded.
 Need to get XXX.X MB of archives.
 After this operation, XXX.X MB of additional disk space will be used.
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/gcc-14-base.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure gcc-14-base:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libc6.deb $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libgcc-s1_14-20240330-1_amd64.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libgcc-s1:amd64 libc6:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/mawk.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure mawk:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/base-files.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure base-files:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libtinfo6.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libtinfo6:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/debianutils.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure debianutils:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/bash.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure bash:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libcap2.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libcap2:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libgpg-error0.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libgpg-error0:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libgcrypt20.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libgcrypt20:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/liblz4-1.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure liblz4-1:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/liblzma5.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure liblzma5:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libzstd1.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libzstd1:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libsystemd0.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libsystemd0:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/bsdutils.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure bsdutils:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libacl1.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libacl1:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libattr1.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libattr1:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libgmp10.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libgmp10:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libpcre2-8-0.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libpcre2-8-0:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libselinux1.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libselinux1:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/zlib1g.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure zlib1g:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libssl3t64.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libssl3t64:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/coreutils.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure coreutils:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libbz2-1.0.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libbz2-1.0:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libmd0.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libmd0:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/tar.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure tar:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/dpkg.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure dpkg:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/dash.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure dash:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/diffutils.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure diffutils:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/findutils.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure findutils:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/grep.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure grep:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/gzip.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure gzip:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/hostname.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure hostname:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libaudit-common.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libaudit-common:all 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libcap-ng0.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libcap-ng0:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libaudit1.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libaudit1:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libcrypt1.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libcrypt1:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/debconf.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure debconf:all 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libpam0g.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libpam0g:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libdb5.3t64.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libdb5.3t64:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libpam-modules-bin.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libpam-modules-bin:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libpam-modules.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libpam-modules:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libpam-runtime.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libpam-runtime:all 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/login.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure login:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/ncurses-bin.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure ncurses-bin:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/perl-base.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure perl-base:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/sed.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure sed:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libblkid1.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libblkid1:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libmount1.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libmount1:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libsmartcols1.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libsmartcols1:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libudev1.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libudev1:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libuuid1.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libuuid1:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/util-linux.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure util-linux:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libdebconfclient0.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libdebconfclient0:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/base-passwd.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure base-passwd:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/init-system-helpers.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure init-system-helpers:all 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libc-bin.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure libc-bin:amd64 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/ncurses-base.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure ncurses-base:all 
-/usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/sysvinit-utils.deb 
-/usr/bin/dpkg --status-fd 9 --no-triggers --configure sysvinit-utils:amd64 
-/usr/bin/dpkg --status-fd 9 --configure --pending 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/gcc-14-base.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure gcc-14-base:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libc6.deb $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libgcc-s1_14-20240330-1_amd64.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libgcc-s1:amd64 libc6:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/mawk.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure mawk:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/base-files.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure base-files:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libtinfo6.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libtinfo6:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/debianutils.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure debianutils:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/bash.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure bash:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libcap2.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libcap2:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libgpg-error0.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libgpg-error0:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libgcrypt20.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libgcrypt20:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/liblz4-1.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure liblz4-1:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/liblzma5.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure liblzma5:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libzstd1.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libzstd1:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libsystemd0.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libsystemd0:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/bsdutils.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure bsdutils:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libacl1.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libacl1:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libattr1.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libattr1:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libgmp10.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libgmp10:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libpcre2-8-0.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libpcre2-8-0:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libselinux1.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libselinux1:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/zlib1g.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure zlib1g:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libssl3t64.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libssl3t64:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/coreutils.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure coreutils:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libbz2-1.0.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libbz2-1.0:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libmd0.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libmd0:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/tar.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure tar:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/dpkg.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure dpkg:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/dash.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure dash:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/diffutils.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure diffutils:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/findutils.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure findutils:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/grep.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure grep:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/gzip.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure gzip:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/hostname.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure hostname:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libaudit-common.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libaudit-common:all 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libcap-ng0.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libcap-ng0:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libaudit1.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libaudit1:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libcrypt1.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libcrypt1:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/debconf.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure debconf:all 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libpam0g.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libpam0g:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libdb5.3t64.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libdb5.3t64:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libpam-modules-bin.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libpam-modules-bin:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libpam-modules.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libpam-modules:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libpam-runtime.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libpam-runtime:all 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/login.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure login:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/ncurses-bin.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure ncurses-bin:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/perl-base.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure perl-base:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/sed.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure sed:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libblkid1.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libblkid1:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libmount1.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libmount1:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libsmartcols1.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libsmartcols1:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libudev1.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libudev1:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libuuid1.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libuuid1:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/util-linux.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure util-linux:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libdebconfclient0.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libdebconfclient0:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/base-passwd.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure base-passwd:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/init-system-helpers.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure init-system-helpers:all 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libc-bin.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libc-bin:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/ncurses-base.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure ncurses-base:all 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/sysvinit-utils.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure sysvinit-utils:amd64 
+/usr/bin/dpkg --status-fd XXX --configure --pending 
 Fetched XXX MB XXXs (XXX kB/s)
 I: extracting archives...
 W: skipping bind-mounting ./dev/console

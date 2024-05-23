@@ -47,7 +47,7 @@
 	# Packages (XXX) acl-2.3.1-2  ...  base-2-2
 	/^Packages ([[:digit:]]\+)/ {
 		s,([[:digit:]]\+),(XXX),
-		s,\([[:lower:][:digit:]@._+-]\+\)-\([[:digit:]]\+:[[:alnum:]._]\+\|[[:alnum:]._]\+\)-\([[:digit:].]\+\),\1,g
+		s,\([[:lower:][:digit:]@._+-]\+\)-\([[:digit:]]\+:[[:alnum:]._]\+\|[[:alnum:]._+]\+\)-\([[:digit:].]\+\),\1,g
 	}
 
 	# Total Download Size:   XXX.XX MiB

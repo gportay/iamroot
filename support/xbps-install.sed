@@ -27,7 +27,7 @@
 # Space available on disk: XXXxB
 /[[:space:]]*[[:lower:][:digit:]._+-]/ {
 	s,\([[:lower:][:digit:]._+-]\+\)-\([[:alnum:]._+-]\+\)_\([[:alnum:]]\+\),\1,
-	s,\s\+[[:digit:]]\+.B\(\|/s\), XXXxB\1,g
+	s,\s\+[[:digit:]]\+\([kMG]\|\)B\(\|/s\), XXXxB\2,g
 	s,[[:digit:]]\+%,XXX%,
 	s,ETA: [[:digit:]]\{2\,2\}m[[:digit:]]\{2\,2\}s,ETA: MMmSSs,
 	/ETA:/d

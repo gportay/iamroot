@@ -1,6 +1,6 @@
 #!/bin/sed -f
 #
-# Copyright 2022 Gaël PORTAY
+# Copyright 2022,2024 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -13,7 +13,7 @@
 
 /^pub  /,/^$/ {
 	# pub  rsa2048/0123456789ABCDEF
-	#      created: YYYYY-MM-DD  expires: YYYY-MM-DD  usage: X
+	#      created: YYYY-MM-DD  expires: YYYY-MM-DD  usage: X
 	#      trust: marginal      validity: unknown
 	# sub  rsa2048/0123456789ABCDEF
 	#      created: YYYY-MM-DD  expires: YYYY-MM-DD  usage: X

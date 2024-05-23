@@ -1965,6 +1965,8 @@ legacy-log: amd64-ubuntu-lunar-rootfs.log
 extra-support: devuan-support
 
 .PHONY: devuan-support
+devuan-support: support/amd64-devuan-jessie-rootfs.txt
+devuan-support: support/amd64-devuan-ascii-rootfs.txt
 devuan-support: support/amd64-devuan-beowulf-rootfs.txt
 devuan-support: support/amd64-devuan-chimaera-rootfs.txt
 devuan-support: support/amd64-devuan-daedalus-rootfs.txt
@@ -1972,6 +1974,8 @@ devuan-support: support/amd64-devuan-daedalus-rootfs.txt
 log: devuan-log
 
 .PHONY: devuan-log
+devuan-log: amd64-devuan-jessie-rootfs.log
+devuan-log: amd64-devuan-ascii-rootfs.log
 devuan-log: amd64-devuan-beowulf-rootfs.log
 devuan-log: amd64-devuan-chimaera-rootfs.log
 devuan-log: amd64-devuan-daedalus-rootfs.log

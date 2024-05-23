@@ -40,6 +40,11 @@
 		d
 	}
 
+	# /usr/bin/dpkg --status-fd 9 --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/base-files_13.2_amd64.deb
+	/^\/usr\/bin\/dpkg / {
+		s,\([[:lower:][:digit:]+.-]\+\)_\([[:digit:]]\+:[[:alnum:].+~%-]\+\|[[:alnum:].+~%-]\+\)_\([[:lower:][:digit:]-]\+\)\.deb,\1.deb,
+	}
+
 	# Unpacking base-files (12.2) ...
 	# Unpacking base-files (12.2) over (12.2) ...
 	# Setting up base-files (12.2) ...
@@ -54,6 +59,7 @@
 
 	# Preparing to unpack .../base-files_12.2_amd64.deb ...
 	/^Preparing to unpack/ {
+		s,\.\.\./[[:digit:]]\+-,.../,
 		s,\([[:lower:][:digit:]+.-]\+\)_\([[:digit:]]\+:[[:alnum:].+~%-]\+\|[[:alnum:].+~%-]\+\)_\([[:lower:][:digit:]-]\+\)\.deb\s\.\.\.,\1 ...,
 	}
 

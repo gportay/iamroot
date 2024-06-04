@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
 
-VERSION = 21
+VERSION = 22
 PREFIX ?= /usr/local
 COVERAGE ?= 0
 OS ?= $(shell uname -o 2>/dev/null || uname -s 2>/dev/null)

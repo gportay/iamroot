@@ -372,8 +372,8 @@ ifneq ($(shell command -v shellcheck 2>/dev/null),)
 	shellcheck -e SC1090 -e SC3037 ido ish exec.sh
 endif
 
-.PHONY: test test-library test-scripts test-ido test-ish
-test test-library test-scripts test-ido test-ish: libiamroot.so
+.PHONY: test test-library test-frontends test-ld-iamroot.so test-ido test-ish
+test test-library test-frontends test-ld-iamroot.so test-ido test-ish: ld-iamroot.so libiamroot.so
 	$(MAKE) -C tests
 	$(MAKE) -C tests $@ PATH=$(CURDIR):$$PATH
 

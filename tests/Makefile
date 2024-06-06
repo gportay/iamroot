@@ -197,7 +197,7 @@ test-path_resolution: libiamnotroot.so
 test-path_resolution: override LDLIBS += libiamnotroot.so
 
 .PHONY: test
-test: test-scripts test-library
+test: test-library test-frontends
 	@echo "Completed!"
 
 .PHONY: test-library
@@ -580,8 +580,14 @@ ifeq ($(OS),GNU/Linux)
 	- env LD_PRELOAD=$(LIBRARY) PATH=$(CURDIR)/rootfs/usr/bin                                                                                          test-lremovexattr         rootfs/etc/os-release user.one
 endif
 
-.PHONY: test-scripts
-test-scripts: test-ido test-ish
+.PHONY: test-frontends
+test-frontends: test-ld-iamroot.so test-ido test-ish
+
+.PHONY: test-ld-iamroot.so
+test-ld-iamroot.so: | rootfs
+ifeq ($(OS),GNU/Linux)
+	bash tests-ld-iamroot.so.bash
+endif
 
 .PHONY: test-ido
 test-ido: | rootfs

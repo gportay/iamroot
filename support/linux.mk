@@ -1188,9 +1188,11 @@ alpinelinux-rootfs: x86_64-alpinelinux-3.16-rootfs
 alpinelinux-rootfs: x86_64-alpinelinux-3.17-rootfs
 alpinelinux-rootfs: x86_64-alpinelinux-3.18-rootfs
 alpinelinux-rootfs: x86_64-alpinelinux-3.19-rootfs
+alpinelinux-rootfs: x86_64-alpinelinux-3.20-rootfs
 alpinelinux-rootfs: x86_64-alpinelinux-edge-rootfs
 
 stable-rootfs: x86_64-alpinelinux-3.19-rootfs
+stable-rootfs: x86_64-alpinelinux-3.20-rootfs
 unstable-rootfs: x86_64-alpinelinux-edge-rootfs
 
 $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpinelinux,3.14))
@@ -1199,6 +1201,7 @@ $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpinelinux,3.16))
 $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpinelinux,3.17))
 $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpinelinux,3.18))
 $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpinelinux,3.19))
+$(eval $(call alpine-make-rootfs-rootfs,x86_64,alpinelinux,3.20))
 $(eval $(call alpine-make-rootfs-rootfs,x86_64,alpinelinux,edge))
 
 chroot-alpine-%: PATH = /usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin
@@ -1246,6 +1249,9 @@ x86_64-alpinelinux-3.18-rootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/
 x86_64-alpinelinux-3.19-shell: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-alpinelinux-3.19-chroot: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-alpinelinux-3.19-rootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-3.20-shell: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-3.20-chroot: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-3.20-rootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-alpinelinux-edge-shell: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-alpinelinux-edge-chroot: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-alpinelinux-edge-rootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
@@ -1263,6 +1269,7 @@ x86-alpinelinux-rootfs: x86-alpinelinux-3.16-rootfs
 x86-alpinelinux-rootfs: x86-alpinelinux-3.17-rootfs
 x86-alpinelinux-rootfs: x86-alpinelinux-3.18-rootfs
 x86-alpinelinux-rootfs: x86-alpinelinux-3.19-rootfs
+x86-alpinelinux-rootfs: x86-alpinelinux-3.20-rootfs
 x86-alpinelinux-rootfs: x86-alpinelinux-edge-rootfs
 
 $(eval $(call alpine-make-rootfs-rootfs,x86,alpinelinux,3.14))
@@ -1271,6 +1278,7 @@ $(eval $(call alpine-make-rootfs-rootfs,x86,alpinelinux,3.16))
 $(eval $(call alpine-make-rootfs-rootfs,x86,alpinelinux,3.17))
 $(eval $(call alpine-make-rootfs-rootfs,x86,alpinelinux,3.18))
 $(eval $(call alpine-make-rootfs-rootfs,x86,alpinelinux,3.19))
+$(eval $(call alpine-make-rootfs-rootfs,x86,alpinelinux,3.20))
 $(eval $(call alpine-make-rootfs-rootfs,x86,alpinelinux,edge))
 endif
 endif
@@ -1618,6 +1626,7 @@ aarch64-alpinelinux-rootfs: aarch64-alpinelinux-3.16-rootfs
 aarch64-alpinelinux-rootfs: aarch64-alpinelinux-3.17-rootfs
 aarch64-alpinelinux-rootfs: aarch64-alpinelinux-3.18-rootfs
 aarch64-alpinelinux-rootfs: aarch64-alpinelinux-3.19-rootfs
+aarch64-alpinelinux-rootfs: aarch64-alpinelinux-3.20-rootfs
 aarch64-alpinelinux-rootfs: aarch64-alpinelinux-edge-rootfs
 
 $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpinelinux,3.14))
@@ -1626,6 +1635,7 @@ $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpinelinux,3.16))
 $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpinelinux,3.17))
 $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpinelinux,3.18))
 $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpinelinux,3.19))
+$(eval $(call alpine-make-rootfs-rootfs,aarch64,alpinelinux,3.20))
 $(eval $(call alpine-make-rootfs-rootfs,aarch64,alpinelinux,edge))
 endif
 
@@ -1639,6 +1649,7 @@ armhf-alpinelinux-rootfs: armhf-alpinelinux-3.16-rootfs
 armhf-alpinelinux-rootfs: armhf-alpinelinux-3.17-rootfs
 armhf-alpinelinux-rootfs: armhf-alpinelinux-3.18-rootfs
 armhf-alpinelinux-rootfs: armhf-alpinelinux-3.19-rootfs
+armhf-alpinelinux-rootfs: armhf-alpinelinux-3.20-rootfs
 armhf-alpinelinux-rootfs: armhf-alpinelinux-edge-rootfs
 
 $(eval $(call alpine-make-rootfs-rootfs,armhf,alpinelinux,3.14))
@@ -1647,6 +1658,7 @@ $(eval $(call alpine-make-rootfs-rootfs,armhf,alpinelinux,3.16))
 $(eval $(call alpine-make-rootfs-rootfs,armhf,alpinelinux,3.17))
 $(eval $(call alpine-make-rootfs-rootfs,armhf,alpinelinux,3.18))
 $(eval $(call alpine-make-rootfs-rootfs,armhf,alpinelinux,3.19))
+$(eval $(call alpine-make-rootfs-rootfs,armhf,alpinelinux,3.20))
 $(eval $(call alpine-make-rootfs-rootfs,armhf,alpinelinux,edge))
 
 .PHONY: armv7-alpinelinux-rootfs
@@ -1656,6 +1668,7 @@ armv7-alpinelinux-rootfs: armv7-alpinelinux-3.16-rootfs
 armv7-alpinelinux-rootfs: armv7-alpinelinux-3.17-rootfs
 armv7-alpinelinux-rootfs: armv7-alpinelinux-3.18-rootfs
 armv7-alpinelinux-rootfs: armv7-alpinelinux-3.19-rootfs
+armv7-alpinelinux-rootfs: armv7-alpinelinux-3.20-rootfs
 armv7-alpinelinux-rootfs: armv7-alpinelinux-edge-rootfs
 
 $(eval $(call alpine-make-rootfs-rootfs,armv7,alpinelinux,3.14))
@@ -1664,6 +1677,7 @@ $(eval $(call alpine-make-rootfs-rootfs,armv7,alpinelinux,3.16))
 $(eval $(call alpine-make-rootfs-rootfs,armv7,alpinelinux,3.17))
 $(eval $(call alpine-make-rootfs-rootfs,armv7,alpinelinux,3.18))
 $(eval $(call alpine-make-rootfs-rootfs,armv7,alpinelinux,3.19))
+$(eval $(call alpine-make-rootfs-rootfs,armv7,alpinelinux,3.20))
 $(eval $(call alpine-make-rootfs-rootfs,armv7,alpinelinux,edge))
 endif
 
@@ -1677,6 +1691,7 @@ ppc64le-alpinelinux-rootfs: ppc64le-alpinelinux-3.16-rootfs
 ppc64le-alpinelinux-rootfs: ppc64le-alpinelinux-3.17-rootfs
 ppc64le-alpinelinux-rootfs: ppc64le-alpinelinux-3.18-rootfs
 ppc64le-alpinelinux-rootfs: ppc64le-alpinelinux-3.19-rootfs
+ppc64le-alpinelinux-rootfs: ppc64le-alpinelinux-3.20-rootfs
 ppc64le-alpinelinux-rootfs: ppc64le-alpinelinux-edge-rootfs
 
 $(eval $(call alpine-make-rootfs-rootfs,ppc64le,alpinelinux,3.14))
@@ -1685,6 +1700,7 @@ $(eval $(call alpine-make-rootfs-rootfs,ppc64le,alpinelinux,3.16))
 $(eval $(call alpine-make-rootfs-rootfs,ppc64le,alpinelinux,3.17))
 $(eval $(call alpine-make-rootfs-rootfs,ppc64le,alpinelinux,3.18))
 $(eval $(call alpine-make-rootfs-rootfs,ppc64le,alpinelinux,3.19))
+$(eval $(call alpine-make-rootfs-rootfs,ppc64le,alpinelinux,3.20))
 $(eval $(call alpine-make-rootfs-rootfs,ppc64le,alpinelinux,edge))
 endif
 endif
@@ -1694,8 +1710,10 @@ riscv64-rootfs: riscv64-alpinelinux-rootfs
 
 ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
 .PHONY: riscv64-alpinelinux-rootfs
+riscv64-alpinelinux-rootfs: riscv64-alpinelinux-3.20-rootfs
 riscv64-alpinelinux-rootfs: riscv64-alpinelinux-edge-rootfs
 
+$(eval $(call alpine-make-rootfs-rootfs,riscv64,alpinelinux,3.20))
 $(eval $(call alpine-make-rootfs-rootfs,riscv64,alpinelinux,edge))
 endif
 
@@ -1709,6 +1727,7 @@ s390x-alpinelinux-rootfs: s390x-alpinelinux-3.16-rootfs
 s390x-alpinelinux-rootfs: s390x-alpinelinux-3.17-rootfs
 s390x-alpinelinux-rootfs: s390x-alpinelinux-3.18-rootfs
 s390x-alpinelinux-rootfs: s390x-alpinelinux-3.19-rootfs
+s390x-alpinelinux-rootfs: s390x-alpinelinux-3.20-rootfs
 s390x-alpinelinux-rootfs: s390x-alpinelinux-edge-rootfs
 
 $(eval $(call alpine-make-rootfs-rootfs,s390x,alpinelinux,3.14))
@@ -1717,6 +1736,7 @@ $(eval $(call alpine-make-rootfs-rootfs,s390x,alpinelinux,3.16))
 $(eval $(call alpine-make-rootfs-rootfs,s390x,alpinelinux,3.17))
 $(eval $(call alpine-make-rootfs-rootfs,s390x,alpinelinux,3.18))
 $(eval $(call alpine-make-rootfs-rootfs,s390x,alpinelinux,3.19))
+$(eval $(call alpine-make-rootfs-rootfs,s390x,alpinelinux,3.20))
 $(eval $(call alpine-make-rootfs-rootfs,s390x,alpinelinux,edge))
 endif
 endif
@@ -2089,6 +2109,7 @@ alpinelinux-support: support/x86_64-alpinelinux-3.16-rootfs.txt
 alpinelinux-support: support/x86_64-alpinelinux-3.17-rootfs.txt
 alpinelinux-support: support/x86_64-alpinelinux-3.18-rootfs.txt
 alpinelinux-support: support/x86_64-alpinelinux-3.19-rootfs.txt
+alpinelinux-support: support/x86_64-alpinelinux-3.20-rootfs.txt
 alpinelinux-support: support/x86_64-alpinelinux-edge-rootfs.txt
 
 log: alpinelinux-log
@@ -2100,6 +2121,7 @@ alpinelinux-log: x86_64-alpinelinux-3.16-rootfs.log
 alpinelinux-log: x86_64-alpinelinux-3.17-rootfs.log
 alpinelinux-log: x86_64-alpinelinux-3.18-rootfs.log
 alpinelinux-log: x86_64-alpinelinux-3.19-rootfs.log
+alpinelinux-log: x86_64-alpinelinux-3.20-rootfs.log
 alpinelinux-log: x86_64-alpinelinux-edge-rootfs.log
 
 legacy-support: support/x86_64-alpinelinux-3.14-rootfs.txt
@@ -2111,10 +2133,12 @@ stable-support: support/x86_64-alpinelinux-3.16-rootfs.txt
 stable-support: support/x86_64-alpinelinux-3.17-rootfs.txt
 stable-support: support/x86_64-alpinelinux-3.18-rootfs.txt
 stable-support: support/x86_64-alpinelinux-3.19-rootfs.txt
+stable-support: support/x86_64-alpinelinux-3.20-rootfs.txt
 stable-log: x86_64-alpinelinux-3.16-rootfs.log
 stable-log: x86_64-alpinelinux-3.17-rootfs.log
 stable-log: x86_64-alpinelinux-3.18-rootfs.log
 stable-log: x86_64-alpinelinux-3.19-rootfs.log
+stable-log: x86_64-alpinelinux-3.20-rootfs.log
 
 unstable-support: support/x86_64-alpinelinux-edge-rootfs.txt
 unstable-log: x86_64-alpinelinux-edge-rootfs.log

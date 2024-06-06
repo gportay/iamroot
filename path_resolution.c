@@ -19,7 +19,7 @@
 #include "iamroot.h"
 
 /* AT flag FOLLOW takes precedence over NOFOLLOW */
-#define follow_symlink(f) ((f & AT_SYMLINK_FOLLOW) || (f & AT_SYMLINK_NOFOLLOW) == 0)
+#define follow_symlink(f) (((f) & AT_SYMLINK_FOLLOW) || ((f) & AT_SYMLINK_NOFOLLOW) == 0)
 
 #if defined(JIM_REGEXP)
 #include "jimregexp.h"

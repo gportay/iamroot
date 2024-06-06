@@ -581,9 +581,18 @@ ifeq ($(OS),GNU/Linux)
 endif
 
 .PHONY: test-scripts
-test-scripts: | rootfs
+test-scripts: test-ido test-ish
+
+.PHONY: test-ido
+test-ido: | rootfs
 ifeq ($(OS),GNU/Linux)
-	bash tests.bash
+	bash tests-ido.bash
+endif
+
+.PHONY: test-ish
+test-ish: | rootfs
+ifeq ($(OS),GNU/Linux)
+	bash tests-ish.bash
 endif
 
 rootfs: DESTDIR = $(CURDIR)/rootfs

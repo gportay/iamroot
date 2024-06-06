@@ -728,12 +728,28 @@ dpkg: regarding .../base-files.deb containing base-files, pre-dependency problem
 dpkg: warning: ignoring pre-dependency problem!
 (Reading database ... XXX files and directories currently installed.)
 Preparing to unpack .../base-files.deb ...
+dpkg-divert: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
+ missing 'Description' field
+dpkg-divert: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
+ missing 'Architecture' field
+dpkg-divert: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
+ missing 'Description' field
+dpkg-divert: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
+ missing 'Architecture' field
+dpkg-divert: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
+ missing 'Description' field
+dpkg-divert: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
+ missing 'Architecture' field
 Unpacking base-files ...
 dpkg: base-files: dependency problems, but configuring anyway as you requested:
  base-files depends on awk; however:
   Package awk is not installed.
 
 Setting up base-files ...
+dpkg-divert: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
+ missing 'Description' field
+dpkg-divert: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
+ missing 'Architecture' field
 dpkg: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
  missing 'Description' field
 dpkg: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
@@ -1182,6 +1198,16 @@ Preparing to unpack .../libzstd1.deb ...
 Unpacking libzstd1 ...
 Selecting previously unselected package login.
 dpkg: regarding .../login.deb containing login, pre-dependency problem:
+ login pre-depends on libpam-modules
+  libpam-modules is unpacked, but has never been configured.
+
+dpkg: warning: ignoring pre-dependency problem!
+dpkg: regarding .../login.deb containing login, pre-dependency problem:
+ login pre-depends on libpam-runtime
+  libpam-runtime is unpacked, but has never been configured.
+
+dpkg: warning: ignoring pre-dependency problem!
+dpkg: regarding .../login.deb containing login, pre-dependency problem:
  login pre-depends on libaudit1
   libaudit1 is unpacked, but has never been configured.
 
@@ -1194,16 +1220,6 @@ dpkg: warning: ignoring pre-dependency problem!
 dpkg: regarding .../login.deb containing login, pre-dependency problem:
  login pre-depends on libpam0g
   libpam0g is unpacked, but has never been configured.
-
-dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../login.deb containing login, pre-dependency problem:
- login pre-depends on libpam-runtime
-  libpam-runtime is unpacked, but has never been configured.
-
-dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../login.deb containing login, pre-dependency problem:
- login pre-depends on libpam-modules
-  libpam-modules is unpacked, but has never been configured.
 
 dpkg: warning: ignoring pre-dependency problem!
 Preparing to unpack .../login.deb ...
@@ -1485,6 +1501,7 @@ Initializing machine ID from random generator.
 Creating group 'systemd-journal' with GID XXX.
 Creating group 'systemd-network' with GID XXX.
 Creating user 'systemd-network' (systemd Network Management) with UID XXX and GID XXX.
+/usr/lib/tmpfiles.d/legacy.conf:13: Duplicate line for path "/run/lock", ignoring.
 Processing triggers for libc-bin ...
 (Reading database ... XXX files and directories currently installed.)
 Preparing to unpack .../systemd-sysv.deb ...
@@ -1523,7 +1540,7 @@ Preparing to unpack .../isc-dhcp-client.deb ...
 Unpacking isc-dhcp-client ...
 Preparing to unpack .../isc-dhcp-common.deb ...
 Unpacking isc-dhcp-common ...
-Preparing to unpack .../archives/kmod.deb ...
+Preparing to unpack .../kmod.deb ...
 Unpacking kmod ...
 Preparing to unpack .../archives/less.deb ...
 Unpacking less ...

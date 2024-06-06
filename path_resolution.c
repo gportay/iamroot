@@ -72,7 +72,7 @@ static size_t slash_len(const char *s)
  *
  * SPDX-License-Identifier: MIT
  */
-hidden char *__realpath(const char *filename, char *resolved)
+static char *__realpath(const char *filename, char *resolved)
 {
 	char stack[PATH_MAX+1];
 	char output[PATH_MAX];

@@ -2126,15 +2126,15 @@ alpinelinux-log: x86_64-alpinelinux-edge-rootfs.log
 
 legacy-support: support/x86_64-alpinelinux-3.14-rootfs.txt
 legacy-support: support/x86_64-alpinelinux-3.15-rootfs.txt
+legacy-support: support/x86_64-alpinelinux-3.16-rootfs.txt
 legacy-log: x86_64-alpinelinux-3.14-rootfs.log
 legacy-log: x86_64-alpinelinux-3.15-rootfs.log
+legacy-log: x86_64-alpinelinux-3.16-rootfs.log
 
-stable-support: support/x86_64-alpinelinux-3.16-rootfs.txt
 stable-support: support/x86_64-alpinelinux-3.17-rootfs.txt
 stable-support: support/x86_64-alpinelinux-3.18-rootfs.txt
 stable-support: support/x86_64-alpinelinux-3.19-rootfs.txt
 stable-support: support/x86_64-alpinelinux-3.20-rootfs.txt
-stable-log: x86_64-alpinelinux-3.16-rootfs.log
 stable-log: x86_64-alpinelinux-3.17-rootfs.log
 stable-log: x86_64-alpinelinux-3.18-rootfs.log
 stable-log: x86_64-alpinelinux-3.19-rootfs.log

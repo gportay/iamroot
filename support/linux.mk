@@ -1084,6 +1084,8 @@ x86_64-fedora-33-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.rep
 x86_64-fedora-34-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 x86_64-fedora-35-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 x86_64-fedora-36-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
+x86_64-fedora-37-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
+x86_64-fedora-38-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 $(eval $(call dnf-rootfs,x86_64,fedora,20))
 $(eval $(call dnf-rootfs,x86_64,fedora,30))
 $(eval $(call dnf-rootfs,x86_64,fedora,31))
@@ -1578,6 +1580,8 @@ aarch64-fedora-33-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.re
 aarch64-fedora-34-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 aarch64-fedora-35-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 aarch64-fedora-36-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
+aarch64-fedora-37-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
+aarch64-fedora-38-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 $(eval $(call dnf-rootfs,aarch64,fedora,33))
 $(eval $(call dnf-rootfs,aarch64,fedora,34))
 $(eval $(call dnf-rootfs,aarch64,fedora,35))

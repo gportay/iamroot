@@ -1369,6 +1369,7 @@ armel-debian-rootfs: armel-debian-bookworm-rootfs
 armel-debian-rootfs: armel-debian-trixie-rootfs
 armel-debian-rootfs: armel-debian-sid-rootfs
 
+armel-debian-buster-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.debian.org/debian
 $(eval $(call debootstrap-rootfs,armel,debian,buster))
 $(eval $(call debootstrap-rootfs,armel,debian,bullseye))
 $(eval $(call debootstrap-rootfs,armel,debian,bookworm))

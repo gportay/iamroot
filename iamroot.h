@@ -116,6 +116,9 @@ extern "C" {
 #endif
 #endif
 
+#define PATH_RESOLUTION_NOMAGICLINKS 0x01
+#define PATH_RESOLUTION_NOIGNORE     0x02
+
 #ifdef __linux__
 /*
  * According to man open(2):
@@ -199,6 +202,7 @@ char *__fpath2(int);
 ssize_t fpath(int, char *, size_t);
 int __path_ignored(int, const char *);
 ssize_t path_resolution(int, const char *, char *, size_t, int);
+ssize_t path_resolution2(int, const char *, char *, size_t, int, int);
 char *__getpath(int, const char *, int);
 ssize_t __host_path_access(const char *, int, const char *, char *, size_t,
 			   off_t);

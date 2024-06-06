@@ -9,6 +9,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - Intercept the functions `dladdr()` and `dladdr1()`
+- Introduce internal function `path_resolution2()` with private flags;
+  `PATH_RESOLUTION_NOMAGICLINKS`: disallow all magic-link resolution during
+  path resolution: i.e. `/proc/1/root` for now, it is readable by root only, it
+  is often use to check if the process is in chroot
+  `PATH_RESOLUTION_NOIGNORE`: disallow non-resolution of ignored path during
+  path resolution: i.e. all path are resolved even if it matches the regex set
+  in `PATH_RESOLUTION_IGNORE`
 
 ### Changed
 

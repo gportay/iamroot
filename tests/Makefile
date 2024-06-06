@@ -128,6 +128,7 @@ all: test-nftw64
 all: test-openat
 all: test-opendir
 all: test-path_resolution
+all: test-path_resolution2
 all: test-posix_spawn
 all: test-putgrent
 all: test-putpwent
@@ -194,6 +195,9 @@ endif
 
 test-path_resolution: libiamnotroot.so
 test-path_resolution: override LDLIBS += libiamnotroot.so
+
+test-path_resolution2: libiamnotroot.so
+test-path_resolution2: override LDLIBS += libiamnotroot.so
 
 .PHONY: test
 test: test-library test-frontends
@@ -308,6 +312,13 @@ ifeq ($(OS),GNU/Linux)
 	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib:$(CURDIR)/rootfs/usr/local/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                 test-path_resolution      /run                                                  | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/run\$$"
 	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib:$(CURDIR)/rootfs/usr/local/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                 test-path_resolution      /var/run                                              | tee /dev/stderr | grep -q "^$(CURDIR)/rootfs/run\$$"
 	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib:$(CURDIR)/rootfs/usr/local/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                 test-path_resolution      /sys/                                                 | tee /dev/stderr | grep -q "^/sys/\$$"
+endif
+ifeq ($(shell test -d /proc/1 && ! test -r /proc/1/root && echo 1),1)
+	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib:$(CURDIR)/rootfs/usr/local/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                 test-path_resolution2     /proc/1/root  0x00                                    | tee /dev/stderr | grep -q '^/$$'
+	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib:$(CURDIR)/rootfs/usr/local/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                 test-path_resolution2     /proc/1/root  0x01                                    | tee /dev/stderr | grep -q '^/proc/1/root$$'
+	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib:$(CURDIR)/rootfs/usr/local/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                 test-path_resolution2     /proc/1/root  0x03                                    | tee /dev/stderr | grep -q '^$(CURDIR)/rootfs/proc/1/root$$'
+endif
+ifeq ($(OS),GNU/Linux)
 	env LD_PRELOAD=$(LIBRARY) PATH=$(CURDIR)/rootfs/usr/bin                                                                                            test-name_to_handle_at  . rootfs/tmp/file0         0
 	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs       test-name_to_handle_at  - /tmp/file0               0
 endif

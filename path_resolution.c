@@ -15,6 +15,9 @@
 
 #include "iamroot.h"
 
+#define allow_magic_links(f) (((f) & PATH_RESOLUTION_NOMAGICLINKS) == 0)
+#define allow_ignore(f) (((f) & PATH_RESOLUTION_NOIGNORE) == 0)
+
 /* AT flag FOLLOW takes precedence over NOFOLLOW */
 #define follow_symlink(f) (((f) & AT_SYMLINK_FOLLOW) || ((f) & AT_SYMLINK_NOFOLLOW) == 0)
 
@@ -373,6 +376,12 @@ hidden int __path_ignored(int dfd, const char *path)
 ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsiz,
 			int atflags)
 {
+	return path_resolution2(dfd, path, buf, bufsiz, atflags, 0);
+}
+
+ssize_t path_resolution2(int dfd, const char *path, char *buf, size_t bufsiz,
+			 int atflags, int prflags)
+{
 	int is_atrootfd = 0;
 	const char *root;
 	ssize_t ret;
@@ -409,7 +418,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsiz,
 	 *	Change: 2023-04-13 06:37:34.723333328 +0200
 	 *	 Birth: -
 	 */
-	if (streq(path, "/proc/1/root")) {
+	if (allow_magic_links(prflags) && streq(path, "/proc/1/root")) {
 		__notice("%s: ignoring path resolution '%s'\n", __func__,
 			 path);
 		_strncpy(buf, "/", bufsiz);
@@ -441,7 +450,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsiz,
 	 *
 	 *	/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
 	 */
-	if (__strneq(path, "/dev/fd/")) {
+	if (allow_magic_links(prflags) && __strneq(path, "/dev/fd/")) {
 		__notice("%s: ignoring path resolution '%s'\n", __func__,
 			 path);
 		_strncpy(buf, path, bufsiz);
@@ -456,7 +465,7 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsiz,
 	 *
 	 * The path is copied as is.
 	 */
-	if (ignore(path)) {
+	if (allow_ignore(prflags) && ignore(path)) {
 		_strncpy(buf, path, bufsiz);
 		ret = strnlen(buf, bufsiz);
 		if ((size_t)ret != __strlen(path))
@@ -564,7 +573,8 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsiz,
 	 *
 	 * The resolved path is stripped from the root directory.
 	 */
-	if (*root && __strleq(buf, root) && ignore(buf+len))
+	if (root && __strleq(buf, root) && allow_ignore(prflags) &&
+	    ignore(buf+len))
 		__striprootdir(buf);
 
 	return strnlen(buf, bufsiz);

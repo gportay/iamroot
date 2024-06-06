@@ -30,6 +30,19 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsiz,
 	return __set_errno(ENOSYS, -1);
 }
 
+ssize_t path_resolution2(int dfd, const char *path, char *buf, size_t bufsiz,
+			 int atflags, int prflags)
+{
+	(void)dfd;
+	(void)path;
+	(void)buf;
+	(void)bufsiz;
+	(void)atflags;
+	(void)prflags;
+
+	return __set_errno(ENOSYS, -1);
+}
+
 void unused()
 {
 }

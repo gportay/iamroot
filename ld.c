@@ -122,6 +122,7 @@ int main(int argc, char * argv[])
 		{ "origin",       required_argument, NULL, 'O' },
 		{ "multiarch",    no_argument,       NULL, 'M' },
 		{ "root",         required_argument, NULL, 'R' },
+		{ "cwd",          required_argument, NULL, 'C' },
 		{ "debug",        no_argument,       NULL, 'D' },
 		{ "version",      no_argument,       NULL, 'V' },
 		{ "help",         no_argument,       NULL, 'h' },
@@ -131,8 +132,8 @@ int main(int argc, char * argv[])
 
 	for (;;) {
 		int index;
-		int c = getopt_long(argc, argv, "A:P:L:O:MR:DVh", long_options,
-				    &index);
+		int c = getopt_long(argc, argv, "A:P:L:O:MR:C:DVh",
+				    long_options, &index);
 		if (c == -1)
 			break;
 

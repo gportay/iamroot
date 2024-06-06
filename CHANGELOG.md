@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [unreleased]
 
+### Changed
+
+- Output the filesystem type for the function `mount()`
+
 ### Fixed
 
 - Fix the `ld-iamroot.so(8)` option `--cwd`

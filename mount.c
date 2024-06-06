@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2023 Gaël PORTAY
+ * Copyright 2020-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -27,8 +27,8 @@ int mount(const char *source, const char *target, const char *filesystemtype,
 	/* Not forwarding function */
 	ret = 0;
 
-	__debug("%s(source: '%s', target: '%s', ..., mountflags: 0x%lx, ...) -> %i\n",
-		__func__, source, target, mountflags, ret);
+	__debug("%s(source: '%s', target: '%s', filesystemtype: '%s', mountflags: 0x%lx, ...) -> %i\n",
+		__func__, source, target, filesystemtype, mountflags, ret);
 
 	return ret;
 }
@@ -46,8 +46,8 @@ int mount(const char *type, const char *dir, int flags, void *data)
 	/* Not forwarding function */
 	ret = 0;
 
-	__debug("%s(..., dir: '%s', flags: 0x%x, ...) -> %i\n", __func__, dir,
-		flags, ret);
+	__debug("%s(type: '%s', dir: '%s', flags: 0x%x, ...) -> %i\n",
+		__func__, type, dir, flags, ret);
 
 	return ret;
 }

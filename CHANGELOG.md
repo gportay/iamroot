@@ -16,6 +16,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the alteration of the `errno` error in the functions `__open_2()`,
   `__openat_2()`, `close()`, `dup()`, `dup2()`, `dup3()`, `fopen()`,
   `freopen()`, `open()` and `openat()`,
+- Fix the output of the fd path the functions `close()`, `dup()`, `dup2()` and
+  `dup3()`
 
 ## [v22] - 2024-06-04
 

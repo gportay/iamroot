@@ -5,7 +5,9 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 #include <errno.h>
+#include <limits.h>
 #include <dlfcn.h>
 #include <fcntl.h>
 
@@ -29,13 +31,19 @@ hidden int next_dup(int fd)
 int dup(int fd)
 {
 	const int errno_save = errno;
+	char buf[PATH_MAX];
+	ssize_t siz;
 	int ret;
+
+	siz = fpath(fd, buf, sizeof(buf));
+	if (siz == -1 && __strncpy(buf, "(null)"))
+		errno = errno_save;
 
 	ret = next_dup(fd);
 	if (ret >= 0 && __setfd(ret, __fpath(fd)))
 		errno = errno_save;
 
-	__debug("%s(fd: %i <-> '%s') -> %i\n", __func__, fd, __fpath(fd), ret);
+	__debug("%s(fd: %i <-> '%s') -> %i\n", __func__, fd, buf, ret);
 
 	return ret;
 }

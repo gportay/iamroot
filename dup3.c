@@ -5,7 +5,9 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 #include <errno.h>
+#include <limits.h>
 #include <dlfcn.h>
 #include <fcntl.h>
 
@@ -29,15 +31,20 @@ hidden int next_dup3(int oldfd, int newfd, int oflags)
 int dup3(int oldfd, int newfd, int oflags)
 {
 	const int errno_save = errno;
+	char buf[PATH_MAX];
+	ssize_t siz;
 	int ret;
+
+	siz = fpath(oldfd, buf, sizeof(buf));
+	if (siz == -1 && __strncpy(buf, "(null)"))
+		errno = errno_save;
 
 	ret = next_dup3(oldfd, newfd, oflags);
 	if (ret >= 0 && __setfd(ret, __fpath(oldfd)))
 		errno = errno_save;
 
 	__debug("%s(oldfd: %i <-> '%s', newfd: %i <-> '%s', oflags: 0%o) -> %i\n",
-		__func__, oldfd, __fpath(oldfd), newfd, __fpath2(newfd),
-		oflags, ret);
+		__func__, oldfd, buf, newfd, __fpath2(newfd), oflags, ret);
 
 	return ret;
 }

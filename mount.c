@@ -6,7 +6,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <errno.h>
+#include <limits.h>
+#include <fcntl.h>
 
 #include <sys/mount.h>
 #include <sys/param.h>
@@ -17,6 +20,8 @@
 int mount(const char *source, const char *target, const char *filesystemtype,
 	  unsigned long mountflags, const void *data)
 {
+	char buf[PATH_MAX];
+	ssize_t siz;
 	int ret;
 	(void)filesystemtype;
 	(void)mountflags;
@@ -24,11 +29,18 @@ int mount(const char *source, const char *target, const char *filesystemtype,
 	(void)target;
 	(void)data;
 
+	siz = path_resolution(AT_FDCWD, target, buf, sizeof(buf), 0);
+	if (siz == -1)
+		goto exit;
+
+	__set_path_resolution(buf, target);
+
+exit:
 	/* Not forwarding function */
 	ret = 0;
 
-	__debug("%s(source: '%s', target: '%s', filesystemtype: '%s', mountflags: 0x%lx, ...) -> %i\n",
-		__func__, source, target, filesystemtype, mountflags, ret);
+	__debug("%s(source: '%s', target: '%s' -> '%s', filesystemtype: '%s', mountflags: 0x%lx, ...) -> %i\n",
+		__func__, source, target, buf, filesystemtype, mountflags, ret);
 
 	return ret;
 }

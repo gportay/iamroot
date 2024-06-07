@@ -485,6 +485,12 @@ extern int next_lremovexattr(const char *, const char *);
 	   __set_errno(errno_save, r); \
 	})
 
+#define __funset_path_resolution(fd) \
+	({ const int errno_save = errno; \
+	   const int r = next_fremovexattr((fd), IAMROOT_XATTRS_PATH_RESOLUTION); \
+	   __set_errno(errno_save, r); \
+	})
+
 #define __set_path_resolution(path, data) \
 	({ const int errno_save = errno; \
 	   int r; \
@@ -492,6 +498,17 @@ extern int next_lremovexattr(const char *, const char *);
 	     r = __unset_path_resolution((path)); \
 	   } else { \
 	     r = next_lsetxattr((path), IAMROOT_XATTRS_PATH_RESOLUTION, (data), __strlen((data))+1, 0); \
+	   } \
+	   __set_errno(errno_save, r); \
+	})
+
+#define __fset_path_resolution(fd, data) \
+	({ const int errno_save = errno; \
+	   int r; \
+	   if (!data || !*data) { \
+	     r = __funset_path_resolution((fd)); \
+	   } else { \
+	     r = next_fsetxattr((fd), IAMROOT_XATTRS_PATH_RESOLUTION, (data), __strlen((data))+1, 0); \
 	   } \
 	   __set_errno(errno_save, r); \
 	})
@@ -648,6 +665,12 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 	   __set_errno(errno_save, r); \
 	})
 
+#define __funset_path_resolution(fd) \
+	({ const int errno_save = errno; \
+	   const int r = next_extattr_delete_fd((fd), EXTATTR_NAMESPACE_USER, IAMROOT_EXTATTR_PATH_RESOLUTION); \
+	   __set_errno(errno_save, r); \
+	})
+
 #define __set_path_resolution(path, data) \
 	({ const int errno_save = errno; \
 	   int r; \
@@ -655,6 +678,17 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 	     r = __unset_path_resolution((path)); \
 	   } else { \
 	     r = next_extattr_set_link((path), EXTATTR_NAMESPACE_USER, IAMROOT_EXTATTR_PATH_RESOLUTION, (data), __strlen((data))+1); \
+	   } \
+	   __set_errno(errno_save, r); \
+	})
+
+#define __fset_path_resolution(fd, data) \
+	({ const int errno_save = errno; \
+	   int r; \
+	   if (!data || !*data) { \
+	     r = __funset_path_resolution((fd)); \
+	   } else { \
+	     r = next_extattr_set_fd((fd), EXTATTR_NAMESPACE_USER, IAMROOT_EXTATTR_GID, (data), __strlen((data))+1, 0); \
 	   } \
 	   __set_errno(errno_save, r); \
 	})

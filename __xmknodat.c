@@ -7,6 +7,8 @@
 #ifdef __linux__
 #include <stdio.h>
 #include <errno.h>
+#include <string.h>
+#include <limits.h>
 
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -27,6 +29,7 @@ int __xmknodat(int ver, int dfd, const char *path, mode_t mode, dev_t *dev)
 	if (fd == -1)
 		return -1;
 
+	__fset_path_resolution(fd, path);
 	__close(fd);
 
 	return 0;

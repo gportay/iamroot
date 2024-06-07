@@ -152,7 +152,7 @@ endef
 
 define pacstrap-rootfs
 .PRECIOUS: $(1)-$(2)-rootfs/bin/sh
-$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
+$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(dev)/|^$(CURDIR)/.*\.gcda
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export EUID = 0
 
 $(eval $(call chroot_shell,$(1),$(2),/bin/bash,pacstrap -GMC support/$(1)-$(2)-pacman.conf $(1)-$(2)-rootfs $(3)))
@@ -176,8 +176,8 @@ define debootstrap-rootfs
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: IDOFLAGS += --multiarch
 # chfn: PAM: Critical error - immediate abort
 # adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^/dev/(null|zero|full|random|urandom|tty|console|pts|shm|ptmx)|^$(CURDIR)/.*\.gcda
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^$(CURDIR)/.*\.gcda
 # debconf: PERL_DL_NONLAZY is not set, if debconf is running from a preinst script, this is not safe
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: IDOFLAGS += --preserve-env=PERL_DL_NONLAZY
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export PERL_DL_NONLAZY = 1
@@ -209,7 +209,7 @@ $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: IDOFLAG
 # chfn: PAM: Critical error - immediate abort
 # adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^/dev/(null|zero|full|random|urandom|tty|console|pts|shm|ptmx)|^$(CURDIR)/.*\.gcda
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/dev/(null|zero|full|random|urandom|tty|console|pts|shm|ptmx)|^$(CURDIR)/.*\.gcda
 # debconf: PERL_DL_NONLAZY is not set, if debconf is running from a preinst script, this is not safe
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: IDOFLAGS += --preserve-env=PERL_DL_NONLAZY
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export PERL_DL_NONLAZY = 1
@@ -232,7 +232,7 @@ endef
 
 define dnf-rootfs
 .PRECIOUS: $(1)-$(2)-$(3)-rootfs/bin/sh
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^$(CURDIR)/.*\.gcda
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora.repo
 
 $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/bash,dnf --forcearch $(1) --releasever $(3) --assumeyes --installroot $(CURDIR)/$(1)-$(2)-$(3)-rootfs group install minimal-environment))
@@ -255,7 +255,7 @@ endef
 define zypper-rootfs
 .PRECIOUS: $(1)-$(2)-rootfs/bin/sh
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|/usr/bin/chkstat
-$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
+$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^$(CURDIR)/.*\.gcda
 
 $(eval $(call chroot_shell,$(1),$(2),/bin/bash,zypper --root $(CURDIR)/$(1)-$(2)-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd))
 
@@ -275,7 +275,7 @@ endef
 
 define xbps-install-rootfs
 .PRECIOUS: $(1)-$(2)-rootfs/bin/sh
-$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
+$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(dev)/|^$(CURDIR)/.*\.gcda
 $(eval $(call chroot_shell,$(1),$(2),/bin/bash,xbps-install -S -r $(1)-$(2)-rootfs -R http://repo-default.voidlinux.org/current base-system))
 
 $(1)-$(2)-rootfs: | $(1)-$(2)-rootfs/bin/sh
@@ -291,7 +291,7 @@ endef
 
 define xbps-install-musl-rootfs
 .PRECIOUS: $(1)-$(2)-musl-rootfs/bin/sh
-$(1)-$(2)-musl-chroot $(1)-$(2)-musl-shell $(1)-$(2)-musl-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
+$(1)-$(2)-musl-chroot $(1)-$(2)-musl-shell $(1)-$(2)-musl-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(dev)/|^$(CURDIR)/.*\.gcda
 $(eval $(call chroot_shell,$(1),$(2)-musl,/bin/bash,xbps-install -S -r $(1)-$(2)-musl-rootfs -R http://repo-default.voidlinux.org/current/musl base-system))
 
 $(1)-$(2)-musl-rootfs: | $(1)-$(2)-musl-rootfs/bin/sh

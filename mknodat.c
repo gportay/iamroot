@@ -6,6 +6,8 @@
 
 #include <stdio.h>
 #include <errno.h>
+#include <string.h>
+#include <limits.h>
 
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -25,6 +27,14 @@ int mknodat(int dfd, const char *path, mode_t mode, dev_t dev)
 	if (fd == -1)
 		return -1;
 
+#ifndef __clang__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnonnull-compare"
+#endif
+	__fset_path_resolution(fd, path);
+#ifndef __clang__
+#pragma GCC diagnostic pop
+#endif
 	__close(fd);
 
 	return 0;

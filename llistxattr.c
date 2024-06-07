@@ -38,8 +38,18 @@ ssize_t llistxattr(const char *path, char *list, size_t size)
 	char buf[PATH_MAX];
 	(void)size;
 
-	siz = path_resolution(AT_FDCWD, path, buf, sizeof(buf),
-			      AT_SYMLINK_NOFOLLOW);
+	/*
+	 * According to symlink(7):
+	 *
+	 * Various system calls do not follow links in the basename component
+	 * of a pathname, and operate on the symbolic link itself. They are:
+	 * lchown(2), lgetxattr(2), llistxattr(2), lremovexattr(2),
+	 * lsetxattr(2), lstat(2), readlink(2), rename(2), rmdir(2), and
+	 * unlink(2).
+	 */
+	siz = path_resolution2(AT_FDCWD, path, buf, sizeof(buf),
+			       AT_SYMLINK_NOFOLLOW,
+			       PATH_RESOLUTION_NOWALKALONG);
 	if (siz == -1)
 		goto exit;
 

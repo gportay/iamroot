@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2021-2023 Gaël PORTAY
+# Copyright 2021-2024 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -76,6 +76,43 @@ shift
 case "${path##*/}" in
 mount|umount)
 	notice "not-running" "$argv0" "$@"
+	if [ "${IAMROOT_ROOT:-/}" != / ] && command -v setfattr 2>/dev/null
+	then
+		args=()
+		opts=()
+		prev=
+		for cur in "$@"
+		do
+			if [ "$prev" = "-t" ] || [ "$prev" = "-o" ] ||
+			   [ "$prev" = "-O" ]
+			then
+				:
+			elif [ "${cur:0:1}" != "-" ]
+			then
+				opts+=("$curr")
+			else
+				args+=("$cur")
+			fi
+			prev="$cur"
+		done
+		unset prev
+		unset cur
+
+		if [[ "${#args[*]}" -eq 2 ]]
+		then
+			xattrargs=(-n "user.iamroot.path-resolution")
+
+			path=$(path_resolution "${args[1]}")
+			if [[ "${path##*/}" == mount ]]
+			then
+				xattrargs+=(-v "${args[1]}")
+			else
+				xattrargs+=(-x)
+			fi
+
+			setfattr "${xattrargs[@]}" "$path"
+		fi
+	fi
 	exit 0
 	;;
 mountpoint)

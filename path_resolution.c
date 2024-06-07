@@ -595,10 +595,8 @@ ssize_t path_resolution2(int dfd, const char *path, char *buf, size_t bufsiz,
 	__path_sanitize(buf, bufsiz);
 
 	/* Follow the symlink unless the AT_SYMLINK_NOFOLLOW is given */
-	if (follow_symlink(atflags)) {
-		__strncpy(tmp, buf);
-		__realpathat(tmp, buf, atflags);
-	}
+	if (follow_symlink(atflags) && __realpathat(buf, tmp, atflags))
+		_strncpy(buf, tmp, bufsiz);
 
 	/*
 	 * The directory fd is the root directory and the resolved path is

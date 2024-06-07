@@ -36,8 +36,18 @@ ssize_t readlinkat(int dfd, const char *path, char *buf, size_t bufsiz)
 	const char *root;
 	size_t len;
 
-	siz = path_resolution(dfd, path, tmp, sizeof(tmp),
-			      AT_SYMLINK_NOFOLLOW);
+	/*
+	 * According to symlink(7):
+	 *
+	 * Various system calls do not follow links in the basename component
+	 * of a pathname, and operate on the symbolic link itself. They are:
+	 * lchown(2), lgetxattr(2), llistxattr(2), lremovexattr(2),
+	 * lsetxattr(2), lstat(2), readlink(2), rename(2), rmdir(2), and
+	 * unlink(2).
+	 */
+	siz = path_resolution2(dfd, path, tmp, sizeof(tmp),
+			       AT_SYMLINK_NOFOLLOW,
+			       PATH_RESOLUTION_NOWALKALONG);
 	if (siz == -1)
 		goto exit;
 

@@ -59,6 +59,7 @@ ld-iamroot.so: fgetxattr.o
 ld-iamroot.so: fstat.o
 ld-iamroot.so: fstatat.o
 ld-iamroot.so: getcwd.o
+ld-iamroot.so: getxattr.o
 ld-iamroot.so: iamroot.o
 ld-iamroot.so: interpreter-script.o
 ld-iamroot.so: jimregexp.o

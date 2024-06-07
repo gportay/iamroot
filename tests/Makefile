@@ -10,6 +10,7 @@ SHELL = bash
 ARCH ?= $(shell uname -m 2>/dev/null)
 KVER ?= $(shell uname -r 2>/dev/null)
 OS ?= $(shell uname -o 2>/dev/null || uname -s 2>/dev/null)
+XATTR ?= $(shell command -v getfattr 2>/dev/null || command -v setfattr 2>/dev/null && echo xattr)
 COVERAGE ?= 0
 
 override CPPFLAGS += -D_GNU_SOURCE
@@ -317,6 +318,9 @@ ifeq ($(shell test -d /proc/1 && ! test -r /proc/1/root && echo 1),1)
 	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib:$(CURDIR)/rootfs/usr/local/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                 test-path_resolution2     /proc/1/root  0x00                                    | tee /dev/stderr | grep -q '^/$$'
 	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib:$(CURDIR)/rootfs/usr/local/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                 test-path_resolution2     /proc/1/root  0x01                                    | tee /dev/stderr | grep -q '^/proc/1/root$$'
 	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib:$(CURDIR)/rootfs/usr/local/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                 test-path_resolution2     /proc/1/root  0x03                                    | tee /dev/stderr | grep -q '^$(CURDIR)/rootfs/proc/1/root$$'
+ifeq ($(XATTR),xattr)
+	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib:$(CURDIR)/rootfs/usr/lib/iar PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                   test-path_resolution2     /proc/1/root  0x03 | tee /dev/stderr | grep -q '^$(CURDIR)/rootfs/proc/1/root$$'
+endif
 endif
 ifeq ($(OS),GNU/Linux)
 	env LD_PRELOAD=$(LIBRARY) PATH=$(CURDIR)/rootfs/usr/bin                                                                                            test-name_to_handle_at  . rootfs/tmp/file0         0
@@ -739,6 +743,10 @@ endif
 	bash install-bin bash $(DESTDIR)
 	bash install-bin env $(DESTDIR)
 	ln -sf bash $(DESTDIR)/usr/bin/sh
+ifeq ($(XATTR),xattr)
+	install -d -m755 $(DESTDIR)/linux/proc
+	getfattr -n user.iamroot.path-resolution -v "/proc\0" $(DESTDIR)/linux/proc
+endif
 	mv $(DESTDIR) $@
 
 .PHONY: clean

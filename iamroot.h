@@ -118,6 +118,7 @@ extern "C" {
 
 #define PATH_RESOLUTION_NOMAGICLINKS 0x01
 #define PATH_RESOLUTION_NOIGNORE     0x02
+#define PATH_RESOLUTION_NOWALKALONG  0x04
 
 #ifdef __linux__
 /*
@@ -152,17 +153,19 @@ extern char **environ;
 #else
 extern char **__environ;
 
-#define IAMROOT_XATTRS_PREFIX "user.iamroot."
-#define IAMROOT_XATTRS_MODE IAMROOT_XATTRS_PREFIX "mode"
-#define IAMROOT_XATTRS_UID  IAMROOT_XATTRS_PREFIX "uid"
-#define IAMROOT_XATTRS_GID  IAMROOT_XATTRS_PREFIX "gid"
+#define IAMROOT_XATTRS_PREFIX          "user.iamroot."
+#define IAMROOT_XATTRS_MODE            IAMROOT_XATTRS_PREFIX "mode"
+#define IAMROOT_XATTRS_UID             IAMROOT_XATTRS_PREFIX "uid"
+#define IAMROOT_XATTRS_GID             IAMROOT_XATTRS_PREFIX "gid"
+#define IAMROOT_XATTRS_PATH_RESOLUTION IAMROOT_XATTRS_PREFIX "path-resolution"
 #endif
 
 #if defined __FreeBSD__ || __NetBSD__
 #define IAMROOT_EXTATTR_PREFIX "iamroot."
-#define IAMROOT_EXTATTR_MODE IAMROOT_EXTATTR_PREFIX "mode"
-#define IAMROOT_EXTATTR_UID  IAMROOT_EXTATTR_PREFIX "uid"
-#define IAMROOT_EXTATTR_GID  IAMROOT_EXTATTR_PREFIX "gid"
+#define IAMROOT_EXTATTR_MODE            IAMROOT_EXTATTR_PREFIX "mode"
+#define IAMROOT_EXTATTR_UID             IAMROOT_EXTATTR_PREFIX "uid"
+#define IAMROOT_EXTATTR_GID             IAMROOT_EXTATTR_PREFIX "gid"
+#define IAMROOT_EXTATTR_PATH_RESOLUTION IAMROOT_EXTATTR_PREFIX "path-resolution"
 #endif
 
 char **_resetenv(char **);
@@ -468,6 +471,35 @@ extern int next_lremovexattr(const char *, const char *);
 	   } \
 	   __set_errno(errno_save, 0); \
 	})
+
+#define __get_path_resolution(path, data, datasiz) \
+	({ const int errno_save = errno; \
+	   const int r = next_lgetxattr((path), IAMROOT_XATTRS_PATH_RESOLUTION, (data), (datasiz)-1); \
+	   __set_errno(errno_save, r); \
+	})
+
+#define __fget_path_resolution(fd, data, datasiz) \
+	({ const int errno_save = errno; \
+	   const int r = next_fgetxattr((fd), IAMROOT_XATTRS_PATH_RESOLUTION, (data), (datasiz)-1); \
+	   __set_errno(errno_save, r); \
+	})
+
+#define __unset_path_resolution(path) \
+	({ const int errno_save = errno; \
+	   const int r = next_lremovexattr((path), IAMROOT_XATTRS_PATH_RESOLUTION); \
+	   __set_errno(errno_save, r); \
+	})
+
+#define __set_path_resolution(path, data) \
+	({ const int errno_save = errno; \
+	   int r; \
+	   if (!data || !*data) { \
+	     r = __unset_path_resolution((path)); \
+	   } else { \
+	     r = next_lsetxattr((path), IAMROOT_XATTRS_PATH_RESOLUTION, (data), __strlen((data))+1, 0); \
+	   } \
+	   __set_errno(errno_save, r); \
+	})
 #endif
 
 #if defined __FreeBSD__ || defined __NetBSD__
@@ -601,6 +633,35 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 	     next_extattr_set_fd((fd), EXTATTR_NAMESPACE_USER, IAMROOT_EXTATTR_GID, &(oldgid), sizeof((oldgid))); \
 	   } \
 	   __set_errno(errno_save, 0); \
+	})
+
+#define __get_path_resolution(path, data, datasiz) \
+	({ const int errno_save = errno; \
+	   const int r = next_extattr_get_link((path), EXTATTR_NAMESPACE_USER, IAMROOT_EXTATTR_PATH_RESOLUTION, (data), (datasiz)-1); \
+	   __set_errno(errno_save, r); \
+	})
+
+#define __fget_path_resolution(fd, data, datasiz) \
+	({ const int errno_save = errno; \
+	   const int r = next_extattr_get_fd((fd), EXTATTR_NAMESPACE_USER, IAMROOT_EXTATTR_PATH_RESOLUTION, (data), (datasiz)-1); \
+	   __set_errno(errno_save, r); \
+	})
+
+#define __unset_path_resolution(path) \
+	({ const int errno_save = errno; \
+	   const int r = next_extattr_delete_link((path), EXTATTR_NAMESPACE_USER, IAMROOT_EXTATTR_PATH_RESOLUTION); \
+	   __set_errno(errno_save, r); \
+	})
+
+#define __set_path_resolution(path, data) \
+	({ const int errno_save = errno; \
+	   int r; \
+	   if (!data || !*data) { \
+	     r = __unset_path_resolution((path)); \
+	   } else { \
+	     r = next_extattr_set_link((path), EXTATTR_NAMESPACE_USER, IAMROOT_EXTATTR_PATH_RESOLUTION, (data), __strlen((data))+1); \
+	   } \
+	   __set_errno(errno_save, r); \
 	})
 #endif
 

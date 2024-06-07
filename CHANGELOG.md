@@ -16,6 +16,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `PATH_RESOLUTION_NOIGNORE`: disallow non-resolution of ignored path during
   path resolution: i.e. all path are resolved even if it matches the regex set
   in `PATH_RESOLUTION_IGNORE`
+  `PATH_RESOLUTION_NOWALKALONG`: disallow the final walkalong resolution of the
+  given path
 
 ### Changed
 

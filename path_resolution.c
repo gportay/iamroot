@@ -17,6 +17,7 @@
 
 #define allow_magic_links(f) (((f) & PATH_RESOLUTION_NOMAGICLINKS) == 0)
 #define allow_ignore(f) (((f) & PATH_RESOLUTION_NOIGNORE) == 0)
+#define allow_walk_along(f) (((f) & PATH_RESOLUTION_NOWALKALONG) == 0)
 
 /* AT flag FOLLOW takes precedence over NOFOLLOW */
 #define follow_symlink(f) (((f) & AT_SYMLINK_FOLLOW) || ((f) & AT_SYMLINK_NOFOLLOW) == 0)
@@ -28,10 +29,24 @@ extern char *next_realpath(const char *, char *);
 #ifndef SYMLOOP_MAX
 #define SYMLOOP_MAX 40
 #endif
+#ifdef __linux__
+#define getxattr next_getxattr
+#endif
+#if defined __FreeBSD__ || __NetBSD__
+#define getxattr next_getxattr
+#define extattr_get_file next_extattr_get_file
+#endif
 #define readlink(...) next_readlinkat(AT_FDCWD, __VA_ARGS__)
 #define getcwd next_getcwd
 #define strlen __strnlen
 
+#ifdef __linux__
+extern ssize_t next_getxattr(const char *, const char *, void *, size_t);
+#endif
+#if defined __FreeBSD__ || __NetBSD__
+extern ssize_t next_extattr_get_file(const char *, int, const char *, void *,
+				     size_t);
+#endif
 extern ssize_t next_readlinkat(int, const char *, char *, size_t);
 extern char *next_getcwd(char *, size_t);
 
@@ -56,7 +71,8 @@ static size_t slash_len(const char *s)
  *
  * SPDX-License-Identifier: MIT
  */
-static char *__realpath(const char *filename, char *resolved)
+/* The original function name is realpath() in the musl sources */
+static char *__realpathat(const char *filename, char *resolved, int atflags)
 {
 	char stack[PATH_MAX+1];
 	char output[PATH_MAX];
@@ -138,7 +154,26 @@ restart:
 			 * directories, processing .. can skip readlink. */
 			if (!check_dir) goto skip_readlink;
 		}
-		ssize_t k = readlink(output, stack, p);
+		ssize_t k=-1;
+		if (!follow_symlink(atflags))
+			goto skip_readlink;
+#ifdef __linux__
+		k = getxattr(output, IAMROOT_XATTRS_PATH_RESOLUTION, stack, p);
+		if (k<0) errno = errno_save;
+#endif
+#if defined __FreeBSD__ || __NetBSD__
+		k = next_extattr_get_file(output, EXTATTR_NAMESPACE_USER,
+					  IAMROOT_EXTATTR_PATH_RESOLUTION,
+					  stack, p);
+		if (k<0) errno = errno_save;
+#endif
+		if (k==(ssize_t)p) goto toolong;
+		if (k>0) {
+			memcpy(stack+p-k+1, stack, k-1);
+			p -= k-1;
+			goto restart;
+		}
+		k = readlink(output, stack, p);
 		if (k==(ssize_t)p) goto toolong;
 		if (!k) {
 			if (errno == ENOENT) goto skip_readlink;
@@ -216,6 +251,12 @@ toolong:
 }
 
 #undef SYMLOOP_MAX
+#if defined __FreeBSD__ || __NetBSD__
+#undef extattr_get_file
+#endif
+#ifdef __linux__
+#undef getxattr
+#endif
 #undef readlink
 #undef getcwd
 #undef strlen
@@ -382,6 +423,8 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsiz,
 ssize_t path_resolution2(int dfd, const char *path, char *buf, size_t bufsiz,
 			 int atflags, int prflags)
 {
+	const int errno_save = errno;
+	char tmp[PATH_MAX+1];
 	int is_atrootfd = 0;
 	const char *root;
 	ssize_t ret;
@@ -553,10 +596,8 @@ ssize_t path_resolution2(int dfd, const char *path, char *buf, size_t bufsiz,
 
 	/* Follow the symlink unless the AT_SYMLINK_NOFOLLOW is given */
 	if (follow_symlink(atflags)) {
-		char tmp[PATH_MAX+1];
-
 		__strncpy(tmp, buf);
-		__realpath(tmp, buf);
+		__realpathat(tmp, buf, atflags);
 	}
 
 	/*
@@ -577,7 +618,14 @@ ssize_t path_resolution2(int dfd, const char *path, char *buf, size_t bufsiz,
 	    ignore(buf+len))
 		__striprootdir(buf);
 
-	return strnlen(buf, bufsiz);
+	/*
+	 * This resolves for symlinks and iamroot.path-resolution extended
+	 * attribute.
+	 */
+	if (allow_walk_along(prflags) && __realpathat(buf, tmp, atflags))
+		_strncpy(buf, tmp, bufsiz);
+
+	return __set_errno(errno_save, strnlen(buf, bufsiz));
 }
 
 hidden char *__getpath(int dfd, const char *path, int atflags)

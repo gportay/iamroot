@@ -36,6 +36,7 @@ hidden int next_openat(int dfd, const char *path, int oflags, mode_t mode)
 
 int openat(int dfd, const char *path, int oflags, ...)
 {
+	const int errno_save = errno;
 	mode_t oldmode = 0, mode = 0;
 	int atflags = 0, ret = -1;
 	char buf[PATH_MAX];
@@ -64,8 +65,8 @@ int openat(int dfd, const char *path, int oflags, ...)
 
 	ret = next_openat(dfd, buf, oflags, mode);
 	__set_mode(buf, oldmode, mode);
-	if (ret >= 0)
-		__setfd(ret, buf);
+	if (ret >= 0 && __setfd(ret, buf))
+		errno = errno_save;
 
 exit:
 	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', oflags: 0%o, mode: 0%03o -> 0%03o) -> %i\n",

@@ -31,6 +31,7 @@ hidden FILE *next_fopen(const char *path, const char *mode)
 
 FILE *fopen(const char *path, const char *mode)
 {
+	const int errno_save = errno;
 	char buf[PATH_MAX];
 	FILE *ret = NULL;
 	ssize_t siz;
@@ -40,8 +41,8 @@ FILE *fopen(const char *path, const char *mode)
 		goto exit;
 
 	ret = next_fopen(buf, mode);
-	if (ret != NULL)
-		__setfd(fileno(ret), buf);
+	if (ret != NULL && __setfd(fileno(ret), buf))
+		errno = errno_save;
 
 exit:
 	__debug("%s(path: '%s' -> '%s', mode: '%s') -> %p\n", __func__, path,

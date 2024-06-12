@@ -28,11 +28,12 @@ hidden int next_dup2(int oldfd, int newfd)
 
 int dup2(int oldfd, int newfd)
 {
+	const int errno_save = errno;
 	int ret;
 
 	ret = next_dup2(oldfd, newfd);
-	if (ret >= 0)
-		__setfd(ret, __fpath(oldfd));
+	if (ret >= 0 && __setfd(ret, __fpath(oldfd)))
+		errno = errno_save;
 
 	__debug("%s(oldfd: %i <-> '%s', newfd: %i <-> '%s') -> %i\n",
 		__func__, oldfd, __fpath(oldfd), newfd, __fpath2(newfd), ret);

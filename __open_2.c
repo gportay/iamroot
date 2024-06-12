@@ -31,6 +31,7 @@ hidden int next___open_2(const char *path, int oflags)
 
 int __open_2(const char *path, int oflags)
 {
+	const int errno_save = errno;
 	int atflags = 0, ret = -1;
 	char buf[PATH_MAX];
 	ssize_t siz;
@@ -43,8 +44,8 @@ int __open_2(const char *path, int oflags)
 		goto exit;
 
 	ret = next___open_2(buf, oflags);
-	if (ret >= 0)
-		__setfd(ret, buf);
+	if (ret >= 0 && __setfd(ret, buf))
+		errno = errno_save;
 
 exit:
 	__debug("%s(path: '%s' -> '%s', oflags: 0%o) -> %i\n", __func__, path,

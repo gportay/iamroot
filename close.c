@@ -28,11 +28,12 @@ hidden int next_close(int fd)
 
 int close(int fd)
 {
+	const int errno_save = errno;
 	int ret;
 
 	ret = next_close(fd);
-	if (ret != -1)
-		__unsetfd(fd);
+	if (ret != -1 && __unsetfd(fd))
+		errno = errno_save;
 
 	__debug("%s(fd: %i <-> '%s') -> %i\n", __func__, fd, __fpath(fd), ret);
 

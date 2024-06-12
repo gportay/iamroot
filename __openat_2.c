@@ -29,6 +29,7 @@ hidden int next___openat_2(int dfd, const char *path, int oflags)
 
 int __openat_2(int dfd, const char *path, int oflags)
 {
+	const int errno_save = errno;
 	int atflags = 0, ret = -1;
 	char buf[PATH_MAX];
 	ssize_t siz;
@@ -41,8 +42,8 @@ int __openat_2(int dfd, const char *path, int oflags)
 		goto exit;
 
 	ret = next___openat_2(dfd, buf, oflags);
-	if (ret >= 0)
-		__setfd(ret, buf);
+	if (ret >= 0 && __setfd(ret, buf))
+		errno = errno_save;
 
 exit:
 	__debug("%s(dfd: %i <-> '%s', path: '%s' -> '%s', oflags: 0%o) -> %i\n",

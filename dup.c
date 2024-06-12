@@ -28,11 +28,12 @@ hidden int next_dup(int fd)
 
 int dup(int fd)
 {
+	const int errno_save = errno;
 	int ret;
 
 	ret = next_dup(fd);
-	if (ret >= 0)
-		__setfd(ret, __fpath(fd));
+	if (ret >= 0 && __setfd(ret, __fpath(fd)))
+		errno = errno_save;
 
 	__debug("%s(fd: %i <-> '%s') -> %i\n", __func__, fd, __fpath(fd), ret);
 

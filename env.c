@@ -236,7 +236,7 @@ hidden int setenv(const char *var, const char *value, int overwrite)
  *
  * SPDX-License-Identifier: MIT
  */
-int unsetenv(const char *name)
+hidden int unsetenv(const char *name)
 {
 	size_t l = __strchrnul(name, '=') - name;
 	if (!l || name[l]) {

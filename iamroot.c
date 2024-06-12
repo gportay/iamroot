@@ -971,6 +971,7 @@ hidden int __setfd(int fd, const char *path)
 
 hidden int __execfd()
 {
+	const int errno_save = errno;
 #if defined __OpenBSD__ || defined __NetBSD__
 	char * const *p;
 
@@ -988,7 +989,7 @@ hidden int __execfd()
 	}
 #endif
 
-	return 0;
+	return __set_errno(errno_save, 0);
 }
 
 #ifdef __linux__

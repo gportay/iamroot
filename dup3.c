@@ -31,7 +31,6 @@ int dup3(int oldfd, int newfd, int oflags)
 	int ret;
 
 	ret = next_dup3(oldfd, newfd, oflags);
-
 	if (ret >= 0)
 		__setfd(ret, __fpath(oldfd));
 

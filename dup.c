@@ -31,7 +31,6 @@ int dup(int fd)
 	int ret;
 
 	ret = next_dup(fd);
-
 	if (ret >= 0)
 		__setfd(ret, __fpath(fd));
 

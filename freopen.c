@@ -40,7 +40,6 @@ FILE *freopen(const char *path, const char *mode, FILE *stream)
 		goto exit;
 
 	ret = next_freopen(buf, mode, stream);
-
 	if (ret != NULL)
 		__setfd(fileno(ret), buf);
 

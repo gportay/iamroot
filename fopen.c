@@ -40,7 +40,6 @@ FILE *fopen(const char *path, const char *mode)
 		goto exit;
 
 	ret = next_fopen(buf, mode);
-
 	if (ret != NULL)
 		__setfd(fileno(ret), buf);
 

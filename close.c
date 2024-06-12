@@ -31,7 +31,6 @@ int close(int fd)
 	int ret;
 
 	ret = next_close(fd);
-
 	if (ret != -1)
 		__unsetfd(fd);
 

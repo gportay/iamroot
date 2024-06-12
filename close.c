@@ -33,7 +33,7 @@ int close(int fd)
 	ret = next_close(fd);
 
 	if (ret != -1)
-		__setfd(fd, NULL);
+		__unsetfd(fd);
 
 	__debug("%s(fd: %i <-> '%s') -> %i\n", __func__, fd, __fpath(fd), ret);
 

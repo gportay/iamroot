@@ -215,6 +215,7 @@ const char *__getexe();
 #endif
 
 const char *__getfd(int);
+#define __unsetfd(fd) __setfd((fd), NULL)
 int __setfd(int, const char *);
 int __execfd();
 const char *__execfn();

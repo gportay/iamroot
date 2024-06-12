@@ -982,7 +982,7 @@ hidden int __execfd()
 		if (n != 2)
 			continue;
 
-		err = __setfd(fd, NULL);
+		err = __unsetfd(fd);
 		if (err == -1)
 			__warning("%i: cannot unset fd!\n", fd);
 	}

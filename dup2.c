@@ -35,7 +35,7 @@ int dup2(int oldfd, int newfd)
 	if (ret >= 0)
 		__setfd(newfd, __fpath(oldfd));
 
-	__debug("%s(oldfd: %i <-> '%s', newfd: %i <-> '%s') -> %i \n",
+	__debug("%s(oldfd: %i <-> '%s', newfd: %i <-> '%s') -> %i\n",
 		__func__, oldfd, __fpath(oldfd), newfd, __fpath2(newfd), ret);
 
 	return ret;

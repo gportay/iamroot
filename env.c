@@ -40,6 +40,62 @@
 
 #include "iamroot.h"
 
+int clearenv()
+{
+	int ret;
+	
+	ret = _clearenv();
+
+	__debug("%s() -> %i\n", __func__, ret);
+
+	return ret;
+}
+
+char *getenv(const char *name)
+{
+	char *ret;
+	
+	ret = _getenv(name);
+
+	__debug("%s(name: '%s') -> '%s'\n", __func__, name, ret);
+
+	return ret;
+}
+
+int putenv(char *string)
+{
+	int ret;
+	
+	ret = _putenv(string);
+
+	__debug("%s(string: '%s') -> %i\n", __func__, string, ret);
+
+	return ret;
+}
+
+int setenv(const char *name, const char *value, int overwrite)
+{
+	int ret;
+	
+	ret = _setenv(name, value, overwrite);
+
+	__debug("%s(name: '%s', value: '%s', overwrite: %i) -> %i\n", __func__,
+		name, value, overwrite, ret);
+
+	return ret;
+}
+
+int unsetenv(const char *name)
+{
+	int ret;
+	
+	ret = _unsetenv(name);
+
+	__debug("%s(name: '%s') -> %i\n", __func__, name, ret);
+
+	return ret;
+}
+
 #define clearenv _clearenv
 #define getenv _getenv
 #define putenv _putenv

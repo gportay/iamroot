@@ -1300,13 +1300,13 @@ hidden int __verbosef(int lvl, const char *func, const char *fmt, ...)
 }
 
 #if !defined(NVERBOSE)
-hidden void __verbose_execve(char * const argv[], char * const envp[])
+hidden void __verbose_execve(int lvl, char * const argv[], char * const envp[])
 {
 	int color, fd, debug;
 	char * const *p;
 
 	debug = __getdebug();
-	if (debug == 0)
+	if (debug < lvl)
 		return;
 
 	fd = __getdebug_fd();
@@ -1314,10 +1314,14 @@ hidden void __verbose_execve(char * const argv[], char * const envp[])
 		return;
 
 	color = __getcolor();
-	if (color)
-		dprintf(fd, "\033[32;1m");
+	if (color) {
+		if (lvl == 0)
+			dprintf(fd, "\033[31;1m");
+		else
+			dprintf(fd, "\033[32;1m");
+	}
 
-	dprintf(fd, "Debug: ");
+	dprintf(fd, "%s: ", lvl == 0 ? "Warning" : "Debug");
 
 	if (color)
 		dprintf(fd, "\033[0m");

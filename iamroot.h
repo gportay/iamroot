@@ -239,13 +239,21 @@ int __verbosef(int, const char *, const char *, ...) __attribute__((format(print
 #define __info(fmt, ...) __verbosef(2, __func__, fmt, __VA_ARGS__)
 #define __notice(fmt, ...) __verbosef(1, __func__, fmt, __VA_ARGS__)
 #define __warning(fmt, ...) __verbosef(0, __func__, fmt, __VA_ARGS__)
-void __verbose_execve(char * const[], char * const[]);
+#define __debug_execve(argv, envp) __verbose_execve(3, argv, envp)
+#define __info_execve(argv, envp) __verbose_execve(2, argv, envp)
+#define __notice_execve(argv, envp) __verbose_execve(1, argv, envp)
+#define __warning_execve(argv, envp) __verbose_execve(0, argv, envp)
+void __verbose_execve(int, char * const[], char * const[]);
 #else
 #define __debug(fmt, ...) {}
 #define __info(fmt, ...) {}
 #define __notice(fmt, ...) {}
 #define __warning(fmt, ...) {}
-#define __verbose_execve(argv, envp) {}
+#define __debug_execve(argv, envp) {}
+#define __info_execve(argv, envp) {}
+#define __notice_execve(argv, envp) {}
+#define __warning_execve(argv, envp) {}
+#define __verbose_execve(lvl, argv, envp) {}
 #endif
 
 #define __note_if_not_preloading_libiamroot_and_ensure_preloading() \

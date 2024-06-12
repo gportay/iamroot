@@ -109,7 +109,7 @@ int posix_spawn(pid_t *pid, const char *path,
 	if (!__inchroot()) {
 		__note_if_not_preloading_libiamroot_and_ensure_preloading();
 		__execfd();
-		__verbose_execve(argv, __environ);
+		__notice_execve(argv, __environ);
 		return next_posix_spawn(pid, path, file_actions, attrp, argv,
 					__environ);
 	}
@@ -156,7 +156,7 @@ loader:
 	/* ... or run it directly! */
 	if (ret == 1) {
 		__execfd();
-		__verbose_execve(argv, envp);
+		__notice_execve(argv, envp);
 		return next_posix_spawn(pid, buf, file_actions, attrp, argv,
 					envp);
 	}
@@ -189,7 +189,7 @@ loader:
 		*narg++ = NULL; /* ensure NULL-terminated */
 
 		__execfd();
-		__verbose_execve(nargv, __environ);
+		__notice_execve(nargv, __environ);
 		return next_posix_spawn(pid, *nargv, file_actions, attrp,
 					nargv, __environ);
 	}
@@ -223,7 +223,7 @@ exec_sh:
 		*narg++ = NULL; /* ensure NULL-terminated */
 
 		__execfd();
-		__verbose_execve(nargv, __environ);
+		__notice_execve(nargv, __environ);
 		return next_posix_spawn(pid, *nargv, file_actions, attrp,
 					nargv, __environ);
 	}

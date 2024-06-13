@@ -1182,6 +1182,16 @@ Preparing to unpack .../libzstd1.deb ...
 Unpacking libzstd1 ...
 Selecting previously unselected package login.
 dpkg: regarding .../login.deb containing login, pre-dependency problem:
+ login pre-depends on libpam-modules
+  libpam-modules is unpacked, but has never been configured.
+
+dpkg: warning: ignoring pre-dependency problem!
+dpkg: regarding .../login.deb containing login, pre-dependency problem:
+ login pre-depends on libpam-runtime
+  libpam-runtime is unpacked, but has never been configured.
+
+dpkg: warning: ignoring pre-dependency problem!
+dpkg: regarding .../login.deb containing login, pre-dependency problem:
  login pre-depends on libaudit1
   libaudit1 is unpacked, but has never been configured.
 
@@ -1194,16 +1204,6 @@ dpkg: warning: ignoring pre-dependency problem!
 dpkg: regarding .../login.deb containing login, pre-dependency problem:
  login pre-depends on libpam0g
   libpam0g is unpacked, but has never been configured.
-
-dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../login.deb containing login, pre-dependency problem:
- login pre-depends on libpam-runtime
-  libpam-runtime is unpacked, but has never been configured.
-
-dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../login.deb containing login, pre-dependency problem:
- login pre-depends on libpam-modules
-  libpam-modules is unpacked, but has never been configured.
 
 dpkg: warning: ignoring pre-dependency problem!
 Preparing to unpack .../login.deb ...

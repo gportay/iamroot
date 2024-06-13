@@ -1322,7 +1322,6 @@ hidden void __verbose_execve(char * const argv[], char * const envp[])
 	if (color)
 		dprintf(fd, "\033[0m");
 
-
 	dprintf(fd, "running");
 
 	for (p = envp; *p; p++) {

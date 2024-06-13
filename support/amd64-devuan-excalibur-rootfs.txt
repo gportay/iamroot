@@ -743,15 +743,28 @@ dpkg: regarding .../base-files.deb containing base-files, pre-dependency problem
 dpkg: warning: ignoring pre-dependency problem!
 (Reading database ... XXX files and directories currently installed.)
 Preparing to unpack .../base-files.deb ...
+dpkg-divert: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
+ missing 'Description' field
+dpkg-divert: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
+ missing 'Architecture' field
+dpkg-divert: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
+ missing 'Description' field
+dpkg-divert: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
+ missing 'Architecture' field
+dpkg-divert: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
+ missing 'Description' field
+dpkg-divert: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
+ missing 'Architecture' field
 Unpacking base-files ...
 dpkg: base-files: dependency problems, but configuring anyway as you requested:
  base-files depends on awk; however:
   Package awk is not installed.
- base-files depends on usrmerge | usr-is-merged; however:
-  Package usrmerge is not installed.
-  Package usr-is-merged is not installed.
 
 Setting up base-files ...
+dpkg-divert: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
+ missing 'Description' field
+dpkg-divert: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
+ missing 'Architecture' field
 dpkg: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
  missing 'Description' field
 dpkg: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
@@ -1211,6 +1224,16 @@ Preparing to unpack .../libzstd1.deb ...
 Unpacking libzstd1 ...
 Selecting previously unselected package login.
 dpkg: regarding .../login.deb containing login, pre-dependency problem:
+ login pre-depends on libpam-modules
+  libpam-modules is unpacked, but has never been configured.
+
+dpkg: warning: ignoring pre-dependency problem!
+dpkg: regarding .../login.deb containing login, pre-dependency problem:
+ login pre-depends on libpam-runtime
+  libpam-runtime is unpacked, but has never been configured.
+
+dpkg: warning: ignoring pre-dependency problem!
+dpkg: regarding .../login.deb containing login, pre-dependency problem:
  login pre-depends on libaudit1
   libaudit1 is unpacked, but has never been configured.
 
@@ -1223,16 +1246,6 @@ dpkg: warning: ignoring pre-dependency problem!
 dpkg: regarding .../login.deb containing login, pre-dependency problem:
  login pre-depends on libpam0g
   libpam0g is unpacked, but has never been configured.
-
-dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../login.deb containing login, pre-dependency problem:
- login pre-depends on libpam-runtime
-  libpam-runtime is unpacked, but has never been configured.
-
-dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../login.deb containing login, pre-dependency problem:
- login pre-depends on libpam-modules
-  libpam-modules is unpacked, but has never been configured.
 
 dpkg: warning: ignoring pre-dependency problem!
 Preparing to unpack .../login.deb ...

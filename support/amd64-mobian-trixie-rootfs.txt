@@ -116,12 +116,12 @@ After this operation, XXX.X MB of additional disk space will be used.
 /usr/bin/dpkg --status-fd XXX --no-triggers --configure libaudit1:amd64 
 /usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libcrypt1.deb 
 /usr/bin/dpkg --status-fd XXX --no-triggers --configure libcrypt1:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libdb5.3t64.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libdb5.3t64:amd64 
 /usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/debconf.deb 
 /usr/bin/dpkg --status-fd XXX --no-triggers --configure debconf:all 
 /usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libpam0g.deb 
 /usr/bin/dpkg --status-fd XXX --no-triggers --configure libpam0g:amd64 
-/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libdb5.3t64.deb 
-/usr/bin/dpkg --status-fd XXX --no-triggers --configure libdb5.3t64:amd64 
 /usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libpam-modules-bin.deb 
 /usr/bin/dpkg --status-fd XXX --no-triggers --configure libpam-modules-bin:amd64 
 /usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libpam-modules.deb 
@@ -161,7 +161,7 @@ After this operation, XXX.X MB of additional disk space will be used.
 /usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/sysvinit-utils.deb 
 /usr/bin/dpkg --status-fd XXX --no-triggers --configure sysvinit-utils:amd64 
 /usr/bin/dpkg --status-fd XXX --configure --pending 
-Fetched XXX MB XXXs (XXX MB/s)
+Fetched XXX MB XXXs (XXX kB/s)
 I: extracting archives...
 W: skipping bind-mounting ./dev/console
 W: skipping bind-mounting ./dev/full
@@ -436,15 +436,15 @@ Unpacking libaudit1 ...
 Selecting previously unselected package libcrypt1.
 Preparing to unpack .../libcrypt1.deb ...
 Unpacking libcrypt1 ...
+Selecting previously unselected package libdb5.3t64.
+Preparing to unpack .../libdb5.3t64.deb ...
+Unpacking libdb5.3t64 ...
 Selecting previously unselected package debconf.
 Preparing to unpack .../debconf.deb ...
 Unpacking debconf ...
 Selecting previously unselected package libpam0g.
 Preparing to unpack .../libpam0g.deb ...
 Unpacking libpam0g ...
-Selecting previously unselected package libdb5.3t64.
-Preparing to unpack .../libdb5.3t64.deb ...
-Unpacking libdb5.3t64 ...
 Selecting previously unselected package libpam-modules-bin.
 Preparing to unpack .../libpam-modules-bin.deb ...
 Unpacking libpam-modules-bin ...
@@ -503,6 +503,16 @@ Preparing to unpack .../libpam-runtime.deb ...
 Unpacking libpam-runtime ...
 Selecting previously unselected package login.
 dpkg: regarding .../login.deb containing login, pre-dependency problem:
+ login pre-depends on libpam-modules
+  libpam-modules is unpacked, but has never been configured.
+
+dpkg: warning: ignoring pre-dependency problem!
+dpkg: regarding .../login.deb containing login, pre-dependency problem:
+ login pre-depends on libpam-runtime
+  libpam-runtime is unpacked, but has never been configured.
+
+dpkg: warning: ignoring pre-dependency problem!
+dpkg: regarding .../login.deb containing login, pre-dependency problem:
  login pre-depends on libaudit1
   libaudit1 is unpacked, but has never been configured.
 
@@ -520,16 +530,6 @@ dpkg: warning: ignoring pre-dependency problem!
 dpkg: regarding .../login.deb containing login, pre-dependency problem:
  login pre-depends on libpam0g
   libpam0g is unpacked, but has never been configured.
-
-dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../login.deb containing login, pre-dependency problem:
- login pre-depends on libpam-runtime
-  libpam-runtime is unpacked, but has never been configured.
-
-dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../login.deb containing login, pre-dependency problem:
- login pre-depends on libpam-modules
-  libpam-modules is unpacked, but has never been configured.
 
 dpkg: warning: ignoring pre-dependency problem!
 Preparing to unpack .../login.deb ...
@@ -721,8 +721,8 @@ Setting up hostname ...
 Setting up libcap-ng0 ...
 Setting up libaudit1 ...
 Setting up libcrypt1 ...
-Setting up libpam0g ...
 Setting up libdb5.3t64 ...
+Setting up libpam0g ...
 Setting up libpam-modules-bin ...
 Setting up libpam-modules ...
 Setting up libpam-runtime ...
@@ -818,10 +818,10 @@ The following NEW packages will be installed:
 XXX upgraded, XXX newly installed, XXX to remove and XXX not upgraded.
 Need to get XXX.X MB of archives.
 After this operation, XXX.X MB of additional disk space will be used.
-Fetched XXX MB XXXs (XXX MB/s)
+Fetched XXX MB XXXs (XXX kB/s)
 Chrooting into $ROOT/amd64-mobian-trixie-rootfs/
 debconf: delaying package configuration, since apt-utils is not installed
-Fetched XXX MB XXXs (XXX MB/s)
+Fetched XXX MB XXXs (XXX kB/s)
 Chrooting into $ROOT/amd64-mobian-trixie-rootfs/
 Selecting previously unselected package libcom-err2.
 (Reading database ... XXX files and directories currently installed.)

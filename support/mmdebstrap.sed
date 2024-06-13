@@ -11,10 +11,10 @@
 		s,[[:digit:]]\+,XXX,g
 	}
 
-	# Need to get XXX.X MB of archives.
-	# After this operation, XXX.X MB of additional disk space will be used.
+	# Need to get XXX.X xB of archives.
+	# After this operation, XXX.X xB of additional disk space will be used.
 	/^\(Need\|After\)/ {
-		s,[[:digit:].]\+\s\([kM]\|\)B,XXX.X \1B,g
+		s,[[:digit:].]\+\s\([kM]\|\)B,XXX.X xB,g
 	}
 
 	# _FORTIFY_SOURCE requires compiling with optimization (-O) at /usr/lib/perl5/5.38/vendor_perl/features.ph line XXX.
@@ -28,9 +28,9 @@
 		s,/tmp\.[[:alnum:]]\{10\,10\},/tmp.XXXXXXXXXX,
 	}
 
-	# Fetched XXX kB in XXXs (XXX kB/s)
+	# Fetched XXX xB in XXXs (XXX xB/s)
 	/^Fetched / {
-		s,[[:digit:].]\{3\,4\}\s\([kM]\|\)B,XXX \1B,g
+		s,[[:digit:].]\{3\,4\}\s\([kM]\|\)B,XXX xB,g
 		s,in\s[[:digit:]]\+\([s]\),XXX\1,g
 	}
 

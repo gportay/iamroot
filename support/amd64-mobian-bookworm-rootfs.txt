@@ -6,7 +6,7 @@ I: chroot architecture amd64 is equal to the host's architecture
 I: finding correct signed-by value...
 I: automatically chosen format: directory
 I: running --setup-hook directly: /usr/share/mmdebstrap/hooks/maybe-merged-usr/setup00.sh $ROOT/amd64-mobian-bookworm-rootfs
-Fetched XXX kB XXXs (XXX kB/s)
+Fetched XXX xB XXXs (XXX xB/s)
 Reading package lists...
 package usr-is-merged found -- running merged-usr setup hook
 dpkg-deb: building package 'usr-is-merged' in '$ROOT/amd64-mobian-bookworm-rootfs/tmp/tmp.XXXXXXXXXX/usr-is-merged.deb'.
@@ -47,8 +47,8 @@ The following NEW packages will be installed:
   login mawk ncurses-base ncurses-bin perl-base sed sysvinit-utils tar
   util-linux util-linux-extra zlib1g
 XXX upgraded, XXX newly installed, XXX to remove and XXX not upgraded.
-Need to get XXX.X MB of archives.
-After this operation, XXX.X MB of additional disk space will be used.
+Need to get XXX.X xB of archives.
+After this operation, XXX.X xB of additional disk space will be used.
 /usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/gcc-12-base.deb 
 /usr/bin/dpkg --status-fd XXX --no-triggers --configure gcc-12-base:amd64 
 /usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libc6.deb $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/libgcc-s1_12.2.0-14_amd64.deb 
@@ -168,7 +168,7 @@ After this operation, XXX.X MB of additional disk space will be used.
 /usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/sysvinit-utils.deb 
 /usr/bin/dpkg --status-fd XXX --no-triggers --configure sysvinit-utils:amd64 
 /usr/bin/dpkg --status-fd XXX --configure --pending 
-Fetched XXX MB XXXs (XXX kB/s)
+Fetched XXX xB XXXs (XXX xB/s)
 I: extracting archives...
 W: skipping bind-mounting ./dev/console
 W: skipping bind-mounting ./dev/full
@@ -767,12 +767,12 @@ Building dependency tree...
 The following packages will be upgraded:
   usr-is-merged
 XXX upgraded, XXX newly installed, XXX to remove and XXX not upgraded.
-Need to get XXX.X B of archives.
-After this operation, XXX.X kB of additional disk space will be used.
-Fetched XXX B XXXs (XXX kB/s)
+Need to get XXX.X xB of archives.
+After this operation, XXX.X xB of additional disk space will be used.
+Fetched XXX xB XXXs (XXX xB/s)
 Chrooting into $ROOT/amd64-mobian-bookworm-rootfs/
 debconf: delaying package configuration, since apt-utils is not installed
-Fetched XXX B XXXs (XXX kB/s)
+Fetched XXX xB XXXs (XXX xB/s)
 Chrooting into $ROOT/amd64-mobian-bookworm-rootfs/
 (Reading database ... (Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX files and directories currently installed.)
 Preparing to unpack .../usr-is-merged.deb ...
@@ -833,12 +833,12 @@ The following NEW packages will be installed:
   sensible-utils systemd systemd-sysv tasksel tasksel-data tzdata udev
   vim-common vim-tiny whiptail
 XXX upgraded, XXX newly installed, XXX to remove and XXX not upgraded.
-Need to get XXX.X MB of archives.
-After this operation, XXX.X MB of additional disk space will be used.
-Fetched XXX MB XXXs (XXX kB/s)
+Need to get XXX.X xB of archives.
+After this operation, XXX.X xB of additional disk space will be used.
+Fetched XXX xB XXXs (XXX xB/s)
 Chrooting into $ROOT/amd64-mobian-bookworm-rootfs/
 debconf: delaying package configuration, since apt-utils is not installed
-Fetched XXX MB XXXs (XXX kB/s)
+Fetched XXX xB XXXs (XXX xB/s)
 Chrooting into $ROOT/amd64-mobian-bookworm-rootfs/
 Selecting previously unselected package libcom-err2.
 (Reading database ... XXX files and directories currently installed.)

@@ -702,8 +702,12 @@ void-artwork: unpacking ...
 traceroute: unpacking ...
 traceroute: registered 'traceroute' alternatives group
 Creating 'traceroute' aCreating system directories/symlinks...
-Trigger register-shell: empty $register_shell!
-Trigger register-shell: empty $register_shell!
+Registered /usr/bin/sh into /etc/shells.
+Registered /usr/bin/dash into /etc/shells.
+Registered /bin/sh into /etc/shells.
+Registered /bin/dash into /etc/shells.
+Registered /usr/bin/bash into /etc/shells.
+Registered /bin/bash into /etc/shells.
 lternatives group symlink: traceroute -> /usr/bin/linux-traceroute
 Creating 'traceroute' alternatives group symlink: traceroute.8 -> /usr/share/man/man8/linux-traceroute.8
 ethtool: unpacking ...
@@ -806,9 +810,13 @@ sqlite: installed successfully.
 liblastlog2: configuring ...
 liblastlog2: installed successfully.
 pam-libs: configuring ...
-pam-libs: installed successfuRegenerating man db...
+pam-libs: installed successfuCreated _uuidd system group.
+Created _uuidd system user.
+Regenerating man db...
 realloc(): invalid pointer
 Aborted (core dumped)
+Created _dhcpcd system group.
+Created _dhcpcd system user.
 lly.
 eudev-libudev: configuring ...
 eudev-libudev: installed successfully.

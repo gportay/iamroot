@@ -159,6 +159,7 @@ extern char **__environ;
 #define IAMROOT_EXTATTR_GID  IAMROOT_EXTATTR_PREFIX "gid"
 #endif
 
+char **_resetenv(char **);
 char *_getenv(const char *);
 int _clearenv();
 int _putenv(char *);

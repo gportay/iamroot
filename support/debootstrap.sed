@@ -85,6 +85,16 @@
 	# amd64: ok
 	/^[[:lower:][:digit:]]\+: ok$/d
 
+	# Creating SSH2 RSA key; this may take some time ...
+	# 2048 SHA256:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX root@XXX (RSA)
+	# Creating SSH2 ECDSA key; this may take some time ...
+	# 256 SHA256:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX root@XXX (ECDSA)
+	# Creating SSH2 ED25519 key; this may take some time ...
+	# 256 SHA256:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX root@XXX (ED25519)
+	/^\(2048\|256\) SHA256/ {
+		s,SHA256:.\{43\,43\} \(.\+\)@.\+ (\(.\+\),SHA256:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX \1@XXX (\2),
+	}
+
         /^\(Warning\|Debug\): /,/^$/ {
 		# rm -f /tmp/tmp.XXXXXXXXXX
 		s,/tmp\.[[:alnum:]]\{10\,10\},/tmp.XXXXXXXXXX,g

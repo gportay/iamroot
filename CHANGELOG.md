@@ -35,6 +35,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the detection of the PowerPC64{,le} [glibc]'s dynamic loader
 - Fix the corrupted setting of the environnement variable `IAMROOT_LIB` if the
   value comes from the environnement
+- Fix the loss for environment if exec'ing from a shell using a local copy for
+  envp instead of environ(7)
 
 ## [v22] - 2024-06-04
 

@@ -70,10 +70,21 @@ int execveat(int dfd, const char *path, char * const argv[],
 	off_t off = 0;
 	ssize_t siz;
 
+	/*
+	 * The Debian Almquist shell does not use the environment functions
+	 * getenv(), setenv(), putenv(), unsetenv() or clearenv().
+	 *
+	 * Instead, it implements its own set of variable functions to manage
+	 * them locally. It saves the environment using environ(7) at init, and
+	 * it passes a local copy of the exported variables to execve(2) via
+	 * envp at exec.
+	 */
 	if (__note_if_envp_is_not_environ(envp)) {
 		__info_execve(argv, envp);
 		__debug_execve(argv, __environ);
 	}
+	if (envp && envp != __environ)
+		envp = _resetenv((char **)envp);
 
 	/* Run exec.sh script */
 	if (__exec_ignored(path))

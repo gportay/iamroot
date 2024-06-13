@@ -452,6 +452,8 @@ useradd: Warning: missing or non-executable shell '/bin/sync'
   Running scriptlet: glibc XXX/XXX
   Installing       : glibc XXX/XXX
   Running scriptlet: glibc XXX/XXX
+warning: runaway fork() in Lua script
+
   Installing       : ncurses-libs XXX/XXX
   Installing       : bash XXX/XXX
   Running scriptlet: bash XXX/XXX
@@ -833,6 +835,8 @@ Created symlink /etc/systemd/system/timers.target.wants/unbound-anchor.timer →
   Installing       : udisks2 XXX/XXX
   Running scriptlet: udisks2 XXX/XXX
 Created symlink /etc/systemd/system/graphical.target.wants/udisks2.service → /usr/lib/systemd/system/udisks2.service.
+Running in chroot, ignoring request.
+Running in chroot, ignoring request.
 
   Installing       : curl XXX/XXX
   Running scriptlet: rpm XXX/XXX
@@ -899,6 +903,8 @@ Created symlink /etc/systemd/system/sockets.target.wants/sssd-kcm.socket → /us
   Running scriptlet: NetworkManager XXX/XXX
   Installing       : NetworkManager XXX/XXX
   Running scriptlet: NetworkManager XXX/XXX
+Running in chroot, ignoring request.
+Running in chroot, ignoring request.
 Created symlink /etc/systemd/system/multi-user.target.wants/NetworkManager.service → /usr/lib/systemd/system/NetworkManager.service.
 Created symlink /etc/systemd/system/dbus-org.freedesktop.nm-dispatcher.service → /usr/lib/systemd/system/NetworkManager-dispatcher.service.
 Created symlink /etc/systemd/system/network-online.target.wants/NetworkManager-wait-online.service → /usr/lib/systemd/system/NetworkManager-wait-online.service.
@@ -922,6 +928,8 @@ Created symlink /etc/systemd/system/multi-user.target.wants/sshd.service → /us
   Installing       : rootfiles XXX/XXX
   Running scriptlet: filesystem XXX/XXX
   Running scriptlet: grub2-common XXX/XXX
+/var/tmp/rpm-tmp.XXXXXX: line X: /bin/mountpoint: cannot execute: required file not found
+
   Running scriptlet: crypto-policies-scripts XXX/XXX
   Running scriptlet: ca-certificates XXX/XXX
   Running scriptlet: authselect-libs XXX/XXX
@@ -931,9 +939,32 @@ Created symlink /etc/systemd/system/multi-user.target.wants/sshd.service → /us
   Running scriptlet: nss XXX/XXX
   Running scriptlet: rpm XXX/XXX
   Running scriptlet: selinux-policy-targeted XXX/XXX
+mkdir: cannot create directory '/run/selinux-policy': Permission denied
+
   Running scriptlet: sssd-common XXX/XXX
+Running in chroot, ignoring command 'set-property'
+
   Running scriptlet: firewalld XXX/XXX
   Running scriptlet: rootfiles XXX/XXX
+warning: runaway fork() in Lua script
+
+Failed to create directory or subvolume "/run/setrans": Permission denied
+Failed to create directory or subvolume "/run/mdadm": Permission denied
+Failed to create directory or subvolume "/run/console": Permission denied
+Failed to create directory or subvolume "/run/sepermit": Permission denied
+Failed to create file /run/motd: Permission denied
+Failed to create directory or subvolume "/run/motd.d": Permission denied
+Failed to create directory or subvolume "/run/systemd/netif/lldp": Permission denied
+Setting access ACL "u::rwx,g::r-x,g:adm:r-x,g:wheel:r-x,m::r-x,o::r-x" on /run/log/journal failed: Permission denied
+Setting default ACL "u::rwx,g::rwx,g:tss:rwx,m::rwx,o::r-x" on /run/tpm2-tss/eventlog failed: Permission denied
+
+Running in chroot, ignoring command 'daemon-reload'
+Running in chroot, ignoring command 'reload-or-restart'
+
+Running in chroot, ignoring command 'list-units'
+
+Running in chroot, ignoring request.
+
 
 Installed:
   ModemManager-glib

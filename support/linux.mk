@@ -166,13 +166,7 @@ endef
 define debootstrap-rootfs
 .PRECIOUS: $(1)-$(2)-$(3)-rootfs/bin/sh
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: IDOFLAGS += --multiarch
-# chfn: PAM: Critical error - immediate abort
-# adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^/dev/(null|zero|full|random|urandom|tty|console|pts|shm|ptmx)|^$(CURDIR)/.*\.gcda
-# debconf: PERL_DL_NONLAZY is not set, if debconf is running from a preinst script, this is not safe
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: IDOFLAGS += --preserve-env=PERL_DL_NONLAZY
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export PERL_DL_NONLAZY = 1
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/debian
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export DEBOOTSTRAP_SCRIPT ?= $(3)
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export DEBOOTSTRAPFLAGS ?=
@@ -198,13 +192,7 @@ endef
 define mmdebstrap-rootfs
 .PRECIOUS: $(1)-$(2)-$(3)-rootfs/bin/sh
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: IDOFLAGS += --multiarch
-# chfn: PAM: Critical error - immediate abort
-# adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^/dev/(null|zero|full|random|urandom|tty|console|pts|shm|ptmx)|^$(CURDIR)/.*\.gcda
-# debconf: PERL_DL_NONLAZY is not set, if debconf is running from a preinst script, this is not safe
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: IDOFLAGS += --preserve-env=PERL_DL_NONLAZY
-$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export PERL_DL_NONLAZY = 1
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/sh: export MMDEBSTRAPFLAGS ?=
 
 $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/bash,mmdebstrap --verbose --architectures=$(1) $$(MMDEBSTRAPFLAGS) $(1)-$(2)-$(3)-rootfs <support/$(2)-$(3)-sources.list))
@@ -423,7 +411,6 @@ $(1)-$(2)-postrootfs: | x86_64/libiamroot-linux-x86-64.so.2
 		    -e '/^#T0:/s,^#,,g' \
 		    -i $(1)-$(2)-rootfs/etc/inittab; \
 	fi
-	ido $$(IDOFLAGS) chroot $(1)-$(2)-rootfs pam-auth-update
 endef
 
 define dnf-postrootfs
@@ -894,7 +881,6 @@ $(eval $(call debootstrap-rootfs,amd64,debian,bullseye))
 $(eval $(call debootstrap-rootfs,amd64,debian,bookworm))
 $(eval $(call debootstrap-rootfs,amd64,debian,trixie))
 $(eval $(call debootstrap-rootfs,amd64,debian,sid))
-amd64-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 amd64-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 
 i686-rootfs: i386-debian-rootfs
@@ -911,7 +897,6 @@ $(eval $(call debootstrap-rootfs,i386,debian,bullseye))
 $(eval $(call debootstrap-rootfs,i386,debian,bookworm))
 $(eval $(call debootstrap-rootfs,i386,debian,trixie))
 $(eval $(call debootstrap-rootfs,i386,debian,sid))
-i386-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 i386-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 
 .PHONY: amd64-ubuntu-rootfs
@@ -955,46 +940,61 @@ $(eval $(call debootstrap-rootfs,amd64,ubuntu,kinetic))
 $(eval $(call debootstrap-rootfs,amd64,ubuntu,lunar))
 $(eval $(call debootstrap-rootfs,amd64,ubuntu,mantic))
 $(eval $(call debootstrap-rootfs,amd64,ubuntu,noble))
+# Setting up makedev ...
+# mknod: 'null-': Permission denied
+# makedev null c 1 3 root root 0666: failed
+# mknod: 'zero-': Permission denied
+# makedev zero c 1 5 root root 0666: failed
+# mknod: 'full-': Permission denied
+# makedev full c 1 7 root root 0666: failed
+# mknod: 'random-': Permission denied
+# makedev random c 1 8 root root 0666: failed
+# mknod: 'urandom-': Permission denied
+# makedev urandom c 1 9 root root 0666: failed
+# mknod: 'tty-': Permission denied
+# makedev tty c 5 0 root tty 0666: failed
+# mknod: 'tty0-': Permission denied
+# makedev tty0 c 4 0 root tty 0600: failed
+# mknod: 'console-': Permission denied
+# makedev console c 5 1 root tty 0600: failed
 # chmod: cannot access '/dev/tty[0-9]*': No such file or directory
 # dpkg: error processing package makedev (--configure):
 #  subprocess installed post-installation script returned error exit status 1
-amd64-ubuntu-trusty-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|/var/lib/dpkg/info/(initscripts|initramfs-tools|makedev).postinst
-amd64-ubuntu-xenial-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/(initramfs-tools|makedev).postinst
-amd64-ubuntu-bionic-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/initramfs-tools.postinst
-# Processing triggers for libc-bin ...
-# dpkg: cycle found while processing triggers:
-#  chain of packages whose triggers are or may be responsible:
-#   libc-bin -> libc-bin
-#  packages' pending triggers which are or may be unresolvable:
-#   libc-bin: ldconfig
-# dpkg: error processing package libc-bin (--configure):
-#  triggers looping, abandoned
-# Errors were encountered while processing:
-#  libc-bin
-amd64-ubuntu-trusty-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
-amd64-ubuntu-trusty-rootfs/bin/sh: IDOFLAGS += --preserve-env=LDCONFIG_NOTRIGGER
-amd64-ubuntu-xenial-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
-amd64-ubuntu-xenial-rootfs/bin/sh: IDOFLAGS += --preserve-env=LDCONFIG_NOTRIGGER
-amd64-ubuntu-bionic-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
-amd64-ubuntu-bionic-rootfs/bin/sh: IDOFLAGS += --preserve-env=LDCONFIG_NOTRIGGER
-amd64-ubuntu-focal-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
-amd64-ubuntu-focal-rootfs/bin/sh: IDOFLAGS += --preserve-env=LDCONFIG_NOTRIGGER
-amd64-ubuntu-groovy-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
-amd64-ubuntu-groovy-rootfs/bin/sh: IDOFLAGS += --preserve-env=LDCONFIG_NOTRIGGER
-amd64-ubuntu-hirsute-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
-amd64-ubuntu-hirsute-rootfs/bin/sh: IDOFLAGS += --preserve-env=LDCONFIG_NOTRIGGER
-amd64-ubuntu-impish-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
-amd64-ubuntu-impish-rootfs/bin/sh: IDOFLAGS += --preserve-env=LDCONFIG_NOTRIGGER
-amd64-ubuntu-jammy-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
-amd64-ubuntu-jammy-rootfs/bin/sh: IDOFLAGS += --preserve-env=LDCONFIG_NOTRIGGER
-amd64-ubuntu-kinetic-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
-amd64-ubuntu-kinetic-rootfs/bin/sh: IDOFLAGS += --preserve-env=LDCONFIG_NOTRIGGER
-amd64-ubuntu-lunar-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
-amd64-ubuntu-lunar-rootfs/bin/sh: IDOFLAGS += --preserve-env=LDCONFIG_NOTRIGGER
-amd64-ubuntu-mantic-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
-amd64-ubuntu-mantic-rootfs/bin/sh: IDOFLAGS += --preserve-env=LDCONFIG_NOTRIGGER
-amd64-ubuntu-noble-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
-amd64-ubuntu-noble-rootfs/bin/sh: IDOFLAGS += --preserve-env=LDCONFIG_NOTRIGGER
+# Setting up initscripts ...
+# rm: cannot remove '/dev/shm': Permission denied
+# dpkg: error processing package initscripts (--configure):
+#  subprocess installed post-installation script returned error exit status 1
+amd64-ubuntu-trusty-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|/var/lib/dpkg/info/(initscripts|makedev).postinst
+# Setting up makedev ...
+# mknod: null-: Permission denied
+# makedev null c 1 3 root root 0666: failed
+# mknod: zero-: Permission denied
+# makedev zero c 1 5 root root 0666: failed
+# mknod: full-: Permission denied
+# makedev full c 1 7 root root 0666: failed
+# mknod: random-: Permission denied
+# makedev random c 1 8 root root 0666: failed
+# mknod: urandom-: Permission denied
+# makedev urandom c 1 9 root root 0666: failed
+# mknod: tty-: Permission denied
+# makedev tty c 5 0 root tty 0666: failed
+# mknod: tty0-: Permission denied
+# makedev tty0 c 4 0 root tty 0600: failed
+# mknod: console-: Permission denied
+# makedev console c 5 1 root tty 0600: failed
+# chmod: cannot access '/dev/tty[0-9]*': No such file or directory
+# dpkg: error processing package makedev (--configure):
+#  subprocess installed post-installation script returned error exit status 1
+# chfn: PAM: System error
+# adduser: `/usr/bin/chfn -f systemd Time Synchronization systemd-timesync' returned error code 1. Exiting.
+# dpkg: error processing package systemd (--configure):
+#  subprocess installed post-installation script returned error exit status 1
+amd64-ubuntu-xenial-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|chfn|/var/lib/dpkg/info/makedev.postinst
+# chfn: PAM: System error
+# adduser: `/usr/bin/chfn -f systemd Network Management systemd-network' returned error code 1. Exiting.
+# dpkg: error processing package systemd (--install):
+#  installed systemd package post-installation script subprocess returned error exit status 1
+amd64-ubuntu-bionic-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|chfn
 
 extra-rootfs: amd64-devuan-rootfs
 
@@ -1024,18 +1024,6 @@ $(eval $(call debootstrap-rootfs,amd64,devuan,beowulf))
 $(eval $(call debootstrap-rootfs,amd64,devuan,chimaera))
 $(eval $(call debootstrap-rootfs,amd64,devuan,daedalus))
 $(eval $(call debootstrap-rootfs,amd64,devuan,excalibur))
-# Processing triggers for libc-bin ...
-# dpkg: cycle found while processing triggers:
-#  chain of packages whose triggers are or may be responsible:
-#   libc-bin -> libc-bin
-#  packages' pending triggers which are or may be unresolvable:
-#   libc-bin: ldconfig
-# dpkg: error processing package libc-bin (--configure):
-#  triggers looping, abandoned
-# Errors were encountered while processing:
-#  libc-bin
-amd64-devuan-jessie-rootfs/bin/sh: export LDCONFIG_NOTRIGGER = y
-amd64-devuan-jessie-rootfs/bin/sh: IDOFLAGS += --preserve-env=LDCONFIG_NOTRIGGER
 
 legacy-support: support/amd64-devuan-jessie-rootfs.txt
 legacy-support: support/amd64-devuan-ascii-rootfs.txt
@@ -1135,9 +1123,6 @@ install-support-x86_64-fedora:
 endif
 
 ifneq ($(shell command -v zypper 2>/dev/null),)
-# Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
-x86_64-opensuse-leap-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_WARNING_IGNORE = /usr/lib64/.libgcrypt.so.20.fips
-
 extra-rootfs: opensuse-rootfs
 
 .PHONY: opensuse-rootfs
@@ -1450,7 +1435,6 @@ $(eval $(call debootstrap-rootfs,armel,debian,bullseye))
 $(eval $(call debootstrap-rootfs,armel,debian,bookworm))
 $(eval $(call debootstrap-rootfs,armel,debian,trixie))
 $(eval $(call debootstrap-rootfs,armel,debian,sid))
-armel-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 armel-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 
@@ -1469,7 +1453,6 @@ $(eval $(call debootstrap-rootfs,armhf,debian,bullseye))
 $(eval $(call debootstrap-rootfs,armhf,debian,bookworm))
 $(eval $(call debootstrap-rootfs,armhf,debian,trixie))
 $(eval $(call debootstrap-rootfs,armhf,debian,sid))
-armhf-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 armhf-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 
@@ -1488,7 +1471,6 @@ $(eval $(call debootstrap-rootfs,arm64,debian,bullseye))
 $(eval $(call debootstrap-rootfs,arm64,debian,bookworm))
 $(eval $(call debootstrap-rootfs,arm64,debian,trixie))
 $(eval $(call debootstrap-rootfs,arm64,debian,sid))
-arm64-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 arm64-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 
@@ -1507,7 +1489,6 @@ $(eval $(call debootstrap-rootfs,riscv64,debian,bullseye))
 $(eval $(call debootstrap-rootfs,riscv64,debian,bookworm))
 $(eval $(call debootstrap-rootfs,riscv64,debian,trixie))
 $(eval $(call debootstrap-rootfs,riscv64,debian,sid))
-riscv64-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 riscv64-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 
@@ -1522,7 +1503,6 @@ mipsel-debian-rootfs: mipsel-debian-bookworm-rootfs
 $(eval $(call debootstrap-rootfs,mipsel,debian,buster))
 $(eval $(call debootstrap-rootfs,mipsel,debian,bullseye))
 $(eval $(call debootstrap-rootfs,mipsel,debian,bookworm))
-mipsel-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 mipsel-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 
@@ -1541,7 +1521,6 @@ $(eval $(call debootstrap-rootfs,mips64el,debian,bullseye))
 $(eval $(call debootstrap-rootfs,mips64el,debian,bookworm))
 $(eval $(call debootstrap-rootfs,mips64el,debian,trixie))
 $(eval $(call debootstrap-rootfs,mips64el,debian,sid))
-mips64el-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 mips64el-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 
 install-support-mips64le: install-support-mips64le-defconfig
@@ -1566,7 +1545,6 @@ $(eval $(call debootstrap-rootfs,ppc64el,debian,bullseye))
 $(eval $(call debootstrap-rootfs,ppc64el,debian,bookworm))
 $(eval $(call debootstrap-rootfs,ppc64el,debian,trixie))
 $(eval $(call debootstrap-rootfs,ppc64el,debian,sid))
-ppc64el-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 ppc64el-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 
@@ -1585,7 +1563,6 @@ $(eval $(call debootstrap-rootfs,s390x,debian,bullseye))
 $(eval $(call debootstrap-rootfs,s390x,debian,bookworm))
 $(eval $(call debootstrap-rootfs,s390x,debian,trixie))
 $(eval $(call debootstrap-rootfs,s390x,debian,sid))
-s390x-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 s390x-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 endif

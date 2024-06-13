@@ -95,7 +95,7 @@ mountpoint)
 	notice "running" "$inchroot_path" "$@"
 	exec "$inchroot_path" "$@"
 	;;
-build-locale-archive|chfn|chkstat|pam-auth-update|*.postinst)
+build-locale-archive|chfn|chkstat|*.postinst)
 	fixme "not-running" "$argv0" "$@"
 	exit 0
 	;;

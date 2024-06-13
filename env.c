@@ -262,3 +262,25 @@ hidden int unsetenv(const char *name)
 #undef putenv
 #undef setenv
 #undef unsetenv
+
+hidden char **_resetenv(char **envp)
+{
+	char **env;
+
+	if (!__environ)
+		goto envp;
+
+	for (env = __environ; *env; env++)
+		if (!__strneq(*env, "IAMROOT"))
+			__env_rm_add(*env, NULL);
+
+envp:
+	if (!envp)
+		goto exit;
+
+	for (env = envp; *env; env++)
+		_putenv(*env);
+
+exit:
+	return __environ;
+}

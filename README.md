@@ -92,8 +92,8 @@ The table below lists the distributions and its tool that work with.
 | [alpine-make-rootfs] | [Alpine Linux]                                                                                |
 | [dnf(8)]             | [Fedora]                                                                                      |
 | [zypper(8)]          | [openSUSE]                                                                                    |
-| [debootstrap(8)]     | [Debian]\*, [Ubuntu]\*, [Devuan]\*                                                            |
-| [mmdebstrap(1)]      | [Mobian]\*                                                                                    |
+| [debootstrap(8)]     | [Debian], [Ubuntu]\*, [Devuan]                                                                |
+| [mmdebstrap(1)]      | [Mobian]                                                                                      |
 | [xbps-install(1)]    | [Void Linux]                                                                                  |
 
 \*: Works with hacks.

@@ -23,6 +23,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `freopen()`, `open()` and `openat()`,
 - Fix the output of the fd path the functions `close()`, `dup()`, `dup2()` and
   `dup3()`
+- Fix the loss for environment if exec'ing from a shell using a local copy for
+  envp instead of environ(7)
 
 ## [v22] - 2024-06-04
 

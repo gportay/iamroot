@@ -165,6 +165,7 @@ extern char **__environ;
 #define IAMROOT_EXTATTR_PATH_RESOLUTION IAMROOT_EXTATTR_PREFIX "path-resolution"
 #endif
 
+char **_resetenv(char **);
 char *_getenv(const char *);
 int _clearenv();
 int _putenv(char *);

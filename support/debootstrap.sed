@@ -84,6 +84,17 @@
 
 	# amd64: ok
 	/^[[:lower:][:digit:]]\+: ok$/d
+
+        /^\(Warning\|Debug\): /,/^$/ {
+		# rm -f /tmp/tmp.XXXXXXXXXX
+		s,/tmp\.[[:alnum:]]\{10\,10\},/tmp.XXXXXXXXXX,g
+
+		# Day Mon dd hh:mm:ss TZ YYYY
+		s,[[:alpha:]]\{3\,3\}[[:blank:]][[:alpha:]]\{3\,3\}[[:blank:]][[:digit:]]\{2\,2\}[[:blank:]][[:digit:]]\{2\,2\}:[[:digit:]]\{2\,2\}:[[:digit:]]\{2\,2\}[[:blank:]][[:alnum:]]\+[[:blank:]][[:digit:]]\{4\,4\},Day Mon dd hh:mm:ss TZ YYYY,g
+
+		# (...) DPKG_RUNNING_VERSION=X (...)
+		s,DPKG_RUNNING_VERSION=[[:alnum:].]\+,DPKG_RUNNING_VERSION=X,g
+	}
 }
 
 # Creating group 'bin' with GID XXX.

@@ -1,6 +1,6 @@
 #!/bin/sed -f
 #
-# Copyright 2022 Gaël PORTAY
+# Copyright 2022,2024 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -26,4 +26,9 @@
                 s,[[:digit:].]\+,X,g
                 s,.iB,XiB,
         }
+
+	# Warning: running PATH=/usr/sbin:/usr/bin:/sbin:/bin post-install 1.35.2-r2
+        /^\(Warning\|Debug\): /,/^$/ {
+		s,\([[:alnum:]._+-]\+\)-\(r[[:digit:]]\+\),X,
+	}
 }

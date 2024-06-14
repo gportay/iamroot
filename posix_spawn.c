@@ -84,6 +84,11 @@ int posix_spawn(pid_t *pid, const char *path,
 	off_t off = 0;
 	ssize_t siz;
 
+	if (__warn_if_envp_is_not_environ(envp)) {
+		__warning_execve(argv, envp);
+		__warning_execve(argv, __environ);
+	}
+
 	/* Run exec.sh script */
 	if (__exec_ignored(path))
 		goto exec_sh;

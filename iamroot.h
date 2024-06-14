@@ -263,6 +263,14 @@ void __verbose_execve(int, char * const[], char * const[]);
 	   errno = errno_save; \
 	   })
 
+#define __warn_if_envp_is_not_environ(envp) \
+	({ if (!(envp)) \
+	     __warning("%s: envp is %p!\n", __func__, (envp)); \
+	   if (!(envp) && (envp) != (__environ)) \
+	     __warning("%s: envp and environ differs!\n", __func__); \
+	   ((envp) != (__environ)); \
+	   })
+
 #define __warn_and_set_user_mode(path, mode, user_mode) \
 	({ if (((mode) & (user_mode)) != (user_mode)) { \
 	     __info("%s: %s: Insuffisant user mode 0%03o!\n", __func__, (path), (mode)); \

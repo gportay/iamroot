@@ -2,11 +2,6 @@
 ==> Installing packages to x86_64-manjaro-stable-rootfs
 :: Synchronizing package databases...
 resolving dependencies...
-:: There are 2 providers available for pacman-mirrorlist:
-:: Repository core
-   1) pacman-mirrors  2) pacman-mirrors-dev
-
-Enter a number (default=1): 
 :: There are 2 providers available for dbus-units:
 :: Repository core
    1) dbus-broker-units  2) dbus-daemon-units

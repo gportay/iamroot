@@ -1300,7 +1300,7 @@ hidden int __verbosef(int lvl, const char *func, const char *fmt, ...)
 }
 
 #if !defined(NVERBOSE)
-hidden void __verbose_exec(char * const argv[], char * const envp[])
+hidden void __verbose_execve(char * const argv[], char * const envp[])
 {
 	int color, fd, debug;
 	char * const *p;

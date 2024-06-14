@@ -239,13 +239,13 @@ int __verbosef(int, const char *, const char *, ...) __attribute__((format(print
 #define __info(fmt, ...) __verbosef(2, __func__, fmt, __VA_ARGS__)
 #define __notice(fmt, ...) __verbosef(1, __func__, fmt, __VA_ARGS__)
 #define __warning(fmt, ...) __verbosef(0, __func__, fmt, __VA_ARGS__)
-void __verbose_exec(char * const[], char * const[]);
+void __verbose_execve(char * const[], char * const[]);
 #else
 #define __debug(fmt, ...) {}
 #define __info(fmt, ...) {}
 #define __notice(fmt, ...) {}
 #define __warning(fmt, ...) {}
-#define __verbose_exec(fmt, ...) {}
+#define __verbose_execve(argv, envp) {}
 #endif
 
 #define __note_if_not_preloading_libiamroot_and_ensure_preloading() \

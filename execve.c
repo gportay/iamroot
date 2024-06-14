@@ -190,7 +190,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	if (!__inchroot()) {
 		__note_if_not_preloading_libiamroot_and_ensure_preloading();
 		__execfd();
-		__verbose_exec(argv, __environ);
+		__verbose_execve(argv, __environ);
 		return next_execve(path, argv, __environ);
 	}
 
@@ -235,7 +235,7 @@ loader:
 	/* ... or run it directly! */
 	if (ret == 1) {
 		__execfd();
-		__verbose_exec(argv, envp);
+		__verbose_execve(argv, envp);
 		return next_execve(buf, argv, envp);
 	}
 
@@ -267,7 +267,7 @@ loader:
 		*narg++ = NULL; /* ensure NULL-terminated */
 
 		__execfd();
-		__verbose_exec(nargv, __environ);
+		__verbose_execve(nargv, __environ);
 		return next_execve(*nargv, nargv, __environ);
 	}
 
@@ -300,7 +300,7 @@ exec_sh:
 		*narg++ = NULL; /* ensure NULL-terminated */
 
 		__execfd();
-		__verbose_exec(nargv, __environ);
+		__verbose_execve(nargv, __environ);
 		return next_execve(*nargv, nargv, __environ);
 	}
 

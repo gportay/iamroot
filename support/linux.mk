@@ -867,7 +867,7 @@ $(eval $(call debootstrap-rootfs,amd64,debian,bullseye))
 $(eval $(call debootstrap-rootfs,amd64,debian,bookworm))
 $(eval $(call debootstrap-rootfs,amd64,debian,trixie))
 $(eval $(call debootstrap-rootfs,amd64,debian,sid))
-amd64-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+amd64-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 amd64-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 
 i686-rootfs: i386-debian-rootfs
@@ -884,7 +884,7 @@ $(eval $(call debootstrap-rootfs,i386,debian,bullseye))
 $(eval $(call debootstrap-rootfs,i386,debian,bookworm))
 $(eval $(call debootstrap-rootfs,i386,debian,trixie))
 $(eval $(call debootstrap-rootfs,i386,debian,sid))
-i386-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+i386-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 i386-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 
 .PHONY: amd64-ubuntu-rootfs
@@ -1385,7 +1385,7 @@ $(eval $(call debootstrap-rootfs,armel,debian,bullseye))
 $(eval $(call debootstrap-rootfs,armel,debian,bookworm))
 $(eval $(call debootstrap-rootfs,armel,debian,trixie))
 $(eval $(call debootstrap-rootfs,armel,debian,sid))
-armel-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+armel-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 armel-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 
@@ -1404,7 +1404,7 @@ $(eval $(call debootstrap-rootfs,armhf,debian,bullseye))
 $(eval $(call debootstrap-rootfs,armhf,debian,bookworm))
 $(eval $(call debootstrap-rootfs,armhf,debian,trixie))
 $(eval $(call debootstrap-rootfs,armhf,debian,sid))
-armhf-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+armhf-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 armhf-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 
@@ -1423,7 +1423,7 @@ $(eval $(call debootstrap-rootfs,arm64,debian,bullseye))
 $(eval $(call debootstrap-rootfs,arm64,debian,bookworm))
 $(eval $(call debootstrap-rootfs,arm64,debian,trixie))
 $(eval $(call debootstrap-rootfs,arm64,debian,sid))
-arm64-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+arm64-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 arm64-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 
@@ -1442,7 +1442,7 @@ $(eval $(call debootstrap-rootfs,riscv64,debian,bullseye))
 $(eval $(call debootstrap-rootfs,riscv64,debian,bookworm))
 $(eval $(call debootstrap-rootfs,riscv64,debian,trixie))
 $(eval $(call debootstrap-rootfs,riscv64,debian,sid))
-riscv64-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+riscv64-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 riscv64-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 
@@ -1457,7 +1457,7 @@ mipsel-debian-rootfs: mipsel-debian-bookworm-rootfs
 $(eval $(call debootstrap-rootfs,mipsel,debian,buster))
 $(eval $(call debootstrap-rootfs,mipsel,debian,bullseye))
 $(eval $(call debootstrap-rootfs,mipsel,debian,bookworm))
-mipsel-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+mipsel-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 mipsel-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 
@@ -1476,7 +1476,7 @@ $(eval $(call debootstrap-rootfs,mips64el,debian,bullseye))
 $(eval $(call debootstrap-rootfs,mips64el,debian,bookworm))
 $(eval $(call debootstrap-rootfs,mips64el,debian,trixie))
 $(eval $(call debootstrap-rootfs,mips64el,debian,sid))
-mips64el-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+mips64el-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 mips64el-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 
 install-support-mips64le: install-support-mips64le-pacman
@@ -1501,7 +1501,7 @@ $(eval $(call debootstrap-rootfs,ppc64el,debian,bullseye))
 $(eval $(call debootstrap-rootfs,ppc64el,debian,bookworm))
 $(eval $(call debootstrap-rootfs,ppc64el,debian,trixie))
 $(eval $(call debootstrap-rootfs,ppc64el,debian,sid))
-ppc64el-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+ppc64el-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 ppc64el-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 
@@ -1520,7 +1520,7 @@ $(eval $(call debootstrap-rootfs,s390x,debian,bullseye))
 $(eval $(call debootstrap-rootfs,s390x,debian,bookworm))
 $(eval $(call debootstrap-rootfs,s390x,debian,trixie))
 $(eval $(call debootstrap-rootfs,s390x,debian,sid))
-s390x-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = ldd|mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
+s390x-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 s390x-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 endif

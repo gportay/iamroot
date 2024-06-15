@@ -1285,6 +1285,7 @@ static int __vdverbosef(int fd, int lvl, const char *func, const char *fmt,
 		dprintf(fd, "\033[0m");
 
 	ret += vdprintf(fd, fmt, ap);
+	fsync(fd);
 
 exit:
 	return __set_errno(errno_save, ret);
@@ -1346,6 +1347,7 @@ hidden void __verbose_execve(int lvl, char * const argv[], char * const envp[])
 	}
 
 	dprintf(fd, "\n");
+	fsync(fd);
 
 exit:
 	errno = errno_save;

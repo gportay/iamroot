@@ -1261,16 +1261,17 @@ static int __ignore(const char *func)
 static int __vdverbosef(int fd, int lvl, const char *func, const char *fmt,
 			va_list ap)
 {
+	const int errno_save = errno;
+	int ret = 0;
 	int debug;
 	int color;
-	int ret;
 
 	if (lvl != 0 && __ignore(func))
-		return 0;
+		goto exit;
 
 	debug = __getdebug();
 	if (debug < lvl)
-		return 0;
+		goto exit;
 
 	color = __getcolor();
 	if (color) {
@@ -1286,7 +1287,9 @@ static int __vdverbosef(int fd, int lvl, const char *func, const char *fmt,
 		dprintf(fd, "\033[0m");
 
 	ret += vdprintf(fd, fmt, ap);
-	return ret;
+
+exit:
+	return __set_errno(errno_save, ret);
 }
 
 hidden int __verbosef(int lvl, const char *func, const char *fmt, ...)
@@ -1303,16 +1306,17 @@ hidden int __verbosef(int lvl, const char *func, const char *fmt, ...)
 #if !defined(NVERBOSE)
 hidden void __verbose_execve(int lvl, char * const argv[], char * const envp[])
 {
+	const int errno_save = errno;
 	int color, fd, debug;
 	char * const *p;
 
 	debug = __getdebug();
 	if (debug < lvl)
-		return;
+		goto exit;
 
 	fd = __getdebug_fd();
 	if (fd < 0)
-		return;
+		goto exit;
 
 	color = __getcolor();
 	if (color) {
@@ -1344,6 +1348,9 @@ hidden void __verbose_execve(int lvl, char * const argv[], char * const envp[])
 	}
 
 	dprintf(fd, "\n");
+
+exit:
+	errno = errno_save;
 }
 #endif
 

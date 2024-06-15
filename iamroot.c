@@ -1257,6 +1257,7 @@ static int __ignore(const char *func)
 
 	return !ret;
 }
+
 static int __vdverbosef(int fd, int lvl, const char *func, const char *fmt,
 			va_list ap)
 {

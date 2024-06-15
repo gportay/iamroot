@@ -1262,9 +1262,7 @@ static int __vdverbosef(int fd, int lvl, const char *func, const char *fmt,
 			va_list ap)
 {
 	const int errno_save = errno;
-	int ret = 0;
-	int debug;
-	int color;
+	int color, debug, ret = 0;
 
 	if (lvl != 0 && __ignore(func))
 		goto exit;
@@ -1307,7 +1305,7 @@ hidden int __verbosef(int lvl, const char *func, const char *fmt, ...)
 hidden void __verbose_execve(int lvl, char * const argv[], char * const envp[])
 {
 	const int errno_save = errno;
-	int color, fd, debug;
+	int color, debug, fd;
 	char * const *p;
 
 	debug = __getdebug();

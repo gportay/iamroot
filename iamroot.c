@@ -22,6 +22,7 @@
 #if !defined(JIM_REGEXP)
 #include <regex.h>
 #endif
+#include <pthread.h>
 
 #include "iamroot.h"
 
@@ -1258,17 +1259,23 @@ static int __ignore(const char *func)
 	return !ret;
 }
 
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
 static int __vdverbosef(int fd, int lvl, const char *func, const char *fmt,
 			va_list ap)
 {
+	int color, debug, err, ret = 0;
 	const int errno_save = errno;
-	int color, debug, ret = 0;
 
 	if (lvl != 0 && __ignore(func))
 		goto exit;
 
 	debug = __getdebug();
 	if (debug < lvl)
+		goto exit;
+
+	err = pthread_mutex_lock(&mutex);
+	if (err)
 		goto exit;
 
 	color = __getcolor();
@@ -1286,6 +1293,8 @@ static int __vdverbosef(int fd, int lvl, const char *func, const char *fmt,
 
 	ret += vdprintf(fd, fmt, ap);
 	fsync(fd);
+
+	pthread_mutex_unlock(&mutex);
 
 exit:
 	return __set_errno(errno_save, ret);
@@ -1306,7 +1315,7 @@ hidden int __verbosef(int lvl, const char *func, const char *fmt, ...)
 hidden void __verbose_execve(int lvl, char * const argv[], char * const envp[])
 {
 	const int errno_save = errno;
-	int color, debug, fd;
+	int color, debug, err, fd;
 	char * const *p;
 
 	debug = __getdebug();
@@ -1315,6 +1324,10 @@ hidden void __verbose_execve(int lvl, char * const argv[], char * const envp[])
 
 	fd = __getdebug_fd();
 	if (fd < 0)
+		goto exit;
+
+	err = pthread_mutex_lock(&mutex);
+	if (err)
 		goto exit;
 
 	color = __getcolor();
@@ -1348,6 +1361,8 @@ hidden void __verbose_execve(int lvl, char * const argv[], char * const envp[])
 
 	dprintf(fd, "\n");
 	fsync(fd);
+
+	pthread_mutex_unlock(&mutex);
 
 exit:
 	errno = errno_save;

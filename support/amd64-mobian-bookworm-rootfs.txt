@@ -6,7 +6,7 @@ I: chroot architecture amd64 is equal to the host's architecture
 I: finding correct signed-by value...
 I: automatically chosen format: directory
 I: running --setup-hook directly: /usr/share/mmdebstrap/hooks/maybe-merged-usr/setup00.sh $ROOT/amd64-mobian-bookworm-rootfs
-Fetched XXX xB XXXs (XXX xB/s)
+Fetched XXX xB in XXXs (XXX xB/s)
 Reading package lists...
 package usr-is-merged found -- running merged-usr setup hook
 dpkg-deb: building package 'usr-is-merged' in '$ROOT/amd64-mobian-bookworm-rootfs/tmp/tmp.XXXXXXXXXX/usr-is-merged.deb'.
@@ -168,7 +168,7 @@ After this operation, XXX.X xB of additional disk space will be used.
 /usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-bookworm-rootfs/var/cache/apt/archives/sysvinit-utils.deb 
 /usr/bin/dpkg --status-fd XXX --no-triggers --configure sysvinit-utils:amd64 
 /usr/bin/dpkg --status-fd XXX --configure --pending 
-Fetched XXX xB XXXs (XXX xB/s)
+Fetched XXX xB in XXXs (XXX xB/s)
 I: extracting archives...
 W: skipping bind-mounting ./dev/console
 W: skipping bind-mounting ./dev/full
@@ -769,10 +769,10 @@ The following packages will be upgraded:
 XXX upgraded, XXX newly installed, XXX to remove and XXX not upgraded.
 Need to get XXX.X xB of archives.
 After this operation, XXX.X xB of additional disk space will be used.
-Fetched XXX xB XXXs (XXX xB/s)
+Fetched XXX xB in XXXs (XXX xB/s)
 Chrooting into $ROOT/amd64-mobian-bookworm-rootfs/
 debconf: delaying package configuration, since apt-utils is not installed
-Fetched XXX xB XXXs (XXX xB/s)
+Fetched XXX xB in XXXs (XXX xB/s)
 Chrooting into $ROOT/amd64-mobian-bookworm-rootfs/
 (Reading database ... (Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX%(Reading database ... XXX files and directories currently installed.)
 Preparing to unpack .../usr-is-merged.deb ...
@@ -835,10 +835,10 @@ The following NEW packages will be installed:
 XXX upgraded, XXX newly installed, XXX to remove and XXX not upgraded.
 Need to get XXX.X xB of archives.
 After this operation, XXX.X xB of additional disk space will be used.
-Fetched XXX xB XXXs (XXX xB/s)
+Fetched XXX xB in XXXs (XXX xB/s)
 Chrooting into $ROOT/amd64-mobian-bookworm-rootfs/
 debconf: delaying package configuration, since apt-utils is not installed
-Fetched XXX xB XXXs (XXX xB/s)
+Fetched XXX xB in XXXs (XXX xB/s)
 Chrooting into $ROOT/amd64-mobian-bookworm-rootfs/
 Selecting previously unselected package libcom-err2.
 (Reading database ... XXX files and directories currently installed.)

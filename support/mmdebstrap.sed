@@ -28,10 +28,10 @@
 		s,/tmp\.[[:alnum:]]\{10\,10\},/tmp.XXXXXXXXXX,
 	}
 
-	# Fetched XXX xB in XXXs (XXX xB/s)
+	# Fetched XXX xB in XXXmin XXXs (XXX xB/s)
 	/^Fetched / {
 		s,[[:digit:].]\{3\,4\}\s\([kM]\|\)B,XXX xB,g
-		s,in\s[[:digit:]]\+\([s]\),in XXX\1,g
+		s,in\(\s[[:digit:]]\+\(min\|s\)\)\+,in XXXs,g
 	}
 
 	# Get:X http://deb.debian.org/debian bookworm InRelease [XXX kB]

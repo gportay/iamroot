@@ -605,12 +605,10 @@ Retrieving: ca-certificates (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB
 Retrieving: ca-certificates [done]
 (XXX/XXX) Installing: ca-certificates [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/ca-certificates: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-/sbin/update-ca-certificates: line X: /dev/fd/X: No such file or directory
 Retrieving: ca-certificates-mozilla (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: ca-certificates-mozilla [done]
 (XXX/XXX) Installing: ca-certificates-mozilla [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/ca-certificates-mozilla: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-/sbin/update-ca-certificates: line X: /dev/fd/X: No such file or directory
 Retrieving: patterns-base-minimal_base (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: patterns-base-minimal_base.rpm [done]
 (XXX/XXX) Installing: patterns-base-minimal_base [done]
@@ -967,8 +965,6 @@ Created symlink /etc/systemd/user/timers.target.wants/systemd-tmpfiles-clean.tim
 Created symlink /etc/systemd/user/basic.target.wants/systemd-tmpfiles-setup.service -> /usr/lib/systemd/user/systemd-tmpfiles-setup.service.
 %posttrans(rpm) script output:
 rmdir: failed to remove 'var/lib/rpm': Directory not empty
-%posttrans(ca-certificates-mozilla) script output:
-/usr/sbin/update-ca-certificates: line X: /dev/fd/X: No such file or directory
 %posttrans(pam-config) script output:
 *** load_config (common-account-pc, account, ...)
 **** Trying /etc/pam.d/common-account-pc...

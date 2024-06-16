@@ -513,19 +513,14 @@ Retrieving: info (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB
 Retrieving: info.rpm [done]
 (XXX/XXX) Installing: info [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/info.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-install-info: No such file or directory for /dev/null
 Retrieving: readline-doc (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: readline-doc [done]
 (XXX/XXX) Installing: readline-doc [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/readline-doc: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-install-info: No such file or directory for /dev/null
-install-info: No such file or directory for /dev/null
-install-info: No such file or directory for /dev/null
 Retrieving: bash-doc (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: bash-doc [done]
 (XXX/XXX) Installing: bash-doc [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/bash-doc: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-install-info: No such file or directory for /dev/null
 Retrieving: zstd (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: zstd.rpm [done]
 (XXX/XXX) Installing: zstd [done]
@@ -542,12 +537,10 @@ Retrieving: which (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB
 Retrieving: which.rpm [done]
 (XXX/XXX) Installing: which [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/which.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-install-info: No such file or directory for /dev/null
 Retrieving: time (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: time.rpm [done]
 (XXX/XXX) Installing: time [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/time.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-install-info: No such file or directory for /dev/null
 Retrieving: systemd-default-settings-branding-openSUSE (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: systemd-default-settings-branding-openSUSE [done]
 (XXX/XXX) Installing: systemd-default-settings-branding-openSUSE [done]
@@ -560,7 +553,6 @@ Retrieving: sed (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB
 Retrieving: sed.rpm [done]
 (XXX/XXX) Installing: sed [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/sed.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-install-info: No such file or directory for /dev/null
 Retrieving: sed-lang (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: sed-lang [done]
 (XXX/XXX) Installing: sed-lang [done]
@@ -569,7 +561,6 @@ Retrieving: pinentry (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB
 Retrieving: pinentry.rpm [done]
 (XXX/XXX) Installing: pinentry [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/pinentry.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-install-info: No such file or directory for /dev/null
 Retrieving: login_defs (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: login_defs [done]
 (XXX/XXX) Installing: login_defs [done]
@@ -582,7 +573,6 @@ Retrieving: libtasn1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB
 Retrieving: libtasn1.rpm [done]
 (XXX/XXX) Installing: libtasn1 [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libtasn1.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-install-info: No such file or directory for /dev/null
 Retrieving: libfido2-udev (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libfido2-udev [done]
 (XXX/XXX) Installing: libfido2-udev [done]
@@ -603,12 +593,10 @@ Retrieving: gzip (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB
 Retrieving: gzip.rpm [done]
 (XXX/XXX) Installing: gzip [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/gzip.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-install-info: No such file or directory for /dev/null
 Retrieving: grep (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: grep.rpm [done]
 (XXX/XXX) Installing: grep [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/grep.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-install-info: No such file or directory for /dev/null
 Retrieving: grep-lang (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: grep-lang [done]
 (XXX/XXX) Installing: grep-lang [done]
@@ -618,8 +606,6 @@ Retrieving: gawk.rpm [done]
 (XXX/XXX) Installing: gawk [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/gawk.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
 update-alternatives: using /usr/bin/gawk to provide /bin/awk (awk) in auto mode
-install-info: No such file or directory for /dev/null
-install-info: No such file or directory for /dev/null
 Retrieving: elfutils (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: elfutils.rpm [done]
 (XXX/XXX) Installing: elfutils [done]
@@ -628,7 +614,6 @@ Retrieving: diffutils (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB
 Retrieving: diffutils.rpm [done]
 (XXX/XXX) Installing: diffutils [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/diffutils.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-install-info: No such file or directory for /dev/null
 Retrieving: diffutils-lang (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: diffutils-lang [done]
 (XXX/XXX) Installing: diffutils-lang [done]
@@ -710,12 +695,10 @@ Retrieving: ca-certificates (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB
 Retrieving: ca-certificates [done]
 (XXX/XXX) Installing: ca-certificates [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/ca-certificates: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-/usr/sbin/update-ca-certificates: line X: /dev/fd/X: No such file or directory
 Retrieving: ca-certificates-mozilla (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: ca-certificates-mozilla [done]
 (XXX/XXX) Installing: ca-certificates-mozilla [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/ca-certificates-mozilla: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-/usr/sbin/update-ca-certificates: line X: /dev/fd/X: No such file or directory
 Retrieving: systemd-presets-branding-openSUSE (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: systemd-presets-branding-openSUSE [done]
 (XXX/XXX) Installing: systemd-presets-branding-openSUSE [done]
@@ -773,7 +756,6 @@ Retrieving: cpio (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB
 Retrieving: cpio.rpm [done]
 (XXX/XXX) Installing: cpio [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/cpio.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-install-info: No such file or directory for /dev/null
 Retrieving: cpio-mt (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: cpio-mt.rpm [done]
 (XXX/XXX) Installing: cpio-mt [done]
@@ -977,7 +959,6 @@ Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: 
 Creating group systemd-timesync with gid 496.
 Creating user systemd-timesync (systemd Time Synchronization) with uid 496 and gid 496.
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
-Failed to open /dev/urandom: No such file or directory
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 Running in chroot, ignoring command 'daemon-reexec'
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
@@ -1187,8 +1168,6 @@ Created symlink /etc/systemd/user/basic.target.wants/systemd-tmpfiles-setup.serv
 %posttrans(rpm) script output:
 rmdir: failed to remove 'var/lib/rpm': Directory not empty
 warning: %posttrans(rpm) scriptlet failed, exit status 1
-%posttrans(ca-certificates-mozilla) script output:
-/usr/sbin/update-ca-certificates: line X: /dev/fd/X: No such file or directory
 %posttrans(systemd-presets-branding-openSUSE) script output:
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 %posttrans(openSUSE-release) script output:

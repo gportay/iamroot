@@ -243,7 +243,7 @@ $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_LIB_I68
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_WARNING_IGNORE = $(CURDIR)/gcompat/libgcompat.so.0
 )
 
-$(eval $(call chroot_shell,$(1),$(2),/bin/bash,zypper --root $(CURDIR)/$(1)-$(2)-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd))
+$(eval $(call chroot_shell,$(1),$(2),/bin/sh,zypper --root $(CURDIR)/$(1)-$(2)-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd))
 
 $(1)-$(2)-rootfs: | $(1)-$(2)-rootfs/bin/sh
 $(1)-$(2)-rootfs/bin/sh: PATH := $(CURDIR):$(PATH)

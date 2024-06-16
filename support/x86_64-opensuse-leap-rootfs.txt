@@ -710,12 +710,12 @@ Retrieving: ca-certificates (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB
 Retrieving: ca-certificates [done]
 (XXX/XXX) Installing: ca-certificates [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/ca-certificates: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-FIXME: not-running update-ca-certificates -f
+/usr/sbin/update-ca-certificates: line X: /dev/fd/X: No such file or directory
 Retrieving: ca-certificates-mozilla (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: ca-certificates-mozilla [done]
 (XXX/XXX) Installing: ca-certificates-mozilla [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/noarch/ca-certificates-mozilla: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
-FIXME: not-running update-ca-certificates
+/usr/sbin/update-ca-certificates: line X: /dev/fd/X: No such file or directory
 Retrieving: systemd-presets-branding-openSUSE (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: systemd-presets-branding-openSUSE [done]
 (XXX/XXX) Installing: systemd-presets-branding-openSUSE [done]
@@ -1188,7 +1188,7 @@ Created symlink /etc/systemd/user/basic.target.wants/systemd-tmpfiles-setup.serv
 rmdir: failed to remove 'var/lib/rpm': Directory not empty
 warning: %posttrans(rpm) scriptlet failed, exit status 1
 %posttrans(ca-certificates-mozilla) script output:
-FIXME: not-running update-ca-certificates
+/usr/sbin/update-ca-certificates: line X: /dev/fd/X: No such file or directory
 %posttrans(systemd-presets-branding-openSUSE) script output:
 Warning: $ROOT/x86_64-opensuse-leap-rootfs/usr/lib64/.libgcrypt.so.20.3.4.fips: contains root directory '$ROOT/x86_64-opensuse-leap-rootfs'
 %posttrans(openSUSE-release) script output:

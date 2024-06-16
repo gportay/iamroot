@@ -1122,7 +1122,7 @@ stable-rootfs: x86_64-opensuse-tumbleweed-rootfs
 
 $(eval $(call zypper-rootfs,x86_64,opensuse-leap))
 $(eval $(call zypper-rootfs,x86_64,opensuse-tumbleweed))
-x86_64-opensuse-leap-chroot x86_64-opensuse-leap-shell x86_64-opensuse-leap-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|/usr/bin/chkstat|/usr/sbin/update-ca-certificates
+x86_64-opensuse-leap-chroot x86_64-opensuse-leap-shell x86_64-opensuse-leap-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|/usr/bin/chkstat
 
 install-support-x86_64: install-support-x86_64-zypper
 

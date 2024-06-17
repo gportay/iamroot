@@ -949,6 +949,7 @@ hidden const char *__getfd(int fd)
 hidden int __setfd(int fd, const char *path)
 {
 #if defined __OpenBSD__ || defined __NetBSD__
+	const int errno_save = errno;
 	char buf[NAME_MAX];
 	int n;
 
@@ -959,9 +960,9 @@ hidden int __setfd(int fd, const char *path)
 	__info("%i: %s='%s' -> '%s'\n", fd, buf, _getenv(buf), path);
 
 	if (!path)
-		return _unsetenv(buf);
+		return __set_errno(errno_save, _unsetenv(buf));
 
-	return _setenv(buf, path, 1);
+	return __set_errno(errno_save, _setenv(buf, path, 1));
 #else
 	(void)fd;
 	(void)path;

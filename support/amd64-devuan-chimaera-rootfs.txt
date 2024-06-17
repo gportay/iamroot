@@ -1444,7 +1444,6 @@ update-alternatives: using /bin/more to provide /usr/bin/pager (pager) in auto m
 Setting up mount ...
 Setting up sysvinit-core ...
 sysvinit: creating /run/initctl
-Warning: User defined signal 1: ignore non killed pid 1
 sysvinit: restarting...init: timeout opening/writing control channel /run/initctl
 .init: timeout opening/writing control channel /run/initctl
 .init: timeout opening/writing control channel /run/initctl

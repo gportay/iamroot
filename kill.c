@@ -29,6 +29,7 @@ hidden int next_kill(pid_t pid, int sig)
 
 int kill(pid_t pid, int sig)
 {
+	const int errno_save = errno;
 	int ret;
 
 	ret = next_kill(pid, sig);
@@ -37,7 +38,7 @@ int kill(pid_t pid, int sig)
 	if ((ret == -1) && (errno == EPERM)) {
 		__warning("%s: ignore non killed pid %u\n", strsignal(sig),
 			  pid);
-		ret = __set_errno(0, 0);
+		ret = __set_errno(errno_save, 0);
 	}
 
 	__debug("%s(pid: %u, sig: %i) -> %i\n", __func__, pid, sig, ret);

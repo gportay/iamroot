@@ -255,7 +255,7 @@ endef
 define zypper-rootfs
 .PRECIOUS: $(1)-$(2)-rootfs/bin/sh
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|/usr/bin/chkstat
-$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
+$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
 
 $(eval $(call chroot_shell,$(1),$(2),/bin/bash,zypper --root $(CURDIR)/$(1)-$(2)-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd))
 
@@ -1097,8 +1097,6 @@ $(eval $(call dnf-rootfs,x86_64,fedora,37))
 $(eval $(call dnf-rootfs,x86_64,fedora,38))
 $(eval $(call dnf-rootfs,x86_64,fedora,39))
 $(eval $(call dnf-rootfs,x86_64,fedora,40))
-x86_64-fedora-39-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
-x86_64-fedora-40-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
 
 install-support-x86_64: install-support-x86_64-fedora
 
@@ -1589,8 +1587,6 @@ $(eval $(call dnf-rootfs,aarch64,fedora,37))
 $(eval $(call dnf-rootfs,aarch64,fedora,38))
 $(eval $(call dnf-rootfs,aarch64,fedora,39))
 $(eval $(call dnf-rootfs,aarch64,fedora,40))
-aarch64-fedora-39-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
-aarch64-fedora-40-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
 endif
 
 ifneq ($(shell command -v arm-buildroot-linux-gnueabihf-gcc 2>/dev/null),)

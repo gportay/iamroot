@@ -454,6 +454,38 @@ ssize_t path_resolution(int dfd, const char *path, char *buf, size_t bufsiz,
 	}
 
 	/*
+	 * The files in /dev/fd/ are read by bash for process substitutions.
+	 *
+	 * According to bash(1):
+	 *
+	 *	Process Substitution
+	 *
+	 *	Process substitution allows a process's input or output to be
+	 *	referred to using a filename. It takes the form of <(list) or
+	 *	>(list). The process list is run asynchronously, and its input
+	 *	or output appears as a filename. This filename is passed as an
+	 *	argument to the current command as the result of the expansion.
+	 *	If the >(list) form is used, writing to the file will provide
+	 *	input for list. If the <(list) form is used, the file passed as
+	 *	an argument should be read to obtain the output of list.
+	 *	Process substitution is supported on systems that support named
+	 *	pipes (FIFOs) or the /dev/fd method of naming open files.
+	 *
+	 * The path is left unresolved, and it is copied as is.
+	 *
+	 *	/usr/lib/rpm/sysusers.sh: line 122: /dev/fd/63: No such file or directory
+	 */
+	if (__strneq(path, "/dev/fd/")) {
+		__notice("%s: ignoring path resolution '%s'\n", __func__,
+			 path);
+		_strncpy(buf, path, bufsiz);
+		ret = strnlen(buf, bufsiz);
+		if ((size_t)ret != __strlen(path))
+			return __set_errno(ENAMETOOLONG, -1);
+		return ret;
+	}
+
+	/*
 	 * The path is to be ignored.
 	 *
 	 * The path is copied as is.

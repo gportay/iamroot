@@ -1,12 +1,12 @@
 #!/bin/sed -f
 #
-# Copyright 2022-2023 Gaël PORTAY
+# Copyright 2022-2024 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
 
 1,/^Dependencies resolved\./ {
-	# Fedora 35 - x86_64                               XX MB/s |  XX MB     XX:XX
+	# Fedora XX - x86_64                               XX MB/s |  XX MB     XX:XX
 	/^.\+\s-\s\S\+/s,^\(.\+\s-\s\S\+\)\s\+\S\+\s.B/s\s|\s\+\S\{1\,3\}\s.B\s\+\S\{2\,2\}:\S\{2\,2\}\s\+$,\1 XXX xB/s | XXX xB XX:XX,
 	# Last metadata expiration check: H:mm:ss ago on Day XX Mon YYYY HH:mm:ss xM TZ.
 	/^Last metadata expiration check: /s,:\s.*,: HH:mm:ss on Day XX Mon YYYY HH:mm:ss xM TZ.,
@@ -19,11 +19,11 @@
 	/^\s\+Package\(\s\+\S\+\)\{4,4\}/s,\s\+, ,g
 	/^=\+/s,=\+,===============================,
 
-	#  acl                             x86_64  2.3.1-2.fc35                    fedora   XX k
+	#  acl                             x86_64  2.3.1-2.fcXX                    fedora   XX k
 	/^\(\s\+\S\+\)\{6,6\}/s,^\(\s\+\S\+\).*,\1,
 
 	# elfutils-default-yama-scope
-	#                            noarch 0.179-1.fc32                     fedora  XX k
+	#                            noarch 0.179-1.fcXX                     fedora  XX k
 	/^\W\+\(\s\+\S\+\)\{5,5\}/d
 
 	# Install  XXX Packages
@@ -40,7 +40,7 @@
 }
 
 /^Downloading Packages:/,/^Running transaction check/{
-	# (XXX/XXX): acl-2.3.1-2.fc35.x86_64.rpm          X.X MB/s |  XX kB     XX:XX
+	# (XXX/XXX): acl-2.3.1-2.fcXX.x86_64.rpm          X.X MB/s |  XX kB     XX:XX
 	/^(\S\+\/\S\+): /d
 
 	# --------------------------------------------------------------------------------
@@ -51,9 +51,9 @@
 }
 
 /^Running transaction/,/^Installed:/ {
-	#   Running scriptlet: filesystem-3.14-7.fc35.x86_64                      XXX/XXX
-	#   Installing       : filesystem-3.14-7.fc35.x86_64                      XXX/XXX
-	#   Verifying        : filesystem-3.14-7.fc35.x86_64                      XXX/XXX
+	#   Running scriptlet: filesystem-3.14-7.fcXX.x86_64                      XXX/XXX
+	#   Installing       : filesystem-3.14-7.fcXX.x86_64                      XXX/XXX
+	#   Verifying        : filesystem-3.14-7.fcXX.x86_64                      XXX/XXX
 	/^\s\+\(\S\+\s*\)\{1,2\}: / {
 		s,\([[:lower:][:upper:][:digit:]._+-]\+\)-\([[:digit:]]\+:[[:alnum:]._~^-]\+\|[[:alnum:]._~^-]\+\)-\([[:alnum:].%{?}-]\+\)\.\([[:lower:][:digit:]]\+\.[[:alnum:]_]\+\|[[:alnum:]_]\+\),\1,
 		s,\s\+[[:digit:]]\+\/[[:digit:]]\+\s\+$, XXX/XXX,
@@ -65,7 +65,7 @@
 		s,line \([[:digit:]]\+\): ,line X: ,
 	}
 
-	#   Running scriptlet: openssh-server-8.5p1-2.fc34.x86_64                 XXX/XXX
+	#   Running scriptlet: openssh-server-8.5p1-2.fcXX.x86_64                 XXX/XXX
 	# (2022-06-16 22:01:23:196328): [sss_cache] [confdb_get_enabled_domain_list] (0x0040): Failed to get [domains] from [sssd], error [2] (No such file or directory)
 	# (2022-06-16 22:01:23:196440): [sss_cache] [init_domains] (0x0020): Could not initialize domains
 	# (2022-06-16 22:01:23:225076): [sss_cache] [confdb_get_enabled_domain_list] (0x0040): Failed to get [domains] from [sssd], error [2] (No such file or directory)
@@ -89,15 +89,15 @@
 }
 
 /^Installed:/,$ {
-	#   filesystem-3.14-7.fc35.x86_64
+	#   filesystem-3.14-7.fcXX.x86_64
 	/^\s\s/ {
 		s,\([[:lower:][:upper:][:digit:]._+-]\+\)-\([[:digit:]]\+:[[:alnum:]._~^-]\+\|[[:alnum:]._~^-]\+\)-\([[:alnum:].%{?}-]\+\)\.\([[:lower:][:digit:]]\+\.[[:alnum:]_]\+\|[[:alnum:]_]\+\),\1,
 		s,\s\+$,,
 	}
 }
 
-# Creating group 'bin' with GID 1.
-# Creating user 'bin' (n/a) with UID 1 and GID 1.
+# Creating group 'bin' with GID XXX.
+# Creating user 'bin' (n/a) with UID XXX and GID XXX.
 /^Creating \(user\|group\) '.*'/{
 	s,UID [[:digit:]]\+,UID XXX,
 	s,GID [[:digit:]]\+,GID XXX,

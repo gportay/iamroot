@@ -17,6 +17,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `ish(1)` is now using `ld-iamroot.so(8)`
 - Do not forward the none-`at` functions `access()` and `euidaccess()` to the
   `at` functions `faccessat()`
+- The functions `__lstat50()`, `__lstat64_time64()`, `lstat()` and `lstat64()`
+  do not call the AT-functions `__fstatat64_time64()`, `fstatat()` and
+  `fstatat64()` anymore
 
 ## [v23] - 2024-06-25
 

@@ -39,7 +39,7 @@
 	s,\s\+$,,
 }
 
-/^Downloading Packages:/,/^Running transaction check/{
+/^Downloading Packages:/,/^Running transaction check/ {
 	# (XXX/XXX): acl-2.3.1-2.fcXX.x86_64.rpm          X.X MB/s |  XX kB     XX:XX
 	/^(\S\+\/\S\+): /d
 
@@ -98,7 +98,7 @@
 
 # Creating group 'bin' with GID XXX.
 # Creating user 'bin' (n/a) with UID XXX and GID XXX.
-/^Creating \(user\|group\) '.*'/{
+/^Creating \(user\|group\) '.*'/ {
 	s,UID [[:digit:]]\+,UID XXX,
 	s,GID [[:digit:]]\+,GID XXX,
 }

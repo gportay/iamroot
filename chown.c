@@ -22,8 +22,7 @@
 
 static int (*sym)(const char *, uid_t, gid_t);
 
-hidden
-int next_chown(const char *path, uid_t owner, gid_t group)
+hidden int next_chown(const char *path, uid_t owner, gid_t group)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "chown");

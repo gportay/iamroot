@@ -23,8 +23,8 @@
 
 static int (*sym)(int, int, const char *);
 
-hidden
-int next_extattr_delete_fd(int fd, int attrnamespace, const char *attrname)
+hidden int next_extattr_delete_fd(int fd, int attrnamespace,
+				  const char *attrname)
 {
 	if (!sym)
 		sym = dlsym(RTLD_NEXT, "extattr_delete_fd");

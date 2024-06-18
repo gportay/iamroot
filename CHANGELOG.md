@@ -11,6 +11,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Output the filesystem type for the function `mount()`
 - Output the traces for the functions `clearenv()`, `getenv()`, `putenv()`,
   `setenv()` and `unsetenv()`
+- The functions `__lstat50()`, `__lstat64_time64()`, `lstat()` and `lstat64()`
+  do not call the AT-functions `__fstatat64_time64()`, `fstatat()` and
+  `fstatat64()` anymore
 
 ### Fixed
 

@@ -11,6 +11,9 @@
 #include <limits.h>
 #include <fcntl.h>
 #include <dlfcn.h>
+#if defined __NetBSD__
+#include <sys/param.h>
+#endif
 
 #include <sys/types.h>
 #include <sys/extattr.h>

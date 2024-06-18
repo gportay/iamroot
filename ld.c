@@ -55,9 +55,9 @@ static int callback(struct dl_phdr_info *info, size_t size, void *data)
 	for (i = 0; i < info->dlpi_phnum; i++) {
 		ElfW(Phdr) *phdr = (ElfW(Phdr) *)(&info->dlpi_phdr[i]);
 		ElfW(Dyn) *dyn = (ElfW(Dyn) *)(info->dlpi_addr + phdr->p_vaddr);
+		const char *dt_runpath = NULL;
 		ElfW(Addr) strtab = 0;
 		unsigned int j;
-		const char *dt_runpath;
 
 		if (info->dlpi_phdr[i].p_type != PT_DYNAMIC)
 			continue;

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2021-2023 Gaël PORTAY
+# Copyright 2021-2024 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -145,6 +145,7 @@ ldconfig|ldconfig.real)
 			prev="$cur"
 		done
 		unset prev
+		unset cur
 
 		if [ ! "$r" ]
 		then

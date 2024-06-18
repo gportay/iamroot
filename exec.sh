@@ -145,6 +145,7 @@ ldconfig|ldconfig.real)
 			prev="$cur"
 		done
 		unset prev
+		unset cur
 
 		if [ ! "$r" ]
 		then

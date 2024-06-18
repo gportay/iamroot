@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Intercept the functions `dladdr()` and `dladdr1()`
 
+### Changed
+
+- Use [Jim Tcl]
+
 ## [v23] - 2024-06-25
 
 ### Added

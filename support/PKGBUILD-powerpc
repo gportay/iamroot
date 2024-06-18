@@ -40,8 +40,8 @@ prepare() {
 
 build() {
 	cd "$srcdir/$pkgname"
-	make CFLAGS=-DJIM_REGEXP PREFIX=/usr powerpc/libiamroot.so.1
-	make CFLAGS=-DJIM_REGEXP PREFIX=/usr powerpc/libiamroot-musl-powerpc.so.1
+	make PREFIX=/usr powerpc/libiamroot.so.1
+	make PREFIX=/usr powerpc/libiamroot-musl-powerpc.so.1
 }
 
 check() {

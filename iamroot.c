@@ -19,23 +19,11 @@
 #if defined __linux__ || defined __FreeBSD__
 #include <sys/auxv.h>
 #endif
-#if !defined(JIM_REGEXP)
-#include <regex.h>
-#endif
 #include <pthread.h>
 
 #include "iamroot.h"
 
-#if defined(JIM_REGEXP)
 #include "jimregexp.h"
-
-#define regcomp jim_regcomp
-#define regexec jim_regexec
-#define regerror jim_regerror
-#define regfree jim_regfree
-
-#define REG_NOSUB 0
-#endif
 
 #define SCRIPTMAG "#!"
 #define SSCRIPTMAG 2
@@ -1216,19 +1204,12 @@ hidden int __getdebug_fd()
 	return strtol(_getenv("IAMROOT_DEBUG_FD") ?: "2", NULL, 0);
 }
 
-typedef struct {
-	regex_t re;
-#ifndef JIMREGEXP_H
-	char jimpad[40];
-#endif
-} __regex_t;
-
 static regex_t *re_ignore;
 
-static void __regex_perror(const char *s, regex_t *regex, int err)
+static void __jim_regex_perror(const char *s, regex_t *regex, int err)
 {
 	char buf[128];
-	regerror(err, regex, buf, sizeof(buf));
+	jim_regerror(err, regex, buf, sizeof(buf));
 	if (!s) {
 		dprintf(DEBUG_FILENO, "%s\n", buf);
 		return;
@@ -1240,7 +1221,7 @@ static void __regex_perror(const char *s, regex_t *regex, int err)
 __attribute__((constructor,visibility("hidden")))
 void verbosef_init()
 {
-	static __regex_t regex_ignore;
+	static regex_t regex_ignore;
 	const char *ignore;
 	int ret;
 
@@ -1248,13 +1229,13 @@ void verbosef_init()
 	if (!ignore)
 		ignore = "^$";
 
-	ret = regcomp(&regex_ignore.re, ignore, REG_NOSUB|REG_EXTENDED);
+	ret = jim_regcomp(&regex_ignore, ignore, REG_EXTENDED);
 	if (ret != 0) {
-		__regex_perror("regcomp", &regex_ignore.re, ret);
+		__jim_regex_perror("jim_regcomp", &regex_ignore, ret);
 		return;
 	}
 
-	re_ignore = &regex_ignore.re;
+	re_ignore = &regex_ignore;
 }
 
 __attribute__((destructor,visibility("hidden")))
@@ -1263,7 +1244,7 @@ void verbosef_fini()
 	if (!re_ignore)
 		return;
 
-	regfree(re_ignore);
+	jim_regfree(re_ignore);
 	re_ignore = NULL;
 }
 
@@ -1275,9 +1256,9 @@ static int __ignore(const char *func)
 	if (!re_ignore)
 		return 0;
 
-	ret = regexec(re_ignore, func, 1, &match, 0);
+	ret = jim_regexec(re_ignore, func, 1, &match, 0);
 	if (ret == -1 || ret > REG_NOMATCH) {
-		__regex_perror("regexec", re_ignore, ret);
+		__jim_regex_perror("jim_regexec", re_ignore, ret);
 		return 0;
 	}
 
@@ -1396,11 +1377,4 @@ exit:
 
 #ifdef __NetBSD__
 #undef next_fstat
-#endif
-
-#if defined(JIM_REGEXP)
-#undef regfree
-#undef regerror
-#undef regexec
-#undef regcomp
 #endif

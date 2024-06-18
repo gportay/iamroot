@@ -40,8 +40,8 @@ prepare() {
 
 build() {
 	cd "$srcdir/$pkgname"
-	make CFLAGS=-DJIM_REGEXP PREFIX=/usr mipsle/libiamroot.so.1
-	make CFLAGS=-DJIM_REGEXP PREFIX=/usr mipsle/libiamroot-musl-mipsel.so.1
+	make PREFIX=/usr mipsle/libiamroot.so.1
+	make PREFIX=/usr mipsle/libiamroot-musl-mipsel.so.1
 }
 
 check() {

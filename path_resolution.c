@@ -10,9 +10,6 @@
 #include <errno.h>
 #include <paths.h>
 #include <limits.h>
-#if !defined(JIM_REGEXP)
-#include <regex.h>
-#endif
 
 #include <fcntl.h>
 
@@ -21,23 +18,7 @@
 /* AT flag FOLLOW takes precedence over NOFOLLOW */
 #define follow_symlink(f) (((f) & AT_SYMLINK_FOLLOW) || ((f) & AT_SYMLINK_NOFOLLOW) == 0)
 
-#if defined(JIM_REGEXP)
 #include "jimregexp.h"
-
-#define regcomp jim_regcomp
-#define regexec jim_regexec
-#define regerror jim_regerror
-#define regfree jim_regfree
-
-#define REG_NOSUB 0
-#endif
-
-typedef struct {
-	regex_t re;
-#ifndef JIMREGEXP_H
-	char jimpad[40];
-#endif
-} __regex_t;
 
 extern char *next_realpath(const char *, char *);
 
@@ -239,10 +220,10 @@ toolong:
 static regex_t *re_ignore;
 static regex_t *re_warning_ignore;
 
-static void __regex_perror(const char *s, regex_t *regex, int err)
+static void __jim_regex_perror(const char *s, regex_t *regex, int err)
 {
 	char buf[128];
-	regerror(err, regex, buf, sizeof(buf));
+	jim_regerror(err, regex, buf, sizeof(buf));
 	if (!s) {
 		dprintf(STDERR_FILENO, "%s\n", buf);
 		return;
@@ -254,7 +235,7 @@ static void __regex_perror(const char *s, regex_t *regex, int err)
 __attribute__((constructor,visibility("hidden")))
 void path_resolution_init()
 {
-	static __regex_t regex_ignore, regex_warning_ignore;
+	static regex_t regex_ignore, regex_warning_ignore;
 	const char *ignore, *warning_ignore;
 	int ret;
 
@@ -265,27 +246,26 @@ void path_resolution_init()
 	if (!ignore)
 		ignore = "^/proc/|/sys/|"_PATH_DEV"|"_PATH_VARRUN"|/run/";
 
-	ret = regcomp(&regex_ignore.re, ignore, REG_NOSUB|REG_EXTENDED);
+	ret = jim_regcomp(&regex_ignore, ignore, REG_EXTENDED);
 	if (ret != 0) {
-		__regex_perror("regcomp", &regex_ignore.re, ret);
+		__jim_regex_perror("jim_regcomp", &regex_ignore, ret);
 		return;
 	}
 
-	re_ignore = &regex_ignore.re;
+	re_ignore = &regex_ignore;
 
 warning_ignore:
 	warning_ignore = _getenv("IAMROOT_PATH_RESOLUTION_WARNING_IGNORE");
 	if (!warning_ignore)
 		warning_ignore = "^/var/log/dnf\\.rpm\\.log$";
 
-	ret = regcomp(&regex_warning_ignore.re, warning_ignore,
-		      REG_NOSUB|REG_EXTENDED);
+	ret = jim_regcomp(&regex_warning_ignore, warning_ignore, REG_EXTENDED);
 	if (ret != 0) {
-		__regex_perror("regcomp", &regex_warning_ignore.re, ret);
+		__jim_regex_perror("jim_regcomp", &regex_warning_ignore, ret);
 		return;
 	}
 
-	re_warning_ignore = &regex_warning_ignore.re;
+	re_warning_ignore = &regex_warning_ignore;
 }
 
 __attribute__((destructor,visibility("hidden")))
@@ -300,14 +280,14 @@ void path_resolution_fini()
 	if (!re_warning_ignore)
 		goto ignore;
 
-	regfree(re_warning_ignore);
+	jim_regfree(re_warning_ignore);
 	re_warning_ignore = NULL;
 
 ignore:
 	if (!re_ignore)
 		return;
 
-	regfree(re_ignore);
+	jim_regfree(re_ignore);
 	re_ignore = NULL;
 }
 
@@ -322,9 +302,9 @@ static int ignore(const char *path)
 	if (!*path)
 		return 0;
 
-	ret = regexec(re_ignore, path, 1, &match, 0);
+	ret = jim_regexec(re_ignore, path, 1, &match, 0);
 	if (ret > REG_NOMATCH) {
-		__regex_perror("regexec", re_ignore, ret);
+		__jim_regex_perror("jim_regexec", re_ignore, ret);
 		return 0;
 	}
 
@@ -339,9 +319,9 @@ static int warning_ignore(const char *path)
 	if (!re_warning_ignore)
 		return 0;
 
-	ret = regexec(re_warning_ignore, path, 1, &match, 0);
+	ret = jim_regexec(re_warning_ignore, path, 1, &match, 0);
 	if (ret > REG_NOMATCH) {
-		__regex_perror("regexec", re_warning_ignore, ret);
+		__jim_regex_perror("jim_regexec", re_warning_ignore, ret);
 		return 0;
 	}
 
@@ -626,10 +606,3 @@ hidden char *__getpath(int dfd, const char *path, int atflags)
 
 	return buf;
 }
-
-#if defined(JIM_REGEXP)
-#undef regfree
-#undef regerror
-#undef regexec
-#undef regcomp
-#endif

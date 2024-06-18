@@ -100,7 +100,6 @@
  * regular-expression syntax might require a total rethink.
  */
 
-#if defined(JIM_REGEXP)
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
@@ -1958,5 +1957,3 @@ void jim_regfree(regex_t *preg)
 {
 	free(preg->program);
 }
-
-#endif

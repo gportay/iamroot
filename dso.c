@@ -22,34 +22,15 @@
 #ifdef __NetBSD__
 #include <sys/exec_elf.h>
 #endif
-#if !defined(JIM_REGEXP)
-#include <regex.h>
-#endif
 #include <spawn.h>
 
 #include "iamroot.h"
 
-#if defined(JIM_REGEXP)
 #include "jimregexp.h"
-
-#define regcomp jim_regcomp
-#define regexec jim_regexec
-#define regerror jim_regerror
-#define regfree jim_regfree
-
-#define REG_NOSUB 0
-#endif
 
 #ifndef ELFOSABI_GNU
 #define ELFOSABI_GNU ELFOSABI_LINUX
 #endif
-
-typedef struct {
-	regex_t re;
-#ifndef JIMREGEXP_H
-	char jimpad[40];
-#endif
-} __regex_t;
 
 extern int next_faccessat(int, const char *, int, int);
 #ifdef __NetBSD__
@@ -186,10 +167,10 @@ static int __setld_preload(const char *preload, int overwrite)
 static regex_t *re_ldso;
 static regex_t *re_lib;
 
-static void __regex_perror(const char *s, regex_t *regex, int err)
+static void __jim_regex_perror(const char *s, regex_t *regex, int err)
 {
 	char buf[128];
-	regerror(err, regex, buf, sizeof(buf));
+	jim_regerror(err, regex, buf, sizeof(buf));
 	if (!s) {
 		dprintf(STDERR_FILENO, "%s\n", buf);
 		return;
@@ -201,7 +182,7 @@ static void __regex_perror(const char *s, regex_t *regex, int err)
 __attribute__((constructor,visibility("hidden")))
 void dso_init()
 {
-	static __regex_t regex_ldso, regex_lib;
+	static regex_t regex_ldso, regex_lib;
 	const char *ldso = "^ld(64|-[[:alnum:]._-]+)?\\.so(\\.[[:digit:]]+)?$";
 	const char *lib = "^lib[[:alnum:]+._-]+\\.so(\\.[[:alnum:]_-]+)*$";
 	int ret;
@@ -209,25 +190,25 @@ void dso_init()
 	if (re_ldso)
 		goto lib;
 
-	ret = regcomp(&regex_ldso.re, ldso, REG_NOSUB|REG_EXTENDED);
+	ret = jim_regcomp(&regex_ldso, ldso, REG_EXTENDED);
 	if (ret != 0) {
-		__regex_perror("regcomp", &regex_ldso.re, ret);
+		__jim_regex_perror("jim_regcomp", &regex_ldso, ret);
 		return;
 	}
 
-	re_ldso = &regex_ldso.re;
+	re_ldso = &regex_ldso;
 
 lib:
 	if (re_lib)
 		return;
 
-	ret = regcomp(&regex_lib.re, lib, REG_NOSUB|REG_EXTENDED);
+	ret = jim_regcomp(&regex_lib, lib, REG_EXTENDED);
 	if (ret != 0) {
-		__regex_perror("regcomp", &regex_lib.re, ret);
+		__jim_regex_perror("jim_regcomp", &regex_lib, ret);
 		return;
 	}
 
-	re_lib = &regex_lib.re;
+	re_lib = &regex_lib;
 }
 
 __attribute__((destructor,visibility("hidden")))
@@ -236,14 +217,14 @@ void dso_fini()
 	if (!re_lib)
 		goto ldso;
 
-	regfree(re_lib);
+	jim_regfree(re_lib);
 	re_lib = NULL;
 
 ldso:
 	if (!re_ldso)
 		return;
 
-	regfree(re_ldso);
+	jim_regfree(re_ldso);
 	re_ldso = NULL;
 }
 
@@ -255,9 +236,9 @@ hidden int __is_ldso(const char *path)
 	if (!re_ldso)
 		return 0;
 
-	ret = regexec(re_ldso, path, 1, &match, 0);
+	ret = jim_regexec(re_ldso, path, 1, &match, 0);
 	if (ret > REG_NOMATCH) {
-		__regex_perror("regexec", re_ldso, ret);
+		__jim_regex_perror("jim_regexec", re_ldso, ret);
 		return 0;
 	}
 
@@ -272,9 +253,9 @@ static int __is_lib(const char *path)
 	if (!re_lib)
 		return 0;
 
-	ret = regexec(re_lib, path, 1, &match, 0);
+	ret = jim_regexec(re_lib, path, 1, &match, 0);
 	if (ret > REG_NOMATCH) {
-		__regex_perror("regexec", re_lib, ret);
+		__jim_regex_perror("jim_regexec", re_lib, ret);
 		return 0;
 	}
 
@@ -4126,11 +4107,4 @@ hidden int __elf_has_interp(int fd)
 
 #ifdef __NetBSD__
 #undef next_fstat
-#endif
-
-#if defined(JIM_REGEXP)
-#undef regfree
-#undef regerror
-#undef regexec
-#undef regcomp
 #endif

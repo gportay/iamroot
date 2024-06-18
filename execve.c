@@ -10,31 +10,12 @@
 #include <limits.h>
 #include <dlfcn.h>
 #include <fcntl.h>
-#if !defined(JIM_REGEXP)
-#include <regex.h>
-#endif
 
 #include <unistd.h>
 
 #include "iamroot.h"
 
-#if defined(JIM_REGEXP)
 #include "jimregexp.h"
-
-#define regcomp jim_regcomp
-#define regexec jim_regexec
-#define regerror jim_regerror
-#define regfree jim_regfree
-
-#define REG_NOSUB 0
-#endif
-
-typedef struct {
-	regex_t re;
-#ifndef JIMREGEXP_H
-	char jimpad[40];
-#endif
-} __regex_t;
 
 extern int next_faccessat(int, const char *, int, int);
 
@@ -42,10 +23,10 @@ extern int __ldso_execve(const char *, char * const[], char * const[]);
 
 static regex_t *re_ignore;
 
-static void __regex_perror(const char *s, regex_t *regex, int err)
+static void __jim_regex_perror(const char *s, regex_t *regex, int err)
 {
 	char buf[128];
-	regerror(err, regex, buf, sizeof(buf));
+	jim_regerror(err, regex, buf, sizeof(buf));
 	if (!s) {
 		dprintf(STDERR_FILENO, "%s\n", buf);
 		return;
@@ -57,7 +38,7 @@ static void __regex_perror(const char *s, regex_t *regex, int err)
 __attribute__((constructor,visibility("hidden")))
 void execve_init()
 {
-	static __regex_t regex_ignore;
+	static regex_t regex_ignore;
 	const char *ignore;
 	int ret;
 
@@ -73,13 +54,13 @@ void execve_init()
 	if (!ignore)
 		ignore = "mountpoint";
 
-	ret = regcomp(&regex_ignore.re, ignore, REG_NOSUB|REG_EXTENDED);
+	ret = jim_regcomp(&regex_ignore, ignore, REG_EXTENDED);
 	if (ret != 0) {
-		__regex_perror("regcomp", &regex_ignore.re, ret);
+		__jim_regex_perror("jim_regcomp", &regex_ignore, ret);
 		return;
 	}
 
-	re_ignore = &regex_ignore.re;
+	re_ignore = &regex_ignore;
 }
 
 __attribute__((destructor,visibility("hidden")))
@@ -88,7 +69,7 @@ void execve_fini()
 	if (!re_ignore)
 		return;
 
-	regfree(re_ignore);
+	jim_regfree(re_ignore);
 	re_ignore = NULL;
 }
 
@@ -100,9 +81,9 @@ static int ignore(const char *path)
 	if (!re_ignore)
 		return 0;
 
-	ret = regexec(re_ignore, path, 1, &match, 0);
+	ret = jim_regexec(re_ignore, path, 1, &match, 0);
 	if (ret > REG_NOMATCH) {
-		__regex_perror("regexec", re_ignore, ret);
+		__jim_regex_perror("jim_regexec", re_ignore, ret);
 		return 0;
 	}
 
@@ -322,10 +303,3 @@ exec_sh:
 
 	return __set_errno(E2BIG, -1);
 }
-
-#if defined(JIM_REGEXP)
-#undef regfree
-#undef regerror
-#undef regexec
-#undef regcomp
-#endif

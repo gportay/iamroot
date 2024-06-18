@@ -455,7 +455,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
-- The function `utimes()` do not call the AT-function `utimensat()` anymore
+- The function `utimes()` does not call the AT-function `utimensat()` anymore
 - Output the three-dots `...` for the functions `mkostemps()`, `mkostempsat()`,
   `scandir()`, `scandir64()`, `scandir_b()`, `scandirat()`
 - Remove output the three-dots `...` for the function `umount()`
@@ -745,9 +745,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `--ld-library-path`
 - The functions `__fxstat()`, `__fxstat64()`, `__lxstat()`, `__lxstat64()`,
   `__xstat()`, `__xstat64()`, `fstat()`, `fstat64()`, `lstat()`, `lstat64()`,
-  `stat()` and `stat64()` calls the functions `__fxstatat()`, `__fxstatat64()`,
+  `stat()` and `stat64()` call the functions `__fxstatat()`, `__fxstatat64()`,
   `fstatat()` and `fstatat64()`
-- The functions `fchmod()` and `fchown()` calls the functions `fchownat()` and
+- The functions `fchmod()` and `fchown()` call the functions `fchownat()` and
   `fchownat()`
 - Output the architecture, the libc and the pid on level 6 and above
 - Output the architecture and the libc as platform

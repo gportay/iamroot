@@ -601,8 +601,9 @@ ifeq ($(OS),GNU/Linux)
 	bash tests-ish.bash
 endif
 
-rootfs: DESTDIR = $(CURDIR)/rootfs
+rootfs: DESTDIR = $(CURDIR)/rootfs.tmp
 rootfs:
+	rm -Rf $(DESTDIR)
 	install -d -m755 $(DESTDIR)
 	install -m644 Makefile $(DESTDIR)/
 	install -d -m 755 $(DESTDIR)/etc
@@ -704,6 +705,7 @@ endif
 	bash install-bin bash $(DESTDIR)
 	bash install-bin env $(DESTDIR)
 	ln -sf bash $(DESTDIR)/usr/bin/sh
+	mv $(DESTDIR) $@
 
 .PHONY: clean
 clean:

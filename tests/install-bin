@@ -13,6 +13,29 @@ then
 	exit 1
 fi
 
+install() {
+	local dir
+
+	dir="${1%/*}"
+	if [[ "$dir" == "$1" ]]
+	then
+		dir=
+	fi
+
+	dir="$(cd "$dir" && pwd)"
+	if [[ ! -e "$2$dir" ]]
+	then
+		echo mkdir -p "$2$dir" >&2
+		mkdir -p "$2$dir"
+	fi
+
+	if [[ ! -e "$2$1" ]]
+	then
+		echo cp -a "$1" "$2$1" >&2
+		cp -a "$1" "$2$1"
+	fi
+}
+
 bin="$(command -v "$1")"
 mapfile -t objects < <(ldd "$bin")
 for i in "${objects[@]}"
@@ -78,14 +101,12 @@ do
 	# Install file to DESTDIR if it is not already installed.
 	if [[ ! -x "$2$file" ]]
 	then
-		echo install -D -m755 "$file" "$2$file" >&2
-		install -D -m755 "$file" "$2$file"
+		install "$file" "$2"
 	fi
 done
 
 # Install binary file to DESTDIR if it is not already installed.
 if [[ ! -x "$2$bin" ]]
 then
-	echo install -D -m755 "$bin" "$2$bin" >&2
-	install -D -m755 "$bin" "$2$bin"
+	install "$bin" "$2"
 fi

@@ -16,6 +16,23 @@ fi
 install() {
 	local dir
 
+	if [[ -h "$1" ]]
+	then
+		local link
+
+		link="$(readlink "$1")"
+		if [[ "${link:0:1}" != "/" ]]
+		then
+			dir="${1%/*}"
+			if [[ "$dir" != "$1" ]]
+			then
+				link="$dir/$link"
+			fi
+		fi
+
+		install "$link" "$2"
+	fi
+
 	dir="${1%/*}"
 	if [[ "$dir" == "$1" ]]
 	then

@@ -39,6 +39,16 @@ do
 	elif [[ "${#words[*]}" -eq 3 ]] && [[ -e "${words[2]}" ]]
 	then
 		file="${words[2]}"
+	# Install the dynamic loader (GNU/Linux):
+	#
+	# It is the dynamic loader if the line has four arguments and if the
+	# first word if an file (it is a shared object otherwise).
+	#
+	# /lib64/ld-linux-x86-64.so.2 => /usr/lib64/ld-linux-x86-64.so.2 (0x00007fc10fd28000)
+	elif [[ "${#words[*]}" -eq 4 ]] && #[[ "${words[0]:0:1}" == "/" ]] &&
+	     [[ -e "${words[0]}" ]]
+	then
+		file="${words[0]}"
 	# Install the needed shared objects (GNU/Linux, FreeBSD):
 	#
 	# It is a shared object if line has four arguments.

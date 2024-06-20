@@ -21,21 +21,6 @@ export NVERBOSE
 IAMROOT_ORIGIN ?= $(CURDIR)
 export IAMROOT_ORIGIN
 
-ifeq ($(ARCH),x86_64)
-ifeq ($(LIBC),musl)
-IAMROOT_LIB ?= $(IAMROOT_LIB_X86_64_MUSL_X86_64_1)
-export IAMROOT_LIB
-else
-IAMROOT_LIB ?= $(IAMROOT_LIB_X86_64_LINUX_X86_64_2)
-export IAMROOT_LIB
-endif
-endif
-
-ifeq ($(ARCH),aarch64)
-IAMROOT_LIB ?= $(IAMROOT_LIB_AARCH64_LINUX_AARCH64_1)
-export IAMROOT_LIB
-endif
-
 -include local.mk
 
 MAKEFLAGS += --no-print-directory
@@ -1227,34 +1212,36 @@ clean-gcompat:
 	rm -f gcompat/ld-*.so*
 
 ifneq ($(COVERAGE),0)
-x86_64-alpinelinux-mini-shell: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-mini-chroot: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-mini-rootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.14-shell: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.14-chroot: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.14-rootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.15-shell: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.15-chroot: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.15-rootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.16-shell: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.16-chroot: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.16-rootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.17-shell: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.17-chroot: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.17-rootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.18-shell: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.18-chroot: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.18-rootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.19-shell: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.19-chroot: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.19-rootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.20-shell: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.20-chroot: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.20-rootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-edge-shell: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-edge-chroot: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-edge-rootfs: IAMROOT_LIB := $(IAMROOT_LIB):$(CURDIR)/gcompat/libgcompat.so.0
-IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(IAMROOT_LIB_X86_64_MUSL_X86_64_1):$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-mini-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-mini-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-mini-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-3.14-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1/:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-3.14-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-3.14-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-3.15-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-3.15-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-3.15-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-3.16-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-3.16-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-3.16-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-3.17-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-3.17-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-3.17-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-3.18-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-3.18-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-3.18-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-3.19-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-3.19-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-3.19-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-3.20-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-3.20-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-3.20-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-edge-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-edge-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-alpinelinux-edge-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-voidlinux-musl-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-voidlinux-musl-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-voidlinux-musl-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
 x86_64/libiamroot-musl-x86_64.so.1: | gcompat/libgcompat.so.0
 endif
 

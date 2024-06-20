@@ -1139,6 +1139,8 @@ endif
 
 $(eval $(call void-rootfs,x86_64,20240314))
 
+$(eval $(call void-rootfs,i686,20240314))
+
 ifneq ($(shell command -v musl-gcc 2>/dev/null)$(if musl,$(LIBC),YES,),)
 .PHONY: alpine-test
 alpine-test: | x86_64-alpine-mini-rootfs/usr/bin/shebang.sh

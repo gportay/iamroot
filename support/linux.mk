@@ -1162,14 +1162,6 @@ $(eval $(call alpine-mini-rootfs,x86_64,3.17))
 
 $(eval $(call alpine-mini-rootfs,x86,3.17))
 
-ifneq ($(shell command -v aarch64-buildroot-linux-musl-gcc 2>/dev/null),)
-aarch64-rootfs: aarch64-alpinelinux-rootfs
-endif
-
-ifneq ($(shell command -v arm-buildroot-linux-musleabihf-gcc 2>/dev/null),)
-arm-rootfs: armhf-alpinelinux-rootfs
-endif
-
 ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
 .PHONY: alpinelinux-rootfs
 alpinelinux-rootfs: x86_64-alpinelinux-3.14-rootfs

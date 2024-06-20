@@ -1160,9 +1160,9 @@ rootfs: alpinelinux-rootfs
 
 $(eval $(call void-musl-rootfs,x86_64,20240314))
 
-$(eval $(call alpine-mini-rootfs,x86_64,3.17))
+$(eval $(call alpine-mini-rootfs,x86_64,3.20))
 
-$(eval $(call alpine-mini-rootfs,x86,3.17))
+$(eval $(call alpine-mini-rootfs,x86,3.20))
 
 ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
 .PHONY: alpinelinux-rootfs

@@ -1701,12 +1701,10 @@ $(eval $(call alpine-make-rootfs-rootfs,ppc64le,alpinelinux,edge))
 
 $(eval $(call alpine-mini-rootfs,ppc64le,3.20))
 endif
-endif
 
 ifneq ($(shell command -v riscv64-buildroot-linux-musl-gcc 2>/dev/null),)
 riscv64-rootfs: riscv64-alpinelinux-rootfs
 
-ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
 .PHONY: riscv64-alpinelinux-rootfs
 riscv64-alpinelinux-rootfs: riscv64-alpinelinux-3.20-rootfs
 riscv64-alpinelinux-rootfs: riscv64-alpinelinux-edge-rootfs

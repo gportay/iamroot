@@ -512,7 +512,7 @@ adelie-rootfs-mini-$(1)-1.0-beta5-$(2).txz:
 endef
 
 define alpine-mini-rootfs
-$(eval $(call chroot_shell,$(1),alpine-mini,/bin/ash,tar xf alpine-minirootfs-$(2).0-$(1).tar.gz -C $(1)-alpine-mini-rootfs))
+$(eval $(call chroot_shell,$(1),alpine-mini,/bin/sh,tar xf alpine-minirootfs-$(2).0-$(1).tar.gz -C $(1)-alpine-mini-rootfs))
 $(1)-alpine-mini-chroot $(1)-alpine-mini-shell: | $(call libs,musl,$(1))
 
 $(1)-alpine-mini-rootfs: | $(1)-alpine-mini-rootfs/bin/sh

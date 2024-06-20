@@ -53,7 +53,12 @@ install() {
 	fi
 }
 
-bin="$(command -v "$1")"
+bin="$1"
+if [[ ! -e "$1" ]] && [[ "${bin:0:1}" != "/" ]]
+then
+	bin="$(command -v "$1")"
+fi
+
 mapfile -t objects < <(ldd "$bin")
 for i in "${objects[@]}"
 do

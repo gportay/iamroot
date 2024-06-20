@@ -239,6 +239,7 @@ $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_PATH_RE
 
 $(if $(findstring 0,$$(COVERAGE)),, \
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 = $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_WARNING_IGNORE = $(CURDIR)/gcompat/libgcompat.so.0
 )
 
 $(eval $(call chroot_shell,$(1),$(2),/bin/bash,zypper --root $(CURDIR)/$(1)-$(2)-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd))
@@ -263,6 +264,7 @@ $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_PATH_RE
 
 $(if $(findstring 0,$$(COVERAGE)),, \
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 = $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_WARNING_IGNORE = $(CURDIR)/gcompat/libgcompat.so.0
 )
 
 $(eval $(call chroot_shell,$(1),$(2),/bin/bash,xbps-install -S -r $(1)-$(2)-rootfs -R http://repo-default.voidlinux.org/current base-system))
@@ -302,6 +304,7 @@ $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: ex
 
 $(if $(findstring 0,$$(COVERAGE)),, \
 $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 = $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+$(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export IAMROOT_PATH_RESOLUTION_WARNING_IGNORE = $(CURDIR)/gcompat/libgcompat.so.0
 )
 
 $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/ash,alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --branch $(3) $$(ALPINE_MAKE_ROOTFSFLAGS)))
@@ -529,6 +532,7 @@ $(1)-alpine-mini-chroot $(1)-alpine-mini-shell: | $(call libs,musl,$(1))
 
 $(if $(findstring 0,$$(COVERAGE)),, \
 $(1)-alpine-mini-chroot $(1)-alpine-mini-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 = $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+$(1)-alpine-mini-chroot $(1)-alpine-mini-shell: export IAMROOT_PATH_RESOLUTION_WARNING_IGNORE = $(CURDIR)/gcompat/libgcompat.so.0
 )
 
 $(1)-alpine-mini-rootfs: | $(1)-alpine-mini-rootfs/bin/sh

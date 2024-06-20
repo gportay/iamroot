@@ -1486,10 +1486,10 @@ $(eval $(call debootstrap-rootfs,mips64el,debian,sid))
 mips64el-debian-buster-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|pam-auth-update|chfn|/var/lib/dpkg/info/openssh-server.postinst
 mips64el-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 
-install-support-mips64le: install-support-mips64le-pacman
+install-support-mips64le: install-support-mips64le-defconfig
 
-.PHONY: install-support-mips64le-pacman
-install-support-mips64le-pacman:
+.PHONY: install-support-mips64le-defconfig
+install-support-mips64le-defconfig:
 	install -D -m644 support/toolchain_debian_mips64el_defconfig $(DESTDIR)$(PREFIX)/share/iamroot/buildroot/toolchain_debian_mips64el_defconfig
 endif
 

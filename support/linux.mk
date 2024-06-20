@@ -1204,12 +1204,27 @@ gcompat/libgcompat.so.0: | gcompat/Makefile
 gcompat/Makefile:
 	git clone https://git.adelielinux.org/adelie/gcompat.git
 
+.PRECIOUS: gcompat-i386/ld-%
+gcompat-i386/ld-%: LOADER_NAME=ld-$*
+gcompat-i386/ld-%: | gcompat-i386/Makefile
+	$(MAKE) -C gcompat-i386 $(@F) LOADER_NAME=ld-$* CC=i386-musl-gcc
+
+.PRECIOUS: gcompat-i386/libgcompat.so.0
+gcompat-i386/libgcompat.so.0: | gcompat-i386/Makefile
+	$(MAKE) -C gcompat-i386 libgcompat.so.0 CC=i386-musl-gcc LDFLAGS+=-nostdlib CFLAGS+=-fno-stack-protector
+
+.PRECIOUS: gcompat-i386/Makefile
+gcompat-i386/Makefile: | gcompat/Makefile
+	git clone gcompat gcompat-i386
+
 clean: clean-gcompat
 
 .PHONY: clean-gcompat
 clean-gcompat:
 	-$(MAKE) -C gcompat clean
 	rm -f gcompat/ld-*.so*
+	-$(MAKE) -C gcompat-i386 clean
+	rm -f gcompat-i386/ld-*.so*
 
 ifneq ($(COVERAGE),0)
 x86_64-alpine-mini-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
@@ -1246,6 +1261,11 @@ x86_64-void-musl-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86
 x86_64-void-musl-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-void-musl-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
 x86_64/libiamroot-musl-x86_64.so.1: | gcompat/libgcompat.so.0
+
+x86-alpine-mini-shell: export IAMROOT_LIB_I686_MUSL_I386_1 := $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
+x86-alpine-mini-chroot: export IAMROOT_LIB_I686_MUSL_I386_1 := $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
+x86-alpine-mini-rootfs: export IAMROOT_LIB_I686_MUSL_I386_1 := $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
+i686/libiamroot-musl-i386.so.1: | gcompat-i386/libgcompat.so.0
 endif
 
 ifneq ($(shell command -v i386-musl-gcc 2>/dev/null),)

@@ -36,7 +36,17 @@ static int __is_in_iamrootlib(const char *pathname)
 	return __path_iterate(lib, __is_in_path_callback, (void *)pathname);
 }
 
-#if defined __powerpc64__ && defined __GLIBC__
+#if defined __powerpc__ && defined __GLIBC__
+
+#define __ELF_TARGET_CLASS __WORDSIZE
+#undef ElfW
+/*
+ * Stolen and hacked from glibc (elf/link.h)
+ *
+ * SPDX-License-Identifier: LGPL-2.1-or-later
+ */
+#define ElfW(type)      _ElfW (Elf, __ELF_TARGET_CLASS, type)
+
 /*
  * Stolen from glibc (sysdeps/unix/sysv/linux/powerpc/libc-start.c)
  *
@@ -121,7 +131,7 @@ static int __dl_iterate_phdr_callback(struct dl_phdr_info *info, size_t size,
 	return 0;
 }
 
-#if defined __powerpc64__ && defined __GLIBC__
+#if defined __powerpc__ && defined __GLIBC__
 int __libc_start_main(int argc,
 		      char **argv,
 		      char **ev,

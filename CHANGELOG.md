@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   in `PATH_RESOLUTION_IGNORE`
   `PATH_RESOLUTION_NOWALKALONG`: disallow the final walkalong resolution of the
   given path
+- Chroot to a [Debian] ppc world; tested on [Debian PowerPC Port]
 
 ### Changed
 
@@ -1062,6 +1063,7 @@ Initial release.
 [Debian ARM EABI Port]: https://wiki.debian.org/ArmEabiPort
 [Debian ARM hard-float Port]: https://wiki.debian.org/ArmHardFloatPort
 [Debian MIPS Port]: https://wiki.debian.org/MIPSPort
+[Debian PowerPC Port]: https://www.debian.org/ports/powerpc/
 [Debian PowerPC64 Port]: https://wiki.debian.org/ppc64el
 [Debian RISC-V 64 Port]: https://wiki.debian.org/Ports/riscv64
 [Debian S/390 Port]: https://www.debian.org/ports/s390/

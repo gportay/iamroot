@@ -1548,6 +1548,26 @@ install-support-mips64le-defconfig:
 	install -D -m644 support/toolchain_debian_mips64el_defconfig $(DESTDIR)$(PREFIX)/share/iamroot/buildroot/toolchain_debian_mips64el_defconfig
 endif
 
+ifneq ($(shell command -v powerpc-buildroot-linux-gnu-gcc 2>/dev/null),)
+powerpc-rootfs: powerpc-debian-rootfs
+
+.PHONY: powerpc-debian-rootfs
+powerpc-debian-rootfs: powerpc-debian-jessie-rootfs
+
+powerpc-debian-jessie-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.debian.org/debian/
+$(eval $(call debootstrap-rootfs,powerpc,debian,jessie))
+# Setting up systemd ...
+# chfn: PAM: System error
+# adduser: `/usr/bin/chfn -f systemd Time Synchronization systemd-timesync' returned error code 1. Exiting.
+# dpkg: error processing package systemd (--install):
+# subprocess installed post-installation script returned error exit status 1
+# Processing triggers for libc-bin ...
+# Errors were encountered while processing:
+#  systemd
+powerpc-debian-jessie-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|chfn
+powerpc-debian-jessie-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --no-check-gpg --include ssh
+endif
+
 ifneq ($(shell command -v powerpc64le-buildroot-linux-gnu-gcc 2>/dev/null),)
 powerpc64-rootfs: ppc64el-debian-rootfs
 

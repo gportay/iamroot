@@ -2048,6 +2048,10 @@ static const char *__multiarch(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 	    __is_64_bits(ehdr, ldso, abi) == 1)
 		return __set_errno(errno_save, "/usr/lib/mips64el-linux-gnuabi64:/lib/mips64el-linux-gnuabi64:/usr/lib:/lib");
 
+	/* It is a PowerPC ELF */
+	if (__is_powerpc(ehdr, ldso, abi))
+		return "/usr/lib/powerpc-linux-gnu:/lib/powerpc-linux-gnu:/usr/lib:/lib";
+
 	/* It is a PowerPC64 ELF */
 	if (__is_powerpc64(ehdr, ldso, abi) == 1)
 		return __set_errno(errno_save, "/usr/lib/powerpc64le-linux-gnu:/lib/powerpc64-linux-gnu:/usr/lib:/lib");

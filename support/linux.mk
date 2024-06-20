@@ -652,7 +652,7 @@ libiamroot.so: aarch64/libiamroot-linux-aarch64.so.1
 $(eval $(call libiamroot_ldso_so_abi,aarch64,linux-aarch64,1))
 endif
 
-.PRECIOUS: ld-iamroot.so
+.PRECIOUS: $(O)-%/ld-iamroot.so
 $(O)-%/ld-iamroot.so: $(wildcard *.c) | $(O)-%
 	$(MAKE) -f $(CURDIR)/Makefile -C $(O)-$* ld-iamroot.so VPATH=$(CURDIR)
 

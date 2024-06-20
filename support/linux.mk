@@ -703,8 +703,8 @@ mips64-rootfs:
 .PHONY: powerpc64-rootfs
 powerpc64-rootfs:
 
-.PHONY: test test-library test-scripts ci ido multiarch-ido ish multiarch-ish
-test test-library test-scripts ci ido multiarch-ido ish multiarch-ish: libiamroot.so
+.PHONY: test test-library test-scripts test-ido test-ish ci ido multiarch-ido ish multiarch-ish
+test test-library test-scripts test-ido test-ish ci ido multiarch-ido ish multiarch-ish: libiamroot.so
 	$(MAKE) -f Makefile $@
 
 .PHONY: coverage

@@ -21,6 +21,12 @@ export NVERBOSE
 IAMROOT_ORIGIN ?= $(CURDIR)
 export IAMROOT_ORIGIN
 
+ifeq ($(ARCH),x86_64)
+vpath := $(O)-$(ARCH)-$(LIBC)-x86-64
+else
+vpath := $(O)-$(ARCH)-$(LIBC)-$(ARCH)
+endif
+
 -include local.mk
 
 MAKEFLAGS += --no-print-directory
@@ -705,11 +711,11 @@ powerpc64-rootfs:
 
 .PHONY: ido multiarch-ido ish multiarch-ish
 ido multiarch-ido ish multiarch-ish: libiamroot.so
-	$(MAKE) -f Makefile $@
+	$(MAKE) -f Makefile $@ VPATH=$(vpath)
 
 .PHONY: test test-library test-frontends test-ld-iamroot.so test-ido test-ish ci
 test test-library test-frontends test-ld-iamroot.so test-ido test-ish ci: ld-iamroot.so libiamroot.so
-	$(MAKE) -f Makefile $@
+	$(MAKE) -f Makefile $@ VPATH=$(vpath)
 
 .PHONY: coverage
 coverage: gcov/index.html

@@ -1348,7 +1348,7 @@ powerpc64-rootfs: powerpc64-archlinuxpower-rootfs
 powerpc64-archlinuxpower-rootfs: powerpc64-archlinuxpower-rootfs/bin/sh
 
 $(eval $(call pacstrap-rootfs,powerpc64,archlinuxpower,base))
-powerpc64-archlinuxpower-chroot powerpc64-archlinuxpower-shell powerpc64-archlinuxpower-rootfs/bin/sh: export IDOFLAGS += /lib:/usr/lib
+powerpc64-archlinuxpower-chroot powerpc64-archlinuxpower-shell powerpc64-archlinuxpower-rootfs/bin/sh: export IDOFLAGS += --libdir
 
 install-support-powerpc64: install-support-powerpc64-pacman
 

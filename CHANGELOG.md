@@ -22,6 +22,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `dup3()`
 - Fix the segmentation fault if the `ld-iamroot.so` binary has no `DT_RUNPATH`
   attribute set
+- Fix the detection of the PowerPC64{,le} [glibc]'s dynamic loader
 
 ## [v22] - 2024-06-04
 

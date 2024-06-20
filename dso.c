@@ -2087,6 +2087,9 @@ static ssize_t __libiamroot_access(Elf64_Ehdr *ehdr, const char *ldso, int abi,
 	/* Generic dynamic loader (ld.so) */
 	if (!*ldso && abi == -1)
 		n = __snprintf(file, "%s/libiamroot.so", machine);
+	/* Former GNU/Linux dynamic loader (ld.so.<abi>) */
+	else if (!*ldso && abi != -1)
+		n = __snprintf(file, "%s/libiamroot.so.%i", machine, abi);
 	/* NetBSD dynamic loader (ld.<object>_so) */
 	else if (*ldso && abi == -1)
 		n = __snprintf(file, "%s/libiamroot.elf_so", machine);
@@ -3138,7 +3141,7 @@ hidden int __ldso(const char *path, char * const argv[], char *interparg[],
 	 *  - --inhibit-rpath since 2.0.94
 	 *  - --library-path since 2.0.92
 	 */
-	if (__is_gnu_linux(&ehdr, ldso, abi) == 1) {
+	if (__is_gnu_linux_ext(&ehdr, ldso, abi) == 1) {
 		shift = 1;
 		has_inhibit_rpath = 1;
 		has_inhibit_cache =

@@ -1604,6 +1604,17 @@ $(eval $(call dnf-rootfs,armv7hl,fedora,36))
 endif
 endif
 
+ifneq ($(shell command -v xbps-install 2>/dev/null),)
+ifneq ($(shell command -v aarch64-buildroot-linux-musl-gcc 2>/dev/null),)
+$(eval $(call void-rootfs,aarch64,20240314))
+endif
+
+ifneq ($(shell command -v arm-buildroot-linux-gnueabihf-gcc 2>/dev/null),)
+$(eval $(call void-rootfs,armv6l,20240314))
+$(eval $(call void-rootfs,armv7l,20240314))
+endif
+endif
+
 ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
 ifneq ($(shell command -v aarch64-buildroot-linux-musl-gcc 2>/dev/null),)
 aarch64-rootfs: aarch64-alpinelinux-rootfs

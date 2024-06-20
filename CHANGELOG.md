@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [unreleased]
 
+### Added
+
+- Chroot to an [Adélie Linux] x86_64 world
+- Chroot to an [Adélie Linux] i686 world
+- Chroot to an [Adélie Linux] aarch64 world
+- Chroot to an [Adélie Linux] armv7 world
+
 ### Changed
 
 - Output the filesystem type for the function `mount()`
@@ -1011,6 +1018,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 Initial release.
 
+[Adélie Linux]: https://www.adelielinux.org/
 [Alpine Linux]: https://alpinelinux.org/
 [Arch Linux 32]: https://archlinux32.org/
 [Arch Linux ARM]: https://archlinuxarm.org/

@@ -48,7 +48,7 @@ $(strip libiamroot.so \
 	$(if $(findstring :$(2):,:riscv64:                         ),$(if $(findstring :$(1):,:musl:),riscv64/libiamroot-musl-riscv64.so.1        ,riscv64/libiamroot-linux-riscv64-lp64d.so.1), \
 	$(if $(findstring :$(2):,:s390x:                           ),$(if $(findstring :$(1):,:musl:),s390x/libiamroot-musl-s390x.so.1            ,s390x/libiamroot.so.1                      ), \
 	$(if $(findstring :$(2):,:x86_64: :amd64:                  ),$(if $(findstring :$(1):,:musl:),x86_64/libiamroot-musl-x86_64.so.1          ,x86_64/libiamroot-linux-x86-64.so.2        ), \
-	$(if $(findstring :$(2):,:x86: :i386: :i686:               ),$(if $(findstring :$(1):,:musl:),i686/libiamroot-musl-i386.so.1              ,i686/libiamroot-linux.so.2                 ), \
+	$(if $(findstring :$(2):,:x86: :i386: :i686: :pmmx:        ),$(if $(findstring :$(1):,:musl:),i686/libiamroot-musl-i386.so.1              ,i686/libiamroot-linux.so.2                 ), \
 	$(error $(1)-$(2): No such library))))))))))))) \
 )
 endef
@@ -495,6 +495,19 @@ $(1)-void-musl-rootfs: | x86_64/libiamroot-linux-x86-64.so.2 x86_64/libiamroot-m
 
 void-$(1)-musl-ROOTFS-$(2).tar.xz:
 	wget http://repo-default.voidlinux.org/live/current/void-$(1)-musl-ROOTFS-$(2).tar.xz
+endef
+
+define adelie-mini-rootfs
+$(eval $(call chroot_shell,$(1),adelie-mini,/bin/sh,tar xf adelie-rootfs-mini-$(1)-1.0-beta5-$(2).tar.txz -C $(1)-adelie-mini-rootfs))
+$(1)-adelie-mini-chroot $(1)-adelie-mini-shell: | $(call libs,musl,$(1))
+
+$(1)-adelie-mini-rootfs: | $(1)-adelie-mini-rootfs/bin/sh
+$(1)-adelie-mini-rootfs/bin/sh: | $(call libs,musl,$(1)) adelie-rootfs-mini-$(1)-1.0-beta5-$(2).txz
+	mkdir -p $(1)-adelie-mini-rootfs
+	tar xf adelie-rootfs-mini-$(1)-1.0-beta5-$(2).txz -C $(1)-adelie-mini-rootfs
+
+adelie-rootfs-mini-$(1)-1.0-beta5-$(2).txz:
+	wget https://distfiles.adelielinux.org/adelie/1.0-beta5/iso/adelie-rootfs-mini-$(1)-1.0-beta5-$(2).txz
 endef
 
 define alpine-mini-rootfs
@@ -1160,6 +1173,10 @@ rootfs: alpinelinux-rootfs
 
 $(eval $(call void-musl-rootfs,x86_64,20240314))
 
+$(eval $(call adelie-mini-rootfs,x86_64,20240426))
+
+$(eval $(call adelie-mini-rootfs,pmmx,20240426))
+
 $(eval $(call alpine-mini-rootfs,x86_64,3.20))
 
 $(eval $(call alpine-mini-rootfs,x86,3.20))
@@ -1254,6 +1271,9 @@ x86_64-alpinelinux-3.20-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CUR
 x86_64-alpinelinux-edge-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-alpinelinux-edge-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-alpinelinux-edge-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-adelie-mini-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-adelie-mini-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+x86_64-adelie-mini-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-voidlinux-musl-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-voidlinux-musl-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
 x86_64-voidlinux-musl-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
@@ -1265,6 +1285,9 @@ x86_64/libiamroot-musl-x86_64.so.1: | gcompat/libgcompat.so.0
 x86-alpine-mini-shell: export IAMROOT_LIB_I686_MUSL_I386_1 := $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
 x86-alpine-mini-chroot: export IAMROOT_LIB_I686_MUSL_I386_1 := $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
 x86-alpine-mini-rootfs: export IAMROOT_LIB_I686_MUSL_I386_1 := $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
+pmmx-adelie-mini-shell: export IAMROOT_LIB_I686_MUSL_I386_1 := $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
+pmmx-adelie-mini-chroot: export IAMROOT_LIB_I686_MUSL_I386_1 := $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
+pmmx-adelie-mini-rootfs: export IAMROOT_LIB_I686_MUSL_I386_1 := $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
 i686/libiamroot-musl-i386.so.1: | gcompat-i386/libgcompat.so.0
 endif
 
@@ -1637,6 +1660,8 @@ endif
 
 ifneq ($(shell command -v alpine-make-rootfs 2>/dev/null),)
 ifneq ($(shell command -v aarch64-buildroot-linux-musl-gcc 2>/dev/null),)
+$(eval $(call adelie-mini-rootfs,aarch64,20240426))
+
 aarch64-rootfs: aarch64-alpinelinux-rootfs
 
 .PHONY: aarch64-alpinelinux-rootfs
@@ -1662,6 +1687,8 @@ $(eval $(call alpine-mini-rootfs,aarch64,3.20))
 endif
 
 ifneq ($(shell command -v arm-buildroot-linux-musleabihf-gcc 2>/dev/null),)
+$(eval $(call adelie-mini-rootfs,armv7,20240426))
+
 arm-rootfs: armhf-alpinelinux-rootfs
 
 .PHONY: armhf-alpinelinux-rootfs

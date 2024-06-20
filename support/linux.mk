@@ -1647,6 +1647,8 @@ $(eval $(call alpine-make-rootfs-rootfs,armhf,alpinelinux,3.19))
 $(eval $(call alpine-make-rootfs-rootfs,armhf,alpinelinux,3.20))
 $(eval $(call alpine-make-rootfs-rootfs,armhf,alpinelinux,edge))
 
+$(eval $(call alpine-mini-rootfs,armhf,3.20))
+
 .PHONY: armv7-alpinelinux-rootfs
 armv7-alpinelinux-rootfs: armv7-alpinelinux-3.14-rootfs
 armv7-alpinelinux-rootfs: armv7-alpinelinux-3.15-rootfs

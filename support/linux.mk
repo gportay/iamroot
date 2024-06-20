@@ -531,8 +531,8 @@ $(eval $(call chroot_shell,$(1),alpine-mini,/bin/sh,tar xf alpine-minirootfs-$(2
 $(1)-alpine-mini-chroot $(1)-alpine-mini-shell: | $(call libs,musl,$(1))
 
 $(if $(findstring 0,$$(COVERAGE)),, \
-$(1)-alpine-mini-chroot $(1)-alpine-mini-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 = $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-$(1)-alpine-mini-chroot $(1)-alpine-mini-shell: export IAMROOT_PATH_RESOLUTION_WARNING_IGNORE = $(CURDIR)/gcompat/libgcompat.so.0
+$(1)-alpine-mini-chroot $(1)-alpine-mini-shell $(1)-alpine-mini-rootfs/bin/sh: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 = $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+$(1)-alpine-mini-chroot $(1)-alpine-mini-shell $(1)-alpine-mini-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_WARNING_IGNORE = $(CURDIR)/gcompat/libgcompat.so.0
 )
 
 $(1)-alpine-mini-rootfs: | $(1)-alpine-mini-rootfs/bin/sh

@@ -1137,7 +1137,7 @@ install-support-x86_64-xbps:
 	install -D -m644 support/x86_64-xbps.conf $(DESTDIR)$(PREFIX)/share/iamroot/voidlinux/xbps.conf
 endif
 
-$(eval $(call void-rootfs,x86_64,20221001))
+$(eval $(call void-rootfs,x86_64,20240314))
 
 ifneq ($(shell command -v musl-gcc 2>/dev/null)$(if musl,$(LIBC),YES,),)
 .PHONY: alpine-test
@@ -1156,7 +1156,7 @@ alpine-test: $(call libs,musl,x86_64) | x86_64-alpine-mini-rootfs
 
 rootfs: alpinelinux-rootfs
 
-$(eval $(call void-musl-rootfs,x86_64,20221001))
+$(eval $(call void-musl-rootfs,x86_64,20240314))
 
 $(eval $(call alpine-mini-rootfs,x86_64,3.17))
 

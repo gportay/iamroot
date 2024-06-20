@@ -303,8 +303,8 @@ $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: ID
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export ALPINE_MAKE_ROOTFSFLAGS ?= --packages apk-tools --packages openrc --mirror-uri http://mirrors.edge.kernel.org/alpine
 
 $(if $(findstring 0,$$(COVERAGE)),, \
-$(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 = $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-$(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export IAMROOT_PATH_RESOLUTION_WARNING_IGNORE = $(CURDIR)/gcompat/libgcompat.so.0
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 = $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export IAMROOT_PATH_RESOLUTION_WARNING_IGNORE = $(CURDIR)/gcompat/libgcompat.so.0
 )
 
 $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/ash,alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --branch $(3) $$(ALPINE_MAKE_ROOTFSFLAGS)))

@@ -237,6 +237,10 @@ define zypper-rootfs
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|/usr/bin/chkstat
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys)/|^$(CURDIR)/.*\.gcda
 
+$(if $(findstring 0,$$(COVERAGE)),, \
+$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 = $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+)
+
 $(eval $(call chroot_shell,$(1),$(2),/bin/bash,zypper --root $(CURDIR)/$(1)-$(2)-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd))
 
 $(1)-$(2)-rootfs: | $(1)-$(2)-rootfs/bin/sh
@@ -256,6 +260,11 @@ endef
 define xbps-install-rootfs
 .PRECIOUS: $(1)-$(2)-rootfs/bin/sh
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
+
+$(if $(findstring 0,$$(COVERAGE)),, \
+$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 = $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+)
+
 $(eval $(call chroot_shell,$(1),$(2),/bin/bash,xbps-install -S -r $(1)-$(2)-rootfs -R http://repo-default.voidlinux.org/current base-system))
 
 $(1)-$(2)-rootfs: | $(1)-$(2)-rootfs/bin/sh
@@ -290,6 +299,10 @@ define alpine-make-rootfs-rootfs
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export APK_OPTS += --arch $(1) --no-progress
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: IDOFLAGS += --preserve-env=APK_OPTS
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export ALPINE_MAKE_ROOTFSFLAGS ?= --packages apk-tools --packages openrc --mirror-uri http://mirrors.edge.kernel.org/alpine
+
+$(if $(findstring 0,$$(COVERAGE)),, \
+$(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 = $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+)
 
 $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/ash,alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --branch $(3) $$(ALPINE_MAKE_ROOTFSFLAGS)))
 
@@ -513,6 +526,10 @@ endef
 define alpine-mini-rootfs
 $(eval $(call chroot_shell,$(1),alpine-mini,/bin/sh,tar xf alpine-minirootfs-$(2).0-$(1).tar.gz -C $(1)-alpine-mini-rootfs))
 $(1)-alpine-mini-chroot $(1)-alpine-mini-shell: | $(call libs,musl,$(1))
+
+$(if $(findstring 0,$$(COVERAGE)),, \
+$(1)-alpine-mini-chroot $(1)-alpine-mini-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 = $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+)
 
 $(1)-alpine-mini-rootfs: | $(1)-alpine-mini-rootfs/bin/sh
 $(1)-alpine-mini-rootfs/bin/sh: | $(call libs,musl,$(1)) alpine-minirootfs-$(2).0-$(1).tar.gz
@@ -1264,53 +1281,8 @@ clean-gcompat:
 	rm -f gcompat-i386/ld-*.so*
 
 ifneq ($(COVERAGE),0)
-x86_64-alpine-mini-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpine-mini-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpine-mini-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.14-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.14-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.14-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.15-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.15-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.15-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.16-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.16-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.16-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.17-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.17-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.17-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.18-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.18-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.18-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.19-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.19-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.19-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.20-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.20-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-3.20-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-edge-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-edge-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-alpinelinux-edge-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-adelie-mini-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-adelie-mini-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-adelie-mini-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-voidlinux-musl-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-voidlinux-musl-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-voidlinux-musl-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-void-musl-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-void-musl-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-void-musl-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
 x86_64/libiamroot-musl-x86_64.so.1: | gcompat/libgcompat.so.0
 
-x86-alpine-mini-shell: export IAMROOT_LIB_I686_MUSL_I386_1 := $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
-x86-alpine-mini-chroot: export IAMROOT_LIB_I686_MUSL_I386_1 := $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
-x86-alpine-mini-rootfs: export IAMROOT_LIB_I686_MUSL_I386_1 := $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
-pmmx-adelie-mini-shell: export IAMROOT_LIB_I686_MUSL_I386_1 := $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
-pmmx-adelie-mini-chroot: export IAMROOT_LIB_I686_MUSL_I386_1 := $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
-pmmx-adelie-mini-rootfs: export IAMROOT_LIB_I686_MUSL_I386_1 := $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
-x86_64-adelielinux-current-shell: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-adelielinux-current-chroot: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
-x86_64-adelielinux-current-rootfs: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 := $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
 i686/libiamroot-musl-i386.so.1: | gcompat-i386/libgcompat.so.0
 endif
 
@@ -1341,12 +1313,6 @@ $(eval $(call alpine-make-rootfs-rootfs,x86,alpinelinux,edge))
 
 $(eval $(call alpine-make-rootfs-adelie-rootfs,pmmx,adelielinux,current))
 pmmx-adelielinux-current-rootfs/bin/busybox: export ALPINE_MAKE_ROOTFSFLAGS = --no-default-pkgs --packages adelie-core --repositories-file support/adelielinux-repositories --mirror-uri https://distfiles.adelielinux.org/adelie
-
-ifneq ($(COVERAGE),0)
-pmmx-adelielinux-current-shell: export IAMROOT_LIB_I686_MUSL_I386_1 := $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
-pmmx-adelielinux-current-chroot: export IAMROOT_LIB_I686_MUSL_I386_1 := $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
-pmmx-adelielinux-current-rootfs: export IAMROOT_LIB_I686_MUSL_I386_1 := $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
-endif
 endif
 endif
 endif

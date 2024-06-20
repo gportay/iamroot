@@ -298,9 +298,9 @@ endef
 
 define alpine-make-rootfs-rootfs
 .PRECIOUS: $(1)-$(2)-$(3)-rootfs/bin/busybox
-$(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export APK_OPTS = --arch $(1) --no-progress
-$(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: IDOFLAGS += --preserve-env=APK_OPTS
-$(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export ALPINE_MAKE_ROOTFSFLAGS = --packages apk-tools --packages openrc
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export APK_OPTS = --arch $(1) --no-progress
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: IDOFLAGS += --preserve-env=APK_OPTS
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export ALPINE_MAKE_ROOTFSFLAGS = --packages apk-tools --packages openrc
 
 $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/ash,alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --mirror-uri http://mirrors.edge.kernel.org/alpine --branch $(3)))
 

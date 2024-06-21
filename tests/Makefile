@@ -641,6 +641,9 @@ endif
 ifeq ($(KVER),7.4)
 	install -m444 /usr/lib/libc.so.97.1 /usr/lib/libpthread.so.27.1 $(DESTDIR)/usr/lib
 endif
+ifeq ($(KVER),7.5)
+	install -m444 /usr/lib/libc.so.99.0 /usr/lib/libpthread.so.27.1 $(DESTDIR)/usr/lib
+endif
 	install -m444 /usr/libexec/ld.so $(DESTDIR)/usr/libexec
 	install -m444 libiamnotroot.so $(DESTDIR)/usr/local/lib
 endif

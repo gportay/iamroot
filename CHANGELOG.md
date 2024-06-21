@@ -33,6 +33,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the segmentation fault if the `ld-iamroot.so` binary has no `DT_RUNPATH`
   attribute set
 - Fix the detection of the PowerPC64{,le} [glibc]'s dynamic loader
+- Fix the corrupted setting of the environnement variable `IAMROOT_LIB` if the
+  value comes from the environnement
 
 ## [v22] - 2024-06-04
 

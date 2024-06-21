@@ -423,7 +423,7 @@ hidden int __exec_sh(const char *path, char * const *argv, char *interparg[],
 	 * variable IAMROOT_ORIGIN if set first, and in the iamroot library
 	 * directory then.
 	 */
-	origin = getenv("IAMROOT_ORIGIN");
+	origin = _getenv("IAMROOT_ORIGIN");
 	if (origin) {
 		ssize_t siz;
 

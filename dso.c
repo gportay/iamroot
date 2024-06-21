@@ -2158,7 +2158,7 @@ static ssize_t __getlibiamroot(Elf64_Ehdr *ehdr, const char *ldso, int abi,
 	 * Try in the iamroot directory set by the environment variable
 	 * IAMROOT_ORIGIN if set, and in the iamroot library directory then.
 	 */
-	origin = getenv("IAMROOT_ORIGIN");
+	origin = _getenv("IAMROOT_ORIGIN");
 	if (origin) {
 		ssize_t siz;
 
@@ -2607,7 +2607,7 @@ static const char *__getdeflib(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 
 static const char *__getinhibit_rpath()
 {
-	return getenv("IAMROOT_INHIBIT_RPATH") ?: "";
+	return _getenv("IAMROOT_INHIBIT_RPATH") ?: "";
 }
 
 static ssize_t __ld_lib_path(const char *, char *, size_t, off_t);

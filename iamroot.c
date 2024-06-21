@@ -412,7 +412,7 @@ static char *__getexec()
 }
 
 hidden int __exec_sh(const char *path, char * const *argv, char *interparg[],
-	      char *buf, size_t bufsiz)
+		     char *buf, size_t bufsiz)
 {
 	char *exec_sh = NULL;
 	const char *origin;

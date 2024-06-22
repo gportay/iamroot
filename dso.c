@@ -285,6 +285,9 @@ static char *__path_strncat(char *dst, const char *src, size_t dstsiz)
 {
 	size_t len;
 
+	if (!src)
+		return __set_errno_and_perror(EINVAL, NULL);
+
 	len = strlen(src);
 	if (*dst)
 		len++;

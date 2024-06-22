@@ -1359,7 +1359,7 @@ aarch64-rootfs: aarch64-archlinuxarm-rootfs
 aarch64-archlinuxarm-rootfs: aarch64-archlinuxarm-rootfs/bin/sh
 
 $(eval $(call pacstrap-rootfs,aarch64,archlinuxarm,base))
-aarch64-archlinuxarm-chroot aarch64-archlinuxarm-shell aarch64-archlinuxarm-rootfs/bin/sh: IDOFLAGS += --libbdir
+aarch64-archlinuxarm-chroot aarch64-archlinuxarm-shell aarch64-archlinuxarm-rootfs/bin/sh: IDOFLAGS += --libdir
 
 install-support-aarch64: install-support-aarch64-pacman
 

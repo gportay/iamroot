@@ -1570,6 +1570,7 @@ ppc64el-debian-rootfs: ppc64el-debian-bookworm-rootfs
 ppc64el-debian-rootfs: ppc64el-debian-trixie-rootfs
 ppc64el-debian-rootfs: ppc64el-debian-sid-rootfs
 
+ppc64el-debian-buster-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.debian.org/debian
 $(eval $(call debootstrap-rootfs,ppc64el,debian,buster))
 $(eval $(call debootstrap-rootfs,ppc64el,debian,bullseye))
 $(eval $(call debootstrap-rootfs,ppc64el,debian,bookworm))

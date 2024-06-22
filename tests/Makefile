@@ -33,6 +33,7 @@ all: test-chown
 all: test-chroot
 all: test-close_range
 all: test-closefrom
+all: test-creat
 all: test-ctermid
 all: test-dl_iterate_phdr
 all: test-dlmopen
@@ -200,11 +201,13 @@ test-library: export NLSPATH = /usr/lib/nls/msg/%L/%N
 test-library: export LIBRARY = $(IAMROOT_ORIGIN)/libiamroot.so
 test-library: | rootfs
 	rm -Rf rootfs/tmp/* rootfs/dev/*
-	touch rootfs/tmp/file0 rootfs/tmp/wtmp rootfs/tmp/wtmpx
+	touch rootfs/tmp/file0
 	ln -s file0 rootfs/tmp/symlink0
 ifneq (,$(findstring $(OS),GNU/Linux Linux FreeBSD))
 	env LD_PRELOAD=$(LIBRARY) sh -c "unset LD_PRELOAD; chroot rootfs env"
 endif
+	env LD_PRELOAD=$(LIBRARY) PATH=$(CURDIR)/rootfs/usr/bin                                                                                            test-creat                rootfs/tmp/wtmp          00644
+	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs       test-creat                /tmp/wtmpx               00644
 	env LD_PRELOAD=$(LIBRARY) PATH=$(CURDIR)/rootfs/usr/bin                                                                                            test-access               rootfs/tmp/file0         0
 	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs       test-access               /tmp/file0               0
 	-env LD_PRELOAD=$(LIBRARY) PATH=$(CURDIR)/rootfs/usr/bin                                                                                           test-acct                 rootfs/var/log/pacct

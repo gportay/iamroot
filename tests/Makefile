@@ -21,12 +21,6 @@ export LANG
 IAMROOT_ORIGIN ?= $(CURDIR)
 export IAMROOT_ORIGIN
 
-ifneq ($(COVERAGE),0)
-test-%: override CFLAGS += -fprofile-arcs -ftest-coverage
-test-%: override LDFLAGS += -fprofile-arcs
-test-%: override LDLIBS += -lgcov
-endif
-
 .PHONY: all
 all: libiamnotroot.so
 all: test-__xmknod

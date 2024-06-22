@@ -330,7 +330,7 @@ ifneq ($(OS),Linux)
 	env LD_PRELOAD=$(LIBRARY) PATH=$(CURDIR)/rootfs/usr/bin NLSPATH=$(CURDIR)/rootfs/usr/lib/nls/msg/%L/%N                                             test-catopen              test.cat                                 0
 	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs       test-catopen              test.cat                                 0
 endif
-ifeq ($(OS),FreeBSD)
+ifneq (,$(findstring $(OS),GNU/Linux Linux FreeBSD))
 	env LD_PRELOAD=$(LIBRARY) PATH=$(CURDIR)/rootfs/usr/bin                                                                                            test-close_range 3 3 0                                                     2>&1 | tee /dev/stderr | grep -q '^stdout$$'
 	env LD_PRELOAD=$(LIBRARY) PATH=$(CURDIR)/rootfs/usr/bin                                                                                            test-close_range 3 3 0                                                     2>&1 | tee /dev/stderr | grep -q '^stderr$$' || true
 	env LD_PRELOAD=$(LIBRARY) PATH=$(CURDIR)/rootfs/usr/bin                                                                                            test-close_range 2 3 0                                                     2>&1 | tee /dev/stderr | grep -q '^stdout$$'

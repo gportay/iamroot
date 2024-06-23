@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -31,21 +31,11 @@ int next___fxstat64(int ver, int fd, struct stat64 *statbuf)
 
 int __fxstat64(int ver, int fd, struct stat64 *statbuf)
 {
-	uid_t uid;
-	gid_t gid;
 	int ret;
 
 	ret = next___fxstat64(ver, fd, statbuf);
 	if (ret == -1)
 		goto exit;
-
-	uid = __fget_uid(fd);
-	if (uid == (uid_t)-1)
-		statbuf->st_uid = 0;
-
-	gid = __fget_gid(fd);
-	if (gid == (gid_t)-1)
-		statbuf->st_gid = 0;
 
 	__fst_mode(fd, statbuf);
 	__fst_uid(fd, statbuf);

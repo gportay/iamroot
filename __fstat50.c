@@ -30,21 +30,11 @@ int next___fstat50(int fd, struct stat *statbuf)
 
 int __fstat50(int fd, struct stat *statbuf)
 {
-	uid_t uid;
-	gid_t gid;
 	int ret;
 
 	ret = next___fstat50(fd, statbuf);
 	if (ret == -1)
 		goto exit;
-
-	uid = __fget_uid(fd);
-	if (uid == (uid_t)-1)
-		statbuf->st_uid = 0;
-
-	gid = __fget_gid(fd);
-	if (gid == (gid_t)-1)
-		statbuf->st_gid = 0;
 
 	__fst_mode(fd, statbuf);
 	__fst_uid(fd, statbuf);

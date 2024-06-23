@@ -620,36 +620,48 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 	({ uid_t u = __get_uid((path)); \
 	   if (u != (uid_t)-1) { \
 	     statbuf->st_uid = u; \
+	   } else { \
+	     statbuf->st_uid = 0; \
 	   } })
 
 #define __fst_uid(fd, statbuf) \
 	({ uid_t u = __fget_uid((fd)); \
 	   if (u != (uid_t)-1) { \
 	     statbuf->st_uid = u; \
+	   } else { \
+	     statbuf->st_uid = 0; \
 	   } })
 
 #define __stx_uid(path, statxbuf) \
 	({ uid_t u = __get_uid((path)); \
 	   if (u != (uid_t)-1) { \
 	     statxbuf->stx_uid = u; \
+	   } else { \
+	     statxbuf->stx_uid = 0; \
 	   } })
 
 #define __st_gid(path, statbuf) \
 	({ gid_t g = __get_gid((path)); \
 	   if (g != (gid_t)-1) { \
 	     statbuf->st_gid = g; \
+	   } else { \
+	     statbuf->st_gid = 0; \
 	   } })
 
 #define __fst_gid(fd, statbuf) \
 	({ gid_t g = __fget_gid((fd)); \
 	   if (g != (gid_t)-1) { \
 	     statbuf->st_gid = g; \
+	   } else { \
+	     statbuf->st_gid = 0; \
 	   } })
 
 #define __stx_gid(path, statxbuf) \
 	({ gid_t g = __get_gid((path)); \
 	   if (g != (gid_t)-1) { \
 	     statxbuf->stx_gid = g; \
+	   } else { \
+	     statxbuf->stx_gid = 0; \
 	   } })
 #else
 #define __get_mode(path) ({ (mode_t)-1; })

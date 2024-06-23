@@ -45,8 +45,6 @@ int statx(int dfd, const char *path, int atflags, unsigned int mask,
 	char buf[PATH_MAX];
 	int ret = -1;
 	ssize_t siz;
-	uid_t uid;
-	gid_t gid;
 
 	siz = path_resolution(dfd, path, buf, sizeof(buf), atflags);
 	if (siz == -1)
@@ -55,14 +53,6 @@ int statx(int dfd, const char *path, int atflags, unsigned int mask,
 	ret = next_statx(dfd, buf, atflags, mask, statxbuf);
 	if (ret == -1)
 		goto exit;
-
-	uid = __get_uid(buf);
-	if (uid == (uid_t)-1)
-		statxbuf->stx_uid = 0;
-
-	gid = __get_gid(buf);
-	if (gid == (gid_t)-1)
-		statxbuf->stx_gid = 0;
 
 	__stx_mode(buf, statxbuf);
 	__stx_uid(buf, statxbuf);

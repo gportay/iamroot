@@ -40,8 +40,6 @@ int __fstatat64_time64(int dfd, const char *path, struct stat64 *statbuf,
 	char buf[PATH_MAX];
 	int ret = -1;
 	ssize_t siz;
-	uid_t uid;
-	gid_t gid;
 
 	siz = path_resolution(dfd, path, buf, sizeof(buf), atflags);
 	if (siz == -1)
@@ -50,14 +48,6 @@ int __fstatat64_time64(int dfd, const char *path, struct stat64 *statbuf,
 	ret = next___fstatat64_time64(dfd, buf, statbuf, atflags);
 	if (ret == -1)
 		goto exit;
-
-	uid = __get_uid(buf);
-	if (uid == (uid_t)-1)
-		statbuf->st_uid = 0;
-
-	gid = __get_gid(buf);
-	if (gid == (gid_t)-1)
-		statbuf->st_gid = 0;
 
 	__st_mode(buf, statbuf);
 	__st_uid(buf, statbuf);

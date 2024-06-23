@@ -1127,9 +1127,6 @@ Retrieving: dracut.rpm [done]
 (XXX/XXX) Installing: dracut [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/dracut.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
 Retrieving: zypper (openSUSE-Leap-Oss) (XXX/XXX), XXX.X MiB    
-Retrieving: zypper.rpm [...error]
-Location 'http://download.opensuse.org/distribution/leap/15.4/repo/oss/x86_64/zypper-1.14.52-150400.1.9.x86_64.rpm' is temporarily unaccessible.
-Retrying in 30 seconds...
 Retrieving: zypper.rpm [done]
 (XXX/XXX) Installing: zypper [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/zypper.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
@@ -1157,6 +1154,8 @@ Created symlink /etc/systemd/user/basic.target.wants/systemd-tmpfiles-setup.serv
 %posttrans(rpm) script output:
 rmdir: failed to remove 'var/lib/rpm': Directory not empty
 warning: %posttrans(rpm) scriptlet failed, exit status 1
+%posttrans(systemd-presets-branding-openSUSE) script output:
+%posttrans(openSUSE-release) script output:
 %posttrans(kbd) script output:
 Please run "/usr/bin/dracut -f --regenerate-all" as soon as your system is complete.
 make[1]: *** [makefile:XXX: x86_64-opensuse-leap-rootfs/bin/sh] Error 107

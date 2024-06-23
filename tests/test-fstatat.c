@@ -28,7 +28,7 @@ int main(int argc, char * const argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	if (argc > 2)
+	if (argc > 3)
 		flags = strtoul(argv[3], NULL, 0);
 
 	if (!__strneq(argv[1], "-")) {

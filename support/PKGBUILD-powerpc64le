@@ -1,7 +1,7 @@
 # Maintainer: Gaël PORTAY <gael.portay@gmail.com>
 
 pkgname=iamroot-powerpc64le-git
-pkgver=22
+pkgver=23
 pkgrel=1
 pkgdesc='Emulating the syscall chroot(2) in an unpriviliged process (powerpc64le)'
 arch=('x86_64')

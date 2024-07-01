@@ -150,10 +150,9 @@ installing npth...
 installing libsysprof-capture...
 installing glib2...
 Optional dependencies for glib2
+    dconf: GSettings storage backend
+    glib2-devel: development tools
     gvfs: most gio functionality
-    libelf: gresource inspection tool [pending]
-    python: gdbus-codegen, glib-genmarshal, glib-mkenums, gtester-report [pending]
-    python-packaging: gdbus-codegen
 installing json-c...
 installing tpm2-tss...
 installing libsecret...
@@ -278,9 +277,9 @@ Creating group 'tss' with GID XXX.
 Creating user 'tss' (tss user for tpm2) with UID XXX and GID XXX.
 Creating group 'uuidd' with GID XXX.
 Creating user 'uuidd' (n/a) with UID XXX and GID XXX.
-Created symlink /etc/systemd/system/getty.target.wants/getty@tty1.service → /usr/lib/systemd/system/getty@.service.
-Created symlink /etc/systemd/system/multi-user.target.wants/remote-fs.target → /usr/lib/systemd/system/remote-fs.target.
-Created symlink /etc/systemd/system/sockets.target.wants/systemd-userdbd.socket → /usr/lib/systemd/system/systemd-userdbd.socket.
+Created symlink '/etc/systemd/system/getty.target.wants/getty@tty1.service' → '/usr/lib/systemd/system/getty@.service'.
+Created symlink '/etc/systemd/system/multi-user.target.wants/remote-fs.target' → '/usr/lib/systemd/system/remote-fs.target'.
+Created symlink '/etc/systemd/system/sockets.target.wants/systemd-userdbd.socket' → '/usr/lib/systemd/system/systemd-userdbd.socket'.
 Optional dependencies for systemd
     libmicrohttpd: systemd-journal-gatewayd and systemd-journal-remote
     quota-tools: kernel-level quota management

@@ -43,7 +43,7 @@ The following NEW packages will be installed:
   libc6 libcap-ng0 libcap2 libcrypt1 libdb5.3t64 libdebconfclient0 libgcc-s1
   libgmp10 liblzma5 libmd0 libmount1 libpam-modules libpam-modules-bin
   libpam-runtime libpam0g libpcre2-8-0 libselinux1 libsmartcols1 libssl3t64
-  libsystemd0 libtinfo6 libudev1 libuuid1 libzstd1 login mawk ncurses-base
+  libsystemd0 libtinfo6 libudev1 libuuid1 libzstd1 mawk ncurses-base
   ncurses-bin perl-base sed sysvinit-utils tar util-linux zlib1g
 XXX upgraded, XXX newly installed, XXX to remove and XXX not upgraded.
 Need to get XXX.X xB of archives.
@@ -108,14 +108,20 @@ After this operation, XXX.X xB of additional disk space will be used.
 /usr/bin/dpkg --status-fd XXX --no-triggers --configure gzip:amd64 
 /usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/hostname.deb 
 /usr/bin/dpkg --status-fd XXX --no-triggers --configure hostname:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/ncurses-bin.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure ncurses-bin:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libcrypt1.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure libcrypt1:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/perl-base.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure perl-base:amd64 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/sed.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --configure sed:amd64 
 /usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libaudit-common.deb 
 /usr/bin/dpkg --status-fd XXX --no-triggers --configure libaudit-common:all 
 /usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libcap-ng0.deb 
 /usr/bin/dpkg --status-fd XXX --no-triggers --configure libcap-ng0:amd64 
 /usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libaudit1.deb 
 /usr/bin/dpkg --status-fd XXX --no-triggers --configure libaudit1:amd64 
-/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libcrypt1.deb 
-/usr/bin/dpkg --status-fd XXX --no-triggers --configure libcrypt1:amd64 
 /usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libdb5.3t64.deb 
 /usr/bin/dpkg --status-fd XXX --no-triggers --configure libdb5.3t64:amd64 
 /usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/debconf.deb 
@@ -128,14 +134,6 @@ After this operation, XXX.X xB of additional disk space will be used.
 /usr/bin/dpkg --status-fd XXX --no-triggers --configure libpam-modules:amd64 
 /usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libpam-runtime.deb 
 /usr/bin/dpkg --status-fd XXX --no-triggers --configure libpam-runtime:all 
-/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/login.deb 
-/usr/bin/dpkg --status-fd XXX --no-triggers --configure login:amd64 
-/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/ncurses-bin.deb 
-/usr/bin/dpkg --status-fd XXX --no-triggers --configure ncurses-bin:amd64 
-/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/perl-base.deb 
-/usr/bin/dpkg --status-fd XXX --no-triggers --configure perl-base:amd64 
-/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/sed.deb 
-/usr/bin/dpkg --status-fd XXX --no-triggers --configure sed:amd64 
 /usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libblkid1.deb 
 /usr/bin/dpkg --status-fd XXX --no-triggers --configure libblkid1:amd64 
 /usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libmount1.deb 
@@ -425,6 +423,58 @@ dpkg: regarding .../hostname.deb containing hostname, pre-dependency problem:
 dpkg: warning: ignoring pre-dependency problem!
 Preparing to unpack .../hostname.deb ...
 Unpacking hostname ...
+Selecting previously unselected package ncurses-bin.
+dpkg: regarding .../ncurses-bin.deb containing ncurses-bin, pre-dependency problem:
+ ncurses-bin pre-depends on libc6
+  libc6 is unpacked, but has never been configured.
+
+dpkg: warning: ignoring pre-dependency problem!
+dpkg: regarding .../ncurses-bin.deb containing ncurses-bin, pre-dependency problem:
+ ncurses-bin pre-depends on libtinfo6
+  libtinfo6 is unpacked, but has never been configured.
+
+dpkg: warning: ignoring pre-dependency problem!
+Preparing to unpack .../ncurses-bin.deb ...
+Unpacking ncurses-bin ...
+Selecting previously unselected package libcrypt1.
+Preparing to unpack .../libcrypt1.deb ...
+Unpacking libcrypt1 ...
+Selecting previously unselected package perl-base.
+dpkg: regarding .../perl-base.deb containing perl-base, pre-dependency problem:
+ perl-base pre-depends on libc6
+  libc6 is unpacked, but has never been configured.
+
+dpkg: warning: ignoring pre-dependency problem!
+dpkg: regarding .../perl-base.deb containing perl-base, pre-dependency problem:
+ perl-base pre-depends on libcrypt1
+  libcrypt1 is unpacked, but has never been configured.
+
+dpkg: warning: ignoring pre-dependency problem!
+dpkg: regarding .../perl-base.deb containing perl-base, pre-dependency problem:
+ perl-base pre-depends on dpkg
+  dpkg is unpacked, but has never been configured.
+
+dpkg: warning: ignoring pre-dependency problem!
+Preparing to unpack .../perl-base.deb ...
+Unpacking perl-base ...
+Selecting previously unselected package sed.
+dpkg: regarding .../archives/sed.deb containing sed, pre-dependency problem:
+ sed pre-depends on libacl1
+  libacl1 is unpacked, but has never been configured.
+
+dpkg: warning: ignoring pre-dependency problem!
+dpkg: regarding .../archives/sed.deb containing sed, pre-dependency problem:
+ sed pre-depends on libc6
+  libc6 is unpacked, but has never been configured.
+
+dpkg: warning: ignoring pre-dependency problem!
+dpkg: regarding .../archives/sed.deb containing sed, pre-dependency problem:
+ sed pre-depends on libselinux1
+  libselinux1 is unpacked, but has never been configured.
+
+dpkg: warning: ignoring pre-dependency problem!
+Preparing to unpack .../archives/sed.deb ...
+Unpacking sed ...
 Selecting previously unselected package libaudit-common.
 Preparing to unpack .../libaudit-common.deb ...
 Unpacking libaudit-common ...
@@ -434,9 +484,6 @@ Unpacking libcap-ng0 ...
 Selecting previously unselected package libaudit1.
 Preparing to unpack .../libaudit1.deb ...
 Unpacking libaudit1 ...
-Selecting previously unselected package libcrypt1.
-Preparing to unpack .../libcrypt1.deb ...
-Unpacking libcrypt1 ...
 Selecting previously unselected package libdb5.3t64.
 Preparing to unpack .../libdb5.3t64.deb ...
 Unpacking libdb5.3t64 ...
@@ -502,88 +549,6 @@ Unpacking libpam-modules ...
 Selecting previously unselected package libpam-runtime.
 Preparing to unpack .../libpam-runtime.deb ...
 Unpacking libpam-runtime ...
-Selecting previously unselected package login.
-dpkg: regarding .../login.deb containing login, pre-dependency problem:
- login pre-depends on libpam-modules
-  libpam-modules is unpacked, but has never been configured.
-
-dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../login.deb containing login, pre-dependency problem:
- login pre-depends on libpam-runtime
-  libpam-runtime is unpacked, but has never been configured.
-
-dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../login.deb containing login, pre-dependency problem:
- login pre-depends on libaudit1
-  libaudit1 is unpacked, but has never been configured.
-
-dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../login.deb containing login, pre-dependency problem:
- login pre-depends on libc6
-  libc6 is unpacked, but has never been configured.
-
-dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../login.deb containing login, pre-dependency problem:
- login pre-depends on libcrypt1
-  libcrypt1 is unpacked, but has never been configured.
-
-dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../login.deb containing login, pre-dependency problem:
- login pre-depends on libpam0g
-  libpam0g is unpacked, but has never been configured.
-
-dpkg: warning: ignoring pre-dependency problem!
-Preparing to unpack .../login.deb ...
-Unpacking login ...
-Selecting previously unselected package ncurses-bin.
-dpkg: regarding .../ncurses-bin.deb containing ncurses-bin, pre-dependency problem:
- ncurses-bin pre-depends on libc6
-  libc6 is unpacked, but has never been configured.
-
-dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../ncurses-bin.deb containing ncurses-bin, pre-dependency problem:
- ncurses-bin pre-depends on libtinfo6
-  libtinfo6 is unpacked, but has never been configured.
-
-dpkg: warning: ignoring pre-dependency problem!
-Preparing to unpack .../ncurses-bin.deb ...
-Unpacking ncurses-bin ...
-Selecting previously unselected package perl-base.
-dpkg: regarding .../perl-base.deb containing perl-base, pre-dependency problem:
- perl-base pre-depends on libc6
-  libc6 is unpacked, but has never been configured.
-
-dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../perl-base.deb containing perl-base, pre-dependency problem:
- perl-base pre-depends on libcrypt1
-  libcrypt1 is unpacked, but has never been configured.
-
-dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../perl-base.deb containing perl-base, pre-dependency problem:
- perl-base pre-depends on dpkg
-  dpkg is unpacked, but has never been configured.
-
-dpkg: warning: ignoring pre-dependency problem!
-Preparing to unpack .../perl-base.deb ...
-Unpacking perl-base ...
-Selecting previously unselected package sed.
-dpkg: regarding .../archives/sed.deb containing sed, pre-dependency problem:
- sed pre-depends on libacl1
-  libacl1 is unpacked, but has never been configured.
-
-dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../archives/sed.deb containing sed, pre-dependency problem:
- sed pre-depends on libc6
-  libc6 is unpacked, but has never been configured.
-
-dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../archives/sed.deb containing sed, pre-dependency problem:
- sed pre-depends on libselinux1
-  libselinux1 is unpacked, but has never been configured.
-
-dpkg: warning: ignoring pre-dependency problem!
-Preparing to unpack .../archives/sed.deb ...
-Unpacking sed ...
 Selecting previously unselected package libblkid1.
 Preparing to unpack .../libblkid1.deb ...
 Unpacking libblkid1 ...
@@ -600,6 +565,16 @@ Selecting previously unselected package libuuid1.
 Preparing to unpack .../libuuid1.deb ...
 Unpacking libuuid1 ...
 Selecting previously unselected package util-linux.
+dpkg: regarding .../util-linux.deb containing util-linux, pre-dependency problem:
+ util-linux pre-depends on libpam-modules
+  libpam-modules is unpacked, but has never been configured.
+
+dpkg: warning: ignoring pre-dependency problem!
+dpkg: regarding .../util-linux.deb containing util-linux, pre-dependency problem:
+ util-linux pre-depends on libpam-runtime
+  libpam-runtime is unpacked, but has never been configured.
+
+dpkg: warning: ignoring pre-dependency problem!
 dpkg: regarding .../util-linux.deb containing util-linux, pre-dependency problem:
  util-linux pre-depends on libblkid1
   libblkid1 is unpacked, but has never been configured.
@@ -719,18 +694,17 @@ Setting up findutils ...
 Setting up grep ...
 Setting up gzip ...
 Setting up hostname ...
+Setting up ncurses-bin ...
+Setting up libcrypt1 ...
+Setting up perl-base ...
+Setting up sed ...
 Setting up libcap-ng0 ...
 Setting up libaudit1 ...
-Setting up libcrypt1 ...
 Setting up libdb5.3t64 ...
 Setting up libpam0g ...
 Setting up libpam-modules-bin ...
 Setting up libpam-modules ...
 Setting up libpam-runtime ...
-Setting up login ...
-Setting up ncurses-bin ...
-Setting up perl-base ...
-Setting up sed ...
 Setting up libblkid1 ...
 Setting up libmount1 ...
 Setting up libsmartcols1 ...
@@ -768,15 +742,14 @@ Building dependency tree...
 Reading state information...
 debconf is already the newest version (1.5.86).
 libpam-runtime is already the newest version (1.5.3-7).
-mawk is already the newest version (1.3.4.20240123-1).
+mawk is already the newest version (1.3.4.20240622-1).
 libpam-modules is already the newest version (1.5.3-7).
 libpam-modules-bin is already the newest version (1.5.3-7).
 The following additional packages will be installed:
-  dmsetup libapparmor1 libapt-pkg6.0t64 libbpf1 libbsd0 libcap2-bin
-  libcom-err2 libcryptsetup12 libdevmapper1.02.1 libedit2 libelf1t64
-  libext2fs2t64 libfdisk1 libffi8 libgcrypt20 libgnutls30t64 libgpg-error0
-  libgssapi-krb5-2 libhogweed6t64 libidn2-0 libjansson4 libjson-c5
-  libk5crypto3 libkeyutils1 libkmod2 libkrb5-3 libkrb5support0
+  libapparmor1 libapt-pkg6.0t64 libbpf1 libbsd0 libcap2-bin libcom-err2
+  libedit2 libelf1t64 libext2fs2t64 libfdisk1 libffi8 libgcrypt20
+  libgnutls30t64 libgpg-error0 libgssapi-krb5-2 libhogweed6t64 libidn2-0
+  libjansson4 libk5crypto3 libkeyutils1 libkmod2 libkrb5-3 libkrb5support0
   liblocale-gettext-perl liblz4-1 libmnl0 libncursesw6 libnettle8t64
   libnewt0.52 libnftables1 libnftnl11 libp11-kit0 libpopt0 libproc2-0
   libreadline8t64 libseccomp2 libsemanage-common libsemanage2 libsepol2
@@ -789,32 +762,31 @@ Suggested packages:
   | gnupg1 powermgmt-base libarchive-dev anacron checksecurity supercat bat
   gpart parted fuse2fs e2fsck-static gnupg ppp rdnssd python3 resolvconf
   avahi-autoipd isc-dhcp-client-ddns rng-tools gnutls-bin krb5-doc krb5-user
-  libarchive13t64 libdw1t64 libfido2-1 libip4tc2 libpwquality1 libqrencode4
-  libtss2-rc0t64 bsd-mailx | mailx nfs-common hunspell firewalld readline-doc
-  systemd-container systemd-homed systemd-userdbd systemd-boot
-  systemd-resolved libtss2-tcti-device0 polkitd indent
+  libarchive13t64 libcryptsetup12 libdw1t64 libfido2-1 libip4tc2 libpwquality1
+  libqrencode4 libtss2-rc0t64 bsd-mailx | mailx nfs-common hunspell firewalld
+  readline-doc systemd-container systemd-homed systemd-userdbd systemd-boot
+  systemd-resolved systemd-repart libtss2-tcti-device0 polkitd indent
 Recommended packages:
   ca-certificates default-mta | mail-transport-agent e2fsprogs-l10n libpam-cap
   libgpg-error-l10n krb5-locales libgpm2 libfribidi0 psmisc
   default-dbus-system-bus | dbus-system-bus systemd-timesyncd | time-daemon
-  libpam-systemd libnss-systemd laptop-detect xxd
+  systemd-cryptsetup libpam-systemd libnss-systemd laptop-detect xxd
 The following NEW packages will be installed:
   adduser apt apt-utils cpio cron cron-daemon-common debconf-i18n
-  debian-archive-keyring dmidecode dmsetup e2fsprogs fdisk gpgv ifupdown init
-  iproute2 iputils-ping isc-dhcp-client isc-dhcp-common kmod less libapparmor1
-  libapt-pkg6.0t64 libbpf1 libbsd0 libcap2-bin libcom-err2 libcryptsetup12
-  libdevmapper1.02.1 libedit2 libelf1t64 libext2fs2t64 libfdisk1 libffi8
-  libgcrypt20 libgnutls30t64 libgpg-error0 libgssapi-krb5-2 libhogweed6t64
-  libidn2-0 libjansson4 libjson-c5 libk5crypto3 libkeyutils1 libkmod2
-  libkrb5-3 libkrb5support0 liblocale-gettext-perl liblz4-1 libmnl0
-  libncursesw6 libnettle8t64 libnewt0.52 libnftables1 libnftnl11 libp11-kit0
-  libpopt0 libproc2-0 libreadline8t64 libseccomp2 libsemanage-common
-  libsemanage2 libsepol2 libslang2 libss2 libstdc++6 libsystemd-shared
-  libtasn1-6 libtext-charwidth-perl libtext-iconv-perl libtext-wrapi18n-perl
-  libtirpc-common libtirpc3t64 libunistring5 libxtables12 libxxhash0 logrotate
-  logsave mount nano netbase nftables passwd procps readline-common
-  sensible-utils systemd systemd-sysv tasksel tasksel-data tzdata udev
-  vim-common vim-tiny whiptail
+  debian-archive-keyring dmidecode e2fsprogs fdisk gpgv ifupdown init iproute2
+  iputils-ping isc-dhcp-client isc-dhcp-common kmod less libapparmor1
+  libapt-pkg6.0t64 libbpf1 libbsd0 libcap2-bin libcom-err2 libedit2 libelf1t64
+  libext2fs2t64 libfdisk1 libffi8 libgcrypt20 libgnutls30t64 libgpg-error0
+  libgssapi-krb5-2 libhogweed6t64 libidn2-0 libjansson4 libk5crypto3
+  libkeyutils1 libkmod2 libkrb5-3 libkrb5support0 liblocale-gettext-perl
+  liblz4-1 libmnl0 libncursesw6 libnettle8t64 libnewt0.52 libnftables1
+  libnftnl11 libp11-kit0 libpopt0 libproc2-0 libreadline8t64 libseccomp2
+  libsemanage-common libsemanage2 libsepol2 libslang2 libss2 libstdc++6
+  libsystemd-shared libtasn1-6 libtext-charwidth-perl libtext-iconv-perl
+  libtext-wrapi18n-perl libtirpc-common libtirpc3t64 libunistring5
+  libxtables12 libxxhash0 login logrotate logsave mount nano netbase nftables
+  passwd procps readline-common sensible-utils systemd systemd-sysv tasksel
+  tasksel-data tzdata udev vim-common vim-tiny whiptail
 XXX upgraded, XXX newly installed, XXX to remove and XXX not upgraded.
 Need to get XXX.X xB of archives.
 After this operation, XXX.X xB of additional disk space will be used.
@@ -855,21 +827,6 @@ Unpacking mount ...
 Selecting previously unselected package libapparmor1.
 Preparing to unpack .../libapparmor1.deb ...
 Unpacking libapparmor1 ...
-Selecting previously unselected package dmsetup.
-Preparing to unpack .../dmsetup.deb ...
-Unpacking dmsetup ...
-Selecting previously unselected package libdevmapper1.02.1.
-Preparing to unpack .../libdevmapper1.02.1.deb ...
-Unpacking libdevmapper1.02.1 ...
-Selecting previously unselected package libjson-c5.
-Preparing to unpack .../libjson-c5.deb ...
-Unpacking libjson-c5 ...
-Selecting previously unselected package libcryptsetup12.
-Preparing to unpack .../libcryptsetup12.deb ...
-Unpacking libcryptsetup12 ...
-Selecting previously unselected package libfdisk1.
-Preparing to unpack .../libfdisk1.deb ...
-Unpacking libfdisk1 ...
 Selecting previously unselected package libseccomp2.
 Preparing to unpack .../libseccomp2.deb ...
 Unpacking libseccomp2 ...
@@ -879,6 +836,12 @@ Unpacking libsystemd-shared ...
 Selecting previously unselected package systemd.
 Preparing to unpack .../systemd.deb ...
 Unpacking systemd ...
+Selecting previously unselected package libbsd0.
+Preparing to unpack .../libbsd0.deb ...
+Unpacking libbsd0 ...
+Selecting previously unselected package login.
+Preparing to unpack .../login.deb ...
+Unpacking login ...
 Selecting previously unselected package libsemanage-common.
 Preparing to unpack .../libsemanage-common.deb ...
 Unpacking libsemanage-common ...
@@ -902,19 +865,9 @@ Preparing to unpack .../sensible-utils.deb ...
 Unpacking sensible-utils ...
 Chrooting into $ROOT/amd64-mobian-trixie-rootfs/
 Setting up libapparmor1 ...
-Setting up libjson-c5 ...
-Setting up libfdisk1 ...
 Setting up libseccomp2 ...
 Setting up libsystemd-shared ...
 Setting up mount ...
-Setting up libsemanage-common ...
-Setting up libsepol2 ...
-Setting up libsemanage2 ...
-Setting up passwd ...
-Shadow passwords are now on.
-Setting up adduser ...
-Setting up libdevmapper1.02.1 ...
-Setting up libcryptsetup12 ...
 Setting up systemd ...
 Created symlink '/etc/systemd/system/getty.target.wants/getty@tty1.service' → '/usr/lib/systemd/system/getty@.service'.
 Created symlink '/etc/systemd/system/multi-user.target.wants/remote-fs.target' → '/usr/lib/systemd/system/remote-fs.target'.
@@ -924,9 +877,130 @@ Creating group 'systemd-journal' with GID XXX.
 Creating group 'systemd-network' with GID XXX.
 Creating user 'systemd-network' (systemd Network Management) with UID XXX and GID XXX.
 /usr/lib/tmpfiles.d/legacy.conf: Duplicate line for path "/run/lock", ignoring.
+Setting up libbsd0 ...
+Setting up login ...
+Setting up libsemanage-common ...
+Setting up libsepol2 ...
+Setting up libsemanage2 ...
+Setting up passwd ...
+no matching password file entry in /etc/shadow
+add user 'root' in /etc/shadow? No
+no matching password file entry in /etc/shadow
+add user 'daemon' in /etc/shadow? No
+no matching password file entry in /etc/shadow
+add user 'bin' in /etc/shadow? No
+no matching password file entry in /etc/shadow
+add user 'sys' in /etc/shadow? No
+no matching password file entry in /etc/shadow
+add user 'sync' in /etc/shadow? No
+no matching password file entry in /etc/shadow
+add user 'games' in /etc/shadow? No
+no matching password file entry in /etc/shadow
+add user 'man' in /etc/shadow? No
+no matching password file entry in /etc/shadow
+add user 'lp' in /etc/shadow? No
+no matching password file entry in /etc/shadow
+add user 'mail' in /etc/shadow? No
+no matching password file entry in /etc/shadow
+add user 'news' in /etc/shadow? No
+no matching password file entry in /etc/shadow
+add user 'uucp' in /etc/shadow? No
+no matching password file entry in /etc/shadow
+add user 'proxy' in /etc/shadow? No
+no matching password file entry in /etc/shadow
+add user 'www-data' in /etc/shadow? No
+no matching password file entry in /etc/shadow
+add user 'backup' in /etc/shadow? No
+no matching password file entry in /etc/shadow
+add user 'list' in /etc/shadow? No
+no matching password file entry in /etc/shadow
+add user 'irc' in /etc/shadow? No
+no matching password file entry in /etc/shadow
+add user '_apt' in /etc/shadow? No
+no matching password file entry in /etc/shadow
+add user 'nobody' in /etc/shadow? No
+pwck: no changes
+no matching group file entry in /etc/gshadow
+add group 'root' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'daemon' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'bin' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'sys' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'adm' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'tty' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'disk' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'lp' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'mail' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'news' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'uucp' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'man' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'proxy' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'kmem' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'dialout' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'fax' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'voice' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'cdrom' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'floppy' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'tape' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'sudo' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'audio' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'dip' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'www-data' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'backup' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'operator' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'list' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'irc' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'src' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'shadow' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'utmp' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'video' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'sasl' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'plugdev' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'staff' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'games' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'users' in /etc/gshadow? No
+no matching group file entry in /etc/gshadow
+add group 'nogroup' in /etc/gshadow? No
+grpck: no changes
+Shadow passwords are now on.
+Setting up adduser ...
 Setting up cron-daemon-common ...
 Creating group 'crontab' with GID XXX.
-Setting up dmsetup ...
 Chrooting into $ROOT/amd64-mobian-trixie-rootfs/
 Selecting previously unselected package cron.
 (Reading database ... XXX files and directories currently installed.)
@@ -1026,6 +1100,9 @@ Unpacking debconf-i18n ...
 Selecting previously unselected package dmidecode.
 Preparing to unpack .../dmidecode.deb ...
 Unpacking dmidecode ...
+Selecting previously unselected package libfdisk1.
+Preparing to unpack .../libfdisk1.deb ...
+Unpacking libfdisk1 ...
 Selecting previously unselected package libncursesw6.
 Preparing to unpack .../libncursesw6.deb ...
 Unpacking libncursesw6 ...
@@ -1125,9 +1202,6 @@ Unpacking libnftnl11 ...
 Selecting previously unselected package libnftables1.
 Preparing to unpack .../libnftables1.deb ...
 Unpacking libnftables1 ...
-Selecting previously unselected package libbsd0.
-Preparing to unpack .../libbsd0.deb ...
-Unpacking libbsd0 ...
 Selecting previously unselected package libedit2.
 Preparing to unpack .../libedit2.deb ...
 Unpacking libedit2 ...
@@ -1168,6 +1242,7 @@ Setting up libgpg-error0 ...
 Setting up init ...
 Setting up liblz4-1 ...
 Setting up libtirpc-common ...
+Setting up libedit2 ...
 Setting up debian-archive-keyring ...
 Setting up less ...
 Setting up libgcrypt20 ...
@@ -1193,6 +1268,7 @@ Setting up libncursesw6 ...
 Setting up libk5crypto3 ...
 Setting up libxtables12 ...
 Setting up logsave ...
+Setting up libfdisk1 ...
 Setting up nano ...
 update-alternatives: using /bin/nano to provide /usr/bin/editor (editor) in auto mode
 update-alternatives: using /bin/nano to provide /usr/bin/pico (pico) in auto mode
@@ -1207,7 +1283,6 @@ Setting up netbase ...
 Setting up isc-dhcp-common ...
 Setting up libkrb5-3 ...
 Setting up dmidecode ...
-Setting up libbsd0 ...
 Setting up readline-common ...
 Setting up libstdc++6 ...
 Setting up liblocale-gettext-perl ...
@@ -1217,7 +1292,6 @@ Setting up libpopt0 ...
 Setting up logrotate ...
 Created symlink '/etc/systemd/system/timers.target.wants/logrotate.timer' → '/usr/lib/systemd/system/logrotate.timer'.
 Setting up libnewt0.52 ...
-Setting up libedit2 ...
 Setting up cron ...
 Running in chroot, ignoring request.
 invoke-rc.d: policy-rc.d denied execution of start.

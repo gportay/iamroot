@@ -18,6 +18,24 @@ extern int next_dl_iterate_phdr(int (*)(struct dl_phdr_info *, size_t, void *),
 
 #include "iamroot.h"
 
+static int __is_in_path_callback(const char *path, void *user)
+{
+	const char *p = (const char *)user;
+
+	return strneq(path, p, PATH_MAX);
+}
+
+static int __is_in_iamrootlib(const char *pathname)
+{
+	char *lib;
+	
+	lib = _getenv("IAMROOT_LIB");
+	if (!lib)
+		return 0;
+
+	return __path_iterate(lib, __is_in_path_callback, (void *)pathname);
+}
+
 #if defined __powerpc64__ && defined __GLIBC__
 /*
  * Stolen from glibc (sysdeps/unix/sysv/linux/powerpc/libc-start.c)
@@ -93,6 +111,10 @@ static int __dl_iterate_phdr_callback(struct dl_phdr_info *info, size_t size,
 
 	/* is an iamroot library? */
 	if (__strneq(__basename(path), "libiamroot"))
+		return 0;
+
+	/* is an IAMROOT_LIB? */
+	if (__is_in_iamrootlib(path))
 		return 0;
 
 	__warning("%s: is not in root directory '%s'\n", path, root);

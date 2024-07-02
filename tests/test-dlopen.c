@@ -14,8 +14,8 @@
 
 int main(int argc, char * const argv[])
 {
-	int flags = RTLD_LAZY, ret = EXIT_FAILURE;
 	const char *path = NULL;
+	int flags = RTLD_LAZY;
 	void *handle;
 
 	if (argc < 1) {
@@ -35,13 +35,11 @@ int main(int argc, char * const argv[])
 	handle = dlopen(path, flags);
 	if (handle == NULL) {
 		__dlperror("dlopen");
-		return ret;
+		return EXIT_FAILURE;
 	}
-
-	ret = EXIT_SUCCESS;
 
 	if (dlclose(handle))
 		__dlperror("dlclose");
 
-	return ret;
+	return EXIT_SUCCESS;
 }

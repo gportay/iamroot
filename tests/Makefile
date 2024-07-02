@@ -698,7 +698,7 @@ ifeq ($(OS),GNU/Linux)
 	echo "/usr/lib64/iar" >$(DESTDIR)/etc/ld.so.conf
 	ldconfig -v -r $(DESTDIR)
 endif
-	install -d 755 $(DESTDIR)/usr/lib/
+	install -d -m755 $(DESTDIR)/usr/lib/
 	install -m 644 os-release $(DESTDIR)/usr/lib/
 	ln -sf ../usr/lib/os-release $(DESTDIR)/etc/os-release
 	install -d -m755 $(DESTDIR)/proc

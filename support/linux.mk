@@ -2230,6 +2230,14 @@ alpinelinux-support: support/x86_64-alpinelinux-3.18-rootfs.txt
 alpinelinux-support: support/x86_64-alpinelinux-3.19-rootfs.txt
 alpinelinux-support: support/x86_64-alpinelinux-3.20-rootfs.txt
 alpinelinux-support: support/x86_64-alpinelinux-edge-rootfs.txt
+alpinelinux-support: support/x86-alpinelinux-3.14-rootfs.txt
+alpinelinux-support: support/x86-alpinelinux-3.15-rootfs.txt
+alpinelinux-support: support/x86-alpinelinux-3.16-rootfs.txt
+alpinelinux-support: support/x86-alpinelinux-3.17-rootfs.txt
+alpinelinux-support: support/x86-alpinelinux-3.18-rootfs.txt
+alpinelinux-support: support/x86-alpinelinux-3.19-rootfs.txt
+alpinelinux-support: support/x86-alpinelinux-3.20-rootfs.txt
+alpinelinux-support: support/x86-alpinelinux-edge-rootfs.txt
 
 log: alpinelinux-log
 
@@ -2242,25 +2250,49 @@ alpinelinux-log: x86_64-alpinelinux-3.18-rootfs.log
 alpinelinux-log: x86_64-alpinelinux-3.19-rootfs.log
 alpinelinux-log: x86_64-alpinelinux-3.20-rootfs.log
 alpinelinux-log: x86_64-alpinelinux-edge-rootfs.log
+alpinelinux-log: x86-alpinelinux-3.14-rootfs.log
+alpinelinux-log: x86-alpinelinux-3.15-rootfs.log
+alpinelinux-log: x86-alpinelinux-3.16-rootfs.log
+alpinelinux-log: x86-alpinelinux-3.17-rootfs.log
+alpinelinux-log: x86-alpinelinux-3.18-rootfs.log
+alpinelinux-log: x86-alpinelinux-3.19-rootfs.log
+alpinelinux-log: x86-alpinelinux-3.20-rootfs.log
+alpinelinux-log: x86-alpinelinux-edge-rootfs.log
 
 legacy-support: support/x86_64-alpinelinux-3.14-rootfs.txt
 legacy-support: support/x86_64-alpinelinux-3.15-rootfs.txt
 legacy-support: support/x86_64-alpinelinux-3.16-rootfs.txt
+legacy-support: support/x86-alpinelinux-3.14-rootfs.txt
+legacy-support: support/x86-alpinelinux-3.15-rootfs.txt
+legacy-support: support/x86-alpinelinux-3.16-rootfs.txt
 legacy-log: x86_64-alpinelinux-3.14-rootfs.log
 legacy-log: x86_64-alpinelinux-3.15-rootfs.log
 legacy-log: x86_64-alpinelinux-3.16-rootfs.log
+legacy-log: x86-alpinelinux-3.14-rootfs.log
+legacy-log: x86-alpinelinux-3.15-rootfs.log
+legacy-log: x86-alpinelinux-3.16-rootfs.log
 
 stable-support: support/x86_64-alpinelinux-3.17-rootfs.txt
 stable-support: support/x86_64-alpinelinux-3.18-rootfs.txt
 stable-support: support/x86_64-alpinelinux-3.19-rootfs.txt
 stable-support: support/x86_64-alpinelinux-3.20-rootfs.txt
+stable-support: support/x86-alpinelinux-3.17-rootfs.txt
+stable-support: support/x86-alpinelinux-3.18-rootfs.txt
+stable-support: support/x86-alpinelinux-3.19-rootfs.txt
+stable-support: support/x86-alpinelinux-3.20-rootfs.txt
 stable-log: x86_64-alpinelinux-3.17-rootfs.log
 stable-log: x86_64-alpinelinux-3.18-rootfs.log
 stable-log: x86_64-alpinelinux-3.19-rootfs.log
 stable-log: x86_64-alpinelinux-3.20-rootfs.log
+stable-log: x86-alpinelinux-3.17-rootfs.log
+stable-log: x86-alpinelinux-3.18-rootfs.log
+stable-log: x86-alpinelinux-3.19-rootfs.log
+stable-log: x86-alpinelinux-3.20-rootfs.log
 
 unstable-support: support/x86_64-alpinelinux-edge-rootfs.txt
+unstable-support: support/x86-alpinelinux-edge-rootfs.txt
 unstable-log: x86_64-alpinelinux-edge-rootfs.log
+unstable-log: x86-alpinelinux-edge-rootfs.log
 
 support: adelielinux-support
 

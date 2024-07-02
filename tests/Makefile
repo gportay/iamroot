@@ -699,7 +699,7 @@ ifeq ($(OS),GNU/Linux)
 	ldconfig -v -r $(DESTDIR)
 endif
 	install -d -m755 $(DESTDIR)/usr/lib/
-	install -m 644 os-release $(DESTDIR)/usr/lib/
+	install -m644 os-release $(DESTDIR)/usr/lib/
 	ln -sf ../usr/lib/os-release $(DESTDIR)/etc/os-release
 	install -d -m755 $(DESTDIR)/proc
 	install -d -m755 $(DESTDIR)/sys

@@ -114,6 +114,8 @@ libiamroot.so: connect.o
 libiamroot.so: creat.o
 libiamroot.so: ctermid.o
 libiamroot.so: dl_iterate_phdr.o
+libiamroot.so: dladdr.o
+libiamroot.so: dladdr1.o
 libiamroot.so: dlmopen.o
 libiamroot.so: dlopen.o
 libiamroot.so: dso.o

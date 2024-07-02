@@ -224,6 +224,7 @@ int __setrootdir(const char *);
 const char *__getrootdir();
 int __chrootdir(const char *);
 int __inchroot();
+const char *__skiprootdir(const char *);
 char *__striprootdir(char *);
 
 int __getno_color();

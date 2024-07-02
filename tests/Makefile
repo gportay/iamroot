@@ -36,6 +36,8 @@ all: test-closefrom
 all: test-creat
 all: test-ctermid
 all: test-dl_iterate_phdr
+all: test-dladdr
+all: test-dladdr1
 all: test-dlmopen
 all: test-dlopen
 all: test-endgrent
@@ -187,6 +189,7 @@ libiamnotroot.so: iamnotroot.o
 ifneq (,$(findstring $(OS),GNU/Linux Linux FreeBSD))
 test-dlopen: override LDLIBS += -ldl
 test-dlmopen: override LDLIBS += -ldl
+test-dladdr: override LDLIBS += -ldl
 endif
 
 test-path_resolution: libiamnotroot.so
@@ -414,6 +417,18 @@ ifeq ($(OS),GNU/Linux)
 	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib:/usr/lib64/iar PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs ld_library_path=$(CURDIR)/rootfs/usr/lib test-dlmopen              libiamnotroot.so
 	env LD_PRELOAD=$(LIBRARY) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)                                                                                                                    test-dlmopen              rootfs/usr/lib64/iar/libiamnotroot.so
 	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs ld_library_path=$(CURDIR)/rootfs/usr/lib                test-dlmopen              /usr/lib64/iar/libiamnotroot.so
+endif
+	env LD_PRELOAD=$(LIBRARY) PATH=$(CURDIR)/rootfs/usr/bin:/usr/bin                                                                                   test-dladdr               dladdr                                                | tee /dev/stderr | grep '^$(LIBRARY)$$'
+	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs       test-dladdr               dladdr                                                | tee /dev/stderr | grep '^$(LIBRARY)$$'
+	env LD_PRELOAD=$(LIBRARY):libiamnotroot.so PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)                                                                                                   test-dladdr  unused           | tee /dev/stderr | grep '^$(CURDIR)/libiamnotroot.so$$'
+	cd rootfs/ && env LD_PRELOAD=$(LIBRARY):libiamnotroot.so LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib:$(CURDIR)/rootfs/usr/lib64/iar PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs         test-dladdr  unused           | tee /dev/stderr | grep '^/usr/lib64/iar/libiamnotroot.so$$'
+	cd rootfs/ && env LD_PRELOAD=$(LIBRARY):$(CURDIR)/rootfs/usr/lib64/iar/libiamnotroot.so LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs         test-dladdr  unused           | tee /dev/stderr | grep '^/usr/lib64/iar/libiamnotroot.so$$'
+ifeq ($(OS),GNU/Linux)
+	env LD_PRELOAD=$(LIBRARY) PATH=$(CURDIR)/rootfs/usr/bin:/usr/bin                                                                                   test-dladdr1              dladdr1                                               | tee /dev/stderr | grep '^$(LIBRARY):$(LIBRARY)$$'
+	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs       test-dladdr1              dladdr1                                               | tee /dev/stderr | grep '^$(LIBRARY):$(LIBRARY)$$'
+	env LD_PRELOAD=$(LIBRARY):libiamnotroot.so PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)                                                                                                   test-dladdr1 unused           | tee /dev/stderr | grep '^$(CURDIR)/libiamnotroot.so:$(CURDIR)/libiamnotroot.so$$'
+	cd rootfs/ && env LD_PRELOAD=$(LIBRARY):libiamnotroot.so LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib:$(CURDIR)/rootfs/usr/lib64/iar PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs         test-dladdr1 unused           | tee /dev/stderr | grep '^/usr/lib64/iar/libiamnotroot.so:$(CURDIR)/rootfs/usr/lib64/iar/libiamnotroot.so$$'
+	cd rootfs/ && env LD_PRELOAD=$(LIBRARY):$(CURDIR)/rootfs/usr/lib64/iar/libiamnotroot.so LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs         test-dladdr1 unused           | tee /dev/stderr | grep '^/usr/lib64/iar/libiamnotroot.so:$(CURDIR)/rootfs/usr/lib64/iar/libiamnotroot.so$$'
 endif
 	! env LD_PRELOAD=$(LIBRARY) PATH=$(CURDIR)/rootfs/usr/bin                                                                                          test-dl_iterate_phdr                                                            | grep -v '$(CURDIR)/rootfs/usr/bin/test-dl_iterate_phdr' | grep '$(CURDIR)/rootfs'
 	cd rootfs/ && ! env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs     test-dl_iterate_phdr                                                            | grep -v '$(CURDIR)/rootfs/usr/bin/test-dl_iterate_phdr' | grep '$(CURDIR)/rootfs'

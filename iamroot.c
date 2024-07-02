@@ -1142,6 +1142,30 @@ hidden int __inchroot()
 	return !streq(__getrootdir(), "/");
 }
 
+hidden const char *__skiprootdir(const char *path)
+{
+	const char *root;
+	const char *ret;
+	size_t len;
+
+	if (!path || !*path)
+		return __set_errno(EINVAL, NULL);
+
+	root = __getrootdir();
+	if (streq(root, "/"))
+		return path;
+
+	ret = path;
+	len = __strlen(root);
+	if (strneq(root, ret, len))
+		ret = &ret[len];
+
+	if (!*ret)
+		ret = "/";
+
+	return ret;
+}
+
 hidden char *__striprootdir(char *path)
 {
 	const char *root;

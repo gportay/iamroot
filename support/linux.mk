@@ -239,6 +239,7 @@ $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_PATH_RE
 
 $(if $(findstring 0,$$(COVERAGE)),, \
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 = $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_LIB_I686_MUSL_I386_1 = $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_WARNING_IGNORE = $(CURDIR)/gcompat/libgcompat.so.0
 )
 
@@ -264,6 +265,7 @@ $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_PATH_RE
 
 $(if $(findstring 0,$$(COVERAGE)),, \
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 = $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+$(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_LIB_I686_MUSL_I386_1 = $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
 $(1)-$(2)-chroot $(1)-$(2)-shell $(1)-$(2)-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_WARNING_IGNORE = $(CURDIR)/gcompat/libgcompat.so.0
 )
 
@@ -283,6 +285,13 @@ endef
 define xbps-install-musl-rootfs
 .PRECIOUS: $(1)-$(2)-musl-rootfs/bin/sh
 $(1)-$(2)-musl-chroot $(1)-$(2)-musl-shell $(1)-$(2)-musl-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_IGNORE = ^/(proc|sys|dev)/|^$(CURDIR)/.*\.gcda
+
+$(if $(findstring 0,$$(COVERAGE)),, \
+$(1)-$(2)-musl-chroot $(1)-$(2)-musl-shell $(1)-$(2)-musl-rootfs/bin/sh: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 = $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+$(1)-$(2)-musl-chroot $(1)-$(2)-musl-shell $(1)-$(2)-musl-rootfs/bin/sh: export IAMROOT_LIB_I686_MUSL_I386_1 = $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
+$(1)-$(2)-musl-chroot $(1)-$(2)-musl-shell $(1)-$(2)-musl-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_WARNING_IGNORE = $(CURDIR)/gcompat/libgcompat.so.0
+)
+
 $(eval $(call chroot_shell,$(1),$(2)-musl,/bin/bash,xbps-install -S -r $(1)-$(2)-musl-rootfs -R http://repo-default.voidlinux.org/current/musl base-system))
 
 $(1)-$(2)-musl-rootfs: | $(1)-$(2)-musl-rootfs/bin/sh
@@ -304,6 +313,7 @@ $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: ex
 
 $(if $(findstring 0,$$(COVERAGE)),, \
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 = $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+$(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export IAMROOT_LIB_I686_MUSL_I386_1 = $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
 $(1)-$(2)-$(3)-chroot $(1)-$(2)-$(3)-shell $(1)-$(2)-$(3)-rootfs/bin/busybox: export IAMROOT_PATH_RESOLUTION_WARNING_IGNORE = $(CURDIR)/gcompat/libgcompat.so.0
 )
 
@@ -532,6 +542,7 @@ $(1)-alpine-mini-chroot $(1)-alpine-mini-shell: | $(call libs,musl,$(1))
 
 $(if $(findstring 0,$$(COVERAGE)),, \
 $(1)-alpine-mini-chroot $(1)-alpine-mini-shell $(1)-alpine-mini-rootfs/bin/sh: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 = $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
+$(1)-alpine-mini-chroot $(1)-alpine-mini-shell $(1)-alpine-mini-rootfs/bin/sh: export IAMROOT_LIB_I686_MUSL_I386_1 = $(CURDIR)/i686/libiamroot-musl-i386.so.1:$(CURDIR)/gcompat-i386/libgcompat.so.0
 $(1)-alpine-mini-chroot $(1)-alpine-mini-shell $(1)-alpine-mini-rootfs/bin/sh: export IAMROOT_PATH_RESOLUTION_WARNING_IGNORE = $(CURDIR)/gcompat/libgcompat.so.0
 )
 

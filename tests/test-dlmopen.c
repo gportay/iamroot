@@ -16,9 +16,10 @@
 int main(int argc, char * const argv[])
 {
 	int flags = RTLD_LAZY, ret = EXIT_FAILURE;
+	const char *path = NULL;
 	void *handle;
 
-	if (argc < 2) {
+	if (argc < 1) {
 		fprintf(stderr, "Too few arguments\n");
 		exit(EXIT_FAILURE);
 	} else if (argc > 3) {
@@ -26,10 +27,13 @@ int main(int argc, char * const argv[])
 		exit(EXIT_FAILURE);
 	}
 
+	if (argc > 1)
+		path = argv[1];
+
 	if (argc > 2)
 		flags = strtoul(argv[2], NULL, 0);
 
-	handle = dlmopen(LM_ID_BASE, argv[1], flags);
+	handle = dlmopen(LM_ID_BASE, path, flags);
 	if (handle == NULL) {
 		__dlperror("dlmopen");
 		return ret;

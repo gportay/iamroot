@@ -351,7 +351,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-- Intercept the function `__getcwd_chk()`, `__getgroups_chk()`,
+- Intercept the functions `__getcwd_chk()`, `__getgroups_chk()`,
   `__getwd_chk()`, `__ptsname_r_chk()`, `__readlink_chk()`,
   `__readlinkat_chk()`, `__realpath_chk()`, `__ttyname_r_chk()`,
   `fts64_children()`, `fts64_close()`, `fts64_open()`, `fts64_read()`,

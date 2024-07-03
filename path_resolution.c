@@ -232,8 +232,7 @@ static void __jim_regex_perror(const char *s, regex_t *regex, int err)
 	dprintf(STDERR_FILENO, "%s: %s\n", s, buf);
 }
 
-__attribute__((constructor,visibility("hidden")))
-void path_resolution_init()
+constructor void path_resolution_init()
 {
 	static regex_t regex_ignore, regex_warning_ignore;
 	const char *ignore, *warning_ignore;
@@ -268,8 +267,7 @@ warning_ignore:
 	re_warning_ignore = &regex_warning_ignore;
 }
 
-__attribute__((destructor,visibility("hidden")))
-void path_resolution_fini()
+destructor void path_resolution_fini()
 {
 	/*
 	 * Workaround: reset the root directory for later destructors call such

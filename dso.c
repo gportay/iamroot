@@ -179,8 +179,7 @@ static void __jim_regex_perror(const char *s, regex_t *regex, int err)
 	dprintf(STDERR_FILENO, "%s: %s\n", s, buf);
 }
 
-__attribute__((constructor,visibility("hidden")))
-void dso_init()
+constructor void dso_init()
 {
 	static regex_t regex_ldso, regex_lib;
 	const char *ldso = "^ld(64|-[[:alnum:]._-]+)?\\.so(\\.[[:digit:]]+)?$";
@@ -211,8 +210,7 @@ lib:
 	re_lib = &regex_lib;
 }
 
-__attribute__((destructor,visibility("hidden")))
-void dso_fini()
+destructor void dso_fini()
 {
 	if (!re_lib)
 		goto ldso;

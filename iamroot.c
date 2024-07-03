@@ -1218,8 +1218,7 @@ static void __jim_regex_perror(const char *s, regex_t *regex, int err)
 	dprintf(DEBUG_FILENO, "%s: %s\n", s, buf);
 }
 
-__attribute__((constructor,visibility("hidden")))
-void verbosef_init()
+constructor void verbosef_init()
 {
 	static regex_t regex_ignore;
 	const char *ignore;
@@ -1238,8 +1237,7 @@ void verbosef_init()
 	re_ignore = &regex_ignore;
 }
 
-__attribute__((destructor,visibility("hidden")))
-void verbosef_fini()
+destructor void verbosef_fini()
 {
 	if (!re_ignore)
 		return;

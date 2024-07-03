@@ -35,8 +35,7 @@ static void __jim_regex_perror(const char *s, regex_t *regex, int err)
 	dprintf(STDERR_FILENO, "%s: %s\n", s, buf);
 }
 
-__attribute__((constructor,visibility("hidden")))
-void execve_init()
+constructor void execve_init()
 {
 	static regex_t regex_ignore;
 	const char *ignore;
@@ -63,8 +62,7 @@ void execve_init()
 	re_ignore = &regex_ignore;
 }
 
-__attribute__((destructor,visibility("hidden")))
-void execve_fini()
+destructor void execve_fini()
 {
 	if (!re_ignore)
 		return;

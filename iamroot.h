@@ -7,6 +7,9 @@
 #ifndef _IAMROOT_H_
 #define _IAMROOT_H_
 
+#define constructor __attribute__((constructor,__visibility__("hidden")))
+#define destructor __attribute__((destructor,__visibility__("hidden")))
+
 /*
  * Stolen from musl (src/include/features.h)
  *

@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <wait.h>
+#include <sys/wait.h>
 
 #define errExit(msg)    do { perror(msg); \
 			     exit(EXIT_FAILURE); } while (0)

@@ -21,7 +21,7 @@
 			do { errno = en; perror(msg); \
 			     exit(EXIT_FAILURE); } while (0)
 
-char **environ;
+extern char **environ;
 
 /*
  * Stolen and hacked from man-pages (man3/ftw.3)

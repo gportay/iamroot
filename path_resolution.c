@@ -220,18 +220,6 @@ toolong:
 static regex_t *re_ignore;
 static regex_t *re_warning_ignore;
 
-static void __jim_regex_perror(const char *s, regex_t *regex, int err)
-{
-	char buf[128];
-	jim_regerror(err, regex, buf, sizeof(buf));
-	if (!s) {
-		dprintf(STDERR_FILENO, "%s\n", buf);
-		return;
-	}
-
-	dprintf(STDERR_FILENO, "%s: %s\n", s, buf);
-}
-
 constructor void path_resolution_init()
 {
 	static regex_t regex_ignore, regex_warning_ignore;
@@ -247,7 +235,7 @@ constructor void path_resolution_init()
 
 	ret = jim_regcomp(&regex_ignore, ignore, REG_EXTENDED);
 	if (ret != 0) {
-		__jim_regex_perror("jim_regcomp", &regex_ignore, ret);
+		jim_regex_perror("jim_regcomp", &regex_ignore, ret);
 		return;
 	}
 
@@ -260,7 +248,7 @@ warning_ignore:
 
 	ret = jim_regcomp(&regex_warning_ignore, warning_ignore, REG_EXTENDED);
 	if (ret != 0) {
-		__jim_regex_perror("jim_regcomp", &regex_warning_ignore, ret);
+		jim_regex_perror("jim_regcomp", &regex_warning_ignore, ret);
 		return;
 	}
 
@@ -302,7 +290,7 @@ static int ignore(const char *path)
 
 	ret = jim_regexec(re_ignore, path, 1, &match, 0);
 	if (ret > REG_NOMATCH) {
-		__jim_regex_perror("jim_regexec", re_ignore, ret);
+		jim_regex_perror("jim_regexec", re_ignore, ret);
 		return 0;
 	}
 
@@ -319,7 +307,7 @@ static int warning_ignore(const char *path)
 
 	ret = jim_regexec(re_warning_ignore, path, 1, &match, 0);
 	if (ret > REG_NOMATCH) {
-		__jim_regex_perror("jim_regexec", re_warning_ignore, ret);
+		jim_regex_perror("jim_regexec", re_warning_ignore, ret);
 		return 0;
 	}
 

@@ -102,6 +102,7 @@ int jim_regcomp(regex_t *preg, const char *regex, int cflags);
 int jim_regexec(regex_t  *preg,  const  char *string, size_t nmatch, regmatch_t pmatch[], int eflags);
 size_t jim_regerror(int errcode, const regex_t *preg, char *errbuf,  size_t errbuf_size);
 void jim_regfree(regex_t *preg);
+void jim_regex_perror(const char *s, regex_t *preg, int err);
 
 #ifdef __cplusplus
 }

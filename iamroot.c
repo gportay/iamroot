@@ -1206,18 +1206,6 @@ hidden int __getdebug_fd()
 
 static regex_t *re_ignore;
 
-static void __jim_regex_perror(const char *s, regex_t *regex, int err)
-{
-	char buf[128];
-	jim_regerror(err, regex, buf, sizeof(buf));
-	if (!s) {
-		dprintf(DEBUG_FILENO, "%s\n", buf);
-		return;
-	}
-
-	dprintf(DEBUG_FILENO, "%s: %s\n", s, buf);
-}
-
 constructor void verbosef_init()
 {
 	static regex_t regex_ignore;
@@ -1230,7 +1218,7 @@ constructor void verbosef_init()
 
 	ret = jim_regcomp(&regex_ignore, ignore, REG_EXTENDED);
 	if (ret != 0) {
-		__jim_regex_perror("jim_regcomp", &regex_ignore, ret);
+		jim_regex_perror("jim_regcomp", &regex_ignore, ret);
 		return;
 	}
 
@@ -1256,7 +1244,7 @@ static int __ignore(const char *func)
 
 	ret = jim_regexec(re_ignore, func, 1, &match, 0);
 	if (ret == -1 || ret > REG_NOMATCH) {
-		__jim_regex_perror("jim_regexec", re_ignore, ret);
+		jim_regex_perror("jim_regexec", re_ignore, ret);
 		return 0;
 	}
 

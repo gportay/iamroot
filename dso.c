@@ -167,18 +167,6 @@ static int __setld_preload(const char *preload, int overwrite)
 static regex_t *re_ldso;
 static regex_t *re_lib;
 
-static void __jim_regex_perror(const char *s, regex_t *regex, int err)
-{
-	char buf[128];
-	jim_regerror(err, regex, buf, sizeof(buf));
-	if (!s) {
-		dprintf(STDERR_FILENO, "%s\n", buf);
-		return;
-	}
-
-	dprintf(STDERR_FILENO, "%s: %s\n", s, buf);
-}
-
 constructor void dso_init()
 {
 	static regex_t regex_ldso, regex_lib;
@@ -191,7 +179,7 @@ constructor void dso_init()
 
 	ret = jim_regcomp(&regex_ldso, ldso, REG_EXTENDED);
 	if (ret != 0) {
-		__jim_regex_perror("jim_regcomp", &regex_ldso, ret);
+		jim_regex_perror("jim_regcomp", &regex_ldso, ret);
 		return;
 	}
 
@@ -203,7 +191,7 @@ lib:
 
 	ret = jim_regcomp(&regex_lib, lib, REG_EXTENDED);
 	if (ret != 0) {
-		__jim_regex_perror("jim_regcomp", &regex_lib, ret);
+		jim_regex_perror("jim_regcomp", &regex_lib, ret);
 		return;
 	}
 
@@ -236,7 +224,7 @@ hidden int __is_ldso(const char *path)
 
 	ret = jim_regexec(re_ldso, path, 1, &match, 0);
 	if (ret > REG_NOMATCH) {
-		__jim_regex_perror("jim_regexec", re_ldso, ret);
+		jim_regex_perror("jim_regexec", re_ldso, ret);
 		return 0;
 	}
 
@@ -253,7 +241,7 @@ static int __is_lib(const char *path)
 
 	ret = jim_regexec(re_lib, path, 1, &match, 0);
 	if (ret > REG_NOMATCH) {
-		__jim_regex_perror("jim_regexec", re_lib, ret);
+		jim_regex_perror("jim_regexec", re_lib, ret);
 		return 0;
 	}
 

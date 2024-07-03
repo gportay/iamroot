@@ -23,18 +23,6 @@ extern int __ldso_execve(const char *, char * const[], char * const[]);
 
 static regex_t *re_ignore;
 
-static void __jim_regex_perror(const char *s, regex_t *regex, int err)
-{
-	char buf[128];
-	jim_regerror(err, regex, buf, sizeof(buf));
-	if (!s) {
-		dprintf(STDERR_FILENO, "%s\n", buf);
-		return;
-	}
-
-	dprintf(STDERR_FILENO, "%s: %s\n", s, buf);
-}
-
 constructor void execve_init()
 {
 	static regex_t regex_ignore;
@@ -55,7 +43,7 @@ constructor void execve_init()
 
 	ret = jim_regcomp(&regex_ignore, ignore, REG_EXTENDED);
 	if (ret != 0) {
-		__jim_regex_perror("jim_regcomp", &regex_ignore, ret);
+		jim_regex_perror("jim_regcomp", &regex_ignore, ret);
 		return;
 	}
 
@@ -81,7 +69,7 @@ static int ignore(const char *path)
 
 	ret = jim_regexec(re_ignore, path, 1, &match, 0);
 	if (ret > REG_NOMATCH) {
-		__jim_regex_perror("jim_regexec", re_ignore, ret);
+		jim_regex_perror("jim_regexec", re_ignore, ret);
 		return 0;
 	}
 

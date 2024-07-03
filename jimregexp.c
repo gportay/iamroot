@@ -1966,3 +1966,15 @@ hidden void jim_regfree(regex_t *preg)
 {
 	free(preg->program);
 }
+
+hidden void jim_regex_perror(const char *s, regex_t *preg, int err)
+{
+	char buf[128];
+	jim_regerror(err, preg, buf, sizeof(buf));
+	if (!s) {
+		fprintf(stderr, "%s\n", buf);
+		return;
+	}
+
+	fprintf(stderr, "%s: %s\n", s, buf);
+}

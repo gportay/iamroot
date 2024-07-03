@@ -74,11 +74,10 @@ int close_range(unsigned int first, unsigned int last, int flags)
 	err = __dir_iterate("/proc/self/fd", __callback, &data);
 	if (err == -1)
 		__strncpy(data.buf, "(error)");
-
 #else
 	int ret;
-
 #endif
+
 	ret = next_close_range(first, last, flags);
 
 #ifdef __linux__

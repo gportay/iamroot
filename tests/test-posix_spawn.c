@@ -6,6 +6,7 @@
 
 #include <errno.h>
 #include <spawn.h>
+#include <signal.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>

@@ -12,8 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
-- Use [Jim Tcl] and hide symbols `jim_regcomp(),` `jim_regerror()`,
-  `jim_regexec()`, and `jim_regfree()`
+- Use [Jim Tcl]
 
 ## [v23] - 2024-06-25
 

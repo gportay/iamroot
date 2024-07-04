@@ -5,15 +5,6 @@
  */
 
 /*
- * Stolen from musl (src/include/features.h)
- *
- * SPDX-FileCopyrightText: The musl Contributors
- *
- * SPDX-License-Identifier: MIT
- */
-#define hidden __attribute__((__visibility__("hidden")))
-
-/*
  * Stolen from jimtcl (jim.h)
  *
  * SPDX-FileCopyrightText: The jimctl Contributors
@@ -283,7 +274,7 @@ static int str_int_len(const int *seq)
  * Beware that the optimization-preparation code in here knows about some
  * of the structure of the compiled regexp.
  */
-hidden int jim_regcomp(regex_t *preg, const char *exp, int cflags)
+int jim_regcomp(regex_t *preg, const char *exp, int cflags)
 {
 	int scan;
 	int longest;
@@ -1170,7 +1161,7 @@ static int regrepeat(regex_t *preg, int p, int max);
 /*
  - regexec - match a regexp against a string
  */
-hidden int jim_regexec(regex_t  *preg,  const  char *string, size_t nmatch, regmatch_t pmatch[], int eflags)
+int jim_regexec(regex_t  *preg,  const  char *string, size_t nmatch, regmatch_t pmatch[], int eflags)
 {
 	const char *s;
 	int scan;
@@ -1925,7 +1916,7 @@ static const char *regprop( int op )
 }
 #endif /* JIM_BOOTSTRAP */
 
-hidden size_t jim_regerror(int errcode, const regex_t *preg, char *errbuf,  size_t errbuf_size)
+size_t jim_regerror(int errcode, const regex_t *preg, char *errbuf,  size_t errbuf_size)
 {
 	static const char *error_strings[] = {
 		"success",
@@ -1962,12 +1953,12 @@ hidden size_t jim_regerror(int errcode, const regex_t *preg, char *errbuf,  size
 	return snprintf(errbuf, errbuf_size, "%s", err);
 }
 
-hidden void jim_regfree(regex_t *preg)
+void jim_regfree(regex_t *preg)
 {
 	free(preg->program);
 }
 
-hidden void jim_regex_perror(const char *s, regex_t *preg, int err)
+void jim_regex_perror(const char *s, regex_t *preg, int err)
 {
 	char buf[128];
 	jim_regerror(err, preg, buf, sizeof(buf));

@@ -157,7 +157,7 @@ result() {
 	exit "$exitcode"
 }
 
-PATH="$PWD:/usr/bin:/usr/sbin:/bin"
+PATH="$PWD:$PATH"
 trap result 0 SIGINT
 
 export -n NO_COLOR

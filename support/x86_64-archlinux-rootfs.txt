@@ -7,6 +7,11 @@ resolving dependencies...
    1) dbus-broker-units  2) dbus-daemon-units
 
 Enter a number (default=1): 
+:: There are 2 providers available for libxtables.so=12-64:
+:: Repository core
+   1) iptables  2) iptables-nft
+
+Enter a number (default=1): 
 looking for conflicting packages...
 
 Packages (XXX) acl  archlinux-keyring  argon2  attr  audit  bash  brotli  bzip2  ca-certificates  ca-certificates-mozilla  ca-certificates-utils  coreutils  cryptsetup  curl  dbus  dbus-broker  dbus-broker-units  device-mapper  e2fsprogs  expat  file  filesystem  findutils  gawk  gcc-libs  gdbm  gettext  glib2  glibc  gmp  gnupg  gnutls  gpgme  grep  gzip  hwdata  iana-etc  icu  iproute2  iptables  iputils  json-c  kbd  keyutils  kmod  krb5  libarchive  libassuan  libbpf  libcap  libcap-ng  libelf  libevent  libffi  libgcrypt  libgpg-error  libidn2  libksba  libldap  libmnl  libnetfilter_conntrack  libnfnetlink  libnftnl  libnghttp2  libnghttp3  libnl  libnsl  libp11-kit  libpcap  libpsl  libsasl  libseccomp  libsecret  libssh2  libsysprof-capture  libtasn1  libtirpc  libunistring  libusb  libverto  libxcrypt  libxml2  licenses  linux-api-headers  lz4  mpfr  ncurses  nettle  npth  openssl  p11-kit  pacman  pacman-mirrorlist  pam  pambase  pciutils  pcre2  pinentry  popt  procps-ng  psmisc  readline  sed  shadow  sqlite  systemd  systemd-libs  systemd-sysvcompat  tar  tpm2-tss  tzdata  util-linux  util-linux-libs  xz  zlib  zstd  base

@@ -796,9 +796,10 @@ hidden ssize_t __path_access(const char *file, int mode, const char *path,
 		b[z-p] = '/';
 		memcpy(b+(z-p)+(z>p), file, k+1);
 
-		if (access(b, mode) != -1) {
+		if (faccessat(AT_FDCWD, b, mode, AT_SYMLINK_NOFOLLOW) != -1) {
 			errno = 0;
-			return path_resolution(AT_FDCWD, b, buf, bufsiz, 0);
+			return path_resolution(AT_FDCWD, b, buf, bufsiz,
+					       AT_SYMLINK_NOFOLLOW);
 		}
 		switch (errno) {
 		case EACCES:

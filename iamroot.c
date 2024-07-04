@@ -705,6 +705,20 @@ hidden char *__fpath2(int fd)
 }
 
 /*
+ * faccessat does not support flag AT_SYMLINK_NOFOLLOW; the glibc supports for
+ * it, the others do not!
+ */
+static int __faccessat(int dfd, const char *path, int mode, int atflags)
+{
+	struct stat statbuf;
+
+	if (atflags & AT_SYMLINK_NOFOLLOW)
+		return fstatat(dfd, path, &statbuf, atflags & AT_EACCESS);
+
+	return faccessat(dfd, path, mode, atflags & AT_SYMLINK_NOFOLLOW);
+}
+
+/*
  * Stolen and hacked from musl (src/process/execvp.c)
  *
  * SPDX-FileCopyrightText: The musl Contributors
@@ -796,9 +810,10 @@ hidden ssize_t __path_access(const char *file, int mode, const char *path,
 		b[z-p] = '/';
 		memcpy(b+(z-p)+(z>p), file, k+1);
 
-		if (access(b, mode) != -1) {
+		if (__faccessat(AT_FDCWD, b, mode, AT_SYMLINK_FOLLOW) != -1) {
 			errno = 0;
-			return path_resolution(AT_FDCWD, b, buf, bufsiz, 0);
+			return path_resolution(AT_FDCWD, b, buf, bufsiz,
+					       AT_SYMLINK_NOFOLLOW);
 		}
 		switch (errno) {
 		case EACCES:

@@ -3430,11 +3430,8 @@ static int __felf_so_context(int fd,
 	off_t off = offset;
 	ssize_t siz;
 
-	if (fd < 0)
-		return __set_errno_and_perror(EBADFD, -1);
-
-	if (!rpath || !ld_library_path || !runpath || !deflib || !flags_1 ||
-	    !buf)
+	if (fd < 0 || !rpath || !ld_library_path || !runpath || !deflib ||
+	    !flags_1 || !buf)
 		return __set_errno_and_perror(EINVAL, -1);
 
 	*rpath = NULL;

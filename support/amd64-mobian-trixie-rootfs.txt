@@ -769,8 +769,9 @@ Suggested packages:
 Recommended packages:
   ca-certificates default-mta | mail-transport-agent e2fsprogs-l10n libpam-cap
   libgpg-error-l10n krb5-locales libgpm2 libfribidi0 psmisc
-  default-dbus-system-bus | dbus-system-bus systemd-timesyncd | time-daemon
-  systemd-cryptsetup libpam-systemd libnss-systemd laptop-detect xxd
+  default-dbus-system-bus | dbus-system-bus linux-sysctl-defaults
+  systemd-timesyncd | time-daemon systemd-cryptsetup libpam-systemd
+  libnss-systemd laptop-detect xxd
 The following NEW packages will be installed:
   adduser apt apt-utils cpio cron cron-daemon-common debconf-i18n
   debian-archive-keyring dmidecode e2fsprogs fdisk gpgv ifupdown init iproute2

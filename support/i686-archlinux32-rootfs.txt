@@ -213,6 +213,7 @@ Creating group 'tty' with GID XXX.
 Creating group 'uucp' with GID XXX.
 Creating group 'video' with GID XXX.
 Creating group 'users' with GID XXX.
+Creating group 'groups' with GID XXX.
 Creating group 'systemd-journal' with GID XXX.
 Creating group 'rfkill' with GID XXX.
 Creating group 'bin' with GID XXX.

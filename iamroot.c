@@ -984,7 +984,8 @@ hidden int __execfd()
 		char path[PATH_MAX];
 		int n, err, fd;
 
-		n = sscanf(*p, "IAMROOT_FD_%i=%" __xstr(PATH_MAX) "s", &fd, path);
+		n = sscanf(*p, "IAMROOT_FD_%i=%" __xstr(sizeof(PATH_MAX-1)) "s",
+			   &fd, path);
 		if (n != 2)
 			continue;
 

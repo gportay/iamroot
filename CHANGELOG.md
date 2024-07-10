@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 
 - Use [Jim Tcl]
+- Do not reset the environment variable `IAMROOT_LIB` to the iamroot library
 
 ## [v23] - 2024-06-25
 

@@ -2458,10 +2458,6 @@ exit:
 	_strncpy(buf+offset, lib, bufsiz-offset);
 	ret = strnlen(buf, bufsiz);
 
-	err = _setenv("IAMROOT_LIB", buf+offset, 1);
-	if (err == -1)
-		return -1;
-
 	return __set_errno(errno_save, ret);
 }
 

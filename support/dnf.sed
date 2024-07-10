@@ -48,14 +48,6 @@
 
 	# Total                                           XXX MB/s | XXX MB     XX:XX
 	/^Total/s,\s\+\S\+\s.B/s\s|\s\+\S\{1\,3\}\s.B\s\+\S\{2\,2\}:\S\{2\,2\}\s\+$, XXX xB/s | XXX xB XX:XX,
-
-	# Fedora XX - x86_64                              XXX MB/s | XXX kB     XX:XX
-	/^Fedora/s,\s\+\S\+\s.B/s\s|\s\+\S\{1\,3\}\s.B\s\+\S\{2\,2\}:\S\{2\,2\}\s\+$, XXX xB/s | XXX xB XX:XX,
-}
-
-/^Importing GPG key 0x[[:alnum:]]\+:/,/^Key imported successfully/ {
-	# Fingerprint: XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX
-	/ Fingerprint/s, [A-F0-9]\{4\,4\}, XXXX,g
 }
 
 /^Running transaction/,/^Installed:/ {

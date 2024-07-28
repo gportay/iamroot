@@ -86,6 +86,11 @@
 	/^(Reading database \.\.\./ {
 		s,[[:digit:]]\+,XXX,g
 	}
+
+	# debconf is already the newest version (1.5.86).
+	/^[[:lower:][:digit:]+.-]\+ is already the newest version/ {
+		s,(\([[:digit:]]\+:[[:alnum:].+~%-]\+\|[[:alnum:].+~%-]\+\)),(XXX),
+	}
 }
 
 # Creating group 'bin' with GID XXX.

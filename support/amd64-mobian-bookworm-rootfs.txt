@@ -783,11 +783,11 @@ I: installing remaining packages inside the chroot...
 Reading package lists...
 Building dependency tree...
 Reading state information...
-debconf is already the newest version (1.5.82).
-libpam-runtime is already the newest version (1.5.2-6+deb12u1).
-mawk is already the newest version (1.3.4.20200120-3.1).
-libpam-modules is already the newest version (1.5.2-6+deb12u1).
-libpam-modules-bin is already the newest version (1.5.2-6+deb12u1).
+debconf is already the newest version (XXX).
+libpam-runtime is already the newest version (XXX).
+mawk is already the newest version (XXX).
+libpam-modules is already the newest version (XXX).
+libpam-modules-bin is already the newest version (XXX).
 The following additional packages will be installed:
   dmsetup libapparmor1 libapt-pkg6.0 libargon2-1 libbpf1 libbsd0 libcap2-bin
   libcom-err2 libcryptsetup12 libdevmapper1.02.1 libedit2 libelf1 libext2fs2

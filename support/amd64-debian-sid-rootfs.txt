@@ -749,43 +749,43 @@ dpkg: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
  missing 'Description' field
 dpkg: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
  missing 'Architecture' field
-dpkg: regarding .../archives/dpkg.deb containing dpkg, pre-dependency problem:
+dpkg: regarding .../dpkg.deb containing dpkg, pre-dependency problem:
  dpkg pre-depends on libbz2-1.0
   libbz2-1.0 is not installed.
 
 dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../archives/dpkg.deb containing dpkg, pre-dependency problem:
+dpkg: regarding .../dpkg.deb containing dpkg, pre-dependency problem:
  dpkg pre-depends on libc6
   libc6 is not installed.
 
 dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../archives/dpkg.deb containing dpkg, pre-dependency problem:
+dpkg: regarding .../dpkg.deb containing dpkg, pre-dependency problem:
  dpkg pre-depends on liblzma5
   liblzma5 is not installed.
 
 dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../archives/dpkg.deb containing dpkg, pre-dependency problem:
+dpkg: regarding .../dpkg.deb containing dpkg, pre-dependency problem:
  dpkg pre-depends on libmd0
   libmd0 is not installed.
 
 dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../archives/dpkg.deb containing dpkg, pre-dependency problem:
+dpkg: regarding .../dpkg.deb containing dpkg, pre-dependency problem:
  dpkg pre-depends on libselinux1
   libselinux1 is not installed.
 
 dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../archives/dpkg.deb containing dpkg, pre-dependency problem:
+dpkg: regarding .../dpkg.deb containing dpkg, pre-dependency problem:
  dpkg pre-depends on libzstd1
   libzstd1 is not installed.
 
 dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../archives/dpkg.deb containing dpkg, pre-dependency problem:
+dpkg: regarding .../dpkg.deb containing dpkg, pre-dependency problem:
  dpkg pre-depends on zlib1g
   zlib1g is not installed.
 
 dpkg: warning: ignoring pre-dependency problem!
 (Reading database ... XXX files and directories currently installed.)
-Preparing to unpack .../archives/dpkg.deb ...
+Preparing to unpack .../dpkg.deb ...
 Unpacking dpkg ...
 dpkg: dpkg: dependency problems, but configuring anyway as you requested:
  dpkg depends on libbz2-1.0; however:
@@ -906,37 +906,37 @@ Unpacking debianutils ...
 Selecting previously unselected package diffutils.
 Preparing to unpack .../diffutils.deb ...
 Unpacking diffutils ...
-dpkg: regarding .../archives/dpkg.deb containing dpkg, pre-dependency problem:
+dpkg: regarding .../dpkg.deb containing dpkg, pre-dependency problem:
  dpkg pre-depends on libbz2-1.0
   libbz2-1.0 is not installed.
 
 dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../archives/dpkg.deb containing dpkg, pre-dependency problem:
+dpkg: regarding .../dpkg.deb containing dpkg, pre-dependency problem:
  dpkg pre-depends on liblzma5
   liblzma5 is not installed.
 
 dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../archives/dpkg.deb containing dpkg, pre-dependency problem:
+dpkg: regarding .../dpkg.deb containing dpkg, pre-dependency problem:
  dpkg pre-depends on libmd0
   libmd0 is not installed.
 
 dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../archives/dpkg.deb containing dpkg, pre-dependency problem:
+dpkg: regarding .../dpkg.deb containing dpkg, pre-dependency problem:
  dpkg pre-depends on libselinux1
   libselinux1 is not installed.
 
 dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../archives/dpkg.deb containing dpkg, pre-dependency problem:
+dpkg: regarding .../dpkg.deb containing dpkg, pre-dependency problem:
  dpkg pre-depends on libzstd1
   libzstd1 is not installed.
 
 dpkg: warning: ignoring pre-dependency problem!
-dpkg: regarding .../archives/dpkg.deb containing dpkg, pre-dependency problem:
+dpkg: regarding .../dpkg.deb containing dpkg, pre-dependency problem:
  dpkg pre-depends on zlib1g
   zlib1g is not installed.
 
 dpkg: warning: ignoring pre-dependency problem!
-Preparing to unpack .../archives/dpkg.deb ...
+Preparing to unpack .../dpkg.deb ...
 Unpacking dpkg ...
 Selecting previously unselected package e2fsprogs.
 dpkg: regarding .../e2fsprogs.deb containing e2fsprogs, pre-dependency problem:
@@ -1602,7 +1602,7 @@ Preparing to unpack .../whiptail.deb ...
 Unpacking whiptail ...
 Processing triggers for libc-bin ...
 Setting up cpio ...
-update-alternatives: using /bin/mt-gnu to provide /bin/mt (mt) in auto mode
+update-alternatives: using /usr/bin/mt-gnu to provide /usr/bin/mt (mt) in auto mode
 Setting up libtext-iconv-perl ...
 Setting up libtext-charwidth-perl ...
 Setting up libkeyutils1 ...

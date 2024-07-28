@@ -164,7 +164,6 @@ export -n NO_COLOR
 export -n ISHLVL
 export -n ISH_RC_FILE
 export -n ISH_PROFILE_FILE
-export -n ISH_PRESERVE_ENV
 export -n IAMROOT_USER
 export -n IAMROOT_ROOT
 export -n IAMROOT_DEFLIB

@@ -40,8 +40,8 @@ prepare() {
 
 build() {
 	cd "$srcdir/$pkgname"
-	make PREFIX=/usr arm/libiamroot-linux.so.3
-	make PREFIX=/usr arm/libiamroot-musl-arm.so.1
+	make CFLAGS= PREFIX=/usr arm/libiamroot-linux.so.3
+	make CFLAGS= PREFIX=/usr arm/libiamroot-musl-arm.so.1
 }
 
 check() {

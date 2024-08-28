@@ -40,8 +40,8 @@ prepare() {
 
 build() {
 	cd "$srcdir/$pkgname"
-	make PREFIX=/usr s390x/libiamroot.so.1
-	make PREFIX=/usr s390x/libiamroot-musl-s390x.so.1
+	make CFLAGS= PREFIX=/usr s390x/libiamroot.so.1
+	make CFLAGS= PREFIX=/usr s390x/libiamroot-musl-s390x.so.1
 }
 
 check() {

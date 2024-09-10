@@ -221,7 +221,7 @@ $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/sh
 $(1)-$(2)-$(3)-rootfs/bin/sh: PATH := $(CURDIR):$(PATH)
 $(1)-$(2)-$(3)-rootfs/bin/sh: | $(call libs,linux,$(1))
 	ido $$(IDOFLAGS) install -D -m644 $$(FEDORA_REPO) $(1)-$(2)-$(3)-rootfs/etc/distro.repos.d/fedora.repo
-	ido $$(IDOFLAGS) dnf --forcearch $(1) --releasever $(3) --assumeyes --installroot $(CURDIR)/$(1)-$(2)-$(3)-rootfs group install minimal-environment
+	ido $$(IDOFLAGS) dnf --forcearch $(1) --releasever $(3) --assumeyes --installroot $(CURDIR)/$(1)-$(2)-$(3)-rootfs group install "$(4)"
 	ido $$(IDOFLAGS) rm -f $(1)-$(2)-$(3)-rootfs/etc/distro.repos.d/fedora.repo
 
 $(eval $(call log,dnf,$(1)-$(2)-$(3)-rootfs))
@@ -1138,8 +1138,10 @@ fedora-rootfs: x86_64-fedora-37-rootfs
 fedora-rootfs: x86_64-fedora-38-rootfs
 fedora-rootfs: x86_64-fedora-39-rootfs
 fedora-rootfs: x86_64-fedora-40-rootfs
+fedora-rootfs: x86_64-fedora-rawhide-rootfs
 
 stable-rootfs: x86_64-fedora-40-rootfs
+unstable-rootfs: x86_64-fedora-rawhide-rootfs
 
 x86_64-fedora-20-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 x86_64-fedora-30-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
@@ -1151,18 +1153,20 @@ x86_64-fedora-35-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.rep
 x86_64-fedora-36-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 x86_64-fedora-37-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 x86_64-fedora-38-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
-$(eval $(call dnf-rootfs,x86_64,fedora,20))
-$(eval $(call dnf-rootfs,x86_64,fedora,30))
-$(eval $(call dnf-rootfs,x86_64,fedora,31))
-$(eval $(call dnf-rootfs,x86_64,fedora,32))
-$(eval $(call dnf-rootfs,x86_64,fedora,33))
-$(eval $(call dnf-rootfs,x86_64,fedora,34))
-$(eval $(call dnf-rootfs,x86_64,fedora,35))
-$(eval $(call dnf-rootfs,x86_64,fedora,36))
-$(eval $(call dnf-rootfs,x86_64,fedora,37))
-$(eval $(call dnf-rootfs,x86_64,fedora,38))
-$(eval $(call dnf-rootfs,x86_64,fedora,39))
-$(eval $(call dnf-rootfs,x86_64,fedora,40))
+x86_64-fedora-rawhide-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-rawhide.repo
+$(eval $(call dnf-rootfs,x86_64,fedora,20,Minimal Install))
+$(eval $(call dnf-rootfs,x86_64,fedora,30,Minimal Install))
+$(eval $(call dnf-rootfs,x86_64,fedora,31,Minimal Install))
+$(eval $(call dnf-rootfs,x86_64,fedora,32,Minimal Install))
+$(eval $(call dnf-rootfs,x86_64,fedora,33,Minimal Install))
+$(eval $(call dnf-rootfs,x86_64,fedora,34,Minimal Install))
+$(eval $(call dnf-rootfs,x86_64,fedora,35,Minimal Install))
+$(eval $(call dnf-rootfs,x86_64,fedora,36,Minimal Install))
+$(eval $(call dnf-rootfs,x86_64,fedora,37,Minimal Install))
+$(eval $(call dnf-rootfs,x86_64,fedora,38,Minimal Install))
+$(eval $(call dnf-rootfs,x86_64,fedora,39,Minimal Install))
+$(eval $(call dnf-rootfs,x86_64,fedora,40,Minimal Install))
+$(eval $(call dnf-rootfs,x86_64,fedora,rawhide,Fedora Custom Operating System))
 
 install-support-x86_64: install-support-x86_64-fedora
 
@@ -1623,6 +1627,7 @@ aarch64-fedora-rootfs: aarch64-fedora-37-rootfs
 aarch64-fedora-rootfs: aarch64-fedora-38-rootfs
 aarch64-fedora-rootfs: aarch64-fedora-39-rootfs
 aarch64-fedora-rootfs: aarch64-fedora-40-rootfs
+aarch64-fedora-rootfs: aarch64-fedora-rawhide-rootfs
 
 aarch64-fedora-33-rootfs: aarch64-fedora-33-rootfs/bin/sh
 aarch64-fedora-34-rootfs: aarch64-fedora-34-rootfs/bin/sh
@@ -1632,6 +1637,7 @@ aarch64-fedora-37-rootfs: aarch64-fedora-37-rootfs/bin/sh
 aarch64-fedora-38-rootfs: aarch64-fedora-38-rootfs/bin/sh
 aarch64-fedora-39-rootfs: aarch64-fedora-39-rootfs/bin/sh
 aarch64-fedora-40-rootfs: aarch64-fedora-40-rootfs/bin/sh
+aarch64-fedora-rawhide-rootfs: aarch64-fedora-rawhide-rootfs/bin/sh
 
 aarch64-fedora-33-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 aarch64-fedora-34-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
@@ -1639,14 +1645,15 @@ aarch64-fedora-35-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.re
 aarch64-fedora-36-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 aarch64-fedora-37-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 aarch64-fedora-38-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
-$(eval $(call dnf-rootfs,aarch64,fedora,33))
-$(eval $(call dnf-rootfs,aarch64,fedora,34))
-$(eval $(call dnf-rootfs,aarch64,fedora,35))
-$(eval $(call dnf-rootfs,aarch64,fedora,36))
-$(eval $(call dnf-rootfs,aarch64,fedora,37))
-$(eval $(call dnf-rootfs,aarch64,fedora,38))
-$(eval $(call dnf-rootfs,aarch64,fedora,39))
-$(eval $(call dnf-rootfs,aarch64,fedora,40))
+$(eval $(call dnf-rootfs,aarch64,fedora,33,Minimal Install))
+$(eval $(call dnf-rootfs,aarch64,fedora,34,Minimal Install))
+$(eval $(call dnf-rootfs,aarch64,fedora,35,Minimal Install))
+$(eval $(call dnf-rootfs,aarch64,fedora,36,Minimal Install))
+$(eval $(call dnf-rootfs,aarch64,fedora,37,Minimal Install))
+$(eval $(call dnf-rootfs,aarch64,fedora,38,Minimal Install))
+$(eval $(call dnf-rootfs,aarch64,fedora,39,Minimal Install))
+$(eval $(call dnf-rootfs,aarch64,fedora,40,Minimal Install))
+$(eval $(call dnf-rootfs,aarch64,fedora,rawhide,Fedora Custom Operating System))
 endif
 
 ifneq ($(shell command -v arm-buildroot-linux-gnueabihf-gcc 2>/dev/null),)
@@ -1667,10 +1674,10 @@ armv7hl-fedora-33-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.re
 armv7hl-fedora-34-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 armv7hl-fedora-35-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 armv7hl-fedora-36-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
-$(eval $(call dnf-rootfs,armv7hl,fedora,33))
-$(eval $(call dnf-rootfs,armv7hl,fedora,34))
-$(eval $(call dnf-rootfs,armv7hl,fedora,35))
-$(eval $(call dnf-rootfs,armv7hl,fedora,36))
+$(eval $(call dnf-rootfs,armv7hl,fedora,33,Minimal Install))
+$(eval $(call dnf-rootfs,armv7hl,fedora,34,Minimal Install))
+$(eval $(call dnf-rootfs,armv7hl,fedora,35,Minimal Install))
+$(eval $(call dnf-rootfs,armv7hl,fedora,36,Minimal Install))
 endif
 endif
 
@@ -2174,6 +2181,7 @@ fedora-support: support/x86_64-fedora-37-rootfs.txt
 fedora-support: support/x86_64-fedora-38-rootfs.txt
 fedora-support: support/x86_64-fedora-39-rootfs.txt
 fedora-support: support/x86_64-fedora-40-rootfs.txt
+fedora-support: support/x86_64-fedora-rawhide-rootfs.txt
 
 log: fedora-log
 
@@ -2190,6 +2198,7 @@ fedora-log: x86_64-fedora-37-rootfs.log
 fedora-log: x86_64-fedora-38-rootfs.log
 fedora-log: x86_64-fedora-39-rootfs.log
 fedora-log: x86_64-fedora-40-rootfs.log
+fedora-log: x86_64-fedora-rawhide-rootfs.log
 endif
 
 ifneq ($(shell command -v zypper 2>/dev/null),)

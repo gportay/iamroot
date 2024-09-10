@@ -964,7 +964,6 @@ amd64-ubuntu-rootfs: amd64-ubuntu-lunar-rootfs
 amd64-ubuntu-rootfs: amd64-ubuntu-mantic-rootfs
 amd64-ubuntu-rootfs: amd64-ubuntu-noble-rootfs
 
-stable-rootfs: amd64-ubuntu-mantic-rootfs
 unstable-rootfs: amd64-ubuntu-noble-rootfs
 
 amd64-ubuntu-trusty-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
@@ -2091,7 +2090,6 @@ stable-support: support/amd64-ubuntu-xenial-rootfs.txt
 stable-support: support/amd64-ubuntu-bionic-rootfs.txt
 stable-support: support/amd64-ubuntu-focal-rootfs.txt
 stable-support: support/amd64-ubuntu-jammy-rootfs.txt
-stable-support: support/amd64-ubuntu-mantic-rootfs.txt
 stable-support: support/amd64-ubuntu-noble-rootfs.txt
 
 stable-log: amd64-ubuntu-trusty-rootfs.log
@@ -2099,7 +2097,6 @@ stable-log: amd64-ubuntu-xenial-rootfs.log
 stable-log: amd64-ubuntu-bionic-rootfs.log
 stable-log: amd64-ubuntu-focal-rootfs.log
 stable-log: amd64-ubuntu-jammy-rootfs.log
-stable-log: amd64-ubuntu-mantic-rootfs.log
 stable-log: amd64-ubuntu-noble-rootfs.log
 
 legacy-support: support/amd64-ubuntu-groovy-rootfs.txt
@@ -2107,11 +2104,13 @@ legacy-support: support/amd64-ubuntu-hirsute-rootfs.txt
 legacy-support: support/amd64-ubuntu-impish-rootfs.txt
 legacy-support: support/amd64-ubuntu-kinetic-rootfs.txt
 legacy-support: support/amd64-ubuntu-lunar-rootfs.txt
+legacy-support: support/amd64-ubuntu-mantic-rootfs.txt
 legacy-log: amd64-ubuntu-groovy-rootfs.log
 legacy-log: amd64-ubuntu-hirsute-rootfs.log
 legacy-log: amd64-ubuntu-impish-rootfs.log
 legacy-log: amd64-ubuntu-kinetic-rootfs.log
 legacy-log: amd64-ubuntu-lunar-rootfs.log
+legacy-log: amd64-ubuntu-mantic-rootfs.log
 
 extra-support: devuan-support
 

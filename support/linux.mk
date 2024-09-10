@@ -964,7 +964,7 @@ amd64-ubuntu-rootfs: amd64-ubuntu-lunar-rootfs
 amd64-ubuntu-rootfs: amd64-ubuntu-mantic-rootfs
 amd64-ubuntu-rootfs: amd64-ubuntu-noble-rootfs
 
-unstable-rootfs: amd64-ubuntu-noble-rootfs
+stable-rootfs: amd64-ubuntu-noble-rootfs
 
 amd64-ubuntu-trusty-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu
 amd64-ubuntu-xenial-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://mirrors.edge.kernel.org/ubuntu

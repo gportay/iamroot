@@ -614,6 +614,10 @@ ifeq ($(OS),GNU/Linux)
 	- env LD_PRELOAD=$(LIBRARY) PATH=$(CURDIR)/rootfs/usr/bin                                                                                          test-lremovexattr         rootfs/etc/os-release user.one
 endif
 
+.PHONY: test-libiamroot.so
+test-libiamroot.so: | rootfs
+	bash tests-libiamroot.so.bash
+
 .PHONY: test-frontends
 test-frontends: test-ld-iamroot.so test-ido test-ish
 

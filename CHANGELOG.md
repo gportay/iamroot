@@ -29,6 +29,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - The functions `__lstat50()`, `__lstat64_time64()`, `lstat()` and `lstat64()`
   do not call the AT-functions `__fstatat64_time64()`, `fstatat()` and
   `fstatat64()` anymore
+- Output the traces for the group, passwd, and shadow functions
 
 ## [v23] - 2024-06-25
 

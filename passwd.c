@@ -1,10 +1,135 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2024 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#include <unistd.h>
+#include <stdio.h>
+#include <string.h>
+#include <errno.h>
+
+#include <sys/types.h>
+#include <pwd.h>
+
+#include "iamroot.h"
+
 #if defined __linux__ || defined __OpenBSD__ || defined __NetBSD__
+static int _getpwnam_r(const char *, struct passwd *, char *, size_t,
+		       struct passwd **);
+static int _getpwuid_r(uid_t, struct passwd *, char *, size_t,
+		       struct passwd **);
+static struct passwd *_fgetpwent(FILE *);
+static void _setpwent();
+static struct passwd *_getpwent();
+static struct passwd *_getpwuid(uid_t);
+static struct passwd *_getpwnam(const char *);
+static int _putpwent(const struct passwd *, FILE *);
+
+int getpwnam_r(const char *name, struct passwd *pw, char *buf, size_t size,
+	       struct passwd **res)
+{
+	int ret;
+
+	ret = _getpwnam_r(name, pw, buf, size, res);
+
+	__debug("%s(name: '%s', ...) -> %i\n", __func__, name, ret);
+
+	return ret;
+}
+
+int getpwuid_r(uid_t uid, struct passwd *pw, char *buf, size_t size,
+	       struct passwd **res)
+{
+	int ret;
+
+	ret = _getpwuid_r(uid, pw, buf, size, res);
+
+	__debug("%s(uid: %u, ...) -> %i\n", __func__, uid, ret);
+
+	return ret;
+}
+
+struct passwd *fgetpwent(FILE *f)
+{
+	const int fd = fileno(f);
+	struct passwd *ret;
+
+	ret = _fgetpwent(f);
+
+	__debug("%s(f: '%s') -> %p\n", __func__, __fpath(fd), ret);
+
+	return ret;
+}
+
+void setpwent()
+{
+	_setpwent();
+	__debug("%s()\n", __func__);
+}
+
+void endpwent()
+{
+	/* Forward to another function */
+	_setpwent();
+	__debug("%s()\n", __func__);
+}
+
+struct passwd *getpwent()
+{
+	struct passwd *ret;
+
+	ret = _getpwent();
+
+	__debug("%s() -> %p\n", __func__, ret);
+
+	return ret;
+}
+
+struct passwd *getpwuid(uid_t uid)
+{
+	struct passwd *ret;
+
+	ret = _getpwuid(uid);
+
+	__debug("%s(uid: %u) -> %p\n", __func__, uid, ret);
+
+	return ret;
+}
+
+struct passwd *getpwnam(const char *name)
+{
+	struct passwd *ret;
+
+	ret = _getpwnam(name);
+
+	__debug("%s(name: '%s') -> %p\n", __func__, name, ret);
+
+	return ret;
+}
+
+int putpwent(const struct passwd *pw, FILE *f)
+{
+	const int fd = fileno(f);
+	int ret;
+
+	ret = _putpwent(pw, f);
+
+	__debug("%s(..., f: '%s') -> %i\n", __func__, __fpath(fd), ret);
+
+	return ret;
+}
+
+#define getpwnam_r _getpwnam_r
+#define getpwuid_r _getpwuid_r
+#define fgetpwent _fgetpwent
+#define setpwent _setpwent
+#define endpwent _endpwent
+#define getpwent _getpwent
+#define getpwuid _getpwuid
+#define getpwnam _getpwnam
+#define putpwent _putpwent
+
 /*
  * Stolen from musl (src/include/features.h)
  *

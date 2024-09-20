@@ -4,7 +4,169 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <errno.h>
+#include <dlfcn.h>
+#include <fcntl.h>
+
+#include <sys/types.h>
+#include <grp.h>
+
+#include "iamroot.h"
+
 #if defined __linux__ || defined __OpenBSD__ || defined __NetBSD__
+static int _getgrnam_r(const char *, struct group *, char *, size_t,
+		       struct group **);
+static int _getgrgid_r(gid_t, struct group *, char *, size_t, struct group **);
+static struct group *_fgetgrent(FILE *);
+static void _setgrent();
+static struct group *_getgrent();
+static struct group *_getgrgid(gid_t);
+static struct group *_getgrnam(const char *);
+static int _putgrent(const struct group *, FILE *);
+static int _getgrouplist(const char *, gid_t, gid_t *, int *);
+#ifdef __NetBSD__
+static int _getgroupmembership(const char *, gid_t, gid_t *, int, int *);
+#endif
+
+int getgrnam_r(const char *name, struct group *gr, char *buf, size_t size,
+		struct group **res)
+{
+	int ret;
+
+	ret = _getgrnam_r(name, gr, buf, size, res);
+
+	__debug("%s(name: '%s', ...) -> %i\n", __func__, name, ret);
+
+	return ret;
+}
+
+int getgrgid_r(gid_t gid, struct group *gr, char *buf, size_t size,
+	       struct group **res)
+{
+	int ret;
+
+	ret = _getgrgid_r(gid, gr, buf, size, res);
+
+	__debug("%s(gid: %u, ...) -> %i\n", __func__, gid, ret);
+
+	return ret;
+}
+
+struct group *fgetgrent(FILE *f)
+{
+	const int fd = fileno(f);
+	struct group *ret;
+
+	ret = _fgetgrent(f);
+
+	__debug("%s(f: '%s') -> %p\n", __func__, __fpath(fd), ret);
+
+	return ret;
+}
+
+void setgrent()
+{
+	_setgrent();
+	__debug("%s()\n", __func__);
+}
+
+void endgrent()
+{
+	/* Forward to another function */
+	_setgrent();
+	__debug("%s()\n", __func__);
+}
+
+struct group *getgrent()
+{
+	struct group *ret;
+
+	ret = _getgrent();
+
+	__debug("%s() -> %p\n", __func__, ret);
+
+	return ret;
+}
+
+struct group *getgrgid(gid_t gid)
+{
+	struct group *ret;
+
+	ret = _getgrgid(gid);
+
+	__debug("%s(gid: %u) -> %p\n", __func__, gid, ret);
+
+	return ret;
+}
+
+struct group *getgrnam(const char *name)
+{
+	struct group *ret;
+
+	ret = _getgrnam(name);
+
+	__debug("%s(name: '%s') -> %p\n", __func__, name, ret);
+
+	return ret;
+}
+
+int putgrent(const struct group *gr, FILE *f)
+{
+	const int fd = fileno(f);
+	int ret;
+
+	ret = _putgrent(gr, f);
+
+	__debug("%s(..., f: '%s') -> %i\n", __func__, __fpath(fd), ret);
+
+	return ret;
+}
+
+int getgrouplist(const char *user, gid_t gid, gid_t *groups, int *ngroups)
+{
+	int ret;
+
+	ret = _getgrouplist(user, gid, groups, ngroups);
+
+	__debug("%s(user: '%s', gid: %u, ...) -> %i\n", __func__, user, gid,
+		ret);
+
+	return ret;
+}
+
+#ifdef __NetBSD__
+int getgroupmembership(const char *user, gid_t gid, gid_t *groups, int maxgrp,
+		       int *ngroups)
+{
+	int ret;
+
+	ret = _getgroupmembership(user, gid, groups, maxgrp, ngroups);
+
+	__debug("%s(user: '%s', gid: %u, ...) -> %i\n", __func__, user, groups,
+		ret);
+
+	return ret;
+}
+#endif
+
+#define getgrnam_r _getgrnam_r
+#define getgrgid_r _getgrgid_r
+#define fgetgrent _fgetgrent
+#define setgrent _setgrent
+#define endgrent _endgrent
+#define getgrent _getgrent
+#define getgrgid _getgrgid
+#define getgrnam _getgrnam
+#define putgrent _putgrent
+#define getgrouplist _getgrouplist
+#ifdef __NetBSD__
+#define getgroupmembership _getgroupmembership
+#endif
+
 /*
  * Stolen from musl (src/include/features.h)
  *

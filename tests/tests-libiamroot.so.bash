@@ -175,26 +175,31 @@ export -n IAMROOT_DEBUG_IGNORE
 export -n IAMROOT_EXEC_IGNORE
 export -n IAMROOT_PATH_RESOLUTION_IGNORE
 
+XATTR="$(command -v getfattr >/dev/null 2>&1 && echo 1)"
+
 env-root() {
 	env "PATH=$PWD/rootfs/usr/bin" "LD_PRELOAD=$IAMROOT_ORIGIN/libiamroot.so" "$@"
 }
 
-run "libiamroot.so: test path_resolution() follows directory with user extended attribute added"
-if setfattr -n "user.iamroot.path-resolution" -v "/proc\0" rootfs/proc &&
-   env-root LD_LIBRARY_PATH="$PWD" test-path_resolution rootfs/proc | tee /dev/stderr | grep -q "^/proc$"
+if [[ "${XATTR:-0}" -eq 1 ]]
 then
-	ok
-else
-	ko
+	run "libiamroot.so: test path_resolution() follows directory with user extended attribute added"
+	if setfattr -n "user.iamroot.path-resolution" -v "/proc\0" rootfs/proc &&
+	   env-root LD_LIBRARY_PATH="$PWD" test-path_resolution rootfs/proc | tee /dev/stderr | grep -q "^/proc$"
+	then
+		ok
+	else
+		ko
+	fi
+	echo
+	
+	run "libiamroot.so: test path_resolution() resolves directory with user extended attribute removed normally"
+	if setfattr -x "user.iamroot.path-resolution" rootfs/proc &&
+	   env-root LD_LIBRARY_PATH="$PWD" test-path_resolution rootfs/proc | tee /dev/stderr | grep -q "^$PWD/rootfs/proc$"
+	then
+		ok
+	else
+		ko
+	fi
+	echo
 fi
-echo
-
-run "libiamroot.so: test path_resolution() resolves directory with user extended attribute removed normally"
-if setfattr -x "user.iamroot.path-resolution" rootfs/proc &&
-   env-root LD_LIBRARY_PATH="$PWD" test-path_resolution rootfs/proc | tee /dev/stderr | grep -q "^$PWD/rootfs/proc$"
-then
-	ok
-else
-	ko
-fi
-echo

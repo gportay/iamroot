@@ -179,8 +179,8 @@ env-root() {
 	env "PATH=$PWD/rootfs/usr/bin" "LD_PRELOAD=$IAMROOT_ORIGIN/libiamroot.so" "$@"
 }
 
-run "libiamroot.so: test mount() path resolves virtual filesystem proc(5) using host mountpoint"
-if env-root test-mount -t proc none rootfs/proc &&
+run "libiamroot.so: test path_resolution() follows directory with user extended attribute added"
+if setfattr -n "user.iamroot.path-resolution" -v "/proc\0" rootfs/proc &&
    env-root LD_LIBRARY_PATH="$PWD" test-path_resolution rootfs/proc | tee /dev/stderr | grep -q "^/proc$"
 then
 	ok
@@ -189,8 +189,8 @@ else
 fi
 echo
 
-run "libiamroot.so: test umount() path resolves mountpoint"
-if env-root test-umount rootfs/proc &&
+run "libiamroot.so: test path_resolution() resolves directory with user extended attribute removed normally"
+if setfattr -x "user.iamroot.path-resolution" rootfs/proc &&
    env-root LD_LIBRARY_PATH="$PWD" test-path_resolution rootfs/proc | tee /dev/stderr | grep -q "^$PWD/rootfs/proc$"
 then
 	ok

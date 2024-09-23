@@ -780,8 +780,8 @@ powerpc64-rootfs:
 ido multiarch-ido ish multiarch-ish: libiamroot.so
 	$(MAKE) -f Makefile $@ VPATH=$(vpath)
 
-.PHONY: test test-library test-frontends test-ld-iamroot.so test-ido test-ish ci
-test test-library test-frontends test-ld-iamroot.so test-ido test-ish ci: ld-iamroot.so libiamroot.so
+.PHONY: test test-library test-libiamroot.so test-frontends test-ld-iamroot.so test-ido test-ish ci
+test test-library test-libiamroot.so test-frontends test-ld-iamroot.so test-ido test-ish ci: ld-iamroot.so libiamroot.so
 	$(MAKE) -f Makefile $@ VPATH=$(vpath)
 
 .PHONY: coverage

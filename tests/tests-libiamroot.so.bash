@@ -193,6 +193,150 @@ env-host() {
 	    "$@"
 }
 
+run "libiamroot.so: test path_resolution() looks up absolute path normally"
+if env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+            test-path_resolution "$PWD/rootfs/usr/bin/test-path_resolution" | tee /dev/stderr | grep -q "^$PWD/rootfs/usr/bin/test-path_resolution$"
+then
+	ok
+else
+	ko
+fi
+echo
+
+run "libiamroot.so: test path_resolution() looks up relative path normally"
+if env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+            test-path_resolution "rootfs/usr/bin/test-path_resolution" | tee /dev/stderr | grep -q "^$PWD/rootfs/usr/bin/test-path_resolution$"
+then
+	ok
+else
+	ko
+fi
+echo
+
+run "libiamroot.so: test path_resolution() follows relative symlinks in path component"
+if env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+            test-path_resolution "$PWD/rootfs/bin/test-path_resolution" | tee /dev/stderr | grep -q "^$PWD/rootfs/usr/bin/test-path_resolution$"
+then
+	ok
+else
+	ko
+fi
+echo
+
+if test -d /bin && ! test -L /bin
+then
+	run "libiamroot.so: test path_resolution() follows absolute symlinks in path component"
+	if rm -f rootfs/tmp/bin && ln -sf /bin rootfs/tmp/bin &&
+	   env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+	            test-path_resolution "$PWD/rootfs/tmp/bin/test-path_resolution" | tee /dev/stderr | grep -q "^/bin/test-path_resolution$"
+	then
+		ok
+	else
+		ko
+	fi
+	echo
+elif test -d /usr/bin && ! test -L /usr/bin
+then
+	run "libiamroot.so: test path_resolution() follows absolute symlinks in path component"
+	if rm -f rootfs/tmp/bin && ln -sf /usr/bin rootfs/tmp/bin &&
+	   env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+	            test-path_resolution "$PWD/rootfs/tmp/bin/test-path_resolution" | tee /dev/stderr | grep -q "^/usr/bin/test-path_resolution$"
+	then
+		ok
+	else
+		ko
+	fi
+	echo
+elif test -d /usr/local/bin && ! test -L /usr/local/bin
+then
+	run "libiamroot.so: test path_resolution() follows absolute symlinks in path component"
+	if rm -f rootfs/tmp/bin && ln -sf /usr/local/bin rootfs/tmp/bin &&
+	   env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+	            test-path_resolution "$PWD/rootfs/tmp/bin/test-path_resolution" | tee /dev/stderr | grep -q "^/usr/local/bin/test-path_resolution$"
+	then
+		ok
+	else
+		ko
+	fi
+	echo
+fi
+
+run "libiamroot.so: test path_resolution() looks up absolute path normally (in-chroot)"
+if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+            test-path_resolution "/usr/bin/test-path_resolution" | tee /dev/stderr | grep -q "^$PWD/rootfs/usr/bin/test-path_resolution$"
+then
+	ok
+else
+	ko
+fi
+echo
+
+run "libiamroot.so: test path_resolution() looks up relative path normally (in-chroot)"
+if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+            test-path_resolution "/usr/bin/test-path_resolution" | tee /dev/stderr | grep -q "^$PWD/rootfs/usr/bin/test-path_resolution$"
+then
+	ok
+else
+	ko
+fi
+echo
+
+run "libiamroot.so: test path_resolution() follows relative symlinks in path component (in-chroot)"
+if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+            test-path_resolution "/bin/test-path_resolution" | tee /dev/stderr | grep -q "^$PWD/rootfs/usr/bin/test-path_resolution$"
+then
+	ok
+else
+	ko
+fi
+echo
+
+run "libiamroot.so: test path_resolution() follows absolute symlinks in path component (in-chroot)"
+if rm -f rootfs/tmp/bin && ln -sf /usr/bin rootfs/tmp/bin &&
+   env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+            test-path_resolution "/tmp/bin/test-path_resolution" | tee /dev/stderr | grep -q "^$PWD/rootfs/usr/bin/test-path_resolution$"
+then
+	ok
+else
+	ko
+fi
+echo
+
+run "libiamroot.so: test path_resolution() follows the final symbolic link"
+if rm -f rootfs/tmp/final-symbolic-link && ln -sf . rootfs/tmp/final-symbolic-link
+   env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+            test-path_resolution "$PWD/rootfs/tmp/final-symbolic-link" | tee /dev/stderr | grep -q "^$PWD/rootfs/tmp"
+then
+	ok
+else
+	ko
+fi
+echo
+
+run "libiamroot.so: test path_resolution() looks up inexistent file"
+if rm -f rootfs/no-such-file-or-directory &&
+   env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+            test-path_resolution "$PWD/rootfs/no-such-file-or-directory" | tee /dev/stderr | grep -q "^$PWD/rootfs/no-such-file-or-directory$"
+then
+	ok
+else
+	ko
+fi
+echo
+
+if test -L /proc/1/cwd
+then
+	run "libiamroot.so: test path_resolution() looks up permission denied file"
+	if env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+	            test-path_resolution "/proc/1/cwd/" | tee /dev/stderr | grep -q "^/proc/1/cwd/"
+	then
+		ok
+	else
+		ko
+	fi
+	echo
+fi
+
 if [[ "${XATTR:-0}" -eq 1 ]]
 then
 	run "libiamroot.so: test path_resolution() follows directory with user extended attribute added"

@@ -180,13 +180,13 @@ XATTR="$(command -v getfattr >/dev/null 2>&1 && echo 1)"
 PROCFS="$(test -d /proc/1 && ! test -r /proc/1/root && echo 1)"
 
 env-in-chroot() {
-	( cd rootfs/ && env-root "PATH=$PWD/usr/bin" \
+	( cd rootfs/ && env-host "PATH=$PWD/usr/bin" \
 	                         "LD_LIBRARY_PATH=$PWD/usr/lib" \
 	                         "IAMROOT_ROOT=$PWD" \
                                  "$@" )
 }
 
-env-root() {
+env-host() {
 	env "PATH=$PWD/rootfs/usr/bin" \
 	    "LD_PRELOAD=$IAMROOT_ORIGIN/libiamroot.so" \
 	    "IAMROOT_PATH_RESOLUTION_IGNORE=^/(proc|sys)/|.*\.gcda" \
@@ -197,7 +197,7 @@ if [[ "${XATTR:-0}" -eq 1 ]]
 then
 	run "libiamroot.so: test path_resolution() follows directory with user extended attribute added"
 	if setfattr -n "user.iamroot.path-resolution" -v "/proc\0" rootfs/proc &&
-	   env-root LD_LIBRARY_PATH="$PWD" test-path_resolution rootfs/proc | tee /dev/stderr | grep -q "^/proc$"
+	   env-host LD_LIBRARY_PATH="$PWD" test-path_resolution rootfs/proc | tee /dev/stderr | grep -q "^/proc$"
 	then
 		ok
 	else
@@ -207,7 +207,7 @@ then
 	
 	run "libiamroot.so: test path_resolution() resolves directory with user extended attribute removed normally"
 	if setfattr -x "user.iamroot.path-resolution" rootfs/proc &&
-	   env-root LD_LIBRARY_PATH="$PWD" test-path_resolution rootfs/proc | tee /dev/stderr | grep -q "^$PWD/rootfs/proc$"
+	   env-host LD_LIBRARY_PATH="$PWD" test-path_resolution rootfs/proc | tee /dev/stderr | grep -q "^$PWD/rootfs/proc$"
 	then
 		ok
 	else
@@ -219,7 +219,7 @@ fi
 if [[ "${OS:-0}" == "GNU/Linux" ]]
 then
 	run "libiamroot.so: test path_resolution() resolves very long path noexceeding PATH_MAX"
-	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+	if env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
 	            test-path_resolution "this is a very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very long path noexceeding PATH_MAX"
 	then
 		ok
@@ -229,7 +229,7 @@ then
 	echo
 
 	run "libiamroot.so: test path_resolution() does not resolve very long path exceeding PATH_MAX"
-	if ! env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+	if ! env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
 	     test-path_resolution "this is a very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very long path exceeding PATH_MAX"
 	then
 		ok
@@ -243,7 +243,7 @@ fi
 if [[ "${OS:-0}" == "FreeBSD" ]]
 then
 	run "libiamroot.so: test path_resolution() resolves host root directory using host"
-	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+	if env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
 	            test-path_resolution / | tee /dev/stderr | grep -q "^/$"
 	then
 		ok
@@ -253,7 +253,7 @@ then
 	echo
 
 	run "libiamroot.so: test path_resolution() resolves host virtual filesystem tmpfs(5) on mountpoint /run using host"
-	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+	if env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
 	            test-path_resolution /run/ | tee /dev/stderr | grep -q "^/run$"
 	then
 		ok
@@ -263,7 +263,7 @@ then
 	echo
 
 	run "libiamroot.so: test path_resolution() resolves host directory /var/run using host"
-	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+	if env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
 	            test-path_resolution /var/run/ | tee /dev/stderr | grep -q "^/var/run$"
 	then
 		ok
@@ -308,7 +308,7 @@ fi
 if [[ "${OS:-0}" == "GNU/Linux" ]]
 then
 	run "libiamroot.so: test path_resolution() resolves host root directory using host"
-	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+	if env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
 	            test-path_resolution / | tee /dev/stderr | grep -q "^/$"
 	then
 		ok
@@ -318,7 +318,7 @@ then
 	echo
 
 	run "libiamroot.so: test path_resolution() resolves host virtual filesystem tmpfs(5) on mountpoint /run using host"
-	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+	if env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
 	            test-path_resolution /run/ | tee /dev/stderr | grep -q "^/run$"
 	then
 		ok
@@ -328,7 +328,7 @@ then
 	echo
 
 	run "libiamroot.so: test path_resolution() resolves host symlink /var/run using host"
-	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+	if env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
 	            test-path_resolution /var/run/ | tee /dev/stderr | grep -q "^/run$"
 	then
 		ok
@@ -338,7 +338,7 @@ then
 	echo
 
 	run "libiamroot.so: test path_resolution() resolves host virtual filesystem procfs(5) using host"
-	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+	if env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
 	            test-path_resolution /proc/ | tee /dev/stderr | grep -q "^/proc/$"
 	then
 		ok

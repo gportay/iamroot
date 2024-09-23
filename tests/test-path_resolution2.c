@@ -26,7 +26,7 @@ int main(int argc, char * const argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	prflags = strtol(argv[3], NULL, 0);
+	prflags = strtoul(argv[3], NULL, 0);
 
 	if (!__strneq(argv[1], "-")) {
 		dfd = open(".", O_DIRECTORY);

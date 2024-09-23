@@ -195,7 +195,7 @@ env-host() {
 
 run "libiamroot.so: test path_resolution() looks up absolute path normally"
 if env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-            test-path_resolution "$PWD/rootfs/usr/bin/test-path_resolution" | tee /dev/stderr | grep -q "^$PWD/rootfs/usr/bin/test-path_resolution$"
+            test-path_resolution - "$PWD/rootfs/usr/bin/test-path_resolution" | tee /dev/stderr | grep -q "^$PWD/rootfs/usr/bin/test-path_resolution$"
 then
 	ok
 else
@@ -205,7 +205,7 @@ echo
 
 run "libiamroot.so: test path_resolution() looks up relative path normally"
 if env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-            test-path_resolution "rootfs/usr/bin/test-path_resolution" | tee /dev/stderr | grep -q "^$PWD/rootfs/usr/bin/test-path_resolution$"
+            test-path_resolution - "rootfs/usr/bin/test-path_resolution" | tee /dev/stderr | grep -q "^$PWD/rootfs/usr/bin/test-path_resolution$"
 then
 	ok
 else
@@ -215,7 +215,7 @@ echo
 
 run "libiamroot.so: test path_resolution() follows relative symlinks in path component"
 if env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-            test-path_resolution "$PWD/rootfs/bin/test-path_resolution" | tee /dev/stderr | grep -q "^$PWD/rootfs/usr/bin/test-path_resolution$"
+            test-path_resolution - "$PWD/rootfs/bin/test-path_resolution" | tee /dev/stderr | grep -q "^$PWD/rootfs/usr/bin/test-path_resolution$"
 then
 	ok
 else
@@ -228,7 +228,7 @@ then
 	run "libiamroot.so: test path_resolution() follows absolute symlinks in path component"
 	if rm -f rootfs/tmp/bin && ln -sf /bin rootfs/tmp/bin &&
 	   env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution "$PWD/rootfs/tmp/bin/test-path_resolution" | tee /dev/stderr | grep -q "^/bin/test-path_resolution$"
+	            test-path_resolution - "$PWD/rootfs/tmp/bin/test-path_resolution" | tee /dev/stderr | grep -q "^/bin/test-path_resolution$"
 	then
 		ok
 	else
@@ -240,7 +240,7 @@ then
 	run "libiamroot.so: test path_resolution() follows absolute symlinks in path component"
 	if rm -f rootfs/tmp/bin && ln -sf /usr/bin rootfs/tmp/bin &&
 	   env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution "$PWD/rootfs/tmp/bin/test-path_resolution" | tee /dev/stderr | grep -q "^/usr/bin/test-path_resolution$"
+	            test-path_resolution - "$PWD/rootfs/tmp/bin/test-path_resolution" | tee /dev/stderr | grep -q "^/usr/bin/test-path_resolution$"
 	then
 		ok
 	else
@@ -252,7 +252,7 @@ then
 	run "libiamroot.so: test path_resolution() follows absolute symlinks in path component"
 	if rm -f rootfs/tmp/bin && ln -sf /usr/local/bin rootfs/tmp/bin &&
 	   env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution "$PWD/rootfs/tmp/bin/test-path_resolution" | tee /dev/stderr | grep -q "^/usr/local/bin/test-path_resolution$"
+	            test-path_resolution - "$PWD/rootfs/tmp/bin/test-path_resolution" | tee /dev/stderr | grep -q "^/usr/local/bin/test-path_resolution$"
 	then
 		ok
 	else
@@ -263,7 +263,7 @@ fi
 
 run "libiamroot.so: test path_resolution() looks up absolute path normally (in-chroot)"
 if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-            test-path_resolution "/usr/bin/test-path_resolution" | tee /dev/stderr | grep -q "^$PWD/rootfs/usr/bin/test-path_resolution$"
+            test-path_resolution - "/usr/bin/test-path_resolution" | tee /dev/stderr | grep -q "^$PWD/rootfs/usr/bin/test-path_resolution$"
 then
 	ok
 else
@@ -273,7 +273,7 @@ echo
 
 run "libiamroot.so: test path_resolution() looks up relative path normally (in-chroot)"
 if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-            test-path_resolution "/usr/bin/test-path_resolution" | tee /dev/stderr | grep -q "^$PWD/rootfs/usr/bin/test-path_resolution$"
+            test-path_resolution - "/usr/bin/test-path_resolution" | tee /dev/stderr | grep -q "^$PWD/rootfs/usr/bin/test-path_resolution$"
 then
 	ok
 else
@@ -283,7 +283,7 @@ echo
 
 run "libiamroot.so: test path_resolution() follows relative symlinks in path component (in-chroot)"
 if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-            test-path_resolution "/bin/test-path_resolution" | tee /dev/stderr | grep -q "^$PWD/rootfs/usr/bin/test-path_resolution$"
+            test-path_resolution - "/bin/test-path_resolution" | tee /dev/stderr | grep -q "^$PWD/rootfs/usr/bin/test-path_resolution$"
 then
 	ok
 else
@@ -294,7 +294,7 @@ echo
 run "libiamroot.so: test path_resolution() follows absolute symlinks in path component (in-chroot)"
 if rm -f rootfs/tmp/bin && ln -sf /usr/bin rootfs/tmp/bin &&
    env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-            test-path_resolution "/tmp/bin/test-path_resolution" | tee /dev/stderr | grep -q "^$PWD/rootfs/usr/bin/test-path_resolution$"
+            test-path_resolution - "/tmp/bin/test-path_resolution" | tee /dev/stderr | grep -q "^$PWD/rootfs/usr/bin/test-path_resolution$"
 then
 	ok
 else
@@ -305,7 +305,7 @@ echo
 run "libiamroot.so: test path_resolution() follows the final symbolic link"
 if rm -f rootfs/tmp/final-symbolic-link && ln -sf . rootfs/tmp/final-symbolic-link
    env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-            test-path_resolution "$PWD/rootfs/tmp/final-symbolic-link" | tee /dev/stderr | grep -q "^$PWD/rootfs/tmp"
+            test-path_resolution - "$PWD/rootfs/tmp/final-symbolic-link" | tee /dev/stderr | grep -q "^$PWD/rootfs/tmp"
 then
 	ok
 else
@@ -316,7 +316,7 @@ echo
 run "libiamroot.so: test path_resolution() does not follow the final symbolic link if AT_SYMLINK_FOLLOW"
 if rm -f rootfs/tmp/final-symbolic-link && ln -sf . rootfs/tmp/final-symbolic-link
    env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-            test-path_resolution "$PWD/rootfs/tmp/final-symbolic-link" 0x400 | tee /dev/stderr | grep -q "^$PWD/rootfs/tmp"
+            test-path_resolution - "$PWD/rootfs/tmp/final-symbolic-link" 0x400 | tee /dev/stderr | grep -q "^$PWD/rootfs/tmp"
 then
 	ok
 else
@@ -327,7 +327,7 @@ echo
 run "libiamroot.so: test path_resolution() does not follow the final symbolic link if AT_SYMLINK_NOFOLLOW"
 if rm -f rootfs/tmp/final-symbolic-link && ln -sf . rootfs/tmp/final-symbolic-link
    env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-            test-path_resolution "$PWD/rootfs/tmp/final-symbolic-link" 0x100 | tee /dev/stderr | grep -q "^$PWD/rootfs/tmp/final-symbolic-link"
+            test-path_resolution - "$PWD/rootfs/tmp/final-symbolic-link" 0x100 | tee /dev/stderr | grep -q "^$PWD/rootfs/tmp/final-symbolic-link"
 then
 	ok
 else
@@ -338,7 +338,7 @@ echo
 run "libiamroot.so: test path_resolution() looks up inexistent file"
 if rm -f rootfs/no-such-file-or-directory &&
    env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-            test-path_resolution "$PWD/rootfs/no-such-file-or-directory" | tee /dev/stderr | grep -q "^$PWD/rootfs/no-such-file-or-directory$"
+            test-path_resolution - "$PWD/rootfs/no-such-file-or-directory" | tee /dev/stderr | grep -q "^$PWD/rootfs/no-such-file-or-directory$"
 then
 	ok
 else
@@ -350,7 +350,7 @@ if test -L /proc/1/cwd
 then
 	run "libiamroot.so: test path_resolution() looks up permission denied file"
 	if env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution "/proc/1/cwd/" | tee /dev/stderr | grep -q "^/proc/1/cwd/"
+	            test-path_resolution - "/proc/1/cwd/" | tee /dev/stderr | grep -q "^/proc/1/cwd/"
 	then
 		ok
 	else
@@ -358,12 +358,14 @@ then
 	fi
 	echo
 fi
+#
+#exit 0
 
 if [[ "${XATTR:-0}" -eq 1 ]]
 then
 	run "libiamroot.so: test path_resolution() follows directory with user extended attribute added"
 	if setfattr -n "user.iamroot.path-resolution" -v "/proc\0" rootfs/proc &&
-	   env-host LD_LIBRARY_PATH="$PWD" test-path_resolution rootfs/proc | tee /dev/stderr | grep -q "^/proc$"
+	   env-host LD_LIBRARY_PATH="$PWD" test-path_resolution - rootfs/proc | tee /dev/stderr | grep -q "^/proc$"
 	then
 		ok
 	else
@@ -373,7 +375,7 @@ then
 	
 	run "libiamroot.so: test path_resolution() resolves directory with user extended attribute removed normally"
 	if setfattr -x "user.iamroot.path-resolution" rootfs/proc &&
-	   env-host LD_LIBRARY_PATH="$PWD" test-path_resolution rootfs/proc | tee /dev/stderr | grep -q "^$PWD/rootfs/proc$"
+	   env-host LD_LIBRARY_PATH="$PWD" test-path_resolution - rootfs/proc | tee /dev/stderr | grep -q "^$PWD/rootfs/proc$"
 	then
 		ok
 	else
@@ -386,7 +388,7 @@ if [[ "${OS:-0}" == "GNU/Linux" ]]
 then
 	run "libiamroot.so: test path_resolution() resolves very long path noexceeding PATH_MAX"
 	if env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution "this is a very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very long path noexceeding PATH_MAX"
+	            test-path_resolution - "this is a very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very long path noexceeding PATH_MAX"
 	then
 		ok
 	else
@@ -396,7 +398,7 @@ then
 
 	run "libiamroot.so: test path_resolution() does not resolve very long path exceeding PATH_MAX"
 	if ! env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	     test-path_resolution "this is a very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very long path exceeding PATH_MAX"
+	     test-path_resolution - "this is a very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very long path exceeding PATH_MAX"
 	then
 		ok
 	else
@@ -410,7 +412,7 @@ if [[ "${OS:-0}" == "FreeBSD" ]]
 then
 	run "libiamroot.so: test path_resolution() resolves host root directory using host"
 	if env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution / | tee /dev/stderr | grep -q "^/$"
+	            test-path_resolution - / | tee /dev/stderr | grep -q "^/$"
 	then
 		ok
 	else
@@ -420,7 +422,7 @@ then
 
 	run "libiamroot.so: test path_resolution() resolves host virtual filesystem tmpfs(5) on mountpoint /run using host"
 	if env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution /run/ | tee /dev/stderr | grep -q "^/run$"
+	            test-path_resolution - /run/ | tee /dev/stderr | grep -q "^/run$"
 	then
 		ok
 	else
@@ -430,7 +432,7 @@ then
 
 	run "libiamroot.so: test path_resolution() resolves host directory /var/run using host"
 	if env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution /var/run/ | tee /dev/stderr | grep -q "^/var/run$"
+	            test-path_resolution - /var/run/ | tee /dev/stderr | grep -q "^/var/run$"
 	then
 		ok
 	else
@@ -440,7 +442,7 @@ then
 
 	run "libiamroot.so: test path_resolution() resolves virtual filesystem devtmpfs on mountpont /run internally (in-chroot)"
 	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution /dev/ | tee /dev/stderr | grep -q "^$PWD/rootfs/dev$"
+	            test-path_resolution - /dev/ | tee /dev/stderr | grep -q "^$PWD/rootfs/dev$"
 	then
 		ok
 	else
@@ -450,7 +452,7 @@ then
 
 	run "libiamroot.so: test path_resolution() resolves virtual filesystem tmpfs(5) on mountpont /run internally (in-chroot)"
 	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution /run | tee /dev/stderr | grep -q "^$PWD/rootfs/run$"
+	            test-path_resolution - /run | tee /dev/stderr | grep -q "^$PWD/rootfs/run$"
 	then
 		ok
 	else
@@ -461,7 +463,7 @@ then
 
 	run "libiamroot.so: test path_resolution() resolves directory /var/run internally (in-chroot)"
 	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution /var/run | tee /dev/stderr | grep -q "^$PWD/rootfs/var/run$"
+	            test-path_resolution - /var/run | tee /dev/stderr | grep -q "^$PWD/rootfs/var/run$"
 	then
 		ok
 	else
@@ -475,7 +477,7 @@ if [[ "${OS:-0}" == "GNU/Linux" ]]
 then
 	run "libiamroot.so: test path_resolution() resolves host root directory using host"
 	if env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution / | tee /dev/stderr | grep -q "^/$"
+	            test-path_resolution - / | tee /dev/stderr | grep -q "^/$"
 	then
 		ok
 	else
@@ -485,7 +487,7 @@ then
 
 	run "libiamroot.so: test path_resolution() resolves host virtual filesystem tmpfs(5) on mountpoint /run using host"
 	if env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution /run/ | tee /dev/stderr | grep -q "^/run$"
+	            test-path_resolution - /run/ | tee /dev/stderr | grep -q "^/run$"
 	then
 		ok
 	else
@@ -495,7 +497,7 @@ then
 
 	run "libiamroot.so: test path_resolution() resolves host symlink /var/run using host"
 	if env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution /var/run/ | tee /dev/stderr | grep -q "^/run$"
+	            test-path_resolution - /var/run/ | tee /dev/stderr | grep -q "^/run$"
 	then
 		ok
 	else
@@ -505,7 +507,7 @@ then
 
 	run "libiamroot.so: test path_resolution() resolves host virtual filesystem procfs(5) using host"
 	if env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution /proc/ | tee /dev/stderr | grep -q "^/proc/$"
+	            test-path_resolution - /proc/ | tee /dev/stderr | grep -q "^/proc/$"
 	then
 		ok
 	else
@@ -515,7 +517,7 @@ then
 
 	run "libiamroot.so: test path_resolution() resolves virtual filesystem devtmpfs on mountpont /run internally (in-chroot)"
 	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution /dev/ | tee /dev/stderr | grep -q "^$PWD/rootfs/dev$"
+	            test-path_resolution - /dev/ | tee /dev/stderr | grep -q "^$PWD/rootfs/dev$"
 	then
 		ok
 	else
@@ -525,7 +527,7 @@ then
 
 	run "libiamroot.so: test path_resolution() resolves virtual filesystem tmpfs(5) on mountpont /run internally (in-chroot)"
 	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution /run | tee /dev/stderr | grep -q "^$PWD/rootfs/run$"
+	            test-path_resolution - /run | tee /dev/stderr | grep -q "^$PWD/rootfs/run$"
 	then
 		ok
 	else
@@ -535,7 +537,7 @@ then
 
 	run "libiamroot.so: test path_resolution() resolves relative symlink /var/run internally (in-chroot)"
 	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution /var/run | tee /dev/stderr | grep -q "^$PWD/rootfs/run$"
+	            test-path_resolution - /var/run | tee /dev/stderr | grep -q "^$PWD/rootfs/run$"
 	then
 		ok
 	else
@@ -545,7 +547,7 @@ then
 
 	run "libiamroot.so: test path_resolution() resolves mountpoint /var/run internally (in-chroot)"
 	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution /var/run | tee /dev/stderr | grep -q "^$PWD/rootfs/run$"
+	            test-path_resolution - /var/run | tee /dev/stderr | grep -q "^$PWD/rootfs/run$"
 	then
 		ok
 	else
@@ -555,7 +557,7 @@ then
 
 	run "libiamroot.so: test path_resolution() resolves virtual filesystem sysfs(5) using host (in-chroot)"
 	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution /sys/ | tee /dev/stderr | grep -q "^/sys/$"
+	            test-path_resolution - /sys/ | tee /dev/stderr | grep -q "^/sys/$"
 	then
 		ok
 	else
@@ -568,7 +570,7 @@ if [[ "${PROCFS:-0}" -eq 1 ]]
 then
 	run "libiamroot.so: test path_resolution2() resolves magic links if no PR flag set (in-chroot)"
 	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution2 /proc/1/root 0x00 | tee /dev/stderr | grep -q "^/$"
+	            test-path_resolution2 - /proc/1/root 0x00 | tee /dev/stderr | grep -q "^/$"
 	then
 		ok
 	else
@@ -578,7 +580,7 @@ then
 
 	run "libiamroot.so: test path_resolution2() does not resolve magic link if NOMAGICLINKS set (in-chroot)"
 	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution2 /proc/1/root 0x01 | tee /dev/stderr | grep -q "^/proc/1/root$"
+	            test-path_resolution2 - /proc/1/root 0x01 | tee /dev/stderr | grep -q "^/proc/1/root$"
 	then
 		ok
 	else
@@ -588,7 +590,7 @@ then
 
 	run "libiamroot.so: test path_resolution2() does not resolve anything if NOWALKALONG set (in-chroot)"
 	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution2 /proc/1/root 0x03 | tee /dev/stderr | grep -q "^$PWD/rootfs/proc/1/root$"
+	            test-path_resolution2 - /proc/1/root 0x03 | tee /dev/stderr | grep -q "^$PWD/rootfs/proc/1/root$"
 	then
 		ok
 	else
@@ -601,7 +603,7 @@ if [[ "${PROCFS:-0}" -eq 1 ]] && [[ "${XATTR:-0}" -eq 1 ]]
 then
 	run "libiamroot.so: test path_resolution2() resolves virtual filesystem proc(5) internally if NOWALKALONG set (in-chroot)"
 	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution2 /proc/1/root 0x03 | tee /dev/stderr | grep -q "^$PWD/rootfs/proc/1/root$"
+	            test-path_resolution2 - /proc/1/root 0x03 | tee /dev/stderr | grep -q "^$PWD/rootfs/proc/1/root$"
 	then
 		ok
 	else

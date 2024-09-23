@@ -6,6 +6,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <errno.h>
 #include <limits.h>
 #include <fcntl.h>
@@ -14,26 +15,41 @@
 
 int main(int argc, char * const argv[])
 {
+	int prflags, dfd = AT_FDCWD, ret = EXIT_FAILURE;
 	char buf[PATH_MAX];
-	int prflags;
 
-	if (argc < 2) {
+	if (argc < 3) {
 		fprintf(stderr, "Too few arguments\n");
 		exit(EXIT_FAILURE);
-	} else if (argc > 3) {
+	} else if (argc > 4) {
 		fprintf(stderr, "Too many arguments\n");
 		exit(EXIT_FAILURE);
 	}
 
-	prflags = strtol(argv[2], NULL, 0);
+	prflags = strtol(argv[3], NULL, 0);
 
-	if (path_resolution2(AT_FDCWD, argv[1], buf, sizeof(buf), 0,
+	if (!__strneq(argv[1], "-")) {
+		dfd = open(".", O_DIRECTORY);
+		if (dfd == -1) {
+			perror("open");
+			return EXIT_FAILURE;
+		}
+	}
+
+	if (path_resolution2(dfd, argv[2], buf, sizeof(buf), 0,
 			     prflags) == -1) {
 		perror("path_resolution2");
-		return EXIT_FAILURE;
+		goto exit;
 	}
 
 	printf("%s\n", buf);
 
-	return EXIT_SUCCESS;
+	ret = EXIT_SUCCESS;
+
+exit:
+	if (dfd != AT_FDCWD)
+		if (close(dfd))
+			perror("close");
+
+	return ret;
 }

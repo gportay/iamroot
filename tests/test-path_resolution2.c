@@ -15,18 +15,19 @@
 
 int main(int argc, char * const argv[])
 {
-	int prflags, dfd = AT_FDCWD, ret = EXIT_FAILURE;
+	int atflags, prflags, dfd = AT_FDCWD, ret = EXIT_FAILURE;
 	char buf[PATH_MAX];
 
-	if (argc < 3) {
+	if (argc < 4) {
 		fprintf(stderr, "Too few arguments\n");
 		exit(EXIT_FAILURE);
-	} else if (argc > 4) {
+	} else if (argc > 5) {
 		fprintf(stderr, "Too many arguments\n");
 		exit(EXIT_FAILURE);
 	}
 
-	prflags = strtoul(argv[3], NULL, 0);
+	atflags = strtoul(argv[3], NULL, 0);
+	prflags = strtol(argv[4], NULL, 0);
 
 	if (!__strneq(argv[1], "-")) {
 		dfd = open(".", O_DIRECTORY);
@@ -36,7 +37,7 @@ int main(int argc, char * const argv[])
 		}
 	}
 
-	if (path_resolution2(dfd, argv[2], buf, sizeof(buf), 0,
+	if (path_resolution2(dfd, argv[2], buf, sizeof(buf), atflags,
 			     prflags) == -1) {
 		perror("path_resolution2");
 		goto exit;

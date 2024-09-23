@@ -570,7 +570,7 @@ if [[ "${PROCFS:-0}" -eq 1 ]]
 then
 	run "libiamroot.so: test path_resolution2() resolves magic links if no PR flag set (in-chroot)"
 	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution2 - /proc/1/root 0x00 | tee /dev/stderr | grep -q "^/$"
+	            test-path_resolution2 - /proc/1/root 0x00 0x00 | tee /dev/stderr | grep -q "^/$"
 	then
 		ok
 	else
@@ -580,7 +580,7 @@ then
 
 	run "libiamroot.so: test path_resolution2() does not resolve magic link if NOMAGICLINKS set (in-chroot)"
 	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution2 - /proc/1/root 0x01 | tee /dev/stderr | grep -q "^/proc/1/root$"
+	            test-path_resolution2 - /proc/1/root 0x00 0x01 | tee /dev/stderr | grep -q "^/proc/1/root$"
 	then
 		ok
 	else
@@ -590,7 +590,7 @@ then
 
 	run "libiamroot.so: test path_resolution2() does not resolve anything if NOWALKALONG set (in-chroot)"
 	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution2 - /proc/1/root 0x03 | tee /dev/stderr | grep -q "^$PWD/rootfs/proc/1/root$"
+	            test-path_resolution2 - /proc/1/root 0x00 0x03 | tee /dev/stderr | grep -q "^$PWD/rootfs/proc/1/root$"
 	then
 		ok
 	else
@@ -603,7 +603,7 @@ if [[ "${PROCFS:-0}" -eq 1 ]] && [[ "${XATTR:-0}" -eq 1 ]]
 then
 	run "libiamroot.so: test path_resolution2() resolves virtual filesystem proc(5) internally if NOWALKALONG set (in-chroot)"
 	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	            test-path_resolution2 - /proc/1/root 0x03 | tee /dev/stderr | grep -q "^$PWD/rootfs/proc/1/root$"
+	            test-path_resolution2 - /proc/1/root 0x00 0x03 | tee /dev/stderr | grep -q "^$PWD/rootfs/proc/1/root$"
 	then
 		ok
 	else

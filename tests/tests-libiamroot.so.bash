@@ -179,7 +179,7 @@ OS="$(uname -o 2>/dev/null || uname -s 2>/dev/null)"
 XATTR="$(command -v getfattr >/dev/null 2>&1 && echo 1)"
 PROCFS="$(test -d /proc/1 && ! test -r /proc/1/root && echo 1)"
 
-env-in-chroot() {
+env-root() {
 	( cd rootfs/ && env-host "PATH=$PWD/usr/bin" \
 	                         "LD_LIBRARY_PATH=$PWD/usr/lib" \
 	                         "IAMROOT_ROOT=$PWD" \
@@ -273,8 +273,8 @@ then
 	echo
 
 	run "libiamroot.so: test path_resolution() resolves virtual filesystem devtmpfs on mountpont /run internally (in-chroot)"
-	if env-in-chroot "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	                 test-path_resolution /dev/ | tee /dev/stderr | grep -q "^$PWD/rootfs/dev$"
+	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+	            test-path_resolution /dev/ | tee /dev/stderr | grep -q "^$PWD/rootfs/dev$"
 	then
 		ok
 	else
@@ -283,8 +283,8 @@ then
 	echo
 
 	run "libiamroot.so: test path_resolution() resolves virtual filesystem tmpfs(5) on mountpont /run internally (in-chroot)"
-	if env-in-chroot "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	                 test-path_resolution /run | tee /dev/stderr | grep -q "^$PWD/rootfs/run$"
+	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+	            test-path_resolution /run | tee /dev/stderr | grep -q "^$PWD/rootfs/run$"
 	then
 		ok
 	else
@@ -294,8 +294,8 @@ then
 
 
 	run "libiamroot.so: test path_resolution() resolves directory /var/run internally (in-chroot)"
-	if env-in-chroot "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	                 test-path_resolution /var/run | tee /dev/stderr | grep -q "^$PWD/rootfs/var/run$"
+	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+	            test-path_resolution /var/run | tee /dev/stderr | grep -q "^$PWD/rootfs/var/run$"
 	then
 		ok
 	else
@@ -348,8 +348,8 @@ then
 	echo
 
 	run "libiamroot.so: test path_resolution() resolves virtual filesystem devtmpfs on mountpont /run internally (in-chroot)"
-	if env-in-chroot "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	                 test-path_resolution /dev/ | tee /dev/stderr | grep -q "^$PWD/rootfs/dev$"
+	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+	            test-path_resolution /dev/ | tee /dev/stderr | grep -q "^$PWD/rootfs/dev$"
 	then
 		ok
 	else
@@ -358,8 +358,8 @@ then
 	echo
 
 	run "libiamroot.so: test path_resolution() resolves virtual filesystem tmpfs(5) on mountpont /run internally (in-chroot)"
-	if env-in-chroot "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	                 test-path_resolution /run | tee /dev/stderr | grep -q "^$PWD/rootfs/run$"
+	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+	            test-path_resolution /run | tee /dev/stderr | grep -q "^$PWD/rootfs/run$"
 	then
 		ok
 	else
@@ -368,8 +368,8 @@ then
 	echo
 
 	run "libiamroot.so: test path_resolution() resolves relative symlink /var/run internally (in-chroot)"
-	if env-in-chroot "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	                 test-path_resolution /var/run | tee /dev/stderr | grep -q "^$PWD/rootfs/run$"
+	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+	            test-path_resolution /var/run | tee /dev/stderr | grep -q "^$PWD/rootfs/run$"
 	then
 		ok
 	else
@@ -378,8 +378,8 @@ then
 	echo
 
 	run "libiamroot.so: test path_resolution() resolves mountpoint /var/run internally (in-chroot)"
-	if env-in-chroot "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	                 test-path_resolution /var/run | tee /dev/stderr | grep -q "^$PWD/rootfs/run$"
+	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+	            test-path_resolution /var/run | tee /dev/stderr | grep -q "^$PWD/rootfs/run$"
 	then
 		ok
 	else
@@ -388,8 +388,8 @@ then
 	echo
 
 	run "libiamroot.so: test path_resolution() resolves virtual filesystem sysfs(5) using host (in-chroot)"
-	if env-in-chroot "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	                 test-path_resolution /sys/ | tee /dev/stderr | grep -q "^/sys/$"
+	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+	            test-path_resolution /sys/ | tee /dev/stderr | grep -q "^/sys/$"
 	then
 		ok
 	else
@@ -401,8 +401,8 @@ fi
 if [[ "${PROCFS:-0}" -eq 1 ]]
 then
 	run "libiamroot.so: test path_resolution2() resolves magic links if no PR flag set (in-chroot)"
-	if env-in-chroot "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	                 test-path_resolution2 /proc/1/root 0x00 | tee /dev/stderr | grep -q "^/$"
+	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+	            test-path_resolution2 /proc/1/root 0x00 | tee /dev/stderr | grep -q "^/$"
 	then
 		ok
 	else
@@ -411,8 +411,8 @@ then
 	echo
 
 	run "libiamroot.so: test path_resolution2() does not resolve magic link if NOMAGICLINKS set (in-chroot)"
-	if env-in-chroot "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	                 test-path_resolution2 /proc/1/root 0x01 | tee /dev/stderr | grep -q "^/proc/1/root$"
+	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+	            test-path_resolution2 /proc/1/root 0x01 | tee /dev/stderr | grep -q "^/proc/1/root$"
 	then
 		ok
 	else
@@ -421,8 +421,8 @@ then
 	echo
 
 	run "libiamroot.so: test path_resolution2() does not resolve anything if NOWALKALONG set (in-chroot)"
-	if env-in-chroot "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	                 test-path_resolution2 /proc/1/root 0x03 | tee /dev/stderr | grep -q "^$PWD/rootfs/proc/1/root$"
+	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+	            test-path_resolution2 /proc/1/root 0x03 | tee /dev/stderr | grep -q "^$PWD/rootfs/proc/1/root$"
 	then
 		ok
 	else
@@ -434,8 +434,8 @@ fi
 if [[ "${PROCFS:-0}" -eq 1 ]] && [[ "${XATTR:-0}" -eq 1 ]]
 then
 	run "libiamroot.so: test path_resolution2() resolves virtual filesystem proc(5) internally if NOWALKALONG set (in-chroot)"
-	if env-in-chroot "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-	                 test-path_resolution2 /proc/1/root 0x03 | tee /dev/stderr | grep -q "^$PWD/rootfs/proc/1/root$"
+	if env-root "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
+	            test-path_resolution2 /proc/1/root 0x03 | tee /dev/stderr | grep -q "^$PWD/rootfs/proc/1/root$"
 	then
 		ok
 	else

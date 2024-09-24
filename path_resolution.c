@@ -275,7 +275,7 @@ constructor void path_resolution_init()
 
 	ignore = _getenv("IAMROOT_PATH_RESOLUTION_IGNORE");
 	if (!ignore)
-		ignore = "^/proc/|/sys/|"_PATH_DEV"|"_PATH_VARRUN"|/run/";
+		ignore = "^(/proc/|/sys/|"_PATH_DEV"|"_PATH_VARRUN"|/run/)";
 
 	ret = jim_regcomp(&regex_ignore, ignore, REG_EXTENDED);
 	if (ret != 0) {

@@ -291,7 +291,8 @@ endif
 	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs       test-updwtmpx             /tmp/wtmpx
 	env LD_PRELOAD=$(LIBRARY) PATH=$(CURDIR)/rootfs/usr/bin                                                                                            test-mount -t proc none   rootfs/proc
 	env LD_PRELOAD=$(LIBRARY) PATH=$(CURDIR)/rootfs/usr/bin                                                                                            test-umount               rootfs/proc
-	env LD_PRELOAD=$(LIBRARY) PATH=$(CURDIR)/rootfs/usr/bin                                                                                            test-umount2              rootfs/proc
+	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                         test-mount -t sysfs none  /sys
+	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs                                                         test-umount2              /sys
 ifeq ($(OS),GNU/Linux)
 	env LD_PRELOAD=$(LIBRARY) PATH=$(CURDIR)/rootfs/usr/bin                                                                                            test-name_to_handle_at  . rootfs/tmp/file0         0
 	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs       test-name_to_handle_at  - /tmp/file0               0

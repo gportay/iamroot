@@ -51,7 +51,7 @@ Need to get XXX.X xB of archives.
 After this operation, XXX.X xB of additional disk space will be used.
 /usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/gcc-14-base.deb 
 /usr/bin/dpkg --status-fd XXX --no-triggers --configure gcc-14-base:amd64 
-/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libc6.deb $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libgcc-s1_14.2.0-3_amd64.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libc6.deb $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libgcc-s1.deb 
 /usr/bin/dpkg --status-fd XXX --no-triggers --configure libgcc-s1:amd64 libc6:amd64 
 /usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/mawk.deb 
 /usr/bin/dpkg --status-fd XXX --no-triggers --configure mawk:amd64 
@@ -83,7 +83,7 @@ After this operation, XXX.X xB of additional disk space will be used.
 /usr/bin/dpkg --status-fd XXX --no-triggers --configure libzstd1:amd64 
 /usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/zlib1g.deb 
 /usr/bin/dpkg --status-fd XXX --no-triggers --configure zlib1g:amd64 
-/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libssl3t64.deb $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/openssl-provider-legacy_3.3.2-1_amd64.deb 
+/usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/libssl3t64.deb $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/openssl-provider-legacy.deb 
 /usr/bin/dpkg --status-fd XXX --no-triggers --configure openssl-provider-legacy:amd64 libssl3t64:amd64 
 /usr/bin/dpkg --status-fd XXX --no-triggers --unpack --auto-deconfigure $ROOT/amd64-mobian-trixie-rootfs/var/cache/apt/archives/coreutils.deb 
 /usr/bin/dpkg --status-fd XXX --no-triggers --configure coreutils:amd64 

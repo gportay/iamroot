@@ -451,12 +451,12 @@ useradd: Warning: missing or non-executable shell '/bin/sync'
   Installing       : nss-util XXX/XXX
   Installing       : libxml2 XXX/XXX
   Installing       : alternatives XXX/XXX
+  Installing       : libffi XXX/XXX
   Installing       : libmnl XXX/XXX
   Installing       : libtalloc XXX/XXX
   Installing       : gdbm-libs XXX/XXX
   Installing       : libcap-ng XXX/XXX
   Installing       : audit-libs XXX/XXX
-  Installing       : libffi XXX/XXX
   Installing       : fmt XXX/XXX
   Installing       : libassuan XXX/XXX
   Installing       : libgcrypt XXX/XXX
@@ -806,7 +806,6 @@ Created symlink '/etc/systemd/system/multi-user.target.wants/sssd.service' → '
   Installing       : libsolv XXX/XXX
   Installing       : libdnf5 XXX/XXX
   Installing       : libdnf5-cli XXX/XXX
-  Installing       : dnf5 XXX/XXX
   Running scriptlet: rpm XXX/XXX
   Installing       : rpm XXX/XXX
   Installing       : policycoreutils XXX/XXX
@@ -819,6 +818,8 @@ Created symlink '/etc/systemd/system/sysinit.target.wants/selinux-autorelabel-ma
   Installing       : selinux-policy-targeted XXX/XXX
   Running scriptlet: selinux-policy-targeted XXX/XXX
   Installing       : rpm-build-libs XXX/XXX
+  Installing       : dnf5 XXX/XXX
+  Installing       : dnf5-plugins XXX/XXX
   Installing       : libcap-ng-python3 XXX/XXX
   Installing       : python3-nftables XXX/XXX
   Installing       : python3-firewall XXX/XXX
@@ -827,7 +828,6 @@ Created symlink '/etc/systemd/system/sysinit.target.wants/selinux-autorelabel-ma
 Created symlink '/etc/systemd/system/dbus-org.fedoraproject.FirewallD1.service' → '/usr/lib/systemd/system/firewalld.service'.
 Created symlink '/etc/systemd/system/multi-user.target.wants/firewalld.service' → '/usr/lib/systemd/system/firewalld.service'.
 
-  Installing       : dnf5-plugins XXX/XXX
   Installing       : rpm-plugin-selinux XXX/XXX
   Installing       : sssd-kcm XXX/XXX
   Running scriptlet: sssd-kcm XXX/XXX

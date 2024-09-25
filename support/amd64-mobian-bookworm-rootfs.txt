@@ -1,4 +1,4 @@
-_FORTIFY_SOURCE requires compiling with optimization (-O) at /usr/lib/perl5/5.38/vendor_perl/features.ph line XXX.
+_FORTIFY_SOURCE requires compiling with optimization (-O) at /usr/lib/perl5/5.40/vendor_perl/features.ph line XXX.
 I: automatically chosen mode: root
 W: cannot mount because CAP_SYS_ADMIN is not in the effective set
 W: cannot execute mount

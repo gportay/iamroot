@@ -13,8 +13,15 @@
 	s,[[:digit:]]\+,XXX,g
 }
 
-# Overall download size: XX.X MiB. Already cached: 0 B. After the operation, additional XXX.X  MiB will be used.
-/Overall download size:/ {
+# Package download size:    XXX.X MiB
+/Package download size:/ {
+	s,[[:digit:] .]\{5\,6\}\s\([MK]i\|  \)B, XXX.X \1B,g
+}
+
+# Package install size change:
+#               |     XXX.X MiB  required by packages that will be installed
+#    XXX.X MiB  |  -      0 B    released by packages that will be removed
+/Package install size change:/,+2 {
 	s,[[:digit:] .]\{5\,6\}\s\([MK]i\|  \)B, XXX.X \1B,g
 }
 

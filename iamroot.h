@@ -109,7 +109,8 @@ extern "C" {
 #define __snprintf(s, fmt, ...) _snprintf((s), sizeof((s))-1, fmt, __VA_ARGS__)
 
 #ifndef _STAT_VER
-#if defined(__arm__) || defined(__mips__) || defined(__i386__)
+#if defined(__arm__) || defined(__powerpc__) || defined(__mips__) || \
+    defined(__i386__)
 #define _STAT_VER 3
 #else
 #define _STAT_VER 0

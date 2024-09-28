@@ -133,7 +133,6 @@ int __libc_start_main(int argc,
 	const char *root;
 	char *argv0;
 
-
 	__debug("%s(argc: %i, argv: { '%s', '%s', ... }, ...)\n", __func__,
 		argc, argv[0], argv[1]);
 

@@ -1677,6 +1677,7 @@ s390x-debian-rootfs: s390x-debian-trixie-rootfs
 s390x-debian-rootfs: s390x-debian-sid-rootfs
 
 s390x-debian-stretch-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.debian.org/debian
+s390x-debian-buster-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.debian.org/debian
 $(eval $(call debootstrap-rootfs,s390x,debian,stretch))
 $(eval $(call debootstrap-rootfs,s390x,debian,buster))
 $(eval $(call debootstrap-rootfs,s390x,debian,bullseye))

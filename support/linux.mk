@@ -151,7 +151,7 @@ $(eval $(call chroot_shell,$(1),$(2),/bin/bash,pacstrap -GMC support/$(1)-$(2)-p
 
 $(1)-$(2)-rootfs: | $(1)-$(2)-rootfs/bin/sh
 $(1)-$(2)-rootfs/bin/sh: PATH := $(CURDIR):$(PATH)
-$(1)-$(2)-rootfs/bin/sh: | $(call libs,linux,$(1))
+$(1)-$(2)-rootfs/bin/sh: | ld-iamroot.so $(call libs,linux,$(1))
 	ido $$(IDOFLAGS) mkdir -p $(1)-$(2)-rootfs
 	ido $$(IDOFLAGS) pacstrap -GMC support/$(1)-$(2)-pacman.conf $(1)-$(2)-rootfs $(3)
 
@@ -175,7 +175,7 @@ $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/sh,debootstrap --keep-debootstrap
 
 $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/sh
 $(1)-$(2)-$(3)-rootfs/bin/sh: PATH := $(CURDIR):$(PATH)
-$(1)-$(2)-$(3)-rootfs/bin/sh: | $(call libs,linux,$(1))
+$(1)-$(2)-$(3)-rootfs/bin/sh: | ld-iamroot.so $(call libs,linux,$(1))
 	ido $$(IDOFLAGS) mkdir -p $(1)-$(2)-$(3)-rootfs
 	ido $$(IDOFLAGS) debootstrap --keep-debootstrap-dir --arch=$(1) $$(DEBOOTSTRAPFLAGS) $(3) $(1)-$(2)-$(3)-rootfs $$(DEBOOTSTRAP_MIRROR) $$(DEBOOTSTRAP_SCRIPT)
 	ido $$(IDOFLAGS) cat $(1)-$(2)-$(3)-rootfs/debootstrap/debootstrap.log
@@ -199,7 +199,7 @@ $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/sh,mmdebstrap --verbose --archite
 
 $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/sh
 $(1)-$(2)-$(3)-rootfs/bin/sh: PATH := $(CURDIR):$(PATH)
-$(1)-$(2)-$(3)-rootfs/bin/sh: | $(call libs,linux,$(1))
+$(1)-$(2)-$(3)-rootfs/bin/sh: | ld-iamroot.so $(call libs,linux,$(1))
 	ido $$(IDOFLAGS) mmdebstrap --verbose --architectures=$(1) $$(MMDEBSTRAPFLAGS) $(3) $(1)-$(2)-$(3)-rootfs - <support/$(2)-$(3)-sources.list
 
 $(eval $(call log,mmdebstrap,$(1)-$(2)-$(3)-rootfs))
@@ -219,7 +219,7 @@ $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/bash,dnf --forcearch $(1) --relea
 
 $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs/bin/sh
 $(1)-$(2)-$(3)-rootfs/bin/sh: PATH := $(CURDIR):$(PATH)
-$(1)-$(2)-$(3)-rootfs/bin/sh: | $(call libs,linux,$(1))
+$(1)-$(2)-$(3)-rootfs/bin/sh: | ld-iamroot.so $(call libs,linux,$(1))
 	ido $$(IDOFLAGS) install -D -m644 $$(FEDORA_REPO) $(1)-$(2)-$(3)-rootfs/etc/distro.repos.d/fedora.repo
 	ido $$(IDOFLAGS) dnf --forcearch $(1) --releasever $(3) --assumeyes --installroot $(CURDIR)/$(1)-$(2)-$(3)-rootfs group install "$(4)"
 	ido $$(IDOFLAGS) rm -f $(1)-$(2)-$(3)-rootfs/etc/distro.repos.d/fedora.repo
@@ -247,7 +247,7 @@ $(eval $(call chroot_shell,$(1),$(2),/bin/sh,zypper --root $(CURDIR)/$(1)-$(2)-r
 
 $(1)-$(2)-rootfs: | $(1)-$(2)-rootfs/bin/sh
 $(1)-$(2)-rootfs/bin/sh: PATH := $(CURDIR):$(PATH)
-$(1)-$(2)-rootfs/bin/sh: | $(call libs,linux,$(1))
+$(1)-$(2)-rootfs/bin/sh: | ld-iamroot.so $(call libs,linux,$(1))
 	ido $$(IDOFLAGS) zypper --root $(CURDIR)/$(1)-$(2)-rootfs addrepo --no-gpgcheck support/$(2)-repo-oss.repo
 	ido $$(IDOFLAGS) zypper --root $(CURDIR)/$(1)-$(2)-rootfs --non-interactive --no-gpg-checks install patterns-base-minimal_base zypper systemd
 
@@ -275,7 +275,7 @@ $(1)-$(2)-rootfs: | $(1)-$(2)-rootfs/bin/sh
 $(1)-$(2)-rootfs/bin/sh: export XBPS_ARCH=$(1)
 $(1)-$(2)-rootfs/bin/sh: IDOFLAGS += --preserve-env=XBPS_ARCH
 $(1)-$(2)-rootfs/bin/sh: PATH := $(CURDIR):$(PATH)
-$(1)-$(2)-rootfs/bin/sh: | $(call libs,linux,$(1))
+$(1)-$(2)-rootfs/bin/sh: | ld-iamroot.so $(call libs,linux,$(1))
 	ido $$(IDOFLAGS) install -D -t $(1)-$(2)-rootfs/var/db/xbps/keys/ /var/db/xbps/keys/*
 	ido $$(IDOFLAGS) xbps-install -S -y -r $(1)-$(2)-rootfs -R http://repo-default.voidlinux.org/current base-system
 
@@ -298,7 +298,7 @@ $(1)-$(2)-musl-rootfs: | $(1)-$(2)-musl-rootfs/bin/sh
 $(1)-$(2)-musl-rootfs/bin/sh: export XBPS_ARCH=$(1)-musl
 $(1)-$(2)-musl-rootfs/bin/sh: IDOFLAGS += --preserve-env=XBPS_ARCH
 $(1)-$(2)-musl-rootfs/bin/sh: PATH := $(CURDIR):$(PATH)
-$(1)-$(2)-musl-rootfs/bin/sh: | $(call libs,musl,$(1))
+$(1)-$(2)-musl-rootfs/bin/sh: | ld-iamroot.so $(call libs,musl,$(1))
 	ido $$(IDOFLAGS) install -D -t $(1)-$(2)-musl-rootfs/var/db/xbps/keys/ /var/db/xbps/keys/*
 	ido $$(IDOFLAGS) xbps-install -S -y -r $(1)-$(2)-musl-rootfs -R http://repo-default.voidlinux.org/current/musl base-system
 
@@ -321,7 +321,7 @@ $(eval $(call chroot_shell,$(1),$(2)-$(3),/bin/sh,alpine-make-rootfs $(1)-$(2)-$
 
 $(1)-$(2)-$(3)-rootfs: | $(1)-$(2)-$(3)-rootfs$(4)
 $(1)-$(2)-$(3)-rootfs$(4): PATH := $(CURDIR):$(PATH)
-$(1)-$(2)-$(3)-rootfs$(4): | $(call libs,musl,$(1))
+$(1)-$(2)-$(3)-rootfs$(4): | ld-iamroot.so $(call libs,musl,$(1))
 	ido $$(IDOFLAGS) alpine-make-rootfs $(1)-$(2)-$(3)-rootfs --keys-dir /usr/share/apk/keys/$(1) --branch $(3) $$(ALPINE_MAKE_ROOTFSFLAGS)
 
 $(eval $(call log,alpine-make-rootfs,$(1)-$(2)-$(3)-rootfs))
@@ -529,10 +529,10 @@ endef
 
 define adelie-mini-rootfs
 $(eval $(call chroot_shell,$(1),adelie-mini,/bin/sh,tar xf adelie-rootfs-mini-$(1)-1.0-beta5-$(2).tar.txz -C $(1)-adelie-mini-rootfs))
-$(1)-adelie-mini-chroot $(1)-adelie-mini-shell: | $(call libs,musl,$(1))
+$(1)-adelie-mini-chroot $(1)-adelie-mini-shell: | ld-iamroot.so $(call libs,musl,$(1))
 
 $(1)-adelie-mini-rootfs: | $(1)-adelie-mini-rootfs/bin/sh
-$(1)-adelie-mini-rootfs/bin/sh: | $(call libs,musl,$(1)) adelie-rootfs-mini-$(1)-1.0-beta5-$(2).txz
+$(1)-adelie-mini-rootfs/bin/sh: | ld-iamroot.so $(call libs,musl,$(1)) adelie-rootfs-mini-$(1)-1.0-beta5-$(2).txz
 	mkdir -p $(1)-adelie-mini-rootfs
 	tar xf adelie-rootfs-mini-$(1)-1.0-beta5-$(2).txz -C $(1)-adelie-mini-rootfs
 
@@ -542,7 +542,7 @@ endef
 
 define alpine-mini-rootfs
 $(eval $(call chroot_shell,$(1),alpine-mini,/bin/sh,tar xf alpine-minirootfs-$(2).0-$(1).tar.gz -C $(1)-alpine-mini-rootfs))
-$(1)-alpine-mini-chroot $(1)-alpine-mini-shell: | $(call libs,musl,$(1))
+$(1)-alpine-mini-chroot $(1)-alpine-mini-shell: | ld-iamroot.so $(call libs,musl,$(1))
 
 $(if $(findstring 0,$$(COVERAGE)),, \
 $(1)-alpine-mini-chroot $(1)-alpine-mini-shell $(1)-alpine-mini-rootfs/bin/sh: export IAMROOT_LIB_X86_64_MUSL_X86_64_1 = $(CURDIR)/x86_64/libiamroot-musl-x86_64.so.1:$(CURDIR)/gcompat/libgcompat.so.0
@@ -551,7 +551,7 @@ $(1)-alpine-mini-chroot $(1)-alpine-mini-shell $(1)-alpine-mini-rootfs/bin/sh: e
 )
 
 $(1)-alpine-mini-rootfs: | $(1)-alpine-mini-rootfs/bin/sh
-$(1)-alpine-mini-rootfs/bin/sh: | $(call libs,musl,$(1)) alpine-minirootfs-$(2).0-$(1).tar.gz
+$(1)-alpine-mini-rootfs/bin/sh: | ld-iamroot.so $(call libs,musl,$(1)) alpine-minirootfs-$(2).0-$(1).tar.gz
 	mkdir -p $(1)-alpine-mini-rootfs
 	tar xf alpine-minirootfs-$(2).0-$(1).tar.gz -C $(1)-alpine-mini-rootfs
 
@@ -777,7 +777,7 @@ powerpc-rootfs:
 powerpc64-rootfs:
 
 .PHONY: ido multiarch-ido ish multiarch-ish
-ido multiarch-ido ish multiarch-ish: libiamroot.so
+ido multiarch-ido ish multiarch-ish: ld-iamroot.so libiamroot.so
 	$(MAKE) -f Makefile $@ VPATH=$(vpath)
 
 .PHONY: test test-library test-libiamroot.so test-frontends test-ld-iamroot.so test-ido test-ish ci
@@ -1218,7 +1218,7 @@ ifneq ($(shell command -v musl-gcc 2>/dev/null)$(if musl,$(LIBC),YES,),)
 alpine-test: | x86_64-alpine-mini-rootfs/usr/bin/shebang.sh
 alpine-test: | x86_64-alpine-mini-rootfs/usr/bin/shebang-arg.sh
 alpine-test: | x86_64-alpine-mini-rootfs/usr/bin/shebang-busybox.sh
-alpine-test: $(call libs,musl,x86_64) | x86_64-alpine-mini-rootfs
+alpine-test: ld-iamroot.so $(call libs,musl,x86_64) | x86_64-alpine-mini-rootfs
 	ido $(IDOFLAGS) chroot x86_64-alpine-mini-rootfs pwd                          | tee /dev/stderr | grep -q "^/\$$"
 	ido $(IDOFLAGS) chroot x86_64-alpine-mini-rootfs cat /etc/os-release          | tee /dev/stderr | grep 'NAME="Alpine Linux"'
 	ido $(IDOFLAGS) chroot x86_64-alpine-mini-rootfs chroot . cat /etc/os-release | tee /dev/stderr | grep 'NAME="Alpine Linux"'

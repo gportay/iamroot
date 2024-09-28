@@ -391,12 +391,12 @@ multiarch-ish: ish
 
 .PHONY: ido
 ido: PATH := $(CURDIR):$(PATH)
-ido: libiamroot.so
+ido: ld-iamroot.so libiamroot.so
 	bash ido $(IDOFLAGS) -s
 
 .PHONY: ish
 ish: PATH := $(CURDIR):$(PATH)
-ish: libiamroot.so
+ish: ld-iamroot.so libiamroot.so
 	bash ish $(ISHFLAGS)
 
 .PHONY: sh bash zsh

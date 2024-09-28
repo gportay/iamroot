@@ -918,6 +918,7 @@ ifneq ($(shell command -v debootstrap 2>/dev/null),)
 rootfs: amd64-debian-rootfs
 
 .PHONY: amd64-debian-rootfs
+amd64-debian-rootfs: amd64-debian-stretch-rootfs
 amd64-debian-rootfs: amd64-debian-buster-rootfs
 amd64-debian-rootfs: amd64-debian-bullseye-rootfs
 amd64-debian-rootfs: amd64-debian-bookworm-rootfs
@@ -927,27 +928,52 @@ amd64-debian-rootfs: amd64-debian-sid-rootfs
 stable-rootfs: amd64-debian-bookworm-rootfs
 unstable-rootfs: amd64-debian-sid-rootfs
 
+amd64-debian-stretch-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.debian.org/debian
+$(eval $(call debootstrap-rootfs,amd64,debian,stretch))
 $(eval $(call debootstrap-rootfs,amd64,debian,buster))
 $(eval $(call debootstrap-rootfs,amd64,debian,bullseye))
 $(eval $(call debootstrap-rootfs,amd64,debian,bookworm))
 $(eval $(call debootstrap-rootfs,amd64,debian,trixie))
 $(eval $(call debootstrap-rootfs,amd64,debian,sid))
+# Setting up systemd ...
+# chfn: PAM: System error
+# adduser: `/usr/bin/chfn -f systemd Time Synchronization systemd-timesync' returned error code 1. Exiting.
+# dpkg: error processing package systemd (--install):
+# subprocess installed post-installation script returned error exit status 1
+# Processing triggers for libc-bin ...
+# Errors were encountered while processing:
+#  systemd
+amd64-debian-stretch-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|chfn
+amd64-debian-stretch-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 amd64-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 
 i686-rootfs: i386-debian-rootfs
 
 .PHONY: i386-debian-rootfs
+i386-debian-rootfs: i386-debian-stretch-rootfs
 i386-debian-rootfs: i386-debian-buster-rootfs
 i386-debian-rootfs: i386-debian-bullseye-rootfs
 i386-debian-rootfs: i386-debian-bookworm-rootfs
 i386-debian-rootfs: i386-debian-trixie-rootfs
 i386-debian-rootfs: i386-debian-sid-rootfs
 
+i386-debian-stretch-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.debian.org/debian
+$(eval $(call debootstrap-rootfs,i386,debian,stretch))
 $(eval $(call debootstrap-rootfs,i386,debian,buster))
 $(eval $(call debootstrap-rootfs,i386,debian,bullseye))
 $(eval $(call debootstrap-rootfs,i386,debian,bookworm))
 $(eval $(call debootstrap-rootfs,i386,debian,trixie))
 $(eval $(call debootstrap-rootfs,i386,debian,sid))
+# Setting up systemd ...
+# chfn: PAM: System error
+# adduser: `/usr/bin/chfn -f systemd Time Synchronization systemd-timesync' returned error code 1. Exiting.
+# dpkg: error processing package systemd (--install):
+# subprocess installed post-installation script returned error exit status 1
+# Processing triggers for libc-bin ...
+# Errors were encountered while processing:
+#  systemd
+i386-debian-stretch-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|chfn
+i386-debian-stretch-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 i386-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 
 .PHONY: amd64-ubuntu-rootfs
@@ -1478,17 +1504,30 @@ ifneq ($(shell command -v aarch64-buildroot-linux-gnu-gcc 2>/dev/null),)
 arm-rootfs: arm64-debian-rootfs
 
 .PHONY: arm64-debian-rootfs
+arm64-debian-rootfs: arm64-debian-stretch-rootfs
 arm64-debian-rootfs: arm64-debian-buster-rootfs
 arm64-debian-rootfs: arm64-debian-bullseye-rootfs
 arm64-debian-rootfs: arm64-debian-bookworm-rootfs
 arm64-debian-rootfs: arm64-debian-trixie-rootfs
 arm64-debian-rootfs: arm64-debian-sid-rootfs
 
+arm64-debian-stretch-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.debian.org/debian
+$(eval $(call debootstrap-rootfs,arm64,debian,stretch))
 $(eval $(call debootstrap-rootfs,arm64,debian,buster))
 $(eval $(call debootstrap-rootfs,arm64,debian,bullseye))
 $(eval $(call debootstrap-rootfs,arm64,debian,bookworm))
 $(eval $(call debootstrap-rootfs,arm64,debian,trixie))
 $(eval $(call debootstrap-rootfs,arm64,debian,sid))
+# Setting up systemd ...
+# chfn: PAM: System error
+# adduser: `/usr/bin/chfn -f systemd Time Synchronization systemd-timesync' returned error code 1. Exiting.
+# dpkg: error processing package systemd (--install):
+# subprocess installed post-installation script returned error exit status 1
+# Processing triggers for libc-bin ...
+# Errors were encountered while processing:
+#  systemd
+arm64-debian-stretch-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|chfn
+arm64-debian-stretch-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 arm64-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 
@@ -1514,13 +1553,26 @@ ifneq ($(shell command -v mipsel-buildroot-linux-gnu-gcc 2>/dev/null),)
 mips-rootfs: mipsel-debian-rootfs
 
 .PHONY: mipsel-debian-rootfs
+mipsel-debian-rootfs: mipsel-debian-stretch-rootfs
 mipsel-debian-rootfs: mipsel-debian-buster-rootfs
 mipsel-debian-rootfs: mipsel-debian-bullseye-rootfs
 mipsel-debian-rootfs: mipsel-debian-bookworm-rootfs
 
+mipsel-debian-stretch-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.debian.org/debian
+$(eval $(call debootstrap-rootfs,mipsel,debian,stretch))
 $(eval $(call debootstrap-rootfs,mipsel,debian,buster))
 $(eval $(call debootstrap-rootfs,mipsel,debian,bullseye))
 $(eval $(call debootstrap-rootfs,mipsel,debian,bookworm))
+# Setting up systemd ...
+# chfn: PAM: System error
+# adduser: `/usr/bin/chfn -f systemd Time Synchronization systemd-timesync' returned error code 1. Exiting.
+# dpkg: error processing package systemd (--install):
+# subprocess installed post-installation script returned error exit status 1
+# Processing triggers for libc-bin ...
+# Errors were encountered while processing:
+#  systemd
+mipsel-debian-stretch-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|chfn
+mipsel-debian-stretch-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 mipsel-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 
@@ -1528,17 +1580,30 @@ ifneq ($(shell command -v mips64el-buildroot-linux-gnu-gcc 2>/dev/null),)
 mips64-rootfs: mips64el-debian-rootfs
 
 .PHONY: mips64el-debian-rootfs
+mips64el-debian-rootfs: mips64el-debian-stretch-rootfs
 mips64el-debian-rootfs: mips64el-debian-buster-rootfs
 mips64el-debian-rootfs: mips64el-debian-bullseye-rootfs
 mips64el-debian-rootfs: mips64el-debian-bookworm-rootfs
 mips64el-debian-rootfs: mips64el-debian-trixie-rootfs
 mips64el-debian-rootfs: mips64el-debian-sid-rootfs
 
+mips64el-debian-stretch-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.debian.org/debian
+$(eval $(call debootstrap-rootfs,mips64el,debian,stretch))
 $(eval $(call debootstrap-rootfs,mips64el,debian,buster))
 $(eval $(call debootstrap-rootfs,mips64el,debian,bullseye))
 $(eval $(call debootstrap-rootfs,mips64el,debian,bookworm))
 $(eval $(call debootstrap-rootfs,mips64el,debian,trixie))
 $(eval $(call debootstrap-rootfs,mips64el,debian,sid))
+# Setting up systemd ...
+# chfn: PAM: System error
+# adduser: `/usr/bin/chfn -f systemd Time Synchronization systemd-timesync' returned error code 1. Exiting.
+# dpkg: error processing package systemd (--install):
+# subprocess installed post-installation script returned error exit status 1
+# Processing triggers for libc-bin ...
+# Errors were encountered while processing:
+#  systemd
+mips64el-debian-stretch-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|chfn
+mips64el-debian-stretch-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 mips64el-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 
 install-support-mips64le: install-support-mips64le-defconfig
@@ -1572,18 +1637,31 @@ ifneq ($(shell command -v powerpc64le-buildroot-linux-gnu-gcc 2>/dev/null),)
 powerpc64-rootfs: ppc64el-debian-rootfs
 
 .PHONY: ppc64el-debian-rootfs
+ppc64el-debian-rootfs: ppc64el-debian-stretch-rootfs
 ppc64el-debian-rootfs: ppc64el-debian-buster-rootfs
 ppc64el-debian-rootfs: ppc64el-debian-bullseye-rootfs
 ppc64el-debian-rootfs: ppc64el-debian-bookworm-rootfs
 ppc64el-debian-rootfs: ppc64el-debian-trixie-rootfs
 ppc64el-debian-rootfs: ppc64el-debian-sid-rootfs
 
+ppc64el-debian-stretch-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.debian.org/debian
 ppc64el-debian-buster-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.debian.org/debian
+$(eval $(call debootstrap-rootfs,ppc64el,debian,stretch))
 $(eval $(call debootstrap-rootfs,ppc64el,debian,buster))
 $(eval $(call debootstrap-rootfs,ppc64el,debian,bullseye))
 $(eval $(call debootstrap-rootfs,ppc64el,debian,bookworm))
 $(eval $(call debootstrap-rootfs,ppc64el,debian,trixie))
 $(eval $(call debootstrap-rootfs,ppc64el,debian,sid))
+# Setting up systemd ...
+# chfn: PAM: System error
+# adduser: `/usr/bin/chfn -f systemd Time Synchronization systemd-timesync' returned error code 1. Exiting.
+# dpkg: error processing package systemd (--install):
+# subprocess installed post-installation script returned error exit status 1
+# Processing triggers for libc-bin ...
+# Errors were encountered while processing:
+#  systemd
+ppc64el-debian-stretch-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|chfn
+ppc64el-debian-stretch-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 ppc64el-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 
@@ -1591,17 +1669,30 @@ ifneq ($(shell command -v s390x-buildroot-linux-gnu-gcc 2>/dev/null),)
 s390x-rootfs: s390x-debian-rootfs
 
 .PHONY: s390x-debian-rootfs
+s390x-debian-rootfs: s390x-debian-stretch-rootfs
 s390x-debian-rootfs: s390x-debian-buster-rootfs
 s390x-debian-rootfs: s390x-debian-bullseye-rootfs
 s390x-debian-rootfs: s390x-debian-bookworm-rootfs
 s390x-debian-rootfs: s390x-debian-trixie-rootfs
 s390x-debian-rootfs: s390x-debian-sid-rootfs
 
+s390x-debian-stretch-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.debian.org/debian
+$(eval $(call debootstrap-rootfs,s390x,debian,stretch))
 $(eval $(call debootstrap-rootfs,s390x,debian,buster))
 $(eval $(call debootstrap-rootfs,s390x,debian,bullseye))
 $(eval $(call debootstrap-rootfs,s390x,debian,bookworm))
 $(eval $(call debootstrap-rootfs,s390x,debian,trixie))
 $(eval $(call debootstrap-rootfs,s390x,debian,sid))
+# Setting up systemd ...
+# chfn: PAM: System error
+# adduser: `/usr/bin/chfn -f systemd Time Synchronization systemd-timesync' returned error code 1. Exiting.
+# dpkg: error processing package systemd (--install):
+# subprocess installed post-installation script returned error exit status 1
+# Processing triggers for libc-bin ...
+# Errors were encountered while processing:
+#  systemd
+s390x-debian-stretch-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|chfn
+s390x-debian-stretch-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 s390x-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 endif
@@ -2159,8 +2250,10 @@ devuan-log: amd64-devuan-chimaera-rootfs.log
 devuan-log: amd64-devuan-daedalus-rootfs.log
 devuan-log: amd64-devuan-excalibur-rootfs.log
 
+legacy-support: support/amd64-debian-stretch-rootfs.txt
 legacy-support: support/amd64-debian-buster-rootfs.txt
 legacy-support: support/amd64-debian-bullseye-rootfs.txt
+legacy-log: amd64-debian-stretch-rootfs.log
 legacy-log: amd64-debian-buster-rootfs.log
 legacy-log: amd64-debian-bullseye-rootfs.log
 

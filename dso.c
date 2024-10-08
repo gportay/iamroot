@@ -140,7 +140,7 @@ static ssize_t __getld_library_path(char *buf, size_t bufsiz, off_t offset)
 	_strncpy(buf+offset, curr, bufsiz-offset);
 
 exit:
-	return strnlen(buf+offset, bufsiz-offset);;
+	return strnlen(buf+offset, bufsiz-offset);
 }
 
 static int __setld_preload(const char *preload, int overwrite)

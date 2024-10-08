@@ -131,7 +131,9 @@ static ssize_t __getld_library_path(char *buf, size_t bufsiz, off_t offset)
 		size_t len;
 
 		len = __strlen(prev);
-		_strncpy(buf+offset, curr+len, bufsiz-offset);
+		if (s[len] == ':')
+			s++;
+		_strncpy(buf+offset, s+len, bufsiz-offset);
 		goto exit;
 	}
 

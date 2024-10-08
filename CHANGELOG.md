@@ -20,6 +20,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   given path
 - Chroot to a [Debian] ppc world; tested on [Debian PowerPC Port]
 
+## Removed
+
+- Remove the Linux specific function `dladdr1()` from none-linux build
+
 ### Changed
 
 - Use [Jim Tcl]

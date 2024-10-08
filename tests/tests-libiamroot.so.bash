@@ -358,8 +358,6 @@ then
 	fi
 	echo
 fi
-#
-#exit 0
 
 if [[ "${XATTR:-0}" -eq 1 ]]
 then

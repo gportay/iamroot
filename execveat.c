@@ -16,7 +16,9 @@
 
 #include "iamroot.h"
 
+#ifndef __NetBSD__
 extern int __ldso_execveat(int, const char *, char * const[], char * const[]);
+#endif
 
 static int (*sym)(int, const char *, char * const[], char * const[], int);
 
@@ -144,6 +146,7 @@ int execveat(int dfd, const char *path, char * const argv[],
 	off += siz+1; /* NULL-terminated */
 
 loader:
+#ifndef __NetBSD__
 	/* It is the dynamic loader */
 	ret = __is_ldso(__basename(path));
 	/* Try to run the dynamic loader internaly... */
@@ -160,6 +163,7 @@ loader:
 		__notice_execve(argv, envp);
 		return next_execveat(dfd, buf, argv, envp, atflags);
 	}
+#endif
 
 	ret = __ldso(program, argv, interparg, buf, sizeof(buf), off);
 	if ((ret == -1) && (errno != ENOEXEC))

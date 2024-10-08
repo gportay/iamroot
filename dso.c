@@ -695,6 +695,7 @@ static int __fld_needed(int fd,
 	return __path_iterate(needed, __ld_needed_callback, &ctx);
 }
 
+#ifndef __NetBSD__
 static int __ld_needed(const char *path,
 		       const char *rpath,
 		       const char *ld_library_path,
@@ -720,6 +721,7 @@ static int __ld_needed(const char *path,
 
 	return ret;
 }
+#endif
 
 struct __ld_open_needed_context {
 	int flags;
@@ -3536,6 +3538,7 @@ hidden ssize_t __dl_access(const char *path, int mode, char *buf,
 			     bufsiz);
 }
 
+#ifndef __NetBSD__
 static const char *__root_basepath(const char *path)
 {
 	const char *root;
@@ -3851,6 +3854,7 @@ hidden int __ldso_posix_spawn(pid_t *pid,
 	__warning("%s: Function not implemented", __func__);
 	return __set_errno(ENOSYS, -1);
 }
+#endif
 
 /* New API with addr and addrsiz from mmap() */
 static int __elf_header(void *addr, size_t addrsiz, Elf64_Ehdr *ehdr)

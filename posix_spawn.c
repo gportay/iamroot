@@ -17,12 +17,14 @@
 
 #include "iamroot.h"
 
+#ifndef __NetBSD__
 extern int __ldso_posix_spawn(pid_t *,
 			      const char *,
 			      const posix_spawn_file_actions_t *,
 			      const posix_spawnattr_t *,
 			      char * const[],
 			      char * const[]);
+#endif
 
 int (*sym)(pid_t *, const char *, const posix_spawn_file_actions_t *,
 		   const posix_spawnattr_t *, char * const [], char * const []);
@@ -157,6 +159,7 @@ int posix_spawn(pid_t *pid, const char *path,
 	off += siz+1; /* NULL-terminated */
 
 loader:
+#ifndef __NetBSD__
 	/* It is the dynamic loader */
 	ret = __is_ldso(__basename(path));
 	/* Try to run the dynamic loader internaly... */
@@ -175,6 +178,7 @@ loader:
 		return next_posix_spawn(pid, buf, file_actions, attrp, argv,
 					envp);
 	}
+#endif
 
 	ret = __ldso(program, argv, interparg, buf, sizeof(buf), off);
 	if ((ret == -1) && (errno != ENOEXEC))

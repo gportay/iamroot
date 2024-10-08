@@ -19,7 +19,9 @@
 
 extern int next_faccessat(int, const char *, int, int);
 
+#ifndef __NetBSD__
 extern int __ldso_execve(const char *, char * const[], char * const[]);
+#endif
 
 static regex_t *re_ignore;
 
@@ -205,6 +207,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	off += siz+1; /* NULL-terminated */
 
 loader:
+#ifndef __NetBSD__
 	/* It is the dynamic loader */
 	ret = __is_ldso(__basename(path));
 	/* Try to run the dynamic loader internaly... */
@@ -221,6 +224,7 @@ loader:
 		__notice_execve(argv, envp);
 		return next_execve(buf, argv, envp);
 	}
+#endif
 
 	ret = __ldso(program, argv, interparg, buf, sizeof(buf), off);
 	if ((ret == -1) && (errno != ENOEXEC))

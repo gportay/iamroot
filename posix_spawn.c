@@ -24,7 +24,6 @@ extern int __ldso_posix_spawn(pid_t *,
 			      char * const[],
 			      char * const[]);
 
-
 int (*sym)(pid_t *, const char *, const posix_spawn_file_actions_t *,
 		   const posix_spawnattr_t *, char * const [], char * const []);
 

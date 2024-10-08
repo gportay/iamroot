@@ -396,8 +396,10 @@ endif
 	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs       test-unlinkat           - /dev/dev2                0
 	env LD_PRELOAD=$(LIBRARY) PATH=$(CURDIR)/rootfs/usr/bin:/usr/bin                                                                                   test-unshare              whoami
 	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs ld_library_path=$(CURDIR)/rootfs/usr/lib                test-dlopen
+ifneq (,$(findstring $(OS),GNU/Linux Linux FreeBSD))
 	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs ld_library_path=$(CURDIR)/rootfs/usr/lib                test-dlopen               libiamnotroot.so
 	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib:/usr/local/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs ld_library_path=$(CURDIR)/rootfs/usr/lib test-dlopen               libiamnotroot.so
+endif
 ifeq ($(OS),GNU/Linux)
 	env LD_PRELOAD=$(LIBRARY) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)                                                                                                                    test-dlmopen
 	env LD_PRELOAD=$(LIBRARY) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)                                                                                                                    test-dlmopen              libiamnotroot.so

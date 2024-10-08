@@ -621,13 +621,13 @@ rootfs:
 	install -m600 shadow $(DESTDIR)/etc/
 	install -d -m755 $(DESTDIR)/usr/bin
 	ln -sf usr/bin $(DESTDIR)/bin
-ifneq ($(OS),NetBSD)
-	install -d -m755 $(DESTDIR)/usr/local
-	ln -sf ../../bin $(DESTDIR)/usr/local/bin
-else
+ifeq ($(OS),NetBSD)
 	install -d -m755 $(DESTDIR)/usr/pkg
 	ln -sf ../../bin $(DESTDIR)/usr/pkg/bin
 	ln -sf pkg $(DESTDIR)/usr/local
+else
+	install -d -m755 $(DESTDIR)/usr/local
+	ln -sf ../../bin $(DESTDIR)/usr/local/bin
 endif
 	for i in *.c; do \
 		test -e $${i%.c} || continue; \

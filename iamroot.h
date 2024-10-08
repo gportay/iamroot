@@ -794,14 +794,6 @@ int __elf_has_interp(int);
 
 ssize_t __ldso_cache(const char *, char *, size_t);
 
-#if defined(__GLIBC__) && (defined(__aarch64__) || defined(__x86_64__))
-#define _PATH_DEFLIB "/lib64:/usr/lib64"
-#elif defined(__GLIBC__)
-#define _PATH_DEFLIB "/lib:/usr/lib"
-#else
-#define _PATH_DEFLIB "/lib:/usr/local/lib:/usr/lib"
-#endif
-
 /*
  * glibc considers the kernel headers define a wrong value for ARG_MAX and
  * undefines it. Let's redefine it using _POSIX_ARG_MAX.

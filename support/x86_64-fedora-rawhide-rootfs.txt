@@ -108,6 +108,7 @@ Installing dependencies:
  groff-base
  gsettings-desktop-schemas
  gzip
+ hwdata
  inih
  ipcalc
  ipset-libs
@@ -136,6 +137,7 @@ Installing dependencies:
  libblockdev-mdraid
  libblockdev-nvme
  libblockdev-part
+ libblockdev-smart
  libblockdev-swap
  libblockdev-utils
  libbpf
@@ -151,6 +153,7 @@ Installing dependencies:
  libdhash
  libdnf5
  libdnf5-cli
+ libdrm
  libeconf
  libedit
  libevdev
@@ -164,7 +167,6 @@ Installing dependencies:
  libgomp
  libgpg-error
  libgudev
- libgusb
  libidn2
  libini_config
  libjaylink
@@ -187,6 +189,7 @@ Installing dependencies:
  libnsl2
  libnvme
  libpath_utils
+ libpciaccess
  libpipeline
  libpkgconf
  libproxy
@@ -385,7 +388,7 @@ Running transaction test
 Transaction test succeeded.
 Running transaction
   Running scriptlet: filesystem XXX/XXX
-  Running scriptlet: crypto-policies-scripts XXX/XXX
+  Running scriptlet: crypto-policies XXX/XXX
   Running scriptlet: selinux-policy-targeted XXX/XXX
   Preparing        : XXX/XXX
   Installing       : libgcc XXX/XXX
@@ -466,10 +469,10 @@ useradd: Warning: missing or non-executable shell '/bin/sync'
   Installing       : libsepol XXX/XXX
   Installing       : libselinux XXX/XXX
   Installing       : libmount XXX/XXX
+  Installing       : findutils XXX/XXX
   Installing       : libunistring XXX/XXX
   Installing       : libidn2 XXX/XXX
   Installing       : libpsl XXX/XXX
-  Installing       : findutils XXX/XXX
   Installing       : libsemanage XXX/XXX
   Installing       : libtevent XXX/XXX
   Installing       : e2fsprogs-libs XXX/XXX
@@ -601,6 +604,9 @@ useradd: Warning: missing or non-executable shell '/bin/sync'
   Installing       : kbd-misc XXX/XXX
   Installing       : kbd-legacy XXX/XXX
   Installing       : kbd XXX/XXX
+  Installing       : hwdata XXX/XXX
+  Installing       : libpciaccess XXX/XXX
+  Installing       : libdrm XXX/XXX
   Installing       : geolite2-country XXX/XXX
   Installing       : geolite2-city XXX/XXX
   Installing       : ipcalc XXX/XXX
@@ -625,8 +631,8 @@ useradd: Warning: missing or non-executable shell '/bin/sync'
   Running scriptlet: ca-certificates XXX/XXX
   Installing       : ca-certificates XXX/XXX
   Running scriptlet: ca-certificates XXX/XXX
-  Installing       : krb5-libs XXX/XXX
   Installing       : kmod-libs XXX/XXX
+  Installing       : krb5-libs XXX/XXX
   Installing       : gnutls XXX/XXX
   Installing       : glib2 XXX/XXX
   Installing       : libblockdev-utils XXX/XXX
@@ -634,11 +640,9 @@ useradd: Warning: missing or non-executable shell '/bin/sync'
   Running scriptlet: tpm2-tss XXX/XXX
   Installing       : tpm2-tss XXX/XXX
   Installing       : gzip XXX/XXX
-  Installing       : json-glib XXX/XXX
-  Installing       : libgudev XXX/XXX
   Installing       : libarchive XXX/XXX
-  Installing       : libgusb XXX/XXX
   Installing       : cracklib XXX/XXX
+  Installing       : json-glib XXX/XXX
   Installing       : libmbim XXX/XXX
   Installing       : passim-libs XXX/XXX
   Installing       : shared-mime-info XXX/XXX
@@ -663,11 +667,13 @@ useradd: Warning: missing or non-executable shell '/bin/sync'
   Installing       : libblockdev XXX/XXX
   Installing       : libblockdev-fs XXX/XXX
   Installing       : libblockdev-loop XXX/XXX
+  Installing       : libblockdev-smart XXX/XXX
   Installing       : ModemManager-glib XXX/XXX
   Installing       : NetworkManager-libnm XXX/XXX
   Installing       : gobject-introspection XXX/XXX
   Installing       : python3-gobject-base XXX/XXX
   Installing       : gsettings-desktop-schemas XXX/XXX
+  Installing       : libgudev XXX/XXX
   Installing       : libqrtr-glib XXX/XXX
   Installing       : libqmi XXX/XXX
   Installing       : libsecret XXX/XXX
@@ -974,6 +980,7 @@ Installed:
   gsettings-desktop-schemas
   gzip
   hostname
+  hwdata
   inih
   initscripts-service
   ipcalc
@@ -1011,6 +1018,7 @@ Installed:
   libblockdev-mdraid
   libblockdev-nvme
   libblockdev-part
+  libblockdev-smart
   libblockdev-swap
   libblockdev-utils
   libbpf
@@ -1027,6 +1035,7 @@ Installed:
   libdhash
   libdnf5
   libdnf5-cli
+  libdrm
   libeconf
   libedit
   libevdev
@@ -1040,7 +1049,6 @@ Installed:
   libgomp
   libgpg-error
   libgudev
-  libgusb
   libidn2
   libini_config
   libjaylink
@@ -1064,6 +1072,7 @@ Installed:
   libnsl2
   libnvme
   libpath_utils
+  libpciaccess
   libpipeline
   libpkgconf
   libproxy

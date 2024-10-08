@@ -3506,7 +3506,8 @@ static int __elf_so_context(const char *path,
 	return ret;
 }
 
-ssize_t __dl_access(const char *path, int mode, char *buf, size_t bufsiz)
+hidden ssize_t __dl_access(const char *path, int mode, char *buf,
+			   size_t bufsiz)
 {
 	char *deflib, *ld_library_path, *exec_rpath, *exec_runpath;
 	char tmp[PATH_MAX];

@@ -54,6 +54,7 @@ struct spwd *fgetspent(FILE *f)
 {
 	const int fd = fileno(f);
 	struct spwd *ret;
+	(void)fd;
 
 	ret = _fgetspent(f);
 
@@ -90,6 +91,7 @@ int putspent(const struct spwd *sp, FILE *f)
 {
 	const int fd = fileno(f);
 	int ret;
+	(void)fd;
 
 	ret = _putspent(sp, f);
 

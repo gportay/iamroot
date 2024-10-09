@@ -51,6 +51,7 @@ ld-iamroot.so: execve.o
 ld-iamroot.so: execvpe.o
 ld-iamroot.so: extattr_delete_link.o
 ld-iamroot.so: extattr_get_fd.o
+ld-iamroot.so: extattr_get_file.o
 ld-iamroot.so: extattr_get_link.o
 ld-iamroot.so: extattr_set_fd.o
 ld-iamroot.so: extattr_set_link.o
@@ -66,7 +67,6 @@ ld-iamroot.so: jimregexp.o
 ld-iamroot.so: ld.o
 ld-iamroot.so: ldso-cache.o
 ld-iamroot.so: lgetxattr.o
-ld-iamroot.so: extattr_get_file.o
 ld-iamroot.so: lremovexattr.o
 ld-iamroot.so: lsetxattr.o
 ld-iamroot.so: open.o

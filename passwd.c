@@ -54,6 +54,7 @@ struct passwd *fgetpwent(FILE *f)
 {
 	const int fd = fileno(f);
 	struct passwd *ret;
+	(void)fd;
 
 	ret = _fgetpwent(f);
 
@@ -112,6 +113,7 @@ int putpwent(const struct passwd *pw, FILE *f)
 {
 	const int fd = fileno(f);
 	int ret;
+	(void)fd;
 
 	ret = _putpwent(pw, f);
 

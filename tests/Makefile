@@ -669,6 +669,7 @@ ifeq ($(KVER),9.3)
 	ln -sf libc.so.12.213 $(DESTDIR)/lib/libc.so
 endif
 ifeq ($(KVER),10.0)
+	ls -l /lib/libc.so*
 	install -m444 /lib/libc.so.12.222 $(DESTDIR)/lib
 	ln -sf libc.so.12.222 $(DESTDIR)/lib/libc.so.12
 	ln -sf libc.so.12.222 $(DESTDIR)/lib/libc.so

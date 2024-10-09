@@ -39,10 +39,10 @@ $(O)-%:
 openbsd-7.3-chroot: export IDO_SECURE_PATH = /sbin:/usr/sbin:/bin:/usr/bin:/usr/X11R6/bin:/usr/local/sbin:/usr/local/bin
 openbsd-7.3-chroot: export SHELL = /bin/sh
 openbsd-7.3-chroot: PATH := $(CURDIR):$(PATH)
-openbsd-7.3-chroot: $(ARCH)/libiamroot.so | openbsd-7.3-rootfs
+openbsd-7.3-chroot: ld-iamroot.so libiamroot.so $(ARCH)/libiamroot.so | openbsd-7.3-rootfs
 	ido $(IDOFLAGS) chroot openbsd-7.3-rootfs
 
-openbsd-7.3-rootfs: | $(ARCH)/libiamroot.so base.tgz
+openbsd-7.3-rootfs: | ld-iamroot.so libiamroot.so $(ARCH)/libiamroot.so base.tgz
 	rm -Rf $@
 	mkdir -p $@.tmp
 	tar xzf base.tgz -C $@.tmp

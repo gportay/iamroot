@@ -663,9 +663,16 @@ endif
 endif
 ifeq ($(OS),NetBSD)
 	install -d -m755 $(DESTDIR)/libexec $(DESTDIR)/lib $(DESTDIR)/usr/libexec $(DESTDIR)/usr/pkg/lib
+ifeq ($(KVER),9.3)
 	install -m444 /lib/libc.so.12.213 $(DESTDIR)/lib
 	ln -sf libc.so.12.213 $(DESTDIR)/lib/libc.so.12
 	ln -sf libc.so.12.213 $(DESTDIR)/lib/libc.so
+endif
+ifeq ($(KVER),10.0)
+	install -m444 /lib/libc.so.12.222 $(DESTDIR)/lib
+	ln -sf libc.so.12.222 $(DESTDIR)/lib/libc.so.12
+	ln -sf libc.so.12.222 $(DESTDIR)/lib/libc.so
+endif
 	install -m555 /libexec/ld.elf_so $(DESTDIR)/libexec
 	ln -sf /libexec/ld.elf_so $(DESTDIR)/usr/libexec/ld.elf_so
 	install -m444 libiamnotroot.so $(DESTDIR)/usr/pkg/lib

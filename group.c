@@ -60,6 +60,7 @@ struct group *fgetgrent(FILE *f)
 {
 	const int fd = fileno(f);
 	struct group *ret;
+	(void)fd;
 
 	ret = _fgetgrent(f);
 
@@ -118,6 +119,7 @@ int putgrent(const struct group *gr, FILE *f)
 {
 	const int fd = fileno(f);
 	int ret;
+	(void)fd;
 
 	ret = _putgrent(gr, f);
 

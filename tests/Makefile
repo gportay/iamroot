@@ -395,7 +395,9 @@ endif
 	env LD_PRELOAD=$(LIBRARY) PATH=$(CURDIR)/rootfs/usr/bin                                                                                            test-unlinkat           . rootfs/dev/dev1          0
 	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs       test-unlinkat           - /dev/dev2                0
 	env LD_PRELOAD=$(LIBRARY) PATH=$(CURDIR)/rootfs/usr/bin:/usr/bin                                                                                   test-unshare              whoami
+ifneq ($(OS),NetBSD)
 	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs ld_library_path=$(CURDIR)/rootfs/usr/lib                test-dlopen
+endif
 ifneq (,$(findstring $(OS),GNU/Linux Linux FreeBSD))
 	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs ld_library_path=$(CURDIR)/rootfs/usr/lib                test-dlopen               libiamnotroot.so
 	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib:/usr/local/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs ld_library_path=$(CURDIR)/rootfs/usr/lib test-dlopen               libiamnotroot.so
@@ -408,9 +410,9 @@ ifeq ($(OS),GNU/Linux)
 	env LD_PRELOAD=$(LIBRARY) PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)                                                                                                                    test-dlmopen              rootfs/usr/local/lib/libiamnotroot.so
 	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs ld_library_path=$(CURDIR)/rootfs/usr/lib                test-dlmopen              /usr/local/lib/libiamnotroot.so
 endif
+ifneq ($(OS),NetBSD)
 	env LD_PRELOAD=$(LIBRARY) PATH=$(CURDIR)/rootfs/usr/bin:/usr/bin                                                                                   test-dladdr               dladdr                                                | tee /dev/stderr | grep '^$(LIBRARY)$$'
 	cd rootfs/ && env LD_PRELOAD=$(LIBRARY) LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs       test-dladdr               dladdr                                                | tee /dev/stderr | grep '^$(LIBRARY)$$'
-ifneq ($(OS),NetBSD)
 	env LD_PRELOAD=$(LIBRARY):libiamnotroot.so PATH=$(CURDIR)/rootfs/usr/bin LD_LIBRARY_PATH=$(CURDIR)                                                                                                   test-dladdr  unused           | tee /dev/stderr | grep '^$(CURDIR)/libiamnotroot.so$$'
 	cd rootfs/ && env LD_PRELOAD=$(LIBRARY):libiamnotroot.so LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib:$(CURDIR)/rootfs/usr/local/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs         test-dladdr  unused           | tee /dev/stderr | grep '^/usr/local/lib/libiamnotroot.so$$'
 	cd rootfs/ && env LD_PRELOAD=$(LIBRARY):$(CURDIR)/rootfs/usr/local/lib/libiamnotroot.so LD_LIBRARY_PATH=$(CURDIR)/rootfs/usr/lib PATH=$(CURDIR)/rootfs/usr/bin IAMROOT_ROOT=$(CURDIR)/rootfs         test-dladdr  unused           | tee /dev/stderr | grep '^/usr/local/lib/libiamnotroot.so$$'

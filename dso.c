@@ -37,10 +37,10 @@ extern int next_faccessat(int, const char *, int, int);
 #define next_fstat next___fstat50
 extern int next___fstat50(int, struct stat *);
 #else
+extern void *next_dlopen(const char *, int);
 extern int next_fstat(int, struct stat *);
 #endif
 extern int next_open(const char *, int, mode_t);
-extern void *next_dlopen(const char *, int);
 
 static int __getmultiarch()
 {
@@ -601,6 +601,7 @@ static ssize_t __ldso_access(const char *path,
 	return __set_errno(ENOENT, -1);
 }
 
+#ifndef __NetBSD__
 #if defined(__linux__) || defined(__FreeBSD__)
 static int __dl_is_opened(const char *path)
 {
@@ -695,7 +696,6 @@ static int __fld_needed(int fd,
 	return __path_iterate(needed, __ld_needed_callback, &ctx);
 }
 
-#ifndef __NetBSD__
 static int __ld_needed(const char *path,
 		       const char *rpath,
 		       const char *ld_library_path,
@@ -721,7 +721,6 @@ static int __ld_needed(const char *path,
 
 	return ret;
 }
-#endif
 
 struct __ld_open_needed_context {
 	int flags;
@@ -814,6 +813,7 @@ hidden int __dlopen_needed(const char *path, int flags)
 {
 	return __ld_open_needed(path, flags, __execfn());
 }
+#endif
 
 static int __ld_ldso_abi(const char *path, char ldso[NAME_MAX], int *abi)
 {

@@ -759,7 +759,9 @@ extern int next_extattr_delete_link(const char *, int, const char *);
 	({ __dlperror(__func__); \
 	   __set_errno(e, (r)); })
 
+#ifndef __NetBSD__
 int __dlopen_needed(const char *, int);
+#endif
 
 int munmap(void *, size_t);
 int close(int);

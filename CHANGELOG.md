@@ -23,6 +23,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Removed
 
 - Remove the Linux specific function `dladdr1()` from none-linux build
+- Remove the functions `dladdr()` and `dlopen()` from NetBSD build
 
 ### Changed
 

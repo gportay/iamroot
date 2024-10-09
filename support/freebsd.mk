@@ -5,7 +5,7 @@
 #
 
 O ?= output
-ARCH ?= $(shell uname -p 2>/dev/null)
+ARCH ?= $(shell uname -m 2>/dev/null)
 
 IAMROOT_PATH_RESOLUTION_IGNORE ?= ^/dev/|^/etc/resolv.conf
 export IAMROOT_PATH_RESOLUTION_IGNORE

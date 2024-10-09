@@ -336,7 +336,7 @@ int main(int argc, char * argv[])
 	}
 
 #ifdef __FreeBSD__
-	execvP(program, _getenv("PATH"), argv);
+	execvP(program, _getenv("PATH"), &argv[optind]);
 	perror("execvP");
 #else
 	execvpe(program, &argv[optind], __environ);

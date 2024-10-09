@@ -17,7 +17,7 @@
 
 #include "iamroot.h"
 
-#ifndef __NetBSD__
+#if !defined __NetBSD__ && !defined __OpenBSD__
 extern int __ldso_posix_spawn(pid_t *,
 			      const char *,
 			      const posix_spawn_file_actions_t *,
@@ -159,7 +159,7 @@ int posix_spawn(pid_t *pid, const char *path,
 	off += siz+1; /* NULL-terminated */
 
 loader:
-#ifndef __NetBSD__
+#if !defined __NetBSD__ && !defined __OpenBSD__
 	/* It is the dynamic loader */
 	ret = __is_ldso(__basename(path));
 	/* Try to run the dynamic loader internaly... */

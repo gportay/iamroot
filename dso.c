@@ -696,6 +696,7 @@ static int __fld_needed(int fd,
 	return __path_iterate(needed, __ld_needed_callback, &ctx);
 }
 
+#ifndef __OpenBSD__
 static int __ld_needed(const char *path,
 		       const char *rpath,
 		       const char *ld_library_path,
@@ -721,6 +722,7 @@ static int __ld_needed(const char *path,
 
 	return ret;
 }
+#endif
 
 struct __ld_open_needed_context {
 	int flags;
@@ -3538,7 +3540,7 @@ hidden ssize_t __dl_access(const char *path, int mode, char *buf,
 			     bufsiz);
 }
 
-#ifndef __NetBSD__
+#if !defined __NetBSD__ && !defined __OpenBSD__
 static const char *__root_basepath(const char *path)
 {
 	const char *root;

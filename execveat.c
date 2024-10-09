@@ -16,7 +16,7 @@
 
 #include "iamroot.h"
 
-#ifndef __NetBSD__
+#if !defined __NetBSD__ && !defined __OpenBSD__
 extern int __ldso_execveat(int, const char *, char * const[], char * const[]);
 #endif
 
@@ -146,7 +146,7 @@ int execveat(int dfd, const char *path, char * const argv[],
 	off += siz+1; /* NULL-terminated */
 
 loader:
-#ifndef __NetBSD__
+#if !defined __NetBSD__ && !defined __OpenBSD__
 	/* It is the dynamic loader */
 	ret = __is_ldso(__basename(path));
 	/* Try to run the dynamic loader internaly... */

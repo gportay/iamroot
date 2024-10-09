@@ -19,7 +19,7 @@
 
 extern int next_faccessat(int, const char *, int, int);
 
-#ifndef __NetBSD__
+#if !defined __NetBSD__ && !defined __OpenBSD__
 extern int __ldso_execve(const char *, char * const[], char * const[]);
 #endif
 
@@ -207,7 +207,7 @@ int execve(const char *path, char * const argv[], char * const envp[])
 	off += siz+1; /* NULL-terminated */
 
 loader:
-#ifndef __NetBSD__
+#if !defined __NetBSD__ && !defined __OpenBSD__
 	/* It is the dynamic loader */
 	ret = __is_ldso(__basename(path));
 	/* Try to run the dynamic loader internaly... */

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2021-2024 Gaël PORTAY
+# Copyright 2021-2025 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -208,6 +208,12 @@ ld*.so*)
 	# Do not pollute stderr with a warning trace!
 	# warn "running" "$inchroot_path" "$@"
 	exec "$inchroot_path" "$@"
+	;;
+sh|ksh)
+	exec "$SHELL" "$@"
+	;;
+pwd)
+	exec echo "$PWD"
 	;;
 *)
 	warn "running" "$inchroot_path" "$@"

@@ -15,4 +15,5 @@ jobs:
           pkg_add bash
           pkg_add gmake
         run: |
+          SHELL=/usr/local/bin/bash
           gmake test

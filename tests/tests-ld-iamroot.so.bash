@@ -203,7 +203,7 @@ fi
 echo
 
 run "ld-iamroot.so: test option -- with program argument and with program options"
-if ld-iamroot.so -- /bin/sh -c "true"
+if ld-iamroot.so -- "$SHELL" -c "true"
 then
 	ok
 else
@@ -212,7 +212,7 @@ fi
 echo
 
 run "ld-iamroot.so: test with program argument and with program options fails"
-if ! ld-iamroot.so /bin/sh -c "true"
+if ! ld-iamroot.so "$SHELL" -c "true"
 then
 	ok
 else
@@ -221,7 +221,7 @@ fi
 echo
 
 run "ld-iamroot.so: test option -A -sh sets argv[0]"
-if ld-iamroot.so -A "-sh" -- /bin/sh -c 'echo "$0"' | grep "^-sh$"
+if ld-iamroot.so -A "-sh" -- "$SHELL" -c 'echo "$0"' | grep "^-sh$"
 then
 	ok
 else
@@ -230,7 +230,7 @@ fi
 echo
 
 run "ld-iamroot.so: test option --argv0 nologin sets argv[0]"
-if ld-iamroot.so --argv0 nologin -- /bin/sh -c 'echo "$0"' | grep "^nologin$"
+if ld-iamroot.so --argv0 nologin -- "$SHELL" -c 'echo "$0"' | grep "^nologin$"
 then
 	ok
 else

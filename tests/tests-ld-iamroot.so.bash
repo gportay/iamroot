@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Copyright 2024 Gaël PORTAY
 #
@@ -185,7 +185,7 @@ fi
 echo
 
 run "ld-iamroot.so: test with program argument"
-if ld-iamroot.so /bin/true
+if ld-iamroot.so /usr/bin/true
 then
 	ok
 else
@@ -194,7 +194,7 @@ fi
 echo
 
 run "ld-iamroot.so: test with program argument exiting with error fails"
-if ! ld-iamroot.so /bin/false
+if ! ld-iamroot.so /usr/bin/false
 then
 	ok
 else

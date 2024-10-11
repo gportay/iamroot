@@ -610,7 +610,7 @@ endif
 
 .PHONY: test-ish
 test-ish: | rootfs
-ifeq ($(OS),GNU/Linux)
+ifneq ($(OS),OpenBSD)
 	bash tests-ish.bash
 endif
 

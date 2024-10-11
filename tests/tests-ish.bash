@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Copyright 2024 Gaël PORTAY
 #
@@ -175,8 +175,10 @@ export -n IAMROOT_DEBUG_IGNORE
 export -n IAMROOT_EXEC_IGNORE
 export -n IAMROOT_PATH_RESOLUTION_IGNORE
 
+OS="$(shell uname -o 2>/dev/null || uname -s 2>/dev/null)"
+
 run "ish: test without argument opens interactive shell"
-if ( SHELL=/bin/bash && ish <<<'echo "-=$-"' | grep "^-=hBs$" )
+if ( SHELL=bash && ish <<<'echo "-=$-"' | grep "^-=hBs$" )
 then
 	ok
 else
@@ -185,7 +187,7 @@ fi
 echo
 
 run "ish: test option -c executes commands from a command line string"
-if ( SHELL=/bin/bash && ish -c 'echo "-=$-"' | grep "^-=hBc$" )
+if ( SHELL=bash && ish -c 'echo "-=$-"' | grep "^-=hBc$" )
 then
 	ok
 else
@@ -194,7 +196,7 @@ fi
 echo
 
 run "ish: test option -s executes commands from standard input"
-if ( SHELL=/bin/bash && ish -s <<<'echo "-=$-"' | grep "^-=hBs$" )
+if ( SHELL=bash && ish -s <<<'echo "-=$-"' | grep "^-=hBs$" )
 then
 	ok
 else
@@ -203,7 +205,7 @@ fi
 echo
 
 run "ish: test option -i specifies the shell is interactive"
-if ( SHELL=/bin/bash && ish -i <<<'echo "-=$-"' 2>&1 | grep "^-=himBHs" )
+if ( SHELL=bash && ish -i <<<'echo "-=$-"' 2>&1 | grep "^-=himBHs" )
 then
 	ok
 else
@@ -283,8 +285,8 @@ else
 fi
 echo
 
-run "ish: test option --shell /bin/bash sets the shell interpretor"
-if ish --shell /bin/bash -c "env" | grep "^SHELL=/bin/bash$"
+run "ish: test option --shell bash sets the shell interpretor"
+if ish --shell bash -c "env" | grep "^SHELL=bash$"
 then
 	ok
 else
@@ -328,23 +330,26 @@ else
 fi
 echo
 
-run "ish: test option --debug-fd 100 sets debug fd"
-if ( exec 100>&2 && ish --debug-fd 100 -c "env && readlink /proc/self/fd/100" | grep "^IAMROOT_DEBUG_FD=100$" )
+if [[ "$OS" =~ (Linux|NetBSD) ]]
 then
-	ok
-else
-	ko
-fi
-echo
+	run "ish: test option --debug-fd 100 sets debug fd"
+	if ( exec 100>&2 && ish --debug-fd 100 -c "env && test -e /proc/self/fd/100" | grep "^IAMROOT_DEBUG_FD=100$" )
+	then
+		ok
+	else
+		ko
+	fi
+	echo
 
-run "ish: test option --debug-fd 100 sets and duplicates debug fd"
-if ish --debug-fd 100 -c "env && readlink /proc/self/fd/100" | grep "^IAMROOT_DEBUG_FD=100$"
-then
-	ok
-else
-	ko
+	run "ish: test option --debug-fd 100 sets and duplicates debug fd"
+	if ish --debug-fd 100 -c "env && test -e /proc/self/fd/100" | grep "^IAMROOT_DEBUG_FD=100$"
+	then
+		ok
+	else
+		ko
+	fi
+	echo
 fi
-echo
 
 run "ish: test option --debug-ignore ^(chroot|chdir|fchdir)$ sets regular expression of path to ignore for path resolution in chroot."
 if ish --debug-ignore "^(chroot|chdir|fchdir)$" -c "env" | grep "^IAMROOT_DEBUG_IGNORE=^(chroot|chdir|fchdir)\\$\$"

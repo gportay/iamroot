@@ -422,7 +422,7 @@ then
 fi
 
 command=("${shell:-/bin/sh}")
-if [[ "${opt_i:-}" ]]
+if [[ "${opt_i:-}" ]] && [[ "${command[0]:-}" =~ bash$ ]]
 then
 	command+=(-l)
 fi

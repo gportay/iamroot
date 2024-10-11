@@ -36,6 +36,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   do not call the AT-functions `__fstatat64_time64()`, `fstatat()` and
   `fstatat64()` anymore
 - Output the traces for the group, passwd, and shadow functions
+- `ido(1)` sets the login shell option `-l` if `bash(1)` only for a login shell
 
 ## [v23] - 2024-06-25
 

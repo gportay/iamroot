@@ -148,7 +148,7 @@ _ish()
 
 	if [[ "$shell" != 1 ]]
 	then
-		COMPREPLY+=($(compgen -W "--root --profile-file --rc-file --multiarch --libdir --deflib --exec --library --shell --no-color --debug --debug-fd --debug-ignore --exec-ignore --path-resolution-ignore --version" -- "$cur"))
+		COMPREPLY+=($(compgen -W "--login --root --profile-file --rc-file --multiarch --libdir --deflib --exec --library --shell --no-color --debug --debug-fd --debug-ignore --exec-ignore --path-resolution-ignore --version" -- "$cur"))
 	fi
 } &&
 complete -F _ish ish

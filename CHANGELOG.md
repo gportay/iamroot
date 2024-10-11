@@ -19,6 +19,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `PATH_RESOLUTION_NOWALKALONG`: disallow the final walkalong resolution of the
   given path
 - Chroot to a [Debian] ppc world; tested on [Debian PowerPC Port]
+- Add the `ish(1)`'s option `--login` to read and execute commands from the
+  files `$HOME/.ish_profile` and `$PWD/.ishrc` if these files exist
 
 ## Removed
 

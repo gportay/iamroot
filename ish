@@ -27,6 +27,7 @@ POSIX Shell related options:
       -s                        Read commands from standard-input.
 
 iamroot specific options:
+      --login                   Act as if it had been invoked as a login shell.
       --root DIR                Absolute path to the root directory to chroot
                                 in.
       --profile-file FILE       Execute initialization file from FILE.
@@ -181,6 +182,10 @@ do
 		shift
 		IAMROOT_ROOT="$1"
 		export IAMROOT_ROOT
+	elif [[ "$1" == "--login" ]]
+	then
+		ISH_LOGIN=1
+		export ISH_LOGIN
 	elif [[ "$1" == "--" ]]
 	then
 		shift
@@ -196,17 +201,21 @@ then
 	eval "exec $IAMROOT_DEBUG_FD>&2"
 fi
 
-for i in "${ISH_PROFILE_FILE:-}" "${ISH_RC_FILE:-}"
-do
-	if [[ ! "$i" ]]
-	then
-		continue
-	fi
+if [[ "${ISH_LOGIN:-}" ]]
+then
+	for i in "${ISH_PROFILE_FILE:-$HOME/.ish_profile}" \
+		 "${ISH_RC_FILE:-$PWD/.ishrc}"
+	do
+		if [[ ! -e "$i" ]]
+		then
+			continue
+		fi
 
-	cd "${i%/*}"
-	PWD="$OLDPWD" source "${i##*/}"
-	cd "$OLDPWD"
-done
+		cd "${i%/*}"
+		PWD="$OLDPWD" source "${i##*/}"
+		cd "$OLDPWD"
+	done
+fi
 
 if ! ldso="$(command -v ld-iamroot.so 2>/dev/null)"
 then

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Copyright 2024 Gaël PORTAY
 #
@@ -175,6 +175,8 @@ export -n IAMROOT_DEBUG_IGNORE
 export -n IAMROOT_EXEC_IGNORE
 export -n IAMROOT_PATH_RESOLUTION_IGNORE
 
+OS="$(shell uname -o 2>/dev/null || uname -s 2>/dev/null)"
+
 run "ido: test without argument"
 if ! ido
 then
@@ -193,23 +195,26 @@ else
 fi
 echo
 
-run "ido: test option -C=101 do not closes file descriptors < 100"
-if ( exec 100>&2 && ido -C=101 readlink /proc/self/fd/100 )
+if [[ "$OS" =~ Linux ]]
 then
-	ok
-else
-	ko
-fi
-echo
+	run "ido: test option -C=101 do not closes file descriptors < 100"
+	if ( exec 100>&2 && ido -C=101 readlink /proc/self/fd/100 )
+	then
+		ok
+	else
+		ko
+	fi
+	echo
 
-run "ido: test option --close-from=100 closes file descriptor >= 100"
-if ( exec 100>&2 && ! ido --close-from=100 readlink /proc/self/fd/100 )
-then
-	ok
-else
-	ko
+	run "ido: test option --close-from=100 closes file descriptor >= 100"
+	if ( exec 100>&2 && ! ido --close-from=100 readlink /proc/self/fd/100 )
+	then
+		ok
+	else
+		ko
+	fi
+	echo
 fi
-echo
 
 run "ido: test option -D=/tmp changes working directory"
 if ido -D=/tmp pwd | tee /dev/stderr | grep -q "^/tmp$"
@@ -259,14 +264,26 @@ else
 fi
 echo
 
-run "ido: test option -g=root runs command as group name root"
-if ido -g=root id -gn | tee /dev/stderr | grep -q "^root$"
+if [[ "$OS" =~ BSD$ ]]
 then
-	ok
+	run "ido: test option -g=wheel runs command as group name wheel"
+	if ido -g=wheel id -gn | tee /dev/stderr | grep -q "^wheel$"
+	then
+		ok
+	else
+		ko
+	fi
+	echo
 else
-	ko
+	run "ido: test option -g=root runs command as group name root"
+	if ido -g=root id -gn | tee /dev/stderr | grep -q "^root$"
+	then
+		ok
+	else
+		ko
+	fi
+	echo
 fi
-echo
 
 run "ido: test option -g=\#0 runs command as group ID 0"
 if ido -g=0 id -g | tee /dev/stderr | grep -q "^0$"
@@ -350,7 +367,7 @@ fi
 echo
 
 run "ido: test option --preserve-groups preserves group vector ${GROUPS[*]}"
-if ( export SHELL=/bin/bash && ido --user="$USER" --preserve-groups --shell <<<'echo "GROUPS=${GROUPS[*]}"' | tee /dev/stderr | grep -q "GROUPS=${GROUPS[*]}" )
+if ( export SHELL=bash && ido --user="$USER" --preserve-groups --shell <<<'echo "GROUPS=${GROUPS[*]}"' | tee /dev/stderr | grep -q "GROUPS=${GROUPS[*]}" )
 then
 	ok
 else
@@ -385,8 +402,8 @@ else
 fi
 echo
 
-run "ido: test option --shell runs /bin/bash with the specified command"
-if ( export SHELL=/bin/bash; ido --shell env | tee /dev/stderr | grep -q '^SHELL=/bin/bash$' )
+run "ido: test option --shell runs bash with the specified command"
+if ( export SHELL=bash; ido --shell env | tee /dev/stderr | grep -q '^SHELL=bash$' )
 then
 	ok
 else
@@ -556,15 +573,18 @@ else
 fi
 echo
 
-run "ido: test option --debug-fd=100 sets and duplicates debug fd"
-if ido --debug-fd=100 env | grep "^IAMROOT_DEBUG_FD=100$" &&
-   ido --debug-fd=100 readlink /proc/self/fd/100
+if [[ "$OS" =~ Linux ]]
 then
-	ok
-else
-	ko
+	run "ido: test option --debug-fd=100 sets and duplicates debug fd"
+	if ido --debug-fd=100 env | grep "^IAMROOT_DEBUG_FD=100$" &&
+	   ido --debug-fd=100 readlink /proc/self/fd/100
+	then
+		ok
+	else
+		ko
+	fi
+	echo
 fi
-echo
 
 run "ido: test option --debug-ignore=^(chroot|chdir|fchdir)$ sets regular expression of path to ignore for path resolution in chroot."
 if ido --debug-ignore="^(chroot|chdir|fchdir)$" env | grep "^IAMROOT_DEBUG_IGNORE=^(chroot|chdir|fchdir)\\$\$"

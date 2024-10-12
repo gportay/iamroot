@@ -604,7 +604,7 @@ endif
 
 .PHONY: test-ido
 test-ido: | rootfs
-ifeq ($(OS),GNU/Linux)
+ifneq ($(OS),OpenBSD)
 	bash tests-ido.bash
 endif
 

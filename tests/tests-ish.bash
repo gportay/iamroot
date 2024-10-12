@@ -216,6 +216,18 @@ then
 	echo
 fi
 
+if [[ -e "/proc/$$/cmdline" ]]
+then
+	run "ish: test option --login sets the login shell"
+	if ish --login <<<'cat /proc/$$/cmdline | xargs -0' | grep "^-"
+	then
+		ok
+	else
+		ko
+	fi
+	echo
+fi
+
 run "ish: test option --root $PWD/rootfs sets the absolute path to the root directory to chroot in"
 if ish --root "$PWD/rootfs" -c "env" | grep "^IAMROOT_ROOT=$PWD/rootfs$"
 then

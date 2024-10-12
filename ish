@@ -222,6 +222,14 @@ then
 	ldso="${IAMROOT_ORIGIN:-/usr/local/bin}/ld-iamroot.so"
 fi
 
+shell="${SHELL:-/bin/sh}"
+command=("${ldso:-/usr/local/bin/ld-iamroot.so}")
+if [[ "${ISH_LOGIN:-}" ]]
+then
+	command+=(--argv0 "-${shell##*/}")
+fi
+command+=(--)
+
 ISHLVL="$((ISHLVL+1))" \
 PATH="${PATH:-/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin}" \
-exec "${ldso:-/usr/local/bin/ld-iamroot.so}" -- "${SHELL:-/bin/sh}" "$@"
+exec "${command[@]}" "$shell" "$@"

@@ -424,7 +424,7 @@ fi
 command=("${shell:-/bin/sh}")
 if [[ "${opt_i:-}" ]] && [[ "${command[0]:-}" =~ bash$ ]]
 then
-	command+=(-l)
+	command+=(--login)
 fi
 if [[ "$#" -gt 0 ]]
 then

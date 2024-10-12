@@ -340,8 +340,8 @@ else
 fi
 echo
 
-run "ido: test option -P preserves group vector ${GROUPS[*]}"
-if ( export SHELL=/bin/bash && ido -P -s <<<'echo "GROUPS=${GROUPS[*]:1}"' | tee /dev/stderr | grep -q "^GROUPS=${GROUPS[*]}$" )
+run "ido: test option -P preserves group vector 0 ${GROUPS[*]}"
+if ( export SHELL=bash && ido -P -s <<<'echo "GROUPS=${GROUPS[*]}"' | tee /dev/stderr | grep -q "^GROUPS=0 ${GROUPS[*]}$" )
 then
 	ok
 else

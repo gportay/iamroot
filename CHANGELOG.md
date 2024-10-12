@@ -45,7 +45,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   option `-l` for a login shell
 - `ido(1)` sets the login `bash(1)` long option `--login` if an option command
   is set only for a login shell
-- Output the returned value for the function `getgroups()`
+- Output the returned value for the function `__mknodat()`, `getgroups()` and
+  `mknodat()`
 
 ### Fixed
 

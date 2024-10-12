@@ -14,18 +14,21 @@
 
 int mknodat(int dfd, const char *path, mode_t mode, dev_t dev)
 {
-	int fd;
+	int fd, ret = -1;
 	(void)dev;
-
-	__debug("%s(dfd: %i, path: '%s', mode: 0%03o)\n", __func__, dfd, path,
-		mode);
 
 	/* Forward to another function */
 	fd = openat(dfd, path, O_CREAT|O_WRONLY|O_TRUNC, mode);
 	if (fd == -1)
-		return -1;
+		goto exit;
 
 	__close(fd);
 
-	return 0;
+	ret = 0;
+
+exit:
+	__debug("%s(dfd: %i, path: '%s', mode: 0%03o) -> %i\n", __func__, dfd,
+		path, mode, ret);
+
+	return ret;
 }

@@ -57,8 +57,8 @@ int getgroups(int listsize, gid_t list[])
 	if (ret == -1)
 		return -1;
 
-	__debug("%s(listsize: %i, list: %p) IAMROOT_GROUPS: '%s'\n", __func__,
-		listsize, list, val);
+	__debug("%s(listsize: %i, list: %p) -> %i, IAMROOT_GROUPS: '%s'\n",
+		__func__, listsize, list, groups.size, val);
 
 	return groups.size;
 }

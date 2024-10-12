@@ -329,7 +329,7 @@ fi
 echo
 
 run "ish: test option --debug-fd 100 sets debug fd"
-if ( exec 100>&2 && ish --debug-fd 100 -c "env" | grep "^IAMROOT_DEBUG_FD=100$" )
+if ( exec 100>&2 && ish --debug-fd 100 -c "env && readlink /proc/self/fd/100" | grep "^IAMROOT_DEBUG_FD=100$" )
 then
 	ok
 else

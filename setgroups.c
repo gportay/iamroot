@@ -47,7 +47,7 @@ int setgroups(size_t listsize, const gid_t *list)
 	ret = _setenv("IAMROOT_GROUPS", buf, 1);
 
 exit:
-	__debug("%s(listsize: %i, list: %p): -> %i, IAMROOT_GROUPS: '%s'\n",
+	__debug("%s(listsize: %i, list: %p) -> %i, IAMROOT_GROUPS: '%s'\n",
 		__func__, (int)listsize, list, ret, _getenv("IAMROOT_GROUPS"));
 
 	return ret;

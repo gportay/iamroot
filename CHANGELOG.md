@@ -39,6 +39,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `ido(1)` sets the login shell option `-l` if `bash(1)` only for a login shell
 - `ido(1)` sets the login `bash(1)` long option `--login` instead of short
   option `-l` for a login shell
+- `ido(1)` sets the login `bash(1)` long option `--login` if an option command
+  is set only for a login shell
 
 ## [v23] - 2024-06-25
 

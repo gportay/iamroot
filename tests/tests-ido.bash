@@ -630,7 +630,7 @@ fi
 echo
 
 run "ido: test environment sets IDO_COMMAND to the command run by ido"
-if ( ido -i <<<'echo "IDO_COMMAND=$IDO_COMMAND"' | tee /dev/stderr | grep -q -E "^IDO_COMMAND=[A-Za-z0-9/]+ --login$" )
+if ( ido -i <<<'echo "IDO_COMMAND=$IDO_COMMAND"' | tee /dev/stderr | grep -q -E "^IDO_COMMAND=[A-Za-z0-9/]+$" )
 then
 	ok
 else

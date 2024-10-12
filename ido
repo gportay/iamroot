@@ -422,12 +422,13 @@ then
 fi
 
 command=("${shell:-/bin/sh}")
-if [[ "${opt_i:-}" ]] && [[ "${command[0]:-}" =~ bash$ ]]
-then
-	command+=(--login)
-fi
 if [[ "$#" -gt 0 ]]
 then
+	if [[ "${opt_i:-}" ]] && [[ "${command[0]:-}" =~ bash$ ]]
+	then
+		command+=(--login)
+	fi
+
 	command_string="${*@Q}"
 	command+=(-c "$command_string")
 fi

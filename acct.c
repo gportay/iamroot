@@ -13,10 +13,13 @@
 
 int acct(const char *path)
 {
+	int ret;
 	(void)path;
 
 	/* Not forwarding function */
-	__debug("%s(path: '%s')\n", __func__, path);
+	ret = 0;
 
-	return 0;
+	__debug("%s(path: '%s') -> %i\n", __func__, path, ret);
+
+	return ret;
 }

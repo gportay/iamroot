@@ -386,9 +386,10 @@ then
 	shell="$SHELL"
 fi
 
+command_env=()
 if [[ "${opt_T}" ]]
 then
-	command_timeout=(timeout "${opt_T}")
+	command_env+=(timeout "${opt_T}")
 fi
 
 if [[ "${IAMROOT_DEBUG_FD:-}" ]] && [[ ! -e "/proc/$$/fd/$IAMROOT_DEBUG_FD" ]]
@@ -421,6 +422,12 @@ then
 	ish="/usr/local/bin/ish"
 fi
 
+command_env+=("$ish")
+if [[ "${opt_i:-}" ]]
+then
+	command_env+=(--login)
+fi
+
 command=("${shell:-/bin/sh}")
 if [[ "$#" -gt 0 ]]
 then
@@ -444,4 +451,4 @@ USER="${passwd[0]}" \
 HOME="${HOME:-${passwd[5]}}" \
 SHELL="${shell:-${passwd[6]}}" \
 TERM="${TERM:-unknown}" \
-"${command_timeout[@]}" "${ish:-/usr/local/bin/ish}" --shell "${command[@]}"
+"${command_env[@]}" --shell "${command[@]}"

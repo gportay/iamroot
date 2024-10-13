@@ -320,6 +320,11 @@ then
 
 	for i in "/proc/$$/fd/"*
 	do
+		if [[ ! -e "$i" ]]
+		then
+			continue
+		fi
+
 		fd="${i##*/}"
 		if [[ "$fd" -ge "$opt_C" ]] && [[ "$fd" -ne 255 ]]
 		then

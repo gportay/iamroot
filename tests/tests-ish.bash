@@ -176,7 +176,7 @@ export -n IAMROOT_EXEC_IGNORE
 export -n IAMROOT_PATH_RESOLUTION_IGNORE
 
 run "ish: test without argument opens interactive shell"
-if ish <<<'echo "-=$-"' | grep "^-=hBs$"
+if ( SHELL=/bin/bash && ish <<<'echo "-=$-"' | grep "^-=hBs$" )
 then
 	ok
 else
@@ -185,7 +185,7 @@ fi
 echo
 
 run "ish: test option -c executes commands from a command line string"
-if ish -c 'echo "-=$-"' | grep "^-=hBc$"
+if ( SHELL=/bin/bash && ish -c 'echo "-=$-"' | grep "^-=hBc$" )
 then
 	ok
 else
@@ -194,7 +194,7 @@ fi
 echo
 
 run "ish: test option -s executes commands from standard input"
-if ish -s <<<'echo "-=$-"' | grep "^-=hBs$"
+if ( SHELL=/bin/bash && ish -s <<<'echo "-=$-"' | grep "^-=hBs$" )
 then
 	ok
 else
@@ -203,7 +203,7 @@ fi
 echo
 
 run "ish: test option -i specifies the shell is interactive"
-if ish -i <<<'echo "-=$-"' 2>&1 | grep "^-=himBHs"
+if ( SHELL=/bin/bash && ish -i <<<'echo "-=$-"' 2>&1 | grep "^-=himBHs" )
 then
 	ok
 else

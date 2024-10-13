@@ -350,7 +350,7 @@ fi
 echo
 
 run "ido: test option --preserve-groups preserves group vector ${GROUPS[*]}"
-if ( export SHELL=/bin/bash && ido --user="$USER" --preserve-groups --shell <<<'echo "GROUPS=${GROUPS[*]:1}"' | tee /dev/stderr | grep -q "GROUPS=${GROUPS[*]:1}" )
+if ( export SHELL=/bin/bash && ido --user="$USER" --preserve-groups --shell <<<'echo "GROUPS=${GROUPS[*]}"' | tee /dev/stderr | grep -q "GROUPS=${GROUPS[*]}" )
 then
 	ok
 else

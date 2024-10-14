@@ -600,9 +600,7 @@ test-ld-iamroot.so: | rootfs
 
 .PHONY: test-ido
 test-ido: | rootfs
-ifneq ($(OS),OpenBSD)
 	bash tests-ido.bash
-endif
 
 .PHONY: test-ish
 test-ish: | rootfs

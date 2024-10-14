@@ -608,9 +608,7 @@ endif
 
 .PHONY: test-ish
 test-ish: | rootfs
-ifneq ($(OS),OpenBSD)
 	bash tests-ish.bash
-endif
 
 rootfs: DESTDIR = $(CURDIR)/rootfs.tmp
 rootfs:

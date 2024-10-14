@@ -596,9 +596,7 @@ test-frontends: test-ld-iamroot.so test-ido test-ish
 
 .PHONY: test-ld-iamroot.so
 test-ld-iamroot.so: | rootfs
-ifneq ($(OS),OpenBSD)
 	bash tests-ld-iamroot.so.bash
-endif
 
 .PHONY: test-ido
 test-ido: | rootfs

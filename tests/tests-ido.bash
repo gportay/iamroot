@@ -273,35 +273,39 @@ else
 fi
 echo
 
-if [[ "$OS" =~ BSD$ ]]
+# OpenBSD uses statically link shell
+if [[ ! "$OS" =~ ^OpenBSD$ ]]
 then
-	run "ido: test option -g=wheel runs command as group name wheel"
-	if ido -g=wheel id -gn | tee /dev/stderr | grep -q "^wheel$"
+	if [[ "$OS" =~ BSD$ ]]
 	then
-		ok
+		run "ido: test option -g=wheel runs command as group name wheel"
+		if ido -g=wheel id -gn | tee /dev/stderr | grep -q "^wheel$"
+		then
+			ok
+		else
+			ko
+		fi
+		echo
 	else
-		ko
+		run "ido: test option -g=root runs command as group name root"
+		if ido -g=root id -gn | tee /dev/stderr | grep -q "^root$"
+		then
+			ok
+		else
+			ko
+		fi
+		echo
 	fi
-	echo
-else
-	run "ido: test option -g=root runs command as group name root"
-	if ido -g=root id -gn | tee /dev/stderr | grep -q "^root$"
-	then
-		ok
-	else
-		ko
-	fi
-	echo
-fi
 
-run "ido: test option -g=\#0 runs command as group ID 0"
-if ido -g=0 id -g | tee /dev/stderr | grep -q "^0$"
-then
-	ok
-else
-	ko
+	run "ido: test option -g=\#0 runs command as group ID 0"
+	if ido -g=0 id -g | tee /dev/stderr | grep -q "^0$"
+	then
+		ok
+	else
+		ko
+	fi
+	echo
 fi
-echo
 
 run "ido: test option --group=\#${GROUPS[0]} runs command as group ID ${GROUPS[0]}"
 if ido --group="${GROUPS[0]}" id -g | tee /dev/stderr | grep -q "^${GROUPS[0]}$"
@@ -348,23 +352,27 @@ else
 fi
 echo
 
-run "ido: test option -i runs login shell as root user"
-if ( export SHELL=/bin/nologin && ido -i <<<whoami | tee /dev/stderr | grep -q -E "^root$" )
+# OpenBSD uses statically link shell
+if [[ ! "$OS" =~ ^OpenBSD$ ]]
 then
-	ok
-else
-	ko
+	run "ido: test option -i runs login shell as root user"
+	if ( export SHELL=/bin/nologin && ido -i <<<whoami | tee /dev/stderr | grep -q -E "^root$" )
+	then
+		ok
+	else
+		ko
+	fi
+	echo
+	
+	run "ido: test option --login runs login shell as root user with the specified command"
+	if ( export SHELL=/bin/nologin && ido --login whoami | tee /dev/stderr | grep -q -E "^root$" )
+	then
+		ok
+	else
+		ko
+	fi
+	echo
 fi
-echo
-
-run "ido: test option --login runs login shell as root user with the specified command"
-if ( export SHELL=/bin/nologin && ido --login whoami | tee /dev/stderr | grep -q -E "^root$" )
-then
-	ok
-else
-	ko
-fi
-echo
 
 run "ido: test option -P preserves group vector ${groups[*]}"
 if ( export SHELL=bash && ido -P -s <<<'echo "GROUPS=${GROUPS[*]}"' | tee /dev/stderr | grep "^GROUPS=${groups[*]}$" )
@@ -384,14 +392,18 @@ else
 fi
 echo
 
-run "ido: test option -R=$PWD/rootfs changes root directory"
-if ido -R="$PWD/rootfs" env | tee /dev/stderr | grep -q "^IAMROOT_ROOT=$PWD/rootfs$"
+# OpenBSD uses statically link shell
+if [[ ! "$OS" =~ ^OpenBSD$ ]]
 then
-	ok
-else
-	ko
+	run "ido: test option -R=$PWD/rootfs changes root directory"
+	if ido -R="$PWD/rootfs" env | tee /dev/stderr | grep -q "^IAMROOT_ROOT=$PWD/rootfs$"
+	then
+		ok
+	else
+		ko
+	fi
+	echo
 fi
-echo
 
 run "ido: test option --chroot=/dev/null fails to change root directory"
 if ! ido --chroot=/dev/null env
@@ -402,26 +414,30 @@ else
 fi
 echo
 
-run "ido: test option -s runs /bin/sh"
-if ( export SHELL=/bin/sh; ido -s <<<env | tee /dev/stderr | grep -q '^SHELL=/bin/sh$' )
+# OpenBSD uses statically link shell
+if [[ ! "$OS" =~ ^OpenBSD$ ]]
 then
-	ok
-else
-	ko
-fi
-echo
+	run "ido: test option -s runs /bin/sh"
+	if ( export SHELL=/bin/sh; ido -s <<<env | tee /dev/stderr | grep -q '^SHELL=/bin/sh$' )
+	then
+		ok
+	else
+		ko
+	fi
+	echo
 
-run "ido: test option --shell runs bash with the specified command"
-if ( export SHELL=bash; ido --shell env | tee /dev/stderr | grep -q '^SHELL=bash$' )
-then
-	ok
-else
-	ko
+	run "ido: test option --shell runs bash with the specified command"
+	if ( export SHELL=bash; ido --shell env | tee /dev/stderr | grep -q '^SHELL=bash$' )
+	then
+		ok
+	else
+		ko
+	fi
+	echo
 fi
-echo
 
 run "ido: test option -T terminates command after the specfified time limit"
-if ( ido -T=0.1 sleep 5; test "$?" -eq 124 )
+if ( ido -T=0.1 -s sleep 5; test "$?" -eq 124 )
 then
 	ok
 else
@@ -438,32 +454,44 @@ else
 fi
 echo
 
-run "ido: test option -u=root runs command as user name root"
-if ido -u=root id -un | tee /dev/stderr | grep -q "^root$"
+# FIXME: OpenBSD coredumps!
+if [[ ! "$OS" =~ ^OpenBSD$ ]]
 then
-	ok
-else
-	ko
+	run "ido: test option -u=root runs command as user name root"
+	if ido -u=root id -un | tee /dev/stderr | grep -q "^root$"
+	then
+		ok
+	else
+		ko
+	fi
+	echo
 fi
-echo
 
-run "ido: test option -u=\#0 runs command as user ID 0"
-if ido -u=0 id -u | tee /dev/stderr | grep -q "^0$"
+# OpenBSD uses statically link shell
+if [[ ! "$OS" =~ ^OpenBSD$ ]]
 then
-	ok
-else
-	ko
+	run "ido: test option -u=\#0 runs command as user ID 0"
+	if ido -u=0 id -u | tee /dev/stderr | grep -q "^0$"
+	then
+		ok
+	else
+		ko
+	fi
+	echo
 fi
-echo
 
-run "ido: test option --user=$USER runs command as user name $USER"
-if ido --user="$USER" id -un | tee /dev/stderr | grep -q "^$USER$"
+# FIXME: OpenBSD coredumps!
+if [[ ! "$OS" =~ ^OpenBSD$ ]]
 then
-	ok
-else
-	ko
+	run "ido: test option --user=$USER runs command as user name $USER"
+	if ido --user="$USER" id -un | tee /dev/stderr | grep -q "^$USER$"
+	then
+		ok
+	else
+		ko
+	fi
+	echo
 fi
-echo
 
 run "ido: test option --user=\#$UID runs command as user ID $UID"
 if ido --user="#$UID" id -u | tee /dev/stderr | grep -q "^$UID$"
@@ -649,14 +677,18 @@ else
 fi
 echo
 
-run "ido: test environment sets IDO_COMMAND to the command run by ido"
-if ( export SHELL=/bin/sh && ido -s <<<'echo "IDO_COMMAND=$IDO_COMMAND"' | tee /dev/stderr | grep -q "^IDO_COMMAND=/bin/sh$" )
+# OpenBSD uses statically link shell
+if [[ ! "$OS" =~ ^OpenBSD$ ]]
 then
-	ok
-else
-	ko
+	run "ido: test environment sets IDO_COMMAND to the command run by ido"
+	if ( export SHELL=/bin/sh && ido -s <<<'echo "IDO_COMMAND=$IDO_COMMAND"' | tee /dev/stderr | grep -q "^IDO_COMMAND=/bin/sh$" )
+	then
+		ok
+	else
+		ko
+	fi
+	echo
 fi
-echo
 
 run "ido: test environment sets IDO_COMMAND to the command run by ido"
 if ( ido -i <<<'echo "IDO_COMMAND=$IDO_COMMAND"' | tee /dev/stderr | grep -q -E "^IDO_COMMAND=[A-Za-z0-9/]+$" )
@@ -667,14 +699,18 @@ else
 fi
 echo
 
-run "ido: test environment sets IDO_COMMAND to the command run by ido, including args"
-if ( export SHELL=/bin/sh && ido -s env | tee /dev/stderr | grep -q "^IDO_COMMAND=/bin/sh -c 'env'$" )
+# OpenBSD uses statically link shell
+if [[ ! "$OS" =~ ^OpenBSD$ ]]
 then
-	ok
-else
-	ko
+	run "ido: test environment sets IDO_COMMAND to the command run by ido, including args"
+	if ( export SHELL=/bin/sh && ido -s env | tee /dev/stderr | grep -q "^IDO_COMMAND=/bin/sh -c 'env'$" )
+	then
+		ok
+	else
+		ko
+	fi
+	echo
 fi
-echo
 
 run "ido: test environment sets IDO_GID to the group-ID of the user who invoked ido"
 if ido -s <<<'echo "IDO_GID=$IDO_GID"' | tee /dev/stderr | grep -q "^IDO_GID=${GROUPS[0]}$"

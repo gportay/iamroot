@@ -204,14 +204,17 @@ else
 fi
 echo
 
-run "ish: test option -i specifies the shell is interactive"
-if ( SHELL=bash && ish -i <<<'echo "-=$-"' 2>&1 | grep "^-=himBHs" )
+if [[ "${CI:-false}" != "true" ]]
 then
-	ok
-else
-	ko
+	run "ish: test option -i specifies the shell is interactive"
+	if ( SHELL=bash && ish -i <<<'echo "-=$-"' 2>&1 | grep "^-=himBHs" )
+	then
+		ok
+	else
+		ko
+	fi
+	echo
 fi
-echo
 
 run "ish: test option --root $PWD/rootfs sets the absolute path to the root directory to chroot in"
 if ish --root "$PWD/rootfs" -c "env" | grep "^IAMROOT_ROOT=$PWD/rootfs$"

@@ -204,17 +204,14 @@ else
 fi
 echo
 
-if [[ "${CI:-false}" != "true" ]]
+run "ish: test option -i specifies the shell is interactive"
+if ( SHELL=bash && ish -i -m <<<'echo "-=$-"' 2>&1 | grep "^-=himBHs" )
 then
-	run "ish: test option -i specifies the shell is interactive"
-	if ( SHELL=bash && ish -i <<<'echo "-=$-"' 2>&1 | grep "^-=himBHs" )
-	then
-		ok
-	else
-		ko
-	fi
-	echo
+	ok
+else
+	ko
 fi
+echo
 
 if [[ -e "/proc/$$/cmdline" ]]
 then

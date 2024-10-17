@@ -205,10 +205,11 @@ fi
 echo
 
 run "ish: test option -i specifies the shell is interactive"
-if ( SHELL=bash && ish -i -m <<<'echo "-=$-"' 2>&1 | grep "^-=himBHs" )
+if ( SHELL=bash && ish -i -m <<<'echo "-=$-"' 2>&1 | tee /dev/stderr | grep "^-=himBHs"; echo "PIPESTATUS=(${PIPESTATUS[*]}), ?=$?" )
 then
 	ok
 else
+	echo "ko??? PIPESTATUS=(${PIPESTATUS[*]}), ?=$?"
 	ko
 fi
 echo

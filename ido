@@ -445,6 +445,17 @@ then
 	command+=(-c "$command_string")
 fi
 
+if [[ ! "$IDO_SECURE_PATH" ]]
+then
+	if uname -s | grep -q NetBSD
+	then
+		IDO_SECURE_PATH="/usr/pkg/sbin:/usr/pkg/bin:"
+	else
+		IDO_SECURE_PATH="/usr/local/sbin:/usr/local/bin:"
+	fi
+	IDO_SECURE_PATH+="/usr/sbin:/usr/bin:/sbin:/bin"
+fi
+
 exec /usr/bin/env \
 IDO_USER="$USER" \
 IDO_UID="$UID" \

@@ -357,14 +357,26 @@ else
 fi
 echo
 
-run "ido: test option -P preserves group vector 0 ${GROUPS[*]}"
-if ( export SHELL=bash && ido -P -s <<<'echo "GROUPS=${GROUPS[*]}"' | tee /dev/stderr | grep -q "^GROUPS=0 ${GROUPS[*]}$" )
+if [[ "$UID" -eq 0 ]]
 then
-	ok
+	run "ido: test option -P preserves group vector ${GROUPS[*]}"
+	if ( export SHELL=bash && ido -P -s <<<'echo "GROUPS=${GROUPS[*]}"' | tee /dev/stderr | grep -q "^GROUPS=${GROUPS[*]}$" )
+	then
+		ok
+	else
+		ko
+	fi
+	echo
 else
-	ko
+	run "ido: test option -P preserves group vector 0 ${GROUPS[*]}"
+	if ( export SHELL=bash && ido -P -s <<<'echo "GROUPS=${GROUPS[*]}"' | tee /dev/stderr | grep -q "^GROUPS=0 ${GROUPS[*]}$" )
+	then
+		ok
+	else
+		ko
+	fi
+	echo
 fi
-echo
 
 run "ido: test option --preserve-groups preserves group vector ${GROUPS[*]}"
 if ( export SHELL=bash && ido --user="$USER" --preserve-groups --shell <<<'echo "GROUPS=${GROUPS[*]}"' | tee /dev/stderr | grep -q "GROUPS=${GROUPS[*]}" )

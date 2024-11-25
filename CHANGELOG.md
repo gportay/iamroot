@@ -27,7 +27,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Removed
 
 - Remove the Linux specific function `dladdr1()` from none-linux build
-- Remove the functions `dladdr()` and `dlopen()` from NetBSD build
+- Remove the function `dlopen()` from NetBSD build
 
 ### Changed
 
@@ -45,6 +45,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   option `-l` for a login shell
 - `ido(1)` sets the login `bash(1)` long option `--login` if an option command
   is set only for a login shell
+
+### Fixed
+
+- Fix the `ido(1)`'s PATH for [NetBSD]
 
 ## [v23] - 2024-06-25
 

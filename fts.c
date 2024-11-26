@@ -11,30 +11,19 @@
 #include <sys/stat.h>
 #include <errno.h>
 
-/*
- * Based from musl (src/malloc/reallocarray.c)
- *
- * SPDX-FileCopyrightText: The musl Contributors
- *
- * SPDX-License-Identifier: MIT
- */
 int reallocarr(void *ptr, size_t m, size_t n)
 {
 	void *p;
 
-	if (!ptr) {
-		errno = EINVAL;
-		return -1;
-	}
+	if (!ptr)
+		return EINVAL;
 
-	if (n && m > -1 / n) {
-		errno = ENOMEM;
-		return -1;
-	}
+	if (n && m > -1 / n)
+		return ENOMEM;
 
 	p = realloc(ptr, m * n);
 	if (!p)
-		return -1;
+		return errno;
 
 	ptr = p;
 	return 0;

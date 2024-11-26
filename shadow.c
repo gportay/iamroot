@@ -17,111 +17,6 @@
 
 #include "iamroot.h"
 
-static int _getspnam_r(const char *, struct spwd *, char *, size_t,
-		       struct spwd **);
-static struct spwd *_getspnam(const char *);
-static struct spwd *_fgetspent(FILE *);
-static void _setspent();
-static struct spwd *_getspent();
-static int _putspent(const struct spwd *, FILE *);
-static int _lckpwdf();
-static int _ulckpwdf();
-
-int getspnam_r(const char *name, struct spwd *sp, char *buf, size_t size,
-	       struct spwd **res)
-{
-	int ret;
-
-	ret = _getspnam_r(name, sp, buf, size, res);
-
-	__debug("%s(name: '%s', ...) -> %i\n", __func__, name, ret);
-
-	return ret;
-}
-
-struct spwd *getspnam(const char *name)
-{
-	struct spwd *ret;
-
-	ret = _getspnam(name);
-
-	__debug("%s(name: '%s') -> %p\n", __func__, name, ret);
-
-	return ret;
-}
-
-struct spwd *fgetspent(FILE *f)
-{
-	const int fd = fileno(f);
-	struct spwd *ret;
-	(void)fd;
-
-	ret = _fgetspent(f);
-
-	__debug("%s(f: '%s') -> %p\n", __func__, __fpath(fd), ret);
-
-	return ret;
-}
-
-void setspent()
-{
-	_setspent();
-	__debug("%s()\n", __func__);
-}
-
-void endspent()
-{
-	/* Forward to another function */
-	_setspent();
-	__debug("%s()\n", __func__);
-}
-
-struct spwd *getspent()
-{
-	struct spwd *ret;
-
-	ret = _getspent();
-
-	__debug("%s() -> %p\n", __func__, ret);
-
-	return ret;
-}
-
-int putspent(const struct spwd *sp, FILE *f)
-{
-	const int fd = fileno(f);
-	int ret;
-	(void)fd;
-
-	ret = _putspent(sp, f);
-
-	__debug("%s(..., f: '%s') -> %i\n", __func__, __fpath(fd), ret);
-
-	return ret;
-}
-
-int lckpwdf()
-{
-	int ret;
-
-	ret = _lckpwdf();
-
-	__debug("%s() -> %i\n", __func__, ret);
-
-	return ret;
-}
-
-int ulckpwdf()
-{
-	int ret;
-
-	ret = _ulckpwdf();
-
-	__debug("%s() -> %i\n", __func__, ret);
-
-	return ret;
-}
-
 #define getspnam_r _getspnam_r
 #define getspnam _getspnam
 #define fgetspent _fgetspent
@@ -415,4 +310,110 @@ int ulckpwdf()
 {
 	return 0;
 }
+
+#undef getspnam_r
+#undef getspnam
+#undef fgetspent
+#undef setspent
+#undef endspent
+#undef getspent
+#undef putspent
+#undef lckpwdf
+#undef ulckpwdf
+
+int getspnam_r(const char *name, struct spwd *sp, char *buf, size_t size,
+	       struct spwd **res)
+{
+	int ret;
+
+	ret = _getspnam_r(name, sp, buf, size, res);
+
+	__debug("%s(name: '%s', ...) -> %i\n", __func__, name, ret);
+
+	return ret;
+}
+
+struct spwd *getspnam(const char *name)
+{
+	struct spwd *ret;
+
+	ret = _getspnam(name);
+
+	__debug("%s(name: '%s') -> %p\n", __func__, name, ret);
+
+	return ret;
+}
+
+struct spwd *fgetspent(FILE *f)
+{
+	const int fd = fileno(f);
+	struct spwd *ret;
+	(void)fd;
+
+	ret = _fgetspent(f);
+
+	__debug("%s(f: '%s') -> %p\n", __func__, __fpath(fd), ret);
+
+	return ret;
+}
+
+void setspent()
+{
+	_setspent();
+	__debug("%s()\n", __func__);
+}
+
+void endspent()
+{
+	/* Forward to another function */
+	_setspent();
+	__debug("%s()\n", __func__);
+}
+
+struct spwd *getspent()
+{
+	struct spwd *ret;
+
+	ret = _getspent();
+
+	__debug("%s() -> %p\n", __func__, ret);
+
+	return ret;
+}
+
+int putspent(const struct spwd *sp, FILE *f)
+{
+	const int fd = fileno(f);
+	int ret;
+	(void)fd;
+
+	ret = _putspent(sp, f);
+
+	__debug("%s(..., f: '%s') -> %i\n", __func__, __fpath(fd), ret);
+
+	return ret;
+}
+
+int lckpwdf()
+{
+	int ret;
+
+	ret = _lckpwdf();
+
+	__debug("%s() -> %i\n", __func__, ret);
+
+	return ret;
+}
+
+int ulckpwdf()
+{
+	int ret;
+
+	ret = _ulckpwdf();
+
+	__debug("%s() -> %i\n", __func__, ret);
+
+	return ret;
+}
+
 #endif

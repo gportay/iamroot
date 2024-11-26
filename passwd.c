@@ -15,113 +15,6 @@
 #include "iamroot.h"
 
 #if defined __linux__ || defined __OpenBSD__ || defined __NetBSD__
-static int _getpwnam_r(const char *, struct passwd *, char *, size_t,
-		       struct passwd **);
-static int _getpwuid_r(uid_t, struct passwd *, char *, size_t,
-		       struct passwd **);
-static struct passwd *_fgetpwent(FILE *);
-static void _setpwent();
-static struct passwd *_getpwent();
-static struct passwd *_getpwuid(uid_t);
-static struct passwd *_getpwnam(const char *);
-static int _putpwent(const struct passwd *, FILE *);
-
-int getpwnam_r(const char *name, struct passwd *pw, char *buf, size_t size,
-	       struct passwd **res)
-{
-	int ret;
-
-	ret = _getpwnam_r(name, pw, buf, size, res);
-
-	__debug("%s(name: '%s', ...) -> %i\n", __func__, name, ret);
-
-	return ret;
-}
-
-int getpwuid_r(uid_t uid, struct passwd *pw, char *buf, size_t size,
-	       struct passwd **res)
-{
-	int ret;
-
-	ret = _getpwuid_r(uid, pw, buf, size, res);
-
-	__debug("%s(uid: %u, ...) -> %i\n", __func__, uid, ret);
-
-	return ret;
-}
-
-struct passwd *fgetpwent(FILE *f)
-{
-	const int fd = fileno(f);
-	struct passwd *ret;
-	(void)fd;
-
-	ret = _fgetpwent(f);
-
-	__debug("%s(f: '%s') -> %p\n", __func__, __fpath(fd), ret);
-
-	return ret;
-}
-
-void setpwent()
-{
-	_setpwent();
-	__debug("%s()\n", __func__);
-}
-
-void endpwent()
-{
-	/* Forward to another function */
-	_setpwent();
-	__debug("%s()\n", __func__);
-}
-
-struct passwd *getpwent()
-{
-	struct passwd *ret;
-
-	ret = _getpwent();
-
-	__debug("%s() -> %p\n", __func__, ret);
-
-	return ret;
-}
-
-struct passwd *getpwuid(uid_t uid)
-{
-	struct passwd *ret;
-
-	ret = _getpwuid(uid);
-
-	__debug("%s(uid: %u) -> %p\n", __func__, uid, ret);
-
-	return ret;
-}
-
-struct passwd *getpwnam(const char *name)
-{
-	struct passwd *ret;
-
-	ret = _getpwnam(name);
-
-	__debug("%s(name: '%s') -> %p\n", __func__, name, ret);
-
-	return ret;
-}
-
-int putpwent(const struct passwd *pw, FILE *f)
-{
-	const int fd = fileno(f);
-	int ret;
-	(void)fd;
-
-	ret = _putpwent(pw, f);
-
-	__debug("%s(..., f: '%s') -> %i\n", __func__, __fpath(fd), ret);
-
-	return ret;
-}
-
 #define getpwnam_r _getpwnam_r
 #define getpwuid_r _getpwuid_r
 #define fgetpwent _fgetpwent
@@ -391,5 +284,111 @@ int putpwent(const struct passwd *pw, FILE *f)
 	return fprintf(f, "%s:%s:%u:%u:%s:%s:%s\n",
 		pw->pw_name, pw->pw_passwd, pw->pw_uid, pw->pw_gid,
 		pw->pw_gecos, pw->pw_dir, pw->pw_shell)<0 ? -1 : 0;
+}
+
+#undef getpwnam_r
+#undef getpwuid_r
+#undef fgetpwent
+#undef setpwent
+#undef endpwent
+#undef getpwent
+#undef getpwuid
+#undef getpwnam
+#undef putpwent
+
+int getpwnam_r(const char *name, struct passwd *pw, char *buf, size_t size,
+	       struct passwd **res)
+{
+	int ret;
+
+	ret = _getpwnam_r(name, pw, buf, size, res);
+
+	__debug("%s(name: '%s', ...) -> %i\n", __func__, name, ret);
+
+	return ret;
+}
+
+int getpwuid_r(uid_t uid, struct passwd *pw, char *buf, size_t size,
+	       struct passwd **res)
+{
+	int ret;
+
+	ret = _getpwuid_r(uid, pw, buf, size, res);
+
+	__debug("%s(uid: %u, ...) -> %i\n", __func__, uid, ret);
+
+	return ret;
+}
+
+struct passwd *fgetpwent(FILE *f)
+{
+	const int fd = fileno(f);
+	struct passwd *ret;
+	(void)fd;
+
+	ret = _fgetpwent(f);
+
+	__debug("%s(f: '%s') -> %p\n", __func__, __fpath(fd), ret);
+
+	return ret;
+}
+
+void setpwent()
+{
+	_setpwent();
+	__debug("%s()\n", __func__);
+}
+
+void endpwent()
+{
+	/* Forward to another function */
+	_setpwent();
+	__debug("%s()\n", __func__);
+}
+
+struct passwd *getpwent()
+{
+	struct passwd *ret;
+
+	ret = _getpwent();
+
+	__debug("%s() -> %p\n", __func__, ret);
+
+	return ret;
+}
+
+struct passwd *getpwuid(uid_t uid)
+{
+	struct passwd *ret;
+
+	ret = _getpwuid(uid);
+
+	__debug("%s(uid: %u) -> %p\n", __func__, uid, ret);
+
+	return ret;
+}
+
+struct passwd *getpwnam(const char *name)
+{
+	struct passwd *ret;
+
+	ret = _getpwnam(name);
+
+	__debug("%s(name: '%s') -> %p\n", __func__, name, ret);
+
+	return ret;
+}
+
+int putpwent(const struct passwd *pw, FILE *f)
+{
+	const int fd = fileno(f);
+	int ret;
+	(void)fd;
+
+	ret = _putpwent(pw, f);
+
+	__debug("%s(..., f: '%s') -> %i\n", __func__, __fpath(fd), ret);
+
+	return ret;
 }
 #endif

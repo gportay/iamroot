@@ -39,7 +39,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - The functions `__lstat50()`, `__lstat64_time64()`, `lstat()` and `lstat64()`
   do not call the AT-functions `__fstatat64_time64()`, `fstatat()` and
   `fstatat64()` anymore
-- Output the traces for the group, passwd, and shadow functions
+- Output the traces for the fts, group, passwd, and shadow functions
 - `ido(1)` sets the login shell option `-l` if `bash(1)` only for a login shell
 - `ido(1)` sets the login `bash(1)` long option `--login` instead of short
   option `-l` for a login shell

@@ -32,6 +32,12 @@ hidden int reallocarr(void *ptr, size_t m, size_t n)
 	return __set_errno(errno_save, ret);
 }
 
+#define fts_open _fts_open
+#define fts_read _fts_read
+#define fts_children _fts_children
+#define fts_set _fts_set
+#define fts_close _fts_close
+
 #define _DIAGASSERT(e)
 
 /*
@@ -1414,6 +1420,74 @@ bail:
 		(void)close(fd);
 		errno = save_errno;
 	}
+	return ret;
+}
+
+#undef fts_open
+#undef fts_read
+#undef fts_children
+#undef fts_set
+#undef fts_close
+
+FTS *fts_open(char * const *argv,
+	      int options,
+	      int (*compar)(const FTSENT **, const FTSENT **))
+{
+	FTS *ret;
+
+	ret = _fts_open(argv, options, compar);
+
+	__debug("%s(argv: '%s'..., options: %i, ...) -> %p\n", __func__,
+		argv ? argv[0] : "nil", options, ret);
+
+	return ret;
+}
+
+FTSENT *fts_read(FTS *sp)
+{
+	FTSENT *ret;
+
+	ret = _fts_read(sp);
+
+	__debug("%s(sp: %p { .fts_path: '%s' }) -> %p\n", __func__, sp,
+		sp ? sp->fts_path : "nil", ret);
+
+	return ret;
+}
+
+FTSENT *fts_children(FTS *sp, int instr)
+{
+	FTSENT *ret;
+
+	ret = _fts_children(sp, instr);
+
+	__debug("%s(sp: %p { .fts_path: '%s' }, instr: %i) -> %p\n",
+		__func__, sp, sp ? sp->fts_path : "nil", instr, ret);
+
+	return ret;
+}
+
+int fts_set(FTS *sp, FTSENT *p, int instr)
+{
+	int ret;
+
+	ret = _fts_set(sp, p, instr);
+
+	__debug("%s(sp: %p { .fts_path: '%s' }, p: %p { .fts_name: '%s' }, instr: %i) -> %i\n",
+		__func__, sp, sp ? sp->fts_path : "nil", p,
+		p ? p->fts_name : "nil", instr, ret);
+
+	return ret;
+}
+
+int fts_close(FTS *sp)
+{
+	int ret;
+
+	ret = _fts_close(sp);
+
+	__debug("%s(sp: %p') -> %i\n", __func__, sp, ret);
+
 	return ret;
 }
 #endif

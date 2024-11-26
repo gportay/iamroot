@@ -8,11 +8,20 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <sys/types.h>
 #include <sys/stat.h>
 #include <errno.h>
 
 #ifdef _LARGEFILE64_SOURCE
+#include "iamroot.h"
+
 extern int reallocarr(void *, size_t, size_t);
+
+#define fts64_open _fts64_open
+#define fts64_read _fts64_read
+#define fts64_children _fts64_children
+#define fts64_set _fts64_set
+#define fts64_close _fts64_close
 
 #define _DIAGASSERT(e)
 
@@ -1396,6 +1405,75 @@ bail:
 		(void)close(fd);
 		errno = save_errno;
 	}
+	return ret;
+}
+
+#undef fts64_open
+#undef fts64_read
+#undef fts64_children
+#undef fts64_set
+#undef fts64_close
+
+FTS64 *fts64_open(char * const *argv,
+	      int options,
+	      int (*compar)(const FTSENT64 **, const FTSENT64 **))
+{
+	FTS64 *ret;
+
+	ret = _fts64_open(argv, options, compar);
+
+	__debug("%s(argv: '%s'..., options: %i, ...) -> %p\n", __func__,
+		argv ? argv[0] : "nil", options, ret);
+
+	return ret;
+}
+
+FTSENT64 *fts64_read(FTS64 *sp)
+{
+	FTSENT64 *ret;
+
+	ret = _fts64_read(sp);
+
+	__debug("%s(sp: %p { .fts_path: '%s' }) -> %p\n", __func__, sp,
+		sp ? sp->fts_path : "nil", ret);
+
+	return ret;
+}
+
+FTSENT64 *fts64_children(FTS64 *sp, int instr)
+{
+	FTSENT64 *ret;
+
+	ret = _fts64_children(sp, instr);
+
+	__debug("%s(sp: %p { .fts_path: '%s' }, instr: %i) -> %p\n",
+		__func__, sp, sp ? sp->fts_path : "nil", instr, ret);
+
+	return ret;
+}
+
+int fts64_set(FTS64 *sp, FTSENT64 *p, int instr)
+{
+	int ret;
+
+	ret = _fts64_set(sp, p, instr);
+
+	__debug("%s(sp: %p { .fts_path: '%s' }, p: %p { .fts_name: '%s' }, instr: %i) -> %i\n",
+		__func__, sp, sp ? sp->fts_path : "nil", p,
+		p ? p->fts_name : "nil", instr, ret);
+
+	return ret;
+}
+
+int fts64_close(FTS64 *sp)
+{
+	int ret;
+
+	ret = _fts64_close(sp);
+
+	__debug("%s(sp: %p { .fts_path: '%s' }) -> %i\n", __func__, sp,
+		sp ? sp->fts_path : "nil", ret);
+
 	return ret;
 }
 #endif

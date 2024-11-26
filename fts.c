@@ -8,11 +8,16 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <sys/types.h>
 #include <sys/stat.h>
 #include <errno.h>
 
+#include "iamroot.h"
+
 int reallocarr(void *ptr, size_t m, size_t n)
 {
+	const int errno_save = errno;
+	int ret = 0;
 	void *p;
 
 	if (!ptr)
@@ -20,10 +25,11 @@ int reallocarr(void *ptr, size_t m, size_t n)
 
 	p = reallocarray(ptr, m, n);
 	if (!p)
-		return errno;
+		ret = errno;
 
-	ptr = p;
-	return 0;
+	if (ret == 0)
+		ptr = p;
+	return __set_errno(errno_save, ret);
 }
 
 #define _DIAGASSERT(e)

@@ -18,10 +18,7 @@ int reallocarr(void *ptr, size_t m, size_t n)
 	if (!ptr)
 		return EINVAL;
 
-	if (n && m > -1 / n)
-		return ENOMEM;
-
-	p = realloc(ptr, m * n);
+	p = reallocarray(ptr, m, n);
 	if (!p)
 		return errno;
 

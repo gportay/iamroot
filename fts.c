@@ -14,7 +14,7 @@
 
 #include "iamroot.h"
 
-int reallocarr(void *ptr, size_t m, size_t n)
+hidden int reallocarr(void *ptr, size_t m, size_t n)
 {
 	const int errno_save = errno;
 	int ret = 0;

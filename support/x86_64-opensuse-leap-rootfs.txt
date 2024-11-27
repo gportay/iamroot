@@ -96,6 +96,9 @@ Retrieving: glibc (openSUSE-Leap-Oss) (XXX/XXX), XXX.X MiB
 Retrieving: glibc.rpm [done]
 (XXX/XXX) Installing: glibc [done]
 warning: $ROOT/x86_64-opensuse-leap-rootfs/var/cache/zypp/packages/repo-oss/x86_64/glibc.rpm: Header V3 RSA/SHA256 Signature, key ID xxxxxxxx: NOKEY
+warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
 Retrieving: libpcre1 (openSUSE-Leap-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libpcre1.rpm [done]
 (XXX/XXX) Installing: libpcre1 [done]

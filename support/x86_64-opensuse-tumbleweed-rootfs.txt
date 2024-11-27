@@ -14,8 +14,10 @@ Reading installed packages...
 Resolving package dependencies...
 The following XXX recommended packages were automatically selected:
   aaa_base-extras augeas-lenses ca-certificates-mozilla cpio-mt cracklib-dict-full crypto-policies-scripts dirmngr dump-rmt glibc-extra glibc-gconv-modules-extra iproute2 iputils libbpf1 libldap-data libncurses6 libpcre2-8-0 login_defs logrotate lsof ncurses-utils netcfg pam-manpages pam_pwquality publicsuffix python311 python311-curses python311-dbm python311-pip terminfo-screen update-bootloader zypper-log
+The following package is suggested, but will not be installed:
+  libz1-32bit
 The following XXX NEW packages are going to be installed:
-  aaa_base aaa_base-extras alts augeas-lenses bash bash-sh boost-license1_86_0 branding-openSUSE busybox busybox-diffutils busybox-gawk busybox-grep busybox-sed busybox-xz ca-certificates ca-certificates-mozilla compat-usrmerge-tools coreutils cpio cpio-mt cracklib cracklib-dict-full crypto-policies crypto-policies-scripts dbus-1 dbus-1-common dbus-1-tools dbus-broker dbus-broker-block-restart debuginfod-client debuginfod-profile dirmngr dump-rmt filesystem fillup findutils glibc glibc-extra glibc-gconv-modules-extra gpg2 iproute2 iputils kbd krb5 libacl1 libalternatives1 libapparmor1 libassuan9 libattr1 libaudit1 libaugeas0 libblkid1 libboost_thread1_86_0 libboost_thread1_86_0-x86-64-v3 libbpf1 libbrotlicommon1 libbrotlicommon1-x86-64-v3 libbrotlidec1 libbrotlidec1-x86-64-v3 libbz2-1 libbz2-1-x86-64-v3 libcap-ng0 libcap2 libcom_err2 libcrack2 libcrypt1 libcurl4 libdbus-1-3 libdebuginfod1 libdw1 libeconf0 libelf1 libexpat1 libfa1 libfdisk1 libffi8 libgcc_s1 libgcrypt20 libgcrypt20-x86-64-v3 libgdbm6 libgdbm_compat4 libglib-2_0-0 libgmp10 libgnutls30 libgpg-error0 libgpgme11 libhogweed6 libhogweed6-x86-64-v3 libidn2-0 libjitterentropy3 libkeyutils1 libksba8 libldap-data libldap2 liblua5_4-5 liblzma5 liblzma5-x86-64-v3 libmnl0 libmount1 libmpdec3 libncurses6 libnettle8 libnettle8-x86-64-v3 libnghttp2-14 libnpth0 libnss_usrfiles2 libopenssl3 libopenssl3-x86-64-v3 libp11-kit0 libpcre2-8-0 libpkgconf5 libpopt0 libpsl5 libpwquality1 libpython3_11-1_0 libpython3_11-1_0-x86-64-v3 libreadline8 libsasl2-3 libseccomp2 libselinux1 libsepol2 libsigc-2_0-0 libsmartcols1 libsolv-tools-base libsqlite3-0 libsqlite3-0-x86-64-v3 libssh-config libssh4 libstdc++6 libsystemd0 libtasn1-6 libtirpc-netconfig libtirpc3 libudev1 libunistring5 libusb-1_0-0 libuuid1 libverto1 libxml2-2 libxtables12 libyaml-cpp0_8 libz1 libz1-x86-64-v3 libzck1 libzstd1 libzstd1-x86-64-v3 libzypp login_defs logrotate lsof ncurses-utils netcfg openSUSE-build-key openSUSE-release openSUSE-release-ftp p11-kit p11-kit-tools pam pam-config pam-extra pam-manpages pam_pwquality patterns-base-minimal_base patterns-glibc-hwcaps-x86_64_v3 permctl permissions permissions-config pinentry pkgconf pkgconf-m4 pkgconf-pkg-config publicsuffix python311 python311-base python311-base-x86-64-v3 python311-curses python311-dbm python311-pip python311-x86-64-v3 rpm rpm-config-SUSE shared-python-startup system-user-root systemd systemd-default-settings systemd-default-settings-branding-openSUSE systemd-presets-branding-openSUSE systemd-presets-common-SUSE sysuser-shadow terminfo-base terminfo-screen update-alternatives update-bootloader util-linux util-linux-systemd zypper zypper-log zypper-needs-restarting
+  aaa_base aaa_base-extras alts augeas-lenses bash bash-sh boost-license1_86_0 branding-openSUSE busybox busybox-diffutils busybox-gawk busybox-grep busybox-sed busybox-xz ca-certificates ca-certificates-mozilla compat-usrmerge-tools coreutils cpio cpio-mt cracklib cracklib-dict-full crypto-policies crypto-policies-scripts dbus-1 dbus-1-common dbus-1-tools dbus-broker dbus-broker-block-restart debuginfod-client debuginfod-profile dirmngr dump-rmt filesystem fillup findutils glibc glibc-extra glibc-gconv-modules-extra gpg2 iproute2 iputils kbd krb5 libacl1 libalternatives1 libapparmor1 libassuan9 libattr1 libaudit1 libaugeas0 libblkid1 libboost_thread1_86_0 libboost_thread1_86_0-x86-64-v3 libbpf1 libbrotlicommon1 libbrotlicommon1-x86-64-v3 libbrotlidec1 libbrotlidec1-x86-64-v3 libbz2-1 libbz2-1-x86-64-v3 libcap-ng0 libcap2 libcom_err2 libcrack2 libcrypt1 libcurl4 libdbus-1-3 libdebuginfod1 libdw1 libeconf0 libelf1 libexpat1 libfa1 libfdisk1 libffi8 libgcc_s1 libgcrypt20 libgcrypt20-x86-64-v3 libgdbm6 libgdbm_compat4 libglib-2_0-0 libgmp10 libgnutls30 libgpg-error0 libgpgme11 libhogweed6 libhogweed6-x86-64-v3 libidn2-0 libjitterentropy3 libkbdfile1 libkeymap1 libkeyutils1 libkfont0 libksba8 libldap-data libldap2 liblua5_4-5 liblzma5 liblzma5-x86-64-v3 libmnl0 libmount1 libmpdec3 libncurses6 libnettle8 libnettle8-x86-64-v3 libnghttp2-14 libnpth0 libnss_usrfiles2 libopenssl3 libopenssl3-x86-64-v3 libp11-kit0 libpcre2-8-0 libpkgconf5 libpopt0 libpsl5 libpwquality1 libpython3_11-1_0 libpython3_11-1_0-x86-64-v3 libreadline8 libsasl2-3 libseccomp2 libselinux1 libsepol2 libsigc-2_0-0 libsmartcols1 libsolv-tools-base libsqlite3-0 libsqlite3-0-x86-64-v3 libssh-config libssh4 libstdc++6 libsystemd0 libtasn1-6 libtirpc-netconfig libtirpc3 libudev1 libunistring5 libusb-1_0-0 libuuid1 libverto1 libxml2-2 libxtables12 libyaml-cpp0_8 libz1 libz1-x86-64-v3 libzck1 libzstd1 libzstd1-x86-64-v3 libzypp login_defs logrotate lsof ncurses-utils netcfg openSUSE-build-key openSUSE-release openSUSE-release-ftp p11-kit p11-kit-tools pam pam-config pam-extra pam-manpages pam_pwquality patterns-base-minimal_base patterns-glibc-hwcaps-x86_64_v3 permctl permissions permissions-config pinentry pkgconf pkgconf-m4 pkgconf-pkg-config publicsuffix python311 python311-base python311-base-x86-64-v3 python311-curses python311-dbm python311-pip python311-x86-64-v3 rpm rpm-config-SUSE shared-python-startup system-user-root systemd systemd-default-settings systemd-default-settings-branding-openSUSE systemd-presets-branding-openSUSE systemd-presets-common-SUSE sysuser-shadow terminfo-base terminfo-screen update-alternatives update-bootloader util-linux util-linux-systemd zypper zypper-log zypper-needs-restarting
 XXX new packages to install.
 Package download size:   XXX.X MiB
 Package install size change:
@@ -96,6 +98,9 @@ Retrieving: glibc (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB
 Retrieving: glibc.rpm [done]
 (XXX/XXX) Installing: glibc [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/glibc.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
 Retrieving: glibc-gconv-modules-extra (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: glibc-gconv-modules-extra.rpm [done]
 (XXX/XXX) Installing: glibc-gconv-modules-extra [done]
@@ -212,6 +217,10 @@ Retrieving: libkeyutils1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB
 Retrieving: libkeyutils1.rpm [done]
 (XXX/XXX) Installing: libkeyutils1 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libkeyutils1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+Retrieving: libkbdfile1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libkbdfile1.rpm [done]
+(XXX/XXX) Installing: libkbdfile1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libkbdfile1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 Retrieving: libjitterentropy3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libjitterentropy3.rpm [done]
 (XXX/XXX) Installing: libjitterentropy3 [done]
@@ -324,6 +333,14 @@ Retrieving: libxml2-2 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB
 Retrieving: libxml2-2.rpm [done]
 (XXX/XXX) Installing: libxml2-2 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libxml2-2.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+Retrieving: libkfont0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libkfont0.rpm [done]
+(XXX/XXX) Installing: libkfont0 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libkfont0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+Retrieving: libkeymap1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libkeymap1.rpm [done]
+(XXX/XXX) Installing: libkeymap1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libkeymap1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 Retrieving: libksba8 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libksba8.rpm [done]
 (XXX/XXX) Installing: libksba8 [done]
@@ -576,10 +593,6 @@ Retrieving: libpwquality1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB
 Retrieving: libpwquality1.rpm [done]
 (XXX/XXX) Installing: libpwquality1 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpwquality1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: update-bootloader (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: update-bootloader.rpm [done]
-(XXX/XXX) Installing: update-bootloader [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/update-bootloader.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 Retrieving: systemd-presets-common-SUSE (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: systemd-presets-common-SUSE [done]
 (XXX/XXX) Installing: systemd-presets-common-SUSE [done]
@@ -616,10 +629,6 @@ Retrieving: patterns-base-minimal_base (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.
 Retrieving: patterns-base-minimal_base.rpm [done]
 (XXX/XXX) Installing: patterns-base-minimal_base [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/patterns-base-minimal_base.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: crypto-policies (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: crypto-policies [done]
-(XXX/XXX) Installing: crypto-policies [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/crypto-policies: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 Retrieving: systemd-presets-branding-openSUSE (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: systemd-presets-branding-openSUSE [done]
 (XXX/XXX) Installing: systemd-presets-branding-openSUSE [done]
@@ -632,10 +641,6 @@ Retrieving: permissions (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB
 Retrieving: permissions.rpm [done]
 (XXX/XXX) Installing: permissions [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/permissions.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libopenssl3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
-Retrieving: libopenssl3.rpm [done]
-(XXX/XXX) Installing: libopenssl3 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libopenssl3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 Retrieving: pam (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: pam.rpm [done]
 (XXX/XXX) Installing: pam [done]
@@ -647,37 +652,17 @@ Retrieving: iputils.rpm [done]
 (XXX/XXX) Installing: iputils [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/iputils.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 FIXME: not-running /usr/bin/chkstat -n --set --system /usr/bin/clockdiff
-Retrieving: python311-base (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
-Retrieving: python311-base.rpm [done]
-(XXX/XXX) Installing: python311-base [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python311-base.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libpython3_11-1_0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
-Retrieving: libpython3_11-1_0.rpm [done]
-(XXX/XXX) Installing: libpython3_11-1_0 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpython3_11-1_0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libzck1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libzck1.rpm [done]
-(XXX/XXX) Installing: libzck1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libzck1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libopenssl3-x86-64-v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
-Retrieving: libopenssl3-x86-64-v3.rpm [done]
-(XXX/XXX) Installing: libopenssl3-x86-64-v3 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libopenssl3-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libldap2 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libldap2.rpm [done]
-(XXX/XXX) Installing: libldap2 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libldap2.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: dump-rmt (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: dump-rmt.rpm [done]
-(XXX/XXX) Installing: dump-rmt [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/dump-rmt.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-update-alternatives: using /usr/bin/ermt to provide /usr/bin/rmt (rmt) in auto mode
 Retrieving: util-linux (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: util-linux.rpm [done]
 (XXX/XXX) Installing: util-linux [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/util-linux.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-FIXME: not-running /usr/bin/chkstat -n --set --system /usr/bin/mount /usr/bin/umount
-FIXME: not-running /usr/bin/chkstat -n --set --system /usr/bin/su
+ERROR: /proc is not available - unable to fix policy violations. Will continue in warn-only mode.
+/usr/bin/mount: should be root:root 4755 (wrong permissions 0755)
+/usr/bin/umount: should be root:root 4755 (wrong permissions 0755)
+ERROR: not all operations were successful.
+ERROR: /proc is not available - unable to fix policy violations. Will continue in warn-only mode.
+/usr/bin/su: should be root:root 4755 (wrong permissions 0755)
+ERROR: not all operations were successful.
 Retrieving: pam-extra (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: pam-extra.rpm [done]
 (XXX/XXX) Installing: pam-extra [done]
@@ -688,31 +673,10 @@ Retrieving: kbd.rpm [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/kbd.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 Updating /etc/sysconfig/console ...
 Updating /etc/sysconfig/keyboard ...
-Retrieving: python311-pip (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
-Retrieving: python311-pip [done]
-(XXX/XXX) Installing: python311-pip [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/python311-pip: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: python311 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: python311.rpm [done]
-(XXX/XXX) Installing: python311 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python311.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: python311-curses (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: python311-curses.rpm [done]
-(XXX/XXX) Installing: python311-curses [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python311-curses.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libpython3_11-1_0-x86-64-v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
-Retrieving: libpython3_11-1_0-x86-64-v3.rpm [done]
-(XXX/XXX) Installing: libpython3_11-1_0-x86-64-v3 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpython3_11-1_0-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: cpio (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: cpio.rpm [done]
-(XXX/XXX) Installing: cpio [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/cpio.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: cpio-mt (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: cpio-mt.rpm [done]
-(XXX/XXX) Installing: cpio-mt [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/cpio-mt.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-update-alternatives: using /usr/bin/gnumt to provide /usr/bin/mt (mt) in auto mode
+Retrieving: update-bootloader (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: update-bootloader.rpm [done]
+(XXX/XXX) Installing: update-bootloader [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/update-bootloader.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 Retrieving: pam-config (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: pam-config.rpm [done]
 (XXX/XXX) Installing: pam-config [done]
@@ -835,14 +799,72 @@ Retrieving: pam_pwquality (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB
 Retrieving: pam_pwquality.rpm [done]
 (XXX/XXX) Installing: pam_pwquality [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/pam_pwquality.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: python311-dbm (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: python311-dbm.rpm [done]
-(XXX/XXX) Installing: python311-dbm [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python311-dbm.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+Retrieving: crypto-policies (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: crypto-policies [done]
+(XXX/XXX) Installing: crypto-policies [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/crypto-policies: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+Retrieving: libopenssl3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
+Retrieving: libopenssl3.rpm [done]
+(XXX/XXX) Installing: libopenssl3 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libopenssl3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+Retrieving: python311-base (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
+Retrieving: python311-base.rpm [done]
+(XXX/XXX) Installing: python311-base [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python311-base.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+Retrieving: libpython3_11-1_0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
+Retrieving: libpython3_11-1_0.rpm [done]
+(XXX/XXX) Installing: libpython3_11-1_0 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpython3_11-1_0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 Retrieving: logrotate (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: logrotate.rpm [done]
 (XXX/XXX) Installing: logrotate [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/logrotate.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+Retrieving: libzck1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libzck1.rpm [done]
+(XXX/XXX) Installing: libzck1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libzck1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+Retrieving: libopenssl3-x86-64-v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
+Retrieving: libopenssl3-x86-64-v3.rpm [done]
+(XXX/XXX) Installing: libopenssl3-x86-64-v3 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libopenssl3-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+Retrieving: libldap2 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libldap2.rpm [done]
+(XXX/XXX) Installing: libldap2 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libldap2.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+Retrieving: dump-rmt (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: dump-rmt.rpm [done]
+(XXX/XXX) Installing: dump-rmt [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/dump-rmt.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+update-alternatives: using /usr/bin/ermt to provide /usr/bin/rmt (rmt) in auto mode
+Retrieving: python311-pip (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
+Retrieving: python311-pip [done]
+(XXX/XXX) Installing: python311-pip [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/python311-pip: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+Retrieving: python311 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: python311.rpm [done]
+(XXX/XXX) Installing: python311 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python311.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+Retrieving: python311-curses (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: python311-curses.rpm [done]
+(XXX/XXX) Installing: python311-curses [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python311-curses.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+Retrieving: libpython3_11-1_0-x86-64-v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
+Retrieving: libpython3_11-1_0-x86-64-v3.rpm [done]
+(XXX/XXX) Installing: libpython3_11-1_0-x86-64-v3 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpython3_11-1_0-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+Retrieving: cpio (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: cpio.rpm [done]
+(XXX/XXX) Installing: cpio [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/cpio.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+Retrieving: cpio-mt (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: cpio-mt.rpm [done]
+(XXX/XXX) Installing: cpio-mt [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/cpio-mt.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+update-alternatives: using /usr/bin/gnumt to provide /usr/bin/mt (mt) in auto mode
+Retrieving: python311-dbm (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: python311-dbm.rpm [done]
+(XXX/XXX) Installing: python311-dbm [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python311-dbm.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 Retrieving: aaa_base (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: aaa_base.rpm [done]
 (XXX/XXX) Installing: aaa_base [done]
@@ -870,6 +892,12 @@ Retrieving: systemd.rpm [done]
 (XXX/XXX) Installing: systemd [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/systemd.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 Running in chroot, ignoring command 'daemon-reexec'
+warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
 Retrieving: sysuser-shadow (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: sysuser-shadow [done]
 (XXX/XXX) Installing: sysuser-shadow [done]
@@ -884,6 +912,12 @@ Creating group 'messagebus' with GID XXX.
 Creating user 'messagebus' (User for D-Bus) with UID XXX and GID XXX.
 Creating group 'systemd-coredump' with GID XXX.
 Creating user 'systemd-coredump' (systemd Core Dumper) with UID XXX and GID XXX.
+warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
 Retrieving: libdbus-1-3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libdbus-1-3.rpm [done]
 (XXX/XXX) Installing: libdbus-1-3 [done]
@@ -902,6 +936,12 @@ Retrieving: dbus-broker.rpm [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/dbus-broker.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 Created symlink '/etc/systemd/system/dbus.service' -> '/usr/lib/systemd/system/dbus-broker.service'.
 Created symlink '/etc/systemd/user/dbus.service' -> '/usr/lib/systemd/user/dbus-broker.service'.
+warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
 Retrieving: aaa_base-extras (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: aaa_base-extras.rpm [done]
 (XXX/XXX) Installing: aaa_base-extras [done]
@@ -910,10 +950,16 @@ Updating /etc/sysconfig/backup ...
 Created symlink '/etc/systemd/system/timers.target.wants/backup-rpmdb.timer' -> '/usr/lib/systemd/system/backup-rpmdb.timer'.
 Created symlink '/etc/systemd/system/timers.target.wants/backup-sysconfig.timer' -> '/usr/lib/systemd/system/backup-sysconfig.timer'.
 Created symlink '/etc/systemd/system/timers.target.wants/check-battery.timer' -> '/usr/lib/systemd/system/check-battery.timer'.
+warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
 Retrieving: dirmngr (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: dirmngr.rpm [done]
 (XXX/XXX) Installing: dirmngr [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/dirmngr.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
 Retrieving: libtirpc3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libtirpc3.rpm [done]
 (XXX/XXX) Installing: libtirpc3 [done]
@@ -931,6 +977,9 @@ Retrieving: gpg2 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB
 Retrieving: gpg2.rpm [done]
 (XXX/XXX) Installing: gpg2 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/gpg2.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
 Retrieving: lsof (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: lsof.rpm [done]
 (XXX/XXX) Installing: lsof [done]
@@ -944,6 +993,9 @@ Retrieving: util-linux-systemd.rpm [done]
 (XXX/XXX) Installing: util-linux-systemd [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/util-linux-systemd.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
 Created symlink '/etc/systemd/system/timers.target.wants/fstrim.timer' -> '/usr/lib/systemd/system/fstrim.timer'.
+warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
 Retrieving: libgpgme11 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libgpgme11.rpm [done]
 (XXX/XXX) Installing: libgpgme11 [done]

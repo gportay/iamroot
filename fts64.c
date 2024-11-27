@@ -1471,8 +1471,7 @@ int fts64_close(FTS64 *sp)
 
 	ret = _fts64_close(sp);
 
-	__debug("%s(sp: %p { .fts_path: '%s' }) -> %i\n", __func__, sp,
-		sp ? sp->fts_path : "nil", ret);
+	__debug("%s(sp: %p') -> %i\n", __func__, sp, ret);
 
 	return ret;
 }

@@ -813,8 +813,6 @@ pam-libs: configuring ...
 pam-libs: installed successCreated _uuidd system group.
 Created _uuidd system user.
 Regenerating man db...
-realloc(): invalid pointer
-Aborted (core dumped)
 Created _dhcpcd system group.
 Created _dhcpcd system user.
 fully.

@@ -51,6 +51,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 
 - Fix the `ido(1)`'s PATH for [NetBSD]
+- Fix the abnormal termination condition on Linux due to an invalid pointer in
+  memory reallocation in function `fts_sort()`
 
 ## [v23] - 2024-06-25
 

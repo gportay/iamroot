@@ -14,23 +14,7 @@
 
 #include "iamroot.h"
 
-hidden int reallocarr(void *ptr, size_t m, size_t n)
-{
-	const int errno_save = errno;
-	int ret = 0;
-	void *p;
-
-	if (!ptr)
-		return EINVAL;
-
-	p = reallocarray(ptr, m, n);
-	if (!p)
-		ret = errno;
-
-	if (ret == 0)
-		ptr = p;
-	return __set_errno(errno_save, ret);
-}
+extern int reallocarr(void *, size_t, size_t);
 
 #define fts_open _fts_open
 #define fts_read _fts_read

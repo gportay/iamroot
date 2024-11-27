@@ -329,8 +329,6 @@ Running transaction
   Installing       : dnf-data XXX/XXX
   Installing       : kbd-misc XXX/XXX
   Installing       : kbd-legacy XXX/XXX
-  Installing       : geolite2-country XXX/XXX
-  Installing       : geolite2-city XXX/XXX
   Installing       : firewalld-filesystem XXX/XXX
   Installing       : fedora-gpg-keys XXX/XXX
   Installing       : fedora-release XXX/XXX
@@ -348,13 +346,19 @@ Running transaction
   Running scriptlet: glibc XXX/XXX
   Installing       : glibc XXX/XXX
   Running scriptlet: glibc XXX/XXX
+warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+ 
   Installing       : bash XXX/XXX
   Running scriptlet: bash XXX/XXX
   Installing       : libsepol XXX/XXX
   Running scriptlet: libsepol XXX/XXX
   Installing       : zlib XXX/XXX
   Installing       : libxcrypt XXX/XXX
-  Installing       : mkpasswd XXX/XXX
   Installing       : xz-libs XXX/XXX
   Installing       : bzip2-libs XXX/XXX
   Installing       : popt XXX/XXX
@@ -400,11 +404,10 @@ Running transaction
   Installing       : libidn2 XXX/XXX
   Installing       : lz4-libs XXX/XXX
   Installing       : libpsl XXX/XXX
+  Installing       : iproute XXX/XXX
   Installing       : libksba XXX/XXX
-  Installing       : libxcrypt-compat XXX/XXX
   Installing       : file-libs XXX/XXX
   Installing       : cpio XXX/XXX
-  Installing       : diffutils XXX/XXX
   Installing       : gdbm-libs XXX/XXX
   Installing       : jansson XXX/XXX
   Installing       : json-c XXX/XXX
@@ -435,17 +438,19 @@ Running transaction
   Installing       : libdb-utils XXX/XXX
   Installing       : e2fsprogs-libs XXX/XXX
   Installing       : libss XXX/XXX
-  Installing       : pigz XXX/XXX
   Installing       : libselinux-utils XXX/XXX
+  Installing       : elfutils-default-yama-scope XXX/XXX
+  Running scriptlet: elfutils-default-yama-scope XXX/XXX
+  Installing       : elfutils-libs XXX/XXX
   Installing       : less XXX/XXX
   Installing       : brotli XXX/XXX
   Installing       : c-ares XXX/XXX
+  Installing       : diffutils XXX/XXX
   Installing       : fuse-libs XXX/XXX
+  Installing       : ipcalc XXX/XXX
   Installing       : libargon2 XXX/XXX
   Installing       : libedit XXX/XXX
   Installing       : libgomp XXX/XXX
-  Installing       : libmaxminddb XXX/XXX
-  Installing       : ipcalc XXX/XXX
   Installing       : libndp XXX/XXX
   Installing       : libnfnetlink XXX/XXX
   Installing       : libnetfilter_conntrack XXX/XXX
@@ -463,34 +468,24 @@ Running transaction
   Installing       : libseccomp XXX/XXX
   Installing       : libsigsegv XXX/XXX
   Installing       : gawk XXX/XXX
-  Installing       : libsss_autofs XXX/XXX
   Installing       : libsss_nss_idmap XXX/XXX
-  Installing       : libsss_sudo XXX/XXX
   Installing       : libverto XXX/XXX
-  Installing       : libxkbcommon XXX/XXX
   Installing       : libyaml XXX/XXX
   Installing       : linux-atm-libs XXX/XXX
-  Installing       : iproute XXX/XXX
-  Installing       : iproute-tc XXX/XXX
   Installing       : lmdb-libs XXX/XXX
   Installing       : ncurses XXX/XXX
   Installing       : npth XXX/XXX
   Installing       : qrencode-libs XXX/XXX
   Installing       : dhcp-common XXX/XXX
   Installing       : coreutils-common XXX/XXX
-  Installing       : openssl XXX/XXX
   Installing       : krb5-libs XXX/XXX
   Installing       : libtirpc XXX/XXX
   Installing       : libnsl2 XXX/XXX
   Installing       : python-pip-wheel XXX/XXX
-  Installing       : openssl-pkcs11 XXX/XXX
-  Installing       : python-unversioned-command XXX/XXX
-  Installing       : python3-pip XXX/XXX
-  Installing       : python3-setuptools XXX/XXX
-  Installing       : python3-libs XXX/XXX
-  Installing       : python3 XXX/XXX
   Installing       : openssl-libs XXX/XXX
   Installing       : coreutils XXX/XXX
+  Installing       : python3-libs XXX/XXX
+  Installing       : python3 XXX/XXX
   Installing       : crypto-policies XXX/XXX
   Running scriptlet: ca-certificates XXX/XXX
   Installing       : ca-certificates XXX/XXX
@@ -500,59 +495,47 @@ Running transaction
   Installing       : libblkid XXX/XXX
   Running scriptlet: libblkid XXX/XXX
   Installing       : dbus-libs XXX/XXX
+  Installing       : gnutls XXX/XXX
   Installing       : gzip XXX/XXX
   Installing       : cracklib XXX/XXX
   Installing       : libmount XXX/XXX
-  Installing       : shared-mime-info XXX/XXX
-  Running scriptlet: shared-mime-info XXX/XXX
   Installing       : glib2 XXX/XXX
-  Installing       : python3-dbus XXX/XXX
   Installing       : kmod-libs XXX/XXX
   Installing       : libmodulemd1 XXX/XXX
-  Installing       : cracklib-dicts XXX/XXX
+  Installing       : python3-dbus XXX/XXX
   Installing       : procps-ng XXX/XXX
+  Installing       : python3-decorator XXX/XXX
+  Installing       : python3-setuptools XXX/XXX
+  Installing       : python3-six XXX/XXX
+  Installing       : openssl XXX/XXX
   Installing       : kmod XXX/XXX
   Installing       : libevent XXX/XXX
   Installing       : libsss_certmap XXX/XXX
   Installing       : zchunk-libs XXX/XXX
-  Installing       : python3-decorator XXX/XXX
-  Installing       : python3-six XXX/XXX
-  Installing       : python3-dateutil XXX/XXX
   Running scriptlet: unbound-libs XXX/XXX
   Installing       : unbound-libs XXX/XXX
   Running scriptlet: unbound-libs XXX/XXX
-  Installing       : python3-unbound XXX/XXX
-  Installing       : libpwquality XXX/XXX
-  Installing       : pam XXX/XXX
-  Installing       : kbd XXX/XXX
-  Installing       : sssd-client XXX/XXX
-  Running scriptlet: sssd-client XXX/XXX
+  Installing       : tss2 XXX/XXX
+  Installing       : ima-evm-utils XXX/XXX
+  Installing       : python3-dateutil XXX/XXX
+  Installing       : python3-distro XXX/XXX
+  Installing       : NetworkManager-libnm XXX/XXX
   Installing       : gobject-introspection XXX/XXX
   Installing       : python3-gobject-base XXX/XXX
   Installing       : libsecret XXX/XXX
-  Installing       : pinentry XXX/XXX
   Installing       : polkit-libs XXX/XXX
+  Installing       : libpwquality XXX/XXX
+  Installing       : pam XXX/XXX
+  Installing       : sssd-client XXX/XXX
+  Running scriptlet: sssd-client XXX/XXX
   Installing       : libfdisk XXX/XXX
   Installing       : util-linux XXX/XXX
   Running scriptlet: util-linux XXX/XXX
-  Installing       : libusbx XXX/XXX
-  Installing       : plymouth-core-libs XXX/XXX
-  Installing       : libssh XXX/XXX
-  Installing       : fipscheck-lib XXX/XXX
-  Installing       : fipscheck XXX/XXX
-  Running scriptlet: openssh XXX/XXX
-  Installing       : openssh XXX/XXX
-  Installing       : libarchive XXX/XXX
-  Installing       : trousers-lib XXX/XXX
   Installing       : device-mapper XXX/XXX
   Installing       : device-mapper-libs XXX/XXX
   Installing       : cryptsetup-libs XXX/XXX
-  Installing       : elfutils-default-yama-scope XXX/XXX
-  Running scriptlet: elfutils-default-yama-scope XXX/XXX
-  Installing       : elfutils-libs XXX/XXX
   Installing       : dbus XXX/XXX
   Installing       : systemd-pam XXX/XXX
-  Installing       : gnutls XXX/XXX
   Running scriptlet: systemd XXX/XXX
   Installing       : systemd XXX/XXX
   Running scriptlet: systemd XXX/XXX
@@ -569,9 +552,6 @@ Failed to get unit file state for dbus-daemon.service: No such file or directory
 Failed to disable unit, unit dbus-daemon.service does not exist.
 Failed to disable unit, unit dbus-daemon.service does not exist.
 
-  Running scriptlet: trousers XXX/XXX
-  Installing       : trousers XXX/XXX
-  Running scriptlet: trousers XXX/XXX
   Installing       : initscripts XXX/XXX
   Running scriptlet: initscripts XXX/XXX
 Created symlink /etc/systemd/system/sysinit.target.wants/import-state.service → /usr/lib/systemd/system/import-state.service.
@@ -580,34 +560,38 @@ Created symlink /etc/systemd/system/sysinit.target.wants/import-state.service �
   Running scriptlet: iputils XXX/XXX
   Installing       : libkcapi XXX/XXX
   Installing       : libkcapi-hmaccalc XXX/XXX
-  Installing       : systemd-bootchart XXX/XXX
-  Running scriptlet: systemd-bootchart XXX/XXX
   Running scriptlet: systemd-udev XXX/XXX
   Installing       : systemd-udev XXX/XXX
   Running scriptlet: systemd-udev XXX/XXX
 Failed to open /dev/urandom: No such file or directory
 
-  Installing       : NetworkManager-libnm XXX/XXX
-  Installing       : kpartx XXX/XXX
   Installing       : dracut XXX/XXX
+  Installing       : libusbx XXX/XXX
+  Installing       : plymouth-core-libs XXX/XXX
   Installing       : plymouth XXX/XXX
   Installing       : plymouth-scripts XXX/XXX
-  Installing       : tss2 XXX/XXX
-  Installing       : ima-evm-utils XXX/XXX
-  Installing       : python3-distro XXX/XXX
   Installing       : python3-libcomps XXX/XXX
   Installing       : python3-libselinux XXX/XXX
   Installing       : python3-slip XXX/XXX
   Installing       : python3-slip-dbus XXX/XXX
   Installing       : python3-firewall XXX/XXX
-  Installing       : vim-minimal XXX/XXX
+  Installing       : fipscheck-lib XXX/XXX
+  Installing       : fipscheck XXX/XXX
+  Running scriptlet: openssh XXX/XXX
+  Installing       : openssh XXX/XXX
+  Installing       : libarchive XXX/XXX
+  Installing       : libssh XXX/XXX
+  Installing       : trousers-lib XXX/XXX
   Installing       : cyrus-sasl-lib XXX/XXX
   Installing       : openldap XXX/XXX
-  Installing       : gnupg2-smime XXX/XXX
   Installing       : gnupg2 XXX/XXX
   Installing       : gpgme XXX/XXX
   Installing       : libcurl XXX/XXX
   Installing       : libldb XXX/XXX
+  Installing       : sssd-common XXX/XXX
+  Running scriptlet: sssd-common XXX/XXX
+Created symlink /etc/systemd/system/multi-user.target.wants/sssd.service → /usr/lib/systemd/system/sssd.service.
+
   Installing       : curl XXX/XXX
   Installing       : rpm XXX/XXX
   Installing       : rpm-libs XXX/XXX
@@ -622,9 +606,7 @@ Created symlink /etc/systemd/system/sysinit.target.wants/selinux-autorelabel-mar
   Running scriptlet: selinux-policy-targeted XXX/XXX
   Installing       : selinux-policy-targeted XXX/XXX
   Running scriptlet: selinux-policy-targeted XXX/XXX
-  Installing       : deltarpm XXX/XXX
   Installing       : rpm-build-libs XXX/XXX
-  Installing       : rpm-plugin-systemd-inhibit XXX/XXX
   Installing       : rpm-sign-libs XXX/XXX
   Installing       : python3-rpm XXX/XXX
   Installing       : librepo XXX/XXX
@@ -639,19 +621,17 @@ Created symlink /etc/systemd/system/multi-user.target.wants/dnf-makecache.timer 
 
   Installing       : python3-dnf-plugins-core XXX/XXX
   Installing       : libnfsidmap XXX/XXX
-  Installing       : sssd-nfs-idmap XXX/XXX
-  Installing       : sssd-common XXX/XXX
-  Running scriptlet: sssd-common XXX/XXX
-Created symlink /etc/systemd/system/multi-user.target.wants/sssd.service → /usr/lib/systemd/system/sssd.service.
-
   Installing       : libuser XXX/XXX
   Installing       : passwd XXX/XXX
+  Installing       : sssd-nfs-idmap XXX/XXX
+  Installing       : dnf-plugins-core XXX/XXX
+  Installing       : yum XXX/XXX
+  Installing       : deltarpm XXX/XXX
+  Installing       : rpm-plugin-systemd-inhibit XXX/XXX
   Installing       : sssd-kcm XXX/XXX
   Running scriptlet: sssd-kcm XXX/XXX
 Created symlink /etc/systemd/system/sockets.target.wants/sssd-kcm.socket → /usr/lib/systemd/system/sssd-kcm.socket.
 
-  Installing       : dnf-plugins-core XXX/XXX
-  Installing       : yum XXX/XXX
   Running scriptlet: NetworkManager XXX/XXX
   Installing       : NetworkManager XXX/XXX
   Running scriptlet: NetworkManager XXX/XXX
@@ -661,8 +641,18 @@ Created symlink /etc/systemd/system/multi-user.target.wants/NetworkManager.servi
 Created symlink /etc/systemd/system/dbus-org.freedesktop.nm-dispatcher.service → /usr/lib/systemd/system/NetworkManager-dispatcher.service.
 Created symlink /etc/systemd/system/network-online.target.wants/NetworkManager-wait-online.service → /usr/lib/systemd/system/NetworkManager-wait-online.service.
 
+  Installing       : gnupg2-smime XXX/XXX
   Installing       : sudo XXX/XXX
   Running scriptlet: sudo XXX/XXX
+  Running scriptlet: trousers XXX/XXX
+  Installing       : trousers XXX/XXX
+  Running scriptlet: trousers XXX/XXX
+  Installing       : openssh-clients XXX/XXX
+  Running scriptlet: openssh-server XXX/XXX
+  Installing       : openssh-server XXX/XXX
+  Running scriptlet: openssh-server XXX/XXX
+Created symlink /etc/systemd/system/multi-user.target.wants/sshd.service → /usr/lib/systemd/system/sshd.service.
+
   Installing       : firewalld XXX/XXX
   Running scriptlet: firewalld XXX/XXX
 Created symlink /etc/systemd/system/dbus-org.fedoraproject.FirewallD1.service → /usr/lib/systemd/system/firewalld.service.
@@ -674,29 +664,47 @@ Created symlink /etc/systemd/system/multi-user.target.wants/firewalld.service �
   Running scriptlet: audit XXX/XXX
 Created symlink /etc/systemd/system/multi-user.target.wants/auditd.service → /usr/lib/systemd/system/auditd.service.
 
-  Running scriptlet: openssh-server XXX/XXX
-  Installing       : openssh-server XXX/XXX
-  Running scriptlet: openssh-server XXX/XXX
-Created symlink /etc/systemd/system/multi-user.target.wants/sshd.service → /usr/lib/systemd/system/sshd.service.
-
+  Installing       : systemd-bootchart XXX/XXX
+  Running scriptlet: systemd-bootchart XXX/XXX
+  Installing       : kpartx XXX/XXX
   Installing       : parted XXX/XXX
-  Installing       : openssh-clients XXX/XXX
+  Installing       : kbd XXX/XXX
+  Installing       : pinentry XXX/XXX
+  Installing       : python3-unbound XXX/XXX
+  Installing       : openssl-pkcs11 XXX/XXX
+  Installing       : python3-pip XXX/XXX
+  Installing       : shared-mime-info XXX/XXX
+  Running scriptlet: shared-mime-info XXX/XXX
+  Installing       : cracklib-dicts XXX/XXX
   Running scriptlet: man-db XXX/XXX
   Installing       : man-db XXX/XXX
   Running scriptlet: man-db XXX/XXX
   Installing       : e2fsprogs XXX/XXX
+  Installing       : python-unversioned-command XXX/XXX
+  Installing       : vim-minimal XXX/XXX
+  Installing       : iproute-tc XXX/XXX
+  Installing       : libxcrypt-compat XXX/XXX
+  Installing       : mkpasswd XXX/XXX
+  Installing       : pigz XXX/XXX
   Installing       : hostname XXX/XXX
   Running scriptlet: hostname XXX/XXX
+  Installing       : libmaxminddb XXX/XXX
+  Installing       : libsss_autofs XXX/XXX
+  Installing       : libsss_sudo XXX/XXX
+  Installing       : libxkbcommon XXX/XXX
   Installing       : rootfiles XXX/XXX
+  Installing       : geolite2-country XXX/XXX
+  Installing       : geolite2-city XXX/XXX
   Running scriptlet: filesystem XXX/XXX
   Running scriptlet: glibc-all-langpacks XXX/XXX
   Running scriptlet: crypto-policies XXX/XXX
-  Running scriptlet: selinux-policy-targeted XXX/XXX
   Running scriptlet: sssd-common XXX/XXX
 Running in chroot, ignoring request: try-restart
 
+  Running scriptlet: selinux-policy-targeted XXX/XXX
   Running scriptlet: firewalld XXX/XXX
   Running scriptlet: rootfiles XXX/XXX
+  Running scriptlet: geolite2-city XXX/XXX
 
 Installed:
   NetworkManager

@@ -209,7 +209,7 @@ fi
 echo
 
 run "libiamroot.so: test fts traverses a file hierarchy (in-chroot)"
-if env-root test-fts / 0x10 | tee /dev/stderr | grep -qv "^$PWD"
+if ! env-root test-fts / 0x10 | tee /dev/stderr | grep -q "^$PWD/rootfs"
 then
 	ok
 else

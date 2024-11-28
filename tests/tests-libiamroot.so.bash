@@ -193,6 +193,24 @@ env-host() {
 	    "$@"
 }
 
+run "libiamroot.so: test fts traverses a file hierarchy"
+if ! env-host test-fts rootfs 0x10 | tee /dev/stderr | grep -qv "^rootfs"
+then
+	ok
+else
+	ko
+fi
+echo
+
+run "libiamroot.so: test fts traverses a file hierarchy (in-chroot)"
+if env-root test-fts / 0x10 | tee /dev/stderr | grep -qv "^$PWD"
+then
+	ok
+else
+	ko
+fi
+echo
+
 run "libiamroot.so: test path_resolution() looks up absolute path normally"
 if env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
             test-path_resolution - "$PWD/rootfs/usr/bin/test-path_resolution" | tee /dev/stderr | grep -q "^$PWD/rootfs/usr/bin/test-path_resolution$"

@@ -176,7 +176,7 @@ export -n IAMROOT_EXEC_IGNORE
 export -n IAMROOT_PATH_RESOLUTION_IGNORE
 
 OS="$(uname -o 2>/dev/null || uname -s 2>/dev/null)"
-XATTR="$(command -v getfattr >/dev/null 2>&1 && echo 1)"
+XATTR="$(command -v getfattr >/dev/null 2>&1 && echo 1 || echo 0)"
 PROCFS="$(test -d /proc/1 && ! test -r /proc/1/root && echo 1)"
 
 env-root() {

@@ -179,6 +179,12 @@ OS="$(uname -o 2>/dev/null || uname -s 2>/dev/null)"
 XATTR="$(command -v getfattr >/dev/null 2>&1 && echo 1 || echo 0)"
 PROCFS="$(test -d /proc/1 && ! test -r /proc/1/root && echo 1 || echo 0)"
 
+case "$OS" in
+OpenBSD)        AT_SYMLINK_NOFOLLOW=0x02;;
+FreeBSD|NetBSD) AT_SYMLINK_NOFOLLOW=0x200;;
+*Linux|*)       AT_SYMLINK_NOFOLLOW=0x100;;
+esac
+
 env-root() {
 	( cd rootfs/ && env-host "PATH=$PWD/usr/bin" \
 	                         "LD_LIBRARY_PATH=$PWD/usr/lib" \
@@ -345,7 +351,7 @@ echo
 run "libiamroot.so: test path_resolution() does not follow the final symbolic link if AT_SYMLINK_NOFOLLOW"
 if rm -f rootfs/tmp/final-symbolic-link && ln -sf . rootfs/tmp/final-symbolic-link
    env-host "LD_LIBRARY_PATH=$PWD/rootfs/usr/lib:$PWD/rootfs/usr/local/lib" \
-            test-path_resolution - "$PWD/rootfs/tmp/final-symbolic-link" 0x100 | tee /dev/stderr | grep -q "^$PWD/rootfs/tmp/final-symbolic-link"
+            test-path_resolution - "$PWD/rootfs/tmp/final-symbolic-link" "$AT_SYMLINK_NOFOLLOW" | tee /dev/stderr | grep -q "^$PWD/rootfs/tmp/final-symbolic-link"
 then
 	ok
 else

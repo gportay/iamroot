@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2024 Gaël PORTAY
+# Copyright 2024-2025 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -176,6 +176,15 @@ export -n IAMROOT_EXEC_IGNORE
 export -n IAMROOT_PATH_RESOLUTION_IGNORE
 
 OS="$(shell uname -o 2>/dev/null || uname -s 2>/dev/null)"
+groups=(0)
+for i in "${GROUPS[@]}"
+do
+	if [ "$i" -eq "${groups[0]}" ]
+	then
+		continue
+	fi
+	groups+=("$i")
+done
 
 run "ido: test without argument"
 if ! ido
@@ -357,26 +366,14 @@ else
 fi
 echo
 
-if [[ "$UID" -eq 0 ]]
+run "ido: test option -P preserves group vector ${groups[*]}"
+if ( export SHELL=bash && ido -P -s <<<'echo "GROUPS=${GROUPS[*]}"' | tee /dev/stderr | grep "^GROUPS=${groups[*]}$" )
 then
-	run "ido: test option -P preserves group vector ${GROUPS[*]}"
-	if ( export SHELL=bash && ido -P -s <<<'echo "GROUPS=${GROUPS[*]}"' | tee /dev/stderr | grep -q "^GROUPS=${GROUPS[*]}$" )
-	then
-		ok
-	else
-		ko
-	fi
-	echo
+	ok
 else
-	run "ido: test option -P preserves group vector 0 ${GROUPS[*]}"
-	if ( export SHELL=bash && ido -P -s <<<'echo "GROUPS=${GROUPS[*]}"' | tee /dev/stderr | grep -q "^GROUPS=0 ${GROUPS[*]}$" )
-	then
-		ok
-	else
-		ko
-	fi
-	echo
+	ko
 fi
+echo
 
 run "ido: test option --preserve-groups preserves group vector ${GROUPS[*]}"
 if ( export SHELL=bash && ido --user="$USER" --preserve-groups --shell <<<'echo "GROUPS=${GROUPS[*]}"' | tee /dev/stderr | grep -q "GROUPS=${GROUPS[*]}" )

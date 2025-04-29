@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2023-2024 Gaël PORTAY
+# Copyright 2023-2025 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -424,7 +424,12 @@ fi
 
 if ! ish="$(command -v ish 2>/dev/null)"
 then
-	ish="/usr/local/bin/ish"
+	if uname -s | grep -q NetBSD
+	then
+		ish="/usr/pkg/bin/ish"
+	else
+		ish="/usr/local/bin/ish"
+	fi
 fi
 
 command_env+=("$ish")

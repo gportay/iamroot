@@ -356,7 +356,7 @@ then
 	exit 1
 fi
 
-groups="${group[2]}"
+groups=("${group[2]}")
 shell="${passwd[6]}"
 
 if [[ "$opt_D" ]]
@@ -377,7 +377,7 @@ fi
 
 if [[ "${opt_P:-0}" -eq 1 ]]
 then
-	groups="${GROUPS[*]}"
+	groups=("${GROUPS[@]}")
 fi
 
 if [[ "$opt_R" ]]

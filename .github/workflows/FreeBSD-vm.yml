@@ -10,7 +10,7 @@ jobs:
       id: test
       uses: vmactions/freebsd-vm@v1
       with:
-        release: 14.0
+        release: "14.0"
         usesh: true
         prepare: |
           pkg install -y bash

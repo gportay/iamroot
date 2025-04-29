@@ -377,7 +377,14 @@ fi
 
 if [[ "${opt_P:-0}" -eq 1 ]]
 then
-	groups=("${GROUPS[@]}")
+	for i in "${GROUPS[@]}"
+	do
+		if [ "$i" -eq "${groups[0]}" ]
+		then
+			continue
+		fi
+		groups+=("$i")
+	done
 fi
 
 if [[ "$opt_R" ]]

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2024 Gaël PORTAY
+ * Copyright 2022-2025 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -80,8 +80,9 @@ hidden int next___libc_start_main(int argc,
 	return sym(argc, argv, ev, auxvec, rtld_fini, stinfo, stack_on_entry);
 }
 #else
-static int (*sym)(int (*)(), int, char **, int (*)(int, char **, char **),
-		  void (*)(), void(*)(), void(*)());
+static int (*sym)(int (*)(int, char **, char **), int, char **,
+		  int (*)(int, char **, char **), void (*)(),
+		  void(*)(), void(*)());
 
 hidden int next___libc_start_main(int (*main)(int, char **, char **),
 				  int argc,

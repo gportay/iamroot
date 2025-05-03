@@ -52,6 +52,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix the `ido(1)`'s PATH and absolute path to `ish(1)` for [NetBSD]
 - Fix the abnormal termination condition on Linux due to an invalid pointer in
   memory reallocation in function `fts_sort()`
+- Fix the missing symbol `__aeabi_uidiv` by `patchelf`'ing the shared object
+  `libgcc_s.so.1` for 32-bit ARM [glibc]
 
 ## [v23] - 2024-06-25
 

@@ -13,11 +13,14 @@ Executing alpine-baselayout.post-install
 (X/X) Installing libssl3
 (X/X) Installing ssl_client
 (X/X) Installing zlib
+(X/X) Installing libapk2
 (X/X) Installing apk-tools
 (X/X) Installing busybox-suid
 (X/X) Installing scanelf
 (X/X) Installing musl-utils
+(X/X) Installing bridge
 (X/X) Installing ifupdown-ng
+(X/X) Installing openrc-user
 (X/X) Installing libcap2
 (X/X) Installing openrc
 Executing openrc.post-install

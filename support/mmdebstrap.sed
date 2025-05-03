@@ -91,6 +91,14 @@
 	/^[[:lower:][:digit:]+.-]\+ is already the newest version/ {
 		s,(\([[:digit:]]\+:[[:alnum:].+~%-]\+\|[[:alnum:].+~%-]\+\)),(XXX),
 	}
+
+	# Warning: $ROOT/rootfs/tmp/mmdebstrap.apt.conf.XXXXXXXXXXXX: contains root directory '$ROOT/rootfs'
+	# Warning: $ROOT/rootfs/var/cache/apt/srcpkgcache.bin.XXXXXX: contains root directory '$ROOT/rootfs'
+	# Warning: $ROOT/rootfs/var/cache/apt/pkgcache.bin.XXXXXX: contains root directory '$ROOT/rootfs'
+	/Warning: .\+\(\/tmp\/mmdebstrap\.apt\.conf\|\/var\/cache\/apt\/srcpkgcache\.bin\|\/var\/cache\/apt\/pkgcache\.bin\)\.[[:alnum:]_]\{6,12\}: contains root directory '.\+'/ {
+		s,\.[[:alnum:]_]\{12\,12\}: contains root directory,.XXXXXXXXXXXX: contains root directory,
+		s,\.[[:alnum:]_]\{6\,6\}: contains root directory,.XXXXXX: contains root directory,
+	}
 }
 
 # Creating group 'bin' with GID XXX.

@@ -2258,6 +2258,10 @@ legacy-log: amd64-debian-stretch-rootfs.log
 legacy-log: amd64-debian-buster-rootfs.log
 legacy-log: amd64-debian-bullseye-rootfs.log
 
+oldstable-support: support/amd64-debian-stretch-rootfs.txt
+oldstable-support: support/amd64-debian-buster-rootfs.txt
+oldstable-support: support/amd64-debian-bullseye-rootfs.txt
+
 stable-support: support/amd64-debian-bookworm-rootfs.txt
 stable-log: amd64-debian-bookworm-rootfs.log
 

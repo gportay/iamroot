@@ -1187,9 +1187,10 @@ fedora-rootfs: x86_64-fedora-38-rootfs
 fedora-rootfs: x86_64-fedora-39-rootfs
 fedora-rootfs: x86_64-fedora-40-rootfs
 fedora-rootfs: x86_64-fedora-41-rootfs
+fedora-rootfs: x86_64-fedora-42-rootfs
 fedora-rootfs: x86_64-fedora-rawhide-rootfs
 
-stable-rootfs: x86_64-fedora-41-rootfs
+stable-rootfs: x86_64-fedora-42-rootfs
 unstable-rootfs: x86_64-fedora-rawhide-rootfs
 
 x86_64-fedora-20-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
@@ -1216,6 +1217,7 @@ $(eval $(call dnf-rootfs,x86_64,fedora,38,Minimal Install))
 $(eval $(call dnf-rootfs,x86_64,fedora,39,Minimal Install))
 $(eval $(call dnf-rootfs,x86_64,fedora,40,Minimal Install))
 $(eval $(call dnf-rootfs,x86_64,fedora,41,Fedora Custom Operating System))
+$(eval $(call dnf-rootfs,x86_64,fedora,42,Fedora Custom Operating System))
 $(eval $(call dnf-rootfs,x86_64,fedora,rawhide,Fedora Custom Operating System))
 
 install-support-x86_64: install-support-x86_64-fedora
@@ -1854,6 +1856,7 @@ aarch64-fedora-rootfs: aarch64-fedora-38-rootfs
 aarch64-fedora-rootfs: aarch64-fedora-39-rootfs
 aarch64-fedora-rootfs: aarch64-fedora-40-rootfs
 aarch64-fedora-rootfs: aarch64-fedora-41-rootfs
+aarch64-fedora-rootfs: aarch64-fedora-42-rootfs
 aarch64-fedora-rootfs: aarch64-fedora-rawhide-rootfs
 
 aarch64-fedora-33-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
@@ -1871,6 +1874,7 @@ $(eval $(call dnf-rootfs,aarch64,fedora,38,Minimal Install))
 $(eval $(call dnf-rootfs,aarch64,fedora,39,Minimal Install))
 $(eval $(call dnf-rootfs,aarch64,fedora,40,Minimal Install))
 $(eval $(call dnf-rootfs,aarch64,fedora,41,Fedora Custom Operating System))
+$(eval $(call dnf-rootfs,aarch64,fedora,42,Fedora Custom Operating System))
 $(eval $(call dnf-rootfs,aarch64,fedora,rawhide,Fedora Custom Operating System))
 endif
 
@@ -2440,6 +2444,7 @@ fedora-support: support/x86_64-fedora-38-rootfs.txt
 fedora-support: support/x86_64-fedora-39-rootfs.txt
 fedora-support: support/x86_64-fedora-40-rootfs.txt
 fedora-support: support/x86_64-fedora-41-rootfs.txt
+fedora-support: support/x86_64-fedora-42-rootfs.txt
 fedora-support: support/x86_64-fedora-rawhide-rootfs.txt
 
 log: fedora-log
@@ -2458,6 +2463,7 @@ fedora-log: x86_64-fedora-38-rootfs.log
 fedora-log: x86_64-fedora-39-rootfs.log
 fedora-log: x86_64-fedora-40-rootfs.log
 fedora-log: x86_64-fedora-41-rootfs.log
+fedora-log: x86_64-fedora-42-rootfs.log
 fedora-log: x86_64-fedora-rawhide-rootfs.log
 endif
 

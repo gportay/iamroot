@@ -1,5 +1,5 @@
 #
-# Copyright 2021-2024 Gaël PORTAY
+# Copyright 2021-2025 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -1710,6 +1710,14 @@ armhf-mobian-bookworm-rootfs/bin/sh: export MMDEBSTRAPFLAGS ?= --hook-dir=/usr/s
 armhf-mobian-trixie-rootfs/bin/sh: export MMDEBSTRAPFLAGS ?= --hook-dir=/usr/share/mmdebstrap/hooks/maybe-merged-usr
 $(eval $(call mmdebstrap-rootfs,armhf,mobian,bookworm))
 $(eval $(call mmdebstrap-rootfs,armhf,mobian,trixie))
+
+arm-rootfs: armhf-raspbian-rootfs
+
+.PHONY: armhf-raspbian-rootfs
+armhf-raspbian-rootfs: armhf-raspbian-bookworm-rootfs
+
+armhf-raspbian-bookworm-rootfs/bin/sh: export MMDEBSTRAPFLAGS ?= --hook-dir=/usr/share/mmdebstrap/hooks/maybe-merged-usr
+$(eval $(call mmdebstrap-rootfs,armhf,raspbian,bookworm))
 endif
 
 ifneq ($(shell command -v aarch64-buildroot-linux-gnu-gcc 2>/dev/null),)
@@ -1723,6 +1731,14 @@ arm64-mobian-bookworm-rootfs/bin/sh: export MMDEBSTRAPFLAGS ?= --hook-dir=/usr/s
 arm64-mobian-trixie-rootfs/bin/sh: export MMDEBSTRAPFLAGS ?= --hook-dir=/usr/share/mmdebstrap/hooks/maybe-merged-usr
 $(eval $(call mmdebstrap-rootfs,arm64,mobian,bookworm))
 $(eval $(call mmdebstrap-rootfs,arm64,mobian,trixie))
+
+arm-rootfs: arm64-raspbian-rootfs
+
+.PHONY: arm64-raspbian-rootfs
+arm64-raspbian-rootfs: arm64-raspbian-bookworm-rootfs
+
+arm64-raspbian-bookworm-rootfs/bin/sh: export MMDEBSTRAPFLAGS ?= --hook-dir=/usr/share/mmdebstrap/hooks/maybe-merged-usr
+$(eval $(call mmdebstrap-rootfs,arm64,raspbian,bookworm))
 endif
 endif
 
@@ -2281,6 +2297,30 @@ log: mobian-log
 .PHONY: mobian-log
 mobian-log: amd64-mobian-bookworm-rootfs.log
 mobian-log: amd64-mobian-trixie-rootfs.log
+
+ifneq ($(shell command -v arm-buildroot-linux-gnueabihf-gcc 2>/dev/null),)
+extra-support: raspbian-support
+
+.PHONY: raspbian-support
+raspbian-support: support/armhf-raspbian-bookworm-rootfs.txt
+
+log: raspbian-log
+
+.PHONY: raspbian-log
+raspbian-log: armhf-raspbian-bookworm-rootfs.log
+endif
+
+ifneq ($(shell command -v aarch64-buildroot-linux-gnu-gcc 2>/dev/null),)
+extra-support: raspbian-support
+
+.PHONY: raspbian-support
+raspbian-support: support/arm64-raspbian-bookworm-rootfs.txt
+
+log: raspbian-log
+
+.PHONY: raspbian-log
+raspbian-log: arm64-raspbian-bookworm-rootfs.log
+endif
 endif
 
 ifneq ($(shell command -v dnf 2>/dev/null),)

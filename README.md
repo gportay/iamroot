@@ -93,7 +93,7 @@ The table below lists the distributions and its tool that work with.
 | [dnf(8)]             | [Fedora]                                                                                      |
 | [zypper(8)]          | [openSUSE]                                                                                    |
 | [debootstrap(8)]     | [Debian], [Ubuntu]\*, [Devuan]                                                                |
-| [mmdebstrap(1)]      | [Mobian]                                                                                      |
+| [mmdebstrap(1)]      | [Mobian], [Raspbian]                                                                          |
 | [xbps-install(1)]    | [Void Linux]                                                                                  |
 
 \*: Works with hacks.
@@ -224,7 +224,7 @@ Written by Gaël PORTAY *gael.portay@gmail.com*
 
 ## COPYRIGHT
 
-Copyright (c) 2021-2024 Gaël PORTAY
+Copyright (c) 2021-2025 Gaël PORTAY
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU Lesser General Public License as published by the Free
@@ -254,6 +254,7 @@ later version.
 [Mobian]: https://mobian-project.org/
 [NetBSD]: https://www.netbsd.org/
 [OpenBSD]: https://www.openbsd.org/
+[Raspbian]: https://www.raspberrypi.com/software/
 [The Yocto Project]: https://www.yoctoproject.org/software-item/poky/
 [Ubuntu]: https://ubuntu.com/
 [Void Linux]: https://voidlinux.org/

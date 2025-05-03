@@ -1853,16 +1853,6 @@ aarch64-fedora-rootfs: aarch64-fedora-39-rootfs
 aarch64-fedora-rootfs: aarch64-fedora-40-rootfs
 aarch64-fedora-rootfs: aarch64-fedora-rawhide-rootfs
 
-aarch64-fedora-33-rootfs: aarch64-fedora-33-rootfs/bin/sh
-aarch64-fedora-34-rootfs: aarch64-fedora-34-rootfs/bin/sh
-aarch64-fedora-35-rootfs: aarch64-fedora-35-rootfs/bin/sh
-aarch64-fedora-36-rootfs: aarch64-fedora-36-rootfs/bin/sh
-aarch64-fedora-37-rootfs: aarch64-fedora-37-rootfs/bin/sh
-aarch64-fedora-38-rootfs: aarch64-fedora-38-rootfs/bin/sh
-aarch64-fedora-39-rootfs: aarch64-fedora-39-rootfs/bin/sh
-aarch64-fedora-40-rootfs: aarch64-fedora-40-rootfs/bin/sh
-aarch64-fedora-rawhide-rootfs: aarch64-fedora-rawhide-rootfs/bin/sh
-
 aarch64-fedora-33-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 aarch64-fedora-34-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 aarch64-fedora-35-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
@@ -1888,11 +1878,6 @@ armv7hl-fedora-rootfs: armv7hl-fedora-33-rootfs
 armv7hl-fedora-rootfs: armv7hl-fedora-34-rootfs
 armv7hl-fedora-rootfs: armv7hl-fedora-35-rootfs
 armv7hl-fedora-rootfs: armv7hl-fedora-36-rootfs
-
-armv7hl-fedora-33-rootfs: armv7hl-fedora-33-rootfs/bin/sh
-armv7hl-fedora-34-rootfs: armv7hl-fedora-34-rootfs/bin/sh
-armv7hl-fedora-35-rootfs: armv7hl-fedora-35-rootfs/bin/sh
-armv7hl-fedora-36-rootfs: armv7hl-fedora-36-rootfs/bin/sh
 
 armv7hl-fedora-33-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo
 armv7hl-fedora-34-rootfs/bin/sh: export FEDORA_REPO ?= support/fedora-archive.repo

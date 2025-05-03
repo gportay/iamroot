@@ -7,7 +7,6 @@ Dependencies resolved.
 Installing group/module packages:
  NetworkManager
  audit
- basesystem
  bash
  coreutils
  curl
@@ -30,6 +29,7 @@ Installing group/module packages:
  parted
  plymouth
  policycoreutils
+ prefixdevname
  procps-ng
  rootfiles
  rpm
@@ -98,6 +98,7 @@ Installing dependencies:
  glib2
  glibc
  glibc-common
+ glibc-gconv-extra
  glibc-minimal-langpack
  gmp
  gnupg2
@@ -109,6 +110,7 @@ Installing dependencies:
  gsettings-desktop-schemas
  gzip
  hwdata
+ ima-evm-utils-libs
  inih
  ipcalc
  ipset-libs
@@ -161,12 +163,14 @@ Installing dependencies:
  libfdisk
  libffi
  libfido2
+ libfsverity
  libftdi
  libgcc
  libgcrypt
  libgomp
  libgpg-error
  libgudev
+ libicu
  libidn2
  libini_config
  libjaylink
@@ -225,9 +229,11 @@ Installing dependencies:
  libtool-ltdl
  libudisks2
  libunistring
+ liburing
  libusb1
  libuuid
  libverto
+ libwbclient
  libxcrypt
  libxkbcommon
  libxml2
@@ -246,6 +252,7 @@ Installing dependencies:
  ncurses-libs
  nettle
  nftables
+ nftables-services
  npth
  nspr
  nss
@@ -291,6 +298,10 @@ Installing dependencies:
  rpm-libs
  rpm-plugin-selinux
  rpm-sequoia
+ rpm-sign-libs
+ samba-client-libs
+ samba-common
+ samba-common-libs
  sdbus-cpp
  sed
  selinux-policy
@@ -301,6 +312,8 @@ Installing dependencies:
  systemd
  systemd-libs
  systemd-pam
+ systemd-shared
+ systemd-sysusers
  systemd-udev
  tpm2-tss
  tpm2-tss-fapi
@@ -317,8 +330,8 @@ Installing dependencies:
  zlib-ng-compat
  zram-generator
 Installing weak dependencies:
- abattis-cantarell-fonts
- adobe-source-code-pro-fonts
+ adwaita-mono-fonts
+ adwaita-sans-fonts
  avahi
  bash-completion
  bluez
@@ -337,7 +350,6 @@ Installing weak dependencies:
  geolite2-city
  geolite2-country
  glib-networking
- glibc-gconv-extra
  gnupg2-smime
  initscripts-service
  ipset
@@ -345,7 +357,9 @@ Installing weak dependencies:
  jq
  kpartx
  libcap-ng-python3
+ libdnf5-plugin-expired-pgp-keys
  libmaxminddb
+ logrotate
  memstrack
  mkpasswd
  nano-default-editor
@@ -383,6 +397,7 @@ Downloading Packages:
 ----------------------------------
 Total XXX xB/s | XXX xB XX:XX
 Running transaction check
+warning: private mounts in chroot not implemented
 Transaction check succeeded.
 Running transaction test
 Transaction test succeeded.
@@ -392,7 +407,6 @@ Running transaction
   Running scriptlet: selinux-policy-targeted XXX/XXX
   Preparing        : XXX/XXX
   Installing       : libgcc XXX/XXX
-  Running scriptlet: libgcc XXX/XXX
   Installing       : xkeyboard-config XXX/XXX
   Installing       : fonts-filesystem XXX/XXX
   Installing       : whois-nls XXX/XXX
@@ -424,92 +438,109 @@ useradd: Warning: missing or non-executable shell '/bin/sync'
   Installing       : setup XXX/XXX
   Running scriptlet: setup XXX/XXX
   Installing       : filesystem XXX/XXX
-  Installing       : basesystem XXX/XXX
+  Running scriptlet: filesystem XXX/XXX
   Installing       : glibc-gconv-extra XXX/XXX
   Running scriptlet: glibc-gconv-extra XXX/XXX
-  Installing       : glibc-minimal-langpack XXX/XXX
-  Installing       : glibc-common XXX/XXX
+  Installing       : ncurses-libs XXX/XXX
   Running scriptlet: glibc XXX/XXX
   Installing       : glibc XXX/XXX
   Running scriptlet: glibc XXX/XXX
-  Installing       : ncurses-libs XXX/XXX
   Installing       : bash XXX/XXX
   Running scriptlet: bash XXX/XXX
+  Installing       : glibc-common XXX/XXX
+  Running scriptlet: glibc-common XXX/XXX
+  Installing       : glibc-minimal-langpack XXX/XXX
   Installing       : zlib-ng-compat XXX/XXX
   Installing       : libuuid XXX/XXX
   Installing       : libblkid XXX/XXX
-  Installing       : xz-libs XXX/XXX
-  Installing       : readline XXX/XXX
+  Installing       : libstdc++ XXX/XXX
   Installing       : libcom_err XXX/XXX
+  Installing       : popt XXX/XXX
+  Installing       : xz-libs XXX/XXX
   Installing       : libzstd XXX/XXX
-  Installing       : bzip2-libs XXX/XXX
+  Installing       : readline XXX/XXX
+  Installing       : libxcrypt XXX/XXX
   Installing       : json-c XXX/XXX
   Installing       : libgpg-error XXX/XXX
-  Installing       : libstdc++ XXX/XXX
-  Installing       : libxcrypt XXX/XXX
-  Installing       : sqlite-libs XXX/XXX
+  Running scriptlet: libgpg-error XXX/XXX
+  Installing       : libtalloc XXX/XXX
   Running scriptlet: crypto-policies XXX/XXX
   Installing       : crypto-policies XXX/XXX
   Running scriptlet: crypto-policies XXX/XXX
+  Installing       : bzip2-libs XXX/XXX
   Installing       : gmp XXX/XXX
   Installing       : nspr XXX/XXX
-  Installing       : popt XXX/XXX
+  Installing       : sqlite-libs XXX/XXX
   Installing       : nss-util XXX/XXX
   Installing       : libxml2 XXX/XXX
+  Running scriptlet: libxml2 XXX/XXX
   Installing       : alternatives XXX/XXX
+  Running scriptlet: alternatives XXX/XXX
   Installing       : libffi XXX/XXX
   Installing       : libmnl XXX/XXX
-  Installing       : libtalloc XXX/XXX
   Installing       : pcre2 XXX/XXX
   Installing       : grep XXX/XXX
+  Running scriptlet: grep XXX/XXX
   Installing       : elfutils-libelf XXX/XXX
+  Installing       : fmt XXX/XXX
   Installing       : gdbm-libs XXX/XXX
   Installing       : libcap-ng XXX/XXX
   Installing       : audit-libs XXX/XXX
-  Installing       : fmt XXX/XXX
+  Installing       : libtevent XXX/XXX
   Installing       : libassuan XXX/XXX
   Installing       : libgcrypt XXX/XXX
   Installing       : libfdisk XXX/XXX
   Installing       : expat XXX/XXX
+  Running scriptlet: expat XXX/XXX
   Installing       : keyutils-libs XXX/XXX
   Installing       : libsepol XXX/XXX
   Installing       : libselinux XXX/XXX
   Installing       : libmount XXX/XXX
-  Installing       : findutils XXX/XXX
+  Installing       : libtasn1 XXX/XXX
+  Installing       : p11-kit XXX/XXX
+  Running scriptlet: p11-kit XXX/XXX
+  Installing       : libtdb XXX/XXX
   Installing       : libunistring XXX/XXX
   Installing       : libidn2 XXX/XXX
   Installing       : libpsl XXX/XXX
-  Installing       : libsemanage XXX/XXX
-  Installing       : libtevent XXX/XXX
+  Installing       : p11-kit-trust XXX/XXX
+  Running scriptlet: p11-kit-trust XXX/XXX
+  Installing       : findutils XXX/XXX
+  Running scriptlet: findutils XXX/XXX
   Installing       : e2fsprogs-libs XXX/XXX
-  Installing       : libedit XXX/XXX
-  Installing       : libattr XXX/XXX
-  Installing       : libacl XXX/XXX
-  Installing       : sed XXX/XXX
+  Installing       : jansson XXX/XXX
   Installing       : libeconf XXX/XXX
   Installing       : pam-libs XXX/XXX
   Installing       : libcap XXX/XXX
+  Running scriptlet: libcap XXX/XXX
   Installing       : systemd-libs XXX/XXX
-  Installing       : shadow-utils XXX/XXX
   Installing       : dbus-libs XXX/XXX
   Installing       : libusb1 XXX/XXX
+  Installing       : libedit XXX/XXX
   Installing       : libsmartcols XXX/XXX
   Installing       : util-linux-core XXX/XXX
-  Installing       : libtasn1 XXX/XXX
-  Installing       : p11-kit XXX/XXX
-  Installing       : p11-kit-trust XXX/XXX
-  Running scriptlet: p11-kit-trust XXX/XXX
+  Running scriptlet: util-linux-core XXX/XXX
   Installing       : ntfs-3g-libs XXX/XXX
   Installing       : sdbus-cpp XXX/XXX
+  Installing       : libsemanage XXX/XXX
   Installing       : cyrus-sasl-lib XXX/XXX
+  Running scriptlet: cyrus-sasl-lib XXX/XXX
+  Installing       : libbpf XXX/XXX
   Installing       : libnftnl XXX/XXX
   Installing       : mpfr XXX/XXX
   Installing       : gawk XXX/XXX
+  Running scriptlet: gawk XXX/XXX
   Installing       : libksba XXX/XXX
   Installing       : file-libs XXX/XXX
   Installing       : cpio XXX/XXX
+  Running scriptlet: cpio XXX/XXX
   Installing       : duktape XXX/XXX
-  Installing       : jansson XXX/XXX
+  Installing       : libattr XXX/XXX
+  Installing       : libacl XXX/XXX
+  Installing       : sed XXX/XXX
+  Running scriptlet: sed XXX/XXX
+  Installing       : shadow-utils XXX/XXX
+  Running scriptlet: shadow-utils XXX/XXX
   Installing       : libbasicobjects XXX/XXX
   Installing       : libbrotli XXX/XXX
   Installing       : libcbor XXX/XXX
@@ -518,26 +549,32 @@ useradd: Warning: missing or non-executable shell '/bin/sync'
   Installing       : libgomp XXX/XXX
   Installing       : libnghttp2 XXX/XXX
   Installing       : libref_array XXX/XXX
+  Installing       : libseccomp XXX/XXX
   Installing       : libsss_idmap XXX/XXX
-  Installing       : libtdb XXX/XXX
   Installing       : lua-libs XXX/XXX
   Installing       : npth XXX/XXX
   Installing       : libb2 XXX/XXX
   Installing       : nano XXX/XXX
+  Running scriptlet: nano XXX/XXX
   Installing       : libbytesize XXX/XXX
   Installing       : libjaylink XXX/XXX
   Installing       : libatasmart XXX/XXX
+  Running scriptlet: libatasmart XXX/XXX
   Installing       : procps-ng XXX/XXX
+  Running scriptlet: procps-ng XXX/XXX
   Installing       : kbd XXX/XXX
+  Running scriptlet: kbd XXX/XXX
   Installing       : libselinux-utils XXX/XXX
+  Running scriptlet: libselinux-utils XXX/XXX
   Installing       : audit-rules XXX/XXX
   Running scriptlet: audit-rules XXX/XXX
 /var/tmp/rpm-tmp.XXXXXX: line X: wc: command not found
 /var/tmp/rpm-tmp.XXXXXX: line X: [: : integer expression expected
 
   Installing       : gdbm XXX/XXX
-  Installing       : libbpf XXX/XXX
+  Running scriptlet: gdbm XXX/XXX
   Installing       : xz XXX/XXX
+  Running scriptlet: xz XXX/XXX
   Installing       : ipset-libs XXX/XXX
   Running scriptlet: groff-base XXX/XXX
   Installing       : groff-base XXX/XXX
@@ -548,6 +585,7 @@ useradd: Warning: missing or non-executable shell '/bin/sync'
   Installing       : nettle XXX/XXX
   Installing       : gnutls XXX/XXX
   Installing       : glib2 XXX/XXX
+  Running scriptlet: glib2 XXX/XXX
   Installing       : polkit-libs XXX/XXX
   Installing       : json-glib XXX/XXX
   Installing       : libmbim XXX/XXX
@@ -555,6 +593,7 @@ useradd: Warning: missing or non-executable shell '/bin/sync'
   Installing       : shared-mime-info XXX/XXX
   Running scriptlet: shared-mime-info XXX/XXX
   Installing       : libxmlb XXX/XXX
+  Running scriptlet: libxmlb XXX/XXX
   Installing       : ModemManager-glib XXX/XXX
   Installing       : NetworkManager-libnm XXX/XXX
   Installing       : gobject-introspection XXX/XXX
@@ -563,8 +602,10 @@ useradd: Warning: missing or non-executable shell '/bin/sync'
   Installing       : libqrtr-glib XXX/XXX
   Installing       : libqmi XXX/XXX
   Installing       : libsecret XXX/XXX
+  Running scriptlet: libsecret XXX/XXX
   Installing       : libudisks2 XXX/XXX
   Installing       : libss XXX/XXX
+  Installing       : libicu XXX/XXX
   Running scriptlet: dbus-common XXX/XXX
   Installing       : dbus-common XXX/XXX
   Running scriptlet: dbus-common XXX/XXX
@@ -576,23 +617,28 @@ useradd: Warning: missing or non-executable shell '/bin/sync'
   Running scriptlet: elfutils-default-yama-scope XXX/XXX
   Installing       : elfutils-libs XXX/XXX
   Installing       : less XXX/XXX
-  Installing       : psmisc XXX/XXX
-  Installing       : iproute XXX/XXX
+  Running scriptlet: less XXX/XXX
   Installing       : c-ares XXX/XXX
   Installing       : diffutils XXX/XXX
+  Running scriptlet: diffutils XXX/XXX
   Installing       : dmidecode XXX/XXX
+  Running scriptlet: dmidecode XXX/XXX
   Installing       : fuse3-libs XXX/XXX
   Installing       : inih XXX/XXX
   Installing       : ipcalc XXX/XXX
+  Running scriptlet: ipcalc XXX/XXX
   Installing       : libdaemon XXX/XXX
   Installing       : libevdev XXX/XXX
   Installing       : plymouth-core-libs XXX/XXX
   Installing       : libndp XXX/XXX
+  Running scriptlet: libndp XXX/XXX
   Installing       : libnfnetlink XXX/XXX
   Installing       : libnetfilter_conntrack XXX/XXX
   Installing       : iptables-libs XXX/XXX
   Installing       : nftables XXX/XXX
   Running scriptlet: nftables XXX/XXX
+  Installing       : nftables-services XXX/XXX
+  Running scriptlet: nftables-services XXX/XXX
   Installing       : libnl3 XXX/XXX
   Installing       : libpath_utils XXX/XXX
   Installing       : libini_config XXX/XXX
@@ -601,15 +647,16 @@ useradd: Warning: missing or non-executable shell '/bin/sync'
   Installing       : libpipeline XXX/XXX
   Installing       : libpkgconf XXX/XXX
   Installing       : pkgconf XXX/XXX
+  Running scriptlet: pkgconf XXX/XXX
   Installing       : pkgconf-pkg-config XXX/XXX
-  Installing       : libseccomp XXX/XXX
+  Running scriptlet: pkgconf-pkg-config XXX/XXX
   Installing       : libsss_nss_idmap XXX/XXX
   Installing       : libsss_sudo XXX/XXX
   Installing       : libtool-ltdl XXX/XXX
+  Installing       : liburing XXX/XXX
   Installing       : libverto XXX/XXX
   Installing       : libyaml XXX/XXX
   Installing       : lmdb-libs XXX/XXX
-  Installing       : libldb XXX/XXX
   Installing       : lz4-libs XXX/XXX
   Installing       : lzo XXX/XXX
   Installing       : mpdecimal XXX/XXX
@@ -617,36 +664,52 @@ useradd: Warning: missing or non-executable shell '/bin/sync'
   Installing       : pciutils-libs XXX/XXX
   Installing       : pcsc-lite-libs XXX/XXX
   Installing       : protobuf-c XXX/XXX
+  Installing       : psmisc XXX/XXX
+  Running scriptlet: psmisc XXX/XXX
+  Installing       : iproute XXX/XXX
+  Running scriptlet: iproute XXX/XXX
   Installing       : userspace-rcu XXX/XXX
   Installing       : zram-generator XXX/XXX
   Installing       : dhcp-common XXX/XXX
   Installing       : coreutils-common XXX/XXX
   Installing       : openssl-libs XXX/XXX
   Installing       : coreutils XXX/XXX
+  Running scriptlet: coreutils XXX/XXX
   Running scriptlet: ca-certificates XXX/XXX
   Installing       : ca-certificates XXX/XXX
   Running scriptlet: ca-certificates XXX/XXX
   Installing       : krb5-libs XXX/XXX
   Installing       : kmod-libs XXX/XXX
   Installing       : libblockdev-utils XXX/XXX
-  Installing       : gzip XXX/XXX
+  Installing       : systemd-shared XXX/XXX
   Running scriptlet: tpm2-tss XXX/XXX
   Installing       : tpm2-tss XXX/XXX
-  Installing       : cracklib XXX/XXX
+  Installing       : gzip XXX/XXX
+  Running scriptlet: gzip XXX/XXX
   Installing       : libtirpc XXX/XXX
+  Installing       : cracklib XXX/XXX
+  Running scriptlet: cracklib XXX/XXX
+  Installing       : systemd-sysusers XXX/XXX
+  Running scriptlet: systemd-sysusers XXX/XXX
   Installing       : authselect-libs XXX/XXX
   Installing       : kmod XXX/XXX
+  Running scriptlet: kmod XXX/XXX
   Installing       : libarchive XXX/XXX
   Installing       : libevent XXX/XXX
   Installing       : openldap XXX/XXX
   Installing       : gnupg2 XXX/XXX
+  Running scriptlet: gnupg2 XXX/XXX
   Installing       : gpgme XXX/XXX
+  Running scriptlet: gpgme XXX/XXX
+  Installing       : avahi-libs XXX/XXX
   Installing       : zchunk-libs XXX/XXX
   Installing       : libjcat XXX/XXX
-  Installing       : avahi-libs XXX/XXX
-  Installing       : libnsl2 XXX/XXX
+  Running scriptlet: libjcat XXX/XXX
   Installing       : libpwquality XXX/XXX
+  Running scriptlet: libpwquality XXX/XXX
+  Installing       : libnsl2 XXX/XXX
   Installing       : pam XXX/XXX
+  Running scriptlet: pam XXX/XXX
   Installing       : util-linux XXX/XXX
   Running scriptlet: util-linux XXX/XXX
   Installing       : systemd-pam XXX/XXX
@@ -656,33 +719,55 @@ useradd: Warning: missing or non-executable shell '/bin/sync'
   Running scriptlet: polkit XXX/XXX
   Installing       : polkit XXX/XXX
   Running scriptlet: polkit XXX/XXX
+  Running scriptlet: samba-common XXX/XXX
+  Installing       : samba-common XXX/XXX
+  Running scriptlet: samba-common XXX/XXX
+  Installing       : libldb XXX/XXX
+  Running scriptlet: libwbclient XXX/XXX
+  Installing       : libwbclient XXX/XXX
+  Installing       : samba-common-libs XXX/XXX
+  Installing       : samba-client-libs XXX/XXX
   Installing       : openssh XXX/XXX
+  Running scriptlet: openssh XXX/XXX
+  Installing       : policycoreutils XXX/XXX
+  Running scriptlet: policycoreutils XXX/XXX
+Created symlink '/etc/systemd/system/sysinit.target.wants/selinux-autorelabel-mark.service' → '/usr/lib/systemd/system/selinux-autorelabel-mark.service'.
+
+  Installing       : selinux-policy XXX/XXX
+  Running scriptlet: selinux-policy XXX/XXX
+  Running scriptlet: selinux-policy-targeted XXX/XXX
+  Installing       : selinux-policy-targeted XXX/XXX
+  Running scriptlet: selinux-policy-targeted XXX/XXX
   Installing       : device-mapper-libs XXX/XXX
   Installing       : device-mapper XXX/XXX
+  Running scriptlet: device-mapper XXX/XXX
   Installing       : cryptsetup-libs XXX/XXX
   Running scriptlet: systemd-udev XXX/XXX
   Installing       : systemd-udev XXX/XXX
   Running scriptlet: systemd-udev XXX/XXX
-Created symlink '/etc/systemd/system/dbus-org.freedesktop.home1.service' → '/usr/lib/systemd/system/systemd-homed.service'.
-Created symlink '/etc/systemd/system/multi-user.target.wants/systemd-homed.service' → '/usr/lib/systemd/system/systemd-homed.service'.
-Created symlink '/etc/systemd/system/systemd-homed.service.wants/systemd-homed-activate.service' → '/usr/lib/systemd/system/systemd-homed-activate.service'.
-Created symlink '/etc/systemd/system/dbus-org.freedesktop.oom1.service' → '/usr/lib/systemd/system/systemd-oomd.service'.
-Created symlink '/etc/systemd/system/multi-user.target.wants/systemd-oomd.service' → '/usr/lib/systemd/system/systemd-oomd.service'.
-Created symlink '/etc/systemd/system/sysinit.target.wants/systemd-pstore.service' → '/usr/lib/systemd/system/systemd-pstore.service'.
-Created symlink '/etc/systemd/system/multi-user.target.wants/remote-cryptsetup.target' → '/usr/lib/systemd/system/remote-cryptsetup.target'.
+Failed to preset unit: Unit system-systemdx2dcryptsetup.slice does not exist
 
   Installing       : iputils XXX/XXX
+  Running scriptlet: iputils XXX/XXX
   Installing       : libftdi XXX/XXX
   Installing       : flashrom XXX/XXX
+  Running scriptlet: flashrom XXX/XXX
   Installing       : libkcapi XXX/XXX
   Installing       : libkcapi-hasher XXX/XXX
+  Running scriptlet: libkcapi-hasher XXX/XXX
   Installing       : libkcapi-hmaccalc XXX/XXX
+  Running scriptlet: libkcapi-hmaccalc XXX/XXX
   Installing       : dracut XXX/XXX
+  Running scriptlet: dracut XXX/XXX
   Installing       : plymouth XXX/XXX
+  Running scriptlet: plymouth XXX/XXX
   Installing       : plymouth-scripts XXX/XXX
+  Running scriptlet: plymouth-scripts XXX/XXX
   Installing       : libblockdev-part XXX/XXX
   Installing       : libblockdev-swap XXX/XXX
   Installing       : sudo XXX/XXX
+  Running scriptlet: sudo XXX/XXX
+  Installing       : ima-evm-utils-libs XXX/XXX
   Installing       : libblockdev XXX/XXX
   Installing       : libblockdev-fs XXX/XXX
   Installing       : libblockdev-loop XXX/XXX
@@ -694,6 +779,7 @@ Created symlink '/etc/systemd/system/multi-user.target.wants/remote-cryptsetup.t
   Installing       : fwupd XXX/XXX
   Running scriptlet: fwupd XXX/XXX
   Installing       : curl XXX/XXX
+  Running scriptlet: curl XXX/XXX
   Installing       : libproxy XXX/XXX
   Installing       : tpm2-tss-fapi XXX/XXX
   Installing       : sssd-client XXX/XXX
@@ -701,6 +787,7 @@ Created symlink '/etc/systemd/system/multi-user.target.wants/remote-cryptsetup.t
   Installing       : python-pip-wheel XXX/XXX
   Installing       : python3-libs XXX/XXX
   Installing       : python3 XXX/XXX
+  Running scriptlet: python3 XXX/XXX
   Installing       : pcsc-lite-ccid XXX/XXX
   Running scriptlet: pcsc-lite-ccid XXX/XXX
   Installing       : pcsc-lite XXX/XXX
@@ -718,11 +805,13 @@ Created symlink '/etc/systemd/system/timers.target.wants/raid-check.timer' → '
 
   Installing       : libblockdev-mdraid XXX/XXX
   Installing       : nss-sysinit XXX/XXX
+  Running scriptlet: nss-sysinit XXX/XXX
   Installing       : nss XXX/XXX
   Running scriptlet: nss XXX/XXX
   Installing       : volume_key-libs XXX/XXX
   Installing       : libblockdev-crypto XXX/XXX
   Installing       : libfido2 XXX/XXX
+  Installing       : libfsverity XXX/XXX
   Installing       : libnvme XXX/XXX
   Installing       : libblockdev-nvme XXX/XXX
   Installing       : libsss_certmap XXX/XXX
@@ -735,25 +824,24 @@ Created symlink '/etc/systemd/system/multi-user.target.wants/sssd.service' → '
   Installing       : rpm-sequoia XXX/XXX
   Installing       : rpm-libs XXX/XXX
   Installing       : libmodulemd XXX/XXX
+  Running scriptlet: libmodulemd XXX/XXX
   Installing       : librepo XXX/XXX
   Installing       : libsolv XXX/XXX
   Installing       : libdnf5 XXX/XXX
   Installing       : libdnf5-cli XXX/XXX
   Installing       : dnf5 XXX/XXX
   Running scriptlet: dnf5 XXX/XXX
-  Running scriptlet: rpm XXX/XXX
-  Installing       : rpm XXX/XXX
-  Installing       : policycoreutils XXX/XXX
-  Running scriptlet: policycoreutils XXX/XXX
-Created symlink '/etc/systemd/system/sysinit.target.wants/selinux-autorelabel-mark.service' → '/usr/lib/systemd/system/selinux-autorelabel-mark.service'.
+Created symlink '/etc/systemd/system/timers.target.wants/dnf-makecache.timer' → '/usr/lib/systemd/system/dnf-makecache.timer'.
 
-  Installing       : selinux-policy XXX/XXX
-  Running scriptlet: selinux-policy XXX/XXX
-  Running scriptlet: selinux-policy-targeted XXX/XXX
-  Installing       : selinux-policy-targeted XXX/XXX
-  Running scriptlet: selinux-policy-targeted XXX/XXX
+  Installing       : rpm-sign-libs XXX/XXX
   Installing       : rpm-build-libs XXX/XXX
   Installing       : dnf5-plugins XXX/XXX
+  Installing       : libdnf5-plugin-expired-pgp-keys. XXX/XXX
+  Running scriptlet: rpm XXX/XXX
+  Installing       : rpm XXX/XXX
+  Running scriptlet: rpm XXX/XXX
+Created symlink '/etc/systemd/system/basic.target.wants/rpmdb-rebuild.service' → '/usr/lib/systemd/system/rpmdb-rebuild.service'.
+
   Installing       : rpm-plugin-audit XXX/XXX
   Installing       : rpm-plugin-selinux XXX/XXX
   Installing       : sssd-kcm XXX/XXX
@@ -772,10 +860,13 @@ Created symlink '/etc/systemd/system/dbus-org.fedoraproject.FirewallD1.service' 
 Created symlink '/etc/systemd/system/multi-user.target.wants/firewalld.service' → '/usr/lib/systemd/system/firewalld.service'.
 
   Installing       : crypto-policies-scripts XXX/XXX
+  Running scriptlet: crypto-policies-scripts XXX/XXX
   Installing       : libcap-ng-python3 XXX/XXX
   Installing       : python-unversioned-command XXX/XXX
+  Running scriptlet: python-unversioned-command XXX/XXX
   Installing       : sudo-python-plugin XXX/XXX
   Installing       : tpm2-tools XXX/XXX
+  Running scriptlet: tpm2-tools XXX/XXX
   Installing       : glib-networking XXX/XXX
   Installing       : fwupd-plugin-flashrom XXX/XXX
   Installing       : fwupd-plugin-modem-manager XXX/XXX
@@ -788,38 +879,36 @@ Created symlink '/etc/systemd/system/dbus-org.freedesktop.nm-dispatcher.service'
 Created symlink '/etc/systemd/system/network-online.target.wants/NetworkManager-wait-online.service' → '/usr/lib/systemd/system/NetworkManager-wait-online.service'.
 
   Installing       : elfutils-debuginfod-client XXX/XXX
+  Running scriptlet: elfutils-debuginfod-client XXX/XXX
   Running scriptlet: passim XXX/XXX
-[sss_cache] [sss_tool_confdb_init] (0x0010): Can't access '/var/lib/sss/db/config.ldb', probably SSSD isn't configured
-Can't find configuration db, was SSSD configured and run?
-[sss_cache] [sss_tool_confdb_init] (0x0010): Can't access '/var/lib/sss/db/config.ldb', probably SSSD isn't configured
-Can't find configuration db, was SSSD configured and run?
-[sss_cache] [sss_tool_confdb_init] (0x0010): Can't access '/var/lib/sss/db/config.ldb', probably SSSD isn't configured
-Can't find configuration db, was SSSD configured and run?
-[sss_cache] [sss_tool_confdb_init] (0x0010): Can't access '/var/lib/sss/db/config.ldb', probably SSSD isn't configured
-Can't find configuration db, was SSSD configured and run?
+Warning: libreplace-private-samba.so: needed library not found in library-path /lib64:/usr/lib64:/usr/lib64/sssd
+Warning: libreplace-private-samba.so: needed library not found in library-path /lib64:/usr/lib64:/usr/lib64/sssd
+Warning: libreplace-private-samba.so: needed library not found in library-path /lib64:/usr/lib64:/usr/lib64/sssd
+Warning: libreplace-private-samba.so: needed library not found in library-path /lib64:/usr/lib64:/usr/lib64/sssd
 
   Installing       : passim XXX/XXX
   Running scriptlet: passim XXX/XXX
   Installing       : dracut-config-rescue XXX/XXX
   Installing       : dhcp-client XXX/XXX
+  Running scriptlet: dhcp-client XXX/XXX
   Installing       : udftools XXX/XXX
+  Running scriptlet: udftools XXX/XXX
   Installing       : kpartx XXX/XXX
+  Running scriptlet: kpartx XXX/XXX
   Installing       : parted XXX/XXX
+  Running scriptlet: parted XXX/XXX
   Running scriptlet: openssh-server XXX/XXX
-[sss_cache] [sss_tool_confdb_init] (0x0010): Can't access '/var/lib/sss/db/config.ldb', probably SSSD isn't configured
-Can't find configuration db, was SSSD configured and run?
-[sss_cache] [sss_tool_confdb_init] (0x0010): Can't access '/var/lib/sss/db/config.ldb', probably SSSD isn't configured
-Can't find configuration db, was SSSD configured and run?
-[sss_cache] [sss_tool_confdb_init] (0x0010): Can't access '/var/lib/sss/db/config.ldb', probably SSSD isn't configured
-Can't find configuration db, was SSSD configured and run?
-[sss_cache] [sss_tool_confdb_init] (0x0010): Can't access '/var/lib/sss/db/config.ldb', probably SSSD isn't configured
-Can't find configuration db, was SSSD configured and run?
+Warning: libreplace-private-samba.so: needed library not found in library-path /lib64:/usr/lib64:/usr/lib64/sssd
+Warning: libreplace-private-samba.so: needed library not found in library-path /lib64:/usr/lib64:/usr/lib64/sssd
+Warning: libreplace-private-samba.so: needed library not found in library-path /lib64:/usr/lib64:/usr/lib64/sssd
+Warning: libreplace-private-samba.so: needed library not found in library-path /lib64:/usr/lib64:/usr/lib64/sssd
 
   Installing       : openssh-server XXX/XXX
   Running scriptlet: openssh-server XXX/XXX
 Created symlink '/etc/systemd/system/multi-user.target.wants/sshd.service' → '/usr/lib/systemd/system/sshd.service'.
 
   Installing       : polkit-pkla-compat XXX/XXX
+  Running scriptlet: polkit-pkla-compat XXX/XXX
   Installing       : audit XXX/XXX
   Running scriptlet: audit XXX/XXX
 Created symlink '/etc/systemd/system/multi-user.target.wants/auditd.service' → '/usr/lib/systemd/system/auditd.service'.
@@ -831,27 +920,27 @@ Created symlink '/etc/systemd/system/dbus-org.bluez.service' → '/usr/lib/syste
 Created symlink '/etc/systemd/system/bluetooth.target.wants/bluetooth.service' → '/usr/lib/systemd/system/bluetooth.service'.
 
   Installing       : initscripts-service XXX/XXX
+  Running scriptlet: initscripts-service XXX/XXX
+  Running scriptlet: logrotate XXX/XXX
+  Installing       : logrotate XXX/XXX
+  Running scriptlet: logrotate XXX/XXX
+Created symlink '/etc/systemd/system/timers.target.wants/logrotate.timer' → '/usr/lib/systemd/system/logrotate.timer'.
+
   Running scriptlet: systemd-networkd XXX/XXX
-[sss_cache] [sss_tool_confdb_init] (0x0010): Can't access '/var/lib/sss/db/config.ldb', probably SSSD isn't configured
-Can't find configuration db, was SSSD configured and run?
-[sss_cache] [sss_tool_confdb_init] (0x0010): Can't access '/var/lib/sss/db/config.ldb', probably SSSD isn't configured
-Can't find configuration db, was SSSD configured and run?
-[sss_cache] [sss_tool_confdb_init] (0x0010): Can't access '/var/lib/sss/db/config.ldb', probably SSSD isn't configured
-Can't find configuration db, was SSSD configured and run?
-[sss_cache] [sss_tool_confdb_init] (0x0010): Can't access '/var/lib/sss/db/config.ldb', probably SSSD isn't configured
-Can't find configuration db, was SSSD configured and run?
+Warning: libreplace-private-samba.so: needed library not found in library-path /lib64:/usr/lib64:/usr/lib64/sssd
+Warning: libreplace-private-samba.so: needed library not found in library-path /lib64:/usr/lib64:/usr/lib64/sssd
+Warning: libreplace-private-samba.so: needed library not found in library-path /lib64:/usr/lib64:/usr/lib64/sssd
+Warning: libreplace-private-samba.so: needed library not found in library-path /lib64:/usr/lib64:/usr/lib64/sssd
 
   Installing       : systemd-networkd XXX/XXX
   Running scriptlet: systemd-networkd XXX/XXX
+Created symlink '/etc/systemd/system/sysinit.target.wants/systemd-network-generator.service' → '/usr/lib/systemd/system/systemd-network-generator.service'.
+
   Running scriptlet: systemd-resolved XXX/XXX
-[sss_cache] [sss_tool_confdb_init] (0x0010): Can't access '/var/lib/sss/db/config.ldb', probably SSSD isn't configured
-Can't find configuration db, was SSSD configured and run?
-[sss_cache] [sss_tool_confdb_init] (0x0010): Can't access '/var/lib/sss/db/config.ldb', probably SSSD isn't configured
-Can't find configuration db, was SSSD configured and run?
-[sss_cache] [sss_tool_confdb_init] (0x0010): Can't access '/var/lib/sss/db/config.ldb', probably SSSD isn't configured
-Can't find configuration db, was SSSD configured and run?
-[sss_cache] [sss_tool_confdb_init] (0x0010): Can't access '/var/lib/sss/db/config.ldb', probably SSSD isn't configured
-Can't find configuration db, was SSSD configured and run?
+Warning: libreplace-private-samba.so: needed library not found in library-path /lib64:/usr/lib64:/usr/lib64/sssd
+Warning: libreplace-private-samba.so: needed library not found in library-path /lib64:/usr/lib64:/usr/lib64/sssd
+Warning: libreplace-private-samba.so: needed library not found in library-path /lib64:/usr/lib64:/usr/lib64/sssd
+Warning: libreplace-private-samba.so: needed library not found in library-path /lib64:/usr/lib64:/usr/lib64/sssd
 
   Installing       : systemd-resolved XXX/XXX
   Running scriptlet: systemd-resolved XXX/XXX
@@ -859,6 +948,11 @@ Created symlink '/etc/systemd/system/dbus-org.freedesktop.resolve1.service' → 
 Created symlink '/etc/systemd/system/sysinit.target.wants/systemd-resolved.service' → '/usr/lib/systemd/system/systemd-resolved.service'.
 
   Running scriptlet: avahi XXX/XXX
+Warning: libreplace-private-samba.so: needed library not found in library-path /lib64:/usr/lib64:/usr/lib64/sssd
+Warning: libreplace-private-samba.so: needed library not found in library-path /lib64:/usr/lib64:/usr/lib64/sssd
+Warning: libreplace-private-samba.so: needed library not found in library-path /lib64:/usr/lib64:/usr/lib64/sssd
+Warning: libreplace-private-samba.so: needed library not found in library-path /lib64:/usr/lib64:/usr/lib64/sssd
+
   Installing       : avahi XXX/XXX
   Running scriptlet: avahi XXX/XXX
 Created symlink '/etc/systemd/system/sockets.target.wants/avahi-daemon.socket' → '/usr/lib/systemd/system/avahi-daemon.socket'.
@@ -866,8 +960,11 @@ Created symlink '/etc/systemd/system/dbus-org.freedesktop.Avahi.service' → '/u
 Created symlink '/etc/systemd/system/multi-user.target.wants/avahi-daemon.service' → '/usr/lib/systemd/system/avahi-daemon.service'.
 
   Installing       : gnupg2-smime XXX/XXX
+  Running scriptlet: gnupg2-smime XXX/XXX
   Installing       : authselect XXX/XXX
+  Running scriptlet: authselect XXX/XXX
   Installing       : cracklib-dicts XXX/XXX
+  Running scriptlet: cracklib-dicts XXX/XXX
   Running scriptlet: man-db XXX/XXX
   Installing       : man-db XXX/XXX
   Running scriptlet: man-db XXX/XXX
@@ -876,32 +973,51 @@ Created symlink '/etc/systemd/system/multi-user.target.wants/avahi-daemon.servic
   Installing       : pkcs11-provider XXX/XXX
   Installing       : zram-generator-defaults XXX/XXX
   Installing       : xfsprogs XXX/XXX
+  Running scriptlet: xfsprogs XXX/XXX
   Installing       : jq XXX/XXX
+  Running scriptlet: jq XXX/XXX
   Installing       : btrfs-progs XXX/XXX
+  Running scriptlet: btrfs-progs XXX/XXX
   Installing       : fwupd-efi XXX/XXX
   Installing       : e2fsprogs XXX/XXX
+  Running scriptlet: e2fsprogs XXX/XXX
   Installing       : pinentry XXX/XXX
+  Running scriptlet: pinentry XXX/XXX
   Installing       : ntfsprogs XXX/XXX
+  Running scriptlet: ntfsprogs XXX/XXX
   Installing       : ipset XXX/XXX
+  Running scriptlet: ipset XXX/XXX
   Installing       : nano-default-editor XXX/XXX
-  Installing       : ntfs-3g XXX/XXX
-  Installing       : ntfs-3g-system-compression XXX/XXX
   Installing       : vim-minimal XXX/XXX
+  Running scriptlet: vim-minimal XXX/XXX
+  Installing       : ntfs-3g XXX/XXX
+  Running scriptlet: ntfs-3g XXX/XXX
+  Installing       : ntfs-3g-system-compression XXX/XXX
+  Installing       : prefixdevname XXX/XXX
   Installing       : nilfs-utils XXX/XXX
+  Running scriptlet: nilfs-utils XXX/XXX
   Installing       : f2fs-tools XXX/XXX
+  Running scriptlet: f2fs-tools XXX/XXX
   Installing       : mkpasswd XXX/XXX
+  Running scriptlet: mkpasswd XXX/XXX
   Installing       : pigz XXX/XXX
+  Running scriptlet: pigz XXX/XXX
   Installing       : bash-completion XXX/XXX
   Installing       : hostname XXX/XXX
   Running scriptlet: hostname XXX/XXX
-  Installing       : memstrack XXX/XXX
-  Installing       : ncurses XXX/XXX
   Installing       : dosfstools XXX/XXX
+  Running scriptlet: dosfstools XXX/XXX
   Installing       : exfatprogs XXX/XXX
+  Running scriptlet: exfatprogs XXX/XXX
   Installing       : libmaxminddb XXX/XXX
+  Running scriptlet: libmaxminddb XXX/XXX
+  Installing       : memstrack XXX/XXX
+  Running scriptlet: memstrack XXX/XXX
+  Installing       : ncurses XXX/XXX
+  Running scriptlet: ncurses XXX/XXX
   Installing       : qrencode-libs XXX/XXX
-  Installing       : abattis-cantarell-fonts XXX/XXX
-  Installing       : adobe-source-code-pro-5. XXX/XXX
+  Installing       : adwaita-mono-fonts XXX/XXX
+  Installing       : adwaita-sans-fonts XXX/XXX
   Installing       : rootfiles XXX/XXX
   Installing       : geolite2-country XXX/XXX
   Installing       : geolite2-city XXX/XXX
@@ -910,10 +1026,9 @@ Created symlink '/etc/systemd/system/multi-user.target.wants/avahi-daemon.servic
   Running scriptlet: ca-certificates XXX/XXX
   Running scriptlet: authselect-libs XXX/XXX
   Running scriptlet: systemd XXX/XXX
+  Running scriptlet: selinux-policy-targeted XXX/XXX
   Running scriptlet: systemd-udev XXX/XXX
   Running scriptlet: sssd-common XXX/XXX
-  Running scriptlet: rpm XXX/XXX
-  Running scriptlet: selinux-policy-targeted XXX/XXX
   Running scriptlet: firewalld XXX/XXX
   Running scriptlet: crypto-policies-scripts XXX/XXX
   Running scriptlet: systemd-networkd XXX/XXX
@@ -927,8 +1042,8 @@ Installed:
   ModemManager-glib
   NetworkManager
   NetworkManager-libnm
-  abattis-cantarell-fonts
-  adobe-source-code-pro-fonts
+  adwaita-mono-fonts
+  adwaita-sans-fonts
   alternatives
   audit
   audit-libs
@@ -937,7 +1052,6 @@ Installed:
   authselect-libs
   avahi
   avahi-libs
-  basesystem
   bash
   bash-completion
   bluez
@@ -1025,6 +1139,7 @@ Installed:
   gzip
   hostname
   hwdata
+  ima-evm-utils-libs
   inih
   initscripts-service
   ipcalc
@@ -1079,6 +1194,7 @@ Installed:
   libdhash
   libdnf5
   libdnf5-cli
+  libdnf5-plugin-expired-pgp-keys
   libdrm
   libeconf
   libedit
@@ -1087,12 +1203,14 @@ Installed:
   libfdisk
   libffi
   libfido2
+  libfsverity
   libftdi
   libgcc
   libgcrypt
   libgomp
   libgpg-error
   libgudev
+  libicu
   libidn2
   libini_config
   libjaylink
@@ -1152,9 +1270,11 @@ Installed:
   libtool-ltdl
   libudisks2
   libunistring
+  liburing
   libusb1
   libuuid
   libverto
+  libwbclient
   libxcrypt
   libxkbcommon
   libxml2
@@ -1162,6 +1282,7 @@ Installed:
   libyaml
   libzstd
   lmdb-libs
+  logrotate
   lua-libs
   lz4-libs
   lzo
@@ -1178,6 +1299,7 @@ Installed:
   ncurses-libs
   nettle
   nftables
+  nftables-services
   nilfs-utils
   npth
   nspr
@@ -1223,6 +1345,7 @@ Installed:
   polkit-libs
   polkit-pkla-compat
   popt
+  prefixdevname
   procps-ng
   protobuf-c
   psmisc
@@ -1244,6 +1367,10 @@ Installed:
   rpm-plugin-audit
   rpm-plugin-selinux
   rpm-sequoia
+  rpm-sign-libs
+  samba-client-libs
+  samba-common
+  samba-common-libs
   sdbus-cpp
   sed
   selinux-policy
@@ -1263,6 +1390,8 @@ Installed:
   systemd-networkd
   systemd-pam
   systemd-resolved
+  systemd-shared
+  systemd-sysusers
   systemd-udev
   tpm2-tools
   tpm2-tss

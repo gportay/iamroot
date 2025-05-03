@@ -319,6 +319,7 @@ Downloading Packages:
 ----------------------------------
 Total XXX xB/s | XXX xB XX:XX
 Running transaction check
+warning: private mounts in chroot not implemented
 Transaction check succeeded.
 Running transaction test
 Transaction test succeeded.
@@ -689,9 +690,6 @@ Running in chroot, ignoring request.
   Installing       : geolite2-city XXX/XXX
   Running scriptlet: filesystem XXX/XXX
   Running scriptlet: glibc-all-langpacks             295/295FIXME: not-running /usr/sbin/build-locale-archive --install-langs all
-warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
  
   Running scriptlet: sssd-common XXX/XXX
   Running scriptlet: kernel-core XXX/XXX

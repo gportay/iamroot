@@ -389,6 +389,7 @@ Downloading Packages:
 ----------------------------------
 Total XXX xB/s | XXX xB XX:XX
 Running transaction check
+warning: private mounts in chroot not implemented
 Transaction check succeeded.
 Running transaction test
 Transaction test succeeded.

@@ -331,6 +331,7 @@ Downloading Packages:
 ----------------------------------
 Total XXX xB/s | XXX xB XX:XX
 Running transaction check
+warning: private mounts in chroot not implemented
 Transaction check succeeded.
 Running transaction test
 Transaction test succeeded.
@@ -370,13 +371,6 @@ Running transaction
   Running scriptlet: glibc XXX/XXX
   Installing       : glibc XXX/XXX
   Running scriptlet: glibc XXX/XXX
-warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
- 
   Installing       : ncurses-libs XXX/XXX
   Installing       : bash XXX/XXX
   Running scriptlet: bash XXX/XXX

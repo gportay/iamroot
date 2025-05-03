@@ -13,11 +13,11 @@ Loading repository data...
 Reading installed packages...
 Resolving package dependencies...
 The following XXX recommended packages were automatically selected:
-  aaa_base-extras augeas-lenses ca-certificates-mozilla cpio-mt cracklib-dict-full crypto-policies-scripts dirmngr dump-rmt glibc-extra glibc-gconv-modules-extra iproute2 iputils libbpf1 libldap-data libncurses6 libpcre2-8-0 login_defs logrotate lsof ncurses-utils netcfg pam-manpages pam_pwquality publicsuffix python311 python311-curses python311-dbm python311-pip terminfo-screen update-bootloader zypper-log
+  aaa_base-extras augeas-lenses ca-certificates-mozilla cpio-mt cracklib-dict-full crypto-policies-scripts dirmngr dump-rmt glibc-extra glibc-gconv-modules-extra iproute2 iputils libbpf1 libldap-data libncurses6 libpcre2-8-0 login_defs logrotate lsof ncurses-utils netcfg pam-manpages pam_pwquality publicsuffix python313 python313-curses python313-dbm python313-pip terminfo-screen update-bootloader zypper-log
 The following package is suggested, but will not be installed:
   libz1-32bit
 The following XXX NEW packages are going to be installed:
-  aaa_base aaa_base-extras alts augeas-lenses bash bash-sh boost-license1_86_0 branding-openSUSE busybox busybox-diffutils busybox-gawk busybox-grep busybox-sed busybox-xz ca-certificates ca-certificates-mozilla compat-usrmerge-tools coreutils cpio cpio-mt cracklib cracklib-dict-full crypto-policies crypto-policies-scripts dbus-1 dbus-1-common dbus-1-tools dbus-broker dbus-broker-block-restart debuginfod-client debuginfod-profile dirmngr dump-rmt filesystem fillup findutils glibc glibc-extra glibc-gconv-modules-extra gpg2 iproute2 iputils kbd krb5 libacl1 libalternatives1 libapparmor1 libassuan9 libattr1 libaudit1 libaugeas0 libblkid1 libboost_thread1_86_0 libboost_thread1_86_0-x86-64-v3 libbpf1 libbrotlicommon1 libbrotlicommon1-x86-64-v3 libbrotlidec1 libbrotlidec1-x86-64-v3 libbz2-1 libbz2-1-x86-64-v3 libcap-ng0 libcap2 libcom_err2 libcrack2 libcrypt1 libcurl4 libdbus-1-3 libdebuginfod1 libdw1 libeconf0 libelf1 libexpat1 libfa1 libfdisk1 libffi8 libgcc_s1 libgcrypt20 libgcrypt20-x86-64-v3 libgdbm6 libgdbm_compat4 libglib-2_0-0 libgmp10 libgnutls30 libgpg-error0 libgpgme11 libhogweed6 libhogweed6-x86-64-v3 libidn2-0 libjitterentropy3 libkbdfile1 libkeymap1 libkeyutils1 libkfont0 libksba8 libldap-data libldap2 liblua5_4-5 liblzma5 liblzma5-x86-64-v3 libmnl0 libmount1 libmpdec3 libncurses6 libnettle8 libnettle8-x86-64-v3 libnghttp2-14 libnpth0 libnss_usrfiles2 libopenssl3 libopenssl3-x86-64-v3 libp11-kit0 libpcre2-8-0 libpkgconf5 libpopt0 libpsl5 libpwquality1 libpython3_11-1_0 libpython3_11-1_0-x86-64-v3 libreadline8 libsasl2-3 libseccomp2 libselinux1 libsepol2 libsigc-2_0-0 libsmartcols1 libsolv-tools-base libsqlite3-0 libsqlite3-0-x86-64-v3 libssh-config libssh4 libstdc++6 libsystemd0 libtasn1-6 libtirpc-netconfig libtirpc3 libudev1 libunistring5 libusb-1_0-0 libuuid1 libverto1 libxml2-2 libxtables12 libyaml-cpp0_8 libz1 libz1-x86-64-v3 libzck1 libzstd1 libzstd1-x86-64-v3 libzypp login_defs logrotate lsof ncurses-utils netcfg openSUSE-build-key openSUSE-release openSUSE-release-ftp p11-kit p11-kit-tools pam pam-config pam-extra pam-manpages pam_pwquality patterns-base-minimal_base patterns-glibc-hwcaps-x86_64_v3 permctl permissions permissions-config pinentry pkgconf pkgconf-m4 pkgconf-pkg-config publicsuffix python311 python311-base python311-base-x86-64-v3 python311-curses python311-dbm python311-pip python311-x86-64-v3 rpm rpm-config-SUSE shared-python-startup system-user-root systemd systemd-default-settings systemd-default-settings-branding-openSUSE systemd-presets-branding-openSUSE systemd-presets-common-SUSE sysuser-shadow terminfo-base terminfo-screen update-alternatives update-bootloader util-linux util-linux-systemd zypper zypper-log zypper-needs-restarting
+  aaa_base aaa_base-extras alts augeas-lenses bash bash-sh boost-license1_87_0 branding-openSUSE busybox busybox-diffutils busybox-gawk busybox-grep busybox-sed busybox-xz ca-certificates ca-certificates-mozilla compat-usrmerge-tools coreutils cpio cpio-mt cracklib cracklib-dict-full crypto-policies crypto-policies-scripts dbus-1 dbus-1-common dbus-1-tools dbus-broker dbus-broker-block-restart debuginfod-client debuginfod-profile dirmngr dump-rmt filesystem fillup findutils glibc glibc-extra glibc-gconv-modules-extra gpg2 iproute2 iputils kbd krb5 libacl1 libalternatives1 libapparmor1 libassuan9 libattr1 libaudit1 libaugeas0 libblkid1 libboost_thread1_87_0 libboost_thread1_87_0-x86-64-v3 libbpf1 libbrotlicommon1 libbrotlicommon1-x86-64-v3 libbrotlidec1 libbrotlidec1-x86-64-v3 libbz2-1 libbz2-1-x86-64-v3 libcap-ng0 libcap2 libcom_err2 libcrack2 libcrypt1 libcurl4 libdbus-1-3 libdebuginfod1 libdw1 libeconf0 libelf1 libexpat1 libfa1 libfdisk1 libffi8 libgcc_s1 libgcrypt20 libgcrypt20-x86-64-v3 libgdbm6 libgdbm_compat4 libglib-2_0-0 libgmp10 libgnutls30 libgpg-error0 libgpgme11 libhogweed6 libhogweed6-x86-64-v3 libidn2-0 libjitterentropy3 libjson-c5 libkbdfile1 libkeymap1 libkeyutils1 libkfont0 libksba8 libldap-data libldap2 liblua5_4-5 liblzma5 liblzma5-x86-64-v3 libmnl0 libmount1 libmpdec3 libncurses6 libnettle8 libnettle8-x86-64-v3 libnghttp2-14 libnpth0 libnss_usrfiles2 libopenssl3 libopenssl3-x86-64-v3 libp11-kit0 libpcre2-8-0 libpkgconf5 libpopt0 libpsl5 libpwquality1 libpython3_13-1_0 libpython3_13-1_0-x86-64-v3 libreadline8 libsasl2-3 libseccomp2 libselinux1 libsepol2 libsigc-2_0-0 libsmartcols1 libsolv-tools-base libsqlite3-0 libsqlite3-0-x86-64-v3 libssh-config libssh4 libstdc++6 libsystemd0 libtasn1-6 libtirpc-netconfig libtirpc3 libudev1 libunistring5 libusb-1_0-0 libuuid1 libverto1 libxml2-2 libxtables12 libyaml-cpp0_8 libz1 libz1-x86-64-v3 libzck1 libzstd1 libzstd1-x86-64-v3 libzypp login_defs logrotate lsof ncurses-utils netcfg openSUSE-build-key openSUSE-release openSUSE-release-ftp p11-kit p11-kit-tools pam pam-config pam-extra pam-manpages pam_pwquality patterns-base-minimal_base patterns-glibc-hwcaps-x86_64_v3 permctl permissions permissions-config pinentry pkgconf pkgconf-m4 pkgconf-pkg-config publicsuffix python313 python313-base python313-base-x86-64-v3 python313-curses python313-dbm python313-pip python313-x86-64-v3 rpm rpm-config-SUSE shared-python-startup system-user-root systemd systemd-default-settings systemd-default-settings-branding-openSUSE systemd-presets-branding-openSUSE systemd-presets-common-SUSE sysuser-shadow terminfo-base terminfo-screen update-alternatives update-bootloader util-linux util-linux-systemd zypper zypper-log zypper-needs-restarting
 XXX new packages to install.
 Package download size:   XXX.X MiB
 Package install size change:
@@ -30,586 +30,743 @@ Warning: XXX packages had to be excluded from file conflicts check because they 
     Note: Checking for file conflicts requires not installed packages to be downloaded in advance in
     order to access their file lists. See option '--download-in-advance / --dry-run --download-only'
     in the zypper manual page for details.
-Retrieving: boost-license1_86_0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: boost-license1_86_0 [done]
-(XXX/XXX) Installing: boost-license1_86_0 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/boost-license1_86_0: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+Retrieving: boost-license1_87_0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: boost-license1_87_0 [done]
+(XXX/XXX) Installing: boost-license1_87_0 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/boost-license1_87_0: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: branding-openSUSE (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: branding-openSUSE [done]
+Retrieving: branding-openSUSE.rpm [done]
 (XXX/XXX) Installing: branding-openSUSE [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/branding-openSUSE: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/branding-openSUSE.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: compat-usrmerge-tools (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: compat-usrmerge-tools.rpm [done]
 (XXX/XXX) Installing: compat-usrmerge-tools [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/compat-usrmerge-tools.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: cracklib-dict-full (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: cracklib-dict-full.rpm [done]
 (XXX/XXX) Installing: cracklib-dict-full [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/cracklib-dict-full.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: dbus-broker-block-restart (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: dbus-broker-block-restart [done]
 (XXX/XXX) Installing: dbus-broker-block-restart [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/dbus-broker-block-restart: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: debuginfod-profile (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: debuginfod-profile.rpm [done]
 (XXX/XXX) Installing: debuginfod-profile [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/debuginfod-profile.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: libldap-data (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libldap-data [done]
 (XXX/XXX) Installing: libldap-data [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/libldap-data: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libssh-config (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libssh-config.rpm [done]
-(XXX/XXX) Installing: libssh-config [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libssh-config.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: libtirpc-netconfig (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libtirpc-netconfig.rpm [done]
 (XXX/XXX) Installing: libtirpc-netconfig [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libtirpc-netconfig.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: openSUSE-release-ftp (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: openSUSE-release-ftp.rpm [done]
 (XXX/XXX) Installing: openSUSE-release-ftp [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/openSUSE-release-ftp.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: pam-manpages (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: pam-manpages [done]
 (XXX/XXX) Installing: pam-manpages [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/pam-manpages: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: pkgconf-m4 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: pkgconf-m4 [done]
 (XXX/XXX) Installing: pkgconf-m4 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/pkgconf-m4: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: publicsuffix (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: publicsuffix [done]
 (XXX/XXX) Installing: publicsuffix [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/publicsuffix: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: shared-python-startup (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: shared-python-startup [done]
 (XXX/XXX) Installing: shared-python-startup [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/shared-python-startup: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: system-user-root (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: system-user-root [done]
 (XXX/XXX) Installing: system-user-root [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/system-user-root: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: filesystem (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: filesystem.rpm [done]
 (XXX/XXX) Installing: filesystem [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/filesystem.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: glibc (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: glibc.rpm [done]
 (XXX/XXX) Installing: glibc [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/glibc.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+warning: private mounts in chroot not implemented
 Retrieving: glibc-gconv-modules-extra (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: glibc-gconv-modules-extra.rpm [done]
 (XXX/XXX) Installing: glibc-gconv-modules-extra [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/glibc-gconv-modules-extra.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: libpcre2-8-0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libpcre2-8-0.rpm [done]
 (XXX/XXX) Installing: libpcre2-8-0 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpcre2-8-0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: libselinux1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libselinux1.rpm [done]
 (XXX/XXX) Installing: libselinux1 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libselinux1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: glibc-extra (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: glibc-extra.rpm [done]
 (XXX/XXX) Installing: glibc-extra [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/glibc-extra.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: update-alternatives (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: update-alternatives.rpm [done]
 (XXX/XXX) Installing: update-alternatives [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/update-alternatives.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: patterns-glibc-hwcaps-x86_64_v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: patterns-glibc-hwcaps-x86_64_v3.rpm [done]
-(XXX/XXX) Installing: patterns-glibc-hwcaps-x86_64_v3 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/patterns-glibc-hwcaps-x86_64_v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libzstd1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libzstd1.rpm [done]
-(XXX/XXX) Installing: libzstd1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libzstd1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libz1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libz1.rpm [done]
-(XXX/XXX) Installing: libz1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libz1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libxtables12 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libxtables12.rpm [done]
-(XXX/XXX) Installing: libxtables12 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libxtables12.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libverto1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libverto1.rpm [done]
-(XXX/XXX) Installing: libverto1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libverto1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libuuid1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libuuid1.rpm [done]
-(XXX/XXX) Installing: libuuid1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libuuid1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libunistring5 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libunistring5.rpm [done]
-(XXX/XXX) Installing: libunistring5 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libunistring5.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libtasn1-6 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libtasn1-6.rpm [done]
-(XXX/XXX) Installing: libtasn1-6 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libtasn1-6.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libsqlite3-0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libsqlite3-0.rpm [done]
-(XXX/XXX) Installing: libsqlite3-0 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsqlite3-0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libsmartcols1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libsmartcols1.rpm [done]
-(XXX/XXX) Installing: libsmartcols1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsmartcols1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libsepol2 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libsepol2.rpm [done]
-(XXX/XXX) Installing: libsepol2 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsepol2.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libseccomp2 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libseccomp2.rpm [done]
-(XXX/XXX) Installing: libseccomp2 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libseccomp2.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libsasl2-3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libsasl2-3.rpm [done]
-(XXX/XXX) Installing: libsasl2-3 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsasl2-3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libpopt0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libpopt0.rpm [done]
-(XXX/XXX) Installing: libpopt0 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpopt0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libpkgconf5 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libpkgconf5.rpm [done]
-(XXX/XXX) Installing: libpkgconf5 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpkgconf5.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libnss_usrfiles2 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libnss_usrfiles2.rpm [done]
-(XXX/XXX) Installing: libnss_usrfiles2 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libnss_usrfiles2.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libnpth0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libnpth0.rpm [done]
-(XXX/XXX) Installing: libnpth0 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libnpth0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libnghttp2-14 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libnghttp2-14.rpm [done]
-(XXX/XXX) Installing: libnghttp2-14 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libnghttp2-14.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libnettle8 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libnettle8.rpm [done]
-(XXX/XXX) Installing: libnettle8 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libnettle8.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libmpdec3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libmpdec3.rpm [done]
-(XXX/XXX) Installing: libmpdec3 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libmpdec3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libmnl0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libmnl0.rpm [done]
-(XXX/XXX) Installing: libmnl0 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libmnl0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: liblzma5 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: liblzma5.rpm [done]
-(XXX/XXX) Installing: liblzma5 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/liblzma5.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: liblua5_4-5 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: liblua5_4-5.rpm [done]
-(XXX/XXX) Installing: liblua5_4-5 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/liblua5_4-5.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libkeyutils1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libkeyutils1.rpm [done]
-(XXX/XXX) Installing: libkeyutils1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libkeyutils1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libkbdfile1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libkbdfile1.rpm [done]
-(XXX/XXX) Installing: libkbdfile1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libkbdfile1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libjitterentropy3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libjitterentropy3.rpm [done]
-(XXX/XXX) Installing: libjitterentropy3 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libjitterentropy3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libgpg-error0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libgpg-error0.rpm [done]
-(XXX/XXX) Installing: libgpg-error0 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgpg-error0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libgmp10 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libgmp10.rpm [done]
-(XXX/XXX) Installing: libgmp10 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgmp10.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libglib-2_0-0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libglib-2_0-0.rpm [done]
-(XXX/XXX) Installing: libglib-2_0-0 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libglib-2_0-0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libgdbm6 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libgdbm6.rpm [done]
-(XXX/XXX) Installing: libgdbm6 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgdbm6.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libgcc_s1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libgcc_s1.rpm [done]
-(XXX/XXX) Installing: libgcc_s1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgcc_s1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libffi8 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libffi8.rpm [done]
-(XXX/XXX) Installing: libffi8 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libffi8.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libfa1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libfa1.rpm [done]
-(XXX/XXX) Installing: libfa1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libfa1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libexpat1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libexpat1.rpm [done]
-(XXX/XXX) Installing: libexpat1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libexpat1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libeconf0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libeconf0.rpm [done]
-(XXX/XXX) Installing: libeconf0 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libeconf0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libcrypt1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libcrypt1.rpm [done]
-(XXX/XXX) Installing: libcrypt1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libcrypt1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libcom_err2 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libcom_err2.rpm [done]
-(XXX/XXX) Installing: libcom_err2 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libcom_err2.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libcap2 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libcap2.rpm [done]
-(XXX/XXX) Installing: libcap2 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libcap2.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libcap-ng0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libcap-ng0.rpm [done]
-(XXX/XXX) Installing: libcap-ng0 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libcap-ng0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libbz2-1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libbz2-1.rpm [done]
-(XXX/XXX) Installing: libbz2-1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libbz2-1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libbrotlicommon1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libbrotlicommon1.rpm [done]
-(XXX/XXX) Installing: libbrotlicommon1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libbrotlicommon1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libaudit1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libaudit1.rpm [done]
-(XXX/XXX) Installing: libaudit1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libaudit1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libattr1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libattr1.rpm [done]
-(XXX/XXX) Installing: libattr1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libattr1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libapparmor1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libapparmor1.rpm [done]
-(XXX/XXX) Installing: libapparmor1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libapparmor1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libalternatives1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libalternatives1.rpm [done]
-(XXX/XXX) Installing: libalternatives1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libalternatives1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libacl1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libacl1.rpm [done]
-(XXX/XXX) Installing: libacl1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libacl1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: findutils (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: findutils.rpm [done]
-(XXX/XXX) Installing: findutils [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/findutils.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: fillup (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: fillup.rpm [done]
-(XXX/XXX) Installing: fillup [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/fillup.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libelf1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libelf1.rpm [done]
-(XXX/XXX) Installing: libelf1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libelf1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libidn2-0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libidn2-0.rpm [done]
-(XXX/XXX) Installing: libidn2-0 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libidn2-0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: pkgconf (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: pkgconf.rpm [done]
-(XXX/XXX) Installing: pkgconf [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/pkgconf.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: netcfg (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: netcfg [done]
-(XXX/XXX) Installing: netcfg [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/netcfg: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libxml2-2 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libxml2-2.rpm [done]
-(XXX/XXX) Installing: libxml2-2 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libxml2-2.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libkfont0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libkfont0.rpm [done]
-(XXX/XXX) Installing: libkfont0 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libkfont0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libkeymap1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libkeymap1.rpm [done]
-(XXX/XXX) Installing: libkeymap1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libkeymap1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libksba8 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libksba8.rpm [done]
-(XXX/XXX) Installing: libksba8 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libksba8.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libgcrypt20 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libgcrypt20.rpm [done]
-(XXX/XXX) Installing: libgcrypt20 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgcrypt20.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libassuan9 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libassuan9.rpm [done]
-(XXX/XXX) Installing: libassuan9 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libassuan9.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libhogweed6 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libhogweed6.rpm [done]
-(XXX/XXX) Installing: libhogweed6 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libhogweed6.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libgdbm_compat4 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libgdbm_compat4.rpm [done]
-(XXX/XXX) Installing: libgdbm_compat4 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgdbm_compat4.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libstdc++6 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libstdc++6.rpm [done]
-(XXX/XXX) Installing: libstdc++6 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libstdc++6.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libp11-kit0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libp11-kit0.rpm [done]
-(XXX/XXX) Installing: libp11-kit0 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libp11-kit0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libblkid1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libblkid1.rpm [done]
-(XXX/XXX) Installing: libblkid1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libblkid1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: busybox (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: busybox.rpm [done]
-(XXX/XXX) Installing: busybox [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/busybox.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libudev1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libudev1.rpm [done]
-(XXX/XXX) Installing: libudev1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libudev1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libsystemd0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libsystemd0.rpm [done]
-(XXX/XXX) Installing: libsystemd0 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsystemd0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libbrotlidec1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libbrotlidec1.rpm [done]
-(XXX/XXX) Installing: libbrotlidec1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libbrotlidec1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: alts (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: alts.rpm [done]
-(XXX/XXX) Installing: alts [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/alts.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: permctl (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: permctl.rpm [done]
-(XXX/XXX) Installing: permctl [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/permctl.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libdw1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libdw1.rpm [done]
-(XXX/XXX) Installing: libdw1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libdw1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libbpf1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libbpf1.rpm [done]
-(XXX/XXX) Installing: libbpf1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libbpf1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libpsl5 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libpsl5.rpm [done]
-(XXX/XXX) Installing: libpsl5 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpsl5.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libaugeas0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libaugeas0.rpm [done]
-(XXX/XXX) Installing: libaugeas0 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libaugeas0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: augeas-lenses (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: augeas-lenses.rpm [done]
-(XXX/XXX) Installing: augeas-lenses [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/augeas-lenses.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: terminfo-base (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: terminfo-base.rpm [done]
 (XXX/XXX) Installing: terminfo-base [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/terminfo-base.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: libncurses6 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libncurses6.rpm [done]
 (XXX/XXX) Installing: libncurses6 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libncurses6.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: ncurses-utils (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: ncurses-utils.rpm [done]
 (XXX/XXX) Installing: ncurses-utils [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/ncurses-utils.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libyaml-cpp0_8 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libyaml-cpp0_8.rpm [done]
-(XXX/XXX) Installing: libyaml-cpp0_8 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libyaml-cpp0_8.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libsigc-2_0-0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libsigc-2_0-0.rpm [done]
-(XXX/XXX) Installing: libsigc-2_0-0 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsigc-2_0-0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libboost_thread1_86_0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libboost_thread1_86_0.rpm [done]
-(XXX/XXX) Installing: libboost_thread1_86_0 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libboost_thread1_86_0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: p11-kit-tools (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: p11-kit-tools.rpm [done]
-(XXX/XXX) Installing: p11-kit-tools [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/p11-kit-tools.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: p11-kit (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: p11-kit.rpm [done]
-(XXX/XXX) Installing: p11-kit [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/p11-kit.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libmount1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libmount1.rpm [done]
-(XXX/XXX) Installing: libmount1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libmount1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libfdisk1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libfdisk1.rpm [done]
-(XXX/XXX) Installing: libfdisk1 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libfdisk1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: busybox-xz (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: busybox-xz [done]
-(XXX/XXX) Installing: busybox-xz [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/busybox-xz: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: busybox-sed (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: busybox-sed [done]
-(XXX/XXX) Installing: busybox-sed [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/busybox-sed: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: busybox-grep (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: busybox-grep [done]
-(XXX/XXX) Installing: busybox-grep [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/busybox-grep: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: busybox-gawk (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: busybox-gawk [done]
-(XXX/XXX) Installing: busybox-gawk [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/busybox-gawk: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: busybox-diffutils (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: busybox-diffutils [done]
-(XXX/XXX) Installing: busybox-diffutils [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/busybox-diffutils: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libusb-1_0-0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libusb-1_0-0.rpm [done]
-(XXX/XXX) Installing: libusb-1_0-0 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libusb-1_0-0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: patterns-glibc-hwcaps-x86_64_v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: patterns-glibc-hwcaps-x86_64_v3.rpm [done]
+(XXX/XXX) Installing: patterns-glibc-hwcaps-x86_64_v3 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/patterns-glibc-hwcaps-x86_64_v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libzstd1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libzstd1.rpm [done]
+(XXX/XXX) Installing: libzstd1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libzstd1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libz1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libz1.rpm [done]
+(XXX/XXX) Installing: libz1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libz1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libxtables12 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libxtables12.rpm [done]
+(XXX/XXX) Installing: libxtables12 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libxtables12.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libverto1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libverto1.rpm [done]
+(XXX/XXX) Installing: libverto1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libverto1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libuuid1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libuuid1.rpm [done]
+(XXX/XXX) Installing: libuuid1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libuuid1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libunistring5 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libunistring5.rpm [done]
+(XXX/XXX) Installing: libunistring5 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libunistring5.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libtasn1-6 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libtasn1-6.rpm [done]
+(XXX/XXX) Installing: libtasn1-6 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libtasn1-6.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libsqlite3-0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libsqlite3-0.rpm [done]
+(XXX/XXX) Installing: libsqlite3-0 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsqlite3-0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libsmartcols1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libsmartcols1.rpm [done]
+(XXX/XXX) Installing: libsmartcols1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsmartcols1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libsepol2 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libsepol2.rpm [done]
+(XXX/XXX) Installing: libsepol2 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsepol2.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libseccomp2 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libseccomp2.rpm [done]
+(XXX/XXX) Installing: libseccomp2 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libseccomp2.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libsasl2-3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libsasl2-3.rpm [done]
+(XXX/XXX) Installing: libsasl2-3 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsasl2-3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libpopt0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libpopt0.rpm [done]
+(XXX/XXX) Installing: libpopt0 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpopt0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libpkgconf5 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libpkgconf5.rpm [done]
+(XXX/XXX) Installing: libpkgconf5 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpkgconf5.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libnss_usrfiles2 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libnss_usrfiles2.rpm [done]
+(XXX/XXX) Installing: libnss_usrfiles2 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libnss_usrfiles2.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libnpth0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libnpth0.rpm [done]
+(XXX/XXX) Installing: libnpth0 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libnpth0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libnghttp2-14 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libnghttp2-14.rpm [done]
+(XXX/XXX) Installing: libnghttp2-14 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libnghttp2-14.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libnettle8 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libnettle8.rpm [done]
+(XXX/XXX) Installing: libnettle8 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libnettle8.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libmpdec3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libmpdec3.rpm [done]
+(XXX/XXX) Installing: libmpdec3 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libmpdec3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libmnl0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libmnl0.rpm [done]
+(XXX/XXX) Installing: libmnl0 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libmnl0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: liblzma5 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: liblzma5.rpm [done]
+(XXX/XXX) Installing: liblzma5 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/liblzma5.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: liblua5_4-5 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: liblua5_4-5.rpm [done]
+(XXX/XXX) Installing: liblua5_4-5 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/liblua5_4-5.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libkeyutils1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libkeyutils1.rpm [done]
+(XXX/XXX) Installing: libkeyutils1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libkeyutils1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libkbdfile1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libkbdfile1.rpm [done]
+(XXX/XXX) Installing: libkbdfile1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libkbdfile1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libjson-c5 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libjson-c5.rpm [done]
+(XXX/XXX) Installing: libjson-c5 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libjson-c5.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libjitterentropy3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libjitterentropy3.rpm [done]
+(XXX/XXX) Installing: libjitterentropy3 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libjitterentropy3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libgpg-error0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libgpg-error0.rpm [done]
+(XXX/XXX) Installing: libgpg-error0 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgpg-error0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libgmp10 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libgmp10.rpm [done]
+(XXX/XXX) Installing: libgmp10 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgmp10.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libglib-2_0-0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libglib-2_0-0.rpm [done]
+(XXX/XXX) Installing: libglib-2_0-0 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libglib-2_0-0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libgdbm6 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libgdbm6.rpm [done]
+(XXX/XXX) Installing: libgdbm6 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgdbm6.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libgcc_s1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libgcc_s1.rpm [done]
+(XXX/XXX) Installing: libgcc_s1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgcc_s1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libffi8 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libffi8.rpm [done]
+(XXX/XXX) Installing: libffi8 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libffi8.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libfa1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libfa1.rpm [done]
+(XXX/XXX) Installing: libfa1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libfa1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libexpat1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libexpat1.rpm [done]
+(XXX/XXX) Installing: libexpat1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libexpat1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libeconf0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libeconf0.rpm [done]
+(XXX/XXX) Installing: libeconf0 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libeconf0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libcrypt1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libcrypt1.rpm [done]
+(XXX/XXX) Installing: libcrypt1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libcrypt1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libcom_err2 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libcom_err2.rpm [done]
+(XXX/XXX) Installing: libcom_err2 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libcom_err2.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libcap2 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libcap2.rpm [done]
+(XXX/XXX) Installing: libcap2 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libcap2.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libcap-ng0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libcap-ng0.rpm [done]
+(XXX/XXX) Installing: libcap-ng0 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libcap-ng0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libbz2-1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libbz2-1.rpm [done]
+(XXX/XXX) Installing: libbz2-1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libbz2-1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libbrotlicommon1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libbrotlicommon1.rpm [done]
+(XXX/XXX) Installing: libbrotlicommon1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libbrotlicommon1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libaudit1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libaudit1.rpm [done]
+(XXX/XXX) Installing: libaudit1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libaudit1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libattr1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libattr1.rpm [done]
+(XXX/XXX) Installing: libattr1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libattr1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libapparmor1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libapparmor1.rpm [done]
+(XXX/XXX) Installing: libapparmor1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libapparmor1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libalternatives1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libalternatives1.rpm [done]
+(XXX/XXX) Installing: libalternatives1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libalternatives1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libacl1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libacl1.rpm [done]
+(XXX/XXX) Installing: libacl1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libacl1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: findutils (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: findutils.rpm [done]
+(XXX/XXX) Installing: findutils [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/findutils.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: fillup (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: fillup.rpm [done]
+(XXX/XXX) Installing: fillup [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/fillup.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: terminfo-screen (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: terminfo-screen.rpm [done]
 (XXX/XXX) Installing: terminfo-screen [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/terminfo-screen.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: libreadline8 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libreadline8.rpm [done]
 (XXX/XXX) Installing: libreadline8 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libreadline8.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libelf1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libelf1.rpm [done]
+(XXX/XXX) Installing: libelf1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libelf1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libidn2-0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libidn2-0.rpm [done]
+(XXX/XXX) Installing: libidn2-0 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libidn2-0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: pkgconf (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: pkgconf.rpm [done]
+(XXX/XXX) Installing: pkgconf [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/pkgconf.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: netcfg (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: netcfg [done]
+(XXX/XXX) Installing: netcfg [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/netcfg: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libxml2-2 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libxml2-2.rpm [done]
+(XXX/XXX) Installing: libxml2-2 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libxml2-2.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libkfont0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libkfont0.rpm [done]
+(XXX/XXX) Installing: libkfont0 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libkfont0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libkeymap1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libkeymap1.rpm [done]
+(XXX/XXX) Installing: libkeymap1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libkeymap1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libksba8 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libksba8.rpm [done]
+(XXX/XXX) Installing: libksba8 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libksba8.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libgcrypt20 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libgcrypt20.rpm [done]
+(XXX/XXX) Installing: libgcrypt20 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgcrypt20.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libassuan9 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libassuan9.rpm [done]
+(XXX/XXX) Installing: libassuan9 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libassuan9.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libhogweed6 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libhogweed6.rpm [done]
+(XXX/XXX) Installing: libhogweed6 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libhogweed6.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libgdbm_compat4 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libgdbm_compat4.rpm [done]
+(XXX/XXX) Installing: libgdbm_compat4 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgdbm_compat4.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libstdc++6 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libstdc++6.rpm [done]
+(XXX/XXX) Installing: libstdc++6 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libstdc++6.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libp11-kit0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libp11-kit0.rpm [done]
+(XXX/XXX) Installing: libp11-kit0 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libp11-kit0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libblkid1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libblkid1.rpm [done]
+(XXX/XXX) Installing: libblkid1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libblkid1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: busybox (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: busybox.rpm [done]
+(XXX/XXX) Installing: busybox [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/busybox.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libudev1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libudev1.rpm [done]
+(XXX/XXX) Installing: libudev1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libudev1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libsystemd0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libsystemd0.rpm [done]
+(XXX/XXX) Installing: libsystemd0 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsystemd0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libbrotlidec1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libbrotlidec1.rpm [done]
+(XXX/XXX) Installing: libbrotlidec1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libbrotlidec1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: alts (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: alts.rpm [done]
+(XXX/XXX) Installing: alts [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/alts.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: permctl (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: permctl.rpm [done]
+(XXX/XXX) Installing: permctl [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/permctl.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: bash (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: bash.rpm [done]
 (XXX/XXX) Installing: bash [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/bash.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: bash-sh (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: bash-sh [done]
 (XXX/XXX) Installing: bash-sh [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/bash-sh: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: zypper-log (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: zypper-log [done]
-(XXX/XXX) Installing: zypper-log [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/zypper-log: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libdw1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libdw1.rpm [done]
+(XXX/XXX) Installing: libdw1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libdw1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libbpf1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libbpf1.rpm [done]
+(XXX/XXX) Installing: libbpf1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libbpf1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libpsl5 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libpsl5.rpm [done]
+(XXX/XXX) Installing: libpsl5 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpsl5.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libaugeas0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libaugeas0.rpm [done]
+(XXX/XXX) Installing: libaugeas0 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libaugeas0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: augeas-lenses (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: augeas-lenses.rpm [done]
+(XXX/XXX) Installing: augeas-lenses [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/augeas-lenses.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libyaml-cpp0_8 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libyaml-cpp0_8.rpm [done]
+(XXX/XXX) Installing: libyaml-cpp0_8 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libyaml-cpp0_8.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libsigc-2_0-0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libsigc-2_0-0.rpm [done]
+(XXX/XXX) Installing: libsigc-2_0-0 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsigc-2_0-0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libboost_thread1_87_0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libboost_thread1_87_0.rpm [done]
+(XXX/XXX) Installing: libboost_thread1_87_0 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libboost_thread1_87_0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: p11-kit-tools (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: p11-kit-tools.rpm [done]
+(XXX/XXX) Installing: p11-kit-tools [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/p11-kit-tools.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: p11-kit (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: p11-kit.rpm [done]
+(XXX/XXX) Installing: p11-kit [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/p11-kit.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libmount1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libmount1.rpm [done]
+(XXX/XXX) Installing: libmount1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libmount1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libfdisk1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libfdisk1.rpm [done]
+(XXX/XXX) Installing: libfdisk1 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libfdisk1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: busybox-xz (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: busybox-xz [done]
+(XXX/XXX) Installing: busybox-xz [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/busybox-xz: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: busybox-sed (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: busybox-sed [done]
+(XXX/XXX) Installing: busybox-sed [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/busybox-sed: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: busybox-grep (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: busybox-grep [done]
+(XXX/XXX) Installing: busybox-grep [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/busybox-grep: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: busybox-gawk (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: busybox-gawk [done]
+(XXX/XXX) Installing: busybox-gawk [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/busybox-gawk: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: busybox-diffutils (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: busybox-diffutils [done]
+(XXX/XXX) Installing: busybox-diffutils [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/busybox-diffutils: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libusb-1_0-0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libusb-1_0-0.rpm [done]
+(XXX/XXX) Installing: libusb-1_0-0 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libusb-1_0-0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: sysuser-shadow (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: sysuser-shadow [done]
+(XXX/XXX) Installing: sysuser-shadow [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/sysuser-shadow: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: systemd-default-settings-branding-openSUSE (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: systemd-default-settings-branding-openSUSE [done]
 (XXX/XXX) Installing: systemd-default-settings-branding-openSUSE [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/systemd-default-settings-branding-openSUSE: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: systemd-default-settings (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: systemd-default-settings [done]
 (XXX/XXX) Installing: systemd-default-settings [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/systemd-default-settings: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: pkgconf-pkg-config (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: pkgconf-pkg-config.rpm [done]
 (XXX/XXX) Installing: pkgconf-pkg-config [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/pkgconf-pkg-config.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: pinentry (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: pinentry.rpm [done]
 (XXX/XXX) Installing: pinentry [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/pinentry.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: openSUSE-build-key (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: openSUSE-build-key.rpm [done]
 (XXX/XXX) Installing: openSUSE-build-key [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/openSUSE-build-key.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: login_defs (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: login_defs [done]
 (XXX/XXX) Installing: login_defs [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/login_defs: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: libzstd1-x86-64-v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libzstd1-x86-64-v3.rpm [done]
 (XXX/XXX) Installing: libzstd1-x86-64-v3 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libzstd1-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: libz1-x86-64-v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libz1-x86-64-v3.rpm [done]
 (XXX/XXX) Installing: libz1-x86-64-v3 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libz1-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libssh-config (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libssh-config [done]
+(XXX/XXX) Installing: libssh-config [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/libssh-config: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: libsqlite3-0-x86-64-v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libsqlite3-0-x86-64-v3.rpm [done]
 (XXX/XXX) Installing: libsqlite3-0-x86-64-v3 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsqlite3-0-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: libnettle8-x86-64-v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libnettle8-x86-64-v3.rpm [done]
 (XXX/XXX) Installing: libnettle8-x86-64-v3 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libnettle8-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: liblzma5-x86-64-v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: liblzma5-x86-64-v3.rpm [done]
 (XXX/XXX) Installing: liblzma5-x86-64-v3 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/liblzma5-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: libhogweed6-x86-64-v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libhogweed6-x86-64-v3.rpm [done]
 (XXX/XXX) Installing: libhogweed6-x86-64-v3 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libhogweed6-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: libgcrypt20-x86-64-v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libgcrypt20-x86-64-v3.rpm [done]
 (XXX/XXX) Installing: libgcrypt20-x86-64-v3 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgcrypt20-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: libbz2-1-x86-64-v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libbz2-1-x86-64-v3.rpm [done]
 (XXX/XXX) Installing: libbz2-1-x86-64-v3 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libbz2-1-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: libbrotlidec1-x86-64-v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libbrotlidec1-x86-64-v3.rpm [done]
 (XXX/XXX) Installing: libbrotlidec1-x86-64-v3 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libbrotlidec1-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: libbrotlicommon1-x86-64-v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libbrotlicommon1-x86-64-v3.rpm [done]
 (XXX/XXX) Installing: libbrotlicommon1-x86-64-v3 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libbrotlicommon1-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libboost_thread1_86_0-x86-64-v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libboost_thread1_86_0-x86-64-v3.rpm [done]
-(XXX/XXX) Installing: libboost_thread1_86_0-x86-64-v3 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libboost_thread1_86_0-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: iproute2 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
-Retrieving: iproute2.rpm [done]
-(XXX/XXX) Installing: iproute2 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/iproute2.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: cracklib (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: cracklib.rpm [done]
 (XXX/XXX) Installing: cracklib [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/cracklib.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: libcrack2 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libcrack2.rpm [done]
 (XXX/XXX) Installing: libcrack2 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libcrack2.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: coreutils (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: coreutils.rpm [done]
 (XXX/XXX) Installing: coreutils [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/coreutils.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: iproute2 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
+Retrieving: iproute2.rpm [done]
+(XXX/XXX) Installing: iproute2 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/iproute2.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libboost_thread1_87_0-x86-64-v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libboost_thread1_87_0-x86-64-v3.rpm [done]
+(XXX/XXX) Installing: libboost_thread1_87_0-x86-64-v3 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libboost_thread1_87_0-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: zypper-log (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: zypper-log [done]
+(XXX/XXX) Installing: zypper-log [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/zypper-log: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: dbus-1-common (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: dbus-1-common [done]
+(XXX/XXX) Installing: dbus-1-common [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/dbus-1-common: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+/usr/bin/busybox adduser -S -H -g User for D-Bus -G messagebus -h /run/dbus messagebus -s /usr/sbin/nologin
 Retrieving: openSUSE-release (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: openSUSE-release.rpm [done]
 (XXX/XXX) Installing: openSUSE-release [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/openSUSE-release.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: libpwquality1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libpwquality1.rpm [done]
 (XXX/XXX) Installing: libpwquality1 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpwquality1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: systemd-presets-common-SUSE (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: systemd-presets-common-SUSE [done]
 (XXX/XXX) Installing: systemd-presets-common-SUSE [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/systemd-presets-common-SUSE: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: rpm-config-SUSE (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: rpm-config-SUSE [done]
 (XXX/XXX) Installing: rpm-config-SUSE [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/rpm-config-SUSE: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: rpm (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: rpm.rpm [done]
 (XXX/XXX) Installing: rpm [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/rpm.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Updating /etc/sysconfig/services ...
 Retrieving: permissions-config (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: permissions-config [done]
 (XXX/XXX) Installing: permissions-config [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/permissions-config: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Updating /etc/sysconfig/security ...
 Checking permissions and ownerships - using the permissions files
 	/usr/share/permissions/permissions
@@ -621,41 +778,63 @@ Retrieving: ca-certificates (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB
 Retrieving: ca-certificates [done]
 (XXX/XXX) Installing: ca-certificates [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/ca-certificates: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: ca-certificates-mozilla (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: ca-certificates-mozilla [done]
 (XXX/XXX) Installing: ca-certificates-mozilla [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/ca-certificates-mozilla: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libdbus-1-3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libdbus-1-3.rpm [done]
+(XXX/XXX) Installing: libdbus-1-3 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libdbus-1-3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: patterns-base-minimal_base (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: patterns-base-minimal_base.rpm [done]
 (XXX/XXX) Installing: patterns-base-minimal_base [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/patterns-base-minimal_base.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: systemd-presets-branding-openSUSE (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: systemd-presets-branding-openSUSE [done]
 (XXX/XXX) Installing: systemd-presets-branding-openSUSE [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/systemd-presets-branding-openSUSE: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: libsolv-tools-base (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libsolv-tools-base.rpm [done]
 (XXX/XXX) Installing: libsolv-tools-base [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libsolv-tools-base.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: permissions (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: permissions.rpm [done]
 (XXX/XXX) Installing: permissions [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/permissions.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: dbus-1-tools (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: dbus-1-tools.rpm [done]
+(XXX/XXX) Installing: dbus-1-tools [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/dbus-1-tools.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: pam (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: pam.rpm [done]
 (XXX/XXX) Installing: pam [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/pam.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-FIXME: not-running /usr/bin/chkstat -n --set --system /usr/sbin/unix_chkpwd
-FIXME: not-running /usr/bin/chkstat -n --set --system /usr/sbin/unix2_chkpwd
+warning: private mounts in chroot not implemented
+ERROR: /proc is not available - unable to fix policy violations. Will continue in warn-only mode.
+/usr/sbin/unix_chkpwd: should be root:shadow 4755 (wrong owner/group root:root, wrong permissions 0755)
+ERROR: not all operations were successful.
 Retrieving: iputils (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: iputils.rpm [done]
 (XXX/XXX) Installing: iputils [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/iputils.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-FIXME: not-running /usr/bin/chkstat -n --set --system /usr/bin/clockdiff
+warning: private mounts in chroot not implemented
+ERROR: /proc is not available - unable to fix policy violations. Will continue in warn-only mode.
+/usr/bin/clockdiff: should be root:root 0755 "cap_net_raw=p". (missing capabilities)
+ERROR: not all operations were successful.
 Retrieving: util-linux (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: util-linux.rpm [done]
 (XXX/XXX) Installing: util-linux [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/util-linux.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 ERROR: /proc is not available - unable to fix policy violations. Will continue in warn-only mode.
 /usr/bin/mount: should be root:root 4755 (wrong permissions 0755)
 /usr/bin/umount: should be root:root 4755 (wrong permissions 0755)
@@ -667,20 +846,24 @@ Retrieving: pam-extra (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB
 Retrieving: pam-extra.rpm [done]
 (XXX/XXX) Installing: pam-extra [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/pam-extra.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: kbd (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: kbd.rpm [done]
 (XXX/XXX) Installing: kbd [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/kbd.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Updating /etc/sysconfig/console ...
 Updating /etc/sysconfig/keyboard ...
 Retrieving: update-bootloader (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: update-bootloader.rpm [done]
 (XXX/XXX) Installing: update-bootloader [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/update-bootloader.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: pam-config (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: pam-config.rpm [done]
 (XXX/XXX) Installing: pam-config [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/pam-config.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 ERROR: module /lib64/security/pam_pwquality.so is not installed.
 *** write_config (account, /etc/pam.d/common-account-pc, ...)
 **** write config for pam_access.so (account, disabled)
@@ -709,10 +892,10 @@ ERROR: module /lib64/security/pam_pwquality.so is not installed.
 **** write config for pam_kwallet5.so (auth, disabled)
 **** write config for pam_systemd_home.so (auth, disabled)
 **** write config for pam_ssh.so (auth, disabled)
-**** write config for pam_unix2.so (auth, disabled)
-**** write config for pam_unix.so (auth, enabled)
 **** write config for pam_ecryptfs.so (auth, disabled)
 **** write config for pam_fscrypt.so (auth, disabled)
+**** write config for pam_unix2.so (auth, disabled)
+**** write config for pam_unix.so (auth, enabled)
 **** write config for pam_krb5.so (auth, disabled)
 **** write config for pam_sss.so (auth, disabled)
 **** write config for pam_ldap.so (auth, disabled)
@@ -799,227 +982,217 @@ Retrieving: pam_pwquality (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB
 Retrieving: pam_pwquality.rpm [done]
 (XXX/XXX) Installing: pam_pwquality [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/pam_pwquality.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: crypto-policies (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: crypto-policies [done]
 (XXX/XXX) Installing: crypto-policies [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/crypto-policies: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: libopenssl3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: libopenssl3.rpm [done]
 (XXX/XXX) Installing: libopenssl3 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libopenssl3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: python311-base (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
-Retrieving: python311-base.rpm [done]
-(XXX/XXX) Installing: python311-base [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python311-base.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libpython3_11-1_0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
-Retrieving: libpython3_11-1_0.rpm [done]
-(XXX/XXX) Installing: libpython3_11-1_0 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpython3_11-1_0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: python313-base (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
+Retrieving: python313-base.rpm [done]
+(XXX/XXX) Installing: python313-base [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python313-base.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libpython3_13-1_0 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
+Retrieving: libpython3_13-1_0.rpm [done]
+(XXX/XXX) Installing: libpython3_13-1_0 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpython3_13-1_0.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: logrotate (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: logrotate.rpm [done]
 (XXX/XXX) Installing: logrotate [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/logrotate.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: libzck1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libzck1.rpm [done]
 (XXX/XXX) Installing: libzck1 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libzck1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: libopenssl3-x86-64-v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: libopenssl3-x86-64-v3.rpm [done]
 (XXX/XXX) Installing: libopenssl3-x86-64-v3 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libopenssl3-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: libldap2 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libldap2.rpm [done]
 (XXX/XXX) Installing: libldap2 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libldap2.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: dump-rmt (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: dump-rmt.rpm [done]
 (XXX/XXX) Installing: dump-rmt [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/dump-rmt.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 update-alternatives: using /usr/bin/ermt to provide /usr/bin/rmt (rmt) in auto mode
-Retrieving: python311-pip (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
-Retrieving: python311-pip [done]
-(XXX/XXX) Installing: python311-pip [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/python311-pip: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: python311 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: python311.rpm [done]
-(XXX/XXX) Installing: python311 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python311.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: python311-curses (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: python311-curses.rpm [done]
-(XXX/XXX) Installing: python311-curses [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python311-curses.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libpython3_11-1_0-x86-64-v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
-Retrieving: libpython3_11-1_0-x86-64-v3.rpm [done]
-(XXX/XXX) Installing: libpython3_11-1_0-x86-64-v3 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpython3_11-1_0-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+Retrieving: python313-pip (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
+Retrieving: python313-pip [done]
+(XXX/XXX) Installing: python313-pip [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/python313-pip: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: python313 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: python313.rpm [done]
+(XXX/XXX) Installing: python313 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python313.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: python313-curses (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: python313-curses.rpm [done]
+(XXX/XXX) Installing: python313-curses [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python313-curses.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libpython3_13-1_0-x86-64-v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
+Retrieving: libpython3_13-1_0-x86-64-v3.rpm [done]
+(XXX/XXX) Installing: libpython3_13-1_0-x86-64-v3 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libpython3_13-1_0-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: cpio (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: cpio.rpm [done]
 (XXX/XXX) Installing: cpio [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/cpio.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: cpio-mt (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: cpio-mt.rpm [done]
 (XXX/XXX) Installing: cpio-mt [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/cpio-mt.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 update-alternatives: using /usr/bin/gnumt to provide /usr/bin/mt (mt) in auto mode
-Retrieving: python311-dbm (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: python311-dbm.rpm [done]
-(XXX/XXX) Installing: python311-dbm [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python311-dbm.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+Retrieving: python313-dbm (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: python313-dbm.rpm [done]
+(XXX/XXX) Installing: python313-dbm [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python313-dbm.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: aaa_base (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: aaa_base.rpm [done]
 (XXX/XXX) Installing: aaa_base [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/aaa_base.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Updating /etc/sysconfig/language ...
 Updating /etc/sysconfig/proxy ...
-Retrieving: python311-x86-64-v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: python311-x86-64-v3.rpm [done]
-(XXX/XXX) Installing: python311-x86-64-v3 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python311-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: python311-base-x86-64-v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
-Retrieving: python311-base-x86-64-v3.rpm [done]
-(XXX/XXX) Installing: python311-base-x86-64-v3 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python311-base-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+Retrieving: python313-x86-64-v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: python313-x86-64-v3.rpm [done]
+(XXX/XXX) Installing: python313-x86-64-v3 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python313-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: python313-base-x86-64-v3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
+Retrieving: python313-base-x86-64-v3.rpm [done]
+(XXX/XXX) Installing: python313-base-x86-64-v3 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/python313-base-x86-64-v3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: crypto-policies-scripts (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: crypto-policies-scripts [done]
 (XXX/XXX) Installing: crypto-policies-scripts [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/crypto-policies-scripts: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: dbus-1-tools (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: dbus-1-tools.rpm [done]
-(XXX/XXX) Installing: dbus-1-tools [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/dbus-1-tools.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: systemd (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
-Retrieving: systemd.rpm [done]
-(XXX/XXX) Installing: systemd [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/systemd.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Running in chroot, ignoring command 'daemon-reexec'
-warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-Retrieving: sysuser-shadow (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: sysuser-shadow [done]
-(XXX/XXX) Installing: sysuser-shadow [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/sysuser-shadow: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: dbus-1-common (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: dbus-1-common [done]
-(XXX/XXX) Installing: dbus-1-common [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/dbus-1-common: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-/usr/bin/systemd-sysusers --replace=/usr/lib/sysusers.d/dbus.conf -
-Creating group 'systemd-journal' with GID XXX.
-Creating group 'messagebus' with GID XXX.
-Creating user 'messagebus' (User for D-Bus) with UID XXX and GID XXX.
-Creating group 'systemd-coredump' with GID XXX.
-Creating user 'systemd-coredump' (systemd Core Dumper) with UID XXX and GID XXX.
-warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-Retrieving: libdbus-1-3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libdbus-1-3.rpm [done]
-(XXX/XXX) Installing: libdbus-1-3 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libdbus-1-3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libgnutls30 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libgnutls30.rpm [done]
-(XXX/XXX) Installing: libgnutls30 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgnutls30.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: krb5 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: krb5.rpm [done]
-(XXX/XXX) Installing: krb5 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/krb5.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: dbus-broker (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: dbus-broker.rpm [done]
-(XXX/XXX) Installing: dbus-broker [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/dbus-broker.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Created symlink '/etc/systemd/system/dbus.service' -> '/usr/lib/systemd/system/dbus-broker.service'.
-Created symlink '/etc/systemd/user/dbus.service' -> '/usr/lib/systemd/user/dbus-broker.service'.
-warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-Retrieving: aaa_base-extras (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: aaa_base-extras.rpm [done]
-(XXX/XXX) Installing: aaa_base-extras [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/aaa_base-extras.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Updating /etc/sysconfig/backup ...
-Created symlink '/etc/systemd/system/timers.target.wants/backup-rpmdb.timer' -> '/usr/lib/systemd/system/backup-rpmdb.timer'.
-Created symlink '/etc/systemd/system/timers.target.wants/backup-sysconfig.timer' -> '/usr/lib/systemd/system/backup-sysconfig.timer'.
-Created symlink '/etc/systemd/system/timers.target.wants/check-battery.timer' -> '/usr/lib/systemd/system/check-battery.timer'.
-warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-Retrieving: dirmngr (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: dirmngr.rpm [done]
-(XXX/XXX) Installing: dirmngr [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/dirmngr.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-Retrieving: libtirpc3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libtirpc3.rpm [done]
-(XXX/XXX) Installing: libtirpc3 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libtirpc3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libssh4 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libssh4.rpm [done]
-(XXX/XXX) Installing: libssh4 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libssh4.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: dbus-1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: dbus-1.rpm [done]
 (XXX/XXX) Installing: dbus-1 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/dbus-1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-FIXME: not-running /usr/bin/chkstat -n --set --system /usr/libexec/dbus-1/dbus-daemon-launch-helper
-Retrieving: gpg2 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
-Retrieving: gpg2.rpm [done]
-(XXX/XXX) Installing: gpg2 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/gpg2.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-Retrieving: lsof (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: lsof.rpm [done]
-(XXX/XXX) Installing: lsof [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/lsof.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
-Retrieving: libcurl4 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
-Retrieving: libcurl4.rpm [done]
-(XXX/XXX) Installing: libcurl4 [done]
-warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libcurl4.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+ERROR: /proc is not available - unable to fix policy violations. Will continue in warn-only mode.
+/usr/libexec/dbus-1/dbus-daemon-launch-helper: should be root:messagebus 4750 (wrong owner/group root:root, wrong permissions 0750)
+ERROR: not all operations were successful.
+Retrieving: systemd (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
+Retrieving: systemd.rpm [done]
+(XXX/XXX) Installing: systemd [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/systemd.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Running in chroot, ignoring command 'daemon-reexec'
+Retrieving: dbus-broker (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: dbus-broker.rpm [done]
+(XXX/XXX) Installing: dbus-broker [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/dbus-broker.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Created symlink '/etc/systemd/system/dbus.service' -> '/usr/lib/systemd/system/dbus-broker.service'.
+Created symlink '/etc/systemd/user/dbus.service' -> '/usr/lib/systemd/user/dbus-broker.service'.
+Retrieving: libgnutls30 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libgnutls30.rpm [done]
+(XXX/XXX) Installing: libgnutls30 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgnutls30.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: krb5 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: krb5.rpm [done]
+(XXX/XXX) Installing: krb5 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/krb5.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: aaa_base-extras (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: aaa_base-extras.rpm [done]
+(XXX/XXX) Installing: aaa_base-extras [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/aaa_base-extras.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Updating /etc/sysconfig/backup ...
+Created symlink '/etc/systemd/system/timers.target.wants/backup-rpmdb.timer' -> '/usr/lib/systemd/system/backup-rpmdb.timer'.
+Created symlink '/etc/systemd/system/timers.target.wants/backup-sysconfig.timer' -> '/usr/lib/systemd/system/backup-sysconfig.timer'.
+Created symlink '/etc/systemd/system/timers.target.wants/check-battery.timer' -> '/usr/lib/systemd/system/check-battery.timer'.
 Retrieving: util-linux-systemd (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: util-linux-systemd.rpm [done]
 (XXX/XXX) Installing: util-linux-systemd [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/util-linux-systemd.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Created symlink '/etc/systemd/system/timers.target.wants/fstrim.timer' -> '/usr/lib/systemd/system/fstrim.timer'.
-warning: posix.fork(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.wait(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
-warning: posix.exec(): .fork(), .exec(), .wait() and .redirect2null() are deprecated, use rpm.spawn() or rpm.execute() instead
+Retrieving: dirmngr (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: dirmngr.rpm [done]
+(XXX/XXX) Installing: dirmngr [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/dirmngr.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libtirpc3 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libtirpc3.rpm [done]
+(XXX/XXX) Installing: libtirpc3 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libtirpc3.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libssh4 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libssh4.rpm [done]
+(XXX/XXX) Installing: libssh4 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libssh4.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: gpg2 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
+Retrieving: gpg2.rpm [done]
+(XXX/XXX) Installing: gpg2 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/gpg2.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: lsof (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: lsof.rpm [done]
+(XXX/XXX) Installing: lsof [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/lsof.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
+Retrieving: libcurl4 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
+Retrieving: libcurl4.rpm [done]
+(XXX/XXX) Installing: libcurl4 [done]
+warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libcurl4.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: libgpgme11 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libgpgme11.rpm [done]
 (XXX/XXX) Installing: libgpgme11 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libgpgme11.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: libdebuginfod1 (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: libdebuginfod1.rpm [done]
 (XXX/XXX) Installing: libdebuginfod1 [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libdebuginfod1.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: libzypp (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: libzypp.rpm [done]
 (XXX/XXX) Installing: libzypp [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/libzypp.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: debuginfod-client (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: debuginfod-client.rpm [done]
 (XXX/XXX) Installing: debuginfod-client [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/debuginfod-client.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: zypper (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X MiB    
 Retrieving: zypper.rpm [done]
 (XXX/XXX) Installing: zypper [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/x86_64/zypper.rpm: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Retrieving: zypper-needs-restarting (openSUSE-Tumbleweed-Oss) (XXX/XXX), XXX.X KiB    
 Retrieving: zypper-needs-restarting [done]
 (XXX/XXX) Installing: zypper-needs-restarting [done]
 warning: $ROOT/x86_64-opensuse-tumbleweed-rootfs/var/cache/zypp/packages/repo-oss/noarch/zypper-needs-restarting: Header V3 RSA/SHA512 Signature, key ID xxxxxxxx: NOKEY
+warning: private mounts in chroot not implemented
 Running post-transaction scripts [done]
 %posttrans(systemd-presets-common-SUSE) script output:
 Created symlink '/etc/systemd/system/default.target.wants/ca-certificates.path' -> '/usr/lib/systemd/system/ca-certificates.path'.
@@ -1115,10 +1288,10 @@ rmdir: failed to remove 'var/lib/rpm': Directory not empty
 **** write config for pam_kwallet5.so (auth, disabled)
 **** write config for pam_systemd_home.so (auth, disabled)
 **** write config for pam_ssh.so (auth, disabled)
-**** write config for pam_unix2.so (auth, disabled)
-**** write config for pam_unix.so (auth, enabled)
 **** write config for pam_ecryptfs.so (auth, disabled)
 **** write config for pam_fscrypt.so (auth, disabled)
+**** write config for pam_unix2.so (auth, disabled)
+**** write config for pam_unix.so (auth, enabled)
 **** write config for pam_krb5.so (auth, disabled)
 **** write config for pam_sss.so (auth, disabled)
 **** write config for pam_ldap.so (auth, disabled)

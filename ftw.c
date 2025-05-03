@@ -7,6 +7,7 @@
 #ifndef __clang__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-function-type"
+#pragma GCC diagnostic ignored "-Wincompatible-pointer-types"
 #endif
 
 /*

@@ -1,5 +1,5 @@
 #
-# Copyright 2020-2024 Gaël PORTAY
+# Copyright 2020-2025 Gaël PORTAY
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -20,9 +20,6 @@ endif
 
 %.o: override CPPFLAGS += -D_GNU_SOURCE -DVERSION=$(VERSION) -DPREFIX=$(PREFIX)
 %.o: override CFLAGS += -fPIC -Wall -Wextra
-ifeq ($(OS),GNU/Linux)
-lib%.so: override LDFLAGS += -nodefaultlibs
-endif
 ifeq ($(OS),FreeBSD)
 lib%.so: override LDLIBS += -ldl
 endif
@@ -452,11 +449,17 @@ PREPROCESS.c = $(PREPROCESS.S)
 
 lib%.so: override LDFLAGS += -shared
 lib%.so:
-	$(LINK.o) $^ $(LOADLIBES) $(LDLIBS) -o $@.tmp
-ifeq ($(OS),GNU/Linux)
-	patchelf --add-needed libc.so.6 --add-needed libdl.so.2 --add-needed libpthread.so.0 $@.tmp
-endif
-	mv $@.tmp $@
+	if $(CC) -dumpmachine | grep -qE "\-linux-gnu(eabi|eabihf)$$"; then \
+		$(LINK.o) -nodefaultlibs $^ $(LOADLIBES) $(LDLIBS) -o $@.tmp; \
+		patchelf --add-needed libc.so.6 --add-needed libdl.so.2 --add-needed libpthread.so.0 --add-needed libgcc_s.so.1 $@.tmp; \
+		mv $@.tmp $@; \
+	elif $(CC) -dumpmachine | grep -q "\-linux-gnu$$"; then \
+		$(LINK.o) -nodefaultlibs $^ $(LOADLIBES) $(LDLIBS) -o $@.tmp; \
+		patchelf --add-needed libc.so.6 --add-needed libdl.so.2 --add-needed libpthread.so.0 $@.tmp; \
+		mv $@.tmp $@; \
+	else \
+		$(LINK.o) $^ $(LOADLIBES) $(LDLIBS) -o $@; \
+	fi
 
 ld%.so:
 	$(LINK.o) $^ $(LOADLIBES) $(LDLIBS) -o $@

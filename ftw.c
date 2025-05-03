@@ -1,8 +1,13 @@
 /*
- * Copyright 2021-2023 Gaël PORTAY
+ * Copyright 2021-2023,2025 Gaël PORTAY
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
+
+#ifndef __clang__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-function-type"
+#endif
 
 /*
  * Stolen from musl (src/legacy/ftw.c)
@@ -21,3 +26,7 @@ int ftw(const char *path, int (*fn)(const char *, const struct stat *, int), int
 	 * actually undefined, but works on all real-world machines. */
 	return nftw(path, (int (*)())fn, fd_limit, FTW_PHYS);
 }
+
+#ifndef __clang__
+#pragma GCC diagnostic pop
+#endif

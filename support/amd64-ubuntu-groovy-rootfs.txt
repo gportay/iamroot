@@ -1,7 +1,6 @@
 I: Target architecture can be executed
+W: Cannot check Release signature; keyring file not available /usr/share/keyrings/ubuntu-archive-removed-keys.gpg
 I: Retrieving InRelease 
-I: Checking Release signature
-I: Valid Release signature (key id XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX)
 I: Retrieving Packages 
 I: Validating Packages 
 I: Resolving dependencies of required packages...
@@ -869,9 +868,6 @@ I: Configuring libc-bin...
 I: Configuring systemd...
 I: Configuring ca-certificates...
 I: Base system installed successfully.
-gpgv: Signature made Day Mon dd hh:mm:ss YYYY TZ
-gpgv:                using RSA key XXXXXXXXXXXXXXXX
-gpgv: Good signature from "Ubuntu Archive Automatic Signing Key (2018) <ftpmaster@ubuntu.com>"
 dpkg: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
  missing 'Description' field
 dpkg: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':

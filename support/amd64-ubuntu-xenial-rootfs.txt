@@ -1,7 +1,6 @@
 I: Target architecture can be executed
+W: Cannot check Release signature; keyring file not available /usr/share/keyrings/ubuntu-archive-removed-keys.gpg
 I: Retrieving InRelease 
-I: Checking Release signature
-I: Valid Release signature (key id XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX)
 I: Retrieving Packages 
 I: Validating Packages 
 I: Resolving dependencies of required packages...
@@ -826,12 +825,6 @@ I: Configuring initramfs-tools...
 I: Configuring ureadahead...
 I: Configuring resolvconf...
 I: Base system installed successfully.
-gpgv: Signature made Day Mon dd hh:mm:ss YYYY TZ
-gpgv:                using DSA key XXXXXXXXXXXXXXXX
-gpgv: Can't check signature: No public key
-gpgv: Signature made Day Mon dd hh:mm:ss YYYY TZ
-gpgv:                using RSA key XXXXXXXXXXXXXXXX
-gpgv: Good signature from "Ubuntu Archive Automatic Signing Key (2012) <ftpmaster@ubuntu.com>"
 dpkg: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':
  missing description
 dpkg: warning: parsing file '/var/lib/dpkg/status' near line X: package 'dpkg':

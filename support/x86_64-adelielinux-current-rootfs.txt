@@ -19,6 +19,9 @@
 (X/X) Installing adelie-keys
 (X/X) Installing scanelf
 (X/X) Installing musl-utils
+(X/X) Installing execline
+(X/X) Installing s6
+(X/X) Installing utmps-libs
 (X/X) Installing linux-pam
 (X/X) Installing shadow
 (X/X) Installing shimmy

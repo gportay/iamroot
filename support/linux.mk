@@ -2201,6 +2201,9 @@ support: all
 .PHONY: legacy-support
 legacy-support: all
 
+.PHONY: oldstable-support
+oldstable-support: all
+
 .PHONY: stable-support
 stable-support: all
 
@@ -2218,6 +2221,9 @@ fixme-support: all
 
 .PHONY: log
 log: all
+
+.PHONY: oldstable-log
+oldstable-log: all
 
 .PHONY: stable-log
 stable-log: all
@@ -2321,16 +2327,18 @@ ubuntu-log: amd64-ubuntu-lunar-rootfs.log
 ubuntu-log: amd64-ubuntu-mantic-rootfs.log
 ubuntu-log: amd64-ubuntu-noble-rootfs.log
 
-stable-support: support/amd64-ubuntu-trusty-rootfs.txt
-stable-support: support/amd64-ubuntu-xenial-rootfs.txt
-stable-support: support/amd64-ubuntu-bionic-rootfs.txt
+oldstable-support: support/amd64-ubuntu-trusty-rootfs.txt
+oldstable-support: support/amd64-ubuntu-xenial-rootfs.txt
+oldstable-support: support/amd64-ubuntu-bionic-rootfs.txt
+
 stable-support: support/amd64-ubuntu-focal-rootfs.txt
 stable-support: support/amd64-ubuntu-jammy-rootfs.txt
 stable-support: support/amd64-ubuntu-noble-rootfs.txt
 
-stable-log: amd64-ubuntu-trusty-rootfs.log
-stable-log: amd64-ubuntu-xenial-rootfs.log
-stable-log: amd64-ubuntu-bionic-rootfs.log
+oldstable-log: amd64-ubuntu-trusty-rootfs.log
+oldstable-log: amd64-ubuntu-xenial-rootfs.log
+oldstable-log: amd64-ubuntu-bionic-rootfs.log
+
 stable-log: amd64-ubuntu-focal-rootfs.log
 stable-log: amd64-ubuntu-jammy-rootfs.log
 stable-log: amd64-ubuntu-noble-rootfs.log

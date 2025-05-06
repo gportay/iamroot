@@ -1489,18 +1489,42 @@ ifneq ($(shell command -v arm-buildroot-linux-gnueabi-gcc 2>/dev/null),)
 arm-rootfs: armel-debian-rootfs
 
 .PHONY: armel-debian-rootfs
+fixme-rootfs: armel-debian-jessie-rootfs
+fixme-rootfs: armel-debian-stretch-rootfs
 armel-debian-rootfs: armel-debian-buster-rootfs
 armel-debian-rootfs: armel-debian-bullseye-rootfs
 armel-debian-rootfs: armel-debian-bookworm-rootfs
 armel-debian-rootfs: armel-debian-trixie-rootfs
 armel-debian-rootfs: armel-debian-sid-rootfs
 
+armel-debian-jessie-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.debian.org/debian
+armel-debian-stretch-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.debian.org/debian
 armel-debian-buster-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.debian.org/debian
+$(eval $(call debootstrap-rootfs,armel,debian,jessie))
+$(eval $(call debootstrap-rootfs,armel,debian,stretch))
 $(eval $(call debootstrap-rootfs,armel,debian,buster))
 $(eval $(call debootstrap-rootfs,armel,debian,bullseye))
 $(eval $(call debootstrap-rootfs,armel,debian,bookworm))
 $(eval $(call debootstrap-rootfs,armel,debian,trixie))
 $(eval $(call debootstrap-rootfs,armel,debian,sid))
+# I: Target architecture can be executed
+# I: Retrieving InRelease
+# I: Checking Release signature
+# E: Release signed by unknown key (key id CBF8D6FD518E17E1)
+#    The specified keyring /usr/share/keyrings/debian-archive-keyring.gpg may be incorrect or out of date.
+#    You can find the latest Debian release key at https://ftp-master.debian.org/keys.html
+armel-debian-jessie-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --no-check-sig
+# Setting up systemd ...
+# chfn: PAM: System error
+# adduser: `/usr/bin/chfn -f systemd Time Synchronization systemd-timesync' returned error code 1. Exiting.
+# dpkg: error processing package systemd (--install):
+# subprocess installed post-installation script returned error exit status 1
+# Processing triggers for libc-bin ...
+# Errors were encountered while processing:
+#  systemd
+armel-debian-jessie-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|chfn
+armel-debian-stretch-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|chfn
+armel-debian-stretch-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 armel-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 
@@ -1508,17 +1532,41 @@ ifneq ($(shell command -v arm-buildroot-linux-gnueabihf-gcc 2>/dev/null),)
 arm-rootfs: armhf-debian-rootfs
 
 .PHONY: armhf-debian-rootfs
+fixme-rootfs: armhf-debian-jessie-rootfs
+fixme-rootfs: armhf-debian-stretch-rootfs
 armhf-debian-rootfs: armhf-debian-buster-rootfs
 armhf-debian-rootfs: armhf-debian-bullseye-rootfs
 armhf-debian-rootfs: armhf-debian-bookworm-rootfs
 armhf-debian-rootfs: armhf-debian-trixie-rootfs
 armhf-debian-rootfs: armhf-debian-sid-rootfs
 
+armhf-debian-jessie-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.debian.org/debian
+armhf-debian-stretch-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.debian.org/debian
+$(eval $(call debootstrap-rootfs,armhf,debian,jessie))
+$(eval $(call debootstrap-rootfs,armhf,debian,stretch))
 $(eval $(call debootstrap-rootfs,armhf,debian,buster))
 $(eval $(call debootstrap-rootfs,armhf,debian,bullseye))
 $(eval $(call debootstrap-rootfs,armhf,debian,bookworm))
 $(eval $(call debootstrap-rootfs,armhf,debian,trixie))
 $(eval $(call debootstrap-rootfs,armhf,debian,sid))
+# I: Target architecture can be executed
+# I: Retrieving InRelease
+# I: Checking Release signature
+# E: Release signed by unknown key (key id CBF8D6FD518E17E1)
+#    The specified keyring /usr/share/keyrings/debian-archive-keyring.gpg may be incorrect or out of date.
+#    You can find the latest Debian release key at https://ftp-master.debian.org/keys.html
+armhf-debian-jessie-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --no-check-sig
+# Setting up systemd ...
+# chfn: PAM: System error
+# adduser: `/usr/bin/chfn -f systemd Time Synchronization systemd-timesync' returned error code 1. Exiting.
+# dpkg: error processing package systemd (--install):
+# subprocess installed post-installation script returned error exit status 1
+# Processing triggers for libc-bin ...
+# Errors were encountered while processing:
+#  systemd
+armhf-debian-jessie-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|chfn
+armhf-debian-stretch-rootfs/bin/sh: export IAMROOT_EXEC_IGNORE = mountpoint|chfn
+armhf-debian-stretch-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 armhf-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 

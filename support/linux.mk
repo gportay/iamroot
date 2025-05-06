@@ -1559,6 +1559,7 @@ mipsel-debian-rootfs: mipsel-debian-bullseye-rootfs
 mipsel-debian-rootfs: mipsel-debian-bookworm-rootfs
 
 mipsel-debian-stretch-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.debian.org/debian
+mipsel-debian-buster-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.debian.org/debian
 $(eval $(call debootstrap-rootfs,mipsel,debian,stretch))
 $(eval $(call debootstrap-rootfs,mipsel,debian,buster))
 $(eval $(call debootstrap-rootfs,mipsel,debian,bullseye))
@@ -1588,6 +1589,7 @@ mips64el-debian-rootfs: mips64el-debian-trixie-rootfs
 mips64el-debian-rootfs: mips64el-debian-sid-rootfs
 
 mips64el-debian-stretch-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.debian.org/debian
+mips64el-debian-buster-rootfs/bin/sh: export DEBOOTSTRAP_MIRROR ?= http://archive.debian.org/debian
 $(eval $(call debootstrap-rootfs,mips64el,debian,stretch))
 $(eval $(call debootstrap-rootfs,mips64el,debian,buster))
 $(eval $(call debootstrap-rootfs,mips64el,debian,bullseye))

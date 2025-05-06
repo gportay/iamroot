@@ -98,6 +98,48 @@ The table below lists the distributions and its tool that work with.
 
 \*: Works with hacks.
 
+### DEBIAN PORTS
+
+Here is the list of tested [Debian ports]:
+
+| ports    | amd64 | i386 | armel | armhf | arm64 | riscv64 | mips64el | mipsel | ppc64el | powerpc | s390x |
+| -------- | ----- | ---- | ----- | ----- | ----- | ------- | -------- | -----  | ------- | ------- | ----- |
+| jessie   | X     | X    | \*\*  | \*\*  | X     | N/A     | X        | -      | -       | X       | -     |
+| stretch  | X     | X    | \*\*  | \*\*  | X     | N/A     | X        | X      | X       | N/A     | X     |
+| buster   | X     | X    | X     | X     | X     | N/A     | X        | X      | X       | N/A     | X     |
+| bullseye | X     | X    | X     | X     | X     | N/A     | X        | X      | X       | N/A     | X     |
+| bookworm | X     | X    | X     | X     | X     | N/A     | X        | X      | X       | N/A     | X     |
+| trixie   | X     | X    | X     | X     | X     | X       | X        | N/A    | X       | N/A     | X     |
+| sid      | X     | X    | X     | X     | X     | X       | X        | N/A    | X       | N/A     | X     |
+
+
+``` bash
+export IAMROOT_PATH_RESOLUTION_IGNORE="^/(proc|sys)/|^/dev/(null|zero|full|random|urandom|tty|console|pts|shm|ptmx)"
+ido --multiarch debootstrap [--arch=PORT] sid rootfs [http://mirrors.edge.kernel.org/debian]
+```
+
+\*\*: `bash(1)` has its own internal implementation of `malloc(3)`; it fails if
+running through `qemu-arm-static(1)` (32-bit ARM) with the errors below. Debian
+has removed since [bash-4.4.18-2] (buster).
+
+```
+Selecting previously unselected package dash.
+Preparing to unpack .../dash.deb ...
+jim_regcomp: out of memory
+jim_regcomp: out of memory
+jim_regcomp: out of memory
+jim_regcomp: out of memory
+bash: xmalloc: .././locale.c: cannot allocate 2 bytes (0 bytes allocated)
+dpkg: error processing archive /var/cache/apt/archives/dash.deb (--unpack):
+subprocess new pre-installation script returned error exit status 2
+Preparing to unpack .../debconf.deb ...
+Warning: 40: ELF's machine is not supported yet!
+Warning: 40: ELF's machine is not supported yet!
+Warning: libm.so.6: needed library not found in library-path /lib:/usr/lib
+/var/lib/dpkg/info/debconf.prerm: 6: /var/lib/dpkg/info/debconf.prerm: awk: not found
+Unpacking debconf ...
+```
+
 ## GLIBC
 
 The [GNU C Library][glibc] leaks symbols in the dynamically linked binaries and
@@ -246,6 +288,7 @@ later version.
 [Arch Linux RISC-V]: https://archriscv.felixc.at/
 [Arch Linux]: https://archlinux.org/
 [Arch POWER]: https://archlinuxpower.org/
+[Debian ports]: https://www.debian.org/ports/
 [Debian]: https://www.debian.org/
 [Devuan]: https://www.devuan.org/
 [Fedora]: https://fedoraproject.org/
@@ -259,6 +302,7 @@ later version.
 [Ubuntu]: https://ubuntu.com/
 [Void Linux]: https://voidlinux.org/
 [alpine-make-rootfs]: https://github.com/alpinelinux/alpine-make-rootfs/blob/master/README.adoc
+[bash-4.4.18-2]: https://salsa.debian.org/debian/bash/-/commit/df499936b4a369f06179653111c291652c015910
 [binfmt_misc]: https://www.kernel.org/doc/html/latest/admin-guide/binfmt-misc.html
 [chdir(2)]: https://linux.die.net/man/2/chdir
 [chown(2)]: https://linux.die.net/man/2/chown

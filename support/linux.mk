@@ -1535,18 +1535,11 @@ ifneq ($(shell command -v riscv64-buildroot-linux-gnu-gcc 2>/dev/null),)
 riscv64-rootfs: riscv64-debian-rootfs
 
 .PHONY: riscv64-debian-rootfs
-riscv64-debian-rootfs: riscv64-debian-buster-rootfs
-riscv64-debian-rootfs: riscv64-debian-bullseye-rootfs
-riscv64-debian-rootfs: riscv64-debian-bookworm-rootfs
 riscv64-debian-rootfs: riscv64-debian-trixie-rootfs
 riscv64-debian-rootfs: riscv64-debian-sid-rootfs
 
-$(eval $(call debootstrap-rootfs,riscv64,debian,buster))
-$(eval $(call debootstrap-rootfs,riscv64,debian,bullseye))
-$(eval $(call debootstrap-rootfs,riscv64,debian,bookworm))
 $(eval $(call debootstrap-rootfs,riscv64,debian,trixie))
 $(eval $(call debootstrap-rootfs,riscv64,debian,sid))
-riscv64-debian-buster-rootfs/bin/sh: export DEBOOTSTRAPFLAGS += --include ssh
 endif
 
 ifneq ($(shell command -v mipsel-buildroot-linux-gnu-gcc 2>/dev/null),)

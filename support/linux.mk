@@ -1943,7 +1943,7 @@ $(eval $(call alpine-make-rootfs-alpine-rootfs,aarch64,alpinelinux,3.20))
 $(eval $(call alpine-make-rootfs-alpine-rootfs,aarch64,alpinelinux,3.21))
 $(eval $(call alpine-make-rootfs-alpine-rootfs,aarch64,alpinelinux,edge))
 
-$(eval $(call alpine-mini-rootfs,aarch64,3.20))
+$(eval $(call alpine-mini-rootfs,aarch64,3.21))
 
 aarch64-rootfs: aarch64-adelielinux-rootfs
 
@@ -1980,7 +1980,7 @@ $(eval $(call alpine-make-rootfs-alpine-rootfs,armhf,alpinelinux,3.20))
 $(eval $(call alpine-make-rootfs-alpine-rootfs,armhf,alpinelinux,3.21))
 $(eval $(call alpine-make-rootfs-alpine-rootfs,armhf,alpinelinux,edge))
 
-$(eval $(call alpine-mini-rootfs,armhf,3.20))
+$(eval $(call alpine-mini-rootfs,armhf,3.21))
 
 .PHONY: armv7-alpinelinux-rootfs
 armv7-alpinelinux-rootfs: armv7-alpinelinux-3.14-rootfs
@@ -2003,7 +2003,7 @@ $(eval $(call alpine-make-rootfs-alpine-rootfs,armv7,alpinelinux,3.20))
 $(eval $(call alpine-make-rootfs-alpine-rootfs,armv7,alpinelinux,3.21))
 $(eval $(call alpine-make-rootfs-alpine-rootfs,armv7,alpinelinux,edge))
 
-$(eval $(call alpine-mini-rootfs,armv7,3.20))
+$(eval $(call alpine-mini-rootfs,armv7,3.21))
 
 arm-rootfs: armv7-adelielinux-rootfs
 
@@ -2052,7 +2052,7 @@ $(eval $(call alpine-make-rootfs-alpine-rootfs,ppc64le,alpinelinux,3.20))
 $(eval $(call alpine-make-rootfs-alpine-rootfs,ppc64le,alpinelinux,3.21))
 $(eval $(call alpine-make-rootfs-alpine-rootfs,ppc64le,alpinelinux,edge))
 
-$(eval $(call alpine-mini-rootfs,ppc64le,3.20))
+$(eval $(call alpine-mini-rootfs,ppc64le,3.21))
 
 powerpc64-rootfs: ppc64-adelielinux-rootfs
 
@@ -2075,7 +2075,7 @@ $(eval $(call alpine-make-rootfs-alpine-rootfs,riscv64,alpinelinux,3.20))
 $(eval $(call alpine-make-rootfs-alpine-rootfs,riscv64,alpinelinux,3.21))
 $(eval $(call alpine-make-rootfs-alpine-rootfs,riscv64,alpinelinux,edge))
 
-$(eval $(call alpine-mini-rootfs,riscv64,3.20))
+$(eval $(call alpine-mini-rootfs,riscv64,3.21))
 endif
 
 ifneq ($(shell command -v s390x-buildroot-linux-musl-gcc 2>/dev/null),)
@@ -2102,7 +2102,7 @@ $(eval $(call alpine-make-rootfs-alpine-rootfs,s390x,alpinelinux,3.20))
 $(eval $(call alpine-make-rootfs-alpine-rootfs,s390x,alpinelinux,3.21))
 $(eval $(call alpine-make-rootfs-alpine-rootfs,s390x,alpinelinux,edge))
 
-$(eval $(call alpine-mini-rootfs,s390x,3.20))
+$(eval $(call alpine-mini-rootfs,s390x,3.21))
 endif
 endif
 

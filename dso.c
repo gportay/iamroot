@@ -2060,7 +2060,7 @@ static const char *__multiarch(Elf64_Ehdr *ehdr, const char *ldso, int abi)
 
 	/* It is a PowerPC64 ELF */
 	if (__is_powerpc64(ehdr, ldso, abi) == 1)
-		return __set_errno(errno_save, "/usr/lib/powerpc64le-linux-gnu:/lib/powerpc64-linux-gnu:/usr/lib:/lib");
+		return __set_errno(errno_save, "/usr/lib/powerpc64-linux-gnu:/lib/powerpc64-linux-gnu:/usr/lib:/lib");
 
 	/* It is a PowerPC64 LSB ELF */
 	if (__is_powerpc64le(ehdr, ldso, abi) == 1)

@@ -282,7 +282,6 @@ later version.
 [-nodefaultlibs]: https://gcc.gnu.org/onlinedocs/gcc/Link-Options.html#index-nodefaultlibs
 [Adélie Linux]: https://www.adelielinux.org/
 [Alpine Linux]: https://www.alpinelinux.org/
-[Alpine Linux]: https://www.alpinelinux.org/
 [Arch Linux 32]: https://archlinux32.org/
 [Arch Linux ARM]: https://archlinuxarm.org/
 [Arch Linux RISC-V]: https://archriscv.felixc.at/

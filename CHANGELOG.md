@@ -24,7 +24,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   the `argv0` by the hyphen character `-`
 - `ido(1)` sets the `ish(1)` option `--login` if login shell
 
-## Removed
+### Removed
 
 - Remove the function `dlopen()` from NetBSD build
 
